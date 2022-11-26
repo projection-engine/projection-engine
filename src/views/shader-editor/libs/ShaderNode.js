@@ -1,4 +1,4 @@
-import {v4 as uuidv4} from "uuid"
+import {v4} from "uuid"
 
 const types = {
     vec2: 0,
@@ -14,7 +14,8 @@ export default class ShaderNode {
     constructor(inputs, output = [], dynamicInputs) {
         this.x = 10
         this.y = 10
-        this.id = uuidv4()
+        this.id = v4()
+        this.uniformName = "DYNAMIC_" + this.id.replaceAll("-", "_")
         this.output = output
         this.inputs = inputs ? inputs : []
 

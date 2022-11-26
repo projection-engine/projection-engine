@@ -39,21 +39,8 @@
     <div class="icon">
         {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 1rem; "}>{icon}</Icon>
-        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL || metadata.type === FILE_TYPES.MATERIAL || metadata.type === FILE_TYPES.MATERIAL_INSTANCE || metadata.type === FILE_TYPES.TERRAIN_MATERIAL}
+        {:else if metadata.type === FILE_TYPES.MATERIAL}
             <div data-shaded-material="-" style="width: 20px; height: 20px"></div>
-            {#if metadata.type !== FILE_TYPES.MATERIAL}
-                <div class="file-type">
-                    <Icon styles="font-size: .8rem">
-                        {#if metadata.type === FILE_TYPES.MATERIAL_INSTANCE }
-                            copy_all
-                        {:else if metadata.type === FILE_TYPES.SIMPLE_MATERIAL}
-                            fast_forward
-                        {:else if metadata.type === FILE_TYPES.TERRAIN_MATERIAL}
-                            landscape
-                        {/if}
-                    </Icon>
-                </div>
-            {/if}
         {:else if metadata.type === FILE_TYPES.PRIMITIVE || metadata.type === FILE_TYPES.TEXTURE}
             <Preview path={metadata.path}>
                 <img class="image" slot="image" alt="logo" let:src src={src}>

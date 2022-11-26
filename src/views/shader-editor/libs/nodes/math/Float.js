@@ -28,10 +28,9 @@ export default class Float extends ShaderNode {
         return NODE_TYPES.STATIC
     }
 
-    async getInputInstance(index, uniforms, uniformData) {
+    async getInputInstance(index, uniforms, uniformValues) {
         if (this.uniform) {
-            this.uniformName = `FLOAT_VAR${index}`
-            uniformData.push({
+            uniformValues.push({
                 label: this.name,
                 key: this.uniformName,
                 type: DATA_TYPES.FLOAT,
@@ -44,14 +43,12 @@ export default class Float extends ShaderNode {
             })
 
             return `uniform float ${this.uniformName};`
-        } else {
-            this.uniformName = `FLOAT_VAR${index}`
-            return `const float ${this.uniformName}  = ${checkGlslFloat(this.v)};`
         }
+        return `const float ${this.uniformName}  = ${checkGlslFloat(this.v)};`
     }
 
-    getFunctionCall(_, index) {
-        this.FLOAT_VAR = "FLOAT_VAR" + index
+    getFunctionCall() {
+        this.FLOAT_VAR = this.uniformName
         return ""
     }
 }

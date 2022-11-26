@@ -46,7 +46,6 @@
 
 <style>
     .title-wrapper {
-        padding: 8px;
         background: var(--pj-background-secondary);
         justify-content: space-between;
         width: 100%;

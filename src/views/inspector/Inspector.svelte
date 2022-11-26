@@ -81,7 +81,6 @@
             <EntityInspector entity={entity}/>
         {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
             <ContentBrowserItem item={entity}/>
-            ]
         {:else if target === SelectionStore.TYPES.SHADER_EDITOR}
             <AttributeEditor node={entity} internalID={internalID}/>
         {/if}

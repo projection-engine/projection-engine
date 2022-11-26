@@ -1,3 +1,6 @@
-- Fallback shader
-- Tweaking pbr computation
-- Depth reconstruction added to SSGI/SSR pass
+- Added random ID to uniform/constant  name when compiling material
+- Fixed material query on Scene renderer
+- Removing references to simple material/material instance/terrain material/fallback material
+- Visual tweaks to material item on inspector
+- Fixed uniforms not showing on material item
+- Organizing runtime renderers

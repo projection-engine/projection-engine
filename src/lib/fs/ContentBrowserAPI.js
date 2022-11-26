@@ -71,10 +71,9 @@ export default class ContentBrowserAPI {
             componentsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COMPONENT)),
             levelsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.LEVEL)),
             uiReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.UI_LAYOUT)),
-            materialInstancesReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.MATERIAL_INSTANCE)),
-            simpleMaterialReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.SIMPLE_MATERIAL)),
+
             terrainReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN)),
-            terrainMaterialReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN_MATERIAL)),
+
             collections = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COLLECTION)),
             promises = []
 
@@ -82,12 +81,12 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(meshesReg, FILE_TYPES.PRIMITIVE))
         promises.push(...mapAsset(materialsReg, FILE_TYPES.MATERIAL))
         promises.push(...mapAsset(componentsReg, FILE_TYPES.COMPONENT))
-        promises.push(...mapAsset(simpleMaterialReg, FILE_TYPES.MATERIAL_INSTANCE))
+
         promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
         promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
-        promises.push(...mapAsset(materialInstancesReg, FILE_TYPES.MATERIAL_INSTANCE))
+
         promises.push(...mapAsset(terrainReg, FILE_TYPES.TERRAIN))
-        promises.push(...mapAsset(terrainMaterialReg, FILE_TYPES.TERRAIN_MATERIAL))
+
         promises.push(...mapAsset(collections, FILE_TYPES.COLLECTION))
 
         const loadedPromises = await Promise.all(promises)
@@ -125,15 +124,11 @@ export default class ContentBrowserAPI {
                 case FILE_TYPES.UI_LAYOUT:
                     result.uiLayouts.push(current)
                     break
-                case FILE_TYPES.MATERIAL_INSTANCE:
-                    result.materialInstances.push(current)
-                    break
+
                 case FILE_TYPES.TERRAIN:
                     result.terrains.push(current)
                     break
-                case FILE_TYPES.TERRAIN_MATERIAL:
-                    result.terrainMaterials.push(current)
-                    break
+
                 case FILE_TYPES.COLLECTION:
                     result.collections.push(current)
                     break

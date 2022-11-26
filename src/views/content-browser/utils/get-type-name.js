@@ -17,10 +17,6 @@ export default function getTypeName(type) {
 
         case FILE_TYPES.COLLECTION:
             return "Scene"
-        case FILE_TYPES.MATERIAL_INSTANCE:
-            return "Material Instance"
-        case FILE_TYPES.SIMPLE_MATERIAL:
-            return "Simple material"
         case FILE_TYPES.TERRAIN:
             return "Terrain"
         case ".js":

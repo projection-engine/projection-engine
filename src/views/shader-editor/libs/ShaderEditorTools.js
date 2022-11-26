@@ -1,13 +1,11 @@
 import BOARD_SIZE from "../static/BOARD_SIZE";
 import materialCompiler from "./material-compiler/material-compiler";
-import Material from "../../../../public/engine/instances/Material";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import Localization from "../../../templates/LOCALIZATION_EN";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "./nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
-import GPU from "../../../../public/engine/GPU";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 
@@ -78,27 +76,9 @@ export default class ShaderEditorTools {
         }
     }
 
-    static async compile(nodes, links, isSave, id) {
+    static async compile(nodes, links) {
         const parsedNodes = nodes.map(ShaderEditorTools.#serializeNode)
         const compiled = await materialCompiler(nodes.filter(n => !n.isComment), links)
-
-
-        if (isSave) {
-            let material
-            if (GPU.materials.get(id)) {
-                material = GPU.materials.get(id)
-                await new Promise(resolve => material.shader = [compiled.shader, compiled.vertexShader, compiled.uniformData, () => resolve()])
-            } else
-                await new Promise(resolve => {
-                    material = new Material({
-                        vertex: compiled.vertexShader,
-                        fragment: compiled.shader,
-                        onCompiled: () => resolve(),
-                        settings: compiled.settings
-                    })
-                })
-        }
-
         return {compiled, parsedNodes}
     }
 
@@ -106,7 +86,7 @@ export default class ShaderEditorTools {
         try {
             const reg = RegistryAPI.getRegistryEntry(openFile.registryID)
             const isLevel = reg.path.includes(FILE_TYPES.LEVEL)
-            const {compiled, parsedNodes} = await ShaderEditorTools.compile(nodes, links, true)
+            const {compiled, parsedNodes} = await ShaderEditorTools.compile(nodes, links)
             const materialData = {
                 nodes: parsedNodes,
                 links,

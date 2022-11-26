@@ -26,11 +26,10 @@ export default class RGB extends ShaderNode {
         return NODE_TYPES.STATIC
     }
 
-    async getInputInstance(index, uniforms, uniformData) {
+    async getInputInstance(index, uniforms, uniformValues) {
         const v = this.rgb
         if (this.uniform) {
-            this.uniformName = `COLOR_RGB${index}`
-            uniformData.push({
+            uniformValues.push({
                 label: this.name,
                 key: this.uniformName,
                 type: DATA_TYPES.VEC3,
@@ -44,14 +43,13 @@ export default class RGB extends ShaderNode {
             })
 
             return `uniform vec3 ${this.uniformName};`
-        } else {
-            this.uniformName = `COLOR_RGB${index}`
-            return `const vec3 ${this.uniformName}  = vec3(${checkGlslFloat(v[0])}, ${checkGlslFloat(v[1])}, ${checkGlslFloat(v[2] )});`
         }
+        return `const vec3 ${this.uniformName}  = vec3(${checkGlslFloat(v[0])}, ${checkGlslFloat(v[1])}, ${checkGlslFloat(v[2])});`
+
     }
 
-    getFunctionCall(_, index) {
-        this.COLOR_RGB = "COLOR_RGB" + index
+    getFunctionCall() {
+        this.COLOR_RGB = this.uniformName
         return ""
     }
 }

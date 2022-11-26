@@ -1,4 +1,3 @@
-import {v4} from "uuid";
 import DataController from "../instances/DataController";
 
 export default function linkNodeToStructure(node) {

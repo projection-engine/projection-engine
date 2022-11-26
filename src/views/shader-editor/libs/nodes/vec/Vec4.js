@@ -31,12 +31,12 @@ export default class Vec4 extends ShaderNode {
             return NODE_TYPES.STATIC
     }
 
-     
 
-    async getInputInstance(index, uniforms, uniformData) {
+    async getInputInstance(index, uniforms, uniformValues) {
+        this.uniformName = this.id.replaceAll("-", "_") + `_${index}`
         if (this.uniform) {
-            this.uniformName = `VEC4_VAR${index}`
-            uniformData.push({
+
+            uniformValues.push({
                 label: this.name,
                 key: this.uniformName,
                 type: DATA_TYPES.VEC4,
@@ -49,11 +49,9 @@ export default class Vec4 extends ShaderNode {
             })
 
             return `uniform float ${this.uniformName};`
-        } else {
-            this.uniformName = `VEC4_VAR${index}`
-
-            return `const vec4 ${this.uniformName} = vec4(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])}, ${checkGlslFloat(this.v[2])}, ${checkGlslFloat(this.v[3])});`
         }
+        return `const vec4 ${this.uniformName} = vec4(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])}, ${checkGlslFloat(this.v[2])}, ${checkGlslFloat(this.v[3])});`
+
     }
 
     getFunctionCall(_, index) {

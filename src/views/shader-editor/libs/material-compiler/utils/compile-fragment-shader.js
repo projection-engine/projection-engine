@@ -1,20 +1,20 @@
-import cloneClass from "../../../../../../public/engine/utils/clone-class";
-import NODE_TYPES from "../templates/NODE_TYPES";
 import resolveRelationship from "./resolve-relationship";
+import TextureSample from "../../nodes/TextureSample";
 
-export default async function compileFragmentShader(n, links) {
+export default async function compileFragmentShader(startPoint, nodes, links) {
     const uniforms = [],
-        uniformData = [],
+        uniformValues = [],
         uniformDeclarations = [],
         typesInstantiated = {},
         constants = []
 
-    const nodes = n.map(nn => cloneClass(nn))
-    const startPoint = nodes.find(n => n.type === NODE_TYPES.OUTPUT)
+    let textureOffset = 0
     for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i]
         if (typeof n.getInputInstance === "function" && !typesInstantiated[n.id]) {
-            const res = await n.getInputInstance(i, uniforms, uniformData)
+            const res = await n.getInputInstance(i, uniforms, uniformValues, textureOffset)
+            if(n instanceof TextureSample)
+                textureOffset++
             if(res.includes("const "))
                 constants.push(res)
             else
@@ -29,7 +29,7 @@ export default async function compileFragmentShader(n, links) {
         functionDeclaration: constants.join("\n") + "\n" + body.join("\n"),
         uniformsDeclaration: uniformDeclarations.join("\n"),
         uniforms,
-        uniformData
+        uniformValues
     }
 
 }

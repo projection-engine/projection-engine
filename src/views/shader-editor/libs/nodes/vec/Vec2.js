@@ -5,7 +5,7 @@ import checkGlslFloat from "../../../utils/check-glsl-float"
 
 
 export default class Vec2 extends ShaderNode {
-    v = [0,0]
+    v = [0, 0]
     uniform = false
 
     constructor() {
@@ -31,14 +31,11 @@ export default class Vec2 extends ShaderNode {
             return NODE_TYPES.STATIC
     }
 
-     
 
-    async getInputInstance(index, uniforms, uniformData) {
+    async getInputInstance(index, uniforms, uniformValues) {
 
         if (this.uniform) {
-
-            this.uniformName = `VEC2_VAR${index}`
-            uniformData.push({
+            uniformValues.push({
                 label: this.name,
                 key: this.uniformName,
                 type: DATA_TYPES.VEC2,
@@ -51,14 +48,13 @@ export default class Vec2 extends ShaderNode {
             })
 
             return `uniform float ${this.uniformName};`
-        } else {
-            this.uniformName = `VEC2_VAR${index}`
-            return `const vec2 ${this.uniformName} = vec2(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])});`
         }
+        return `const vec2 ${this.uniformName} = vec2(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])});`
+
     }
 
-    getFunctionCall(_, index) {
-        this.VEC2_VAR = "VEC2_VAR" + index
+    getFunctionCall() {
+        this.VEC2_VAR = this.uniformName
         return ""
     }
 }

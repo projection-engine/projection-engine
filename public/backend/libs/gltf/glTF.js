@@ -1,7 +1,6 @@
 import Accessor from "./instances/Accessor";
 import DataBuffer from "./instances/DataBuffer";
 import buildImage from "./utils/build-image";
-import buildMaterial from "./utils/build-material";
 import createRegistryEntry from "../../utils/create-registry-entry";
 import ProjectMap from "../ProjectMap";
 import buildPrimitive from "./utils/build-primitive";
@@ -77,23 +76,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                 }
             }
 
-        if (file.materials)
-            for (let i = 0; i < file.materials.length; i++) {
-                try {
-                    const ID = v4()
-                    const data = file.materials[i]
-                    const material = await buildMaterial(file.textures, images, data, textureMap)
-                    if (!material)
-                        continue
-                    const name = "material-" + i
-                    const pathToAsset = basePath + path.sep + "materials" + path.sep + name + FILE_TYPES.SIMPLE_MATERIAL
-                    await fs.promises.writeFile(pathToAsset, JSON.stringify(material))
-                    await createRegistryEntry(ID, pathToAsset.replace(ProjectMap.pathToAssets, ""))
-                    materials[i] = ID
-                } catch (err) {
-                    console.error(err)
-                }
-            }
+
 
         const toUpdateTextures = Object.entries(textureMap)
 

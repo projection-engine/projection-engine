@@ -3,7 +3,6 @@
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
-    import FALLBACK_MATERIAL from "../../../../public/engine/static/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
     import "../css/selector.css"
     import VirtualList from '@sveltejs/svelte-virtual-list';
@@ -30,9 +29,7 @@
         else
             current = [...temp]
         if (!noDefault) {
-            if (type === "material")
-                current.push({name: Localization.DEFAULT_MATERIAL, registryID: FALLBACK_MATERIAL})
-            else if (type === "mesh")
+            if (type === "mesh")
                 Object.entries(STATIC_MESHES.PRODUCTION).forEach(sm => {
                     if (Localization[sm[0]] != null)
                         current.push({

@@ -6,7 +6,6 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";
-    import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
     import STATIC_MESHES from "../../../public/engine/static/resources/STATIC_MESHES";
     import getType from "./utils/get-type";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
@@ -32,10 +31,8 @@
     $: {
         if (type === "parent") {
             state = selected ? selected : {name: Localization.EMPTY}
-        } else if(selected) {
-            if (selected === FALLBACK_MATERIAL)
-                state = {name: Localization.DEFAULT_MATERIAL, registryID: FALLBACK_MATERIAL}
-            else if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
+        } else if (selected) {
+            if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
                 state = {
                     name: Localization[Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)],
                     registryID: selected
@@ -48,7 +45,7 @@
                 else
                     state = {name: Localization.EMPTY}
             }
-        }else
+        } else
             state = {name: Localization.EMPTY}
     }
 </script>

@@ -1,7 +1,6 @@
 import materialCompiler from "../libs/material-compiler/material-compiler"
 import GPU from "../../../../public/engine/GPU";
 import Localization from "../../../templates/LOCALIZATION_EN";
-import Material from "../../../../public/engine/instances/Material";
 import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
 export default async function buildShader(nodes, links, openFile) {

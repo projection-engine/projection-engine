@@ -109,29 +109,6 @@ export default class AssimpLoader {
         }
     }
 
-    // static #loadMaterial(data, index) {
-    //     const material = data.materials[index]
-    //     if (!material)
-    //         return
-    //     const properties = material.properties
-    //     const materialNameProperty = properties.findIndex(v => v.key.match(/^\?mat/) != null)
-    //     const mtTemplate = SIMPLE_MATERIAL_UNIFORMS
-    //
-    //     for (let i = 0; i < properties.length; i++) {
-    //         if(i === materialNameProperty)
-    //             continue
-    //
-    //         const current = properties[i]
-    //         const name = current.key.split(".").pop()
-    //
-    //         switch (name){
-    //             case "diffuse":
-    //
-    //         }
-    //
-    //     }
-    // }
-
     static #mapChildren(collection, meshes, node, parent) {
         if (!node)
             return;

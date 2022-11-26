@@ -12,11 +12,8 @@ export default async function materialCompiler(n, links) {
             functionDeclaration,
             uniformsDeclaration,
             uniforms,
-            uniformData
-        } = await compileFragmentShader(
-            n,
-            links
-        )
+            uniformValues
+        } = await compileFragmentShader(startPoint, nodes, links)
 
         const template = {...MATERIAL_OUTPUT_FORMAT}
         template.functionDeclaration = functionDeclaration
@@ -25,7 +22,7 @@ export default async function materialCompiler(n, links) {
         template.settings.noDepthTest = !startPoint.depthTest
         template.settings.isAlphaTested = startPoint.alphaTested
         template.uniforms = uniforms
-        template.uniformsData = uniformData
+        template.uniformsData = uniformValues
         return template
     } else return {}
 }

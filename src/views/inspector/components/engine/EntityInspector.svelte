@@ -13,6 +13,7 @@
 
     import getEntityTabs from "../../utils/get-entity-tabs";
     import TransformationForm from "./TransformationForm.svelte";
+    import MaterialUniforms from "../MaterialUniforms.svelte";
 
     export let entity
 
@@ -97,6 +98,9 @@
                             component={components[tabIndex][1]}
                             submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, components[tabIndex])}
                     />
+                    {#if components[tabIndex][0] === COMPONENTS.MESH && components[tabIndex][1].materialID}
+                        <MaterialUniforms uniforms={components[tabIndex][1].materialID} update={() => {}}/>
+                    {/if}
                 {/if}
 
             {/if}

@@ -58,8 +58,8 @@ export default class TextureSample extends ShaderNode {
     }
 
 
-    async getInputInstance(index, uniforms, uniformData) {
-        this.uniformName = `sampler${index}`
+    async getInputInstance(index, uniforms, uniformValues, textureOffset) {
+        this.uniformName = `sampler` + textureOffset
         if (this.texture?.registryID) {
             try {
                 const res = RegistryAPI.getRegistryEntry(this.texture?.registryID)
@@ -70,7 +70,7 @@ export default class TextureSample extends ShaderNode {
                         key: this.uniformName,
                         type: DATA_TYPES.TEXTURE,
                     })
-                    uniformData.push({
+                    uniformValues.push({
                         label: this.name,
                         key: this.uniformName,
                         data: res.id,

@@ -18,7 +18,6 @@ import GPU from "../../../public/engine/GPU";
 import Entity from "../../../public/engine/instances/Entity";
 import GPUAPI from "../../../public/engine/lib/rendering/GPUAPI";
 import {v4} from "uuid";
-import FALLBACK_MATERIAL from "../../../public/engine/static/FALLBACK_MATERIAL";
 import FileSystemAPI from "../../../public/engine/lib/utils/FileSystemAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
@@ -102,7 +101,7 @@ export default class Loader {
                     const materialID = await Loader.mesh(file, data, asID)
                     const entity = new Entity(undefined, "New primitive")
                     const instance = entity.addComponent(COMPONENTS.MESH)
-                    instance.materialID = materialID || FALLBACK_MATERIAL
+                    instance.materialID = materialID
                     instance.meshID = data
                     EntityConstructor.translateEntity(entity)
                     entitiesToPush.push(entity)
@@ -123,9 +122,7 @@ export default class Loader {
                     }
                     break
                 }
-                case FILE_TYPES.SIMPLE_MATERIAL:
-                case FILE_TYPES.MATERIAL_INSTANCE:
-                case FILE_TYPES.TERRAIN_MATERIAL:
+
                 case FILE_TYPES.MATERIAL: {
                     const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
                     if (!entity || !entity.components.get(COMPONENTS.MESH)) return;

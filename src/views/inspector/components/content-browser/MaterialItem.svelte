@@ -5,17 +5,15 @@
     import GPU from "../../../../../public/engine/GPU";
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
-
     import MaterialAPI from "../../../../../public/engine/lib/rendering/MaterialAPI";
     import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
-    import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import GPUAPI from "../../../../../public/engine/lib/rendering/GPUAPI";
-
+    import MaterialUniforms from "../MaterialUniforms.svelte";
 
     export let data
     export let item
@@ -26,6 +24,7 @@
     let originalMat
     let timeout
     let wasUpdated = false
+
     async function load(ID) {
         if (wasUpdated)
             return
@@ -35,21 +34,19 @@
         if (!reg)
             alert.pushAlert("Instance no longer valid", "error")
         else {
-            originalMat = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
+            originalMat = await FilesAPI.readFile(NodeFS.ASSETS_PATH + reg.path, "json")
             if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
-                temp = {...temp, uniforms: originalMat.response.uniforms, uniformData: originalMat.response.uniformData}
+                temp = {
+                    ...temp,
+                    uniforms: originalMat.response.uniforms,
+                    uniformsData: originalMat.response.uniformsData
+                }
                 await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
             }
         }
     }
 
-    $: isInstance = item.id.includes(FILE_TYPES.MATERIAL_INSTANCE)
-    $: {
-        if (isInstance && data?.original != null)
-            load(data.original)
-    }
-
-    $: uniforms = isInstance ? temp?.uniformData : temp?.response?.uniformData
+    $: uniforms = temp?.response?.uniformsData
 
     const updateAsset = (index, value, t) => {
         clearTimeout(timeout)
@@ -59,30 +56,24 @@
                     return {...u, data: value}
                 return u
             })
-
-            if (!isInstance) {
-                temp = {
-                    ...temp,
-                    response: {
-                        ...temp.response,
-                        uniformData: update
-                    }
+            temp = {
+                ...temp,
+                response: {
+                    ...temp.response,
+                    uniformsData: update
                 }
-                await AssetAPI.updateAsset(item.registryID, JSON.stringify({
-                    ...temp,
-                    response: {
-                        ...temp.response,
-                        uniformData: update
-                    }
-                }))
-            } else {
-                await AssetAPI.updateAsset(item.registryID, JSON.stringify({...temp, uniformData: update}))
-                temp = {...temp, uniformData: update}
             }
+            await AssetAPI.updateAsset(item.registryID, JSON.stringify({
+                ...temp,
+                response: {
+                    ...temp.response,
+                    uniformsData: update
+                }
+            }))
 
             if (GPU.materials.get(item.registryID) != null) {
                 const instance = GPU.materials.get(item.registryID)
-                await MaterialAPI.updateMaterialUniforms(isInstance ? temp.uniformData : temp.response.uniformData, instance)
+                await MaterialAPI.updateMaterialUniforms(temp.response.uniformsData, instance)
                 alert.pushAlert(Localization.MATERIAL_UPDATED, "success")
                 GPUAPI.cleanUpTextures()
             }
@@ -92,36 +83,7 @@
 
 
 {#if uniforms != null && uniforms.length > 0}
-    {#each uniforms as uniform, i}
-        <div class="section">
-            {#if uniform.type === DATA_TYPES.TEXTURE}
-                <small>{uniform.label}</small>
-                <Selector
-                        type="image"
-                        selected={uniform.data}
-                        handleChange={v => {
-                            updateAsset(i, v.registryID)
-                        }}
-                />
-            {/if}
-            {#if uniform.type === DATA_TYPES.FLOAT}
-                <Range
-                        value={uniform.data}
-                        onFinish={v => {
-                        updateAsset(i, v)
-                    }}
-                />
-            {/if}
-            {#if uniform.type === DATA_TYPES.VEC3 && uniform.isColor }
-                <small>{uniform.label}</small>
-                <ColorPicker
-                        value={uniform.data.map(e => e * 255)}
-                        label={uniform.label}
-                        submit={({r,g,b}) => updateAsset(i, [r/255,g/255,b/255], 750)}
-                />
-            {/if}
-        </div>
-    {/each}
+    <MaterialUniforms uniforms={uniforms} update={updateAsset}/>
 {:else}
     <div class="empty-wrapper">
         <div data-empty="-" style="position: relative">
@@ -142,10 +104,4 @@
         height: 100%;
     }
 
-    .section {
-        padding: 0 4px;
-        display: grid;
-        gap: 2px;
-        width: 100%;
-    }
 </style>

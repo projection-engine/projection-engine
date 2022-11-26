@@ -479,9 +479,6 @@ export default {
     UI_LAYOUT: "UI layouts",
     COMPONENT: "Component",
 
-    MATERIAL_INSTANCE: "Material instance",
-    SIMPLE_MATERIAL: "Simple material",
-    TERRAIN_MATERIAL: "Terrain material",
 
     TEXTURE: "Texture",
     COLLECTION: "Collection",

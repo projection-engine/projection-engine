@@ -8,12 +8,10 @@
     import ItemMetadata from "./ItemMetadata.svelte";
     import MaterialItem from "./MaterialItem.svelte";
     import MeshItem from "./MeshItem.svelte";
-    import SimpleMaterialItem from "./SimpleMaterialItem.svelte";
     import TerrainItem from "./TerrainItem.svelte";
-    import TerrainMaterialWrapper from "./TerrainMaterialWrapper.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
 
-    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION, FILE_TYPES.TERRAIN_MATERIAL, FILE_TYPES.SIMPLE_MATERIAL, FILE_TYPES.MATERIAL, FILE_TYPES.MATERIAL_INSTANCE, FILE_TYPES.TERRAIN]
+    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION,  FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
 
     export let item
     let data
@@ -41,12 +39,8 @@
 
     {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.UI_LAYOUT}
         <CodeItem data={data} item={item}/>
-    {:else if data != null && (fileType === FILE_TYPES.MATERIAL || fileType === FILE_TYPES.MATERIAL_INSTANCE)}
+    {:else if data != null && (fileType === FILE_TYPES.MATERIAL)}
         <MaterialItem data={data} item={item}/>
-    {:else if data != null && fileType === FILE_TYPES.SIMPLE_MATERIAL}
-        <SimpleMaterialItem data={data} item={item}/>
-    {:else if data != null && fileType === FILE_TYPES.TERRAIN_MATERIAL}
-        <TerrainMaterialWrapper data={data} item={item}/>
     {:else if data != null && fileType === FILE_TYPES.TERRAIN}
         <TerrainItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.PRIMITIVE}
