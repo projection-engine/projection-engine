@@ -30,6 +30,7 @@ export default {
     SSGI_NORMALS: "Stochastic normals",
     BLUR_BLOOM: "Blur color filter",
     GI: "Global illumination",
+    ERROR_DURING_COMPILATION: "Error during compilation",
     UNKNOWN: "Unknown buffer",
     SCREEN_EFFECTS: "",
     RECORDING_SAMPLES: "Recording samples",

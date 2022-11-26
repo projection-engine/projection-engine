@@ -25,7 +25,7 @@ export default async function materialCompiler(n, links) {
         template.settings.noDepthTest = !startPoint.depthTest
         template.settings.isAlphaTested = startPoint.alphaTested
         template.uniforms = uniforms
-        template.uniformsMetadata = uniformData
+        template.uniformsData = uniformData
         return template
     } else return {}
 }

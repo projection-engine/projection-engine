@@ -1,57 +1,29 @@
 import materialCompiler from "../libs/material-compiler/material-compiler"
-import {trimString} from "../../../../public/engine/instances/Shader";
 import GPU from "../../../../public/engine/GPU";
 import Localization from "../../../templates/LOCALIZATION_EN";
+import Material from "../../../../public/engine/instances/Material";
+import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 
-export default async function buildShader(nodes, links, openFile, setStatus){
+export default async function buildShader(nodes, links, openFile) {
     const {
-        shader,
-        vertexShader,
-        uniformData,
+        functionDeclaration,
+        uniformsDeclaration,
         settings,
-        info,
-        cubeMapShader
+        uniformsData
     } = await materialCompiler(nodes.filter(n => !n.isComment), links)
 
-    if (shader) {
-        const currentMaterial = GPU.materials.get(openFile.registryID)
-        let promise
-        if (!currentMaterial)
+    if (functionDeclaration) {
+        if (!GPU.materials.get(openFile.registryID)) {
             alert.pushAlert(Localization.NOT_APPLIED, "alert")
-        else
-            promise = new Promise(resolve => {
-                currentMaterial.shader = [shader, vertexShader, uniformData, (shaderMessage) => resolve(shaderMessage), settings]
-                // currentMaterial.cubeMapShader = [cubeMapShader.code, vertexShader]
-            })
-        const m = await promise
-        const message = m ? m : {messages: []}
-        const shaderSplit = trimString(shader).split(";")
-        let parsed = []
-        setStatus({
-            ...message,
-            messages: message.messages
-                .map(m => m.split("ERROR"))
-                .flat()
-                .map(m => {
-                    const data = {lines: []}
-                    if (m.length > 0) {
-                        const match = m.match(/:\s([0-9]+):([0-9]+)/gm),
-                            matchS = m.match(/:\s([0-9]+):([0-9]+)/m)
-                        if (matchS) {
-                            let s = matchS[0].split("")
-                            s.shift()
-                            const [, end] = s.join("").split(":")
-                            if (!parsed.includes(end)) {
-                                data.lines = shaderSplit.slice(end - 9, end - 8)
-                                parsed.push(end)
-                                data.error = "ERROR" + m
-                                data.label = "ERROR" + match[0]
-                                return data
-                            }
-                        }
-                    }
-                }).filter(e => e),
-            info
-        })
-    }
+            return
+        }
+        GPU.materials.delete(openFile.registryID)
+        await GPUAPI.allocateMaterial({
+            functionDeclaration,
+            uniformsDeclaration,
+            uniformsData,
+            settings
+        }, openFile.registryID)
+    } else
+        alert.pushAlert(Localization.ERROR_DURING_COMPILATION)
 }

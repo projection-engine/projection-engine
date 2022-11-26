@@ -1,2 +1,3 @@
-- Starting structure for forward pass
-- Tweaks to fallback shader and pbr shader
+- Fallback shader
+- Tweaking pbr computation
+- Depth reconstruction added to SSGI/SSR pass
