@@ -4,13 +4,7 @@ import NODE_TYPES from "../material-compiler/templates/NODE_TYPES"
 import MATERIAL_RENDERING_TYPES from "../../../../../public/engine/static/MATERIAL_RENDERING_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float";
 
-function enableAll(ref) {
-    ref.inputs = ref.inputs.map(i => {
 
-        i.disabled = false
-        return i
-    })
-}
 
 function arrayToGlsl(a) {
     const arr = Array.isArray(a) ? a : [0, 0, 0]
@@ -18,18 +12,13 @@ function arrayToGlsl(a) {
 }
 
 export default class Material extends ShaderNode {
-    alphaTested = true
-    shadingType = MATERIAL_RENDERING_TYPES.DEFERRED
-    rsmAlbedo
-
+    alphaTested = false
     canBeDeleted = false
 
     faceCulling = true
     depthTest = true
-    cullBackFace = false
-    blend = true
-    blendFuncSource = "ONE_MINUS_SRC_COLOR"
-    blendFuncTarget = "ONE_MINUS_DST_ALPHA"
+
+    depthMask = true
     refraction = 0
     roughness = 1
     metallic = 0
@@ -60,10 +49,12 @@ export default class Material extends ShaderNode {
             {label: "Refraction", key: "refraction", accept: allTypes, type: DATA_TYPES.FLOAT},
 
 
+
             {label: "Is alpha tested", key: "alphaTested", type: DATA_TYPES.CHECKBOX},
             {label: "Face culling", key: "faceCulling", type: DATA_TYPES.CHECKBOX},
             {label: "Depth test", key: "depthTest", type: DATA_TYPES.CHECKBOX},
             {label: "Flat shading", key: "flatShading", type: DATA_TYPES.CHECKBOX},
+            {label: "Write to depth-buffer", key: "depthMask", type: DATA_TYPES.CHECKBOX},
         ], [])
 
         this.name = "Material"

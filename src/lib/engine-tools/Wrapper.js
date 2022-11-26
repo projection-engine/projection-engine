@@ -2,7 +2,6 @@ import GridSystem from "./runtime/GridSystem"
 import IconsSystem from "./runtime/IconsSystem"
 import GizmoSystem from "./runtime/GizmoSystem"
 import SelectedSystem from "./runtime/SelectedSystem"
-import BackgroundSystem from "./runtime/BackgroundSystem"
 import Engine from "../../../public/engine/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
@@ -48,7 +47,6 @@ export default class Wrapper {
     }
 
     static duringDrawing() {
-        BackgroundSystem.execute()
         GridSystem.execute()
     }
 

@@ -1,4 +1,2 @@
-- Fixed inspector layout for script and some components
-- Removed DiffuseProbePass and SpecularProbePass
-- Changed probe component to skylight component
-- Added skylight udpate method to engine
+- Removing skybox and background pass
+- Adding new attributes to material

@@ -16,7 +16,6 @@ import ENVIRONMENT from "../../../public/engine/static/ENVIRONMENT";
 import GridSystem from "./runtime/GridSystem";
 import IconsSystem from "./runtime/IconsSystem";
 import SelectedSystem from "./runtime/SelectedSystem";
-import BackgroundSystem from "./runtime/BackgroundSystem";
 import GizmoSystem from "./runtime/GizmoSystem";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
@@ -24,7 +23,6 @@ import DEBUGGlsl from "./shaders/DEBUG.glsl";
 import GPUAPI from "../../../public/engine/lib/rendering/GPUAPI";
 import WIREFRAMEGlsl from "./shaders/WIREFRAME.glsl";
 import RotationGizmo from "./lib/transformation/RotationGizmo";
-import * as SKYBOX from "./shaders/SKYBOX.glsl";
 import * as SELECTED from "./shaders/SELECTED.glsl"
 import * as GRID from "./shaders/GRID.glsl";
 import BufferVisualization from "./runtime/BufferVisualization";
@@ -46,7 +44,6 @@ export default async function initializer() {
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED, DEBUGGlsl.vertex, DEBUGGlsl.fragment)
     CollisionVisualizationSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.WIREFRAME, WIREFRAMEGlsl.vertex, WIREFRAMEGlsl.fragment)
     RotationGizmo.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ROTATION_GIZMO, gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot)
-    BackgroundSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.BACKGROUND, SKYBOX.vertex, SKYBOX.fragment)
     GridSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GRID, GRID.vertex, GRID.fragment)
     SelectedSystem.shaderSilhouette = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE, SELECTED.vertexSilhouette, SELECTED.fragmentSilhouette)
     SelectedSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE_OUTLINE, SELECTED.vertex, SELECTED.fragment)
