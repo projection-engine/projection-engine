@@ -9,7 +9,6 @@ import GPU from "../../../public/engine/GPU";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
-import TerrainGenerator from "../../../public/engine/lib/math/TerrainGenerator";
 import EngineStore from "../../stores/EngineStore";
 import SelectionStore from "../../stores/SelectionStore";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";

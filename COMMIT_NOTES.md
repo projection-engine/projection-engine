@@ -1,11 +1,2 @@
-- Reworking material compiler
-- Rewriting material class 
-- Removing material instance class
-- Changing nodes for shader editor to integrate with new compiler
-- Adding template for compiled material
-- Tweaks to pbLightComputation
-- Added two remaining methods present on shader editor as universal glsl methods for uber shader
-- Added message cache to shader instance
-- Reworked allocateMaterial method
-- Added white color clear to ambient occlusion
-- Changes to FileSystemAPI material loader
+- Starting structure for forward pass
+- Tweaks to fallback shader and pbr shader
