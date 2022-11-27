@@ -12,9 +12,10 @@ import AXIS from "../static/AXIS";
 import LineAPI from "../../../../public/engine/lib/rendering/LineAPI";
 import {mat4} from "gl-matrix";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
+import GizmoAPI from "../lib/GizmoAPI";
 
-const X = [1, 0, 0], Y = [0, 1, 0], Z = [0, 0, 1]
-const M = mat4.create()
+const X = new Float32Array([1, 0, 0]), Y = new Float32Array([0, 1, 0]), Z = new Float32Array([0, 0, 1])
+const lineMatrix = mat4.create()
 const EMPTY_COMPONENT = new Movable()
 export default class GizmoSystem {
     static mainEntity
@@ -53,9 +54,8 @@ export default class GizmoSystem {
     static scaleGizmo
     static rotationGizmo
     static lineShader
-    static EMPTY_COMPONENT = EMPTY_COMPONENT
     static transformationType = TRANSFORMATION_TYPE.GLOBAL
-    static activeGizmoMatrix = M
+
     static save
     static updateGizmoToolTip = () => null
 
@@ -92,26 +92,28 @@ export default class GizmoSystem {
             if (t) {
                 t.drawGizmo()
                 ScreenSpaceGizmo.drawGizmo()
+                mat4.identity(lineMatrix)
+                GizmoAPI.applyTransformation(lineMatrix, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
             }
 
-            const c = GizmoSystem.clickedAxis
-            const o = {transformMatrix: GizmoSystem.activeGizmoMatrix}
-            if (c === AXIS.X ||  c === AXIS.XZ ||  c === AXIS.XY) {
-                o.axis = X
-                GizmoSystem.lineShader.bindForUse(o)
-                LineAPI.draw(o.axis)
+            const axis = GizmoSystem.clickedAxis
+            const shader = GizmoSystem.lineShader
+            const uniforms = shader.uniformMap
+            shader.bind()
+            gpu.uniformMatrix4fv(uniforms.transformMatrix, false, lineMatrix)
+            if (axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY) {
+                gpu.uniform3fv(uniforms.axis, X)
+                LineAPI.draw(X)
             }
 
-            if (c === AXIS.Y || c === AXIS.ZY || c === AXIS.XY) {
-                o.axis = Y
-                GizmoSystem.lineShader.bindForUse(o)
-                LineAPI.draw(o.axis)
+            if (axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY) {
+                gpu.uniform3fv(uniforms.axis, Y)
+                LineAPI.draw(Y)
             }
 
-            if (c === AXIS.Z || c === AXIS.ZY || c === AXIS.XZ) {
-                o.axis = Z
-                GizmoSystem.lineShader.bindForUse(o)
-                LineAPI.draw(o.axis)
+            if (axis === AXIS.Z || axis === AXIS.ZY || axis === AXIS.XZ) {
+                gpu.uniform3fv(uniforms.axis, Z)
+                LineAPI.draw(Z)
             }
 
         } else

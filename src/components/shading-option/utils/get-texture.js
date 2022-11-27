@@ -1,19 +1,19 @@
 import SHADING_MODELS from "../../../lib/engine-tools/static/SHADING_MODELS";
 
-import AmbientOcclusion from "../../../../public/engine/runtime/occlusion/AmbientOcclusion";
-import GlobalIlluminationPass from "../../../../public/engine/runtime/rendering/GlobalIlluminationPass";
+import SSAO from "../../../../public/engine/runtime/rendering/SSAO";
+import SSGI from "../../../../public/engine/runtime/rendering/SSGI";
 
 export default function getTexture(shadingModel) {
 
     switch (shadingModel) {
         case SHADING_MODELS.AO:
-            return AmbientOcclusion.filteredSampler
+            return SSAO.filteredSampler
         case SHADING_MODELS.SSR:
-            return GlobalIlluminationPass.SSRSampler
+            return SSGI.SSRSampler
         case SHADING_MODELS.SSGI:
-            return GlobalIlluminationPass.SSGISampler
+            return SSGI.SSGISampler
         case SHADING_MODELS.SSGI_UNFILTERED:
-            return GlobalIlluminationPass.unfilteredSSGISampler
+            return SSGI.unfilteredSSGISampler
     }
 
 }

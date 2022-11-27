@@ -3,9 +3,11 @@ import getPickerId from "../../../../public/engine/utils/get-picker-id";
 import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
 import VisibilityBuffer from "../../../../public/engine/runtime/rendering/VisibilityBuffer";
+import GPU from "../../../../public/engine/GPU";
+import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
 
 export default function drawGizmoToDepth(mesh, transforms){
-    const FBO = VisibilityBuffer.buffer
+    const FBO = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.VISIBILITY_BUFFER)
     const data = {
         translation: GizmoSystem.mainEntity.__pivotOffset,
         cameraIsOrthographic: CameraAPI.isOrthographic
@@ -31,6 +33,6 @@ export default function drawGizmoToDepth(mesh, transforms){
 
     DualAxisGizmo.drawToBuffer(data)
     FBO.stopMapping()
-
+    VisibilityBuffer.needsUpdate = true
     gpu.enable(gpu.CULL_FACE)
 }

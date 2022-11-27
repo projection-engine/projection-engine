@@ -5,8 +5,11 @@ import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE";
 import RotationGizmo from "../lib/transformation/RotationGizmo";
 
 export default function gizmoRotateEntity(vec, screenSpace) {
+    let firstEntity = GizmoSystem.mainEntity
+    if (!firstEntity)
+        return;
     const targets = Wrapper.selected, SIZE = targets.length
-    if (SIZE === 1 && GizmoSystem.mainEntity.lockedRotation)
+    if (SIZE === 1 && firstEntity.lockedRotation)
         return
     const quatA = quat.create()
     if (screenSpace)
@@ -19,7 +22,7 @@ export default function gizmoRotateEntity(vec, screenSpace) {
         quat.rotateY(quatA, quatA, vec[1])
     if (vec[2] !== 0)
         quat.rotateZ(quatA, quatA, vec[2])
-    const inv = quat.invert([], quatA)
+
     for (let i = 0; i < SIZE; i++) {
         const target = targets[i]
         if (target.lockedRotation)

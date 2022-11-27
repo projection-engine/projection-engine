@@ -6,9 +6,12 @@ import {vec3, vec4} from "gl-matrix";
 import TranslationGizmo from "../lib/transformation/TranslationGizmo";
 
 export default function gizmoTranslateEntity(event){
+    let toApply, firstEntity = GizmoSystem.mainEntity
+    if (!firstEntity)
+        return;
     const g = event.ctrlKey ? 1 : TranslationGizmo.gridSize
     const vec = ScreenSpaceGizmo.onMouseMove(event, GizmoSystem.sensitivity)
-    let toApply, firstEntity = GizmoSystem.mainEntity
+
     if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || Wrapper.selected.length > 1)
         toApply = vec
     else

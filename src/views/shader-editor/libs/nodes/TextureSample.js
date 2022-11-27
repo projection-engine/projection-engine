@@ -7,8 +7,6 @@ import RegistryAPI from "../../../../lib/fs/RegistryAPI";
 export default class TextureSample extends ShaderNode {
     uniform = true
     _texture = {}
-    yFlip = false
-
 
     get texture() {
         return this._texture
@@ -81,7 +79,7 @@ export default class TextureSample extends ShaderNode {
                 console.error(error)
             }
         }
-        return `uniform sampler2D sampler${index};`
+        return ``
     }
 
     getFunctionCall({uv}, index, outputs) {

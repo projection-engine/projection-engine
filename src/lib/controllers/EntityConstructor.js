@@ -10,6 +10,8 @@ import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
 import LightsAPI from "../../../public/engine/lib/rendering/LightsAPI";
 import SettingsStore from "../../stores/SettingsStore";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+import VisibilityBuffer from "../../../public/engine/runtime/rendering/VisibilityBuffer";
+import EntityAPI from "../../../public/engine/lib/utils/EntityAPI";
 
 
 const addSprite = (entity, img) => {
@@ -88,13 +90,7 @@ export default class EntityConstructor {
     }
 
     static toggleEntityVisibility(nodeRef, submit = true) {
-        const loopHierarchy = (entity, newValue) => {
-            for (let i = 0; i < entity.children.length; i++)
-                loopHierarchy(entity.children[i], newValue)
-            entity.active = newValue
-        }
-        loopHierarchy(nodeRef, !nodeRef.active)
-        LightsAPI.packageLights(false, false)
+        EntityAPI.toggleVisibility(nodeRef)
         if (submit)
             EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }

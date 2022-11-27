@@ -19,8 +19,6 @@
     let store
     let settings
     let historyChangeType = null
-    let timeout
-
     const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)

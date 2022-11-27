@@ -100,11 +100,7 @@ export default class Inheritance {
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Z || !this.tracking)
             GizmoAPI.drawGizmo(this.xyz, this.zGizmo.matrix, AXIS.Z, this.zGizmo.pickID)
 
-        if (this.key !== "_scaling" && this.tracking) {
-            const c = mat4.create()
-            GizmoAPI.applyTransformation(c, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
-            GizmoSystem.activeGizmoMatrix = c
-        }
+
         gpu.enable(gpu.CULL_FACE)
     }
 }

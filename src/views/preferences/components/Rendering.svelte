@@ -287,6 +287,13 @@
                 value={visualSettings.SSAO.bias}
                 onFinish={v => updateSubObject("SSAO","bias",v)}
         />
+        <Range
+                label={Localization.FALLOFF}
+                value={visualSettings.SSAO.falloffDistance}
+                onFinish={v => updateSubObject("SSAO","falloffDistance",v)}
+        />
+
     </div>
+
 </fieldset>
 

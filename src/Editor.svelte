@@ -5,9 +5,7 @@
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "./components/view/Views.svelte";
-
     import SettingsStore from "./stores/SettingsStore";
-
     import ContextMenu from "shared-resources/frontend/components/context-menu/ContextMenu.svelte";
     import WindowOptions from "./components/frame-options/WindowOptions.svelte";
 

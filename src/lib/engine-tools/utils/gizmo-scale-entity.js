@@ -4,12 +4,21 @@ import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
 import Wrapper from "../Wrapper";
 import {vec3, vec4} from "gl-matrix";
 import ScalingGizmo from "../lib/transformation/ScalingGizmo";
+import AXIS from "../static/AXIS";
 
-export default function gizmoScaleEntity(event){
+export default function gizmoScaleEntity(event) {
+    let toApply, firstEntity = GizmoSystem.mainEntity
+    if (!firstEntity)
+        return;
+    const axis = GizmoSystem.clickedAxis
     const isGlobal = GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL
     const g = event.ctrlKey ? 1 : ScalingGizmo.gridSize
-    const vec = ScreenSpaceGizmo.onMouseMove(event, GizmoSystem.sensitivity)
-    let toApply, firstEntity = GizmoSystem.mainEntity
+    let vec = [0, 0, 0]
+    if (axis === AXIS.SCREEN_SPACE)
+        vec[0] = vec[1] = vec[2] = (Math.abs(event.movementX) > Math.abs(event.movementY) ? event.movementX : event.movementY) / 50
+    else
+        vec = ScreenSpaceGizmo.onMouseMove(event, GizmoSystem.sensitivity)
+
     if (isGlobal || Wrapper.selected.length > 1)
         toApply = vec4.transformQuat([], [...vec, 1], firstEntity._rotationQuat)
     else

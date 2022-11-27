@@ -39,12 +39,13 @@ export default {
 
     SSAO: {
 
-        blurSamples: 2,
+        blurSamples: 1,
         maxSamples: 64,
-        bias: .025,
+        bias: .1,
         enabled: false,
         power: 1,
-        radius: .5
+        radius: .25,
+        falloffDistance: 100
     },
     INITIALIZED: false
 }

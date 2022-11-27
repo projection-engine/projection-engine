@@ -2,7 +2,7 @@ import Engine from "../../../../public/engine/Engine";
 import CameraTracker from "../../../lib/engine-tools/lib/CameraTracker";
 import Wrapper from "../../../lib/engine-tools/Wrapper";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-import DirectionalShadows from "../../../../public/engine/runtime/occlusion/DirectionalShadows";
+import DirectionalShadows from "../../../../public/engine/runtime/rendering/DirectionalShadows";
 import GridSystem from "../../../lib/engine-tools/runtime/GridSystem";
 import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
 import GPU from "../../../../public/engine/GPU";

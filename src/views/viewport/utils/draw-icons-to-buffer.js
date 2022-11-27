@@ -5,10 +5,11 @@ import Engine from "../../../../public/engine/Engine";
 
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
 import VisibilityBuffer from "../../../../public/engine/runtime/rendering/VisibilityBuffer";
+import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
 
 export default function drawIconsToBuffer() {
     const entities = Engine.entities
-    const FBO = VisibilityBuffer.buffer
+    const FBO = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.VISIBILITY_BUFFER)
     FBO.use()
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]
@@ -21,6 +22,7 @@ export default function drawIconsToBuffer() {
         )
     }
     FBO.stop()
+    VisibilityBuffer.needsUpdate = true
 }
 
 function drawIcon(mesh, meshID, transformMatrix) {
