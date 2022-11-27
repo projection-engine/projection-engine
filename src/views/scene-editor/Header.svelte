@@ -12,10 +12,14 @@
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
+    import COMPONENTS from "../../../public/engine/static/COMPONENTS";
+    import Engine from "../../../public/engine/Engine";
+    import Selector from "../../components/selector/Selector.svelte";
+    import SettingsStore from "../../stores/SettingsStore";
+    import GPU from "../../../public/engine/GPU";
 
     export let settings
     export let engine
-
 
 </script>
 
@@ -61,6 +65,7 @@
     .right-content {
         display: flex;
         align-items: center;
+        gap: 4px;
         justify-content: flex-end;
         width: 100%;
 

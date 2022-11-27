@@ -1,12 +1,4 @@
-- Visibility buffer caching integrated with pipeline
-- SSGI now process at half res instead of full-resolution
-- SSR and SSGI are now separated systems
-- Added SSAO falloff
-- Added shadow-map falloff settings for point and directional lights
-- Fixed point lights
-- Fixed picking cleaning up visibility buffer
-- Fixed gizmo line rendering
-- Added fragment culling
-- Fixed benchmark 
-- Moved active skylight to GPU (previously on Engine which was not accessible through scripts)
-- Some optimizations to depth reconstruction methods
+- Working on camera worker synchronization
+- Skylight initial integration with shader
+- Tweaks to depth test on uber shader
+- Tweaks to webgl context 

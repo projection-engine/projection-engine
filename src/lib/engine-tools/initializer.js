@@ -27,7 +27,8 @@ import * as SELECTED from "./shaders/SELECTED.glsl"
 import * as GRID from "./shaders/GRID.glsl";
 import BufferVisualization from "./runtime/BufferVisualization";
 import DebugPass from "./runtime/DebugPass";
-
+import CUBEMAP_VERT from "../../../public/engine/shaders/forward-rendering/CUBEMAP.vert"
+import CUBEMAP_FRAG from "./shaders/CUBEMAP.frag"
 export default async function initializer() {
 
     UIAPI.useIframe = true
@@ -36,7 +37,7 @@ export default async function initializer() {
     GPUAPI.allocateTexture(probeIcon, STATIC_TEXTURES.PROBE).catch()
     GPUAPI.allocateTexture(circle, STATIC_TEXTURES.ROTATION_GIZMO).catch()
 
-
+    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.CUBEMAP, CUBEMAP_VERT, CUBEMAP_FRAG)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, gizmoShaderCode.lineVertex, gizmoShaderCode.lineFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, gizmoShaderCode.sameSizeVertex, gizmoShaderCode.pickFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.UNSHADED, gizmoShaderCode.cameraVertex, gizmoShaderCode.cameraFragment)

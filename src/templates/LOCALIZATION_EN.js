@@ -1,4 +1,8 @@
 export default {
+    UPDATING_SKYLIGHT: "Updating skylight",
+    ACTIVE_SKYLIGHT: "Active skylight",
+
+
     SETTINGS: "Settings",
     VELOCITY_DEF: "Per-object velocity",
     SHADING_VELOCITY: "Velocity",
@@ -34,12 +38,14 @@ export default {
     ERROR_DURING_COMPILATION: "Error during compilation",
     NEW_FOLDER: "New folder",
     UNKNOWN: "Unknown buffer",
-    SCREEN_EFFECTS: "",
+
+    NO_SKYLIGHT_COMPONENT_FOUND: "No Skylight component found on entity",
     RECORDING_SAMPLES: "Recording samples",
     EDITOR_COLOR_CORRECTION: "Editor color correction",
     FILE_ALREADY_OPEN: "File already open",
     GRID_VISIBILITY: "Show grid",
     ICON_VISIBILITY: "Show icons",
+    RECOMPUTE_CAPTURE: "Recompute capture",
     MATERIALS: "Materials",
     MATERIALS_TO_DRAW: "Materials to draw",
     CULL_FACE: "Cull face",

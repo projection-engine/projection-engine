@@ -1,9 +1,7 @@
 import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES"
 import NODE_TYPES from "../material-compiler/templates/NODE_TYPES"
-import MATERIAL_RENDERING_TYPES from "../../../../../public/engine/static/MATERIAL_RENDERING_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float";
-
 
 
 function arrayToGlsl(a) {

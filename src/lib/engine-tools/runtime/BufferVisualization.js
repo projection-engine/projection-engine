@@ -2,6 +2,8 @@ import GPU from "../../../../public/engine/GPU";
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
 import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
 import ConversionAPI from "../../../../public/engine/lib/math/ConversionAPI";
+import Engine from "../../../../public/engine/Engine";
+import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 
 let shader, uniforms
 let height
@@ -40,6 +42,8 @@ export default class BufferVisualization {
                     height: framebuffer.height
                 })
         })
+
+
         BufferVisualization.updateDimensions(250)
     }
 
@@ -73,8 +77,10 @@ export default class BufferVisualization {
             drawQuad()
         }
 
+
         gpu.disable(gpu.SCISSOR_TEST)
         gpu.viewport(0, 0, GPU.internalResolution.w, GPU.internalResolution.h)
+
         // gpu.enable(gpu.DEPTH_TEST)
     }
 }

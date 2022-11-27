@@ -84,7 +84,7 @@
                     minValue={attribute.min}
                     maxValue={attribute.max}
 
-                    label={partial}
+                    label={Localization[partial] || partial}
                     value={value[index]}
             />
         {/each}

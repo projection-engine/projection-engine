@@ -15,7 +15,7 @@
     import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
-    import Accordion from "../../../../components/accordion/Accordion.svelte";
+    import GPU from "../../../../../public/engine/GPU";
 
     export let entity
 
@@ -119,6 +119,17 @@
                                 />
                             {/if}
                         </fieldset>
+                    {:else if components[tabIndex][0] === COMPONENTS.SKYLIGHT}
+                        <fieldset>
+                            <legend>{Localization.PROBE}</legend>
+                            <button
+                                    class="recompute-button"
+                                    on:click={() => {
+                                    GPU.activeSkylightEntity = entity
+                                }}>
+                                {Localization.RECOMPUTE_CAPTURE}
+                            </button>
+                        </fieldset>
                     {/if}
                 {/if}
 
@@ -127,6 +138,11 @@
     </div>
 {/if}
 <style>
+    .recompute-button {
+        height: 25px;
+        width: 100%;
+        background: var(--pj-background-primary);
+    }
 
     .wrapper {
         display: flex;

@@ -4,13 +4,11 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-re
 import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
 import {vec3, vec4} from "gl-matrix";
 import Localization from "../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 import EngineStore from "../../stores/EngineStore";
 import {v4} from "uuid";
 import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
-import LightsAPI from "../../../public/engine/lib/rendering/LightsAPI";
 import SettingsStore from "../../stores/SettingsStore";
-import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-import VisibilityBuffer from "../../../public/engine/runtime/rendering/VisibilityBuffer";
 import EntityAPI from "../../../public/engine/lib/utils/EntityAPI";
 
 

@@ -45,7 +45,7 @@
         `}
 >
     {#if settings.visibleBuffers}
-        <div style="max-height: 0px"></div>
+        <div style="max-height: 0"></div>
         <ResizableBar type="height"/>
     {/if}
     <div
