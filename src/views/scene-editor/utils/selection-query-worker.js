@@ -10,7 +10,7 @@ export default function selectionQueryWorker() {
         }
         const selected = [], ids = []
         for (let i = 0; i < data.length; i += 4) {
-            const ID =  Math.round((data[i + 1] + data[i + 2]) * 255)
+            const ID =  Math.round((data[i] + data[i + 1] + data[i + 2]) * 255)
             const found = map[ID]
             if(!found || selected.includes(ID)) 
                 continue

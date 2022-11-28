@@ -1,4 +1,3 @@
-- Working on camera worker synchronization
-- Skylight initial integration with shader
-- Tweaks to depth test on uber shader
-- Tweaks to webgl context 
+- EntityID texture separate from depth texture
+- Working on cubemap generation
+- Added TBN computation to material compilation
