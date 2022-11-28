@@ -1,5 +1,5 @@
 <script>
-    import SHADING_MODELS from "../../lib/engine-tools/static/SHADING_MODELS"
+    import SHADING_MODELS from "../../../public/engine/static/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
@@ -28,6 +28,10 @@
                 on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.ROUGHNESS})}>
             {LOCALIZATION_EN.SHADING_ROUGHNESS}
         </button>
+        <button data-highlight={shadingModel === SHADING_MODELS.LIGHT_ONLY ? "-" : ""}
+                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.LIGHT_ONLY})}>
+            {LOCALIZATION_EN.LIGHT_ONLY}
+        </button>
     </div>
     <div class="row">
         <button data-highlight={shadingModel === SHADING_MODELS.METALLIC ? "-" : ""}
@@ -44,12 +48,13 @@
         </button>
     </div>
 </fieldset>
+
 <fieldset>
     <legend>{LOCALIZATION_EN.DEBUG_SHADING}</legend>
 
     <div class="row">
-        <button data-highlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.POSITION})}>
+        <button data-highlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
+                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DEPTH})}>
             {LOCALIZATION_EN.SHADING_DEPTH}
         </button>
         <button
@@ -57,18 +62,31 @@
                 on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.RANDOM})}>
             {LOCALIZATION_EN.SHADING_RANDOM}
         </button>
+
+
+    </div>
+    <div class="row">
+        <button data-highlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
+                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.POSITION})}>
+            {LOCALIZATION_EN.POSITION}
+        </button>
         <button data-highlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
                 on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.AO})}>
             {LOCALIZATION_EN.SHADING_DYNAMIC_AO}
+        </button>
+        <button data-highlight={shadingModel === SHADING_MODELS.OVERDRAW ? "-" : ""}
+                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.OVERDRAW})}>
+            {LOCALIZATION_EN.OVERDRAW}
         </button>
     </div>
 </fieldset>
 
 
 <style>
-    fieldset{
+    fieldset {
         background: var(--pj-background-primary);
     }
+
     .button {
         background: var(--pj-background-primary);
     }

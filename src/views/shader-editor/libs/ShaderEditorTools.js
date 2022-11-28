@@ -45,7 +45,8 @@ export default class ShaderEditorTools {
     static copy(nodes) {
         ShaderEditorTools.copied.clear()
         for (let i = 0; i < nodes.length; i++)
-            ShaderEditorTools.copied.set(nodes[i].id, ShaderEditorTools.#serializeNode(nodes[i]))
+            if(nodes[i])
+                ShaderEditorTools.copied.set(nodes[i].id, ShaderEditorTools.#serializeNode(nodes[i]))
     }
 
     static paste(updateNodes) {

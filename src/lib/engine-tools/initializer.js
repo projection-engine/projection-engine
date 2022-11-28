@@ -19,7 +19,6 @@ import SelectedSystem from "./runtime/SelectedSystem";
 import GizmoSystem from "./runtime/GizmoSystem";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
-import DEBUGGlsl from "./shaders/DEBUG.glsl";
 import GPUAPI from "../../../public/engine/lib/rendering/GPUAPI";
 import WIREFRAMEGlsl from "./shaders/WIREFRAME.glsl";
 import RotationGizmo from "./lib/transformation/RotationGizmo";
@@ -28,6 +27,7 @@ import * as GRID from "./shaders/GRID.glsl";
 import BufferVisualization from "./runtime/BufferVisualization";
 import CUBEMAP_VERT from "../../../public/engine/shaders/forward-rendering/CUBEMAP.vert"
 import CUBEMAP_FRAG from "./shaders/CUBEMAP.frag"
+
 export default async function initializer() {
 
     UIAPI.useIframe = true
@@ -41,7 +41,7 @@ export default async function initializer() {
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, gizmoShaderCode.sameSizeVertex, gizmoShaderCode.pickFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.UNSHADED, gizmoShaderCode.cameraVertex, gizmoShaderCode.cameraFragment)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GIZMO, gizmoShaderCode.vertex, gizmoShaderCode.fragment)
-    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.DEBUG_DEFERRED, DEBUGGlsl.vertex, DEBUGGlsl.fragment)
+
     CollisionVisualizationSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.WIREFRAME, WIREFRAMEGlsl.vertex, WIREFRAMEGlsl.fragment)
     RotationGizmo.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ROTATION_GIZMO, gizmoShaderCode.vertexRot, gizmoShaderCode.fragmentRot)
     GridSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GRID, GRID.vertex, GRID.fragment)

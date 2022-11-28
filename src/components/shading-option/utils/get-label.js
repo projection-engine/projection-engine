@@ -1,4 +1,4 @@
-import SHADING_MODELS from "../../../lib/engine-tools/static/SHADING_MODELS";
+import SHADING_MODELS from "../../../../public/engine/static/SHADING_MODELS";
 
 export default function getLabel(shadingModel){
     switch (shadingModel) {
@@ -13,10 +13,9 @@ export default function getLabel(shadingModel){
         case SHADING_MODELS.G_AO:
         case SHADING_MODELS.AO:
             return "SHADING_AO"
-        case SHADING_MODELS.SSR:
-            return "SHADING_SSR"
+
         case SHADING_MODELS.POSITION:
-            return "SHADING_POSITION"
+            return "POSITION"
         case SHADING_MODELS.RANDOM:
             return  "SHADING_RANDOM"
         case SHADING_MODELS.DETAIL:
@@ -27,16 +26,11 @@ export default function getLabel(shadingModel){
             return "SHADING_METALLIC"
         case SHADING_MODELS.SSGI:
             return "SHADING_SSGI"
-        case SHADING_MODELS.SSGI_UNFILTERED:
-            return "SHADING_SSGI"
-        case SHADING_MODELS.STOCHASTIC:
-            return "SHADING_STOCHASTIC"
+
         case SHADING_MODELS.UV:
             return "SHADING_UV"
-        case SHADING_MODELS.ID:
-            return "SHADING_ID"
-        case SHADING_MODELS.MATERIALS:
-            return "MATERIALS"
+        case SHADING_MODELS.OVERDRAW:
+            return "OVERDRAW"
         default:
             return ""
     }

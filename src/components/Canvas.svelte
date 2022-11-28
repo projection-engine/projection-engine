@@ -28,7 +28,8 @@
             canvasRef,
             {w: settings.resolution[0], h: settings.resolution[1]},
             AssetAPI.readAsset,
-            AssetAPI.readMetadata
+            AssetAPI.readMetadata,
+            true
         )
             .then(async () => {
                 await initializer()

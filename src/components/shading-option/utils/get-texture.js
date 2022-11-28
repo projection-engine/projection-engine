@@ -1,4 +1,4 @@
-import SHADING_MODELS from "../../../lib/engine-tools/static/SHADING_MODELS";
+import SHADING_MODELS from "../../../../public/engine/static/SHADING_MODELS";
 
 import SSAO from "../../../../public/engine/runtime/rendering/SSAO";
 import SSGI from "../../../../public/engine/runtime/rendering/SSGI";

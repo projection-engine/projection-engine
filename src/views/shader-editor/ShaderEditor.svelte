@@ -4,7 +4,7 @@
 
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";
     import Material from "./libs/nodes/Material";
     import BOARD_SIZE from "./static/BOARD_SIZE";
@@ -32,12 +32,14 @@
     let dragWillStart
     let status
     let ref
-    let isWorldMaterial
-
     let engine
     let wasInitialized = false
     let isReady = false
+
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+    onMount(() => {
+        window.test = () => console.trace(gpu.getParameter(gpu.MAX_VERTEX_TEXTURE_IMAGE_UNITS))
+    })
 
     function initializeStructure() {
         SEContextController.deleteContext(openFile?.registryID)
@@ -58,7 +60,10 @@
                 }
                 SEContextController.registerContext(
                     openFile.registryID,
-                    v => nodes = v,
+                    v => nodes = v.map(n => {
+                        n.CONTEXT_ID = openFile.registryID
+                        return n
+                    }),
                     v => links = v,
                     () => nodes,
                     () => links,
@@ -71,24 +76,20 @@
     }
 
     function initializeFromFile(v) {
+        console.trace("FILE INITIALIZATION", v)
         if (!v) {
             UndoRedoAPI.clearShaderEditorStates()
             SEContextController.deleteContext(openFile?.registryID)
             openFile = v
         } else if (SEContextController.getContext(v.registryID))
             alert.pushAlert(LOCALIZATION_EN.FILE_ALREADY_OPEN)
-
         else {
-            // const reg = RegistryAPI.getRegistryEntry(v.registryID)
-            // isWorldMaterial = reg.path.includes(FILE_TYPES.LEVEL)
-
             UndoRedoAPI.clearShaderEditorStates()
             isReady = false
             openFile = v
             initializeStructure()
         }
     }
-
 
     $: {
         if (wasInitialized) {
@@ -97,8 +98,6 @@
         } else {
             const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
             const newFile = ShaderEditorTools.toOpenFile || state?.openFile
-            if (!newFile)
-                SEContextController.deleteContext(openFile?.registryID)
 
             initializeFromFile(newFile)
             ShaderEditorTools.toOpenFile = undefined
@@ -110,6 +109,7 @@
             wasInitialized = true
         }
     }
+
     onDestroy(() => {
         unsubscribeEngine()
         UndoRedoAPI.clearShaderEditorStates()

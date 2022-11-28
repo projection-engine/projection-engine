@@ -25,7 +25,8 @@ export default {
     SIDE_BAR: "Viewport side-bar",
     DEBUG_SHADING: "Debug shading",
     NATURAL_SHADING: "Natural shading",
-
+    LIGHT_ONLY: "Light only",
+    SKYLIGHT_INDIRECT: "Skylight indirect",
     MOTION_BLUR: "Motion blur",
     OVERLAY: "Overlay",
     NEW_TAB: "New tab",
@@ -43,6 +44,7 @@ export default {
     ERROR_DURING_COMPILATION: "Error during compilation",
     NEW_FOLDER: "New folder",
     UNKNOWN: "Unknown buffer",
+    OVERDRAW: "Overdraw",
 
     NO_SKYLIGHT_COMPONENT_FOUND: "No Skylight component found on entity",
     RECORDING_SAMPLES: "Recording samples",
@@ -171,7 +173,7 @@ export default {
     SHADING_SSR: "Reflections",
     SSGI_DEF: "Screen-space global illumination",
     SSGI_UNFILTERED_DEF: "Unfiltered global illumination",
-    SHADING_POSITION: "Position",
+    POSITION: "Position",
     POSITION_DEF: "Fragment position",
 
     SHADING_METALLIC: "Metallic",

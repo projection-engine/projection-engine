@@ -131,7 +131,7 @@ export default class Material extends ShaderNode {
             refractionIndex = ${this.getDataBehaviour(refraction)};
             alpha = ${this.getDataBehaviour(opacity)};
             albedo = ${this.getData(al)};
-            ${normal ? "computeTBN()" : ""}
+            ${normal ? "computeTBN();" : ""}
             N = ${normal ? `normalize(TBN * ((${this.getData(normal)} * 2.0)- 1.0))` : "normalVec"};
             emission = ${this.getData(emission)};
             flatShading = ${this.flatShading};

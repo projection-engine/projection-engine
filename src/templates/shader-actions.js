@@ -48,7 +48,7 @@ export default function shaderActions(openFile) {
                 const nodes = context.getNodes(), links = context.getLinks()
                 for (let i = 0; i < nodes.length; i++) {
                     const current = nodes[i]
-                    if (!SelectionStore.map.get(current.id) || nodes[i] instanceof Material) {
+                    if (!SelectionStore.map.get(current?.id) || nodes[i] instanceof Material) {
                         newNodes.push(current)
                         map.set(current.id, true)
                     }

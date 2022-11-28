@@ -1,4 +1,6 @@
-- Adding overlay toggle 
-- Added outline option to viewport
-- Visual tweaks to shading model selector
-- 
+- Debug mode
+- Added toggle for outline
+- SSAO caching
+- Fixed shader editor not linking nodes to context 
+- Fixed texture binding on uber shader
+- Enabling more textures on uber shader
