@@ -19,8 +19,12 @@ export default class ToTangentSpace extends ShaderNode {
     }
 
     getFunctionCall() {
+
         // TODO - GENERATE TBN IF NOT EXISTENT
         this.TBN = "TBN"
-        return ""
+        return `
+            if(!hasTBNComputed)
+                computeTBN();
+        `
     }
 }

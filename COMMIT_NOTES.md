@@ -1,6 +1,1 @@
-- Debug mode
-- Added toggle for outline
-- SSAO caching
-- Fixed shader editor not linking nodes to context 
-- Fixed texture binding on uber shader
-- Enabling more textures on uber shader
+- Working on parallax occlusion mapping

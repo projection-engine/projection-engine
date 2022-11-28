@@ -22,7 +22,14 @@ export default class ViewDirection extends ShaderNode {
     }
 
     getFunctionCall(_, index, outputs) {
-        let response = []
+        let response = [`
+            if(!hasTBNComputed)
+                computeTBN();
+            if(!hasViewDirectionComputed){            
+                viewDirection = normalize(transpose(TBN) * cameraPosition  - transpose(TBN) * worldSpacePosition.xyz);
+                hasViewDirectionComputed = true;
+            }
+        `]
 
         outputs.forEach(o => {
             if(o === "viewDirection"){
