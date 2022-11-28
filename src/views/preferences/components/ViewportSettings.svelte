@@ -39,28 +39,6 @@
     </div>
 </fieldset>
 
-
-<fieldset>
-    <legend>{Localization.BACKGROUND}</legend>
-    <div data-form="-">
-        <Checkbox
-                checked={settings.background}
-                handleCheck={() => {
-                update("background",  !settings.background)
-            }}
-                label={Localization.ENABLED}
-        />
-        <ColorPicker
-                label={Localization.COLOR}
-                value={settings.backgroundColor.map(c => c*255)}
-                submit={(color) => {
-            update("backgroundColor", Object.values(color).map(c => c/255))
-        }}
-        />
-    </div>
-</fieldset>
-
-
 <fieldset>
     <legend>{Localization.VIEWPORT}</legend>
     <div data-form="-">

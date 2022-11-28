@@ -44,7 +44,11 @@ out vec4 fragColor;
  
 void main()
 {
-    vec2 size = 2./vec2(textureSize(silhouette, 0));
+    vec2 size;
+    if(!isOutline)
+        size = 2./vec2(textureSize(silhouette, 0));
+    else
+        size = .5/vec2(textureSize(silhouette, 0));
     vec3 center = texture(silhouette, texCoords).rgb;
     vec3 left = texture(silhouette, texCoords + vec2(-1., 0.) * size).rgb;
     vec3 right = texture(silhouette, texCoords + vec2(1., 0.) * size).rgb;

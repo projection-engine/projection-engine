@@ -7,9 +7,8 @@ import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SH
 
 
 let shader, uniforms, fbo, outlineShader, outlineShaderUniforms
-const fallbackColor = new Float32Array([.25,.25,.25])
+const fallbackColor = new Float32Array([.5,.5,.5])
 export default class SelectedSystem {
-    static shaderSilhouette
     static shader
 
     static silhouetteSampler
@@ -59,6 +58,7 @@ export default class SelectedSystem {
             gpu.activeTexture(gpu.TEXTURE0)
             gpu.bindTexture(gpu.TEXTURE_2D, SelectedSystem.silhouetteSampler)
             gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
+            gpu.uniform1i(outlineShaderUniforms.isOutline, 0)
             drawQuad()
         }
 

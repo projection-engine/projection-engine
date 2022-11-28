@@ -44,32 +44,22 @@ export default class DualAxisGizmo {
         if (!GizmoSystem.mainEntity)
             return
         gpu.disable(gpu.CULL_FACE)
-        const clicked = GizmoSystem.clickedAxis
-        const notSelected = !clicked || clicked <= 0
         const gizmos = DualAxisGizmo.gizmos
-
-        if (clicked === AXIS.XY || notSelected)
-            DualAxisGizmo.#draw(
-                XY_ID,
-                AXIS.XY,
-                gizmos.XY.matrix
-            )
-
-
-        if (clicked === AXIS.XZ || notSelected)
-            DualAxisGizmo.#draw(
-                XZ_ID,
-                AXIS.XZ,
-                gizmos.XZ.matrix
-            )
-
-
-        if (clicked === AXIS.ZY || notSelected)
-            DualAxisGizmo.#draw(
-                ZY_ID,
-                AXIS.ZY,
-                gizmos.ZY.matrix
-            )
+        DualAxisGizmo.#draw(
+            XY_ID,
+            AXIS.XY,
+            gizmos.XY.matrix
+        )
+        DualAxisGizmo.#draw(
+            XZ_ID,
+            AXIS.XZ,
+            gizmos.XZ.matrix
+        )
+        DualAxisGizmo.#draw(
+            ZY_ID,
+            AXIS.ZY,
+            gizmos.ZY.matrix
+        )
         gpu.enable(gpu.CULL_FACE)
     }
 

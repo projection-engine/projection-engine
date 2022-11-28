@@ -27,7 +27,7 @@ export default class GizmoSystem {
     static targetGizmo
     static toBufferShader
     static gizmoShader
-    static selectedEntities = []
+
     static clickedAxis
     static sensitivity = .001
     static hasStarted = false
@@ -87,6 +87,11 @@ export default class GizmoSystem {
     static execute() {
         const m = GizmoSystem.mainEntity
         if (m != null) {
+            const axis = GizmoSystem.clickedAxis
+            GizmoSystem.highlightX = axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY|| axis  === AXIS.SCREEN_SPACE
+            GizmoSystem.highlightY = axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY || axis  === AXIS.SCREEN_SPACE
+            GizmoSystem.highlightZ =  axis === AXIS.Z || axis === AXIS.ZY || axis === AXIS.XZ|| axis  === AXIS.SCREEN_SPACE
+
             getPivotPointMatrix(m)
             const t = GizmoSystem.targetGizmo
             if (t) {
@@ -98,22 +103,21 @@ export default class GizmoSystem {
                 GizmoAPI.applyTransformation(lineMatrix, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
             }
 
-            const axis = GizmoSystem.clickedAxis
             const shader = GizmoSystem.lineShader
             const uniforms = shader.uniformMap
             shader.bind()
             gpu.uniformMatrix4fv(uniforms.transformMatrix, false, lineMatrix)
-            if (axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY) {
+            if (GizmoSystem.highlightX) {
                 gpu.uniform3fv(uniforms.axis, X)
                 LineAPI.draw(X)
             }
 
-            if (axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY) {
+            if (GizmoSystem.highlightY) {
                 gpu.uniform3fv(uniforms.axis, Y)
                 LineAPI.draw(Y)
             }
 
-            if (axis === AXIS.Z || axis === AXIS.ZY || axis === AXIS.XZ) {
+            if (GizmoSystem.highlightZ) {
                 gpu.uniform3fv(uniforms.axis, Z)
                 LineAPI.draw(Z)
             }

@@ -1,7 +1,7 @@
 export default {
     UPDATING_SKYLIGHT: "Updating skylight",
     ACTIVE_SKYLIGHT: "Active skylight",
-
+    OUTLINE: "Outline",
 
     SETTINGS: "Settings",
     VELOCITY_DEF: "Per-object velocity",
@@ -23,10 +23,15 @@ export default {
     SHOW_BUFFERS: "Show buffers",
     UI_ALREADY_OPEN: "UI already open on other view",
     SIDE_BAR: "Viewport side-bar",
-    MOTION_BLUR: "Motion blur",
-    NEW_TAB: "New tab",
+    DEBUG_SHADING: "Debug shading",
+    NATURAL_SHADING: "Natural shading",
 
+    MOTION_BLUR: "Motion blur",
+    OVERLAY: "Overlay",
+    NEW_TAB: "New tab",
+    GIZMOS: "Gizmos",
     INDIRECT_LIGHT: "Indirect light",
+    SHADING_DYNAMIC_AO: "SSAO",
     SPAWN_ON_ORIGIN: "Spawn on origin",
     SHORTCUTS: "Shortcuts",
     DEPTH_SAMPLER: "Depth sampler",
@@ -237,12 +242,11 @@ export default {
     SMOOTHING: "Smoothing",
     ICON_SIZE: "icon size",
     SHADING_LIGHT: "Light only",
-    SHADING_UNLIT: "Unlit",
+    SHADING_UNLIT: "Albedo",
     SHADING_NORMAL: "Normals",
     SHADING_DEPTH: "Depth",
-    SHADING_AO: "Ambient Occlusion",
+    SHADING_AO: "Ambient occlusion",
     SHADING_DETAIL: "Details",
-    SHADING_SWITCH: "Switching to details shading model",
 
     ZOOM: "Zoom",
 

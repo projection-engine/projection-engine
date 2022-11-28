@@ -3,6 +3,7 @@ import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE"
 
 import GizmoSystem from "../runtime/GizmoSystem";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
+import AXIS from "../static/AXIS";
 
 export default class GizmoAPI {
     static tooltip
@@ -36,11 +37,12 @@ export default class GizmoAPI {
     }
 
     static drawGizmo(mesh, transformMatrix, axis, uID) {
+        const a = GizmoSystem.clickedAxis
         GizmoSystem.gizmoShader.bindForUse({
             transformMatrix,
             translation: GizmoSystem.mainEntity.__pivotOffset,
             axis,
-            selectedAxis: GizmoSystem.clickedAxis,
+            selectedAxis: a === AXIS.SCREEN_SPACE ? axis : a,
             uID,
             cameraIsOrthographic: CameraAPI.isOrthographic
         })

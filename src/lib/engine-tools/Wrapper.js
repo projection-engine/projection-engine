@@ -7,9 +7,11 @@ import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
 import BufferVisualization from "./runtime/BufferVisualization";
+import SETTINGS from "../../static/SETTINGS";
+import SettingsStore from "../../stores/SettingsStore";
 
 
-let selected = []
+let selected = [], settings
 export default class Wrapper {
     static selected = selected
     static selectionMap = new Map()
@@ -43,25 +45,27 @@ export default class Wrapper {
 
     static beforeDrawing() {
         CameraTracker.updateFrame()
+        settings = SettingsStore.data
+        if (!settings.overlays) return
         SelectedSystem.drawToBuffer(selected)
     }
 
     static duringDrawing() {
+        if (!settings.overlays) return
         GridSystem.execute()
     }
 
     static afterDrawing() {
+        if (!settings.overlays) return
 
-        if (Engine.params.iconsVisibility) {
-            IconsSystem.drawIcons(selected)
-            CollisionVisualizationSystem.execute(selected)
-        }
+        IconsSystem.drawIcons()
+        CollisionVisualizationSystem.execute(selected)
+
         SelectedSystem.drawSilhouette(selected)
-
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         GizmoSystem.execute()
         IconsSystem.drawPoints(selected)
-        if(Engine.params.visibleBuffers)
-            BufferVisualization.execute()
+
+        BufferVisualization.execute()
     }
 }

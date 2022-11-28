@@ -52,10 +52,8 @@ export default class IconsSystem {
         })
     }
 
-    static drawIcons(selected) {
+    static drawIcons() {
         const cameras = Engine.data.cameras
-
-
         for (let i = 0; i < cameras.length; i++) {
             const current = cameras[i]
             if (CameraAPI.trackingEntity === current)

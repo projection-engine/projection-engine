@@ -1,3 +1,4 @@
-- EntityID texture separate from depth texture
-- Working on cubemap generation
-- Added TBN computation to material compilation
+- Adding overlay toggle 
+- Added outline option to viewport
+- Visual tweaks to shading model selector
+- 
