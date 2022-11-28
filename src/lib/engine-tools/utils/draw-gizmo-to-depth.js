@@ -23,13 +23,14 @@ export default function drawGizmoToDepth(mesh, transforms){
         })
         mesh.draw()
     }
-
-    GizmoSystem.toBufferShader.bindForUse({
-        ...data,
-        transformMatrix: GizmoSystem.mainEntity.__cacheCenterMatrix,
-        uID: getPickerId(1)
-    })
-    GizmoSystem.screenSpaceMesh.draw()
+    if(GizmoSystem.targetGizmo !== GizmoSystem.rotationGizmo) {
+        GizmoSystem.toBufferShader.bindForUse({
+            ...data,
+            transformMatrix: GizmoSystem.mainEntity.__cacheCenterMatrix,
+            uID: getPickerId(1)
+        })
+        GizmoSystem.screenSpaceMesh.draw()
+    }
 
     DualAxisGizmo.drawToBuffer(data)
     FBO.stopMapping()

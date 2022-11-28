@@ -26,7 +26,6 @@ import RotationGizmo from "./lib/transformation/RotationGizmo";
 import * as SELECTED from "./shaders/SELECTED.glsl"
 import * as GRID from "./shaders/GRID.glsl";
 import BufferVisualization from "./runtime/BufferVisualization";
-import DebugPass from "./runtime/DebugPass";
 import CUBEMAP_VERT from "../../../public/engine/shaders/forward-rendering/CUBEMAP.vert"
 import CUBEMAP_FRAG from "./shaders/CUBEMAP.frag"
 export default async function initializer() {
@@ -63,5 +62,4 @@ export default async function initializer() {
     SelectedSystem.initialize()
     GizmoSystem.initialize()
     BufferVisualization.initialize()
-    DebugPass.initialize()
 }

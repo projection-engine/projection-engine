@@ -36,6 +36,9 @@ export const fragmentSilhouette = `
 precision mediump float;
 uniform sampler2D silhouette;
 
+uniform bool isOutline;
+uniform vec3 outlineColor;
+
 in vec2 texCoords;
 out vec4 fragColor;
  
@@ -47,8 +50,12 @@ void main()
     vec3 right = texture(silhouette, texCoords + vec2(1., 0.) * size).rgb;
     vec3 top = texture(silhouette, texCoords + vec2(0., -1.) * size).rgb;
     vec3 bottom = texture(silhouette, texCoords + vec2(0., 1.) * size).rgb;
-    if(left != center || right != center || top != center || bottom != center )
-        fragColor = vec4(1., .35, 0., 1.);    
+    if(left != center || right != center || top != center || bottom != center ){
+        if(!isOutline)
+            fragColor = vec4(1., .35, 0., 1.);
+        else
+            fragColor = vec4(outlineColor, 1.);
+    }
     else
         discard;
 }

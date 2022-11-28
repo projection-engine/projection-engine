@@ -68,8 +68,9 @@ export default class Inheritance {
             gpu.canvas.requestPointerLock()
         }
     }
-    transformGizmo(){
-        if(!GizmoSystem.mainEntity)
+
+    transformGizmo() {
+        if (!GizmoSystem.mainEntity)
             return
         mat4.copy(this.xGizmo.matrix, this.xGizmo.__cacheMatrix)
         mat4.copy(this.yGizmo.matrix, this.yGizmo.__cacheMatrix)
@@ -87,19 +88,17 @@ export default class Inheritance {
         GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.ZY, true)
         GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.XZ, true)
     }
+
     drawGizmo() {
         if (!GizmoSystem.mainEntity)
             return
 
         gpu.disable(gpu.CULL_FACE)
         DualAxisGizmo.drawGizmo()
-        if (this.tracking && GizmoSystem.clickedAxis === AXIS.X || !this.tracking)
-            GizmoAPI.drawGizmo(this.xyz, this.xGizmo.matrix, AXIS.X, this.xGizmo.pickID)
-        if (this.tracking && GizmoSystem.clickedAxis === AXIS.Y || !this.tracking)
-            GizmoAPI.drawGizmo(this.xyz, this.yGizmo.matrix, AXIS.Y, this.yGizmo.pickID)
-        if (this.tracking && GizmoSystem.clickedAxis === AXIS.Z || !this.tracking)
-            GizmoAPI.drawGizmo(this.xyz, this.zGizmo.matrix, AXIS.Z, this.zGizmo.pickID)
 
+        GizmoAPI.drawGizmo(this.xyz, this.xGizmo.matrix, AXIS.X, this.xGizmo.pickID)
+        GizmoAPI.drawGizmo(this.xyz, this.yGizmo.matrix, AXIS.Y, this.yGizmo.pickID)
+        GizmoAPI.drawGizmo(this.xyz, this.zGizmo.matrix, AXIS.Z, this.zGizmo.pickID)
 
         gpu.enable(gpu.CULL_FACE)
     }

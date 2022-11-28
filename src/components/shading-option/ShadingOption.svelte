@@ -102,7 +102,6 @@
 
         </div>
         <div class="column">
-
             <button data-highlight={shadingModel === SHADING_MODELS.SSGI ? "-" : ""}
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.SSGI})}>
                 {LOCALIZATION_EN.SHADING_SSGI}

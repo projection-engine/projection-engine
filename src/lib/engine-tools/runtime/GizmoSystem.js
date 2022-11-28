@@ -91,7 +91,9 @@ export default class GizmoSystem {
             const t = GizmoSystem.targetGizmo
             if (t) {
                 t.drawGizmo()
-                ScreenSpaceGizmo.drawGizmo()
+                gpu.clear(gpu.DEPTH_BUFFER_BIT)
+                if(t !== GizmoSystem.rotationGizmo)
+                    ScreenSpaceGizmo.drawGizmo()
                 mat4.identity(lineMatrix)
                 GizmoAPI.applyTransformation(lineMatrix, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
             }

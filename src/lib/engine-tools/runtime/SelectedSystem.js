@@ -1,9 +1,13 @@
 import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js"
 import GPU from "../../../../public/engine/GPU";
 import STATIC_FRAMEBUFFERS from "../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
+import VisibilityBuffer from "../../../../public/engine/runtime/rendering/VisibilityBuffer";
+import SettingsStore from "../../../stores/SettingsStore";
+import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
 
 
-let shader, uniforms, fbo
+let shader, uniforms, fbo, outlineShader, outlineShaderUniforms
+const fallbackColor = new Float32Array([.25,.25,.25])
 export default class SelectedSystem {
     static shaderSilhouette
     static shader
@@ -15,6 +19,10 @@ export default class SelectedSystem {
         SelectedSystem.silhouetteSampler = fbo.colors[0]
         shader = SelectedSystem.shader
         uniforms = shader.uniformMap
+
+        outlineShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE_OUTLINE)
+        outlineShaderUniforms = outlineShader.uniformMap
+
     }
 
     static drawToBuffer(selected) {
@@ -43,12 +51,27 @@ export default class SelectedSystem {
     }
 
     static drawSilhouette(selected) {
+        const settings = SettingsStore.data
         const length = selected.length
-        if (length > 0) {
-            SelectedSystem.shaderSilhouette.bindForUse({
-                silhouette: SelectedSystem.silhouetteSampler
-            })
+        outlineShader.bind()
+
+        if(length > 0) {
+            gpu.activeTexture(gpu.TEXTURE0)
+            gpu.bindTexture(gpu.TEXTURE_2D, SelectedSystem.silhouetteSampler)
+            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
             drawQuad()
         }
+
+        if(settings.outlineEnabled) {
+            gpu.activeTexture(gpu.TEXTURE0)
+            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityBuffer.entityIDSampler)
+            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
+
+            gpu.uniform1i(outlineShaderUniforms.isOutline, 1)
+            gpu.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
+
+            drawQuad()
+        }
+
     }
 }

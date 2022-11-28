@@ -8,7 +8,8 @@ import INITIAL_LAYOUT from "./INITIAL_LAYOUT";
 
 const toRad = Math.PI / 180
 export default {
-
+    outlineEnabled: true,
+    outlineColor: [.25,.25,.25],
     resolution: [window.screen.width, window.screen.height],
     hideFooter: false,
     projectCreationDate: (new Date()).toDateString(),
