@@ -10,6 +10,7 @@
     import Engine from "../../../../public/engine/Engine";
     import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+    import CameraGizmo from "../../../components/CameraGizmo.svelte";
 
     export let engine
     export let settings
@@ -30,7 +31,7 @@
             buttonStyles={"border-radius: 25px; height: 25px;" + (engine.focusedCamera ? "background: var(--pj-accent-color);" : "background: var(--pj-background-tertiary);")}>
         <button
                 slot="button"
-                style="background: transparent"
+                style="background: transparent; box-shadow: none"
                 class="button viewport"
                 data-highlight={engine.focusedCamera ? "-" : undefined}
         >
@@ -63,58 +64,12 @@
         {/if}
     </button>
 
-    <button class="button viewport" on:click={() => ViewportActions.focus()} style="margin-right: 8px">
+    <button disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center" on:click={() => ViewportActions.focus()}>
         <ToolTip content={LOCALIZATION_EN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>
-    <button
 
-            class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
-        <Icon styles="font-size: 1rem; color: #FFC757">highlight_alt</Icon>
-
-        {LOCALIZATION_EN.SELECTION}
-
-        <ToolTip content={LOCALIZATION_EN.SELECTION}/>
-    </button>
-    <button
-            class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
-        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_with</Icon>
-        {LOCALIZATION_EN.T_GIZMO}
-
-        <ToolTip content={LOCALIZATION_EN.T_GIZMO}/>
-    </button>
-    <button
-
-            class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
-        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">360</Icon>
-        {LOCALIZATION_EN.R_GIZMO}
-
-        <ToolTip content={LOCALIZATION_EN.R_GIZMO}/>
-    </button>
-    <button
-
-            class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
-        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
-        {LOCALIZATION_EN.S_GIZMO}
-        <ToolTip content={LOCALIZATION_EN.S_GIZMO}/>
-    </button>
-    <button
-            class="button viewport"
-            style="width: fit-content; max-height: 25px; min-height: 25px"
-            data-highlight={settings.visibleBuffers ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, visibleBuffers: !settings.visibleBuffers})}
-    >
-        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">{settings.visibleBuffers ? "visibility" : "visibility_off"}</Icon>
-        {!settings.visibleBuffers ? LOCALIZATION_EN.SHOW_BUFFERS : LOCALIZATION_EN.HIDE_BUFFERS}
-    </button>
+    <CameraGizmo/>
 </div>
 
 <style>
@@ -123,9 +78,9 @@
     .wrapper {
         width: 100%;
         display: flex;
-        justify-content: flex-start;
+        justify-content: flex-end;
         align-items: flex-start;
-        gap: 3px;
+        gap: 4px;
     }
 
 </style>

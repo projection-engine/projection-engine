@@ -8,6 +8,7 @@ import INITIAL_LAYOUT from "./INITIAL_LAYOUT";
 
 const toRad = Math.PI / 180
 export default {
+    cameraGizmoSize: 25,
     overlays: true,
     outlineEnabled: true,
     outlineColor: [.5,.5,.5],

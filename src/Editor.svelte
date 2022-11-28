@@ -1,6 +1,6 @@
 <script>
     import Alert from "shared-resources/frontend/components/alert/Alert.svelte";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
@@ -22,6 +22,7 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
+
     onDestroy(() => {
         unsubscribeSettings()
         unsubscribeEngine()
@@ -39,7 +40,7 @@
 
 </script>
 
-<div class="wrapper">
+<div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
     <Alert/>
     <WindowOptions/>
     <ContextMenu/>

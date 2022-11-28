@@ -20,16 +20,6 @@
     }
 </script>
 
-<button data-view-header-button="-" data-highlight={settings.outlineEnabled ? "-" : undefined}
-        on:click={() => SettingsStore.updateStore({...settings, outlineEnabled: !settings.outlineEnabled})}>
-    <Icon styles="font-size: 1rem">border_outer</Icon>
-    <ToolTip content={LOCALIZATION_EN.OUTLINE}/>
-</button>
-<button data-view-header-button="-" data-highlight={settings.overlays ? "-" : undefined}
-        on:click={() => SettingsStore.updateStore({...settings, overlays: !settings.overlays})}>
-    <Icon styles="font-size: 1rem">layers</Icon>
-    <ToolTip content={LOCALIZATION_EN.OVERLAY}/>
-</button>
 
 <Dropdown
         styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;"

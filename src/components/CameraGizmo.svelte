@@ -75,8 +75,7 @@
 
 <style>
     .gizmo-wrapper {
-        position: absolute;
-        right: 0;
+        position: relative;
         overflow: hidden;
         border-radius: 50%;
         padding: 4px;
@@ -84,6 +83,11 @@
         backdrop-filter: blur(10px);
         opacity: .85;
         border: var(--pj-transparent-border) 1px solid;
+        --gizmo-wrapper-size: calc(var(--cube-size) * 2 + 10px);
+        min-width: var(--gizmo-wrapper-size);
+        min-height: var(--gizmo-wrapper-size);
+        max-width: var(--gizmo-wrapper-size);
+        max-height: var(--gizmo-wrapper-size);
     }
 
     .gizmo-wrapper:hover {
@@ -98,8 +102,6 @@
     }
 
     .camera-view {
-        --cube-size: 25px;
-
         width: calc(var(--cube-size) * 2);
         height: calc(var(--cube-size) * 2);
         transform: scale3d(1.5, 1.5, 1.5);

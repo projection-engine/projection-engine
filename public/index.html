@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="build/editor.css" />
 
     <script defer src="build/editor.js"></script>
+    <script defer>
+      document.addEventListener('pointerlockerror', _ => document.exitPointerLock(), false);
+    </script>
   </head>
   <body></body>
 </html>

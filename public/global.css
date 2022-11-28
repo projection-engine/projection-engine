@@ -50,6 +50,7 @@ svg {
 
 html,
 body {
+    --cube-size: 50px;
     display: flex;
     flex-direction: column;
 
@@ -382,7 +383,7 @@ pre[data-pre="-"] {
 
 .button.viewport {
     height: 25px;
-    padding: 0 4px;
+    padding: 0 6px;
     border-radius: 25px;
 
     display: flex;

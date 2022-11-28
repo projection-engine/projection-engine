@@ -6,38 +6,53 @@
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings
+
     function update(key, value) {
         SettingsStore.updateStore({...settings, [key]: value})
     }
 
 </script>
+
+<fieldset>
+    <legend>{Localization.CAMERA_GIZMO}</legend>
+    <div data-form="-">
+        <Range
+                label={Localization.SIZE}
+                onFinish={v => {
+                    update("cameraGizmoSize", v)
+                }}
+                integer={true}
+                value={settings.cameraGizmoSize}
+                minValue={10}
+        />
+
+    </div>
+</fieldset>
+
 <fieldset>
     <legend>{Localization.RESOLUTION}</legend>
     <div data-form="-">
         <Range
                 label={"X"}
-                variant={"embedded"}
                 onFinish={v => {
-                update("resolution", [v, settings.resolution[1]])
-            }}
-                incrementPercentage={1}
-                handleChange={() => null}
+                    update("resolution", [v, settings.resolution[1]])
+                }}
+                integer={true}
                 value={settings.resolution[0]}
                 minValue={1}
         />
         <Range
                 label={"Y"}
-                variant={"embedded"}
                 onFinish={v => {
-                update("resolution", [settings.resolution[0], v])
-            }}
-                incrementPercentage={1}
-                handleChange={() => null}
+                    update("resolution", [settings.resolution[0], v])
+                }}
+                integer={true}
                 value={settings.resolution[1]}
                 minValue={1}
         />
     </div>
 </fieldset>
+
 
 <fieldset>
     <legend>{Localization.VIEWPORT}</legend>
@@ -45,16 +60,16 @@
         <Checkbox
                 checked={settings.gridVisibility}
                 handleCheck={() => {
-            update("gridVisibility",  !settings.gridVisibility)
-        }}
+                    update("gridVisibility",  !settings.gridVisibility)
+                }}
                 label={Localization.GRID_VISIBILITY}
         />
         <Checkbox
-                checked={settings.iconsVisibility}
+                checked={settings.overlays}
                 handleCheck={() => {
-            update("iconsVisibility",  !settings.iconsVisibility)
-        }}
-                label={Localization.ICON_VISIBILITY}
+                    update("overlays", !settings.overlays)
+                }}
+                label={Localization.SHOW_OVERLAY}
         />
     </div>
 </fieldset>

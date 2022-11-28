@@ -13,12 +13,14 @@
     import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
     import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+    import GIZMOS from "../../../static/GIZMOS";
 
 
     export let settings
 
     const updateGizmoGrid = (key, value, submit) => {
-        switch (key){
+        switch (key) {
             case key === "scalingGizmo":
                 ScalingGizmo.gridSize = value
                 break
@@ -33,43 +35,26 @@
         if (submit)
             SettingsStore.updateStore({...settings, gizmoGrid: {...settings.gizmoGrid, [key]: value}})
     }
+    $ : {
+        GizmoSystem.transformationType = settings.transformationType
+    }
 </script>
 
 <div class="wrapper">
-    <Dropdown buttonStyles={getDropdownHeaderStyles()}>
-        <button slot="button" data-view-header-dropdown="-">
-            {#if settings.transformationType === TRANSFORMATION_TYPE.RELATIVE}
-                <Icon styles="font-size: .9rem">
-                    place
-                </Icon>
-                {Localization.LOCAL}
-            {:else}
-                <Icon styles="font-size: .9rem">
-                    language
-                </Icon>
-                {Localization.GLOBAL}
-
-            {/if}
-            <ToolTip content={Localization.TRANSFORMATION_ORIENTATION}/>
-        </button>
-
-        <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "" : "-"}
-                on:click={() => {
-                    settings.transformationType = TRANSFORMATION_TYPE.GLOBAL
-                    GizmoSystem.transformationType = TRANSFORMATION_TYPE.GLOBAL
-                }}>
-            <Icon>language</Icon>
-            {Localization.GLOBAL}
-        </button>
-        <button data-highlight={settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? "-" : ""}
-                on:click={() => {
-                    settings.transformationType = TRANSFORMATION_TYPE.RELATIVE
-                    GizmoSystem.transformationType = TRANSFORMATION_TYPE.RELATIVE
-                }}>
-            <Icon>place</Icon>
+    <button
+            on:click={() => SettingsStore.updateStore({...settings, transformationType: settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? TRANSFORMATION_TYPE.GLOBAL : TRANSFORMATION_TYPE.RELATIVE})}
+            class="button viewport"
+    >
+        {#if settings.transformationType === TRANSFORMATION_TYPE.RELATIVE}
+            <Icon styles="font-size: .9rem">place</Icon>
             {Localization.LOCAL}
-        </button>
-    </Dropdown>
+        {:else}
+            <Icon styles="font-size: .9rem">language</Icon>
+            {Localization.GLOBAL}
+        {/if}
+        <ToolTip content={Localization.TOGGLE_TRANSFORMATION_TYPE}/>
+    </button>
+
     <Dropdown buttonStyles={getDropdownHeaderStyles()}>
         <button slot="button" data-view-header-dropdown="-">
             <Icon styles="font-size: .9rem">straighten</Icon>
@@ -122,12 +107,50 @@
         </div>
     </Dropdown>
 
+    <button
+            class="button viewport"
+            data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
+        <Icon styles="font-size: 1rem; color: #FFC757">highlight_alt</Icon>
+
+        {LOCALIZATION_EN.SELECTION}
+
+        <ToolTip content={LOCALIZATION_EN.SELECTION}/>
+    </button>
+    <button
+            class="button viewport"
+            data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
+        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_with</Icon>
+        {LOCALIZATION_EN.T_GIZMO}
+
+        <ToolTip content={LOCALIZATION_EN.T_GIZMO}/>
+    </button>
+    <button
+
+            class="button viewport"
+            data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
+        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">360</Icon>
+        {LOCALIZATION_EN.R_GIZMO}
+
+        <ToolTip content={LOCALIZATION_EN.R_GIZMO}/>
+    </button>
+    <button
+
+            class="button viewport"
+            data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
+        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
+        {LOCALIZATION_EN.S_GIZMO}
+        <ToolTip content={LOCALIZATION_EN.S_GIZMO}/>
+    </button>
 </div>
 
 <style>
     .wrapper {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 4px;
     }
 

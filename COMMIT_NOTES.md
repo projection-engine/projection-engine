@@ -1,1 +1,5 @@
-- Working on parallax occlusion mapping
+- Fixing pointerlock errors because of InputAPI returning document as target
+- Updating shared resources
+- Reworking scene editor layout
+- Some visual tweaks
+- Added camera gizmo size setting

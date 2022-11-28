@@ -11,7 +11,7 @@
     import viewportContext from "../../templates/viewport-context";
     import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import GeneralSettings from "./components/GeneralSettings.svelte";
+    import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
@@ -24,15 +24,13 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
     import getUnderSelectionBox from "./utils/get-under-selection-box";
-    import BufferVisualization from "./components/BufferVisualization.svelte";
-
+    import GizmoSettings from "./components/GizmoSettings.svelte";
 
     let selectedSize = -1
     let mainEntity
     let isOnGizmo = false
     let engine = {}
     let settings = {}
-    let interval
 
     const draggable = dragDrop(false)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -103,8 +101,9 @@
             nodes={[]}
     />
     <div class="top-bar">
-        <GeneralSettings engine={engine} settings={settings}/>
-        <CameraGizmo/>
+        <GizmoSettings settings={settings} engine={engine}/>
+        <CameraSettings engine={engine} settings={settings}/>
+
     </div>
     {#if focusedCamera}
         <div class="focused-camera" data-inline="-">
@@ -112,8 +111,6 @@
             {focusedCamera.name}
         </div>
     {/if}
-
-    <BufferVisualization settings={settings}/>
 {:else}
     <button class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
         <Icon styles="font-size: .85rem">pause</Icon>

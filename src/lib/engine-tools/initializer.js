@@ -24,7 +24,7 @@ import WIREFRAMEGlsl from "./shaders/WIREFRAME.glsl";
 import RotationGizmo from "./lib/transformation/RotationGizmo";
 import * as SELECTED from "./shaders/SELECTED.glsl"
 import * as GRID from "./shaders/GRID.glsl";
-import BufferVisualization from "./runtime/BufferVisualization";
+
 import CUBEMAP_VERT from "../../../public/engine/shaders/forward-rendering/CUBEMAP.vert"
 import CUBEMAP_FRAG from "./shaders/CUBEMAP.frag"
 
@@ -61,5 +61,4 @@ export default async function initializer() {
     IconsSystem.initialize()
     SelectedSystem.initialize()
     GizmoSystem.initialize()
-    BufferVisualization.initialize()
 }

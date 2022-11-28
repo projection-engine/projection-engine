@@ -6,8 +6,6 @@ import Engine from "../../../public/engine/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
-import BufferVisualization from "./runtime/BufferVisualization";
-import SETTINGS from "../../static/SETTINGS";
 import SettingsStore from "../../stores/SettingsStore";
 
 
@@ -66,6 +64,5 @@ export default class Wrapper {
         GizmoSystem.execute()
         IconsSystem.drawPoints(selected)
 
-        BufferVisualization.execute()
     }
 }

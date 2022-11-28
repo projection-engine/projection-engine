@@ -17,6 +17,7 @@
     import Selector from "../../components/selector/Selector.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import GPU from "../../../public/engine/GPU";
+    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 
     export let settings
     export let engine
@@ -46,8 +47,18 @@
     <ObjectOptions settings={settings}/>
     <SpawnSettings settings={settings}/>
 </div>
-<GizmoSettings settings={settings}/>
+
 <div class="right-content">
+    <button data-view-header-button="-" data-highlight={settings.outlineEnabled ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({...settings, outlineEnabled: !settings.outlineEnabled})}>
+        <Icon styles="font-size: 1rem">border_outer</Icon>
+        <ToolTip content={LOCALIZATION_EN.OUTLINE}/>
+    </button>
+    <button data-view-header-button="-" data-highlight={settings.overlays ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({...settings, overlays: !settings.overlays})}>
+        <Icon styles="font-size: 1rem">layers</Icon>
+        <ToolTip content={LOCALIZATION_EN.OVERLAY}/>
+    </button>
     <ShadingOption engine={engine} settings={settings}/>
 </div>
 
