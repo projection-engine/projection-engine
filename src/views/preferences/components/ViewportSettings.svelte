@@ -30,6 +30,21 @@
 </fieldset>
 
 <fieldset>
+    <legend>{Localization.GIZMOS}</legend>
+    <div data-form="-">
+        <Range
+                label={Localization.SENSITIVITY}
+                onFinish={v => {
+                    SettingsStore.updateStore({...settings, gizmoGrid:{...settings.gizmoGrid, sensitivity: v / 100}})
+                }}
+                integer={true}
+                value={settings.gizmoGrid.sensitivity  * 100}
+                minValue={1}
+        />
+    </div>
+</fieldset>
+
+<fieldset>
     <legend>{Localization.RESOLUTION}</legend>
     <div data-form="-">
         <Range
@@ -73,3 +88,4 @@
         />
     </div>
 </fieldset>
+

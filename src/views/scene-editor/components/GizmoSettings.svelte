@@ -15,11 +15,15 @@
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import GIZMOS from "../../../static/GIZMOS";
+    import ROTATION_GRID from "../static/ROTATION_GRID";
+    import SCALE_GRID from "../static/SCALE_GRID";
+    import TRANSLATION_GRID from "../static/TRANSLATION_GRID";
 
-
+    const BUTTON_DROPDOWN = "border-radius: 25px; height: 25px; background: var(--pj-background-tertiary);"
+    const BUTTON_DROPDOWN_INT = "background: transparent; box-shadow: none; width: 50px; justify-content: center; gap: 6px"
     export let settings
 
-    const updateGizmoGrid = (key, value, submit) => {
+    const updateGizmoGrid = (key, value) => {
         switch (key) {
             case key === "scalingGizmo":
                 ScalingGizmo.gridSize = value
@@ -28,15 +32,15 @@
                 TranslationGizmo.gridSize = value
                 break
             case key === "rotationGizmo":
-                RotationGizmo.gridSize = value
+                RotationGizmo.gridSize = value * Math.PI / 180
                 break
         }
-        GizmoSystem[key]
-        if (submit)
-            SettingsStore.updateStore({...settings, gizmoGrid: {...settings.gizmoGrid, [key]: value}})
+
+        SettingsStore.updateStore({...settings, gizmoGrid: {...settings.gizmoGrid, [key]: value}})
     }
     $ : {
         GizmoSystem.transformationType = settings.transformationType
+        GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity || .001
     }
 </script>
 
@@ -55,60 +59,77 @@
         <ToolTip content={Localization.TOGGLE_TRANSFORMATION_TYPE}/>
     </button>
 
-    <Dropdown buttonStyles={getDropdownHeaderStyles()}>
-        <button slot="button" data-view-header-dropdown="-">
-            <Icon styles="font-size: .9rem">straighten</Icon>
-            <ToolTip content={Localization.MOVEMENT_GRID}/>
+    <Dropdown hideArrow={true} buttonStyles={BUTTON_DROPDOWN}>
+        <button
+                slot="button"
+                style={BUTTON_DROPDOWN_INT}
+                class="button viewport"
+        >
+            <ToolTip content={LOCALIZATION_EN.TRANSLATION_GRID}/>
+            {settings.gizmoGrid.translationGizmo}
+            <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_with</Icon>
         </button>
-        <fieldset class="dropdown-content">
-            <legend>{Localization.MOVEMENT_GRID}</legend>
-            <Range
-                    variant="embedded"
-                    label={Localization.TRANSLATION_GRID}
-                    precision="3"
-                    maxValue={10}
-                    minValue={0.001}
-                    onFinish={v => updateGizmoGrid("translationGizmo", v, true)}
-                    value={settings.gizmoGrid.translationGizmo}
-                    handleChange={v => {
-                            GridSystem.metadataBuffer[1] = v
-                    }}
 
-            />
-            <Range
-                    variant="embedded"
-                    label={Localization.SCALE_GRID}
-                    precision="3"
-                    maxValue={10}
-                    minValue={0.001}
-                    onFinish={v => updateGizmoGrid("scaleGizmo", v, true)}
-                    value={settings.gizmoGrid.scaleGizmo}
-            />
-            <Range
-                    variant="embedded"
-                    precision="3"
-                    label={Localization.ROTATION_GRID}
-                    maxValue={360}
-                    minValue={0.001}
-                    onFinish={v => updateGizmoGrid("rotationGizmo", v, true)}
-                    value={settings.gizmoGrid.rotationGizmo}
-            />
-        </fieldset>
-        <div data-divider="-"></div>
-        <div style="padding: 4px;">
-            <Range
-                    variant="embedded"
-                    precision={4}
-                    label={Localization.SENSITIVITY}
-                    minValue={0}
-                    onFinish={v => updateGizmoGrid("sensitivity", v / 100, true)}
-                    value={settings.gizmoGrid.sensitivity * 100}
-            />
-        </div>
+        {#each TRANSLATION_GRID as value}
+            <button data-inline="-" on:click={() => updateGizmoGrid("translationGizmo", value)}>
+                {#if settings.gizmoGrid.translationGizmo === value}
+                    <Icon>check</Icon>
+                {:else}
+                    <div style="width: 1.1rem"></div>
+                {/if}
+                {value}
+            </button>
+        {/each}
     </Dropdown>
+    <Dropdown hideArrow={true} buttonStyles={BUTTON_DROPDOWN}>
+        <button
+                slot="button"
+                style={BUTTON_DROPDOWN_INT}
+                class="button viewport"
+        >
+            <ToolTip content={LOCALIZATION_EN.SCALE_GRID}/>
+            {settings.gizmoGrid.scaleGizmo}
+            <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
+        </button>
+
+        {#each SCALE_GRID as value}
+            <button data-inline="-" on:click={() => updateGizmoGrid("scaleGizmo", value)}>
+                {#if settings.gizmoGrid.scaleGizmo === value}
+                    <Icon>check</Icon>
+                {:else}
+                    <div style="width: 1.1rem"></div>
+                {/if}
+                {value}
+            </button>
+        {/each}
+    </Dropdown>
+    <Dropdown hideArrow={true} buttonStyles={BUTTON_DROPDOWN }>
+        <button
+                slot="button"
+                style={BUTTON_DROPDOWN_INT}
+                class="button viewport"
+        >
+            <ToolTip content={LOCALIZATION_EN.ROTATION_GRID}/>
+            {settings.gizmoGrid.rotationGizmo}
+            <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">360</Icon>
+        </button>
+
+        {#each ROTATION_GRID as value}
+            <button data-inline="-" on:click={() => updateGizmoGrid("rotationGizmo", value)}>
+                {#if settings.gizmoGrid.rotationGizmo === value}
+                    <Icon>check</Icon>
+                {:else}
+                    <div style="width: 1.1rem"></div>
+                {/if}
+                {value}
+            </button>
+        {/each}
+    </Dropdown>
+
 
     <button
             class="button viewport"
+            style="margin-left: 8px"
             data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
         <Icon styles="font-size: 1rem; color: #FFC757">highlight_alt</Icon>
@@ -126,6 +147,16 @@
 
         <ToolTip content={LOCALIZATION_EN.T_GIZMO}/>
     </button>
+
+    <button
+
+            class="button viewport"
+            data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
+        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
+        {LOCALIZATION_EN.S_GIZMO}
+        <ToolTip content={LOCALIZATION_EN.S_GIZMO}/>
+    </button>
     <button
 
             class="button viewport"
@@ -136,15 +167,6 @@
 
         <ToolTip content={LOCALIZATION_EN.R_GIZMO}/>
     </button>
-    <button
-
-            class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
-        <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
-        {LOCALIZATION_EN.S_GIZMO}
-        <ToolTip content={LOCALIZATION_EN.S_GIZMO}/>
-    </button>
 </div>
 
 <style>
@@ -152,12 +174,5 @@
         display: flex;
         align-items: flex-start;
         gap: 4px;
-    }
-
-    .dropdown-content {
-
-        padding: 4px;
-        margin-top: 4px;
-        margin-bottom: 2px
     }
 </style>

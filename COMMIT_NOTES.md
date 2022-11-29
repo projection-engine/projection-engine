@@ -1,5 +1,5 @@
-- Fixing pointerlock errors because of InputAPI returning document as target
-- Updating shared resources
-- Reworking scene editor layout
-- Some visual tweaks
-- Added camera gizmo size setting
+- Shadowed areas will no longer compute light contribution for fragment
+- Added point-light cutoff radius
+- Added better gizmo grid controls
+- Added cutoff falloff to point-light
+- Removed linear attenuation from point-light
