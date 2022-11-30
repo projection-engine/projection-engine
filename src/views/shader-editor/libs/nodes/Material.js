@@ -15,7 +15,7 @@ export default class Material extends ShaderNode {
 
     faceCulling = true
     depthTest = true
-
+    ssrEnabled = false
     depthMask = true
     refraction = 0
     roughness = 1
@@ -44,8 +44,9 @@ export default class Material extends ShaderNode {
                 max: 1,
                 min: 0
             },
-            {label: "Refraction", key: "refraction", accept: allTypes, type: DATA_TYPES.FLOAT},
+            {label: "Refraction index", key: "refraction", accept: allTypes, type: DATA_TYPES.FLOAT, disabled:true},
 
+            {label: "Screen-space reflections", key: "ssrEnabled", type: DATA_TYPES.CHECKBOX},
 
 
             {label: "Is alpha tested", key: "alphaTested", type: DATA_TYPES.CHECKBOX},

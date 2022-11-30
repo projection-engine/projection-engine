@@ -44,7 +44,7 @@ export default function updateRenderer(selected, engine, settings) {
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
     }
     if (Engine.environment === ENVIRONMENT.DEV)
-        Loop.linkToExecutionPipeline(Wrapper.beforeDrawing, Wrapper.duringDrawing, Wrapper.afterDrawing)
+        Loop.linkToExecutionPipeline(Wrapper.beforeDrawing, Wrapper.afterDrawing)
     else
         Loop.linkToExecutionPipeline()
 

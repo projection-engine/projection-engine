@@ -5,19 +5,32 @@
     import CameraTracker from "../lib/engine-tools/lib/CameraTracker";
     import CAMERA_ROTATIONS from "../lib/engine-tools/static/CAMERA_ROTATIONS";
     import focusOnCamera from "../utils/focus-on-camera";
+    import EngineStore from "../stores/EngineStore";
+    import CameraAPI from "../../public/engine/lib/utils/CameraAPI";
+    import EntityStateController from "../lib/controllers/EntityStateController";
 
     let ref
     onMount(() => CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO))
+
+    function onGizmoClick() {
+
+            if(EntityStateController.cameraSerialization)
+                CameraAPI.restoreState(EntityStateController.cameraSerialization)
+            if(EngineStore.engine.focusedCamera){
+                CameraTracker.startTracking()
+                EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
+                EntityStateController.cameraSerialization = undefined
+            }
+            ref.addEventListener("mousemove", CameraTracker.forceRotationTracking, {once: true})
+
+    }
 </script>
 
 
 <div
         class="gizmo-wrapper"
         bind:this={ref}
-        on:mousedown={_ => {
-            focusOnCamera()
-            ref.addEventListener("mousemove", CameraTracker.forceRotationTracking, {once: true})
-        }}
+        on:mousedown={onGizmoClick}
         on:mouseup={_ => ref.removeEventListener("mousemove", CameraTracker.forceRotationTracking)}
 >
     <div class="camera-view">

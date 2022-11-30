@@ -98,11 +98,6 @@
     <legend>{Localization.SSR}</legend>
 
     <div data-form="-">
-        <Checkbox
-                checked={visualSettings.SSR.enabled}
-                handleCheck={() => updateSubObject("SSR","enabled",!visualSettings.SSR.enabled)}
-                label={Localization.ENABLED}
-        />
 
         <Range
                 label={Localization.STEPS}

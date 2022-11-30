@@ -7,15 +7,13 @@ import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SH
 
 
 let shader, uniforms, fbo, outlineShader, outlineShaderUniforms
-const fallbackColor = new Float32Array([.5,.5,.5])
+const fallbackColor = new Float32Array([.5, .5, .5])
 export default class SelectedSystem {
     static shader
 
-    static silhouetteSampler
-
     static initialize() {
         fbo = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.POST_PROCESSING_WORKER)
-        SelectedSystem.silhouetteSampler = fbo.colors[0]
+
         shader = SelectedSystem.shader
         uniforms = shader.uniformMap
 
@@ -24,45 +22,39 @@ export default class SelectedSystem {
 
     }
 
-    static drawToBuffer(selected) {
-        const length = selected.length
-        if (length === 0)
-            return
-
-        fbo.startMapping()
-        gpu.disable(gpu.CULL_FACE)
-        shader.bind()
-        for (let m = 0; m < length; m++) {
-            const current = selected[m]
-            if (!current || !current.active)
-                continue
-            const mesh = GPU.meshes.get(current.components.get(COMPONENTS.MESH)?.meshID)
-            if (!mesh)
-                continue
-
-            gpu.uniform3fv(uniforms.meshID, current.pickID)
-            gpu.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
-            mesh.draw()
-        }
-        gpu.enable(gpu.CULL_FACE)
-        fbo.stopMapping()
-
-    }
 
     static drawSilhouette(selected) {
-        const settings = SettingsStore.data
         const length = selected.length
-        outlineShader.bind()
+        if (length > 0) {
+            fbo.startMapping()
+            gpu.disable(gpu.CULL_FACE)
+            shader.bind()
+            for (let m = 0; m < length; m++) {
+                const current = selected[m]
+                if (!current || !current.active)
+                    continue
+                const mesh = GPU.meshes.get(current.components.get(COMPONENTS.MESH)?.meshID)
+                if (!mesh)
+                    continue
 
-        if(length > 0) {
+                gpu.uniform3fv(uniforms.meshID, current.pickID)
+                gpu.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
+                mesh.draw()
+            }
+            gpu.enable(gpu.CULL_FACE)
+            fbo.stopMapping()
+        }
+        const settings = SettingsStore.data
+        outlineShader.bind()
+        if (length > 0) {
             gpu.activeTexture(gpu.TEXTURE0)
-            gpu.bindTexture(gpu.TEXTURE_2D, SelectedSystem.silhouetteSampler)
+            gpu.bindTexture(gpu.TEXTURE_2D, fbo.colors[0])
             gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
             gpu.uniform1i(outlineShaderUniforms.isOutline, 0)
             drawQuad()
         }
 
-        if(settings.outlineEnabled) {
+        if (settings.outlineEnabled) {
             gpu.activeTexture(gpu.TEXTURE0)
             gpu.bindTexture(gpu.TEXTURE_2D, VisibilityBuffer.entityIDSampler)
             gpu.uniform1i(outlineShaderUniforms.silhouette, 0)

@@ -1,1 +1,3 @@
-- Shift to copy functionality added to translation gizmo
+- Removed SSR pass
+- Integrated SSR processing with uber-shader
+- Organizing drawing order and overlays

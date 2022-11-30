@@ -30,7 +30,7 @@ export default class Wrapper {
         const main = Wrapper.selected[0]
         if (main)
             GizmoSystem.linkEntityToGizmo(main)
-            else {
+        else {
             GizmoSystem.targetRotation = undefined
             GizmoSystem.mainEntity = undefined
             GizmoSystem.hasStarted = false
@@ -41,15 +41,12 @@ export default class Wrapper {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
         if (!settings.overlays) return
-        SelectedSystem.drawToBuffer(selected)
-    }
-
-    static duringDrawing() {
-        if (!settings.overlays) return
         GridSystem.execute()
     }
 
+
     static afterDrawing() {
+
         if (!settings.overlays) return
 
         IconsSystem.drawIcons()

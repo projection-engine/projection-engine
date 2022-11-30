@@ -22,6 +22,8 @@ export default async function materialCompiler(n, links) {
         template.settings.noDepthTest = !startPoint.depthTest
         template.settings.isAlphaTested = startPoint.alphaTested
         template.settings.depthMask = startPoint.depthMask
+        template.settings.ssrEnabled = startPoint.ssrEnabled
+
         template.uniforms = uniforms
         template.uniformsData = uniformValues
         return template
