@@ -2,12 +2,14 @@ import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import GizmoSystem from "../../runtime/GizmoSystem";
 import Inheritance from "../Inheritance";
 import gizmoTranslateEntity from "../../utils/gizmo-translate-entity";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/dispatch-renderer-entities";
+import Wrapper from "../../Wrapper";
 
 export default class TranslationGizmo extends Inheritance {
     static gridSize = 1
     tracking = false
     key = "_translation"
-
+    static hasCloned = false
     static cache = [0, 0, 0]
 
     constructor() {
@@ -21,11 +23,22 @@ export default class TranslationGizmo extends Inheritance {
 
     onMouseDown(event) {
         super.onMouseDown(event);
+        TranslationGizmo.hasCloned = false
         TranslationGizmo.cache = [0, 0, 0]
     }
 
     onMouseMove(event) {
         super.onMouseMove()
+        console.log(event)
+        if(!TranslationGizmo.hasCloned && event.shiftKey){
+            const clones = Wrapper.selected.map(m => m.clone())
+            dispatchRendererEntities({
+                type: ENTITY_ACTIONS.PUSH_BLOCK,
+                payload: clones
+            })
+            GizmoSystem.linkEntityToGizmo(clones[0])
+        }
+        TranslationGizmo.hasCloned = event.shiftKey
         gizmoTranslateEntity(event)
     }
 

@@ -10,6 +10,7 @@ import {v4} from "uuid";
 import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
 import SettingsStore from "../../stores/SettingsStore";
 import EntityAPI from "../../../public/engine/lib/utils/EntityAPI";
+import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
 
 
 const addSprite = (entity, img) => {

@@ -28,13 +28,9 @@ export default class Wrapper {
         })
 
         const main = Wrapper.selected[0]
-        if (main) {
-            getPivotPointMatrix(main)
-            main.__pivotChanged = true
-            GizmoSystem.mainEntity = main
-            GizmoSystem.targetGizmo.transformGizmo()
-            GizmoSystem.targetRotation = main._rotationQuat
-        } else {
+        if (main)
+            GizmoSystem.linkEntityToGizmo(main)
+            else {
             GizmoSystem.targetRotation = undefined
             GizmoSystem.mainEntity = undefined
             GizmoSystem.hasStarted = false

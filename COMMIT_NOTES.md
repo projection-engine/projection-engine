@@ -1,5 +1,1 @@
-- Shadowed areas will no longer compute light contribution for fragment
-- Added point-light cutoff radius
-- Added better gizmo grid controls
-- Added cutoff falloff to point-light
-- Removed linear attenuation from point-light
+- Shift to copy functionality added to translation gizmo

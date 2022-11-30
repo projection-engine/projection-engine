@@ -56,8 +56,15 @@ export default class GizmoSystem {
     static lineShader
     static transformationType = TRANSFORMATION_TYPE.GLOBAL
 
-    static save
     static updateGizmoToolTip = () => null
+
+    static linkEntityToGizmo(main) {
+        getPivotPointMatrix(main)
+        main.__pivotChanged = true
+        GizmoSystem.mainEntity = main
+        GizmoSystem.targetGizmo.transformGizmo()
+        GizmoSystem.targetRotation = main._rotationQuat
+    }
 
     static initialize() {
 
@@ -88,16 +95,16 @@ export default class GizmoSystem {
         const m = GizmoSystem.mainEntity
         if (m != null) {
             const axis = GizmoSystem.clickedAxis
-            GizmoSystem.highlightX = axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY|| axis  === AXIS.SCREEN_SPACE
-            GizmoSystem.highlightY = axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY || axis  === AXIS.SCREEN_SPACE
-            GizmoSystem.highlightZ =  axis === AXIS.Z || axis === AXIS.ZY || axis === AXIS.XZ|| axis  === AXIS.SCREEN_SPACE
+            GizmoSystem.highlightX = axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
+            GizmoSystem.highlightY = axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
+            GizmoSystem.highlightZ = axis === AXIS.Z || axis === AXIS.ZY || axis === AXIS.XZ || axis === AXIS.SCREEN_SPACE
 
             getPivotPointMatrix(m)
             const t = GizmoSystem.targetGizmo
             if (t) {
                 t.drawGizmo()
                 gpu.clear(gpu.DEPTH_BUFFER_BIT)
-                if(t !== GizmoSystem.rotationGizmo)
+                if (t !== GizmoSystem.rotationGizmo)
                     ScreenSpaceGizmo.drawGizmo()
                 mat4.identity(lineMatrix)
                 GizmoAPI.applyTransformation(lineMatrix, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
