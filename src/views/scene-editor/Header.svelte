@@ -3,8 +3,8 @@
     import ShadingOption from "../../components/shading-option/ShadingOption.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
-    import GizmoSettings from "./components/GizmoSettings.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
@@ -12,12 +12,7 @@
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
-    import COMPONENTS from "../../../public/engine/static/COMPONENTS";
-    import Engine from "../../../public/engine/Engine";
-    import Selector from "../../components/selector/Selector.svelte";
     import SettingsStore from "../../stores/SettingsStore";
-    import GPU from "../../../public/engine/GPU";
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 
     export let settings
     export let engine

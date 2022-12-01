@@ -18,10 +18,10 @@ export default async function materialCompiler(n, links) {
         const template = {...MATERIAL_OUTPUT_FORMAT}
         template.functionDeclaration = functionDeclaration
         template.uniformsDeclaration = uniformsDeclaration
-        template.settings.cullFace = startPoint.faceCulling
-        template.settings.noDepthTest = !startPoint.depthTest
+
+        template.settings.isSky = startPoint.isSky
+        template.settings.doubleSided = startPoint.doubleSided
         template.settings.isAlphaTested = startPoint.alphaTested
-        template.settings.depthMask = startPoint.depthMask
         template.settings.ssrEnabled = startPoint.ssrEnabled
 
         template.uniforms = uniforms

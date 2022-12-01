@@ -1,14 +1,9 @@
 <script>
-    import SHADING_MODELS from "../../../public/engine/static/SHADING_MODELS"
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import SettingsStore from "../../stores/SettingsStore";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-    import FrameComposition from "../../../public/engine/runtime/post-processing/FrameComposition";
     import getLabel from "./utils/get-label";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
     import Options from "./Options.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import SceneRenderer from "../../../public/engine/runtime/rendering/SceneRenderer";
 
     export let engine

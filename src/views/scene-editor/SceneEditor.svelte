@@ -2,7 +2,6 @@
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
-    import CameraGizmo from "../../components/CameraGizmo.svelte";
     import GIZMOS from "../../static/GIZMOS";
     import Loader from "../../lib/parsers/Loader";
     import GizmoSystem from "../../lib/engine-tools/runtime/GizmoSystem";

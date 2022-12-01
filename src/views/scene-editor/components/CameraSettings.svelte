@@ -1,8 +1,6 @@
 <script>
-    import GIZMOS from "../../../static/GIZMOS"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import SettingsStore from "../../../stores/SettingsStore";
     import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
     import ViewportActions from "../../../lib/utils/ViewportActions";
     import focusOnCamera from "../../../utils/focus-on-camera";

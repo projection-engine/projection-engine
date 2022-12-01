@@ -1,6 +1,5 @@
 <script>
     import SHADING_MODELS from "../../../public/engine/static/SHADING_MODELS"
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 

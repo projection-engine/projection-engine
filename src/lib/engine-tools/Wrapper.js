@@ -5,7 +5,6 @@ import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../../../public/engine/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
-import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
 import SettingsStore from "../../stores/SettingsStore";
 import STATIC_SHADERS from "../../../public/engine/static/resources/STATIC_SHADERS";
 import GPU from "../../../public/engine/GPU";

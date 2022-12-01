@@ -6,14 +6,11 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import Range from "shared-resources/frontend/components/range/Range.svelte";
-    import GridSystem from "../../../lib/engine-tools/runtime/GridSystem";
     import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
     import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
     import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
-    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
-    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import GIZMOS from "../../../static/GIZMOS";
     import ROTATION_GRID from "../static/ROTATION_GRID";
     import SCALE_GRID from "../static/SCALE_GRID";

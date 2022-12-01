@@ -10,13 +10,14 @@ function arrayToGlsl(a) {
 }
 
 export default class Material extends ShaderNode {
-    alphaTested = false
+
     canBeDeleted = false
 
-    faceCulling = true
-    depthTest = true
+    alphaTested = false
+    isSky = false
+    doubleSided = false
     ssrEnabled = false
-    depthMask = true
+
     refraction = 0
     roughness = 1
     metallic = 0
@@ -50,10 +51,10 @@ export default class Material extends ShaderNode {
 
 
             {label: "Is alpha tested", key: "alphaTested", type: DATA_TYPES.CHECKBOX},
-            {label: "Face culling", key: "faceCulling", type: DATA_TYPES.CHECKBOX},
-            {label: "Depth test", key: "depthTest", type: DATA_TYPES.CHECKBOX},
-            {label: "Flat shading", key: "flatShading", type: DATA_TYPES.CHECKBOX},
-            {label: "Write to depth-buffer", key: "depthMask", type: DATA_TYPES.CHECKBOX},
+
+            {label: "Double sided", key: "doubleSided", type: DATA_TYPES.CHECKBOX},
+            {label: "Is sky", key: "isSky", type: DATA_TYPES.CHECKBOX},
+            {label: "Flat-shading", key: "flatShading", type: DATA_TYPES.CHECKBOX}
         ], [])
 
         this.name = "Material"

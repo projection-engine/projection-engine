@@ -1,3 +1,2 @@
-- Fixed SSGI not sampling correct depth texture
-- Improvements to SSGI stability
-- Working on SSR on uber-shader
+- Sky variant for material
+- Fixed SSR

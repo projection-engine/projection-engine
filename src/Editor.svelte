@@ -1,6 +1,6 @@
 <script>
     import Alert from "shared-resources/frontend/components/alert/Alert.svelte";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
