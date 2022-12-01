@@ -16,7 +16,8 @@ export default function getComponentIcon(key) {
             return "transform"
         case COMPONENTS.SPRITE:
             return "image"
-
+        case COMPONENTS.SPOTLIGHT:
+            return "highlight"
 
         case COMPONENTS.PHYSICS_COLLIDER:
             return "compare_arrows"

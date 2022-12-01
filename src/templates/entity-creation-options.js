@@ -46,6 +46,12 @@ export default function entityCreationOptions() {
             label: Localization.SKYLIGHT,
             onClick: () => EntityConstructor.createProbe()
         },
+        {
+            icon: "highlight",
+            label: Localization.SPOTLIGHT,
+            onClick: EntityConstructor.createSpotLight
+        },
+
         {divider: true, label: Localization.UTILS},
         {
             icon: "videocam",

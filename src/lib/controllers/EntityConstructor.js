@@ -1,7 +1,6 @@
 import Entity from "../../../public/engine/instances/Entity";
 import COMPONENTS from "../../../public/engine/static/COMPONENTS.js";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
-import STATIC_TEXTURES from "../../../public/engine/static/resources/STATIC_TEXTURES";
 import {vec3, vec4} from "gl-matrix";
 import Localization from "../../templates/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
@@ -19,7 +18,7 @@ const addSprite = (entity, img) => {
 }
 
 export default class EntityConstructor {
-    static translateEntity(entity, rotation= CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
+    static translateEntity(entity, rotation = CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
         if (SettingsStore.data.spawnOnOrigin) {
             vec3.copy(entity._translation, [0, 0, 0])
             entity.__changedBuffer[0] = 1
@@ -47,28 +46,28 @@ export default class EntityConstructor {
     static createProbe() {
         const entity = new Entity(undefined, LOCALIZATION_EN.SKYLIGHT)
         entity.addComponent(COMPONENTS.SKYLIGHT)
-
-        addSprite(entity, STATIC_TEXTURES.PROBE)
         EntityConstructor.translateEntity(entity)
+        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
+    }
 
+    static createSpotLight() {
+        const entity = new Entity(undefined, Localization.SPOTLIGHT)
+        entity.addComponent(COMPONENTS.SPOTLIGHT)
+        EntityConstructor.translateEntity(entity)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 
     static createPointLight() {
         const entity = new Entity(undefined, Localization.POINT_LIGHT)
         entity.addComponent(COMPONENTS.POINT_LIGHT)
-        addSprite(entity, STATIC_TEXTURES.POINT_LIGHT)
         EntityConstructor.translateEntity(entity)
-
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 
     static createDirectionalLight() {
         const entity = new Entity(undefined, Localization.DIRECTIONAL_LIGHT)
-        addSprite(entity, STATIC_TEXTURES.DIRECTIONAL_LIGHT)
         EntityConstructor.translateEntity(entity)
         entity.addComponent(COMPONENTS.DIRECTIONAL_LIGHT)
-
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 

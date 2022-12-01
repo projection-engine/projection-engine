@@ -14,6 +14,7 @@ export default {
     SHADER_EDITOR: "Shader editor",
     CAMERA_GIZMO: "Camera gizmo",
     UNDO: "Undo",
+    SPOTLIGHT: "Spotlight",
     APPLY: "Apply",
     EDITOR_POST_PROCESSING: "Editor post-processing",
     POST_PROCESSING: "Post processing",

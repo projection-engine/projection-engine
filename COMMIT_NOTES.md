@@ -1,2 +1,1 @@
-- Sky variant for material
-- Fixed SSR
+- Working on spotlights

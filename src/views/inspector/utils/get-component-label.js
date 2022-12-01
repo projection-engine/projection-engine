@@ -13,6 +13,8 @@ export default function getComponentLabel(component){
             return "Directional Light"
         case COMPONENTS.SPRITE:
             return "Sprite"
+        case COMPONENTS.SPOTLIGHT:
+            return LOCALIZATION_EN.SPOTLIGHT
         case COMPONENTS.SKYLIGHT:
             return LOCALIZATION_EN.SKYLIGHT
         case COMPONENTS.PHYSICS_COLLIDER:
