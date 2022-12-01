@@ -1,3 +1,3 @@
-- Removed SSR pass
-- Integrated SSR processing with uber-shader
-- Organizing drawing order and overlays
+- Fixed SSGI not sampling correct depth texture
+- Improvements to SSGI stability
+- Working on SSR on uber-shader

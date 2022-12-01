@@ -7,6 +7,9 @@ import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import getPivotPointMatrix from "./utils/get-pivot-point-matrix";
 import SettingsStore from "../../stores/SettingsStore";
+import STATIC_SHADERS from "../../../public/engine/static/resources/STATIC_SHADERS";
+import GPU from "../../../public/engine/GPU";
+import SSGI from "../../../public/engine/runtime/rendering/SSGI";
 
 
 let selected = [], settings
@@ -56,6 +59,14 @@ export default class Wrapper {
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         GizmoSystem.execute()
         IconsSystem.drawPoints(selected)
+
+        if(window.d){
+            const s = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)
+            s.bindForUse({
+                image: SSGI.unfilteredSSGISampler
+            })
+            drawQuad()
+        }
 
     }
 }

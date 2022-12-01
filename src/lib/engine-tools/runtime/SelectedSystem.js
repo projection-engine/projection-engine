@@ -12,7 +12,7 @@ export default class SelectedSystem {
     static shader
 
     static initialize() {
-        fbo = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.POST_PROCESSING_WORKER)
+        fbo = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.CHACHE_BUFFER)
 
         shader = SelectedSystem.shader
         uniforms = shader.uniformMap
