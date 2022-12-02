@@ -223,11 +223,15 @@ out vec4 fragColor;
 
 void main(){
     vec4 colorS = texture(circleSampler, uv);
-    float opacity = 1.;
-    if(colorS.a <= .1 && axis > 0)
-        opacity = .2;
+ 
     
-        
+    vec2 a = floor(gl_FragCoord.xy);  
+    bool checker = mod(a.x + a.y, 4.0 ) > 0.0;
+    
+    if( checker && colorS.a < .5)
+        discard;
+    
+    
     vec3 color = vec3(1.);
     switch (axis) {
         case 2:
@@ -246,7 +250,7 @@ void main(){
     if(selectedAxis == axis)
         color = vec3(1., 1., 0.);
         
-    fragColor = vec4(color, opacity);
+    fragColor = vec4(color, 1.);
 }
 `
 

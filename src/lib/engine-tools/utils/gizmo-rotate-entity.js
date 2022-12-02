@@ -3,6 +3,9 @@ import GizmoSystem from "../runtime/GizmoSystem";
 import {quat, vec3} from "gl-matrix";
 import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE";
 import RotationGizmo from "../lib/transformation/RotationGizmo";
+import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
+
+
 
 export default function gizmoRotateEntity(vec, screenSpace) {
     let firstEntity = GizmoSystem.mainEntity
@@ -22,6 +25,7 @@ export default function gizmoRotateEntity(vec, screenSpace) {
         quat.rotateY(quatA, quatA, vec[1])
     if (vec[2] !== 0)
         quat.rotateZ(quatA, quatA, vec[2])
+
 
     for (let i = 0; i < SIZE; i++) {
         const target = targets[i]
