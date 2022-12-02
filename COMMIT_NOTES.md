@@ -1,2 +1,0 @@
-- Added dithering to rotation gizmo to prevent unsorted alpha hiding gizmo sides
-- Entity rotation now affects spotlight direction
