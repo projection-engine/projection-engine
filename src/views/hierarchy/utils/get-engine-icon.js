@@ -7,12 +7,12 @@ export default function getEngineIcon(nodeRef) {
         if (nodeRef.components.get(COMPONENTS.POINT_LIGHT))
             icons.push({
                 icon: "lightbulb",
-                label: "Point light"
+                label: LOCALIZATION_EN.POINT_LIGHT
             })
         if (nodeRef.components.get(COMPONENTS.DIRECTIONAL_LIGHT))
             icons.push({
                 icon: "light_mode",
-                label: "Directional light"
+                label: LOCALIZATION_EN.DIRECTIONAL_LIGHT
             })
         if (nodeRef.components.get(COMPONENTS.SKYLIGHT))
             icons.push({
@@ -23,23 +23,28 @@ export default function getEngineIcon(nodeRef) {
 
             icons.push({
                 icon: "category",
-                label: "Mesh renderer"
+                label: LOCALIZATION_EN.MESH_RENDERER
             })
         if (nodeRef.components.get(COMPONENTS.CAMERA))
 
             icons.push({
                 icon: "videocam",
-                label: "Camera"
+                label: LOCALIZATION_EN.CAMERA
             })
         if (nodeRef.components.get(COMPONENTS.SPRITE))
             icons.push({
                 icon: "image",
-                label: "Sprite"
+                label: LOCALIZATION_EN.SPRITE_RENDERER
             })
         if (nodeRef.components.get(COMPONENTS.UI))
             icons.push({
                 icon: "widgets",
-                label: "UI renderer"
+                label: LOCALIZATION_EN.UI_LAYOUT
+            })
+        if (nodeRef.components.get(COMPONENTS.SPOTLIGHT))
+            icons.push({
+                icon: "highlight",
+                label: LOCALIZATION_EN.SPOTLIGHT
             })
     }
     return icons

@@ -146,14 +146,13 @@ void main(){
             color = vec3(0., 0., 1.);
             break;
         case ${AXIS.XZ}:
-            color = vec3(0., 0., 1.);
-            
+            color = vec3(0., 1., 0.);
         break;
         case ${AXIS.XY}:
-            color = vec3(1., 0., 0.);
+            color = vec3(0., 0., 1.);
         break;
         case ${AXIS.ZY}:
-            color = vec3(0., 1., 0.);
+            color = vec3(1., 0., 0.);
         break;
         default:
             break;

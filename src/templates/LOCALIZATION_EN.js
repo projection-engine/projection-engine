@@ -50,6 +50,7 @@ export default {
     CUTOFF_SPHERE: "Cutoff sphere",
     OVERDRAW: "Overdraw",
     OUTER_CUTOFF: "Outer cutoff",
+    CUTOFF: "Cutoff",
     SHOW_OVERLAY: "Show overlay",
     NO_SKYLIGHT_COMPONENT_FOUND: "No Skylight component found on entity",
     RECORDING_SAMPLES: "Recording samples",
@@ -230,8 +231,6 @@ export default {
     ACTIVE: "Active",
     DELETE_VIEW: "Delete view",
 
-    SPOT_LIGHT: "SpotLight",
-    DIFFUSE_PROBE: "Diffuse Probe",
     UTILS: "Utils",
     AMBIENT: "Ambient",
     TOP: "Top",

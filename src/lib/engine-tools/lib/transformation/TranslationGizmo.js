@@ -29,7 +29,6 @@ export default class TranslationGizmo extends Inheritance {
 
     onMouseMove(event) {
         super.onMouseMove()
-        console.log(event)
         if(!TranslationGizmo.hasCloned && event.shiftKey){
             const clones = Wrapper.selected.map(m => m.clone())
             dispatchRendererEntities({
