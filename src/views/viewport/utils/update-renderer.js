@@ -61,7 +61,15 @@ export default function updateRenderer(selected, engine, settings) {
 
 
     GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
-    Engine.updateParams(settings, settings.physicsSimulationStep, settings.physicsSubSteps)
+    Engine.updateParams(
+        settings,
+        settings.SSGI || {},
+        settings.SSR || {},
+        settings.SSS || {},
+        settings.SSAO || {},
+        settings.physicsSimulationStep,
+        settings.physicsSubSteps
+    )
 
     switch (settings.gizmo) {
         case GIZMOS.TRANSLATION:

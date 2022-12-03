@@ -124,16 +124,6 @@
                 onFinish={v => updateSubObject("SSR","falloff",v)}
         />
 
-        <Range
-                label={Localization.MIN_RAY_STEP}
-
-                incrementPercentage={.001}
-                precision={4}
-                minValue={.00001}
-                value={visualSettings.SSR.minRayStep}
-                onFinish={v => updateSubObject("SSR","minRayStep",v)}
-        />
-
     </div>
 </fieldset>
 
@@ -206,7 +196,46 @@
 </fieldset>
 
 <fieldset>
-    <legend>{Localization.SHADOWS}</legend>
+    <legend>{Localization.SSS}</legend>
+    <div data-form="-">
+        <Range
+                label={Localization.STEPS}
+                maxValue={100}
+                minValue={1}
+                integer={true}
+                value={visualSettings.SSS.maxSteps}
+                onFinish={v => updateSubObject("SSS","maxSteps",v)}
+        />
+        <Range
+                label={Localization.MAX_DISTANCE}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={.00001}
+                value={visualSettings.SSS.maxDistance}
+                onFinish={v => updateSubObject("SSS","maxDistance",v)}
+        />
+        <Range
+                label={Localization.DEPTH_THICKNESS}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={.00001}
+                value={visualSettings.SSS.depthThickness}
+                onFinish={v => updateSubObject("SSS","depthThickness",v)}
+        />
+
+        <Range
+                label={Localization.FALLOFF}
+                incrementPercentage={.001}
+                precision={4}
+                minValue={0}
+                value={visualSettings.SSS.edgeFalloff}
+                onFinish={v => updateSubObject("SSS","edgeFalloff",v)}
+        />
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>{Localization.DIRECTIONAL_SHADOWS}</legend>
     <div data-form="-">
         <Range
                 label={Localization.RESOLUTION}

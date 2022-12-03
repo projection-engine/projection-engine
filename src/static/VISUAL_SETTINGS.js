@@ -34,9 +34,13 @@ export default {
         binarySearchSteps: 5,
         stepSize: .7,
         falloff: 3,
-        minRayStep: .1
     },
-
+    SSS: {
+      edgeFalloff: 12,
+      maxSteps: 24,
+      depthThickness: .05,
+      maxDistance: .05,
+    },
     SSAO: {
 
         blurSamples: 1,

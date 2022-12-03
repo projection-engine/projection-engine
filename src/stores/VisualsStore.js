@@ -12,8 +12,8 @@ export default class VisualsStore {
     }
 
     static updateStore(value = VisualsStore.data) {
-        VisualsStore.data = value
-        store.set(value)
+        VisualsStore.data = {...VISUAL_SETTINGS, ...value}
+        store.set(VisualsStore.data)
     }
 }
 

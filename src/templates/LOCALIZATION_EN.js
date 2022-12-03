@@ -9,6 +9,7 @@ export default {
     GRID: "Grid",
     CREATING_ENTITY: "Creating entity",
     UPDATING_SETTINGS: "Updating settings",
+    SPECULAR_LIGHT: "Specular light",
     RESET: "Reset",
     ORIGINAL: "Original",
     SHADER_EDITOR: "Shader editor",
@@ -16,8 +17,12 @@ export default {
     UNDO: "Undo",
     SPOTLIGHT: "Spotlight",
     APPLY: "Apply",
+    SSS: "Screen-space shadows",
     EDITOR_POST_PROCESSING: "Editor post-processing",
     POST_PROCESSING: "Post processing",
+    MAX_DISTANCE: "Max distance",
+    DEPTH_THICKNESS: "Depth thickness",
+    HAS_SSS: "Has screen-space shadows",
     VIEWPORT: "Viewport",
     MIN_RAY_STEP: "Minimum ray step",
     SOME_ERROR_OCCURRED: "Some error occurred",
@@ -44,6 +49,7 @@ export default {
     SKYLIGHT: "Skylight",
     BLUR_BLOOM: "Blur color filter",
     GI: "Global illumination",
+    DIRECTIONAL_SHADOWS: "Directional shadows",
     ERROR_DURING_COMPILATION: "Error during compilation",
     NEW_FOLDER: "New folder",
     UNKNOWN: "Unknown buffer",
@@ -113,7 +119,6 @@ export default {
     UPDATING_STRUCTURE: "Updating structure",
 
     DEFAULT_LEVEL: "Default",
-
     NATIVE_MESHES: "Some meshes are embedded with editor/engine",
     NATIVE_MATERIALS: "Some materials are embedded with editor/engine",
     NATIVE_TEXTURES: "Some textures are embedded with editor/engine",
@@ -272,6 +277,7 @@ export default {
     SELECTED_CHILD: "Child entity is selected",
     FOCUS_LOCKED_ENTITY: "Focus on locked entity",
     TRANSFORM: "Transformation",
+
     PROBE: "Probe",
 
     COMPONENT_FILTER: "Filter by component",
