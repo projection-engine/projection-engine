@@ -223,8 +223,7 @@ out vec4 fragColor;
 
 void main(){
     vec4 colorS = texture(circleSampler, uv);
- 
-    
+
     vec2 a = floor(gl_FragCoord.xy);  
     bool checker = mod(a.x + a.y, 4.0 ) > 0.0;
     

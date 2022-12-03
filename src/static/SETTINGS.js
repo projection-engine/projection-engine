@@ -18,9 +18,12 @@ export default {
     loggingEnabled: true,
     iconsVisibility: true,
     visibleBuffers: false,
-    showGridSubdivision: true,
+
     gridOpacity: 1,
-    gridVisibility: true,
+    gridColor: .3,
+    gridScale: 1,
+    gridThreshold: 100.,
+
     spawnDistanceFromCamera: 10,
     shadingModel: SHADING_MODELS.DETAIL,
     gizmo: GIZMOS.TRANSLATION,

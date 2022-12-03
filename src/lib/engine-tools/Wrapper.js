@@ -43,6 +43,8 @@ export default class Wrapper {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
         if (!settings.overlays) return
+        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+
         GridSystem.execute()
     }
 
