@@ -6,9 +6,9 @@ import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SH
 import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
 import SpritePass from "../../../../public/engine/runtime/rendering/SpritePass";
 import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
+import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import Wrapper from "../Wrapper";
-import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 
 const attr = {
     translation: [0, 0, 0],
@@ -17,72 +17,105 @@ const attr = {
     scale: [.25, .25, .25],
     attributes: [1, 1]
 }
+let iconsShader, iconsUniforms
 
-const CAMERA_SCALE = [0.8578777313232422, 0.5202516317367554, 0.2847398519515991]
 export default class IconsSystem {
-    static cameraMesh
+    static iconsTexture
     static shader
-    static textureOrange
-    static textureYellow
 
     static initialize() {
-        IconsSystem.cameraMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.CAMERA)
+
         IconsSystem.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.UNSHADED)
-
-        const canvas = document.createElement("canvas")
-        const ctx = canvas.getContext("2d")
-        canvas.width = 128
-        canvas.height = 128
-
-        // LOCKED ENTITY
-        ctx.fillStyle = "rgb(255, 69, 0)"
-        ctx.arc(64, 64, 10, 0, Math.PI * 2)
-        ctx.fill()
-        GPUAPI.allocateTexture(canvas.toDataURL(), STATIC_TEXTURES.PIXEL).then(texture => {
-            IconsSystem.textureYellow = texture.texture
-        })
-
-        ctx.clearRect(0, 0, 128, 128)
-
-        ctx.fillStyle = "yellow"
-        ctx.arc(64, 64, 10, 0, Math.PI * 2)
-        ctx.fill()
-        GPUAPI.allocateTexture(canvas.toDataURL(), STATIC_TEXTURES.PIXEL_ORANGE).then(texture => {
-            IconsSystem.textureOrange = texture.texture
-        })
+        iconsShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.ICONS)
+        iconsUniforms = iconsShader.uniformMap
     }
 
     static drawIcons() {
-        const cameras = Engine.data.cameras
-        for (let i = 0; i < cameras.length; i++) {
-            const current = cameras[i]
-            if (CameraAPI.trackingEntity === current)
-                continue
+        const data = Engine.data
+        if (!IconsSystem.iconsTexture)
+            return
+
+        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+        const pointLights = data.pointLights,
+            directionalLights = data.directionalLights,
+            spotLights = data.spotLights,
+            cameras = data.cameras,
+            skylights = data.skylights
+
+        const pointLightsLength = pointLights.length,
+            directionalLightsLength = directionalLights.length,
+            spotLightLength = spotLights.length,
+            camerasLength = cameras.length,
+            skylightLength = skylights.length
+        const tracking = CameraAPI.trackingEntity
+const selected = Wrapper.selectionMap
+        iconsShader.bind()
+        gpu.activeTexture(gpu.TEXTURE0)
+        gpu.bindTexture(gpu.TEXTURE_2D, IconsSystem.iconsTexture)
+        gpu.uniform1i(iconsUniforms.image, 0)
+        gpu.uniform1f(iconsUniforms.scale, window.scale || 1.)
+
+        if (directionalLightsLength > 0)
+            gpu.uniform1f(iconsUniforms.imageIndex, 1)
+        for (let i = 0; i < directionalLightsLength; i++) {
+            const current = directionalLights[i]
             if (!current.active)
                 continue
-            attr.highlight = Wrapper.selectionMap.get(current.id) != null
-            attr.transformMatrix = current.__cacheCenterMatrix
-            IconsSystem.shader.bindForUse(attr)
-            IconsSystem.cameraMesh.draw()
+            getPivotPointMatrix(current)
+
+            gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            drawQuad()
         }
 
-
-    }
-    static drawPoints(selected){
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
-        const size = selected.length
-        for (let i = 0; i < size; i++) {
-            const current = selected[i]
-            if (!current)
+        if (pointLightsLength > 0)
+            gpu.uniform1f(iconsUniforms.imageIndex, 2)
+        for (let i = 0; i < pointLightsLength; i++) {
+            const current = pointLights[i]
+            if (!current.active)
                 continue
-
+            gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
             getPivotPointMatrix(current)
-            attr.transformationMatrix = current.__cacheCenterMatrix
-            attr.iconSampler = i === 0 ? IconsSystem.textureYellow : IconsSystem.textureOrange
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            drawQuad()
+        }
 
-            SpritePass.shader.bindForUse(attr)
+        if (skylightLength > 0)
+            gpu.uniform1f(iconsUniforms.imageIndex, 3)
+        for (let i = 0; i < skylightLength; i++) {
+            const current = skylights[i]
+            if (!current.active)
+                continue
+            gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
+            getPivotPointMatrix(current)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            drawQuad()
+        }
+
+        if (spotLightLength > 0)
+            gpu.uniform1f(iconsUniforms.imageIndex, 4)
+        for (let i = 0; i < spotLightLength; i++) {
+            const current = spotLights[i]
+            if (!current.active)
+                continue
+            gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
+            getPivotPointMatrix(current)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            drawQuad()
+        }
+
+        if (camerasLength > 0)
+            gpu.uniform1f(iconsUniforms.imageIndex, 5)
+        for (let i = 0; i < camerasLength; i++) {
+            const current = cameras[i]
+            if (!current.active || tracking === current)
+                continue
+            gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
+            getPivotPointMatrix(current)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
             drawQuad()
         }
     }
+
 
 }

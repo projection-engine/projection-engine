@@ -51,9 +51,12 @@ void main() {
         
     float opacity = abs(distanceFromCamera - threshold) /((distanceFromCamera + threshold)/2.);
      
-    float gridValue = clamp(grid(10., 0.5) *  grid(50., 1.), color, 1.0); 
+    float biggerGrid = grid(10., 0.5);
+    float smallerGrid = grid(50., 1.);
+    float gridValue = clamp(biggerGrid * smallerGrid, color, 1.0); 
     if(gridValue != color)
             discard;
+            
     float lineScale = 1./scale;
     float offset = .5/scale;
     float Z = worldPosition.z - offset;

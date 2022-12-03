@@ -11,12 +11,13 @@ export default function drawIconsToBuffer() {
     const entities = Engine.entities
     const FBO = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.VISIBILITY_BUFFER)
     FBO.use()
+    const CUBE = GPU.meshes.get(STATIC_MESHES.PRODUCTION.CUBE)
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]
-        if (!entity.active || !(entity.components.get(COMPONENTS.SPRITE) || entity.components.get(COMPONENTS.CAMERA)))
+        if (!entity.active || entity.__meshRef)
             continue
         drawIcon(
-            GPU.meshes.get(entity.components.get(COMPONENTS.CAMERA) ? STATIC_MESHES.EDITOR.CAMERA : STATIC_MESHES.PRODUCTION.CUBE),
+            CUBE,
             entity.pickID,
             entity.matrix,
         )

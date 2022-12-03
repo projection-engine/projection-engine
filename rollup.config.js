@@ -43,7 +43,7 @@ const common = (inputFile, outputFile) => ({
         image(),
         json(),
         string({
-            include: ["**/*.glsl", "**/*.frag","**/*.vert"]
+            include: ["**/*.glsl", "**/*.frag","**/*.vert", "**/*.base64"]
         })
     ],
     watch: {

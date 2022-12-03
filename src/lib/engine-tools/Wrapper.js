@@ -19,15 +19,22 @@ export default class Wrapper {
 
     static updateSelectionData(data) {
         Wrapper.selectionMap.clear()
+        for(let i = 0; i < selected.length; i++)
+            selected[i].__isSelected = false
         selected = []
         Wrapper.selected = selected
+
+
         data.forEach(d => {
             const c = Engine.entitiesMap.get(d)
             if (c) {
                 selected.push(c)
+                c.__isSelected = true
                 Wrapper.selectionMap.set(d, true)
             }
         })
+
+
 
         const main = Wrapper.selected[0]
         if (main)
@@ -59,8 +66,6 @@ export default class Wrapper {
         SelectedSystem.drawSilhouette(selected)
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         GizmoSystem.execute()
-        IconsSystem.drawPoints(selected)
-
         if(window.d){
             const s = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)
             s.bindForUse({
