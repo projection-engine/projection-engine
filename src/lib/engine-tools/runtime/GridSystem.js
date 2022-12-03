@@ -1,10 +1,6 @@
-import Engine from "../../../../public/engine/Engine";
-import {vec3, vec4} from "gl-matrix";
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
 import GPU from "../../../../public/engine/GPU";
 import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
-import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
-import * as GRID from "../shaders/GRID.glsl";
 
 let shader, uniforms, planeMesh, buffer
 export default class GridSystem {

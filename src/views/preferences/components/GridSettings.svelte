@@ -2,7 +2,6 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
-    import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import GridSystem from "../../../lib/engine-tools/runtime/GridSystem";
 
     export let settings

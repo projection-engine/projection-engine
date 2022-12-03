@@ -1,4 +1,3 @@
-import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
 import GPU from "../../../../public/engine/GPU";
 import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
 import Engine from "../../../../public/engine/Engine";

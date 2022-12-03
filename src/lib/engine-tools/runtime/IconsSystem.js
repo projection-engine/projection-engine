@@ -1,11 +1,7 @@
 import Engine from "../../../../public/engine/Engine";
 import GPU from "../../../../public/engine/GPU";
-import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
 
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
-import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
-import SpritePass from "../../../../public/engine/runtime/rendering/SpritePass";
-import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import Wrapper from "../Wrapper";
