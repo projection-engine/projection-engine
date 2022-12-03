@@ -231,6 +231,14 @@
                 value={visualSettings.SSS.edgeFalloff}
                 onFinish={v => updateSubObject("SSS","edgeFalloff",v)}
         />
+
+        <Range
+                label={Localization.DEPTH_DELTA}
+                incrementPercentage={.001}
+                precision={4}
+                value={visualSettings.SSS.depthDelta}
+                onFinish={v => updateSubObject("SSS","depthDelta",v)}
+        />
     </div>
 </fieldset>
 

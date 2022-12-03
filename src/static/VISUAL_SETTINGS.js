@@ -36,6 +36,7 @@ export default {
         falloff: 3,
     },
     SSS: {
+        depthDelta: -4,
       edgeFalloff: 12,
       maxSteps: 24,
       depthThickness: .05,

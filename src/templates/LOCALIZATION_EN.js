@@ -26,6 +26,7 @@ export default {
     VIEWPORT: "Viewport",
     MIN_RAY_STEP: "Minimum ray step",
     SOME_ERROR_OCCURRED: "Some error occurred",
+    DEPTH_DELTA: "Depth min delta",
     TOGGLE_TRANSFORMATION_TYPE: "Toggle transformation type",
     HIDE_BUFFERS: "Hide buffers",
     SHOW_BUFFERS: "Show buffers",
