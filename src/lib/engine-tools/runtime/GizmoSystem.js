@@ -103,10 +103,9 @@ export default class GizmoSystem {
             getPivotPointMatrix(m)
             const t = GizmoSystem.targetGizmo
             if (t) {
-                t.drawGizmo()
-                gpu.clear(gpu.DEPTH_BUFFER_BIT)
                 if (t !== GizmoSystem.rotationGizmo)
                     ScreenSpaceGizmo.drawGizmo()
+                t.drawGizmo()
                 mat4.identity(lineMatrix)
                 GizmoAPI.applyTransformation(lineMatrix, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
             }

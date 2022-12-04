@@ -11,7 +11,10 @@
         SettingsStore.updateStore({...settings, [key]: value})
     }
 
+    let s = [0, 10, 0]
+    let r = 3
 </script>
+
 
 <fieldset>
     <legend>{Localization.CAMERA_GIZMO}</legend>
