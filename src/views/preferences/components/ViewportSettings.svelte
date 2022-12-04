@@ -3,6 +3,7 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
+    import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
 
     export let settings
 
@@ -29,6 +30,25 @@
 </fieldset>
 
 <fieldset>
+    <legend>{Localization.OUTLINE}</legend>
+
+    <div data-form="-">
+        <Checkbox
+                checked={settings.outlineEnabled}
+                handleCheck={() => {
+                    update("outlineEnabled", !settings.outlineEnabled)
+                }}
+                label={Localization.ENABLED}
+        />
+        <ColorPicker
+                value={settings.outlineColor}
+                label={Localization.COLOR}
+                submit={({r,g,b}) => update("outlineColor", [r/255,g/255,b/255])}
+        />
+    </div>
+</fieldset>
+
+<fieldset>
     <legend>{Localization.GIZMOS}</legend>
     <div data-form="-">
         <Range
@@ -36,7 +56,6 @@
                 onFinish={v => {
                     SettingsStore.updateStore({...settings, gizmoGrid:{...settings.gizmoGrid, sensitivity: v / 100}})
                 }}
-                integer={true}
                 value={settings.gizmoGrid.sensitivity  * 100}
                 minValue={1}
         />
@@ -71,13 +90,6 @@
 <fieldset>
     <legend>{Localization.VIEWPORT}</legend>
     <div data-form="-">
-        <Checkbox
-                checked={settings.gridVisibility}
-                handleCheck={() => {
-                    update("gridVisibility",  !settings.gridVisibility)
-                }}
-                label={Localization.GRID_VISIBILITY}
-        />
         <Checkbox
                 checked={settings.overlays}
                 handleCheck={() => {

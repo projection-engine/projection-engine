@@ -100,7 +100,7 @@ export default class LevelController {
         ipcRenderer.on(
             CHANNELS.ENTITIES,
             async (_, data) => {
-                const {entities, worldMaterial} = data
+                const {entities} = data
 
                 const mapped = []
                 for (let i = 0; i < entities.length; i++) {
@@ -164,12 +164,10 @@ export default class LevelController {
                 pathToWrite = NodeFS.ASSETS_PATH + NodeFS.sep + reg.path
             }
             pathToWrite = NodeFS.resolvePath(pathToWrite)
-            const worldMaterial = await FilesAPI.readFile(pathToWrite, "json")
-            console.log(worldMaterial)
+
             await FilesAPI.writeFile(
                 pathToWrite,
                 serializeStructure({
-                    worldMaterial,
                     entities: entities.map(e => e.serializable()),
                 }),
                 true

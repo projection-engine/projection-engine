@@ -64,6 +64,7 @@ export default class GizmoSystem {
         GizmoSystem.mainEntity = main
         GizmoSystem.targetGizmo.transformGizmo()
         GizmoSystem.targetRotation = main._rotationQuat
+        RotationGizmo.currentRotation = [0,0,0]
     }
 
     static initialize() {

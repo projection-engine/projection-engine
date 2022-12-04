@@ -50,7 +50,6 @@ export default class RotationGizmo {
         document.exitPointerLock()
         GizmoSystem.clickedAxis = -1
         this.tracking = false
-        RotationGizmo.currentRotation = [0, 0, 0]
     }
 
 

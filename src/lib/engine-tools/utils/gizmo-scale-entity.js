@@ -6,6 +6,10 @@ import {vec3, vec4} from "gl-matrix";
 import ScalingGizmo from "../lib/transformation/ScalingGizmo";
 import AXIS from "../static/AXIS";
 
+function getAxisMovement(event) {
+    return Math.abs(event.movementX) > Math.abs(event.movementY) ? event.movementX : event.movementY
+}
+
 export default function gizmoScaleEntity(event) {
     let toApply, firstEntity = GizmoSystem.mainEntity
     if (!firstEntity)
@@ -14,10 +18,25 @@ export default function gizmoScaleEntity(event) {
     const isGlobal = GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL
     const g = event.ctrlKey ? 1 : ScalingGizmo.gridSize
     let vec = [0, 0, 0]
-    if (axis === AXIS.SCREEN_SPACE)
-        vec[0] = vec[1] = vec[2] = (Math.abs(event.movementX) > Math.abs(event.movementY) ? event.movementX : event.movementY) / 50
-    else
-        vec = ScreenSpaceGizmo.onMouseMove(event, GizmoSystem.sensitivity)
+
+    switch (axis) {
+        case AXIS.SCREEN_SPACE:
+            vec[0] = vec[1] = vec[2] = getAxisMovement(event) / 50
+            break
+        case AXIS.XY:
+            vec[0] = vec[1] = getAxisMovement(event) / 50
+            break
+        case AXIS.XZ:
+            vec[0] = vec[2] = getAxisMovement(event) / 50
+            break
+        case AXIS.ZY:
+            vec[1] = vec[2] = getAxisMovement(event) / 50
+            break
+        default:
+            vec = ScreenSpaceGizmo.onMouseMove(event, GizmoSystem.sensitivity)
+            break
+    }
+
 
     if (isGlobal || Wrapper.selected.length > 1)
         toApply = vec4.transformQuat([], [...vec, 1], firstEntity._rotationQuat)

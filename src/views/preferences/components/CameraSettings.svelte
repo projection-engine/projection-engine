@@ -41,30 +41,27 @@
                 variant="embedded"
                 incrementPercentage={1}
                 onFinish={(v) => {
-                SettingsStore.updateStore({...settings, zFar: v})
-
-                state.zFar = v
-                CameraAPI.zFar = v
-                CameraAPI.updateProjection()
-            }}
-                value={state.zFar}
+                    SettingsStore.updateStore({...settings, zFar: v})
+                    CameraAPI.zFar = v
+                    CameraAPI.updateProjection()
+                }}
+                value={settings.zFar}
                 handleChange={v => {
-                CameraAPI.zFar = v
-                CameraAPI.updateProjection()
-            }}
+                    CameraAPI.zFar = v
+                    CameraAPI.updateProjection()
+                }}
         />
         <Range
                 minLabelWidth={"30px"}
                 variant="embedded"
                 label={Localization.NEAR}
                 onFinish={(v) => {
-               SettingsStore.updateStore({...settings, zNear: v})
+                    SettingsStore.updateStore({...settings, zNear: v})
 
-                state.zNear = v
-                CameraAPI.zNear = v
-                CameraAPI.updateProjection()
-            }}
-                value={state.zNear}
+                    CameraAPI.zNear = v
+                    CameraAPI.updateProjection()
+                }}
+                value={settings.zNear}
                 handleChange={v => {
                 state.zNear = v
                 CameraAPI.zNear = v
@@ -73,24 +70,21 @@
         />
         <Range
                 variant="embedded"
-                minLabelWidth={"30px"}
                 label={Localization.FOV}
                 minValue={10}
                 maxValue={150}
                 disabled={state.ortho}
-
-                onFinish={(v) => {
-                const value = v * toRad
-                SettingsStore.updateStore({...settings, fov: value})
-                state.fov = value
-                CameraAPI.fov = value
-                CameraAPI.updateProjection()
-            }}
-                value={state.fov}
+                onFinish={v => {
+                    const value = v / toDeg
+                    SettingsStore.updateStore({...settings, fov: value})
+                    CameraAPI.fov = value
+                    CameraAPI.updateProjection()
+                }}
+                value={settings.fov * toDeg}
                 handleChange={v => {
-                CameraAPI.fov = v * toRad
-                CameraAPI.updateProjection()
-            }}
+                    CameraAPI.fov = v / toDeg
+                    CameraAPI.updateProjection()
+                }}
         />
     </div>
 </fieldset>

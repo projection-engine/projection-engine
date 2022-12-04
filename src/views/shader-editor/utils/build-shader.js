@@ -16,7 +16,7 @@ export default async function buildShader(nodes, links, openFile) {
             alert.pushAlert(Localization.NOT_APPLIED, "alert")
             return
         }
-        GPU.materials.delete(openFile.registryID)
+        GPUAPI.asyncDestroyMaterial(openFile.registryID)
         await GPUAPI.allocateMaterial({
             functionDeclaration,
             uniformsDeclaration,

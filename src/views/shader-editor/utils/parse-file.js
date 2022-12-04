@@ -7,13 +7,9 @@ import FILE_TYPES from "shared-resources/FILE_TYPES";
 
 export default async function parseFile(openFile, setNodes, setLinks) {
     const res = RegistryAPI.getRegistryEntry(openFile.registryID)
-    let isLevel = false
-    if (res) {
-        isLevel = res.path.includes(FILE_TYPES.LEVEL)
-        let dataToParse = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
-        if(isLevel)
-            dataToParse = dataToParse.worldMaterial
 
+    if (res) {
+        let dataToParse = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
         if (dataToParse && Object.keys(dataToParse).length > 0) {
             const newNodes = []
             for (let i = 0; i < dataToParse.nodes.length; i++) {

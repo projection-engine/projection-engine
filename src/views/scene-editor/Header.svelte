@@ -49,6 +49,7 @@
         <Icon styles="font-size: 1rem">border_outer</Icon>
         <ToolTip content={LOCALIZATION_EN.OUTLINE}/>
     </button>
+
     <button data-view-header-button="-" data-highlight={settings.overlays ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, overlays: !settings.overlays})}>
         <Icon styles="font-size: 1rem">layers</Icon>
