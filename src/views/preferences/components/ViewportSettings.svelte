@@ -10,9 +10,9 @@
     function update(key, value) {
         SettingsStore.updateStore({...settings, [key]: value})
     }
-
-    let s = [0, 10, 0]
-    let r = 3
+    //
+    // let s = [0, 10, 0]
+    // let r = 3
 </script>
 
 
