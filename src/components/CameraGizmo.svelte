@@ -20,7 +20,7 @@
                 EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
                 EntityStateController.cameraSerialization = undefined
             }
-            ref.addEventListener("mousemove", CameraTracker.forceRotationTracking, {once: true})
+            CameraTracker.forceRotationTracking()
 
     }
 </script>

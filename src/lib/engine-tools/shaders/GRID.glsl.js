@@ -19,11 +19,12 @@ precision mediump float;
  
 in vec3 worldPosition; 
 in vec3 cameraPosition;
- 
+uniform sampler2D depthSampler;
+uniform vec2 resolution;
 out vec4 finalColor;
 uniform vec4 settings;
 
-
+vec2 quadUV;
 // Thick lines 
 float grid(float space, float gridWidth)
 {
@@ -40,6 +41,7 @@ float grid(float space, float gridWidth)
 
 
 void main() {
+    quadUV = gl_FragCoord.xy/resolution;
     float color     = settings.x;
     float scale     = settings.y;
     float threshold = min(100., settings.z);
@@ -48,16 +50,19 @@ void main() {
     float distanceFromCamera = length(cameraPosition - worldPosition);
     if(distanceFromCamera > threshold)
         discard;
-        
+    
+    float depth = texture(depthSampler, quadUV).r;
+    if(depth - gl_FragCoord.z <= .001 && depth > 0.) discard;
+    
     float opacity = abs(distanceFromCamera - threshold) /((distanceFromCamera + threshold)/2.);
      
-    float biggerGrid = grid(10., 0.5);
-    float smallerGrid = grid(50., 1.);
+    float smallerGrid = grid(10., 0.2);
+    float biggerGrid = grid(50., .4);
     float gridValue = clamp(biggerGrid * smallerGrid, color, 1.0); 
     if(gridValue != color)
             discard;
             
-    float lineScale = 1./scale;
+    float lineScale = .4/scale;
     float offset = .5/scale;
     float Z = worldPosition.z - offset;
     float X = worldPosition.x - offset;

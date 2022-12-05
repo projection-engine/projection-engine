@@ -31,7 +31,6 @@ export default class IconsSystem {
         if (!IconsSystem.iconsTexture)
             return
 
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
         const pointLights = data.pointLights,
             directionalLights = data.directionalLights,
             spotLights = data.spotLights,
@@ -44,7 +43,7 @@ export default class IconsSystem {
             camerasLength = cameras.length,
             skylightLength = skylights.length
         const tracking = CameraAPI.trackingEntity
-const selected = Wrapper.selectionMap
+
         iconsShader.bind()
         gpu.activeTexture(gpu.TEXTURE0)
         gpu.bindTexture(gpu.TEXTURE_2D, IconsSystem.iconsTexture)
@@ -60,7 +59,7 @@ const selected = Wrapper.selectionMap
             getPivotPointMatrix(current)
 
             gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
-            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheIconMatrix)
             drawQuad()
         }
 
@@ -72,7 +71,7 @@ const selected = Wrapper.selectionMap
                 continue
             gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
             getPivotPointMatrix(current)
-            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheIconMatrix)
             drawQuad()
         }
 
@@ -84,7 +83,7 @@ const selected = Wrapper.selectionMap
                 continue
             gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
             getPivotPointMatrix(current)
-            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheIconMatrix)
             drawQuad()
         }
 
@@ -96,7 +95,7 @@ const selected = Wrapper.selectionMap
                 continue
             gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
             getPivotPointMatrix(current)
-            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheIconMatrix)
             drawQuad()
         }
 
@@ -108,7 +107,7 @@ const selected = Wrapper.selectionMap
                 continue
             gpu.uniform1i(iconsUniforms.isSelected, current.__isSelected ? 1 : 0)
             getPivotPointMatrix(current)
-            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheCenterMatrix)
+            gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, current.__cacheIconMatrix)
             drawQuad()
         }
     }

@@ -9,6 +9,7 @@ import serializeStructure from "../../../public/engine/utils/serialize-structure
 import EntityAPI from "../../../public/engine/lib/utils/EntityAPI";
 import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
 import ScriptsAPI from "../../../public/engine/lib/rendering/ScriptsAPI";
+import MaterialAPI from "../../../public/engine/lib/rendering/MaterialAPI";
 
 export default class EntityStateController {
     static #state = []
@@ -31,7 +32,7 @@ export default class EntityStateController {
     static async stopPlayState() {
         if (!EntityStateController.#isPlaying)
             return
-
+        MaterialAPI.entityMaterial.clear()
         alert.pushAlert("Restoring state", "alert")
         EntityStateController.#isPlaying = false
         Engine.environment = ENVIRONMENT.DEV

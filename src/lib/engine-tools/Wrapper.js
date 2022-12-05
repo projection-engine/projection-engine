@@ -50,20 +50,20 @@ export default class Wrapper {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
         if (!settings.overlays) return
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
 
-        GridSystem.execute()
     }
 
 
     static afterDrawing() {
-
+        CameraTracker.updateFrame()
+        settings = SettingsStore.data
         if (!settings.overlays) return
-
-        IconsSystem.drawIcons()
+        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+        GridSystem.execute()
         CollisionVisualizationSystem.execute(selected)
-
         SelectedSystem.drawSilhouette(selected)
+        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+        IconsSystem.drawIcons()
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         GizmoSystem.execute()
         if(window.d){

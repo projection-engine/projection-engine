@@ -23,7 +23,7 @@
         <Range
                 label={Localization.GAMMA}
 
-                incrementPercentage={.001}
+
                 precision={3}
                 minValue={.1}
                 maxValue={10}
@@ -35,7 +35,7 @@
                 label={Localization.EXPOSURE}
 
                 minValue={.1}
-                incrementPercentage={.001}
+
                 precision={3}
                 maxValue={10}
                 onFinish={v => update("exposure",  v)}
@@ -108,17 +108,15 @@
         />
         <Range
                 label={Localization.STEP_SIZE}
-                incrementPercentage={.001}
-                precision={4}
-                minValue={.00001}
+                minValue={.1}
                 value={visualSettings.SSR.stepSize}
                 onFinish={v => updateSubObject("SSR","stepSize",v)}
         />
 
         <Range
                 label={Localization.FALLOFF}
-                incrementPercentage={.001}
-                precision={4}
+
+
                 minValue={0}
                 value={visualSettings.SSR.falloff}
                 onFinish={v => updateSubObject("SSR","falloff",v)}
@@ -169,9 +167,8 @@
         <Range
                 label={Localization.STEP_SIZE}
 
-                incrementPercentage={.001}
-                precision={4}
-                minValue={.00001}
+
+                minValue={.1}
                 value={visualSettings.SSGI.stepSize}
                 onFinish={v => updateSubObject("SSGI","stepSize",v)}
         />
@@ -208,16 +205,13 @@
         />
         <Range
                 label={Localization.MAX_DISTANCE}
-                incrementPercentage={.001}
-                precision={4}
                 minValue={.00001}
                 value={visualSettings.SSS.maxDistance}
                 onFinish={v => updateSubObject("SSS","maxDistance",v)}
         />
+
         <Range
                 label={Localization.DEPTH_THICKNESS}
-                incrementPercentage={.001}
-                precision={4}
                 minValue={.00001}
                 value={visualSettings.SSS.depthThickness}
                 onFinish={v => updateSubObject("SSS","depthThickness",v)}
@@ -225,8 +219,8 @@
 
         <Range
                 label={Localization.FALLOFF}
-                incrementPercentage={.001}
-                precision={4}
+
+
                 minValue={0}
                 value={visualSettings.SSS.edgeFalloff}
                 onFinish={v => updateSubObject("SSS","edgeFalloff",v)}
@@ -234,8 +228,8 @@
 
         <Range
                 label={Localization.DEPTH_DELTA}
-                incrementPercentage={.001}
-                precision={4}
+
+
                 value={visualSettings.SSS.depthDelta}
                 onFinish={v => updateSubObject("SSS","depthDelta",v)}
         />

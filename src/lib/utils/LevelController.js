@@ -129,6 +129,11 @@ export default class LevelController {
     }
 
     static async save() {
+        if(EngineStore.engine.executingAnimation){
+            alert.pushAlert(Localization.EXECUTING_SIMULATION, "alert")
+            return
+        }
+
         alert.pushAlert(Localization.SAVING, "info")
         try {
             const entities = Engine.entities

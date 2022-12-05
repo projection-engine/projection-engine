@@ -7,8 +7,16 @@ export default function getPivotPointMatrix(entity) {
     if (entity.__changedBuffer[1] || !entity.__cacheCenterMatrix || entity.__pivotChanged) {
         const m = !entity.__cacheCenterMatrix ? mat4.clone(EMPTY_MATRIX) : entity.__cacheCenterMatrix
         getPivotPointTranslation(entity)
+
         mat4.fromRotationTranslationScale(m, entity._rotationQuat, entity.__pivotOffset, [.25, .25, .25])
         entity.__cacheCenterMatrix = m
+        if(!entity.__cacheIconMatrix)
+            entity.__cacheIconMatrix = mat4.create()
+        mat4.copy(entity.__cacheIconMatrix, entity.__cacheCenterMatrix)
+
+        entity.__cacheIconMatrix[12] = entity._translation[0]
+        entity.__cacheIconMatrix[13] = entity._translation[1]
+        entity.__cacheIconMatrix[14] = entity._translation[2]
 
         if(GizmoSystem.mainEntity) {
             GizmoSystem.targetGizmo.transformGizmo()
