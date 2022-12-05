@@ -445,7 +445,19 @@ pre[data-pre="-"] {
     height: 25px;
     border-bottom: var(--pj-border-primary) 1px solid;
 }
+.action-data.frame {
+    display: grid;
+    justify-items: flex-start;
+    justify-content: flex-start;
+    align-content: space-between;
+    width: 100%;
+}
 
+.button-list.frame {
+    border: none;
+    width: 100%;
+    border-bottom: var(--pj-border-primary) 1px solid;
+}
 .button-small.frame {
     min-height: 22px !important;
     max-height: 22px !important;

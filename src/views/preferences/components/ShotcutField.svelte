@@ -4,6 +4,7 @@
     import SETTINGS from "../../../static/SETTINGS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import KEYS from "../../../static/KEYS";
     import SettingsStore from "../../../stores/SettingsStore";
 
@@ -54,7 +55,7 @@
 
             if (all.find(a => JSON.stringify(a) === c) != null) {
                 currentShortcut = [...shortcut]
-                alert.pushAlert("Shortcut already linked to action", "error")
+                window.consoleAPI.error(LOCALIZATION_EN.SHORTCUT_ALREADY_LINKED)
             }
             update(currentShortcut)
         } else if (!event.repeat) {

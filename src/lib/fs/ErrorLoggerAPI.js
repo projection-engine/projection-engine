@@ -53,9 +53,6 @@ export default class ErrorLoggerAPI {
                     parsed.forEach(m => ConsoleAPI.error(m))
 
                 }, 150)
-                const primary = messages[0]
-                if (primary instanceof Error && alert.pushAlert != null)
-                    alert.pushAlert(primary.message, "error")
                 old(...messages)
             }
         })

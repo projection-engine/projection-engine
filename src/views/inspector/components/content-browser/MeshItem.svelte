@@ -1,5 +1,6 @@
 <script>
     import Localization from "../../../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../public/engine/GPU";
     import PrimitiveProcessor from "../../../../../public/engine/lib/math/PrimitiveProcessor";
@@ -24,7 +25,7 @@
             GPUAPI.destroyMesh(item.registryID)
             GPUAPI.allocateMesh(item.registryID, data)
         }
-        alert.pushAlert(Localization.UPDATING_ASSET, "alert")
+        window.consoleAPI.warn(LOCALIZATION_EN.UPDATING_ASSET)
     }
 </script>
 

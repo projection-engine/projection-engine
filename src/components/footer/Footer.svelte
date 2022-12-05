@@ -8,9 +8,13 @@
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import ScriptsAPI from "../../../public/engine/lib/rendering/ScriptsAPI";
+    import UIAPI from "../../../public/engine/lib/rendering/UIAPI";
 
     const {shell} = window.require("electron")
 
+    export let engine
     let settings = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     onDestroy(() => unsubscribeSettings())
@@ -19,11 +23,28 @@
         if (await NodeFS.exists(ErrorLoggerAPI.path))
             shell.openPath(ErrorLoggerAPI.path).catch()
         else
-            alert.pushAlert("No logs found")
+            window.consoleAPI.error("No logs found")
+    }
+    async function updateStructure() {
+        window.consoleAPI.warn(Localization.UPDATING_STRUCTURE)
+
+        await ScriptsAPI.updateAllScripts()
+        await UIAPI.updateAllElements()
+
+        window.consoleAPI.log(Localization.DONE)
     }
 </script>
 
 <div class="wrapper">
+    <button
+            class="button frame" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={updateStructure}
+            disabled={engine.executingAnimation}
+    >
+        <Icon styles="font-size: 1rem">refresh</Icon>
+        {Localization.REFRESH_STRUCTURE}
+        <ToolTip content={Localization.REFRESH_SCRIPTS_AND_PROBES}/>
+    </button>
+    <div data-vertdivider="-"></div>
     <FrameMetadata settings={settings}/>
     <div class="meta-data">
         <SceneStats/>

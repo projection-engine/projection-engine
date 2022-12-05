@@ -63,10 +63,10 @@
             <ToolTip content={Localization.PARENT_DIR}/>
         </button>
         <button
-                disabled="{loading}"
+                disabled={loading}
                 data-view-header-button="-"
                 on:click={() => {
-                    alert.pushAlert(Localization.REFRESHING, "info")
+                    window.consoleAPI.warn(Localization.REFRESHING)
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
         >

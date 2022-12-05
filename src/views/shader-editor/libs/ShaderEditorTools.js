@@ -1,7 +1,7 @@
 import BOARD_SIZE from "../static/BOARD_SIZE";
 import materialCompiler from "./material-compiler/material-compiler";
 import AssetAPI from "../../../lib/fs/AssetAPI";
-import Localization from "../../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "./nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
@@ -101,7 +101,7 @@ export default class ShaderEditorTools {
                     openFile.registryID,
                     JSON.stringify(materialData)
                 )
-            alert.pushAlert(Localization.SAVED, "success")
+            window.consoleAPI.log(LOCALIZATION_EN.SAVED)
         } catch (err) {
             console.error(err)
         }

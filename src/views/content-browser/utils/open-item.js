@@ -1,7 +1,7 @@
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import LevelController from "../../../lib/utils/LevelController";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import Localization from "../../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../components/view/static/VIEWS";
@@ -21,17 +21,17 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case ".js":
             case ".json":
                 shell.openPath(NodeFS.ASSETS_PATH + NodeFS.sep + data.id).catch()
-                alert.pushAlert(Localization.OPENING_FILE + " (" + data.name + ")", "info")
+                window.consoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 break
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:
             case FILE_TYPES.TEXTURE:
             case FILE_TYPES.TERRAIN:
                 Loader.load(data.registryID, true).catch()
-                alert.pushAlert(Localization.CREATING_ENTITY, "info")
+                window.consoleAPI.warn(LOCALIZATION_EN.CREATING_ENTITY)
                 break
             case FILE_TYPES.LEVEL:
-                alert.pushAlert(Localization.OPENING_LEVEL + " (" + data.name + ")", "info")
+                window.consoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 LevelController.loadLevel(data).catch()
                 break
             case FILE_TYPES.MATERIAL:

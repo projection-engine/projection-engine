@@ -44,7 +44,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             label: "Refresh",
             require: settings.contentBrowserHotkeys.REFRESH,
             callback: () => {
-                alert.pushAlert(Localization.REFRESHING, "info")
+                window.consoleAPI.log(Localization.REFRESHING)
                 FilesStore.refreshFiles().catch()
             }
         },
@@ -106,7 +106,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
                 onClick: () => {
                     const ID = RegistryAPI.getByPath(SelectionStore.contentBrowserSelected[0])
                     if(ID){
-                        alert.pushAlert(Localization.COPIED, "success")
+                        window.consoleAPI.log(Localization.COPIED)
                         clipboard.writeText(ID)
                     }
                 }

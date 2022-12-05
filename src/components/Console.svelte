@@ -1,33 +1,30 @@
 <script>
-    import Localization from "../../templates/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import Localization from "../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import ConsoleAPI from "../../../public/engine/lib/utils/ConsoleAPI";
+    import ConsoleAPI from "../../public/engine/lib/utils/ConsoleAPI";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import EngineStore from "../../stores/EngineStore";
     import {v4} from "uuid";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import createPortal from "shared-resources/frontend/components/create-portal";
-    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
 
-
-    export let switchView = undefined
-    export let orientation = undefined
+    export let engine
     const internalID = v4()
+    const TYPES = ConsoleAPI.TYPES
+    const portal = createPortal(999)
+
     let metadata
     let toRender = []
+    let newMessages = false
     let showWarnings = true
     let showLogs = true
     let showErrors = true
     let clearOnPlay = false
-
     let ref
-    let engine
+
     let changed
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const TYPES = ConsoleAPI.TYPES
     let modal
     let objectOpen
 
@@ -41,14 +38,13 @@
             metadata = md
             toRender = messages
             changed = true
+            newMessages = true
         })
         portal.create(modal, {backdropFilter: "blur(2px)"})
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
         ConsoleAPI.unregisterConsole(internalID)
-        unsubscribeEngine()
-
         portal.destroy()
         document.removeEventListener("mousedown", handler)
     })
@@ -71,106 +67,84 @@
         }
     }
 
-    const portal = createPortal(999)
+
     $: objectOpen != null ? portal.open() : portal.close()
 
 </script>
-<ViewHeader>
 
-    <button on:click={() => ConsoleAPI.clear()} data-view-header-button="-">
-        <Icon>
-            clear_all
-        </Icon>
-        <ToolTip content={Localization.CLEAR}/>
-    </button>
-    <button on:click={() => clearOnPlay = !clearOnPlay} data-view-header-button="-" style="max-width: unset">
-        {#if clearOnPlay}
-            <Icon>
-                check
-            </Icon>
+<Dropdown hideArrow={true} styles="width: 300px" onOpen={_ => newMessages = false}>
+    <button slot="button" class="button frame">
+        <Icon styles="font-size: 1rem">terminal</Icon>
+        <ToolTip content={LOCALIZATION_EN.CONSOLE}/>
+        {#if newMessages}
+            <small class="dot"></small>
         {/if}
-        {Localization.TOGGLE_CLEAR_ON_PLAY}
     </button>
-    <div class="metadata">
-        <Dropdown buttonStyles={getDropdownHeaderStyles()}>
-            <button slot="button" data-view-header-dropdown="-">
-                {Localization.VIEW}
-                <ToolTip content={Localization.VIEW}/>
+    <div class="dropdown-container frame">
+        <div class="dropdown-header frame">
+            <button
+                    class="button frame button-small frame"
+                    style="max-width: 22px;gap: 4px"
+                    on:click={() => ConsoleAPI.clear()}>
+                <Icon>clear_all</Icon>
+                <ToolTip content={LOCALIZATION_EN.CLEAR}/>
             </button>
-
-            <button on:click={() => showErrors = !showErrors}>
-                {#if showErrors}
-                    <Icon>
-                        check
-                    </Icon>
-                {/if}
-                {Localization.ERRORS}
-
-            </button>
-            <button on:click={() => showWarnings = !showWarnings}>
-                {#if showWarnings}
-                    <Icon>
-                        check
-                    </Icon>
-                {/if}
-                {Localization.WARNINGS}
-            </button>
-            <button on:click={() => showLogs = !showLogs}>
-                {#if showLogs}
-                    <Icon>
-                        check
-                    </Icon>
-                {/if}
-                {Localization.LOGS}
-            </button>
-        </Dropdown>
-    </div>
-</ViewHeader>
-
-<div class="wrapper" bind:this={ref}>
-    {#if toRender.length > 0}
-    <VirtualList items={toRender} let:item>
-        <div
-                class="container"
-                class:error={item.type === TYPES.ERROR}
-                class:warn={item.type === TYPES.WARN}
-                class:log={item.type === TYPES.LOG}
-                on:click={() => {
-                        if(item.object)
-                            objectOpen =item.object
-                    }}
-        >
-
-            {#if item.type === TYPES.ERROR}
-                <Icon>
-                    error
-                </Icon>
-            {:else if item.type === TYPES.WARN}
-                <Icon>
-                    warning
-                </Icon>
-            {/if}
-            {#if item.object}
-                <ToolTip content={Localization.CLICK_TO_SHOW_OBJECT}/>
-            {/if}
-            <pre data-overflow="-">{item.message}</pre>
-            <div style="margin-right: auto; text-align: right; color: var(--pj-color-primary)">{item.src}</div>
         </div>
-    </VirtualList>
-        {:else}
-
-            <div data-empty="-" style="position: relative">
-                <Icon styles="font-size: 75px">terminal</Icon>
-                {Localization.CONSOLE}
+        {#if toRender.length === 0}
+            <div style="height: 100%; width: 100%; position: relative">
+                <div data-empty="-">
+                    <Icon styles="font-size: 75px">terminal</Icon>
+                    {LOCALIZATION_EN.CONSOLE}
+                </div>
             </div>
+        {:else}
+            <VirtualList items={toRender} let:item>
+                <div
+                        class="container"
+                        class:error={item.type === TYPES.ERROR}
+                        class:warn={item.type === TYPES.WARN}
+                        class:log={item.type === TYPES.LOG}
+                        on:click={() => {
+                            if(item.object)
+                                objectOpen =item.object
+                        }}
+                >
 
-    {/if}
-</div>
+                    {#if item.type === TYPES.ERROR}
+                        <Icon>
+                            error
+                        </Icon>
+                    {:else if item.type === TYPES.WARN}
+                        <Icon>
+                            warning
+                        </Icon>
+                    {/if}
+                    {#if item.object}
+                        <ToolTip content={Localization.CLICK_TO_SHOW_OBJECT}/>
+                    {/if}
+                    <pre data-overflow="-">{item.message}</pre>
+                    <div style="margin-right: auto; text-align: right; color: var(--pj-color-primary)">{item.src}</div>
+                </div>
+            </VirtualList>
+        {/if}
+    </div>
+</Dropdown>
+
 <div bind:this={modal} class="container-modal">
     <pre data-pre="-" style="overflow: visible; height: fit-content; line-height: .9rem">{objectOpen}</pre>
 </div>
 
 <style>
+    .dot {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: red;
+        top: 4px;
+        right: 4px;
+        z-index: 100;
+    }
     pre {
         width: 100%;
     }
@@ -190,12 +164,6 @@
 
     }
 
-    .metadata {
-
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    }
 
     .error {
         padding: 0 4px;
@@ -230,16 +198,6 @@
 
     .button[data-metadata="-"] {
         background: var(--pj-border-primary);
-    }
-
-
-    .wrapper {
-        position: relative;
-        font-size: .7rem;
-
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
     }
 
     .container-modal {

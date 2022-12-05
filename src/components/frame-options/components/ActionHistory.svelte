@@ -63,10 +63,10 @@
                 <button
                         data-inline="-"
                         data-highlight={currentIndex === item.index + 1? "-" : undefined}
-                        class="button"
+                        class="button-list frame"
                         on:click={() => UndoRedoAPI.applyIndex(item.index + 1)}
                 >
-                    <div class="action-data">
+                    <div class="action-data frame">
                         <strong>{LOCALIZATION_EN[item.target]}</strong>
                         <small>{item.time}</small>
                     </div>
@@ -79,18 +79,3 @@
 
 </Dropdown>
 
-<style>
-    .action-data {
-        display: grid;
-        justify-items: flex-start;
-        justify-content: flex-start;
-        align-content: space-between;
-        width: 100%;
-    }
-
-    .button {
-        border: none;
-        width: 100%;
-        border-bottom: var(--pj-border-primary) 1px solid;
-    }
-</style>

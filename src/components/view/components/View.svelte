@@ -1,5 +1,4 @@
 <script>
-    import Console from "../../../views/console/Console.svelte";
     import Hierarchy from "../../../views/hierarchy/Hierarchy.svelte";
     import ContentBrowser from "../../../views/content-browser/ContentBrowser.svelte";
     import ComponentEditor from "../../../views/inspector/Inspector.svelte";
@@ -30,9 +29,6 @@
                 return ComponentEditor
             case VIEWS.FILES:
                 return ContentBrowser
-            case VIEWS.CONSOLE:
-                return Console
-
             case VIEWS.PREFERENCES:
                 return Preferences
             case VIEWS.UI:

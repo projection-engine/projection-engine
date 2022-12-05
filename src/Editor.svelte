@@ -87,7 +87,7 @@
         />
     </div>
     {#if !settings.hideFooter}
-        <Footer/>
+        <Footer engine={engine}/>
     {/if}
 </div>
 

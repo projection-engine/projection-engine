@@ -19,6 +19,7 @@ import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE"
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
 import TabsStore from "../../stores/TabsStore";
 import CameraTracker from "../engine-tools/lib/CameraTracker";
@@ -66,7 +67,7 @@ export default class LevelController {
     static async loadLevel(level = PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
         await RegistryAPI.readRegistry()
         if (LevelController.#loadedLevel === level) {
-            alert.pushAlert("Level already loaded")
+            window.consoleAPI.warn(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
             return
         }
         LevelController.#loadedLevel = level
@@ -130,11 +131,11 @@ export default class LevelController {
 
     static async save() {
         if(EngineStore.engine.executingAnimation){
-            alert.pushAlert(Localization.EXECUTING_SIMULATION, "alert")
+            window.consoleAPI.warn(Localization.EXECUTING_SIMULATION)
             return
         }
 
-        alert.pushAlert(Localization.SAVING, "info")
+        window.consoleAPI.log(Localization.SAVING)
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta
@@ -162,7 +163,7 @@ export default class LevelController {
             else {
                 const reg = RegistryAPI.getRegistryEntry(EngineStore.engine.currentLevel.registryID)
                 if (!reg) {
-                    alert.pushAlert("Level not found, a new one will be created.", "alert")
+                    window.consoleAPI.warn(LOCALIZATION_EN.LEVEL_NOT_FOUND)
                     pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
                     break pathElse
                 }
@@ -181,7 +182,7 @@ export default class LevelController {
             console.error(err)
             return
         }
-        alert.pushAlert("Project saved", "success")
+        window.consoleAPI.log(LOCALIZATION_EN.PROJECT_SAVED)
 
 
     }

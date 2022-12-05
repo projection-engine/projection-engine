@@ -82,7 +82,7 @@
             SEContextController.deleteContext(openFile?.registryID)
             openFile = v
         } else if (SEContextController.getContext(v.registryID))
-            alert.pushAlert(LOCALIZATION_EN.FILE_ALREADY_OPEN)
+            window.consoleAPI.warn(LOCALIZATION_EN.FILE_ALREADY_OPEN)
         else {
             UndoRedoAPI.clearShaderEditorStates()
             isReady = false

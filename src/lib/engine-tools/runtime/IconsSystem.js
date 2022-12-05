@@ -4,7 +4,6 @@ import GPU from "../../../../public/engine/GPU";
 import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-import Wrapper from "../Wrapper";
 
 const attr = {
     translation: [0, 0, 0],

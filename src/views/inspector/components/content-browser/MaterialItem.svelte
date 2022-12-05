@@ -2,6 +2,7 @@
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../public/engine/GPU";
     import Localization from "../../../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
@@ -25,19 +26,14 @@
             return
         wasUpdated = true
         const reg = RegistryAPI.getRegistryEntry(ID)
-
-        if (!reg)
-            alert.pushAlert("Instance no longer valid", "error")
-        else {
-            originalMat = await FilesAPI.readFile(NodeFS.ASSETS_PATH + reg.path, "json")
-            if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
-                temp = {
-                    ...temp,
-                    uniforms: originalMat.response.uniforms,
-                    uniformsData: originalMat.response.uniformsData
-                }
-                await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+        originalMat = await FilesAPI.readFile(NodeFS.ASSETS_PATH + reg.path, "json")
+        if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
+            temp = {
+                ...temp,
+                uniforms: originalMat.response.uniforms,
+                uniformsData: originalMat.response.uniformsData
             }
+            await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
         }
     }
 
@@ -68,7 +64,8 @@
             const instance = GPU.materials.get(item.registryID)
             if (instance) {
                 await instance.updateUniformGroup(temp.response.uniformsData)
-                alert.pushAlert(Localization.MATERIAL_UPDATED, "success")
+                window.consoleAPI.log(LOCALIZATION_EN.MATERIAL_UPDATED)
+
                 GPUAPI.cleanUpTextures()
             }
         }, t ? t : 0)

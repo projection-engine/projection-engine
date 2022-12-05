@@ -133,7 +133,7 @@ export default class Loader {
                         entity.components.get(comp).materialID = data
                         UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     } else
-                        alert.pushAlert(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
+                        window.consoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break
                 }
                 case FILE_TYPES.TERRAIN: {
@@ -142,14 +142,14 @@ export default class Loader {
                     break
                 }
                 default:
-                    console.error(new Error("Not valid file type"))
+                    window.consoleAPI.error(new Error("Not valid file type"))
                     break
             }
         }
 
         if (entitiesToPush.length > 0) {
             dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entitiesToPush})
-            alert.pushAlert(`Entities created`, "success")
+            window.consoleAPI.log(LOCALIZATION_EN.ENTITIES_CREATED)
         }
     }
 

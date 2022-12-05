@@ -9,7 +9,7 @@ import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 export default async function loadTerrain(reg) {
     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")
     if (!file.image) {
-        alert.pushAlert("No height-map present", "error")
+        window.consoleAPI.error("No height-map present")
         return
     }
     const data = await TerrainGenerator.generate(file.image, file.scale, file.dimensions)

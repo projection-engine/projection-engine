@@ -19,7 +19,7 @@ export default class EntityStateController {
     static async startPlayState() {
         if (EntityStateController.#isPlaying)
             return
-        alert.pushAlert("Saving state", "alert")
+        window.consoleAPI.warn("Saving state")
         EntityStateController.cameraSerialization = CameraAPI.serializeState()
         EntityStateController.#isPlaying = true
         CameraTracker.stopTracking()
@@ -33,7 +33,7 @@ export default class EntityStateController {
         if (!EntityStateController.#isPlaying)
             return
         MaterialAPI.entityMaterial.clear()
-        alert.pushAlert("Restoring state", "alert")
+        window.consoleAPI.warn("Restoring state")
         EntityStateController.#isPlaying = false
         Engine.environment = ENVIRONMENT.DEV
 

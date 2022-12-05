@@ -1,4 +1,5 @@
 import ShaderEditorTools from "../libs/ShaderEditorTools";
+import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 
 export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) {
     const doIt = (n) => {
@@ -19,8 +20,9 @@ export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) 
             n.x = (current.x - 100) / ShaderEditorTools.scale
             n.y = (current.y - 25) / ShaderEditorTools.scale
             return n
-        } else
-            alert.pushAlert("Cannot add two apis of " + n.name, "error")
+        }
+        else
+            window.consoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED)
     }
     if (Array.isArray(dataToPush)) {
         const result = dataToPush.map(d => doIt(d)).flat()

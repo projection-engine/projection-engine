@@ -14,8 +14,8 @@ export default class UndoRedoAPI {
     static clear() {
         UndoRedoAPI.#cache.index = 0
         UndoRedoAPI.#cache.history = [null]
-        if (typeof UndoRedoAPI.onChange === "function")
-            UndoRedoAPI.onChange([], 0)
+
+        UndoRedoAPI.onChange?.([], 0)
     }
 
     static save(value, target = ACTION_HISTORY_TARGETS.ENGINE) {
@@ -43,23 +43,23 @@ export default class UndoRedoAPI {
             default:
                 break
         }
-        if (typeof UndoRedoAPI.onChange === "function")
-            UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({
-                ...e,
-                index: i
-            })), UndoRedoAPI.#cache.index)
+
+        UndoRedoAPI.onChange?.(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({
+            ...e,
+            index: i
+        })), UndoRedoAPI.#cache.index)
     }
 
     static clearShaderEditorStates() {
         UndoRedoAPI.#cache.history = UndoRedoAPI.#cache.history.filter(h => !h || h.target !== ACTION_HISTORY_TARGETS.SHADER_EDITOR)
         UndoRedoAPI.#cache.index = Math.max(UndoRedoAPI.#cache.history.length - 1, 0)
 
-        if (typeof UndoRedoAPI.onChange === "function")
-            UndoRedoAPI.onChange(UndoRedoAPI.#cache.history, UndoRedoAPI.#cache.index)
+
+        UndoRedoAPI.onChange?.(UndoRedoAPI.#cache.history, UndoRedoAPI.#cache.index)
     }
 
     static applyIndex(i) {
-        if(i <= 0 || i > UndoRedoAPI.#cache.history.length -1)
+        if (i <= 0 || i > UndoRedoAPI.#cache.history.length - 1)
             return
 
         const actualIndex = () => UndoRedoAPI.#cache.index
@@ -78,7 +78,7 @@ export default class UndoRedoAPI {
     static undo() {
         const action = UndoRedoAPI.#cache.undo()
         if (action) {
-            alert.pushAlert(LOCALIZATION_EN.UNDOING_CHANGES, "info")
+            window.consoleAPI.warn(LOCALIZATION_EN.UNDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 
@@ -87,14 +87,14 @@ export default class UndoRedoAPI {
     static redo() {
         const action = UndoRedoAPI.#cache.redo()
         if (action) {
-            alert.pushAlert(LOCALIZATION_EN.REDOING_CHANGES, "info")
+            window.consoleAPI.warn(LOCALIZATION_EN.REDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 
     }
 
     static #apply(currentAction) {
-        UndoRedoAPI.onChange(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({
+        UndoRedoAPI.onChange?.(UndoRedoAPI.#cache.history.slice(1, UndoRedoAPI.#cache.history.length).map((e, i) => ({
             ...e,
             index: i
         })), UndoRedoAPI.#cache.index)

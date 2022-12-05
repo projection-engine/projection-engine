@@ -11,6 +11,7 @@
     import RENDER_TARGET from "./static/RENDER_TARGET";
     import Localization from "./templates/LOCALIZATION_EN";
     import HotKeysController from "./lib/utils/HotKeysController";
+    import ConsoleAPI from "../public/engine/lib/utils/ConsoleAPI";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -19,6 +20,19 @@
     let fullyLoaded = false
 
     onMount(() => {
+        ConsoleAPI.onLog = (messages) => {
+            alert.pushAlert(messages.join(" "), "info")
+            console.log(messages)
+        }
+        ConsoleAPI.onWarn = (messages) => {
+            alert.pushAlert(messages.join(" "), "alert")
+            console.warn(messages)
+        }
+        ConsoleAPI.onError = (messages) => {
+            alert.pushAlert(messages.join(" "), "error")
+            console.error(messages)
+        }
+
         ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
@@ -57,11 +71,12 @@
     <About handleClose={() => isAboutOpen = false}/>
 {/if}
 <style>
-    .label{
+    .label {
         font-size: 1.1rem;
         font-weight: 500;
         text-align: center;
     }
+
     .wrapper {
         width: 100vw;
         height: 100vh;
@@ -77,7 +92,8 @@
     img {
         max-width: 60vw;
     }
-    .title{
+
+    .title {
         display: grid;
         gap: 4px;
         justify-content: center;
