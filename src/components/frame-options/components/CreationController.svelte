@@ -21,19 +21,19 @@
 
 </script>
 
-<button on:click={_ => setTabs([...tabs.left, [VIEWS.CONSOLE]], "left")}>
+<button on:click={_ => setTabs([...tabs.left, [VIEWS.FILES]], "left")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
     <ToolTip content={Localization.SPLIT_LEFT}/>
 </button>
-<button on:click={_ => setTabs([...tabs.bottom, [VIEWS.CONSOLE]], "bottom")}>
+<button on:click={_ => setTabs([...tabs.bottom, [VIEWS.FILES]], "bottom")}>
     <Icon styles="font-size: 1.2rem;">horizontal_split</Icon>
     <ToolTip content={Localization.SPLIT_BOTTOM}/>
 </button>
-<button on:click={_ => setTabs([...tabs.top, [VIEWS.CONSOLE]], "top")}>
+<button on:click={_ => setTabs([...tabs.top, [VIEWS.FILES]], "top")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">horizontal_split</Icon>
     <ToolTip content={Localization.SPLIT_TOP}/>
 </button>
-<button on:click={_ => setTabs([...tabs.right, [VIEWS.CONSOLE]], "right")}>
+<button on:click={_ => setTabs([...tabs.right, [VIEWS.FILES]], "right")}>
     <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
     <ToolTip content={Localization.SPLIT_RIGHT}/>
 </button>

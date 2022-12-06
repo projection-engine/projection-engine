@@ -34,7 +34,7 @@
             ...SettingsStore.data.views,
             {
                 name: LOCALIZATION_EN.NEW_TAB + SettingsStore.data.views.length,
-                bottom: [[VIEWS.CONSOLE]],
+                bottom: [[VIEWS.FILES]],
                 right: [[VIEWS.HIERARCHY]],
                 viewport: [VIEWPORT_TABS.EDITOR],
                 left: [],
@@ -56,7 +56,7 @@
 </script>
 
 <div class="container">
-    <button on:click={_ => LevelController.save()}>
+    <button disabled={engine.executingAnimation} on:click={_ => LevelController.save()}>
         <Icon>save</Icon>
         <ToolTip content={LOCALIZATION_EN.SAVE}/>
     </button>

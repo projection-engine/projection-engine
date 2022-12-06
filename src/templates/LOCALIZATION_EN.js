@@ -565,7 +565,8 @@ export default {
     PARENT_DIR: "Action: Go to parent",
     CREATE_FOLDER: "Create folder",
     FILTER_TYPE: "Filter by file type",
-
+    PER_OBJECTS: "Per-object",
+    WORLD: "World",
 
     ABOUT: "About",
     EXIT: "Exit",

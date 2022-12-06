@@ -36,17 +36,17 @@
 </script>
 
 <div class="wrapper">
-    <button
-            class="button frame" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={updateStructure}
-            disabled={engine.executingAnimation}
-    >
-        <Icon styles="font-size: 1rem">refresh</Icon>
-        {Localization.REFRESH_STRUCTURE}
-        <ToolTip content={Localization.REFRESH_SCRIPTS_AND_PROBES}/>
-    </button>
-    <div data-vertdivider="-"></div>
     <FrameMetadata settings={settings}/>
     <div class="meta-data">
+        <button
+                class="button frame" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={updateStructure}
+                disabled={engine.executingAnimation}
+        >
+            <Icon styles="font-size: 1rem">refresh</Icon>
+            {Localization.REFRESH_STRUCTURE}
+            <ToolTip content={Localization.REFRESH_SCRIPTS_AND_PROBES}/>
+        </button>
+        <div data-vertdivider="-"></div>
         <SceneStats/>
         <div data-vertdivider="-"></div>
         <Dropdown hideArrow={true}>

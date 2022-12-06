@@ -1,9 +1,9 @@
 <script>
-    import Localization from "../templates/LOCALIZATION_EN";
-    import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
+    import Localization from "../../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import ConsoleAPI from "../../public/engine/lib/utils/ConsoleAPI";
+    import ConsoleAPI from "../../../../public/engine/lib/utils/ConsoleAPI";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import {v4} from "uuid";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
@@ -87,6 +87,7 @@
                     style="max-width: 22px;gap: 4px"
                     on:click={() => ConsoleAPI.clear()}>
                 <Icon>clear_all</Icon>
+                {LOCALIZATION_EN.CLEAR}
                 <ToolTip content={LOCALIZATION_EN.CLEAR}/>
             </button>
         </div>

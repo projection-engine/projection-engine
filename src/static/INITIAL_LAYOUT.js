@@ -13,7 +13,7 @@ export default [
     {
         top: [],
         name: "Debug",
-        bottom: [[VIEWS.CONSOLE]],
+        bottom: [[VIEWS.FILES]],
         left: [],
         viewport: [VIEWPORT_TABS.EDITOR],
         right: []

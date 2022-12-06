@@ -1,7 +1,7 @@
 <script>
     import LevelSelector from "./components/LevelSelector.svelte";
     import ActionHistory from "./components/ActionHistory.svelte";
-    import Console from "../Console.svelte";
+    import Console from "./components/Console.svelte";
 
     export let store
     export let settings

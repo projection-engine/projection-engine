@@ -3,8 +3,7 @@ import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
 
 export default function getViewIcon(view) {
     switch (view) {
-        case VIEWS.CONSOLE:
-            return "terminal"
+
         case VIEWS.COMPONENT:
             return "category"
         case VIEWS.FILES:
