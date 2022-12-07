@@ -1,0 +1,30 @@
+<script>
+    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+    import getLabel from "./utils/get-label";
+    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
+    import Options from "./Options.svelte";
+    import SceneRenderer from "../../../../public/engine/runtime/rendering/SceneRenderer";
+
+    export let engine
+    export let settings
+
+    $: shading = getLabel(settings.shadingModel)
+    $: {
+        SceneRenderer.debugShadingModel = settings.shadingModel
+    }
+</script>
+
+
+<Dropdown
+        styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;"
+        buttonStyles={getDropdownHeaderStyles()}
+>
+    <button slot="button" data-view-header-dropdown="-">
+        <div style="--color-to-apply: white" data-shaded-material="-"></div>
+        <div style="white-space: nowrap">{LOCALIZATION_EN[shading]}</div>
+    </button>
+    <Options settings={settings}/>
+</Dropdown>
+
+
