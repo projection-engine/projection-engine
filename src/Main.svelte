@@ -6,7 +6,6 @@
     import LevelController from "./lib/utils/LevelController";
     import About from "shared-resources/frontend/components/About.svelte";
     import logo from "shared-resources/APP_LOGO.js"
-    import PROJECT_PATH from "shared-resources/PROJECT_PATH";
     import Canvas from "./components/Canvas.svelte";
     import RENDER_TARGET from "./static/RENDER_TARGET";
     import Localization from "./templates/LOCALIZATION_EN";
@@ -36,14 +35,11 @@
         ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
-            const d = sessionStorage.getItem(PROJECT_PATH)
-            if (d !== null) {
-                clearInterval(interval)
-                InitializeWindow(_ => isAboutOpen = true)
-                LevelController.initialize(() => {
-                    initialized = true
-                })
-            }
+            clearInterval(interval)
+            InitializeWindow(_ => isAboutOpen = true)
+            LevelController.initialize(() => {
+                initialized = true
+            })
         }, 100)
         HotKeysController.initializeListener()
     })

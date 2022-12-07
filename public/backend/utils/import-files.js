@@ -1,7 +1,7 @@
 import {v4} from "uuid";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import TEXTURE_TEMPLATE from "../../engine/static/TEXTURE_TEMPLATE";
-import ProjectMap from "../libs/ProjectMap";
+import ProjectController from "../libs/ProjectController";
 import readTypedFile from "./read-typed-file";
 import createRegistryEntry from "./create-registry-entry";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
@@ -30,7 +30,7 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
                         const base64 = `data:image/${type};base64,` + bufferData.toString("base64")
                         const data = JSON.stringify({...TEXTURE_TEMPLATE, base64})
                         await fs.promises.writeFile(newRoot + FILE_TYPES.TEXTURE, data)
-                        const pathToPreview = pathRequire.resolve(ProjectMap.pathToPreviews + pathRequire.sep + fileID + FILE_TYPES.PREVIEW)
+                        const pathToPreview = pathRequire.resolve(ProjectController.pathToPreviews + pathRequire.sep + fileID + FILE_TYPES.PREVIEW)
                         const bufferPreview = await sharp(bufferData).resize(256, 256).png().toBuffer()
                         await fs.promises.writeFile(pathToPreview, `data:image/png;base64,` + bufferPreview.toString("base64"))
                         registryEntries.push(fileID)

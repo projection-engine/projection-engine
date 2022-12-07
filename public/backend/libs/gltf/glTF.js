@@ -2,7 +2,7 @@ import Accessor from "./instances/Accessor";
 import DataBuffer from "./instances/DataBuffer";
 import buildImage from "./utils/build-image";
 import createRegistryEntry from "../../utils/create-registry-entry";
-import ProjectMap from "../ProjectMap";
+import ProjectController from "../ProjectController";
 import buildPrimitive from "./utils/build-primitive";
 import buildNode from "./utils/build-node";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
@@ -86,7 +86,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
             const pathToAsset = basePath + path.sep + "textures" + path.sep + name + FILE_TYPES.TEXTURE
 
             await fs.promises.writeFile(pathToAsset, JSON.stringify(texture))
-            await createRegistryEntry(ID, pathToAsset.replace(ProjectMap.pathToAssets, ""))
+            await createRegistryEntry(ID, pathToAsset.replace(ProjectController.pathToAssets, ""))
         }
 
         for (let i = 0; i < file.meshes.length; i++) {
@@ -99,7 +99,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                 const name = "mesh-" + i + "-primitive-" + j
                 const pathToAsset = basePath + path.sep + "primitives" + path.sep + name + FILE_TYPES.PRIMITIVE
                 await fs.promises.writeFile(pathToAsset, JSON.stringify(primitiveData))
-                await createRegistryEntry(ID, pathToAsset.replace(ProjectMap.pathToAssets, ""))
+                await createRegistryEntry(ID, pathToAsset.replace(ProjectController.pathToAssets, ""))
                 primitives[i][j] = ID
             }
         }
@@ -121,7 +121,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 
         const pathToAsset = basePath + path.sep + scene.name + FILE_TYPES.COLLECTION
         await fs.promises.writeFile(pathToAsset, JSON.stringify(scene))
-        await createRegistryEntry(v4(), pathToAsset.replace(ProjectMap.pathToAssets, ""))
+        await createRegistryEntry(v4(), pathToAsset.replace(ProjectController.pathToAssets, ""))
     } catch (error) {
         console.error(error)
     }

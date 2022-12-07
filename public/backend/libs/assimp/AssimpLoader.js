@@ -3,7 +3,7 @@ import PrimitiveProcessor from "../../../engine/lib/math/PrimitiveProcessor";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import createRegistryEntry from "../../utils/create-registry-entry";
 import {v4} from "uuid";
-import ProjectMap from "../ProjectMap";
+import ProjectController from "../ProjectController";
 import {mat4} from "gl-matrix";
 
 const path = require("path")
@@ -69,7 +69,7 @@ export default class AssimpLoader {
                 collectionPath,
                 JSON.stringify(collection)
             )
-            await createRegistryEntry(v4(), collectionPath.replace(ProjectMap.pathToAssets, ''))
+            await createRegistryEntry(v4(), collectionPath.replace(ProjectController.pathToAssets, ''))
         } catch (err) {
             console.error(err)
         }
@@ -103,7 +103,7 @@ export default class AssimpLoader {
                 path.resolve(localName),
                 jsonText
             );
-            await createRegistryEntry(meshID, localName.replace(ProjectMap.pathToAssets, ''))
+            await createRegistryEntry(meshID, localName.replace(ProjectController.pathToAssets, ''))
         } catch (err) {
             console.error(err)
         }

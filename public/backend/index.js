@@ -1,5 +1,5 @@
 import fileSystem from "shared-resources/backend/file-system"
-import buildProjectWindow from "./libs/build-project-window";
+import window from "./libs/Window";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 
 const {app, BrowserWindow} = require('electron');
@@ -22,7 +22,7 @@ async function createEnvironment() {
     if (!pathToProject)
         app.quit()
 
-    const result = await buildProjectWindow(pathToProject, isDev)
+    const result = await window(pathToProject, isDev)
     if (!result)
         app.quit()
 }
