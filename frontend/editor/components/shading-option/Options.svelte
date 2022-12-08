@@ -61,7 +61,11 @@
                 on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.RANDOM})}>
             {LOCALIZATION_EN.SHADING_RANDOM}
         </button>
-
+        <button
+                data-highlight={shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY ? "-" : ""}
+                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.LIGHT_COMPLEXITY})}>
+            {LOCALIZATION_EN.LIGHT_COMPLEXITY}
+        </button>
 
     </div>
     <div class="row">

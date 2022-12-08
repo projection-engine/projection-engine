@@ -36,6 +36,7 @@ export default {
     DEPTH_DELTA: "Depth min delta",
     TOGGLE_TRANSFORMATION_TYPE: "Toggle transformation type",
     HIDE_BUFFERS: "Hide buffers",
+    LIGHT_COMPLEXITY: "Light complexity",
     SHORTCUT_ALREADY_LINKED:"Shortcut already linked to action",
     SHOW_BUFFERS: "Show buffers",
     UI_ALREADY_OPEN: "UI already open on other view",
