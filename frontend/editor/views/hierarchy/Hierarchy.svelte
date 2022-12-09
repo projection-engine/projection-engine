@@ -17,6 +17,7 @@
     import Engine from "../../../../public/engine/Engine";
     import handleDrop from "./utils/handle-drop";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
+    import EntityConstructor from "../../lib/controllers/EntityConstructor";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -75,6 +76,13 @@
     >
         <ToolTip content={Localization.SHOW_MAIN_ENTITY}/>
         <Icon styles="font-size: .9rem">center_focus_strong</Icon>
+    </button>
+    <button
+            on:click={() => EntityConstructor.createEmpty()}
+            data-view-header-button="-"
+    >
+        <ToolTip content={Localization.CREATE_ENTITY}/>
+        <Icon styles="font-size: .9rem">add</Icon>
     </button>
     <Input
             hasBorder={true}

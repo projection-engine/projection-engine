@@ -1,7 +1,7 @@
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js"
 import GPU from "../../../../../public/engine/GPU";
 import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
-import VisibilityBuffer from "../../../../../public/engine/runtime/rendering/VisibilityBuffer";
+import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
 import SettingsStore from "../../../stores/SettingsStore";
 import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
 
@@ -56,7 +56,7 @@ export default class SelectedSystem {
 
         if (settings.outlineEnabled) {
             gpu.activeTexture(gpu.TEXTURE0)
-            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityBuffer.entityIDSampler)
+            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.entityIDSampler)
             gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
 
             gpu.uniform1i(outlineShaderUniforms.isOutline, 1)

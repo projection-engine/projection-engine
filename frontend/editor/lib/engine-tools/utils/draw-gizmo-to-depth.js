@@ -2,7 +2,7 @@ import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
 import getPickerId from "../../../../../public/engine/utils/get-picker-id";
 import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
-import VisibilityBuffer from "../../../../../public/engine/runtime/rendering/VisibilityBuffer";
+import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
 import GPU from "../../../../../public/engine/GPU";
 import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
 
@@ -34,6 +34,6 @@ export default function drawGizmoToDepth(mesh, transforms){
 
     DualAxisGizmo.drawToBuffer(data)
     FBO.stopMapping()
-    VisibilityBuffer.needsUpdate = true
+    VisibilityRenderer.needsUpdate = true
     gpu.enable(gpu.CULL_FACE)
 }

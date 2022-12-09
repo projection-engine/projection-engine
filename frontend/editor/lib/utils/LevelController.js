@@ -135,7 +135,7 @@ export default class LevelController {
             return
         }
 
-        window.consoleAPI.log(Localization.SAVING)
+        window.consoleAPI.warn(Localization.SAVING)
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta

@@ -3,7 +3,7 @@ import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_
 import Engine from "../../../../../public/engine/Engine";
 
 import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
-import VisibilityBuffer from "../../../../../public/engine/runtime/rendering/VisibilityBuffer";
+import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
 import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
 
 export default function drawIconsToBuffer() {
@@ -22,7 +22,7 @@ export default function drawIconsToBuffer() {
         )
     }
     FBO.stop()
-    VisibilityBuffer.needsUpdate = true
+    VisibilityRenderer.needsUpdate = true
 }
 
 function drawIcon(mesh, meshID, transformMatrix) {

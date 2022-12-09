@@ -30,6 +30,7 @@ export default {
     VIEWPORT: "Viewport",
     LEVEL_NOT_FOUND: "Level not found, a new one will be created.",
     IMPORT_SUCCESSFUL: "Import successful",
+    CREATE_ENTITY: "Create entity",
     EXECUTING_SIMULATION: "Cannot save while executing simulation",
     MIN_RAY_STEP: "Minimum ray step",
     SOME_ERROR_OCCURRED: "Some error occurred",

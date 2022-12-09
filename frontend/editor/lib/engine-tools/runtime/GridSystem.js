@@ -1,7 +1,7 @@
 import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
 import GPU from "../../../../../public/engine/GPU";
 import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
-import VisibilityBuffer from "../../../../../public/engine/runtime/rendering/VisibilityBuffer";
+import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
 import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
 
 let shader, uniforms, planeMesh, buffer, resolution
@@ -26,7 +26,7 @@ export default class GridSystem {
         gpu.uniform4fv(uniforms.settings, buffer)
 
         gpu.activeTexture(gpu.TEXTURE0)
-        gpu.bindTexture(gpu.TEXTURE_2D, VisibilityBuffer.depthSampler)
+        gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.depthSampler)
         gpu.uniform1i(uniforms.depthSampler, 0)
 
         gpu.uniform2fv(uniforms.resolution, resolution)
