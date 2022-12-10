@@ -63,7 +63,7 @@ export default class Wrapper {
         CollisionVisualizationSystem.execute(selected)
         SelectedSystem.drawSilhouette(selected)
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
-        IconsSystem.drawIcons()
+        IconsSystem.drawIcons(settings)
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         GizmoSystem.execute()
         if(window.d){

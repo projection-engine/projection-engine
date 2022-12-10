@@ -16,14 +16,12 @@ export default {
     hideFooter: false,
     projectCreationDate: (new Date()).toDateString(),
     loggingEnabled: true,
-    iconsVisibility: true,
-    visibleBuffers: false,
 
     gridOpacity: 1,
     gridColor: .3,
     gridScale: 1,
     gridThreshold: 100.,
-
+    iconScale: 1,
     spawnDistanceFromCamera: 10,
     shadingModel: SHADING_MODELS.DETAIL,
     gizmo: GIZMOS.TRANSLATION,

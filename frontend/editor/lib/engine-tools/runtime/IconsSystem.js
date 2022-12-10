@@ -27,15 +27,14 @@ export default class IconsSystem {
         iconsUniforms = iconsShader.uniformMap
     }
 
-    static drawIcons() {
+    static drawIcons(settings) {
         if (!IconsSystem.iconsTexture)
             return
 
         iconsShader.bind()
         gpu.activeTexture(gpu.TEXTURE0)
         gpu.bindTexture(gpu.TEXTURE_2D, IconsSystem.iconsTexture)
-        // TODO - ADD TO VIEWPORT SETTINGS
-        gpu.uniform1f(iconsUniforms.scale, 1.)
+        gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
 
         const tracking = CameraAPI.trackingEntity
         const entities = Engine.entities

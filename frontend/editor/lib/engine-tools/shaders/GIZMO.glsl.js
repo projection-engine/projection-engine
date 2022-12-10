@@ -13,13 +13,13 @@ void main() {
 export const lineVertex = `
 layout (location = 0) in vec3 position; 
  
-#define HALF 5000.
-#define FULL 1000000.
  
 //import(cameraUBO)
 
 uniform mat4 transformMatrix; 
 uniform vec3 axis; 
+uniform float size;
+
 
 void main() {
  
@@ -32,18 +32,18 @@ void main() {
                 sc[x][y] = 1.;
 
     if(axis.x > 0.){
-           sc[0][0] = FULL;
-           sc[3][0] = -HALF;
+           sc[0][0] = size;
+           sc[3][0] = -size/2.;
     }
     if(axis.y > 0.){
-           sc[1][1] = FULL;
-           sc[3][1] = -HALF;
+           sc[1][1] = size;
+           sc[3][1] = -size/2.;
     }
     if(axis.z > 0.){
-           sc[2][2] = FULL;
-           sc[3][2] = -HALF;
+           sc[2][2] = size;
+           sc[3][2] = -size/2.;
     } 
-    gl_Position = viewProjection * transformMatrix* sc * vec4(position, 1.0);
+    gl_Position = viewProjection * transformMatrix * sc * vec4(position, 1.0);
 }
 
 `

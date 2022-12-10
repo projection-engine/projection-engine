@@ -33,6 +33,21 @@
 </fieldset>
 
 <fieldset>
+    <legend>{Localization.ICONS}</legend>
+    <div data-form="-">
+        <Range
+                label={Localization.SIZE}
+                onFinish={v => {
+                    update("iconScale", v)
+                }}
+                value={settings.iconScale}
+                minValue={1}
+        />
+
+    </div>
+</fieldset>
+
+<fieldset>
     <legend>{Localization.OUTLINE}</legend>
 
     <div data-form="-">

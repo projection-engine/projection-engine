@@ -11,6 +11,7 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import ScriptsAPI from "../../../../public/engine/lib/rendering/ScriptsAPI";
     import UIAPI from "../../../../public/engine/lib/rendering/UIAPI";
+    import FilesAPI from "../../lib/fs/FilesAPI";
 
     const {shell} = window.require("electron")
 
@@ -62,6 +63,10 @@
             <button on:click={openLogs}>
                 <Icon>open_in_new</Icon>
                 {Localization.SHOW_ERROR_LOGS}
+            </button>
+            <button on:click={() => FilesAPI.deleteFile(ErrorLoggerAPI.path)}>
+                <Icon>delete_forever</Icon>
+                {Localization.CLEAR_CACHE}
             </button>
         </Dropdown>
         <div data-vertdivider="-"></div>

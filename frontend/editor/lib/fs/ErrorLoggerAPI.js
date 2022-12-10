@@ -50,8 +50,6 @@ export default class ErrorLoggerAPI {
                     })
                     const p = ErrorLoggerAPI.path
                     FilesAPI.writeFile(p, JSON.stringify([...original, ...parsed], null, 4), true).catch()
-                    parsed.forEach(m => ConsoleAPI.error(m))
-
                 }, 150)
                 old(...messages)
             }

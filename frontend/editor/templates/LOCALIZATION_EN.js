@@ -49,6 +49,7 @@ export default {
     MOTION_BLUR: "Motion blur",
     OVERLAY: "Overlay",
     NEW_TAB: "New tab",
+    CLEAR_CACHE: "Clear cache",
     GIZMOS: "Gizmos",
     INDIRECT_LIGHT: "Indirect light",
     PROJECT_SAVED: "Project saved",
@@ -67,7 +68,7 @@ export default {
     UNKNOWN: "Unknown buffer",
     CUTOFF_SMOOTHING: "Cutoff smoothing",
     OVERDRAW: "Overdraw",
-    CUTOFF_DISTANCE: "Cutoff distance",
+
     CUTOFF: "Cutoff",
     SHOW_OVERLAY: "Show overlay",
     NO_SKYLIGHT_COMPONENT_FOUND: "No Skylight component found on entity",
