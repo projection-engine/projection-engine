@@ -49,23 +49,27 @@ export default class IconsSystem {
             const hasDirectionalLight = entity.__hasDirectionalLight
             const hasSkylight = entity.__hasSkylight
             const hasCamera = entity.__hasCamera
+
             if (
-                !hasSpotLight ||
-                !hasPointLight ||
-                !hasDirectionalLight ||
-                !hasSkylight ||
-                !hasCamera || tracking === entity
+                entity.__meshRef ||
+                !hasSpotLight &&
+                !hasPointLight &&
+                !hasDirectionalLight &&
+                !hasSkylight &&
+                !hasCamera &&
+                tracking != null && tracking === entity
             )
                 continue
             let index = 0
             let hasMore = false
-            if (!hasDirectionalLight)
+
+            if (hasDirectionalLight)
                 index = 1
             if (hasPointLight) {
                 hasMore = index !== 0
                 index = 2
             }
-            if (!hasSkylight) {
+            if (hasSkylight) {
                 hasMore = index !== 0
                 index = 3
             }
@@ -73,7 +77,7 @@ export default class IconsSystem {
                 hasMore = index !== 0
                 index = 4
             }
-            if (!hasCamera) {
+            if (hasCamera) {
                 hasMore = index !== 0
                 index = 5
             }

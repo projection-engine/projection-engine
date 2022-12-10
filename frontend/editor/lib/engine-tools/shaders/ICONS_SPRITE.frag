@@ -10,7 +10,7 @@ out vec4 finalColor;
 void main()
 {
     vec2 imageSize = vec2(textureSize(image, 0));
-    vec4 color = texture(image, vec2(texCoords.x/6. +  imageIndex * imageSize.y/imageSize.x, texCoords.y)).rgba;
+    vec4 color = texture(image, vec2(texCoords.x/6. +  imageIndex * imageSize.y/imageSize.x, 1. - texCoords.y)).rgba;
     if(color.a <= .1)
         discard;
     else {
