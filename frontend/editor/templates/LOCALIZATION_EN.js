@@ -496,6 +496,7 @@ export default {
     SMOOTHING_SAMPLES: "Smoothing samples",
     SAMPLES: "Samples",
     RADIUS: "Radius",
+
     FALLOFF: "Falloff",
     AREA: "Area",
     BASE: "Base",

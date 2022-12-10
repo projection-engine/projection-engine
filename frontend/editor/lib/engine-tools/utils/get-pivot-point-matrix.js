@@ -14,9 +14,9 @@ export default function getPivotPointMatrix(entity) {
             entity.__cacheIconMatrix = mat4.create()
         mat4.copy(entity.__cacheIconMatrix, entity.__cacheCenterMatrix)
 
-        entity.__cacheIconMatrix[12] = entity._translation[0]
-        entity.__cacheIconMatrix[13] = entity._translation[1]
-        entity.__cacheIconMatrix[14] = entity._translation[2]
+        entity.__cacheIconMatrix[12] = entity.absoluteTranslation[0]
+        entity.__cacheIconMatrix[13] = entity.absoluteTranslation[1]
+        entity.__cacheIconMatrix[14] = entity.absoluteTranslation[2]
 
         if(GizmoSystem.mainEntity) {
             GizmoSystem.targetGizmo.transformGizmo()

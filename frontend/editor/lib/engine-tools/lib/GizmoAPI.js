@@ -19,17 +19,21 @@ export default class GizmoAPI {
 
     static applyTransformation(matrix, q, t, s) {
         const m = GizmoSystem.mainEntity
+        if (!m)
+            return
         const isRelative = GizmoSystem.transformationType === TRANSFORMATION_TYPE.RELATIVE
-        if (isRelative || m.parent)
+        if (isRelative || m.parent) {
+            const quatToMultiply = isRelative ? GizmoSystem.targetRotation : m.parent._rotationQuat
+            if (!quatToMultiply)
+                return;
             mat4.fromRotationTranslationScaleOrigin(
                 matrix,
-                quat.multiply([], isRelative ? GizmoSystem.targetRotation : m.parent._rotationQuat, q),
+                quat.multiply([], quatToMultiply, q),
                 vec3.add([], m.__pivotOffset, t),
                 s,
                 t
             )
-        else {
-
+        } else {
             matrix[12] += m.__pivotOffset[0]
             matrix[13] += m.__pivotOffset[1]
             matrix[14] += m.__pivotOffset[2]

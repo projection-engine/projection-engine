@@ -5,14 +5,16 @@ import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
+import Wrapper from "../Wrapper";
+import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
+import LightsAPI from "../../../../../public/engine/lib/rendering/LightsAPI";
+import GizmoSystem from "./GizmoSystem";
 
-const attr = {
-    translation: [0, 0, 0],
-    sameSize: false,
-    highlight: false,
-    scale: [.25, .25, .25],
-    attributes: [1, 1]
-}
+const AXIS_X = new Float32Array([1, 0, 0])
+const AXIS_Y = new Float32Array([0, 1, 0])
+const AXIS_Z = new Float32Array([0, 0, 1])
+const ALL_AXIS= new Float32Array([1, 1, 1])
+let lineShader, lineUniforms
 let iconsShader, iconsUniforms
 
 export default class IconsSystem {
@@ -21,7 +23,8 @@ export default class IconsSystem {
 
 
     static initialize() {
-
+        lineShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.LINE)
+        lineUniforms = lineShader.uniformMap
         IconsSystem.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.UNSHADED)
         iconsShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.ICONS)
         iconsUniforms = iconsShader.uniformMap
@@ -89,7 +92,38 @@ export default class IconsSystem {
         }
 
 
+
+
+        lineShader.bind()
+        let lightsToLoop = LightsAPI.spotLights.array
+        let toLoop       = lightsToLoop.length
+        gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
+        gpu.uniform1i(lineUniforms.atOrigin, 1)
+        for (let i = 0; i < toLoop; i++) {
+            const current = lightsToLoop[i]
+            if (!current._active)
+                continue
+            const component = current.components.get(COMPONENTS.SPOTLIGHT)
+            getPivotPointMatrix(current)
+            gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, current.__cacheCenterMatrix)
+            gpu.uniform1f(lineUniforms.size, component.cutoff * 4)
+            LineAPI.drawY()
+        }
+
+        // lightsToLoop = LightsAPI.pointLights.array
+        // toLoop       = lightsToLoop.length
+        // const mesh = GizmoSystem.screenSpaceMesh
+        // gpu.uniform3fv(lineUniforms.axis, ALL_AXIS)
+        // for (let i = 0; i < toLoop; i++) {
+        //     const current = lightsToLoop[i]
+        //     if (!current._active)
+        //         continue
+        //     const component = current.components.get(COMPONENTS.POINT_LIGHT)
+        //     getPivotPointMatrix(current)
+        //     gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, current.__cacheCenterMatrix)
+        //     gpu.uniform1f(lineUniforms.size, component.cutoff * 4)
+        //     mesh.drawTriangleStrip()
+        // }
+        gpu.clear(gpu.DEPTH_BUFFER_BIT)
     }
-
-
 }

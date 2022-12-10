@@ -40,7 +40,9 @@
     <FrameMetadata settings={settings}/>
     <div class="meta-data">
         <button
-                class="button frame" style="max-width: unset; font-size: .7rem; padding: 0 4px;" on:click={updateStructure}
+                class="button frame"
+                style="max-width: unset; font-size: .7rem; padding: 0 4px; max-height: 25px; min-height: unset"
+                on:click={updateStructure}
                 disabled={engine.executingAnimation}
         >
             <Icon styles="font-size: 1rem">refresh</Icon>

@@ -46,14 +46,6 @@ export default class Wrapper {
         }
     }
 
-    static beforeDrawing() {
-        CameraTracker.updateFrame()
-        settings = SettingsStore.data
-        if (!settings.overlays) return
-
-    }
-
-
     static afterDrawing() {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
@@ -64,7 +56,7 @@ export default class Wrapper {
         SelectedSystem.drawSilhouette(selected)
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         IconsSystem.drawIcons(settings)
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+
         GizmoSystem.execute()
         if(window.d){
             const s = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)

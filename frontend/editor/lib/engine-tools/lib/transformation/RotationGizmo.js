@@ -29,7 +29,6 @@ export default class RotationGizmo {
         this.zGizmo = mapGizmoMesh("z", "ROTATION")
 
 
-
         this.texture = GPU.textures.get(STATIC_TEXTURES.ROTATION_GIZMO)
     }
 
@@ -113,6 +112,8 @@ export default class RotationGizmo {
 
     #rotateGizmo(axis, entity) {
         const m = GizmoSystem.mainEntity
+        if (!m)
+            return
         const matrix = entity.matrix
         switch (axis) {
             case "x":
@@ -144,14 +145,12 @@ export default class RotationGizmo {
                 default:
                     break
             }
-        } else if (axis !== undefined)
-            return mat4.fromRotationTranslationScale(matrix, quat.multiply([], GizmoSystem.targetRotation, entity._rotationQuat), GizmoSystem.mainEntity.__pivotOffset, entity.scaling)
-
-        return matrix
+        } else if (axis !== undefined && GizmoSystem.targetRotation)
+            mat4.fromRotationTranslationScale(matrix, quat.multiply([], GizmoSystem.targetRotation, entity._rotationQuat), GizmoSystem.mainEntity.__pivotOffset, entity.scaling)
     }
 
     transformGizmo() {
-        if(!GizmoSystem.mainEntity)
+        if (!GizmoSystem.mainEntity)
             return
         this.#rotateGizmo("x", this.xGizmo)
         this.#rotateGizmo("y", this.yGizmo)

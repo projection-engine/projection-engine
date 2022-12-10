@@ -115,19 +115,20 @@ export default class GizmoSystem {
             lineShader.bind()
             gpu.uniform1f(lineUniforms.size, LINE_SIZE)
             gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, lineMatrix)
+            gpu.uniform1i(lineUniforms.atOrigin, 0)
             if (GizmoSystem.highlightX) {
                 gpu.uniform3fv(lineUniforms.axis, X)
-                LineAPI.draw(X)
+                LineAPI.drawX()
             }
 
             if (GizmoSystem.highlightY) {
                 gpu.uniform3fv(lineUniforms.axis, Y)
-                LineAPI.draw(Y)
+                LineAPI.drawY()
             }
 
             if (GizmoSystem.highlightZ) {
                 gpu.uniform3fv(lineUniforms.axis, Z)
-                LineAPI.draw(Z)
+                LineAPI.drawZ()
             }
 
         } else

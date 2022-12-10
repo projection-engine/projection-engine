@@ -10,9 +10,7 @@
     function update(key, value) {
         SettingsStore.updateStore({...settings, [key]: value})
     }
-    //
-    // let s = [0, 10, 0]
-    // let r = 3
+
 </script>
 
 
@@ -41,7 +39,7 @@
                     update("iconScale", v)
                 }}
                 value={settings.iconScale}
-                minValue={1}
+                minValue={.01}
         />
 
     </div>
@@ -59,7 +57,7 @@
                 label={Localization.ENABLED}
         />
         <ColorPicker
-                value={settings.outlineColor}
+                value={settings.outlineColor.map(v => v * 255)}
                 label={Localization.COLOR}
                 submit={({r,g,b}) => update("outlineColor", [r/255,g/255,b/255])}
         />
