@@ -11,17 +11,20 @@
     let ref
     onMount(() => CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO))
 
-    function onGizmoClick() {
-
-            if(EntityStateController.cameraSerialization)
+    function onGizmoClick(e) {
+        const face = parseInt(e.target.getAttribute("data-face"))
+        if(!isNaN(face))
+            CameraTracker.rotate(face)
+        else {
+            if (EntityStateController.cameraSerialization)
                 CameraAPI.restoreState(EntityStateController.cameraSerialization)
-            if(EngineStore.engine.focusedCamera){
+            if (EngineStore.engine.focusedCamera) {
                 CameraTracker.startTracking()
                 EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
                 EntityStateController.cameraSerialization = undefined
             }
             CameraTracker.forceRotationTracking()
-
+        }
     }
 </script>
 
@@ -40,35 +43,40 @@
             <div
                     class="face front"
                     style="background: hsl(205, 100%, var(--brightness))"
-                    on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)}
+                    data-face={CAMERA_ROTATIONS.FRONT}
+
             >
                 Z+
             </div>
             <div
                     class="face back darker"
+                    data-face={CAMERA_ROTATIONS.BACK}
                     style="background: hsl(205, 100%, var(--brightness))"
-                    on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)}
+
             >
                 Z-
             </div>
             <div
                     class="face right"
                     style="background: hsl(0, 100%, var(--brightness))"
-                    on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)}
+                    data-face={CAMERA_ROTATIONS.RIGHT}
+
             >
                 X+
             </div>
             <div
                     class="face left darker"
                     style="background: hsl(0, 100%, var(--brightness))"
-                    on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)}
+                    data-face={CAMERA_ROTATIONS.LEFT}
+
             >
                 X-
             </div>
             <div
                     class="face top darker"
                     style="background: hsl(120, 88%, var(--brightness))"
-                    on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)}
+                    data-face={CAMERA_ROTATIONS.TOP}
+
 
             >
                 Y-
@@ -76,7 +84,7 @@
             <div
                     class="face bottom"
                     style="background: hsl(120, 88%, var(--brightness))"
-                    on:click={() => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)}
+                    data-face={CAMERA_ROTATIONS.BOTTOM}
             >
                 Y+
             </div>
