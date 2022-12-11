@@ -8,7 +8,7 @@ import Engine from "../../../../public/engine/Engine";
 import serializeStructure from "../../../../public/engine/utils/serialize-structure";
 import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-import ScriptsAPI from "../../../../public/engine/lib/rendering/ScriptsAPI";
+import ScriptsAPI from "../../../../public/engine/lib/utils/ScriptsAPI";
 import MaterialAPI from "../../../../public/engine/lib/rendering/MaterialAPI";
 
 export default class EntityStateController {

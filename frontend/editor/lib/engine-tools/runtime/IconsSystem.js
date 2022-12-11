@@ -4,11 +4,7 @@ import GPU from "../../../../../public/engine/GPU";
 import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
-import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
-import Wrapper from "../Wrapper";
 import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
-import LightsAPI from "../../../../../public/engine/lib/rendering/LightsAPI";
-import GizmoSystem from "./GizmoSystem";
 import LIGHT_TYPES from "../../../../../public/engine/static/LIGHT_TYPES";
 
 const AXIS_Y = new Float32Array([0, 1, 0])
@@ -35,7 +31,7 @@ export default class IconsSystem {
         const size = entities.length
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity._active)
+            if (!entity.active)
                 continue
             const hasLight = entity.__hasLight
             const hasSkylight = entity.__hasSkylight

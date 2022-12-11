@@ -1,6 +1,5 @@
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-import LIGHT_TYPES from "../../../../../public/engine/static/LIGHT_TYPES";
 
 export default function getEngineIcon(nodeRef) {
     let icons = []

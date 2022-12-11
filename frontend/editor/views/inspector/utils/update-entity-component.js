@@ -1,6 +1,6 @@
 import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
 import SelectionStore from "../../../stores/SelectionStore";
-import LightsAPI from "../../../../../public/engine/lib/rendering/LightsAPI";
+import LightsAPI from "../../../../../public/engine/lib/utils/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
 import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
