@@ -113,6 +113,7 @@ export default class GizmoSystem {
             }
 
             lineShader.bind()
+            gpu.uniform1i(lineUniforms.darker, 0)
             gpu.uniform1f(lineUniforms.size, LINE_SIZE)
             gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, lineMatrix)
             gpu.uniform1i(lineUniforms.atOrigin, 0)

@@ -43,11 +43,13 @@
     </button>
     <div class="dropdown-container frame">
         <div class="dropdown-header frame">
+            <strong>{LOCALIZATION_EN.ACTIVITY_HISTORY}</strong>
             <button
                     class="button frame button-small frame"
                     style="max-width: 22px;gap: 4px"
                     on:click={() => UndoRedoAPI.clear()}>
                 <Icon>clear_all</Icon>
+                {LOCALIZATION_EN.CLEAR}
                 <ToolTip content={LOCALIZATION_EN.CLEAR}/>
             </button>
         </div>

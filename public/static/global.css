@@ -432,6 +432,7 @@ pre[data-pre="-"] {
 
 .dropdown-container.frame {
     display: flex;
+    overflow-x: hidden;
     flex-direction: column;
     justify-content: flex-start;
     height: 350px;
@@ -442,8 +443,13 @@ pre[data-pre="-"] {
     background: var(--pj-background-secondary);
     display: flex;
     justify-content: space-between;
+    align-items: center;
     height: 25px;
+    padding: 0 4px;
     border-bottom: var(--pj-border-primary) 1px solid;
+}
+.dropdown-header.frame > strong{
+    font-size: .85rem;
 }
 .action-data.frame {
     display: grid;

@@ -137,7 +137,7 @@
         <Range
 
                 label={Localization.STEPS}
-
+                maxValue={100}
                 minValue={1}
                 integer={true}
                 value={visualSettings.SSGI.maxSteps}

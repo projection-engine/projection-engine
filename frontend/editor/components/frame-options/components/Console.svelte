@@ -38,7 +38,7 @@
             metadata = md
             toRender = messages
             changed = true
-            newMessages = true
+            newMessages = messages.length > 0
         })
         portal.create(modal, {backdropFilter: "blur(2px)"})
         document.addEventListener("mousedown", handler)
@@ -69,10 +69,10 @@
 
 
     $: objectOpen != null ? portal.open() : portal.close()
-
+    $: console.trace(toRender)
 </script>
 
-<Dropdown hideArrow={true} styles="width: 300px" onOpen={_ => newMessages = false}>
+<Dropdown hideArrow={true} styles="width: clamp(250px, 20vw, 1000px" onOpen={_ => newMessages = false}>
     <button slot="button" class="button frame">
         <Icon styles="font-size: 1rem">terminal</Icon>
         <ToolTip content={LOCALIZATION_EN.CONSOLE}/>
@@ -82,6 +82,7 @@
     </button>
     <div class="dropdown-container frame">
         <div class="dropdown-header frame">
+            <strong>{LOCALIZATION_EN.CONSOLE}</strong>
             <button
                     class="button frame button-small frame"
                     style="max-width: 22px;gap: 4px"
@@ -119,12 +120,14 @@
                         <Icon>
                             warning
                         </Icon>
+                        {:else}
+                        <div style="width: 1.1rem"></div>
                     {/if}
                     {#if item.object}
                         <ToolTip content={Localization.CLICK_TO_SHOW_OBJECT}/>
                     {/if}
-                    <pre data-overflow="-">{item.message}</pre>
-                    <div style="margin-right: auto; text-align: right; color: var(--pj-color-primary)">{item.src}</div>
+                    <small data-overflow="-">{item.message}</small>
+                    <ToolTip content={item.src.includes("file://") ? LOCALIZATION_EN.INTERNAL_ERROR : item.str}/>
                 </div>
             </VirtualList>
         {/if}
@@ -146,6 +149,7 @@
         right: 4px;
         z-index: 100;
     }
+
     pre {
         width: 100%;
     }

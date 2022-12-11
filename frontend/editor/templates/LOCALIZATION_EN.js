@@ -54,6 +54,7 @@ export default {
     INDIRECT_LIGHT: "Indirect light",
     PROJECT_SAVED: "Project saved",
     SHADING_DYNAMIC_AO: "SSAO",
+    INTERNAL_ERROR: "Internal error",
     SPAWN_ON_ORIGIN: "Spawn on origin",
     SHORTCUTS: "Shortcuts",
     DEPTH_SAMPLER: "Depth sampler",

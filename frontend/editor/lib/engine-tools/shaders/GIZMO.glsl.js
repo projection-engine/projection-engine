@@ -5,8 +5,13 @@ export const lineFragment = `
 
 precision lowp float;
 out vec4 finalColor;
+uniform bool darker;
+
 void main() {
-    finalColor = vec4(1., 1., .0, 1);
+    if(darker)
+        finalColor = vec4(1.);
+    else
+        finalColor = vec4(1., 1., .0, 1);
 }
 `
 
@@ -135,31 +140,49 @@ uniform bool isSurface;
 void main(){
     vec3 color = vec3(1.);
     vec3 loc = vec3(0.0, 1.0, 0.0);
-    switch (axis) {
-        case ${AXIS.X}:
-            color = vec3(1., 0., 0.);
-            break;
-        case ${AXIS.Y}:
-            color = vec3(0., 1., 0.);
-            break;
-        case ${AXIS.Z}:
-            color = vec3(0., 0., 1.);
-            break;
-        case ${AXIS.XZ}:
-            color = vec3(0., 1., 0.);
-        break;
-        case ${AXIS.XY}:
-            color = vec3(0., 0., 1.);
-        break;
-        case ${AXIS.ZY}:
-            color = vec3(1., 0., 0.);
-        break;
-        default:
-            break;
-    }
-     
-    if(selectedAxis == axis)
+    bool isSelected = selectedAxis == axis;
+    if(isSelected)
         color = vec3(1., 1., 0.);
+    else
+        switch (axis) {
+            case ${AXIS.X}:
+                color = vec3(1., 0., 0.);
+                break;
+            case ${AXIS.Y}:
+                color = vec3(0., 1., 0.);
+                break;
+            case ${AXIS.Z}:
+                color = vec3(0., 0., 1.);
+                break;
+            case ${AXIS.XZ}:{
+                color = vec3(0., 1., 0.);
+                vec2 a = floor(gl_FragCoord.xy);  
+                bool checker = mod(a.x + a.y, 2.0 ) > 0.0;
+                if( checker )
+                    discard;
+                break;
+            }
+            case ${AXIS.XY}:{
+                color = vec3(0., 0., 1.);
+                vec2 a = floor(gl_FragCoord.xy);  
+                bool checker = mod(a.x + a.y, 2.0 ) > 0.0;
+                if( checker )
+                    discard;
+                break;
+            }
+            case ${AXIS.ZY}:{
+                color = vec3(1., 0., 0.);
+                vec2 a = floor(gl_FragCoord.xy);  
+                bool checker = mod(a.x + a.y, 2.0 ) > 0.0;
+                if( checker )
+                    discard;
+                break;
+            }
+            default:
+                break;
+        }
+     
+    
     fragColor = vec4(color, 1.);
 }
 `
@@ -232,22 +255,24 @@ void main(){
     
     
     vec3 color = vec3(1.);
-    switch (axis) {
-        case 2:
-            color = vec3(0., 0., 1.);
-            break;
-        case 3:
-            color = vec3(0., 1., 0.);
-            break;
-        case 4:
-            color = vec3(1., 0., 0.);
-            break;
-        default:
-            break;
-    }
-  
     if(selectedAxis == axis)
         color = vec3(1., 1., 0.);
+    else
+        switch (axis) {
+            case 2:
+                color = vec3(0., 0., 1.);
+                break;
+            case 3:
+                color = vec3(0., 1., 0.);
+                break;
+            case 4:
+                color = vec3(1., 0., 0.);
+                break;
+            default:
+                break;
+        }
+  
+  
         
     fragColor = vec4(color, 1.);
 }
