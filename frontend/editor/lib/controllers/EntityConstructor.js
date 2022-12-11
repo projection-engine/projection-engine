@@ -9,6 +9,7 @@ import {v4} from "uuid";
 import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
 import SettingsStore from "../../stores/SettingsStore";
 import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
+import LIGHT_TYPES from "../../../../public/engine/static/LIGHT_TYPES";
 
 
 const addSprite = (entity, img) => {
@@ -52,14 +53,16 @@ export default class EntityConstructor {
 
     static createSpotLight() {
         const entity = new Entity(undefined, Localization.SPOTLIGHT)
-        entity.addComponent(COMPONENTS.SPOTLIGHT)
+        const comp = entity.addComponent(COMPONENTS.LIGHT)
+        comp.type = LIGHT_TYPES.SPOT
         EntityConstructor.translateEntity(entity)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 
     static createPointLight() {
         const entity = new Entity(undefined, Localization.POINT_LIGHT)
-        entity.addComponent(COMPONENTS.POINT_LIGHT)
+        const comp = entity.addComponent(COMPONENTS.LIGHT)
+        comp.type = LIGHT_TYPES.POINT
         EntityConstructor.translateEntity(entity)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
@@ -67,7 +70,8 @@ export default class EntityConstructor {
     static createDirectionalLight() {
         const entity = new Entity(undefined, Localization.DIRECTIONAL_LIGHT)
         EntityConstructor.translateEntity(entity)
-        entity.addComponent(COMPONENTS.DIRECTIONAL_LIGHT)
+        const comp = entity.addComponent(COMPONENTS.LIGHT)
+        comp.type = LIGHT_TYPES.DIRECTIONAL
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 

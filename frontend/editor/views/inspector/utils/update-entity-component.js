@@ -1,5 +1,3 @@
-import DirectionalLightComponent from "../../../../../public/engine/templates/components/DirectionalLightComponent";
-import PointLightComponent from "../../../../../public/engine/templates/components/PointLightComponent";
 import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import LightsAPI from "../../../../../public/engine/lib/rendering/LightsAPI";
@@ -7,10 +5,10 @@ import EngineStore from "../../../stores/EngineStore";
 import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
 import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
-import SpotlightComponent from "../../../../../public/engine/templates/components/SpotlightComponent";
+import LightComponent from "../../../../../public/engine/templates/components/LightComponent";
 
 export default function updateEntityComponent(savedState, setSaved, entity, key, value, save, currentComponentValue) {
-    if (currentComponentValue[1] instanceof DirectionalLightComponent || currentComponentValue[1] instanceof PointLightComponent|| currentComponentValue[1] instanceof SpotlightComponent) {
+    if (currentComponentValue[1] instanceof LightComponent) {
         entity.needsLightUpdate = true
         LightsAPI.packageLights(true)
     }

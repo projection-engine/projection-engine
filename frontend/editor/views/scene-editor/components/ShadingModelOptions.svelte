@@ -1,7 +1,7 @@
 <script>
-    import SHADING_MODELS from "../../../../public/engine/static/SHADING_MODELS"
-    import SettingsStore from "../../stores/SettingsStore";
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+    import SHADING_MODELS from "../../../../../public/engine/static/SHADING_MODELS"
+    import SettingsStore from "../../../stores/SettingsStore";
+    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 
     export let settings
     $: shadingModel = settings.shadingModel
@@ -80,6 +80,12 @@
         <button data-highlight={shadingModel === SHADING_MODELS.OVERDRAW ? "-" : ""}
                 on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.OVERDRAW})}>
             {LOCALIZATION_EN.OVERDRAW}
+        </button>
+    </div>
+    <div class="row">
+        <button data-highlight={shadingModel === SHADING_MODELS.LIGHT_QUANTITY ? "-" : ""}
+                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.LIGHT_QUANTITY})}>
+            {LOCALIZATION_EN.LIGHT_QUANTITY}
         </button>
     </div>
 </fieldset>

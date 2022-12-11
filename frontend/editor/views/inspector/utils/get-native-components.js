@@ -4,9 +4,8 @@ import getComponentLabel from "./get-component-label";
 
 export default function getNativeComponents() {
     return [
-        [COMPONENTS.SPOTLIGHT, getComponentLabel(COMPONENTS.SPOTLIGHT), getComponentIcon(COMPONENTS.SPOTLIGHT)],
-        [COMPONENTS.POINT_LIGHT, getComponentLabel(COMPONENTS.POINT_LIGHT), getComponentIcon(COMPONENTS.POINT_LIGHT)],
-        [COMPONENTS.DIRECTIONAL_LIGHT, getComponentLabel(COMPONENTS.DIRECTIONAL_LIGHT), getComponentIcon(COMPONENTS.DIRECTIONAL_LIGHT)],
+
+        [COMPONENTS.LIGHT, getComponentLabel(COMPONENTS.LIGHT), getComponentIcon(COMPONENTS.LIGHT)],
 
         [COMPONENTS.SPRITE, getComponentLabel(COMPONENTS.SPRITE), getComponentIcon(COMPONENTS.SPRITE)],
         [COMPONENTS.MESH, getComponentLabel(COMPONENTS.MESH), getComponentIcon(COMPONENTS.MESH)],

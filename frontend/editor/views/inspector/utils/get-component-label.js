@@ -7,14 +7,12 @@ export default function getComponentLabel(component){
             return "Mesh"
         case COMPONENTS.CAMERA:
             return "Camera"
-        case COMPONENTS.POINT_LIGHT:
-            return "Point Light"
-        case COMPONENTS.DIRECTIONAL_LIGHT:
-            return "Directional Light"
+
+
         case COMPONENTS.SPRITE:
             return "Sprite"
-        case COMPONENTS.SPOTLIGHT:
-            return LOCALIZATION_EN.SPOTLIGHT
+        case COMPONENTS.LIGHT:
+            return LOCALIZATION_EN.LIGHT
         case COMPONENTS.SKYLIGHT:
             return LOCALIZATION_EN.SKYLIGHT
         case COMPONENTS.PHYSICS_COLLIDER:

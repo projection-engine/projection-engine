@@ -1,18 +1,16 @@
 <script>
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-    import getLabel from "./utils/get-label";
-    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
-    import Options from "./Options.svelte";
-    import SceneRenderer from "../../../../public/engine/runtime/rendering/SceneRenderer";
+    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+    import getLabel from "../utils/get-label";
+    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import Options from "./ShadingModelOptions.svelte";
+    import SceneRenderer from "../../../../../public/engine/runtime/rendering/SceneRenderer";
 
     export let engine
     export let settings
 
     $: shading = getLabel(settings.shadingModel)
-    $: {
-        SceneRenderer.debugShadingModel = settings.shadingModel
-    }
+    $: SceneRenderer.debugShadingModel = settings.shadingModel
 </script>
 
 

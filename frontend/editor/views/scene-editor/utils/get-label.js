@@ -27,6 +27,8 @@ export default function getLabel(shadingModel){
             return "SHADING_UV"
         case SHADING_MODELS.OVERDRAW:
             return "OVERDRAW"
+        case SHADING_MODELS.LIGHT_QUANTITY:
+            return "LIGHT_QUANTITY"
         default:
             return ""
     }

@@ -1,6 +1,6 @@
 <script>
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import ShadingOption from "../../components/shading-option/ShadingOption.svelte";
+    import ShadingOption from "./components/ShadingModels.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";

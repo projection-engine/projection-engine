@@ -24,6 +24,7 @@
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
     import getUnderSelectionBox from "./utils/get-under-selection-box";
     import GizmoSettings from "./components/GizmoSettings.svelte";
+    import SHADING_MODELS from "../../../../public/engine/static/SHADING_MODELS";
 
     let selectedSize = -1
     let mainEntity
@@ -110,6 +111,17 @@
             {focusedCamera.name}
         </div>
     {/if}
+    {#if settings.shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
+        <div class="complexity-gradient">
+            <small>{Localization.NOTHING}</small>
+            <small>{Localization.ALL_LIGHTS}</small>
+        </div>
+    {:else if settings.shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
+        <div class="complexity-gradient">
+            <small>{Localization.NOTHING}</small>
+            <small>{Localization.MAXIMUM_NUMBER_OF_LIGHTS}</small>
+        </div>
+    {/if}
 {:else}
     <button class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
         <Icon styles="font-size: .85rem">pause</Icon>
@@ -117,8 +129,26 @@
     </button>
 {/if}
 
-
 <style>
+    .complexity-gradient{
+        position: absolute;
+        z-index: 10;
+        bottom: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 75%;
+        padding: 6px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: linear-gradient(0.25turn, blue, red);
+        height: 40px;
+        border-radius: 5px;
+        box-shadow: rgb(0 0 0 / 20%) 2px 4px 10px 2px;
+    }
+
     .focused-camera {
         position: absolute;
         bottom: 4px;

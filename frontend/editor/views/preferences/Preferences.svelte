@@ -17,10 +17,7 @@
 
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
-
-    let timeout
     let tab = 0
-
 
     onDestroy(() => {
         unsubscribeSettings()

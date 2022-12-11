@@ -4,9 +4,7 @@ export default function getComponentIcon(key) {
     switch (key) {
         case COMPONENTS.MESH:
             return "category"
-        case COMPONENTS.POINT_LIGHT:
-            return "lightbulb"
-        case COMPONENTS.DIRECTIONAL_LIGHT:
+        case COMPONENTS.LIGHT:
             return "light_mode"
         case COMPONENTS.CAMERA:
             return "videocam"
@@ -16,9 +14,6 @@ export default function getComponentIcon(key) {
             return "transform"
         case COMPONENTS.SPRITE:
             return "image"
-        case COMPONENTS.SPOTLIGHT:
-            return "highlight"
-
         case COMPONENTS.PHYSICS_COLLIDER:
             return "compare_arrows"
         case COMPONENTS.RIGID_BODY:

@@ -3,6 +3,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../../utils/remove-component";
     import Localization from "../../../../../templates/LOCALIZATION_EN";
+    import Component from "../../../../../../../public/engine/templates/components/Component";
 
     export let key
     export let index
@@ -11,6 +12,10 @@
     export let submit
 
     $: title = Localization[component.name] || component.name
+
+    function checkIsDisabled(propAttr) {
+        return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]
+    }
 </script>
 
 <div data-inline="-" class="title-wrapper">
@@ -21,19 +26,21 @@
 </div>
 {#if Array.isArray(component.props)}
     {#each component.props as propAttr}
-        {#if propAttr.type === "group" && Array.isArray(propAttr.children)}
+        {#if propAttr.type === Component.propTypes.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
             <fieldset>
                 <legend>{Localization[propAttr.label] || propAttr.label}</legend>
                 {#each propAttr.children as attribute}
-                    <Property
-                            component={component}
-                            submit={submit}
-                            attribute={attribute}
-                    />
+                    {#if !checkIsDisabled(attribute)}
+                        <Property
+                                component={component}
+                                submit={submit}
+                                attribute={attribute}
+                        />
+                    {/if}
                 {/each}
             </fieldset>
 
-        {:else if propAttr.type !== "group"}
+        {:else if propAttr.type !== Component.propTypes.GROUP && !checkIsDisabled(propAttr)}
             <Property
                     component={component}
                     submit={submit}

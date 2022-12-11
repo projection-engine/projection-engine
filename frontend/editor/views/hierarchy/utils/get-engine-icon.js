@@ -1,19 +1,11 @@
 import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+import LIGHT_TYPES from "../../../../../public/engine/static/LIGHT_TYPES";
 
 export default function getEngineIcon(nodeRef) {
     let icons = []
     if (nodeRef) {
-        if (nodeRef.components.get(COMPONENTS.POINT_LIGHT))
-            icons.push({
-                icon: "lightbulb",
-                label: LOCALIZATION_EN.POINT_LIGHT
-            })
-        if (nodeRef.components.get(COMPONENTS.DIRECTIONAL_LIGHT))
-            icons.push({
-                icon: "light_mode",
-                label: LOCALIZATION_EN.DIRECTIONAL_LIGHT
-            })
+
         if (nodeRef.components.get(COMPONENTS.SKYLIGHT))
             icons.push({
                 icon: "lens_blur",
@@ -41,10 +33,11 @@ export default function getEngineIcon(nodeRef) {
                 icon: "widgets",
                 label: LOCALIZATION_EN.UI_LAYOUT
             })
-        if (nodeRef.components.get(COMPONENTS.SPOTLIGHT))
+
+        if ( nodeRef.__hasLight)
             icons.push({
-                icon: "highlight",
-                label: LOCALIZATION_EN.SPOTLIGHT
+                icon: "light_mode",
+                label: LOCALIZATION_EN.LIGHT
             })
     }
     return icons

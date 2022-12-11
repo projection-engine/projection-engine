@@ -9,6 +9,7 @@ import Wrapper from "../Wrapper";
 import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
 import LightsAPI from "../../../../../public/engine/lib/rendering/LightsAPI";
 import GizmoSystem from "./GizmoSystem";
+import LIGHT_TYPES from "../../../../../public/engine/static/LIGHT_TYPES";
 
 const AXIS_Y = new Float32Array([0, 1, 0])
 const AXIS_Z = new Float32Array([0, 0, 1])
@@ -36,27 +37,22 @@ export default class IconsSystem {
             const entity = entities[i]
             if (!entity._active)
                 continue
-            const hasSpotLight = entity.__hasSpotLight
-            const hasPointLight = entity.__hasPointLight
-            const hasDirectionalLight = entity.__hasDirectionalLight
+            const hasLight = entity.__hasLight
             const hasSkylight = entity.__hasSkylight
             const hasCamera = entity.__hasCamera
 
             if (
                 tracking === entity ||
                 entity.__meshRef ||
-                !hasSpotLight &&
-                !hasPointLight &&
-                !hasDirectionalLight &&
+                !hasLight &&
+
                 !hasSkylight &&
                 !hasCamera
             )
                 continue
             cb(
                 entity,
-                hasSpotLight,
-                hasPointLight,
-                hasDirectionalLight,
+                hasLight,
                 hasSkylight,
                 hasCamera
             )
@@ -65,17 +61,19 @@ export default class IconsSystem {
 
     static #drawIcon(
         entity,
-        hasSpotLight,
-        hasPointLight,
-        hasDirectionalLight,
+        hasLight,
         hasSkylight,
         hasCamera
     ) {
         let index = 0
         let hasMore = false
-        if (hasDirectionalLight)
+        const lightComponent = entity.__lightComp
+        const lightType = lightComponent?.type
+
+
+        if (lightType !== undefined && lightType === LIGHT_TYPES.DIRECTIONAL)
             index = 1
-        if (hasPointLight) {
+        if (lightType !== undefined && lightType === LIGHT_TYPES.POINT) {
             hasMore = index !== 0
             index = 2
         }
@@ -83,7 +81,7 @@ export default class IconsSystem {
             hasMore = index !== 0
             index = 3
         }
-        if (hasSpotLight) {
+        if (lightType !== undefined && lightType === LIGHT_TYPES.SPOT) {
             hasMore = index !== 0
             index = 4
         }
@@ -101,36 +99,33 @@ export default class IconsSystem {
 
     static #drawVisualizations(
         entity,
-        hasSpotLight,
-        hasPointLight,
-        hasDirectionalLight,
+        hasLight,
         hasSkylight,
         hasCamera
     ) {
-        if(hasSpotLight || hasPointLight || hasCamera)
+
+        if (hasLight || hasCamera)
             gpu.uniform1i(lineUniforms.darker, entity.__isSelected ? 0 : 1)
 
         let hasBound = false
-        if (hasSpotLight) {
+        const component = entity.__lightComp
+        if (hasLight && component.type === LIGHT_TYPES.SPOT) {
             hasBound = true
-            const component = entity.components.get(COMPONENTS.SPOTLIGHT)
             gpu.uniform1f(lineUniforms.size, component.cutoff * 4)
             gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
             gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
             LineAPI.drawY()
-        }
-        if (hasPointLight) {
-            const component = entity.components.get(COMPONENTS.POINT_LIGHT)
-            if(!hasBound) {
-                gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
-                gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
-            }
+        } else if (hasLight && component.type === LIGHT_TYPES.DIRECTIONAL) {
+            gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
+            gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
+
             gpu.uniform1f(lineUniforms.size, -component.cutoff * 4)
             LineAPI.drawY()
             hasBound = true
         }
-        if (hasCamera){
-            if(!hasBound)
+
+        if (hasCamera) {
+            if (!hasBound)
                 gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
             gpu.uniform1f(lineUniforms.size, -50)
             gpu.uniform3fv(lineUniforms.axis, AXIS_Z)
