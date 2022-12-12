@@ -41,7 +41,6 @@ export default class IconsSystem {
                 tracking === entity ||
                 entity.__meshRef ||
                 !hasLight &&
-
                 !hasSkylight &&
                 !hasCamera
             )
@@ -105,17 +104,12 @@ export default class IconsSystem {
 
         let hasBound = false
         const component = entity.__lightComp
-        if (hasLight && component.type === LIGHT_TYPES.SPOT) {
-            hasBound = true
-            gpu.uniform1f(lineUniforms.size, component.cutoff * 4)
-            gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
-            gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
-            LineAPI.drawY()
-        } else if (hasLight && component.type === LIGHT_TYPES.DIRECTIONAL) {
-            gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
-            gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
+        if (hasLight) {
+            const multiplier = component.type === LIGHT_TYPES.SPOT ? 1 : -1
 
-            gpu.uniform1f(lineUniforms.size, -component.cutoff * 4)
+            gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
+            gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
+            gpu.uniform1f(lineUniforms.size, multiplier * component.cutoff * 4)
             LineAPI.drawY()
             hasBound = true
         }
