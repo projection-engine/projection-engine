@@ -26,6 +26,8 @@ import CUBEMAP_FRAG from "./shaders/CUBEMAP.frag"
 import ICONS from "./static/ICONS.base64"
 import ICONS_SPRITE_FRAG from "./shaders/ICONS_SPRITE.frag"
 import ICONS_SPRITE_VERT from "./shaders/ICONS_SPRITE.vert"
+import LineRenderer from "./runtime/LineRenderer";
+import {lineFragment, lineVertex} from "./shaders/LINE";
 
 export default async function initializer() {
 
@@ -33,12 +35,13 @@ export default async function initializer() {
 
     GPUAPI.allocateTexture(circle, STATIC_TEXTURES.ROTATION_GIZMO).catch()
 
+
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ICONS, ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.CUBEMAP, CUBEMAP_VERT, CUBEMAP_FRAG)
-    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, gizmoShaderCode.lineVertex, gizmoShaderCode.lineFragment)
+    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, lineVertex, lineFragment)
 
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, gizmoShaderCode.sameSizeVertex, gizmoShaderCode.pickFragment)
-    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.UNSHADED, gizmoShaderCode.cameraVertex, gizmoShaderCode.cameraFragment)
+
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GIZMO, gizmoShaderCode.vertex, gizmoShaderCode.fragment)
 
     CollisionVisualizationSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.WIREFRAME, WIREFRAMEGlsl.vertex, WIREFRAMEGlsl.fragment)
@@ -59,7 +62,7 @@ export default async function initializer() {
     IconsSystem.initialize()
     SelectedSystem.initialize()
     GizmoSystem.initialize()
-
+    LineRenderer.initialize()
 
     GPUAPI.allocateTexture(ICONS, STATIC_TEXTURES.ICONS).then(texture => {
         IconsSystem.iconsTexture = texture.texture

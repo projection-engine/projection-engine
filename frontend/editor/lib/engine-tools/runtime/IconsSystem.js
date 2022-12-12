@@ -6,6 +6,7 @@ import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
 import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
 import LIGHT_TYPES from "../../../../../public/engine/static/LIGHT_TYPES";
+import LineRenderer from "./LineRenderer";
 
 const AXIS_Y = new Float32Array([0, 1, 0])
 const AXIS_Z = new Float32Array([0, 0, 1])
@@ -98,29 +99,17 @@ export default class IconsSystem {
         hasSkylight,
         hasCamera
     ) {
+        if (!hasLight && !hasCamera)
+            return
 
-        if (hasLight || hasCamera)
-            gpu.uniform1i(lineUniforms.darker, entity.__isSelected ? 0 : 1)
-
-        let hasBound = false
         const component = entity.__lightComp
-        if (hasLight) {
-            const multiplier = component.type === LIGHT_TYPES.SPOT ? 1 : -1
+        const lineSize = hasCamera ? -50 : component.type === LIGHT_TYPES.SPOT ? 1 : -1 * component.cutoff * 4
+        LineRenderer.setState(!entity.__isSelected, true, lineSize)
 
-            gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
-            gpu.uniform3fv(lineUniforms.axis, AXIS_Y)
-            gpu.uniform1f(lineUniforms.size, multiplier * component.cutoff * 4)
-            LineAPI.drawY()
-            hasBound = true
-        }
-
-        if (hasCamera) {
-            if (!hasBound)
-                gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, entity.__cacheCenterMatrix)
-            gpu.uniform1f(lineUniforms.size, -50)
-            gpu.uniform3fv(lineUniforms.axis, AXIS_Z)
-            LineAPI.drawZ()
-        }
+        if (hasLight)
+            LineRenderer.drawY(entity.__cacheIconMatrix)
+        if (hasCamera)
+            LineRenderer.drawZ(entity.__cacheIconMatrix)
     }
 
     static drawIcons(settings) {
@@ -128,15 +117,15 @@ export default class IconsSystem {
             return
 
         iconsShader.bind()
+
         gpu.activeTexture(gpu.TEXTURE0)
         gpu.bindTexture(gpu.TEXTURE_2D, IconsSystem.iconsTexture)
+
         gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
+
         IconsSystem.loop(IconsSystem.#drawIcon)
-
-
-        lineShader.bind()
-        gpu.uniform1i(lineUniforms.atOrigin, 1)
         IconsSystem.loop(IconsSystem.#drawVisualizations)
+        LineRenderer.finish()
 
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
     }

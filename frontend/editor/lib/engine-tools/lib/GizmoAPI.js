@@ -4,6 +4,8 @@ import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE"
 import GizmoSystem from "../runtime/GizmoSystem";
 import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
 import AXIS from "../static/AXIS";
+import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
+import LineRenderer from "../runtime/LineRenderer";
 
 export default class GizmoAPI {
     static tooltip
@@ -42,14 +44,18 @@ export default class GizmoAPI {
 
     static drawGizmo(mesh, transformMatrix, axis, uID) {
         const a = GizmoSystem.clickedAxis
+
+        // TODO - REPLACE WITH BETTER STRUCTURE
         GizmoSystem.gizmoShader.bindForUse({
             transformMatrix,
             translation: GizmoSystem.mainEntity.__pivotOffset,
             axis,
             selectedAxis: a === AXIS.SCREEN_SPACE ? axis : a,
             uID,
-            cameraIsOrthographic: CameraAPI.isOrthographic
+            cameraIsOrthographic: CameraAPI.isOrthographic,
+            depthSampler: VisibilityRenderer.depthSampler,
+            bufferResolution: LineRenderer.depthBufferResolution
         })
-        mesh.draw()
+        mesh.simplifiedDraw()
     }
 }

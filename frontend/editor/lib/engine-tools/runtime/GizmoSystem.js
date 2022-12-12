@@ -13,11 +13,12 @@ import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
 import {mat4} from "gl-matrix";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import GizmoAPI from "../lib/GizmoAPI";
+import LineRenderer from "./LineRenderer";
 
-const X = new Float32Array([1, 0, 0]), Y = new Float32Array([0, 1, 0]), Z = new Float32Array([0, 0, 1])
+
 const lineMatrix = mat4.create()
 const EMPTY_COMPONENT = new Movable()
-let lineShader, lineUniforms
+
 const LINE_SIZE = 1000000;
 export default class GizmoSystem {
     static mainEntity
@@ -69,8 +70,6 @@ export default class GizmoSystem {
     }
 
     static initialize() {
-        lineShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.LINE)
-        lineUniforms = lineShader.uniformMap
         GizmoSystem.screenSpaceMesh = GPU.meshes.get(STATIC_MESHES.PRODUCTION.SPHERE)
         GizmoSystem.dualAxisGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO)
         GizmoSystem.translationGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO)
@@ -112,26 +111,11 @@ export default class GizmoSystem {
                 GizmoAPI.applyTransformation(lineMatrix, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
             }
 
-            lineShader.bind()
-            gpu.uniform1i(lineUniforms.darker, 0)
-            gpu.uniform1f(lineUniforms.size, LINE_SIZE)
-            gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, lineMatrix)
-            gpu.uniform1i(lineUniforms.atOrigin, 0)
-            if (GizmoSystem.highlightX) {
-                gpu.uniform3fv(lineUniforms.axis, X)
-                LineAPI.drawX()
-            }
-
-            if (GizmoSystem.highlightY) {
-                gpu.uniform3fv(lineUniforms.axis, Y)
-                LineAPI.drawY()
-            }
-
-            if (GizmoSystem.highlightZ) {
-                gpu.uniform3fv(lineUniforms.axis, Z)
-                LineAPI.drawZ()
-            }
-
+            LineRenderer.setState(0, 0, LINE_SIZE)
+            if (GizmoSystem.highlightX) LineRenderer.drawX(lineMatrix)
+            if (GizmoSystem.highlightY) LineRenderer.drawY(lineMatrix)
+            if (GizmoSystem.highlightZ) LineRenderer.drawZ(lineMatrix)
+            LineRenderer.finish()
         } else
             GizmoSystem.hasStarted = false
     }
