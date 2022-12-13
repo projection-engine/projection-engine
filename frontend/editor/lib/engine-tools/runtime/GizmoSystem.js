@@ -29,8 +29,6 @@ export default class GizmoSystem {
     static targetRotation
     static targetGizmo
     static toBufferShader
-    static gizmoShader
-
     static clickedAxis
     static sensitivity = .001
     static hasStarted = false
@@ -83,9 +81,7 @@ export default class GizmoSystem {
 
         TransformationAPI.transformMovable(EMPTY_COMPONENT)
 
-        GizmoSystem.lineShader =
-            GizmoSystem.toBufferShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER)
-        GizmoSystem.gizmoShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.GIZMO)
+        GizmoSystem.toBufferShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER)
         GizmoSystem.translationGizmo = new TranslationGizmo()
         GizmoSystem.scaleGizmo = new ScalingGizmo()
         GizmoSystem.rotationGizmo = new RotationGizmo()
@@ -96,6 +92,7 @@ export default class GizmoSystem {
     static execute() {
         const m = GizmoSystem.mainEntity
         if (m != null) {
+            gpu.disable(gpu.CULL_FACE)
             const axis = GizmoSystem.clickedAxis
             GizmoSystem.highlightX = axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
             GizmoSystem.highlightY = axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
@@ -118,6 +115,7 @@ export default class GizmoSystem {
             LineRenderer.finish()
         } else
             GizmoSystem.hasStarted = false
+        gpu.enable(gpu.CULL_FACE)
     }
 
 

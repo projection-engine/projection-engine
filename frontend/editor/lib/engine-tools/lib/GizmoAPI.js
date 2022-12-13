@@ -6,9 +6,17 @@ import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
 import AXIS from "../static/AXIS";
 import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
 import LineRenderer from "../runtime/LineRenderer";
+import GPU from "../../../../../public/engine/GPU";
+import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
+import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
 
+let shader, uniforms
 export default class GizmoAPI {
-    static tooltip
+
+    static initialize(){
+        shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.GIZMO)
+        uniforms = shader.uniformMap
+    }
 
     static translateMatrix(entity, keepMatrix) {
         if (!GizmoSystem.mainEntity)
@@ -43,19 +51,16 @@ export default class GizmoAPI {
     }
 
     static drawGizmo(mesh, transformMatrix, axis, uID) {
-        const a = GizmoSystem.clickedAxis
+        const clickedAxis = GizmoSystem.clickedAxis
+        shader.bind()
+        gpu.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
+        gpu.uniform3fv(uniforms.translation, GizmoSystem.mainEntity.__pivotOffset)
+        gpu.uniform1i(uniforms.axis, axis)
+        gpu.uniform1i(uniforms.selectedAxis, clickedAxis)
 
-        // TODO - REPLACE WITH BETTER STRUCTURE
-        GizmoSystem.gizmoShader.bindForUse({
-            transformMatrix,
-            translation: GizmoSystem.mainEntity.__pivotOffset,
-            axis,
-            selectedAxis: a === AXIS.SCREEN_SPACE ? axis : a,
-            uID,
-            cameraIsOrthographic: CameraAPI.isOrthographic,
-            depthSampler: VisibilityRenderer.depthSampler,
-            bufferResolution: LineRenderer.depthBufferResolution
-        })
+        gpu.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
+        gpu.uniform3fv(uniforms.uID, uID)
+
         mesh.simplifiedDraw()
     }
 }

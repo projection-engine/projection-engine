@@ -1,7 +1,6 @@
 export const lineVertex = `
 layout (location = 0) in vec3 position; 
- 
- 
+
 //import(cameraUBO)
 
 uniform mat4 transformMatrix; 
@@ -53,7 +52,7 @@ void main() {
         
     vec2 quadUV = gl_FragCoord.xy/bufferResolution;
     float currentDepth = texture(depthSampler, quadUV).r;
-    if(currentDepth > 0. && abs(currentDepth - gl_FragCoord.z) > FRAG_DEPTH_THRESHOLD)
-        fragColor.rgb *= .75;
+    if(currentDepth > 0. && currentDepth < gl_FragCoord.z)
+        fragColor.rgb *= .5;
 }
 `

@@ -45,7 +45,7 @@ export default [
             PRODUCTION && terser()
         ]
     },
-    worker("public/engine/workers/movement-worker.js", "public/build/movement-worker.js"),
+    worker("public/engine/workers/entity-worker.js", "public/build/entity-worker.js"),
     worker("public/engine/workers/camera-worker.js", "public/build/camera-worker.js"),
     worker("public/engine/workers/terrain-worker.js", "public/build/terrain-worker.js"),
     worker("public/engine/workers/image-worker.js", "public/build/image-worker.js"),

@@ -11,7 +11,7 @@ let darker = 0, atOrigin = 0, size = 10000
 let finished = true, needsStateUpdate = false
 let bufferRes = new Float32Array(2)
 export default class LineRenderer{
-    static depthBufferResolution = bufferRes;
+
     static setState(darkerState, atOriginState, sizeState){
         darker = darkerState ? 1 : 0
         size = sizeState

@@ -160,16 +160,12 @@ export default class RotationGizmo {
     drawGizmo() {
         if (!GizmoSystem.mainEntity)
             return
-
-
-        gpu.disable(gpu.CULL_FACE)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.X || !this.tracking)
             this.#draw(this.xGizmo.matrix, AXIS.X, this.xGizmo.pickID)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Y || !this.tracking)
             this.#draw(this.yGizmo.matrix, AXIS.Y, this.yGizmo.pickID)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Z || !this.tracking)
             this.#draw(this.zGizmo.matrix, AXIS.Z, this.zGizmo.pickID)
-        gpu.enable(gpu.CULL_FACE)
     }
 
     #draw(transformMatrix, axis, id) {
