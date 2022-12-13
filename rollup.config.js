@@ -49,8 +49,7 @@ export default [
     worker("public/engine/workers/camera-worker.js", "public/build/camera-worker.js"),
     worker("public/engine/workers/terrain-worker.js", "public/build/terrain-worker.js"),
     worker("public/engine/workers/image-worker.js", "public/build/image-worker.js"),
-    worker("public/engine/workers/instancing-worker.js", "public/build/instancing-worker.js"),
-    worker("public/engine/workers/culling-worker.js", "public/build/culling-worker.js"),
+
     {
         input: `frontend/index.js`,
         output: {

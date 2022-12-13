@@ -41,7 +41,17 @@
                 value={settings.iconScale}
                 minValue={.01}
         />
-
+        <fieldset style="padding: 0">
+            <legend>{Localization.CULL_DISTANCE}</legend>
+            <Range
+                    label={Localization.MAX_DISTANCE}
+                    onFinish={v => {
+                        update("maxDistanceIcon", v)
+                    }}
+                    integer={true}
+                    value={settings.maxDistanceIcon}
+                    minValue={100}
+            />
     </div>
 </fieldset>
 

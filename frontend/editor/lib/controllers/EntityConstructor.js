@@ -12,12 +12,6 @@ import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
 import LIGHT_TYPES from "../../../../public/engine/static/LIGHT_TYPES";
 
 
-const addSprite = (entity, img) => {
-    const e = entity.addComponent(COMPONENTS.SPRITE)
-    e.imageID = img
-    e.attributes = [1, 0]
-}
-
 export default class EntityConstructor {
     static translateEntity(entity, rotation = CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
         if (SettingsStore.data.spawnOnOrigin) {

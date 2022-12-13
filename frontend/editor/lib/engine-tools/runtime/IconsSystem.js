@@ -8,15 +8,13 @@ import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
 import LIGHT_TYPES from "../../../../../public/engine/static/LIGHT_TYPES";
 import LineRenderer from "./LineRenderer";
 
-const AXIS_Y = new Float32Array([0, 1, 0])
-const AXIS_Z = new Float32Array([0, 0, 1])
+
 let lineShader, lineUniforms
 let iconsShader, iconsUniforms
 
 export default class IconsSystem {
     static iconsTexture
     static shader
-
 
     static initialize() {
         lineShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.LINE)
@@ -26,13 +24,14 @@ export default class IconsSystem {
         iconsUniforms = iconsShader.uniformMap
     }
 
-    static loop(cb) {
+    static loop(cb, settings ) {
         const tracking = CameraAPI.trackingEntity
         const entities = Engine.entities
         const size = entities.length
+
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity.active)
+            if (!entity.active || entity.distanceFromCamera[0] > settings.maxDistanceIcon)
                 continue
             const hasLight = entity.__hasLight
             const hasSkylight = entity.__hasSkylight
@@ -123,8 +122,8 @@ export default class IconsSystem {
 
         gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
 
-        IconsSystem.loop(IconsSystem.#drawIcon)
-        IconsSystem.loop(IconsSystem.#drawVisualizations)
+        IconsSystem.loop(IconsSystem.#drawIcon, settings)
+        IconsSystem.loop(IconsSystem.#drawVisualizations, settings)
         LineRenderer.finish()
 
         gpu.clear(gpu.DEPTH_BUFFER_BIT)

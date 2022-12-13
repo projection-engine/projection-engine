@@ -29,6 +29,7 @@ export default {
     ITEM_ALREADY_EXISTS: "Item already exists.",
     VIEWPORT: "Viewport",
     LIGHT: "Light",
+    CULL_DISTANCE: "Cull distance",
     ALL_LIGHTS: "All lights",
     LEVEL_NOT_FOUND: "Level not found, a new one will be created.",
     IMPORT_SUCCESSFUL: "Import successful",
