@@ -16,7 +16,7 @@ export default class Inheritance {
     xyz
     gridSize
     updateTransformationRealtime = false
-    key
+
 
     onMouseMove() {
         if (!GizmoSystem.hasStarted) {
@@ -93,13 +93,9 @@ export default class Inheritance {
         if (!GizmoSystem.mainEntity)
             return
 
-        gpu.disable(gpu.CULL_FACE)
         DualAxisGizmo.drawGizmo()
-
-        GizmoAPI.drawGizmo(this.xyz, this.xGizmo.matrix, AXIS.X, this.xGizmo.pickID)
-        GizmoAPI.drawGizmo(this.xyz, this.yGizmo.matrix, AXIS.Y, this.yGizmo.pickID)
-        GizmoAPI.drawGizmo(this.xyz, this.zGizmo.matrix, AXIS.Z, this.zGizmo.pickID)
-
-        gpu.enable(gpu.CULL_FACE)
+        GizmoAPI.drawGizmo(this.xyz, this.xGizmo.matrix, AXIS.X)
+        GizmoAPI.drawGizmo(this.xyz, this.yGizmo.matrix, AXIS.Y)
+        GizmoAPI.drawGizmo(this.xyz, this.zGizmo.matrix, AXIS.Z)
     }
 }

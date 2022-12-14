@@ -17,13 +17,10 @@ import LineRenderer from "./LineRenderer";
 
 
 const lineMatrix = mat4.create()
-const EMPTY_COMPONENT = new Movable()
 
 const LINE_SIZE = 1000000;
 export default class GizmoSystem {
     static mainEntity
-    static transformationMatrix
-    static translation
     static onStart
     static onStop
     static targetRotation
@@ -75,11 +72,6 @@ export default class GizmoSystem {
         GizmoSystem.rotationGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.ROTATION_GIZMO)
         GizmoSystem.scaleGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.SCALE_GIZMO)
 
-        EMPTY_COMPONENT._scaling[0] = .2
-        EMPTY_COMPONENT._scaling[1] = .2
-        EMPTY_COMPONENT._scaling[2] = .2
-
-        TransformationAPI.transformMovable(EMPTY_COMPONENT)
 
         GizmoSystem.toBufferShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER)
         GizmoSystem.translationGizmo = new TranslationGizmo()

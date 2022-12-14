@@ -30,7 +30,7 @@ TYPE: "Type",
     MAX_DISTANCE: "Max distance",
     DISTANCE_CULLING: "Distance culling",
     OCCLUSION_CULLING: "Occlusion culling",
-
+AREA_LIGHT: "Area light",
     DISK: "Disk",
 
     DEPTH_THICKNESS: "Depth thickness",

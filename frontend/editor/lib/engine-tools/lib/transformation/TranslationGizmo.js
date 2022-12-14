@@ -8,7 +8,6 @@ import Wrapper from "../../Wrapper";
 export default class TranslationGizmo extends Inheritance {
     static gridSize = 1
     tracking = false
-    key = "_translation"
     static hasCloned = false
     static cache = [0, 0, 0]
 

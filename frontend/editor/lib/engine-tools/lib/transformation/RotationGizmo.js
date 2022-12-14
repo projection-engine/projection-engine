@@ -161,21 +161,20 @@ export default class RotationGizmo {
         if (!GizmoSystem.mainEntity)
             return
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.X || !this.tracking)
-            this.#draw(this.xGizmo.matrix, AXIS.X, this.xGizmo.pickID)
+            this.#draw(this.xGizmo.matrix, AXIS.X)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Y || !this.tracking)
-            this.#draw(this.yGizmo.matrix, AXIS.Y, this.yGizmo.pickID)
+            this.#draw(this.yGizmo.matrix, AXIS.Y)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Z || !this.tracking)
-            this.#draw(this.zGizmo.matrix, AXIS.Z, this.zGizmo.pickID)
+            this.#draw(this.zGizmo.matrix, AXIS.Z)
     }
 
-    #draw(transformMatrix, axis, id) {
+    #draw(transformMatrix, axis) {
         RotationGizmo.shader.bindForUse({
             transformMatrix,
             axis,
             translation: GizmoSystem.mainEntity.__pivotOffset,
-            uID: [...id, 1],
+
             selectedAxis: GizmoSystem.clickedAxis,
-            circleSampler: this.texture.texture,
             cameraIsOrthographic: CameraAPI.isOrthographic
         })
         GizmoSystem.rotationGizmoMesh.draw()

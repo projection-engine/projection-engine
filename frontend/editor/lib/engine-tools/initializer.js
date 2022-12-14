@@ -19,16 +19,20 @@ import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
 import WIREFRAMEGlsl from "./shaders/WIREFRAME.glsl";
 import RotationGizmo from "./lib/transformation/RotationGizmo";
 import * as SELECTED from "./shaders/SELECTED.glsl"
-import * as GRID from "./shaders/GRID.glsl";
+import GRID_FRAG from "./shaders/GRID.frag";
 
 import ICONS from "./static/ICONS.base64"
 import ICONS_SPRITE_FRAG from "./shaders/ICONS_SPRITE.frag"
 import ICONS_SPRITE_VERT from "./shaders/ICONS_SPRITE.vert"
 import LineRenderer from "./runtime/LineRenderer";
-import {lineFragment, lineVertex} from "./shaders/LINE";
+import LINE_FRAG from "./shaders/LINE.frag";
 import GizmoAPI from "./lib/GizmoAPI";
-import {pickFragment, sameSizeVertex} from "./shaders/TO_DEPTH_BUFFER";
-import {fragmentRot, vertexRot} from "./shaders/ROTATION_GIZMO";
+import GIZMO_TO_DEPTH_FRAG from "./shaders/GIZMO_TO_DEPTH.frag";
+import ROTATION_GIZMO_VERT from "./shaders/ROTATION_GIZMO.vert";
+import ROTATION_GIZMO_FRAG from "./shaders/ROTATION_GIZMO.frag";
+import LINE_VERT from "./shaders/LINE.vert";
+import GRID_VERT from "./shaders/GRID.vert";
+import GIZMO_TO_DEPTH_VERT from "./shaders/GIZMO_TO_DEPTH.vert";
 
 export default async function initializer() {
 
@@ -38,13 +42,13 @@ export default async function initializer() {
 
 
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ICONS, ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
-    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, lineVertex, lineFragment)
-    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, sameSizeVertex, pickFragment)
+    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, LINE_VERT, LINE_FRAG)
+    GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, GIZMO_TO_DEPTH_VERT, GIZMO_TO_DEPTH_FRAG)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GIZMO, gizmoShaderCode.vertex, gizmoShaderCode.fragment)
 
     CollisionVisualizationSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.WIREFRAME, WIREFRAMEGlsl.vertex, WIREFRAMEGlsl.fragment)
-    RotationGizmo.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ROTATION_GIZMO, vertexRot, fragmentRot)
-    GridSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GRID, GRID.vertex, GRID.fragment)
+    RotationGizmo.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ROTATION_GIZMO, ROTATION_GIZMO_VERT, ROTATION_GIZMO_FRAG)
+    GridSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GRID, GRID_VERT, GRID_FRAG)
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE_OUTLINE, SELECTED.vertexSilhouette, SELECTED.fragmentSilhouette)
     SelectedSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE, SELECTED.vertex, SELECTED.fragment)
 

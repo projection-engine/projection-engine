@@ -50,7 +50,7 @@ export default class GizmoAPI {
         }
     }
 
-    static drawGizmo(mesh, transformMatrix, axis, uID) {
+    static drawGizmo(mesh, transformMatrix, axis) {
         const clickedAxis = GizmoSystem.clickedAxis
         shader.bind()
         gpu.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
@@ -59,7 +59,7 @@ export default class GizmoAPI {
         gpu.uniform1i(uniforms.selectedAxis, clickedAxis)
 
         gpu.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
-        gpu.uniform3fv(uniforms.uID, uID)
+
 
         mesh.simplifiedDraw()
     }

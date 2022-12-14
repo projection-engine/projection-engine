@@ -27,18 +27,5 @@ void main(){
     m[2][3]  = 0.0;
 
 
-//    vec3 translation = vec3(transformationMatrix[3]);
-//    float len = length(placement.xyz - translation);
-//    mat4 sc;
-//    for (int x = 0; x < 4; x++)
-//    for (int y = 0; y < 4; y++)
-//    if (x == y && x <= 2)
-//    sc[x][y] = len * scale;
-//    else if (x == y)
-//    sc[x][y] = 1.;
-//    else
-//    sc[x][y] = 0.;
-//    m = m * sc;
-
     gl_Position = projectionMatrix * m * vec4(position, 1.0);
 }

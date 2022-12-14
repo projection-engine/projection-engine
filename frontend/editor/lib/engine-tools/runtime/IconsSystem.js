@@ -51,7 +51,8 @@ export default class IconsSystem {
                 entity,
                 hasLight,
                 hasSkylight,
-                hasCamera
+                hasCamera,
+                settings
             )
         }
     }
@@ -60,7 +61,8 @@ export default class IconsSystem {
         entity,
         hasLight,
         hasSkylight,
-        hasCamera
+        hasCamera,
+        settings
     ) {
         let index = 0
         let hasMore = false
@@ -73,12 +75,15 @@ export default class IconsSystem {
                 index = 1
                 break
             case LIGHT_TYPES.POINT:
-                hasMore = index !== 0
                 index = 2
                 break
             case LIGHT_TYPES.SPOT:
-                hasMore = index !== 0
                 index = 4
+                break
+            case LIGHT_TYPES.SPHERE:
+                index = -1
+                gpu.uniform1i(iconsUniforms.drawSphere, 1)
+                gpu.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
                 break
         }
 
@@ -91,12 +96,15 @@ export default class IconsSystem {
             hasMore = index !== 0
             index = 5
         }
-
+        if(index !== -1)
+            gpu.uniform1i(iconsUniforms.drawSphere, 0)
         gpu.uniform1f(iconsUniforms.imageIndex, hasMore ? 0 : index)
         getPivotPointMatrix(entity)
         gpu.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
         gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
         drawQuad()
+        if(index === -1)
+            gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
     }
 
     static #drawVisualizations(

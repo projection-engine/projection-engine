@@ -47,20 +47,17 @@ export default class DualAxisGizmo {
         GizmoAPI.drawGizmo(
             meshToDraw,
             gizmos.XY.matrix,
-            AXIS.XY,
-            XY_ID
+            AXIS.XY
         )
         GizmoAPI.drawGizmo(
             meshToDraw,
             gizmos.XZ.matrix,
-            AXIS.XZ,
-            XZ_ID
+            AXIS.XZ
         )
         GizmoAPI.drawGizmo(
             meshToDraw,
             gizmos.ZY.matrix,
-            AXIS.ZY,
-            ZY_ID
+            AXIS.ZY
         )
     }
 }
