@@ -16,8 +16,8 @@ export default class ErrorLoggerAPI {
             return
         ErrorLoggerAPI.#initialized = true
 
-        FilesAPI.readFile(ErrorLoggerAPI.path, "json").then(o => {
-            const original = o != null ? o : []
+        // FilesAPI.readFile(ErrorLoggerAPI.path, "json").then(o => {
+
             const old = console.error
 
             console.error = (...messages) => {
@@ -47,11 +47,10 @@ export default class ErrorLoggerAPI {
                         }
                     })
                     const p = ErrorLoggerAPI.path
-                    FilesAPI.writeFile(p, JSON.stringify([...original, ...parsed], null, 4), true).catch()
+                    FilesAPI.writeFile(p, JSON.stringify(parsed, null, 4), true).catch()
                 }, 150)
                 old(...messages)
             }
-        })
-
+        // })
     }
 }

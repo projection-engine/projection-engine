@@ -68,20 +68,25 @@ export default class IconsSystem {
         const lightType = lightComponent?.type
 
 
-        if (lightType !== undefined && lightType === LIGHT_TYPES.DIRECTIONAL)
-            index = 1
-        if (lightType !== undefined && lightType === LIGHT_TYPES.POINT) {
-            hasMore = index !== 0
-            index = 2
+        switch (lightType){
+            case LIGHT_TYPES.DIRECTIONAL:
+                index = 1
+                break
+            case LIGHT_TYPES.POINT:
+                hasMore = index !== 0
+                index = 2
+                break
+            case LIGHT_TYPES.SPOT:
+                hasMore = index !== 0
+                index = 4
+                break
         }
+
         if (hasSkylight) {
             hasMore = index !== 0
             index = 3
         }
-        if (lightType !== undefined && lightType === LIGHT_TYPES.SPOT) {
-            hasMore = index !== 0
-            index = 4
-        }
+
         if (hasCamera) {
             hasMore = index !== 0
             index = 5

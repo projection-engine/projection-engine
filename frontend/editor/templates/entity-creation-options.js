@@ -1,6 +1,7 @@
 import STATIC_MESHES from "../../../public/engine/static/resources/STATIC_MESHES";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import Localization from "./LOCALIZATION_EN";
+import LIGHT_TYPES from "../../../public/engine/static/LIGHT_TYPES";
 
 export default function entityCreationOptions() {
     return [
@@ -32,25 +33,44 @@ export default function entityCreationOptions() {
         },
         {divider: true, label: Localization.LIGHTS},
         {
+            icon: "wb_iridescent",
+            label: Localization.SPHERE_AREA,
+            onClick: () => EntityConstructor.createLight(LIGHT_TYPES.SPHERE)
+        },
+        {
+            icon: "wb_iridescent",
+            label: Localization.DISK_AREA,
+            onClick: () => EntityConstructor.createLight(LIGHT_TYPES.DISK)
+        },
+        {
+            icon: "wb_iridescent",
+            label: Localization.PLANE_AREA,
+            onClick: () => EntityConstructor.createLight(LIGHT_TYPES.PLANE)
+        },
+
+
+        {
             icon: "lightbulb",
             label: Localization.POINT_LIGHT,
-            onClick: EntityConstructor.createPointLight
+            onClick: () => EntityConstructor.createLight(LIGHT_TYPES.POINT)
         },
         {
             icon: "light_mode",
             label: Localization.DIRECTIONAL_LIGHT,
-            onClick: EntityConstructor.createDirectionalLight
+            onClick: () => EntityConstructor.createLight(LIGHT_TYPES.DIRECTIONAL)
         },
+        {
+            icon: "highlight",
+            label: Localization.SPOTLIGHT,
+            onClick: () => EntityConstructor.createLight(LIGHT_TYPES.SPOT)
+        },
+
         {
             icon: "lens_blur",
             label: Localization.SKYLIGHT,
             onClick: () => EntityConstructor.createProbe()
         },
-        {
-            icon: "highlight",
-            label: Localization.SPOTLIGHT,
-            onClick: EntityConstructor.createSpotLight
-        },
+
 
         {divider: true, label: Localization.UTILS},
         {

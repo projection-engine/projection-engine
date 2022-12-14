@@ -1,8 +1,13 @@
 export default {
+    SPHERE_AREA: "Sphere area-light",
+    DISK_AREA: "Disk area-light",
+    PLANE_AREA: "Plane area-light",
+
+
     UPDATING_SKYLIGHT: "Updating skylight",
     ACTIVE_SKYLIGHT: "Active skylight",
     OUTLINE: "Outline",
-
+TYPE: "Type",
     SETTINGS: "Settings",
     VELOCITY_DEF: "Per-object velocity",
     SHADING_VELOCITY: "Velocity",
@@ -25,6 +30,8 @@ export default {
     MAX_DISTANCE: "Max distance",
     DISTANCE_CULLING: "Distance culling",
     OCCLUSION_CULLING: "Occlusion culling",
+
+    DISK: "Disk",
 
     DEPTH_THICKNESS: "Depth thickness",
     HAS_SSS: "Has screen-space shadows",

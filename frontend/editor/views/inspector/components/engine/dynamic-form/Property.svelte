@@ -35,7 +35,7 @@
             originalValue = temp
         }
     }
-
+    $: dropdownLabel  = attribute.type === Component.propTypes.OPTIONS ? attribute.options.find(o => o.value === value) : undefined
 
 </script>
 
@@ -110,7 +110,7 @@
     {:else if attribute.type === Component.propTypes.OPTIONS}
         <Dropdown disabled={isDisabled} width="100%">
             <button slot="button" disabled={isDisabled} class="dropdown">
-                {label}
+                {Localization[dropdownLabel?.label] || dropdownLabel?.label}
             </button>
             {#each attribute.options as option}
                 <button on:click={() =>  submit(attribute.key, option.value, true)}>

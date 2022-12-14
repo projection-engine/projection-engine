@@ -46,27 +46,12 @@ export default class EntityConstructor {
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 
-    static createSpotLight() {
-        const entity = new Entity(undefined, Localization.SPOTLIGHT)
-        const comp = entity.addComponent(COMPONENTS.LIGHT)
-        comp.type = LIGHT_TYPES.SPOT
-        EntityConstructor.translateEntity(entity)
-        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-    }
 
-    static createPointLight() {
-        const entity = new Entity(undefined, Localization.POINT_LIGHT)
-        const comp = entity.addComponent(COMPONENTS.LIGHT)
-        comp.type = LIGHT_TYPES.POINT
-        EntityConstructor.translateEntity(entity)
-        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
-    }
-
-    static createDirectionalLight() {
+    static createLight(type) {
         const entity = new Entity(undefined, Localization.DIRECTIONAL_LIGHT)
         EntityConstructor.translateEntity(entity)
         const comp = entity.addComponent(COMPONENTS.LIGHT)
-        comp.type = LIGHT_TYPES.DIRECTIONAL
+        comp.type = type
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }
 
