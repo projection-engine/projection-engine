@@ -31,7 +31,9 @@ export default class IconsSystem {
 
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity.active || entity.distanceFromCamera[0] > settings.maxDistanceIcon)
+
+
+            if (!entity.active || entity.distanceFromCamera > settings.maxDistanceIcon)
                 continue
             const hasLight = entity.__hasLight
             const hasSkylight = entity.__hasSkylight

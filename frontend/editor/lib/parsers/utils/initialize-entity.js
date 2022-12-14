@@ -17,6 +17,7 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
             entity.baseTransformationMatrix[i] = data.baseTransformationMatrix[i]
 
         const e = entity.addComponent(COMPONENTS.MESH)
+        entity.addComponent(COMPONENTS.CULLING)
         e.materialID = data.material
         e.meshID = meshID
         return entity

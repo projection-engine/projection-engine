@@ -101,6 +101,7 @@ export default class Loader {
                     const materialID = await Loader.mesh(file, data, asID)
                     const entity = new Entity(undefined, "New primitive")
                     const instance = entity.addComponent(COMPONENTS.MESH)
+                    entity.addComponent(COMPONENTS.CULLING)
                     instance.materialID = materialID
                     instance.meshID = data
                     EntityConstructor.translateEntity(entity)

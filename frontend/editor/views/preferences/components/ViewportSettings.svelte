@@ -42,7 +42,7 @@
                 minValue={.01}
         />
         <fieldset style="padding: 0">
-            <legend>{Localization.CULL_DISTANCE}</legend>
+            <legend>{Localization.CULLING}</legend>
             <Range
                     label={Localization.MAX_DISTANCE}
                     onFinish={v => {
@@ -50,7 +50,7 @@
                     }}
                     integer={true}
                     value={settings.maxDistanceIcon}
-                    minValue={100}
+                    minValue={1}
             />
     </div>
 </fieldset>

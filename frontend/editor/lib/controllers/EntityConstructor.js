@@ -33,6 +33,7 @@ export default class EntityConstructor {
     static createMesh(id) {
         const entity = new Entity(undefined, Localization.MESH_RENDERER)
         const m = entity.addComponent(COMPONENTS.MESH)
+        entity.addComponent(COMPONENTS.CULLING)
         m.meshID = id
         EntityConstructor.translateEntity(entity)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})

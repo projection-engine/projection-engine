@@ -8,7 +8,7 @@ import INITIAL_LAYOUT from "./INITIAL_LAYOUT";
 
 const toRad = Math.PI / 180
 export default {
-    maxDistanceIcon: 100,
+    maxDistanceIcon: 50,
     cameraGizmoSize: 25,
     overlays: true,
     outlineEnabled: true,
