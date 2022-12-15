@@ -84,6 +84,14 @@ export default class IconsSystem {
                 index = -1
                 gpu.uniform1i(iconsUniforms.drawSphere, 1)
                 gpu.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
+                gpu.uniform1i(iconsUniforms.removeSphereCenter, 0)
+                break
+            case LIGHT_TYPES.DISK:
+                index = -1
+                gpu.uniform1i(iconsUniforms.doNotFaceCamera, 1)
+                gpu.uniform1i(iconsUniforms.drawSphere, 1)
+                gpu.uniform1i(iconsUniforms.removeSphereCenter, 1)
+                gpu.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
                 break
         }
 
@@ -103,8 +111,10 @@ export default class IconsSystem {
         gpu.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
         gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
         drawQuad()
-        if(index === -1)
+        if(index === -1) {
+            gpu.uniform1i(iconsUniforms.doNotFaceCamera, 0)
             gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
+        }
     }
 
     static #drawVisualizations(
@@ -117,9 +127,20 @@ export default class IconsSystem {
             return
 
         const component = entity.__lightComp
-        const lineSize = hasCamera ? -50 : component.type === LIGHT_TYPES.SPOT ? 1 : -1 * component.cutoff * 4
-        LineRenderer.setState(!entity.__isSelected, true, lineSize)
+        let lineSize = -50
+        if(!hasCamera)
+            switch (component.type){
+                case LIGHT_TYPES.DISK:
+                case LIGHT_TYPES.SPOT:
+                    lineSize = component.cutoff * 4
+                    break
+                case LIGHT_TYPES.SPHERE:
+                case LIGHT_TYPES.POINT:
+                    lineSize = -component.cutoff * 4
+                    break
+            }
 
+        LineRenderer.setState(!entity.__isSelected, true, lineSize)
         if (hasLight)
             LineRenderer.drawY(entity.__cacheIconMatrix)
         if (hasCamera)

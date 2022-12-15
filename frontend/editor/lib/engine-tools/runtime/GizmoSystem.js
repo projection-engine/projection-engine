@@ -84,7 +84,7 @@ export default class GizmoSystem {
     static execute() {
         const m = GizmoSystem.mainEntity
         if (m != null) {
-            gpu.disable(gpu.CULL_FACE)
+
             const axis = GizmoSystem.clickedAxis
             GizmoSystem.highlightX = axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
             GizmoSystem.highlightY = axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
@@ -107,7 +107,6 @@ export default class GizmoSystem {
             LineRenderer.finish()
         } else
             GizmoSystem.hasStarted = false
-        gpu.enable(gpu.CULL_FACE)
     }
 
 

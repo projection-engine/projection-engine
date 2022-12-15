@@ -30,8 +30,7 @@ export default class GridSystem {
         gpu.uniform1i(uniforms.depthSampler, 0)
 
         gpu.uniform2fv(uniforms.resolution, resolution)
-        gpu.disable(gpu.CULL_FACE)
+
         planeMesh.draw()
-        gpu.enable(gpu.CULL_FACE)
     }
 }

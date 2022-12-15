@@ -50,21 +50,14 @@ export default class Wrapper {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
         if (!settings.overlays) return
+        gpu.disable(gpu.CULL_FACE)
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         GridSystem.execute()
         CollisionVisualizationSystem.execute(selected)
         SelectedSystem.drawSilhouette(selected)
         gpu.clear(gpu.DEPTH_BUFFER_BIT)
         IconsSystem.drawIcons(settings)
-
         GizmoSystem.execute()
-        if(window.d){
-            const s = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.TO_SCREEN)
-            s.bindForUse({
-                image: SSGI.unfilteredSSGISampler
-            })
-            drawQuad()
-        }
-
+        gpu.enable(gpu.CULL_FACE)
     }
 }

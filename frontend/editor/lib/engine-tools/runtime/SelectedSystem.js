@@ -27,7 +27,6 @@ export default class SelectedSystem {
         const length = selected.length
         if (length > 0) {
             fbo.startMapping()
-            gpu.disable(gpu.CULL_FACE)
             shader.bind()
             for (let m = 0; m < length; m++) {
                 const current = selected[m]
@@ -41,7 +40,6 @@ export default class SelectedSystem {
                 gpu.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
                 mesh.draw()
             }
-            gpu.enable(gpu.CULL_FACE)
             fbo.stopMapping()
         }
         const settings = SettingsStore.data
