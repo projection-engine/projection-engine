@@ -2,7 +2,7 @@
     import Range from "shared-resources/frontend/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
-    import GridSystem from "../../../lib/engine-tools/runtime/GridSystem";
+    import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
 
     export let settings
 

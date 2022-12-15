@@ -3,8 +3,8 @@ import GizmoSystem from "../runtime/GizmoSystem";
 import AXIS from "../static/AXIS";
 import DualAxisGizmo from "./transformation/DualAxisGizmo";
 import GizmoAPI from "./GizmoAPI";
-import PickingAPI from "../../../../../public/engine/lib/utils/PickingAPI";
-import UndoRedoAPI from "../../utils/UndoRedoAPI";
+import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
+import UndoRedoAPI from "../../frontend/editor/lib/utils/UndoRedoAPI";
 import Wrapper from "../Wrapper";
 import drawGizmoToDepth from "../utils/draw-gizmo-to-depth";
 

@@ -4,7 +4,7 @@
     import SelectBox from "../../components/select-box/SelectBox.svelte";
     import GIZMOS from "../../static/GIZMOS";
     import Loader from "../../lib/parsers/Loader";
-    import GizmoSystem from "../../lib/engine-tools/runtime/GizmoSystem";
+    import GizmoSystem from "../../../../engine-tools/runtime/GizmoSystem";
     import dragDrop from "../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
@@ -16,15 +16,15 @@
     import SettingsStore from "../../stores/SettingsStore";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import EntityInformation from "./components/EntityInformation.svelte";
-    import CameraTracker from "../../lib/engine-tools/lib/CameraTracker";
-    import Engine from "../../../../public/engine/Engine";
+    import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
+    import Engine from "../../../../engine-core/Engine";
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
     import getUnderSelectionBox from "./utils/get-under-selection-box";
     import GizmoSettings from "./components/GizmoSettings.svelte";
-    import SHADING_MODELS from "../../../../public/engine/static/SHADING_MODELS";
+    import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS";
 
     let selectedSize = -1
     let mainEntity

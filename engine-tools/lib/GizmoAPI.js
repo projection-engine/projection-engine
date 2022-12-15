@@ -1,14 +1,10 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
 
 import GizmoSystem from "../runtime/GizmoSystem";
-import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
-import AXIS from "../static/AXIS";
-import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
-import LineRenderer from "../runtime/LineRenderer";
-import GPU from "../../../../../public/engine/GPU";
-import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
-import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
+import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
+import GPU from "../../engine-core/GPU";
+import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 
 let shader, uniforms
 export default class GizmoAPI {

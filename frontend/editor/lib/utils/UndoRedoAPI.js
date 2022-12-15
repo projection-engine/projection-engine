@@ -1,10 +1,10 @@
 import EngineStore from "../../stores/EngineStore";
 import UndoRedo from "./UndoRedo";
-import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-import serializeStructure from "../../../../public/engine/utils/serialize-structure";
+import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityNameController from "../controllers/EntityNameController";
 
 export default class UndoRedoAPI {

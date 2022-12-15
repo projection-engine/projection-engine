@@ -1,6 +1,6 @@
 <script>
     import linkNodes from "../../utils/link-nodes"
-    import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES"
+    import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES"
     import Attribute from "./Attribute.svelte";
     import "../../css/NodeIO.css"
     import ShaderEditorTools from "../../libs/ShaderEditorTools";

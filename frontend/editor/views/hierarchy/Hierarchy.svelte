@@ -14,7 +14,7 @@
     import HierarchyController from "../../lib/controllers/HierarchyController";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import Engine from "../../../../public/engine/Engine";
+    import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
     import EntityConstructor from "../../lib/controllers/EntityConstructor";

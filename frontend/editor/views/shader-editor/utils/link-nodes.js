@@ -1,4 +1,4 @@
-import DATA_TYPES from "../../../../../public/engine/static/DATA_TYPES";
+import DATA_TYPES from "../../../../../engine-core/static/DATA_TYPES";
 import handleLink from "./handle-link";
 import ShaderEditorTools from "../libs/ShaderEditorTools";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";

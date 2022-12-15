@@ -1,4 +1,4 @@
-import PickingAPI from "../../../../../../public/engine/lib/utils/PickingAPI";
+import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 
 const MOUSE_LEFT = 0
 export default class SculptingGizmo {

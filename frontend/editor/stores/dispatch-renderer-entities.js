@@ -1,16 +1,16 @@
 import {v4} from "uuid"
 import EngineStore from "./EngineStore";
 import EntityNameController from "../lib/controllers/EntityNameController";
-import AXIS from "../lib/engine-tools/static/AXIS";
+import AXIS from "../../../engine-tools/static/AXIS";
 import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import SelectionStore from "./SelectionStore";
 import HierarchyController from "../lib/controllers/HierarchyController";
-import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
-import getPickerId from "../../../public/engine/utils/get-picker-id";
-import Engine from "../../../public/engine/Engine";
-import EntityAPI from "../../../public/engine/lib/utils/EntityAPI";
+import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
+import getPickerId from "../../../engine-core/utils/get-picker-id";
+import Engine from "../../../engine-core/Engine";
+import EntityAPI from "../../../engine-core/lib/utils/EntityAPI";
 import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS";
-import getPivotPointMatrix from "../lib/engine-tools/utils/get-pivot-point-matrix";
+import getPivotPointMatrix from "../../../engine-tools/utils/get-pivot-point-matrix";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",

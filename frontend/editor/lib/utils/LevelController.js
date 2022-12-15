@@ -1,14 +1,14 @@
 import FilesAPI from "../fs/FilesAPI"
 import UndoRedoAPI from "./UndoRedoAPI";
-import Engine from "../../../../public/engine/Engine";
+import Engine from "../../../../engine-core/Engine";
 import RegistryAPI from "../fs/RegistryAPI";
 
 import ROUTES from "../../static/ROUTES";
 import CHANNELS from "../../static/CHANNELS";
-import GPU from "../../../../public/engine/GPU";
-import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
+import GPU from "../../../../engine-core/GPU";
+import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
-import STATIC_TEXTURES from "../../../../public/engine/static/resources/STATIC_TEXTURES";
+import STATIC_TEXTURES from "../../../../engine-core/static/resources/STATIC_TEXTURES";
 import EngineStore from "../../stores/EngineStore";
 import SelectionStore from "../../stores/SelectionStore";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
@@ -20,12 +20,12 @@ import NodeFS from "shared-resources/frontend/libs/NodeFS";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
 import Localization from "../../templates/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
+import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import TabsStore from "../../stores/TabsStore";
-import CameraTracker from "../engine-tools/lib/CameraTracker";
-import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
-import serializeStructure from "../../../../public/engine/utils/serialize-structure";
-import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
+import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
+import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
+import serializeStructure from "../../../../engine-core/utils/serialize-structure";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 const {ipcRenderer} = window.require("electron")
 

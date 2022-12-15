@@ -1,4 +1,4 @@
-import Engine from "../../../../../public/engine/Engine";
+import Engine from "../../../../../engine-core/Engine";
 
 
 export default function getType(store, type, mergeMaterials, terrainMaterials) {

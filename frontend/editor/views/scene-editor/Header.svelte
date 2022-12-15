@@ -44,22 +44,53 @@
 </div>
 
 <div class="right-content">
-    <button data-view-header-button="-" data-highlight={settings.outlineEnabled ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, outlineEnabled: !settings.outlineEnabled})}>
-        <Icon styles="font-size: 1rem">border_outer</Icon>
-        <ToolTip content={LOCALIZATION_EN.OUTLINE}/>
-    </button>
+    <Dropdown styles="width: 250px" buttonStyles={getDropdownHeaderStyles()}>
+        <button slot="button" data-view-header-dropdown="-">
+            <Icon styles="font-size: 1rem">layers</Icon>
+            <ToolTip content={LOCALIZATION_EN.OVERLAY}/>
+        </button>
 
-    <button data-view-header-button="-" data-highlight={settings.overlays ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({...settings, overlays: !settings.overlays})}>
-        <Icon styles="font-size: 1rem">layers</Icon>
-        <ToolTip content={LOCALIZATION_EN.OVERLAY}/>
-    </button>
+        <button on:click={() => SettingsStore.updateStore({...settings, showGrid: !settings.showGrid})}>
+            {#if settings.showGrid}
+                <Icon styles="font-size: 1rem">check</Icon>
+            {:else}
+                <div style="width: 1.1rem"></div>
+            {/if}
+            {LOCALIZATION_EN.GRID}
+        </button>
+        <button on:click={() => SettingsStore.updateStore({...settings, showIcons: !settings.showIcons})}>
+            {#if settings.showIcons}
+                <Icon styles="font-size: 1rem">check</Icon>
+            {:else}
+                <div style="width: 1.1rem"></div>
+            {/if}
+            {LOCALIZATION_EN.ICONS}
+        </button>
+        <button on:click={() => SettingsStore.updateStore({...settings, showLines: !settings.showLines})}>
+            {#if settings.showLines}
+                <Icon styles="font-size: 1rem">check</Icon>
+            {:else}
+                <div style="width: 1.1rem"></div>
+            {/if}
+            {LOCALIZATION_EN.LINES}
+        </button>
+
+        <button on:click={() => SettingsStore.updateStore({...settings, showOutline: !settings.showOutline})}>
+            {#if settings.showOutline}
+                <Icon styles="font-size: 1rem">check</Icon>
+            {:else}
+                <div style="width: 1.1rem"></div>
+            {/if}
+            {LOCALIZATION_EN.OUTLINE}
+        </button>
+
+    </Dropdown>
     <ShadingOption engine={engine} settings={settings}/>
 </div>
 
 
 <style>
+
     .left-content {
         display: flex;
         align-items: center;

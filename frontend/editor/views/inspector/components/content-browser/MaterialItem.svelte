@@ -1,6 +1,6 @@
 <script>
     import AssetAPI from "../../../../lib/fs/AssetAPI";
-    import GPU from "../../../../../../public/engine/GPU";
+    import GPU from "../../../../../../engine-core/GPU";
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
@@ -8,7 +8,7 @@
     import compareObjects from "../../utils/compare-objects";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUAPI from "../../../../../../public/engine/lib/rendering/GPUAPI";
+    import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import MaterialUniforms from "../MaterialUniforms.svelte";
 
     export let data

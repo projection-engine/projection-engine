@@ -1,5 +1,5 @@
 import readFile from "shared-resources/backend/utils/read-file";
-import COMPONENTS from "../../public/engine/static/COMPONENTS.js";
+import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import CHANNELS from "../../frontend/editor/static/CHANNELS";
 
 const fs = require("fs");

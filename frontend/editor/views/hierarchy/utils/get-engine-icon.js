@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js";
+import COMPONENTS from "../../../../../engine-core/static/COMPONENTS.js";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 
 export default function getEngineIcon(nodeRef) {

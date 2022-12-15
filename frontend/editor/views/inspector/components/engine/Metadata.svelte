@@ -1,13 +1,13 @@
 <script>
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import getNativeComponents from "../../utils/get-native-components";
-    import Engine from "../../../../../../public/engine/Engine";
+    import Engine from "../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";
-    import EntityAPI from "../../../../../../public/engine/lib/utils/EntityAPI";
+    import EntityAPI from "../../../../../../engine-core/lib/utils/EntityAPI";
     import EngineStore from "../../../../stores/EngineStore";
     import HierarchyController from "../../../../lib/controllers/HierarchyController";
     import {v4} from "uuid";

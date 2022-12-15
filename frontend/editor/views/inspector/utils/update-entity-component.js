@@ -1,11 +1,11 @@
 import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
 import SelectionStore from "../../../stores/SelectionStore";
-import LightsAPI from "../../../../../public/engine/lib/utils/LightsAPI";
+import LightsAPI from "../../../../../engine-core/lib/utils/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
-import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
-import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
+import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
+import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
-import LightComponent from "../../../../../public/engine/templates/components/LightComponent";
+import LightComponent from "../../../../../engine-core/templates/components/LightComponent";
 
 export default function updateEntityComponent(savedState, setSaved, entity, key, value, save, currentComponentValue) {
     if (currentComponentValue[1] instanceof LightComponent) {

@@ -1,6 +1,6 @@
 <script>
     import SelectionStore from "../../../../stores/SelectionStore";
-    import Engine from "../../../../../../public/engine/Engine";
+    import Engine from "../../../../../../engine-core/Engine";
     import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
     import Range from "shared-resources/frontend/components/range/Range.svelte"

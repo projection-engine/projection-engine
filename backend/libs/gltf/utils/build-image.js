@@ -1,4 +1,4 @@
-import TEXTURE_TEMPLATE from "../../../../public/engine/static/TEXTURE_TEMPLATE";
+import TEXTURE_TEMPLATE from "../../../../engine-core/static/TEXTURE_TEMPLATE";
 import readTypedFile from "../../../utils/read-typed-file";
 import ProjectController from "../../../ProjectController";
 import FILE_TYPES from "shared-resources/FILE_TYPES";

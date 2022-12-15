@@ -1,4 +1,4 @@
-import SHADING_MODELS from "../../../public/engine/static/SHADING_MODELS"
+import SHADING_MODELS from "../../../engine-core/static/SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
@@ -10,8 +10,12 @@ const toRad = Math.PI / 180
 export default {
     maxDistanceIcon: 50,
     cameraGizmoSize: 25,
-    overlays: true,
-    outlineEnabled: true,
+
+    showOutline: true,
+    showLines: true,
+    showIcons: true,
+    showGrid: true,
+
     outlineColor: [.5,.5,.5],
     resolution: [window.screen.width, window.screen.height],
     hideFooter: false,

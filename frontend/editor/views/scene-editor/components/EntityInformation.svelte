@@ -2,9 +2,9 @@
     import {onDestroy, onMount} from "svelte";
     import GIZMOS from "../../../static/GIZMOS";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
+    import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
     import {quat} from "gl-matrix";
-    import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
+    import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
 
     const TO_DEG = 180 / Math.PI
     export let settings

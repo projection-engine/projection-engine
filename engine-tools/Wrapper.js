@@ -2,13 +2,10 @@ import GridSystem from "./runtime/GridSystem"
 import IconsSystem from "./runtime/IconsSystem"
 import GizmoSystem from "./runtime/GizmoSystem"
 import SelectedSystem from "./runtime/SelectedSystem"
-import Engine from "../../../../public/engine/Engine";
+import Engine from "../engine-core/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
-import SettingsStore from "../../stores/SettingsStore";
-import STATIC_SHADERS from "../../../../public/engine/static/resources/STATIC_SHADERS";
-import GPU from "../../../../public/engine/GPU";
-import SSGI from "../../../../public/engine/runtime/rendering/SSGI";
+import SettingsStore from "../frontend/editor/stores/SettingsStore";
 
 
 let selected = [], settings
@@ -33,9 +30,6 @@ export default class Wrapper {
                 Wrapper.selectionMap.set(d, true)
             }
         })
-
-
-
         const main = Wrapper.selected[0]
         if (main)
             GizmoSystem.linkEntityToGizmo(main)
@@ -49,14 +43,17 @@ export default class Wrapper {
     static afterDrawing() {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
-        if (!settings.overlays) return
+
         gpu.disable(gpu.CULL_FACE)
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
-        GridSystem.execute()
+        gpu.disable(gpu.DEPTH_TEST)
+        if(settings.showGrid)
+            GridSystem.execute()
         CollisionVisualizationSystem.execute(selected)
-        SelectedSystem.drawSilhouette(selected)
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+        SelectedSystem.drawSilhouette(selected, settings)
         IconsSystem.drawIcons(settings)
+        gpu.enable(gpu.DEPTH_TEST)
+        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+
         GizmoSystem.execute()
         gpu.enable(gpu.CULL_FACE)
     }

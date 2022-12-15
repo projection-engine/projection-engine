@@ -1,10 +1,10 @@
-import GPU from "../../../../../public/engine/GPU";
-import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
-import Engine from "../../../../../public/engine/Engine";
+import GPU from "../../../../../engine-core/GPU";
+import STATIC_MESHES from "../../../../../engine-core/static/resources/STATIC_MESHES";
+import Engine from "../../../../../engine-core/Engine";
 
-import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
-import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
-import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
+import STATIC_SHADERS from "../../../../../engine-core/static/resources/STATIC_SHADERS";
+import VisibilityRenderer from "../../../../../engine-core/runtime/rendering/VisibilityRenderer";
+import STATIC_FRAMEBUFFERS from "../../../../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
 
 export default function drawIconsToBuffer() {
     const entities = Engine.entities

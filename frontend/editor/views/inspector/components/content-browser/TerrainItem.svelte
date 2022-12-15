@@ -5,10 +5,10 @@
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
-    import TerrainGenerator from "../../../../../../public/engine/lib/math/TerrainGenerator";
+    import TerrainGenerator from "../../../../../../engine-core/lib/math/TerrainGenerator";
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUAPI from "../../../../../../public/engine/lib/rendering/GPUAPI";
+    import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
 
     export let item
     export let data

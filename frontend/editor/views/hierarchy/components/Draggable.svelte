@@ -11,7 +11,7 @@
     import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
     import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Engine from "../../../../../public/engine/Engine";
+    import Engine from "../../../../../engine-core/Engine";
 
     export let node
     export let lockedEntity

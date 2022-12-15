@@ -1,4 +1,4 @@
-import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
+import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import {quat, vec3, vec4} from "gl-matrix";
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS";
 

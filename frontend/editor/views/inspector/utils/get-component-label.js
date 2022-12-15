@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
+import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 
 export default function getComponentLabel(component){

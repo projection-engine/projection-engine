@@ -55,24 +55,7 @@
     </div>
 </fieldset>
 
-<fieldset>
-    <legend>{Localization.OUTLINE}</legend>
 
-    <div data-form="-">
-        <Checkbox
-                checked={settings.outlineEnabled}
-                handleCheck={() => {
-                    update("outlineEnabled", !settings.outlineEnabled)
-                }}
-                label={Localization.ENABLED}
-        />
-        <ColorPicker
-                value={settings.outlineColor.map(v => v * 255)}
-                label={Localization.COLOR}
-                submit={({r,g,b}) => update("outlineColor", [r/255,g/255,b/255])}
-        />
-    </div>
-</fieldset>
 
 <fieldset>
     <legend>{Localization.GIZMOS}</legend>
@@ -117,11 +100,37 @@
     <legend>{Localization.VIEWPORT}</legend>
     <div data-form="-">
         <Checkbox
-                checked={settings.overlays}
+                checked={settings.showGrid}
                 handleCheck={() => {
-                    update("overlays", !settings.overlays)
+                    update("showGrid", !settings.showGrid)
                 }}
-                label={Localization.SHOW_OVERLAY}
+                label={Localization.GRID}
+        />
+        <Checkbox
+                checked={settings.showIcons}
+                handleCheck={() => {
+                    update("showIcons", !settings.showIcons)
+                }}
+                label={Localization.ICONS}
+        />
+        <Checkbox
+                checked={settings.showLines}
+                handleCheck={() => {
+                    update("showLines", !settings.showLines)
+                }}
+                label={Localization.LINES}
+        />
+        <Checkbox
+                checked={settings.showOutline}
+                handleCheck={() => {
+                    update("showOutline", !settings.showOutline)
+                }}
+                label={Localization.OUTLINE}
+        />
+        <ColorPicker
+                value={settings.outlineColor.map(v => v * 255)}
+                label={Localization.OUTLINE}
+                submit={({r,g,b}) => update("outlineColor", [r/255,g/255,b/255])}
         />
     </div>
 </fieldset>

@@ -9,8 +9,8 @@
     import SceneStats from "./components/SceneStats.svelte";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
-    import ScriptsAPI from "../../../../public/engine/lib/utils/ScriptsAPI";
-    import UIAPI from "../../../../public/engine/lib/rendering/UIAPI";
+    import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
+    import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
 
     const {shell} = window.require("electron")

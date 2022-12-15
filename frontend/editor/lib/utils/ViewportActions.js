@@ -3,11 +3,11 @@ import EngineStore from "../../stores/EngineStore";
 
 import SelectionStore from "../../stores/SelectionStore";
 
-import QueryAPI from "../../../../public/engine/lib/utils/QueryAPI";
+import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import {vec3, vec4} from "gl-matrix";
-import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-import CameraTracker from "../engine-tools/lib/CameraTracker";
-import Engine from "../../../../public/engine/Engine";
+import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
+import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
+import Engine from "../../../../engine-core/Engine";
 
 
 export default class ViewportActions {

@@ -1,16 +1,16 @@
 <script>
     import Input from "shared-resources/frontend/components/input/Input.svelte";
     import StyleField from "./UIStyles.svelte";
-    import COMPONENTS from "../../../../../../public/engine/static/COMPONENTS.js"
+    import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS.js"
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
-    import UIAPI from "../../../../../../public/engine/lib/rendering/UIAPI";
+    import UIAPI from "../../../../../../engine-core/lib/rendering/UIAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import Engine from "../../../../../../public/engine/Engine";
+    import Engine from "../../../../../../engine-core/Engine";
 
     export let entity
     export let submit

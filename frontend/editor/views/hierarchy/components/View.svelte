@@ -10,7 +10,7 @@
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";
-    import Engine from "../../../../../public/engine/Engine";
+    import Engine from "../../../../../engine-core/Engine";
 
     export let ID
     export let searchString

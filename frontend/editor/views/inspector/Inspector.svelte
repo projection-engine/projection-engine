@@ -6,8 +6,8 @@
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
-    import Entity from "../../../../public/engine/instances/Entity";
-    import QueryAPI from "../../../../public/engine/lib/utils/QueryAPI";
+    import Entity from "../../../../engine-core/instances/Entity";
+    import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
     import ShaderNode from "../shader-editor/libs/ShaderNode";

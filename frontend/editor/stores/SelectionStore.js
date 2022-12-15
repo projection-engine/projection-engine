@@ -1,6 +1,6 @@
 import {get, writable} from "svelte/store";
-import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
-import Engine from "../../../public/engine/Engine";
+import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
+import Engine from "../../../engine-core/Engine";
 
 const TYPES = {
     ENGINE: "ENGINE",

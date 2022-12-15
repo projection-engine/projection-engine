@@ -1,9 +1,9 @@
-import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js"
-import GPU from "../../../../../public/engine/GPU";
-import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
-import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
-import SettingsStore from "../../../stores/SettingsStore";
-import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
+import COMPONENTS from "../../engine-core/static/COMPONENTS.js"
+import GPU from "../../engine-core/GPU";
+import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
+import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
+import SettingsStore from "../../frontend/editor/stores/SettingsStore";
+import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 
 
 let shader, uniforms, fbo, outlineShader, outlineShaderUniforms
@@ -23,7 +23,20 @@ export default class SelectedSystem {
     }
 
 
-    static drawSilhouette(selected) {
+    static drawSilhouette(selected, settings) {
+
+        if (settings.showOutline) {
+            gpu.activeTexture(gpu.TEXTURE0)
+            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.entityIDSampler)
+            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
+
+            gpu.uniform1i(outlineShaderUniforms.isOutline, 1)
+            gpu.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
+
+            drawQuad()
+        }
+
+
         const length = selected.length
         if (length > 0) {
             fbo.startMapping()
@@ -42,24 +55,12 @@ export default class SelectedSystem {
             }
             fbo.stopMapping()
         }
-        const settings = SettingsStore.data
         outlineShader.bind()
         if (length > 0) {
             gpu.activeTexture(gpu.TEXTURE0)
             gpu.bindTexture(gpu.TEXTURE_2D, fbo.colors[0])
             gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
             gpu.uniform1i(outlineShaderUniforms.isOutline, 0)
-            drawQuad()
-        }
-
-        if (settings.outlineEnabled) {
-            gpu.activeTexture(gpu.TEXTURE0)
-            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.entityIDSampler)
-            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
-
-            gpu.uniform1i(outlineShaderUniforms.isOutline, 1)
-            gpu.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
-
             drawQuad()
         }
 

@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import Engine from "../../../../../public/engine/Engine";
+    import Engine from "../../../../../engine-core/Engine";
 
     export let settings
 

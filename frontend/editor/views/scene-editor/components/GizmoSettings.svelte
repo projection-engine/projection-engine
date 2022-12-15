@@ -4,13 +4,13 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
-    import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
+    import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import TranslationGizmo from "../../../lib/engine-tools/lib/transformation/TranslationGizmo";
-    import ScalingGizmo from "../../../lib/engine-tools/lib/transformation/ScalingGizmo";
-    import RotationGizmo from "../../../lib/engine-tools/lib/transformation/RotationGizmo";
+    import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
+    import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
+    import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
     import GIZMOS from "../../../static/GIZMOS";
     import ROTATION_GRID from "../static/ROTATION_GRID";
     import SCALE_GRID from "../static/SCALE_GRID";

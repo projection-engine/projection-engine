@@ -3,7 +3,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import removeComponent from "../../../utils/remove-component";
     import Localization from "../../../../../templates/LOCALIZATION_EN";
-    import Component from "../../../../../../../public/engine/templates/components/Component";
+    import Component from "../../../../../../../engine-core/templates/components/Component";
 
     export let key
     export let index

@@ -2,10 +2,10 @@
 
     import CAMERA_GIZMO from "../static/CAMERA_GIZMO"
     import {onMount} from "svelte";
-    import CameraTracker from "../lib/engine-tools/lib/CameraTracker";
-    import CAMERA_ROTATIONS from "../lib/engine-tools/static/CAMERA_ROTATIONS";
+    import CameraTracker from "../../../engine-tools/lib/CameraTracker";
+    import CAMERA_ROTATIONS from "../../../engine-tools/static/CAMERA_ROTATIONS";
     import EngineStore from "../stores/EngineStore";
-    import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
+    import CameraAPI from "../../../engine-core/lib/utils/CameraAPI";
     import EntityStateController from "../lib/controllers/EntityStateController";
 
     let ref

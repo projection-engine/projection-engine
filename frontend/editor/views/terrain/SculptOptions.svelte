@@ -4,14 +4,14 @@
     import SettingsStore from "../../stores/SettingsStore";
     import Checkbox from "../../components/checkbox/Checkbox.svelte";
     import {onDestroy, onMount} from "svelte";
-    import SculptingGizmo from "../../lib/engine-tools/lib/terrain/SculptingGizmo";
-    import TerrainGenerator from "../../../../public/engine/lib/math/TerrainGenerator";
+    import SculptingGizmo from "../../../../engine-tools/lib/terrain/SculptingGizmo";
+    import TerrainGenerator from "../../../../engine-core/lib/math/TerrainGenerator";
 
     import Selector from "../../components/selector/Selector.svelte";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
+    import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 
     export let settings
     export let selectedTerrain

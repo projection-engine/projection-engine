@@ -1,11 +1,11 @@
 import EngineStore from "../stores/EngineStore";
-import Engine from "../../../public/engine/Engine";
+import Engine from "../../../engine-core/Engine";
 import SelectionStore from "../stores/SelectionStore";
 import EntityStateController from "../lib/controllers/EntityStateController";
-import CameraAPI from "../../../public/engine/lib/utils/CameraAPI";
-import CameraTracker from "../lib/engine-tools/lib/CameraTracker";
-import COMPONENTS from "../../../public/engine/static/COMPONENTS";
-import Entity from "../../../public/engine/instances/Entity";
+import CameraAPI from "../../../engine-core/lib/utils/CameraAPI";
+import CameraTracker from "../../../engine-tools/lib/CameraTracker";
+import COMPONENTS from "../../../engine-core/static/COMPONENTS";
+import Entity from "../../../engine-core/instances/Entity";
 
 export default function focusOnCamera(cameraTarget) {
     const focused = EngineStore.engine.focusedCamera

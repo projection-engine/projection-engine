@@ -1,8 +1,8 @@
-import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
-import GPU from "../../../../../public/engine/GPU";
-import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
-import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
-import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
+import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
+import GPU from "../../engine-core/GPU";
+import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
+import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
+import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
 
 let shader, uniforms, planeMesh, buffer, resolution
 export default class GridSystem {

@@ -5,10 +5,10 @@
     import GIZMOS from "../../static/GIZMOS";
     import SettingsStore from "../../stores/SettingsStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
-    import Entity from "../../../../public/engine/instances/Entity";
-    import Engine from "../../../../public/engine/Engine";
-    import COMPONENTS from "../../../../public/engine/static/COMPONENTS";
-    import UIAPI from "../../../../public/engine/lib/rendering/UIAPI";
+    import Entity from "../../../../engine-core/instances/Entity";
+    import Engine from "../../../../engine-core/Engine";
+    import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
+    import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
 

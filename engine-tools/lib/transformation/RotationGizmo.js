@@ -1,15 +1,15 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../../../static/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../../frontend/editor/static/TRANSFORMATION_TYPE"
 import mapGizmoMesh from "../../utils/map-gizmo-mesh"
-import PickingAPI from "../../../../../../public/engine/lib/utils/PickingAPI";
-import CameraAPI from "../../../../../../public/engine/lib/utils/CameraAPI";
+import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
+import CameraAPI from "../../../engine-core/lib/utils/CameraAPI";
 import GizmoSystem from "../../runtime/GizmoSystem";
 import AXIS from "../../static/AXIS";
 import ScreenSpaceGizmo from "./ScreenSpaceGizmo";
-import GPU from "../../../../../../public/engine/GPU";
-import STATIC_TEXTURES from "../../../../../../public/engine/static/resources/STATIC_TEXTURES";
+import GPU from "../../../engine-core/GPU";
+import STATIC_TEXTURES from "../../../engine-core/static/resources/STATIC_TEXTURES";
 import Wrapper from "../../Wrapper";
-import UndoRedoAPI from "../../../utils/UndoRedoAPI";
+import UndoRedoAPI from "../../../frontend/editor/lib/utils/UndoRedoAPI";
 import gizmoRotateEntity from "../../utils/gizmo-rotate-entity";
 import drawGizmoToDepth from "../../utils/draw-gizmo-to-depth";
 

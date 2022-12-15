@@ -1,4 +1,4 @@
-import Engine from "../../../../public/engine/Engine";
+import Engine from "../../../../engine-core/Engine";
 import SelectionStore from "../../stores/SelectionStore";
 
 

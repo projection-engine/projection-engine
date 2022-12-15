@@ -1,8 +1,8 @@
 import drawIconsToBuffer from "../../viewport/utils/draw-icons-to-buffer";
-import ConversionAPI from "../../../../../public/engine/lib/math/ConversionAPI";
-import GPU from "../../../../../public/engine/GPU";
-import PickingAPI from "../../../../../public/engine/lib/utils/PickingAPI";
-import Engine from "../../../../../public/engine/Engine";
+import ConversionAPI from "../../../../../engine-core/lib/math/ConversionAPI";
+import GPU from "../../../../../engine-core/GPU";
+import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
+import Engine from "../../../../../engine-core/Engine";
 import SelectionStore from "../../../stores/SelectionStore";
 import selectionQueryWorker from "./selection-query-worker";
 

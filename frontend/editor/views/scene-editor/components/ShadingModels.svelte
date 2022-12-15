@@ -4,7 +4,7 @@
     import getLabel from "../utils/get-label";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
     import Options from "./ShadingModelOptions.svelte";
-    import SceneRenderer from "../../../../../public/engine/runtime/rendering/SceneRenderer";
+    import SceneRenderer from "../../../../../engine-core/runtime/rendering/SceneRenderer";
 
     export let engine
     export let settings

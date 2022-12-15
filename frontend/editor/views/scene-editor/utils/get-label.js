@@ -1,4 +1,4 @@
-import SHADING_MODELS from "../../../../../public/engine/static/SHADING_MODELS";
+import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS";
 
 export default function getLabel(shadingModel){
     switch (shadingModel) {

@@ -6,9 +6,9 @@
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
     import AssetAPI from "../lib/fs/AssetAPI";
-    import initializer from "../lib/engine-tools/initializer";
+    import initializer from "../../../engine-tools/initializer";
     import VisualsStore from "../stores/VisualsStore";
-    import Engine from "../../../public/engine/Engine";
+    import Engine from "../../../engine-core/Engine";
 
     export let onReady
 

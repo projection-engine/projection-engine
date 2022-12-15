@@ -1,5 +1,5 @@
 import Main from './Index.svelte';
-import ConsoleAPI from "../public/engine/lib/utils/ConsoleAPI";
+import ConsoleAPI from "../engine-core/lib/utils/ConsoleAPI";
 
 window.consoleAPI = ConsoleAPI
 alert.pushAlert = () => null

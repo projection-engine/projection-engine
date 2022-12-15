@@ -1,11 +1,10 @@
-import Engine from "../../../../../public/engine/Engine";
-import GPU from "../../../../../public/engine/GPU";
+import Engine from "../../engine-core/Engine";
+import GPU from "../../engine-core/GPU";
 
-import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
+import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
-import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
-import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
-import LIGHT_TYPES from "../../../../../public/engine/static/LIGHT_TYPES";
+import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
+import LIGHT_TYPES from "../../engine-core/static/LIGHT_TYPES";
 import LineRenderer from "./LineRenderer";
 
 
@@ -24,7 +23,7 @@ export default class IconsSystem {
         iconsUniforms = iconsShader.uniformMap
     }
 
-    static loop(cb, settings ) {
+    static loop(cb, settings) {
         const tracking = CameraAPI.trackingEntity
         const entities = Engine.entities
         const size = entities.length
@@ -70,7 +69,7 @@ export default class IconsSystem {
         const lightType = lightComponent?.type
 
 
-        switch (lightType){
+        switch (lightType) {
             case LIGHT_TYPES.DIRECTIONAL:
                 index = 1
                 break
@@ -104,14 +103,14 @@ export default class IconsSystem {
             hasMore = index !== 0
             index = 5
         }
-        if(index !== -1)
+        if (index !== -1)
             gpu.uniform1i(iconsUniforms.drawSphere, 0)
         gpu.uniform1f(iconsUniforms.imageIndex, hasMore ? 0 : index)
         getPivotPointMatrix(entity)
         gpu.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
         gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
         drawQuad()
-        if(index === -1) {
+        if (index === -1) {
             gpu.uniform1i(iconsUniforms.doNotFaceCamera, 0)
             gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
         }
@@ -128,8 +127,8 @@ export default class IconsSystem {
 
         const component = entity.__lightComp
         let lineSize = -50
-        if(!hasCamera)
-            switch (component.type){
+        if (!hasCamera)
+            switch (component.type) {
                 case LIGHT_TYPES.DISK:
                 case LIGHT_TYPES.SPOT:
                     lineSize = component.cutoff * 4
@@ -152,17 +151,16 @@ export default class IconsSystem {
             return
 
         iconsShader.bind()
-
         gpu.activeTexture(gpu.TEXTURE0)
         gpu.bindTexture(gpu.TEXTURE_2D, IconsSystem.iconsTexture)
-
         gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
 
-        IconsSystem.loop(IconsSystem.#drawIcon, settings)
-        IconsSystem.loop(IconsSystem.#drawVisualizations, settings)
+        if (settings.showIcons)
+            IconsSystem.loop(IconsSystem.#drawIcon, settings)
+        if (settings.showLines)
+            IconsSystem.loop(IconsSystem.#drawVisualizations, settings)
         LineRenderer.finish()
 
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
     }
 
 

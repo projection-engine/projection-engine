@@ -1,5 +1,5 @@
 import getComponentIcon from "./get-component-icon";
-import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js";
+import COMPONENTS from "../../../../../engine-core/static/COMPONENTS.js";
 import getComponentLabel from "./get-component-label";
 
 export default function getNativeComponents() {

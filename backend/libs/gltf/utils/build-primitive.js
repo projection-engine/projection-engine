@@ -1,4 +1,4 @@
-import PrimitiveProcessor from "../../../../public/engine/lib/math/PrimitiveProcessor";
+import PrimitiveProcessor from "../../../../engine-core/lib/math/PrimitiveProcessor";
 import getPrimitiveIndices from "./get-primitive-indices";
 import {mat4} from "gl-matrix";
 

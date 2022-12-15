@@ -1,5 +1,5 @@
 <script>
-    import SHADING_MODELS from "../../../../../public/engine/static/SHADING_MODELS"
+    import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS"
     import SettingsStore from "../../../stores/SettingsStore";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 

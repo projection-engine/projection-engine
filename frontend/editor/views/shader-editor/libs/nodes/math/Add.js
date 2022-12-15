@@ -1,5 +1,5 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../public/engine/static/DATA_TYPES"
+import DATA_TYPES from "../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../material-compiler/templates/NODE_TYPES"
 
 

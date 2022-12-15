@@ -1,15 +1,14 @@
-import Entity from "../../../../public/engine/instances/Entity";
-import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
+import Entity from "../../../../engine-core/instances/Entity";
+import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import {vec3, vec4} from "gl-matrix";
 import Localization from "../../templates/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 import EngineStore from "../../stores/EngineStore";
 import {v4} from "uuid";
-import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
+import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import SettingsStore from "../../stores/SettingsStore";
-import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
-import LIGHT_TYPES from "../../../../public/engine/static/LIGHT_TYPES";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 
 export default class EntityConstructor {

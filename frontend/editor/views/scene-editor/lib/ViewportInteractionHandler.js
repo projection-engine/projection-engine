@@ -1,5 +1,5 @@
-import GizmoSystem from "../../../lib/engine-tools/runtime/GizmoSystem";
-import Engine from "../../../../../public/engine/Engine";
+import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
+import Engine from "../../../../../engine-core/Engine";
 import onViewportClick from "../../viewport/utils/on-viewport-click";
 import SelectionStore from "../../../stores/SelectionStore";
 import SettingsStore from "../../../stores/SettingsStore";

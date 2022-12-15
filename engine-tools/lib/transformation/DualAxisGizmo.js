@@ -1,10 +1,7 @@
 import GizmoSystem from "../../runtime/GizmoSystem";
 import AXIS from "../../static/AXIS";
-import CameraAPI from "../../../../../../public/engine/lib/utils/CameraAPI";
 import mapGizmoMesh from "../../utils/map-gizmo-mesh";
-import getPickerId from "../../../../../../public/engine/utils/get-picker-id";
-import STATIC_MESHES from "../../../../../../public/engine/static/resources/STATIC_MESHES";
-import GPU from "../../../../../../public/engine/GPU";
+import getPickerId from "../../../engine-core/utils/get-picker-id";
 import GizmoAPI from "../GizmoAPI";
 
 export const XZ_ID = getPickerId(AXIS.XZ), XY_ID = getPickerId(AXIS.XY), ZY_ID = getPickerId(AXIS.ZY)

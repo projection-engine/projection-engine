@@ -1,5 +1,5 @@
 import GizmoSystem from "../runtime/GizmoSystem";
-import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE";
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE";
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
 import Wrapper from "../Wrapper";
 import {vec3, vec4} from "gl-matrix";

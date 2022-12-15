@@ -4,11 +4,11 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
-    import BenchmarkAPI from "../../../../public/engine/lib/utils/BenchmarkAPI";
-    import Engine from "../../../../public/engine/Engine";
+    import BenchmarkAPI from "../../../../engine-core/lib/utils/BenchmarkAPI";
+    import Engine from "../../../../engine-core/Engine";
     import Range from "shared-resources/frontend/components/range/Range.svelte"
     import {v4} from "uuid";
-    import BENCHMARK_KEYS from "../../../../public/engine/static/BENCHMARK_KEYS";
+    import BENCHMARK_KEYS from "../../../../engine-core/static/BENCHMARK_KEYS";
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import SettingsStore from "../../stores/SettingsStore";
 

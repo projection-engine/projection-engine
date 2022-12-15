@@ -1,7 +1,6 @@
 import AXIS from "../static/AXIS";
 
 
-
 export const vertex = `
 #define SIZE .15
 layout (location = 0) in vec3 position; 

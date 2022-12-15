@@ -1,6 +1,6 @@
-import Entity from "../../../../../public/engine/instances/Entity"
-import TransformationAPI from "../../../../../public/engine/lib/math/TransformationAPI"
-import getPickerId from "../../../../../public/engine/utils/get-picker-id";
+import Entity from "../../engine-core/instances/Entity"
+import TransformationAPI from "../../engine-core/lib/math/TransformationAPI"
+import getPickerId from "../../engine-core/utils/get-picker-id";
 import {mat4} from "gl-matrix";
 
 const toDeg = 57.29

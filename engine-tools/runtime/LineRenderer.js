@@ -1,8 +1,8 @@
-import LineAPI from "../../../../../public/engine/lib/rendering/LineAPI";
-import GPU from "../../../../../public/engine/GPU";
-import STATIC_SHADERS from "../../../../../public/engine/static/resources/STATIC_SHADERS";
-import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
-import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
+import LineAPI from "../../engine-core/lib/rendering/LineAPI";
+import GPU from "../../engine-core/GPU";
+import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
+import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
+import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
 
 const X = new Float32Array([1, 0, 0]), Y = new Float32Array([0, 1, 0]), Z = new Float32Array([0, 0, 1])
 let lineShader, lineUniforms

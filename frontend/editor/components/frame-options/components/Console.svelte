@@ -3,7 +3,7 @@
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import ConsoleAPI from "../../../../../public/engine/lib/utils/ConsoleAPI";
+    import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import {v4} from "uuid";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";

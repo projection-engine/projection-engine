@@ -1,10 +1,10 @@
-import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
-import getPickerId from "../../../../../public/engine/utils/get-picker-id";
+import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
+import getPickerId from "../../engine-core/utils/get-picker-id";
 import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
-import VisibilityRenderer from "../../../../../public/engine/runtime/rendering/VisibilityRenderer";
-import GPU from "../../../../../public/engine/GPU";
-import STATIC_FRAMEBUFFERS from "../../../../../public/engine/static/resources/STATIC_FRAMEBUFFERS";
+import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
+import GPU from "../../engine-core/GPU";
+import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
 
 export default function drawGizmoToDepth(mesh, transforms){
     const FBO = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.VISIBILITY_BUFFER)

@@ -33,10 +33,17 @@ export default [
         output: {
             strict: false,
             sourcemap: false,
-            file: "public/build/electron.js",
+            file: "build/electron.js",
             format: 'cjs'
         },
         plugins: [
+            copy({
+                targets: [
+                    { src: 'engine-core/lib/ammo.wasm.wasm', dest: 'build' },
+                    { src: 'backend/libs/assimp/assimpjs.wasm', dest: 'build' },
+                    { src: 'public/index.html', dest: 'build' }
+                ]
+            }),
             resolve({
                 dedupe: ["electron", "sharp"]
             }),
@@ -45,10 +52,10 @@ export default [
             PRODUCTION && terser()
         ]
     },
-    worker("public/engine/workers/entity-worker.js", "public/build/entity-worker.js"),
-    worker("public/engine/workers/camera-worker.js", "public/build/camera-worker.js"),
-    worker("public/engine/workers/terrain-worker.js", "public/build/terrain-worker.js"),
-    worker("public/engine/workers/image-worker.js", "public/build/image-worker.js"),
+    worker("engine-core/workers/entity-worker.js", "build/entity-worker.js"),
+    worker("engine-core/workers/camera-worker.js", "build/camera-worker.js"),
+    worker("engine-core/workers/terrain-worker.js", "build/terrain-worker.js"),
+    worker("engine-core/workers/image-worker.js", "build/image-worker.js"),
 
     {
         input: `frontend/index.js`,
@@ -56,20 +63,15 @@ export default [
             strict: false,
             sourcemap: false,
             format: 'iife',
-            file: `public/build/frontend.js`
+            file: `build/frontend.js`
         },
         plugins: [
-            copy({
-                targets: [
-                    { src: 'public/engine/lib/ammo.wasm.wasm', dest: 'public/build' },
-                    { src: 'backend/libs/assimp/assimpjs.wasm', dest: 'public/build' }
-                ]
-            }),
+
             svelte({
                 compilerOptions: {
                     dev: !PRODUCTION,
                     css: css => {
-                        css.write(`public/build/frontend.css`);
+                        css.write(`build/frontend.css`);
                     }
                 }
             }),

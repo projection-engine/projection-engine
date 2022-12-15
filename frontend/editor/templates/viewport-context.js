@@ -1,7 +1,7 @@
 import SelectionStore from "../stores/SelectionStore";
 import viewportHotkeys from "./viewport-hotkeys";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
-import QueryAPI from "../../../public/engine/lib/utils/QueryAPI";
+import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import entityCreationOptions from "./entity-creation-options";
 
 export default function viewportContext(settings, forDropdown) {

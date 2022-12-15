@@ -1,6 +1,6 @@
 import {v4} from "uuid";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
-import TEXTURE_TEMPLATE from "../../public/engine/static/TEXTURE_TEMPLATE";
+import TEXTURE_TEMPLATE from "../../engine-core/static/TEXTURE_TEMPLATE";
 import ProjectController from "../ProjectController";
 import readTypedFile from "./read-typed-file";
 import createRegistryEntry from "./create-registry-entry";

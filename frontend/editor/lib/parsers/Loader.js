@@ -7,18 +7,18 @@ import RegistryAPI from "../fs/RegistryAPI";
 import EngineStore from "../../stores/EngineStore";
 import Localization from "../../templates/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-import COMPONENTS from "../../../../public/engine/static/COMPONENTS.js";
-import PickingAPI from "../../../../public/engine/lib/utils/PickingAPI";
-import QueryAPI from "../../../../public/engine/lib/utils/QueryAPI";
+import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
+import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
+import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import UndoRedoAPI from "../utils/UndoRedoAPI";
 import EntityConstructor from "../controllers/EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import GPU from "../../../../public/engine/GPU";
-import Entity from "../../../../public/engine/instances/Entity";
-import GPUAPI from "../../../../public/engine/lib/rendering/GPUAPI";
+import GPU from "../../../../engine-core/GPU";
+import Entity from "../../../../engine-core/instances/Entity";
+import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import {v4} from "uuid";
-import FileSystemAPI from "../../../../public/engine/lib/utils/FileSystemAPI";
+import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 

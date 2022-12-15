@@ -1,15 +1,15 @@
-import ENVIRONMENT from "../../../../public/engine/static/ENVIRONMENT";
+import ENVIRONMENT from "../../../../engine-core/static/ENVIRONMENT";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import EngineStore from "../../stores/EngineStore";
-import CameraTracker from "../engine-tools/lib/CameraTracker";
-import UIAPI from "../../../../public/engine/lib/rendering/UIAPI";
-import PhysicsAPI from "../../../../public/engine/lib/rendering/PhysicsAPI";
-import Engine from "../../../../public/engine/Engine";
-import serializeStructure from "../../../../public/engine/utils/serialize-structure";
-import EntityAPI from "../../../../public/engine/lib/utils/EntityAPI";
-import CameraAPI from "../../../../public/engine/lib/utils/CameraAPI";
-import ScriptsAPI from "../../../../public/engine/lib/utils/ScriptsAPI";
-import MaterialAPI from "../../../../public/engine/lib/rendering/MaterialAPI";
+import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
+import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
+import PhysicsAPI from "../../../../engine-core/lib/rendering/PhysicsAPI";
+import Engine from "../../../../engine-core/Engine";
+import serializeStructure from "../../../../engine-core/utils/serialize-structure";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
+import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
+import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
+import MaterialAPI from "../../../../engine-core/lib/rendering/MaterialAPI";
 
 export default class EntityStateController {
     static #state = []

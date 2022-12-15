@@ -1,7 +1,7 @@
-import STATIC_MESHES from "../../../public/engine/static/resources/STATIC_MESHES";
+import STATIC_MESHES from "../../../engine-core/static/resources/STATIC_MESHES";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import Localization from "./LOCALIZATION_EN";
-import LIGHT_TYPES from "../../../public/engine/static/LIGHT_TYPES";
+import LIGHT_TYPES from "../../../engine-core/static/LIGHT_TYPES";
 
 export default function entityCreationOptions() {
     return [

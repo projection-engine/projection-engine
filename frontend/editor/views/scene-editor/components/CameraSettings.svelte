@@ -1,12 +1,12 @@
 <script>
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import CameraAPI from "../../../../../public/engine/lib/utils/CameraAPI";
+    import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
     import ViewportActions from "../../../lib/utils/ViewportActions";
     import focusOnCamera from "../../../utils/focus-on-camera";
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
-    import Engine from "../../../../../public/engine/Engine";
-    import COMPONENTS from "../../../../../public/engine/static/COMPONENTS";
+    import Engine from "../../../../../engine-core/Engine";
+    import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import CameraGizmo from "../../../components/CameraGizmo.svelte";
 

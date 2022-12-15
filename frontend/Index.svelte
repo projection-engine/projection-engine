@@ -10,7 +10,7 @@
     import RENDER_TARGET from "./editor/static/RENDER_TARGET";
     import Localization from "./editor/templates/LOCALIZATION_EN";
     import HotKeysController from "./editor/lib/utils/HotKeysController";
-    import ConsoleAPI from "../public/engine/lib/utils/ConsoleAPI";
+    import ConsoleAPI from "../engine-core/lib/utils/ConsoleAPI";
 
     const {ipcRenderer} = window.require("electron")
 

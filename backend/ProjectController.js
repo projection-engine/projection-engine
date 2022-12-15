@@ -27,7 +27,7 @@ export default class ProjectController {
                 log(...msg)
                 ProjectController.window.webContents.send("console", msg)
             }
-            await ProjectController.window.loadFile(path.join(__dirname, '../../public/index.html'))
+            await ProjectController.window.loadFile(path.join(__dirname, './index.html'))
         }
 
         await ProjectController.window.webContents.executeJavaScript(`sessionStorage.setItem("${PROJECT_PATH}", "${pathTo.replaceAll("\\", "\\\\")}"); `)

@@ -2,7 +2,7 @@ import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import GizmoSystem from "../../runtime/GizmoSystem";
 import Inheritance from "../Inheritance";
 import gizmoTranslateEntity from "../../utils/gizmo-translate-entity";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../../stores/dispatch-renderer-entities";
+import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../frontend/editor/stores/dispatch-renderer-entities";
 import Wrapper from "../../Wrapper";
 
 export default class TranslationGizmo extends Inheritance {

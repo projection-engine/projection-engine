@@ -6,7 +6,7 @@
     import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";
-    import STATIC_MESHES from "../../../../public/engine/static/resources/STATIC_MESHES";
+    import STATIC_MESHES from "../../../../engine-core/static/resources/STATIC_MESHES";
     import getType from "./utils/get-type";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import getIcon from "./utils/get-icon";

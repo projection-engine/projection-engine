@@ -1,7 +1,7 @@
-import STATIC_MESHES from "../../../../../public/engine/static/resources/STATIC_MESHES";
-import GPU from "../../../../../public/engine/GPU";
-import COMPONENTS from "../../../../../public/engine/static/COMPONENTS.js";
-import COLLISION_TYPES from "../../../../../public/engine/static/COLLISION_TYPES";
+import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
+import GPU from "../../engine-core/GPU";
+import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
+import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";
 
 const EMPTY_MATRIX = mat4.create()

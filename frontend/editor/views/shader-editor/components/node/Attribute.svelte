@@ -1,5 +1,5 @@
 <script>
-    import DATA_TYPES from "../../../../../../public/engine/static/DATA_TYPES";
+    import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import Selector from "../../../../components/selector/Selector.svelte";
     import Range from "shared-resources/frontend/components/range/Range.svelte";
