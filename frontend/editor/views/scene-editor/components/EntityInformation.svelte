@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import GIZMOS from "../../../static/GIZMOS";
+    import GIZMOS from "../../../static/GIZMOS.json";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
     import {quat} from "gl-matrix";

@@ -1,4 +1,4 @@
-import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
+import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.json";
 
 export default function addNewTab(tabs, setTabs) {
     const clone  = [...tabs]

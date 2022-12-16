@@ -3,7 +3,7 @@ import PrimitiveProcessor from "../../../engine-core/lib/math/PrimitiveProcessor
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import createRegistryEntry from "../../utils/create-registry-entry";
 import {v4} from "uuid";
-import ProjectController from "../../ProjectController";
+import ProjectController from "../ProjectController";
 import {mat4} from "gl-matrix";
 
 const path = require("path")

@@ -1,5 +1,5 @@
 import VIEWS from "../static/VIEWS";
-import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
+import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.json";
 
 export default function getViewIcon(view) {
     switch (view) {

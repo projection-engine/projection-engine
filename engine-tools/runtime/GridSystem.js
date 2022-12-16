@@ -1,5 +1,5 @@
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
-import GPU from "../../engine-core/GPU";
+import GPU from "../../engine-core/lib/GPU";
 import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
 import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
 import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";

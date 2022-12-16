@@ -2,7 +2,7 @@ import Accessor from "./instances/Accessor";
 import DataBuffer from "./instances/DataBuffer";
 import buildImage from "./utils/build-image";
 import createRegistryEntry from "../../utils/create-registry-entry";
-import ProjectController from "../../ProjectController";
+import ProjectController from "../ProjectController";
 import buildPrimitive from "./utils/build-primitive";
 import buildNode from "./utils/build-node";
 import FILE_TYPES from "shared-resources/FILE_TYPES";

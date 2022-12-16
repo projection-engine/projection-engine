@@ -1,5 +1,5 @@
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js"
-import GPU from "../../engine-core/GPU";
+import GPU from "../../engine-core/lib/GPU";
 import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
 import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
 import SettingsStore from "../../frontend/editor/stores/SettingsStore";

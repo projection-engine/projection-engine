@@ -1,5 +1,5 @@
 <script>
-    import KEYS from "../../../../static/KEYS";
+    import KEYS from "../../../../static/KEYS.json";
 
     export let isOnRename
     export let submitRename

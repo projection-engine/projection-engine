@@ -1,6 +1,6 @@
 <script>
     import AssetAPI from "../../../../lib/fs/AssetAPI";
-    import GPU from "../../../../../../engine-core/GPU";
+    import GPU from "../../../../../../engine-core/lib/GPU";
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";

@@ -7,7 +7,7 @@ import json from "@rollup/plugin-json";
 import {terser} from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
 import {string} from "rollup-plugin-string";
-
+import typescript from "@rollup/plugin-typescript";
 const PRODUCTION = !process.env.ROLLUP_WATCH;
 
 const worker = (fileName, output) => ({
@@ -19,6 +19,7 @@ const worker = (fileName, output) => ({
         format: 'iife'
     },
     plugins: [
+        typescript(),
         resolve({
             browser: true
         }),
@@ -29,7 +30,7 @@ const worker = (fileName, output) => ({
 })
 export default [
     {
-        input: "backend/electron.js",
+        input: "backend/index.js",
         output: {
             strict: false,
             sourcemap: false,
@@ -37,6 +38,7 @@ export default [
             format: 'cjs'
         },
         plugins: [
+            typescript(),
             copy({
                 targets: [
                     { src: 'engine-core/lib/ammo.wasm.wasm', dest: 'build' },
@@ -66,7 +68,7 @@ export default [
             file: `build/frontend.js`
         },
         plugins: [
-
+            typescript(),
             svelte({
                 compilerOptions: {
                     dev: !PRODUCTION,

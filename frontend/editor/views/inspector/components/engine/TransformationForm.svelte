@@ -9,7 +9,7 @@
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
     import {quat} from "gl-matrix";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
+    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.json";
 
     const tempQuat = quat.create()
     const toRad = Math.PI / 180

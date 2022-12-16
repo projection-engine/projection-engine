@@ -1,9 +1,11 @@
+import AA_METHODS from "../../../engine-core/static/AA_METHODS";
+
 export default {
     gamma: 2.2,
     exposure: 1,
 
     mbVelocityScale: 1,
-    fxaa: false,
+    AAMethod: AA_METHODS.DISABLED,
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,
     FXAAReduceMul: 1 / 8,
@@ -12,9 +14,6 @@ export default {
     physicsSimulationStep: 0.01666666,
 
     preferencesVisibility: false,
-
-    backgroundColor: [.2, .2, .2],
-
     shadowAtlasQuantity: 4,
     shadowMapResolution: 4096,
     mbSamples: 50,

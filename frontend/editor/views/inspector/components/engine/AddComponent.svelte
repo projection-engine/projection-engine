@@ -9,7 +9,7 @@
     import SelectionStore from "../../../../stores/SelectionStore";
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS";
+    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.json";
 
     const nativeComponents = getNativeComponents()
 

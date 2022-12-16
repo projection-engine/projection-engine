@@ -3,7 +3,7 @@ import getPickerId from "../../engine-core/utils/get-picker-id";
 import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
 import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
-import GPU from "../../engine-core/GPU";
+import GPU from "../../engine-core/lib/GPU";
 import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
 
 export default function drawGizmoToDepth(mesh, transforms){

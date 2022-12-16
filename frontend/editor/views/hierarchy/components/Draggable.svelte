@@ -6,10 +6,10 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
     import EntityNameController from "../../../lib/controllers/EntityNameController";
-    import KEYS from "../../../static/KEYS";
+    import KEYS from "../../../static/KEYS.json";
     import handleDrop from "../utils/handle-drop";
     import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
+    import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS.json";
     import SelectionStore from "../../../stores/SelectionStore";
     import Engine from "../../../../../engine-core/Engine";
 

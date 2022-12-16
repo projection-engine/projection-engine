@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
-    import GIZMOS from "../../static/GIZMOS";
+    import GIZMOS from "../../static/GIZMOS.json";
     import Loader from "../../lib/parsers/Loader";
     import GizmoSystem from "../../../../engine-tools/runtime/GizmoSystem";
     import dragDrop from "../../components/drag-drop/drag-drop";

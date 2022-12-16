@@ -1,6 +1,6 @@
 <script>
     import {onMount} from "svelte";
-    import ROUTES from "./editor/static/ROUTES";
+    import ROUTES from "../backend/static/ROUTES.json";
     import Editor from "./editor/Editor.svelte";
     import InitializeWindow from "./editor/utils/initialize-window";
     import LevelController from "./editor/lib/utils/LevelController";

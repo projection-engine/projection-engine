@@ -3,6 +3,7 @@
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import VisualsStore from "../../../stores/VisualsStore";
+    import AA_METHODS from "../../../../../engine-core/static/AA_METHODS";
 
     export let visualSettings
 
@@ -49,11 +50,20 @@
     <legend>{Localization.ANTI_ALIASING}</legend>
     <div data-form="-">
         <Checkbox
-                checked={visualSettings.fxaa}
-                handleCheck={() => {
-               update("fxaa", !visualSettings.fxaa)
-        }}
+                checked={visualSettings.AAMethod === AA_METHODS.DISABLED}
+                handleCheck={() => update("AAMethod", AA_METHODS.DISABLED)}
+                label={Localization.DISABLED}
+        />
+        <Checkbox
+                checked={visualSettings.AAMethod === AA_METHODS.FXAA}
+                handleCheck={() => update("AAMethod", AA_METHODS.FXAA)}
                 label={Localization.FXAA}
+        />
+        <Checkbox
+                disabled={true}
+                checked={visualSettings.AAMethod === AA_METHODS.TAA}
+                handleCheck={() => update("AAMethod", AA_METHODS.TAA)}
+                label={Localization.TAA}
         />
     </div>
 </fieldset>

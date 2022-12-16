@@ -1,4 +1,4 @@
-import ProjectController from "../ProjectController";
+import ProjectController from "../libs/ProjectController";
 
 const pathRequire = require("path")
 const fs = require("fs")

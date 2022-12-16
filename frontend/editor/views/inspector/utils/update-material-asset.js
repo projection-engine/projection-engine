@@ -1,4 +1,4 @@
-import GPU from "../../../../../engine-core/GPU";
+import GPU from "../../../../../engine-core/lib/GPU";
 import MaterialAPI from "../../../../../engine-core/lib/rendering/MaterialAPI";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI";

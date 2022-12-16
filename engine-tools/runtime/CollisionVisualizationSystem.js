@@ -1,5 +1,5 @@
 import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
-import GPU from "../../engine-core/GPU";
+import GPU from "../../engine-core/lib/GPU";
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";

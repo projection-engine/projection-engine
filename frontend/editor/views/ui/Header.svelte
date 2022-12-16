@@ -2,7 +2,7 @@
     import Localization from "../../templates/LOCALIZATION_EN";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../static/GIZMOS";
+    import GIZMOS from "../../static/GIZMOS.json";
     import SettingsStore from "../../stores/SettingsStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
     import Entity from "../../../../engine-core/instances/Entity";

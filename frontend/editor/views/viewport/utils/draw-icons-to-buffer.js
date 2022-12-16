@@ -1,4 +1,4 @@
-import GPU from "../../../../../engine-core/GPU";
+import GPU from "../../../../../engine-core/lib/GPU";
 import STATIC_MESHES from "../../../../../engine-core/static/resources/STATIC_MESHES";
 import Engine from "../../../../../engine-core/Engine";
 

@@ -1,7 +1,7 @@
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
 
 import readFile from "shared-resources/backend/utils/read-file";
-import ProjectController from "../ProjectController";
+import ProjectController from "../libs/ProjectController";
 
 
 const pathRequire = require("path")

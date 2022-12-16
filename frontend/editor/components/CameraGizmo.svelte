@@ -1,6 +1,5 @@
 <script>
 
-    import CAMERA_GIZMO from "../static/CAMERA_GIZMO"
     import {onMount} from "svelte";
     import CameraTracker from "../../../engine-tools/lib/CameraTracker";
     import CAMERA_ROTATIONS from "../../../engine-tools/static/CAMERA_ROTATIONS";
@@ -9,7 +8,8 @@
     import EntityStateController from "../lib/controllers/EntityStateController";
 
     let ref
-    onMount(() => CameraTracker.gizmoReference = document.getElementById(CAMERA_GIZMO))
+    let cameraRef
+    onMount(() => CameraTracker.gizmoReference = cameraRef)
 
     function onGizmoClick(e) {
         const face = parseInt(e.target.getAttribute("data-face"))
@@ -38,7 +38,7 @@
     <div class="camera-view">
         <div
                 class="cube"
-                id={CAMERA_GIZMO}
+                bind:this={cameraRef}
         >
             <div
                     class="face front"

@@ -5,7 +5,7 @@ import LevelController from "../lib/utils/LevelController";
 import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
-import ROUTES from "../static/ROUTES";
+import ROUTES from "../../../backend/static/ROUTES.json";
 import VisualsStore from "../stores/VisualsStore";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
 

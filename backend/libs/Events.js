@@ -1,15 +1,15 @@
-import levelLoader from "./utils/level-loader";
+import levelLoader from "../utils/level-loader";
 import PROJECT_FILE_EXTENSION from "shared-resources/PROJECT_FILE_EXTENSION";
-import ROUTES from "../frontend/editor/static/ROUTES";
-import readTypedFile from "./utils/read-typed-file";
-import importFiles from "./utils/import-files";
+import ROUTES from "../static/ROUTES.json";
+import readTypedFile from "../utils/read-typed-file";
+import importFiles from "../utils/import-files";
 import ProjectController from "./ProjectController";
-import resolveFileName from "./utils/resolve-file-name";
+import resolveFileName from "../utils/resolve-file-name";
 
-import createRegistryEntry from "./utils/create-registry-entry";
+import createRegistryEntry from "../utils/create-registry-entry";
 import directoryStructure from "shared-resources/backend/utils/directory-structure";
 import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-import parseContentBrowserData from "./utils/parse-content-browser-data";
+import parseContentBrowserData from "../utils/parse-content-browser-data";
 
 const {ipcMain, dialog, app, screen} = require("electron")
 const fs = require("fs")

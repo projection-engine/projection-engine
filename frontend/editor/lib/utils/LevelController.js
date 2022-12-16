@@ -3,9 +3,9 @@ import UndoRedoAPI from "./UndoRedoAPI";
 import Engine from "../../../../engine-core/Engine";
 import RegistryAPI from "../fs/RegistryAPI";
 
-import ROUTES from "../../static/ROUTES";
-import CHANNELS from "../../static/CHANNELS";
-import GPU from "../../../../engine-core/GPU";
+import ROUTES from "../../../../backend/static/ROUTES.json";
+import CHANNELS from "../../../../backend/static/CHANNELS";
+import GPU from "../../../../engine-core/lib/GPU";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
 import STATIC_TEXTURES from "../../../../engine-core/static/resources/STATIC_TEXTURES";

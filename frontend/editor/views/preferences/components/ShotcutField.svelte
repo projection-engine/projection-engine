@@ -5,7 +5,7 @@
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-    import KEYS from "../../../static/KEYS";
+    import KEYS from "../../../static/KEYS.json";
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let shortcut = []

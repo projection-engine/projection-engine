@@ -1,5 +1,5 @@
 <script>
-    import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE"
+    import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE.json"
 
     import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
@@ -11,7 +11,7 @@
     import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
     import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
     import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
-    import GIZMOS from "../../../static/GIZMOS";
+    import GIZMOS from "../../../static/GIZMOS.json";
     import ROTATION_GRID from "../static/ROTATION_GRID";
     import SCALE_GRID from "../static/SCALE_GRID";
     import TRANSLATION_GRID from "../static/TRANSLATION_GRID";

@@ -2,7 +2,7 @@
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
-    import GPU from "../../../../../../engine-core/GPU";
+    import GPU from "../../../../../../engine-core/lib/GPU";
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import NodeFS from "shared-resources/frontend/libs/NodeFS";

@@ -1,12 +1,12 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../../frontend/editor/static/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../../frontend/editor/static/TRANSFORMATION_TYPE.json"
 import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI";
 import GizmoSystem from "../../runtime/GizmoSystem";
 import AXIS from "../../static/AXIS";
 import ScreenSpaceGizmo from "./ScreenSpaceGizmo";
-import GPU from "../../../engine-core/GPU";
+import GPU from "../../../engine-core/lib/GPU";
 import STATIC_TEXTURES from "../../../engine-core/static/resources/STATIC_TEXTURES";
 import Wrapper from "../../Wrapper";
 import UndoRedoAPI from "../../../frontend/editor/lib/utils/UndoRedoAPI";

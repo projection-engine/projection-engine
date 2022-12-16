@@ -15,7 +15,7 @@
     import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
-    import GPU from "../../../../../../engine-core/GPU";
+    import GPU from "../../../../../../engine-core/lib/GPU";
 
     export let entity
 

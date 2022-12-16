@@ -14,12 +14,12 @@ import UndoRedoAPI from "../utils/UndoRedoAPI";
 import EntityConstructor from "../controllers/EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
 import NodeFS from "shared-resources/frontend/libs/NodeFS";
-import GPU from "../../../../engine-core/GPU";
+import GPU from "../../../../engine-core/lib/GPU";
 import Entity from "../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import {v4} from "uuid";
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
-import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
+import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS.json";
 
 
 export default class Loader {

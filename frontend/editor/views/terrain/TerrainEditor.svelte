@@ -1,6 +1,6 @@
 <script>
     import CameraBar from "../../components/CameraGizmo.svelte";
-    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS";
+    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.json";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
     import Icon from "shared-resources/frontend/components/icon/Icon.svelte";

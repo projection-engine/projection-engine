@@ -1,6 +1,6 @@
 import drawIconsToBuffer from "../../viewport/utils/draw-icons-to-buffer";
 import ConversionAPI from "../../../../../engine-core/lib/math/ConversionAPI";
-import GPU from "../../../../../engine-core/GPU";
+import GPU from "../../../../../engine-core/lib/GPU";
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import Engine from "../../../../../engine-core/Engine";
 import SelectionStore from "../../../stores/SelectionStore";

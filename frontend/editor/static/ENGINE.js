@@ -6,6 +6,5 @@ export default {
     scripts: [],
     changeID: undefined,
     focusedCamera: undefined,
-
     currentLevel: undefined
 }

@@ -13,7 +13,7 @@
     import VIEWS from "../view/static/VIEWS";
     import CreationController from "./components/CreationController.svelte";
     import OtherSettings from "./GlobalOptions.svelte";
-    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS";
+    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.json";
 
     let engine
     let store

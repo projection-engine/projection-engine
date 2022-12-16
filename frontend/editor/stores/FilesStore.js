@@ -1,7 +1,7 @@
 import {get, writable} from "svelte/store";
 import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
-import ROUTES from "../static/ROUTES";
+import ROUTES from "../../../backend/static/ROUTES.json";
 import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
 import Localization from "../templates/LOCALIZATION_EN";
 import resolveFileName from "../templates/utils/resolve-file-name";

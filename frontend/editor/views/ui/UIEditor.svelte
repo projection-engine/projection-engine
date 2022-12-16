@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../static/GIZMOS";
+    import GIZMOS from "../../static/GIZMOS.json";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import SettingsStore from "../../stores/SettingsStore";
     import {v4} from "uuid";

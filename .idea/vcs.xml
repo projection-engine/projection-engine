@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/am" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/color-picker" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/engine-core" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/public/ammo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/public/engine" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/public/engine/ammo" vcs="Git" />

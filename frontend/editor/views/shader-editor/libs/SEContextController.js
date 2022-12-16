@@ -1,5 +1,5 @@
 import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
-import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
+import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS.json";
 
 export default class SEContextController {
     static #contexts = new Map()

@@ -1,9 +1,9 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.json"
 
 import GizmoSystem from "../runtime/GizmoSystem";
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
-import GPU from "../../engine-core/GPU";
+import GPU from "../../engine-core/lib/GPU";
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 
 let shader, uniforms
