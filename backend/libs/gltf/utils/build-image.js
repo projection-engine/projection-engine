@@ -1,7 +1,7 @@
 import TEXTURE_TEMPLATE from "../../../../engine-core/static/TEXTURE_TEMPLATE";
 import readTypedFile from "../../../utils/read-typed-file";
 import ProjectController from "../../ProjectController";
-import FILE_TYPES from "shared-resources/FILE_TYPES";
+import FILE_TYPES from "static/FILE_TYPES";
 
 
 const path = require("path"), fs = require("fs"), sharp = require("sharp")

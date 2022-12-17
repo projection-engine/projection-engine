@@ -23,8 +23,8 @@ import serializeStructure from "../../../../engine-core/utils/serialize-structur
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import NodeFS from "../../../shared/libs/NodeFS";
 import ROUTES from "../../../../backend/static/ROUTES";
-import PROJECT_STATIC_DATA from "../../../../shared-resources/PROJECT_STATIC_DATA";
-import PROJECT_FOLDER_STRUCTURE from "../../../../shared-resources/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_STATIC_DATA from "../../../../static/PROJECT_STATIC_DATA";
+import PROJECT_FOLDER_STRUCTURE from "../../../../static/PROJECT_FOLDER_STRUCTURE";
 import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 

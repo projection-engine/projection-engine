@@ -8,7 +8,7 @@ import resolveFileName from "../utils/resolve-file-name";
 
 import createRegistryEntry from "../utils/create-registry-entry";
 import directoryStructure from "../../shared-resources/backend/utils/directory-structure";
-import PROJECT_FOLDER_STRUCTURE from "../../shared-resources/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
 import parseContentBrowserData from "../utils/parse-content-browser-data";
 
 const {ipcMain, dialog, app, screen} = require("electron")

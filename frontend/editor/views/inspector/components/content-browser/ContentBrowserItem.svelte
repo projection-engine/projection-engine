@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
-    import FILE_TYPES from "shared-resources/FILE_TYPES";
+    import FILE_TYPES from "static/FILE_TYPES";
     import Icon from "frontend/shared/components/icon/Icon.svelte";
     import TextureItem from "./TextureItem.svelte";
     import CodeItem from "./CodeItem.svelte";

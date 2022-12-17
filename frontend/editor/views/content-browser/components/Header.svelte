@@ -11,7 +11,7 @@
     import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
-    import FILE_TYPES from "shared-resources/FILE_TYPES";
+    import FILE_TYPES from "static/FILE_TYPES";
     import importFile from "../../../utils/import-file";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";

@@ -2,7 +2,7 @@ import {v4} from "uuid"
 import RegistryAPI from "./RegistryAPI";
 import ROUTES from "../../../../backend/static/ROUTES";
 import NodeFS from "../../../shared/libs/NodeFS";
-import PROJECT_FOLDER_STRUCTURE from "../../../../shared-resources/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "../../../../static/PROJECT_FOLDER_STRUCTURE";
 
 
 const pathRequire = window.require("path")

@@ -2,7 +2,7 @@
     import Preview from "../../preview/Preview.svelte";
     import NodeFS from "../../../../shared/libs/NodeFS";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import PROJECT_FOLDER_STRUCTURE from "../../../../../shared-resources/PROJECT_FOLDER_STRUCTURE";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../../static/PROJECT_FOLDER_STRUCTURE";
 
     export let state
     export let type

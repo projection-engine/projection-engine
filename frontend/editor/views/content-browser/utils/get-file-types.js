@@ -1,4 +1,4 @@
-import FILE_TYPES from "shared-resources/FILE_TYPES";
+import FILE_TYPES from "static/FILE_TYPES";
 import Localization from "../../../templates/LOCALIZATION_EN";
 
 export default function getFileTypes() {

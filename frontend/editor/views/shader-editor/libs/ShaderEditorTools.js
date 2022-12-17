@@ -7,7 +7,7 @@ import TextureSample from "./nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
-import FILE_TYPES from "shared-resources/FILE_TYPES";
+import FILE_TYPES from "static/FILE_TYPES";
 import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class ShaderEditorTools {

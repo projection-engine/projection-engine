@@ -1,4 +1,4 @@
-import FILE_TYPES from "shared-resources/FILE_TYPES";
+import FILE_TYPES from "static/FILE_TYPES";
 
 export default function getIcon(icon, metadata, childQuantity, type) {
     if (icon)

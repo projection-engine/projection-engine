@@ -5,7 +5,7 @@ import createRegistryEntry from "../../utils/create-registry-entry";
 import ProjectController from "../ProjectController";
 import buildPrimitive from "./utils/build-primitive";
 import buildNode from "./utils/build-node";
-import FILE_TYPES from "shared-resources/FILE_TYPES";
+import FILE_TYPES from "static/FILE_TYPES";
 import {v4} from "uuid";
 import DataController from "./instances/DataController";
 import linkNodeToStructure from "./utils/link-node-to-structure";

@@ -2,7 +2,7 @@ import NodeFS from "frontend/shared/libs/NodeFS"
 import {v4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
-import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "static/PROJECT_FOLDER_STRUCTURE";
 
 const fs = window.require("fs")
 

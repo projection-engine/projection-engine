@@ -1,7 +1,7 @@
-import PROJECT_FOLDER_STRUCTURE from "../../shared-resources/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
 import readTypedFile from "../utils/read-typed-file";
-import FILE_TYPES from "../../shared-resources/FILE_TYPES";
-import PROJECT_STATIC_DATA from "../../shared-resources/PROJECT_STATIC_DATA";
+import FILE_TYPES from "../../static/FILE_TYPES";
+import PROJECT_STATIC_DATA from "../../static/PROJECT_STATIC_DATA";
 
 const {BrowserWindow} = require("electron")
 const fs = require("fs")

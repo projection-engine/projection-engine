@@ -1,6 +1,6 @@
 import FilesStore from "../../../stores/FilesStore";
 import resolveFileName from "../../../templates/utils/resolve-file-name";
-import FILE_TYPES from "shared-resources/FILE_TYPES";
+import FILE_TYPES from "static/FILE_TYPES";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE";
