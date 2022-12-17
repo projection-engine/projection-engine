@@ -1,4 +1,4 @@
-import NodeFS from "shared-resources/frontend/libs/NodeFS"
+import NodeFS from "frontend/shared/libs/NodeFS"
 import FilesStore from "../../../stores/FilesStore";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 

@@ -1,5 +1,5 @@
 <script>
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import Preview from "../../../../components/preview/Preview.svelte";
     import ItemInput from "./ItemInput.svelte";
     import openItem from "../../utils/open-item";

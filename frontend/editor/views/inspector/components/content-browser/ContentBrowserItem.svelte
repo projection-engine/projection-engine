@@ -2,14 +2,14 @@
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import TextureItem from "./TextureItem.svelte";
     import CodeItem from "./CodeItem.svelte";
     import ItemMetadata from "./ItemMetadata.svelte";
     import MaterialItem from "./MaterialItem.svelte";
     import MeshItem from "./MeshItem.svelte";
     import TerrainItem from "./TerrainItem.svelte";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import NodeFS from "frontend/shared/libs/NodeFS";
 
     const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION,  FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
 

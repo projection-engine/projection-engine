@@ -2,9 +2,9 @@
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
+    import Icon from "frontend/shared/components/icon/Icon.svelte"
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import dragDrop from "../../../../components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";

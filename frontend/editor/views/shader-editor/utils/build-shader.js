@@ -2,6 +2,7 @@ import materialCompiler from "../libs/material-compiler/material-compiler"
 import GPU from "../../../../../engine-core/lib/GPU";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI";
+import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default async function buildShader(nodes, links, openFile) {
     const {
@@ -13,7 +14,7 @@ export default async function buildShader(nodes, links, openFile) {
 
     if (functionDeclaration) {
         if (!GPU.materials.get(openFile.registryID)) {
-            window.consoleAPI.warn(LOCALIZATION_EN.NOT_APPLIED)
+            ConsoleAPI.warn(LOCALIZATION_EN.NOT_APPLIED)
             return
         }
         GPUAPI.asyncDestroyMaterial(openFile.registryID)
@@ -24,5 +25,5 @@ export default async function buildShader(nodes, links, openFile) {
             settings
         }, openFile.registryID)
     } else
-        window.consoleAPI.error(LOCALIZATION_EN.ERROR_DURING_COMPILATION)
+        ConsoleAPI.error(LOCALIZATION_EN.ERROR_DURING_COMPILATION)
 }

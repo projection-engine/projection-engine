@@ -2,13 +2,13 @@
     import {onDestroy, onMount} from "svelte";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
     import SelectBox from "../../components/select-box/SelectBox.svelte";
-    import GIZMOS from "../../static/GIZMOS.json";
+    import GIZMOS from "../../static/GIZMOS.ts";
     import Loader from "../../lib/parsers/Loader";
     import GizmoSystem from "../../../../engine-tools/runtime/GizmoSystem";
     import dragDrop from "../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
-    import ContextMenuController from "shared-resources/frontend/libs/ContextMenuController";
+    import ContextMenuController from "frontend/shared/libs/ContextMenuController";
     import Localization from "../../templates/LOCALIZATION_EN";
     import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
@@ -19,8 +19,8 @@
     import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
     import Engine from "../../../../engine-core/Engine";
     import EntityStateController from "../../lib/controllers/EntityStateController";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import Icon from "frontend/shared/components/icon/Icon.svelte"
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
     import getUnderSelectionBox from "./utils/get-under-selection-box";
     import GizmoSettings from "./components/GizmoSettings.svelte";

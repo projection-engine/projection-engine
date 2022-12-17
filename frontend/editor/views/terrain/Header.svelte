@@ -1,8 +1,8 @@
 <script>
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.json";
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
+    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.ts";
     import SettingsStore from "../../stores/SettingsStore";
     import Selector from "../../components/selector/Selector.svelte";
     import ShadingOption from "../scene-editor/components/ShadingModels.svelte";

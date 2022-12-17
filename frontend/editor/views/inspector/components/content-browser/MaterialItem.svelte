@@ -6,10 +6,11 @@
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
+    import NodeFS from "frontend/shared/libs/NodeFS";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import MaterialUniforms from "../MaterialUniforms.svelte";
+    import ConsoleAPI from "../../../../../../engine-core/lib/utils/ConsoleAPI";
 
     export let data
     export let item
@@ -64,7 +65,7 @@
             const instance = GPU.materials.get(item.registryID)
             if (instance) {
                 await instance.updateUniformGroup(temp.response.uniformsData)
-                window.consoleAPI.log(LOCALIZATION_EN.MATERIAL_UPDATED)
+                ConsoleAPI.log(LOCALIZATION_EN.MATERIAL_UPDATED)
 
                 GPUAPI.cleanUpTextures()
             }

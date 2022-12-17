@@ -19,7 +19,6 @@
     "atob": "^2.1.2",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
-    "shared-resources": "https://github.com/projection-engine/shared-resources.git",
     "sharp": "^0.31.1",
     "uuid": "^8.3.2"
   },
@@ -27,11 +26,11 @@
     "@electron-forge/cli": "6.0.0-beta.67",
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-image": "^2.1.1",
-    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
-    "@rollup/plugin-typescript": "^10.0.1",
+    "@tsconfig/svelte": "^3.0.0",
     "@types/electron": "^1.6.10",
     "@types/node": "^18.11.16",
+    "@types/uuid": "^9.0.0",
     "concurrently": "^5.1.0",
     "electron": "^20.1.3",
     "electron-is-dev": "^2.0.0",
@@ -41,8 +40,12 @@
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.34.1",
     "sirv-cli": "2.0.2",
     "svelte": "^3.50.1",
-    "svelte-preprocess": "^4.10.7"
+    "svelte-check": "^2.10.2",
+    "svelte-preprocess": "^5.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
   }
 }

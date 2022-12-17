@@ -1,7 +1,7 @@
 import {get, writable} from "svelte/store";
-import NodeFS, {getCall} from "shared-resources/frontend/libs/NodeFS"
+import NodeFS, {getCall} from "frontend/shared/libs/NodeFS"
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
-import ROUTES from "../../../backend/static/ROUTES.json";
+import ROUTES from "../../../backend/static/ROUTES.ts";
 import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
 import Localization from "../templates/LOCALIZATION_EN";
 import resolveFileName from "../templates/utils/resolve-file-name";
@@ -61,9 +61,6 @@ export default class FilesStore {
         let path = await resolveFileName(currentDirectory.id + NodeFS.sep + Localization.NEW_FOLDER, "")
         await NodeFS.mkdir(NodeFS.ASSETS_PATH + NodeFS.sep + path)
         await FilesStore.refreshFiles()
-
-        if (FilesStore.#isWatching)
-            NodeFS.reWatch()
     }
 
     static updateStore(value = FilesStore.data) {

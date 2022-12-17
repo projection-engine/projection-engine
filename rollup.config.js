@@ -3,12 +3,21 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
-import json from "@rollup/plugin-json";
 import {terser} from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
 import {string} from "rollup-plugin-string";
-import typescript from "@rollup/plugin-typescript";
+import typescript from 'rollup-plugin-typescript2';
+import autoPreprocess from 'svelte-preprocess';
+
+
 const PRODUCTION = !process.env.ROLLUP_WATCH;
+
+const TS = typescript({
+    sourceMap: false,
+    tsconfigDefaults: { compilerOptions: { declaration: true } },
+    tsconfig: "tsconfig.json",
+    tsconfigOverride: { compilerOptions: { declaration: false } }
+})
 
 const worker = (fileName, output) => ({
     input: fileName,
@@ -19,18 +28,16 @@ const worker = (fileName, output) => ({
         format: 'iife'
     },
     plugins: [
-        typescript(),
-        resolve({
-            browser: true
-        }),
+        resolve({browser: true}),
         commonjs({sourceMap: false}),
-        json(),
+        TS,
         PRODUCTION && terser()
     ]
 })
+
 export default [
     {
-        input: "backend/index.js",
+        input: "backend/index.ts",
         output: {
             strict: false,
             sourcemap: false,
@@ -38,9 +45,13 @@ export default [
             format: 'cjs'
         },
         plugins: [
-            typescript(),
+
             copy({
                 targets: [
+
+                    { src: 'public/APP_LOGO.png', dest: 'build' },
+                    { src: 'engine-tools/static/STATIC_GIZMO_DATA.json', dest: 'build' },
+                    { src: 'engine-core/static/STATIC_MESHES.json', dest: 'build' },
                     { src: 'engine-core/lib/ammo.wasm.wasm', dest: 'build' },
                     { src: 'backend/libs/assimp/assimpjs.wasm', dest: 'build' },
                     { src: 'public/index.html', dest: 'build' }
@@ -50,7 +61,7 @@ export default [
                 dedupe: ["electron", "sharp"]
             }),
             commonjs({ignore: ["electron", "sharp"], sourceMap: false }),
-            json(),
+            TS,
             PRODUCTION && terser()
         ]
     },
@@ -60,7 +71,7 @@ export default [
     worker("engine-core/workers/image-worker.js", "build/image-worker.js"),
 
     {
-        input: `frontend/index.js`,
+        input: `frontend/index.ts`,
         output: {
             strict: false,
             sourcemap: false,
@@ -68,8 +79,9 @@ export default [
             file: `build/frontend.js`
         },
         plugins: [
-            typescript(),
+
             svelte({
+                preprocess: autoPreprocess(),
                 compilerOptions: {
                     dev: !PRODUCTION,
                     css: css => {
@@ -82,11 +94,12 @@ export default [
                 browser: true,
                 dedupe: ['svelte']
             }),
+
             commonjs({sourceMap: false }),
-            !PRODUCTION && serve(),
+            TS,
+
             PRODUCTION && terser(),
             image(),
-            json(),
             string({
                 include: ["**/*.glsl", "**/*.frag","**/*.vert", "**/*.base64"]
             })
@@ -96,19 +109,3 @@ export default [
         }
     }
 ]
-
-function serve() {
-    let started = false;
-    return {
-        writeBundle() {
-            if (!started) {
-                started = true;
-
-                require('child_process').spawn('npm', ['run', 'svelte-start', '--', '--dev'], {
-                    stdio: ['ignore', 'inherit', 'inherit'],
-                    shell: true
-                });
-            }
-        }
-    };
-}

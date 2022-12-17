@@ -1,6 +1,6 @@
 <script>
-    import Input from "shared-resources/frontend/components/input/Input.svelte";
-    import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
+    import Input from "frontend/shared/components/input/Input.svelte";
+    import ColorPicker from "frontend/shared/components/color-picker/ColorPicker.svelte";
     import Attribute from "../../../shader-editor/components/node/Attribute.svelte";
     import SEContextController from "../../../shader-editor/libs/SEContextController";
     import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";

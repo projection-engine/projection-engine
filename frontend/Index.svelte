@@ -1,16 +1,17 @@
 <script>
     import {onMount} from "svelte";
-    import ROUTES from "../backend/static/ROUTES.json";
+    import ROUTES from "../backend/static/ROUTES.ts";
     import Editor from "./editor/Editor.svelte";
     import InitializeWindow from "./editor/utils/initialize-window";
     import LevelController from "./editor/lib/utils/LevelController";
-    import About from "shared-resources/frontend/components/About.svelte";
-    import logo from "shared-resources/APP_LOGO.js"
+    import About from "frontend/shared/components/About.svelte";
+
     import Canvas from "./editor/components/Canvas.svelte";
     import RENDER_TARGET from "./editor/static/RENDER_TARGET";
     import Localization from "./editor/templates/LOCALIZATION_EN";
     import HotKeysController from "./editor/lib/utils/HotKeysController";
     import ConsoleAPI from "../engine-core/lib/utils/ConsoleAPI";
+    import Alert from "./shared/components/alert/Alert.svelte";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -19,20 +20,7 @@
     let fullyLoaded = false
 
     onMount(() => {
-        ConsoleAPI.onLog = (messages) => {
-            alert.pushAlert(messages.join(" "), "info")
-            console.log(messages)
-        }
-        ConsoleAPI.onWarn = (messages) => {
-            alert.pushAlert(messages.join(" "), "alert")
-            console.warn(messages)
-        }
-        ConsoleAPI.onError = (messages) => {
-            alert.pushAlert(messages.join(" "), "error")
-            console.error(messages)
-        }
-
-        ipcRenderer.on("console", (_, data) => console.error(...data))
+        ipcRenderer.on("console", (_, data) => ConsoleAPI.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
             clearInterval(interval)
@@ -52,11 +40,12 @@
     {/if}
 </div>
 
+<Alert/>
 {#if fullyLoaded}
     <Editor/>
 {:else}
     <div class="wrapper">
-        <img src={logo} alt="logo">
+        <img src={"./APP_LOGO.png"} alt="logo">
         <div class="title">
             <div class="label">{Localization.PROJECTION_ENGINE}</div>
             <small>{Localization.VERSION}</small>

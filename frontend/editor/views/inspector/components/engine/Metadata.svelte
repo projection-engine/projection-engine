@@ -1,5 +1,5 @@
 <script>
-    import Input from "shared-resources/frontend/components/input/Input.svelte";
+    import Input from "frontend/shared/components/input/Input.svelte";
     import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";

@@ -1,6 +1,6 @@
 <script>
     import viewportContext from "../../../templates/viewport-context";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte"
     import Localization from "../../../templates/LOCALIZATION_EN";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
 

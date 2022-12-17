@@ -8,6 +8,7 @@ import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import FILE_TYPES from "shared-resources/FILE_TYPES";
+import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class ShaderEditorTools {
 
@@ -101,7 +102,7 @@ export default class ShaderEditorTools {
                     openFile.registryID,
                     JSON.stringify(materialData)
                 )
-            window.consoleAPI.log(LOCALIZATION_EN.SAVED)
+            ConsoleAPI.log(LOCALIZATION_EN.SAVED)
         } catch (err) {
             console.error(err)
         }

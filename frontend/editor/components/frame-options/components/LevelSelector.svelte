@@ -1,7 +1,7 @@
 <script>
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import LevelController from "../../../lib/utils/LevelController";
     import Localization from "../../../templates/LOCALIZATION_EN";
 

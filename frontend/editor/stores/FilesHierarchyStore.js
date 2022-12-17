@@ -1,5 +1,5 @@
 import {get, writable} from "svelte/store";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
 import FilesStore from "./FilesStore";
 
 const store = writable({items: [], open: {}});

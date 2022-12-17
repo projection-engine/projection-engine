@@ -1,8 +1,8 @@
 <script>
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import "../css/Branch.css"
     import DraggableEntity from "./Draggable.svelte";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import EntityConstructor from "../../../lib/controllers/EntityConstructor";
 

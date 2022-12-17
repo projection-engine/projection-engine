@@ -1,8 +1,8 @@
 <script>
     import {ALL_NODES} from "../static/ALL_NODES"
-    import Input from "shared-resources/frontend/components/input/Input.svelte";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Input from "frontend/shared/components/input/Input.svelte";
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import "../../../components/selector/css/selector.css"
     import Localization from "../../../templates/LOCALIZATION_EN";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";

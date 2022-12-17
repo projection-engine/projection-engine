@@ -1,13 +1,13 @@
 <script>
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import ShadingOption from "./components/ShadingModels.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import EntityStateController from "../../lib/controllers/EntityStateController";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
+    import Icon from "frontend/shared/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";

@@ -1,12 +1,13 @@
 import FilesAPI from "../../../lib/fs/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
 import Localization from "../../../templates/LOCALIZATION_EN";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
+import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
 
-    window.consoleAPI.warn(Localization.DELETING_ITEMS)
+    ConsoleAPI.warn(Localization.DELETING_ITEMS)
     for (let i = 0; i < itemsToDelete.length; i++) {
         const currentItem = itemsToDelete[i]
         const file = FilesStore.data.items.find(e => e.id === currentItem)
@@ -35,5 +36,5 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
     }
 
     await FilesStore.refreshFiles()
-    window.consoleAPI.log(Localization.SUCCESSFUL_DELETE)
+    ConsoleAPI.log(Localization.SUCCESSFUL_DELETE)
 }

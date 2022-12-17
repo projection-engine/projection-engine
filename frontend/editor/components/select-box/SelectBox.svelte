@@ -14,6 +14,8 @@
 
 
     const handleMouseMove = (event) => {
+        if(!ref || !ref.parentElement)
+            return
         if (!document.pointerLockElement) {
             if (ref.parentElement) {
                 const bBox = ref.parentElement.getBoundingClientRect()

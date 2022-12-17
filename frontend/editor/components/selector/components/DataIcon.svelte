@@ -1,8 +1,8 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import NodeFS from "../../../../shared/libs/NodeFS";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../../shared-resources/PROJECT_FOLDER_STRUCTURE";
 
     export let state
     export let type

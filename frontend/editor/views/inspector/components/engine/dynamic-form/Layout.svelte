@@ -1,6 +1,6 @@
 <script>
     import Property from "./Property.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import removeComponent from "../../../utils/remove-component";
     import Localization from "../../../../../templates/LOCALIZATION_EN";
     import Component from "../../../../../../../engine-core/templates/components/Component";

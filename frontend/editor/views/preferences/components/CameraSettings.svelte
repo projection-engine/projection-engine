@@ -1,5 +1,5 @@
 <script>
-    import Range from "shared-resources/frontend/components/range/Range.svelte";
+    import Range from "frontend/shared/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";

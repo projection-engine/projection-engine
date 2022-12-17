@@ -9,16 +9,17 @@
     import Material from "./libs/nodes/Material";
     import BOARD_SIZE from "./static/BOARD_SIZE";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import NodeFS from "frontend/shared/libs/NodeFS";
     import SEContextController from "./libs/SEContextController";
     import ShaderCanvas from "./components/ShaderCanvas.svelte";
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
+    import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
     const {shell} = window.require("electron")
 
@@ -82,7 +83,7 @@
             SEContextController.deleteContext(openFile?.registryID)
             openFile = v
         } else if (SEContextController.getContext(v.registryID))
-            window.consoleAPI.warn(LOCALIZATION_EN.FILE_ALREADY_OPEN)
+            ConsoleAPI.warn(LOCALIZATION_EN.FILE_ALREADY_OPEN)
         else {
             UndoRedoAPI.clearShaderEditorStates()
             isReady = false

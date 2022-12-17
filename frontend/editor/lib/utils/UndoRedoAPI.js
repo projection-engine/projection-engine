@@ -1,11 +1,12 @@
 import EngineStore from "../../stores/EngineStore";
 import UndoRedo from "./UndoRedo";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
-import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS.json";
+import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS.ts";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityNameController from "../controllers/EntityNameController";
+import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class UndoRedoAPI {
     static #cache = new UndoRedo()
@@ -78,7 +79,7 @@ export default class UndoRedoAPI {
     static undo() {
         const action = UndoRedoAPI.#cache.undo()
         if (action) {
-            window.consoleAPI.warn(LOCALIZATION_EN.UNDOING_CHANGES)
+            ConsoleAPI.warn(LOCALIZATION_EN.UNDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 
@@ -87,7 +88,7 @@ export default class UndoRedoAPI {
     static redo() {
         const action = UndoRedoAPI.#cache.redo()
         if (action) {
-            window.consoleAPI.warn(LOCALIZATION_EN.REDOING_CHANGES)
+            ConsoleAPI.warn(LOCALIZATION_EN.REDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 

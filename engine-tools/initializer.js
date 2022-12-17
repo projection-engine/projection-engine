@@ -1,12 +1,8 @@
 import STATIC_TEXTURES from "../engine-core/static/resources/STATIC_TEXTURES";
-import circle from "../frontend/editor/static/icons/circle.png";
 import STATIC_SHADERS from "../engine-core/static/resources/STATIC_SHADERS";
 import * as gizmoShaderCode from "./shaders/GIZMO.glsl";
 import STATIC_MESHES from "../engine-core/static/resources/STATIC_MESHES";
-import PLANE from "./static/DUAL_AXIS_GIZMO.json";
-import ROTATION_GIZMO from "./static/ROTATION_GIZMO.json";
-import SCALE_GIZMO from "./static/SCALE_GIZMO.json";
-import TRANSLATION_GIZMO from "./static/TRANSLATION_GIZMO.json";
+
 import Engine from "../engine-core/Engine";
 import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";
 import GridSystem from "./runtime/GridSystem";
@@ -20,8 +16,6 @@ import WIREFRAMEGlsl from "./shaders/WIREFRAME.glsl";
 import RotationGizmo from "./lib/transformation/RotationGizmo";
 import * as SELECTED from "./shaders/SELECTED.glsl"
 import GRID_FRAG from "./shaders/GRID.frag";
-
-import ICONS from "./static/ICONS.base64"
 import ICONS_SPRITE_FRAG from "./shaders/ICONS_SPRITE.frag"
 import ICONS_SPRITE_VERT from "./shaders/ICONS_SPRITE.vert"
 import LineRenderer from "./runtime/LineRenderer";
@@ -35,10 +29,7 @@ import GRID_VERT from "./shaders/GRID.vert";
 import GIZMO_TO_DEPTH_VERT from "./shaders/GIZMO_TO_DEPTH.vert";
 
 export default async function initializer() {
-
     UIAPI.useIframe = true
-
-    GPUAPI.allocateTexture(circle, STATIC_TEXTURES.ROTATION_GIZMO).catch()
 
 
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ICONS, ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
@@ -52,10 +43,18 @@ export default async function initializer() {
     GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE_OUTLINE, SELECTED.vertexSilhouette, SELECTED.fragmentSilhouette)
     SelectedSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE, SELECTED.vertex, SELECTED.fragment)
 
-    GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO, PLANE)
-    GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.ROTATION_GIZMO, ROTATION_GIZMO)
-    GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.SCALE_GIZMO, SCALE_GIZMO)
-    GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO, TRANSLATION_GIZMO)
+
+    try{
+        const res = await fetch("./STATIC_GIZMO_DATA.json")
+        const {TRANSLATION_MESH, ROTATION_MESH, SCALE_MESH, DUAL_AXIS_MESH, ICON_IMG} = await res.json()
+        GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO, DUAL_AXIS_MESH)
+        GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.ROTATION_GIZMO, ROTATION_MESH)
+        GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.SCALE_GIZMO, SCALE_MESH)
+        GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO, TRANSLATION_MESH)
+        IconsSystem.iconsTexture = (await GPUAPI.allocateTexture(ICON_IMG, STATIC_TEXTURES.ICONS)).texture
+    }catch (err){
+        console.error(err)
+    }
 
     Engine.environment = ENVIRONMENT.DEV
 
@@ -67,9 +66,6 @@ export default async function initializer() {
     GizmoAPI.initialize()
     LineRenderer.initialize()
 
-    GPUAPI.allocateTexture(ICONS, STATIC_TEXTURES.ICONS).then(texture => {
-        IconsSystem.iconsTexture = texture.texture
-    })
 
 
 }

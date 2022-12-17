@@ -6,7 +6,7 @@ import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMP
 import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE";
 import TERRAIN_TEMPLATE from "../../../../../engine-core/static/templates/TERRAIN_TEMPLATE";
 import Localization from "../../../templates/LOCALIZATION_EN";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
 
 
 export default function getCreationOptions(currentDirectory, materials) {

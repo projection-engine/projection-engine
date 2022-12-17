@@ -1,5 +1,5 @@
 <script>
-    import Range from "shared-resources/frontend/components/range/Range.svelte";
+    import Range from "frontend/shared/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import GridSystem from "../../../../../engine-tools/runtime/GridSystem";

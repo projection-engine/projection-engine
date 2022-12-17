@@ -1,20 +1,18 @@
 import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
 import FilesAPI from "../lib/fs/FilesAPI";
-import ErrorLoggerAPI from "../lib/fs/ErrorLoggerAPI";
 import LevelController from "../lib/utils/LevelController";
 import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
-import ROUTES from "../../../backend/static/ROUTES.json";
+import ROUTES from "../../../backend/static/ROUTES.ts";
 import VisualsStore from "../stores/VisualsStore";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
 
 const {ipcRenderer, shell} = window.require("electron")
 export default function InitializeWindow(openAbout) {
 
     NodeFS.initializePaths()
-    ErrorLoggerAPI.initialize()
-    FilesAPI.initializeFolders()
+    FilesAPI.initializeFolders().catch()
     Math.mat4 = mat4
     Math.mat3 = mat3
     Math.vec4 = vec4

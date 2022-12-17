@@ -9,7 +9,7 @@ import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import getPickerId from "../../../engine-core/utils/get-picker-id";
 import Engine from "../../../engine-core/Engine";
 import EntityAPI from "../../../engine-core/lib/utils/EntityAPI";
-import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS.json";
+import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS.ts";
 import getPivotPointMatrix from "../../../engine-tools/utils/get-pivot-point-matrix";
 
 export const ENTITY_ACTIONS = {

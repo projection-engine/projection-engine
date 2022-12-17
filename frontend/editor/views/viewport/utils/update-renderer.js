@@ -12,7 +12,7 @@ import Loop from "../../../../../engine-core/Loop";
 import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
 import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
-import GIZMOS from "../../../static/GIZMOS.json";
+import GIZMOS from "../../../static/GIZMOS.ts";
 
 
 export default function updateRenderer(selected, engine, settings) {

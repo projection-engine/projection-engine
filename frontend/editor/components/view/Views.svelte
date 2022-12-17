@@ -1,5 +1,5 @@
 <script>
-    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
+    import ResizableBar from "frontend/shared/components/resizable/ResizableBar.svelte";
     import View from "./components/View.svelte";
     import ViewGroup from "./components/ViewGroup.svelte";
     import onResizeEndSplitter from "./utils/on-resize-end-splitter";

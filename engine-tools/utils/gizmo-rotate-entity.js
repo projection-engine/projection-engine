@@ -1,7 +1,7 @@
 import Wrapper from "../Wrapper";
 import GizmoSystem from "../runtime/GizmoSystem";
 import {quat, vec3} from "gl-matrix";
-import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.json";
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.ts";
 import RotationGizmo from "../lib/transformation/RotationGizmo";
 
 

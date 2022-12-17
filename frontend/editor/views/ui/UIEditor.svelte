@@ -1,14 +1,14 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../static/GIZMOS.json";
+    import GIZMOS from "../../static/GIZMOS.ts";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import SettingsStore from "../../stores/SettingsStore";
     import {v4} from "uuid";
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 
     let engine = {}

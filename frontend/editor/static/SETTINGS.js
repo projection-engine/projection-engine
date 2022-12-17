@@ -1,8 +1,8 @@
 import SHADING_MODELS from "../../../engine-core/static/SHADING_MODELS"
-import GIZMOS from "./GIZMOS.json"
-import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE.json"
-import TERRAIN_TOOLS from "./TERRAIN_TOOLS.json";
-import KEYS from "./KEYS.json";
+import GIZMOS from "./GIZMOS.ts"
+import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE.ts"
+import TERRAIN_TOOLS from "./TERRAIN_TOOLS.ts";
+import KEYS from "./KEYS.ts";
 import INITIAL_LAYOUT from "./INITIAL_LAYOUT";
 
 const toRad = Math.PI / 180

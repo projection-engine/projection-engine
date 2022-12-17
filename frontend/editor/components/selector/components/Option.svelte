@@ -1,6 +1,6 @@
 <script>
     import DataIcon from "./DataIcon.svelte";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
 
     export let type
     export let setState

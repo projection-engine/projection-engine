@@ -1,4 +1,4 @@
-import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.json";
+import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts";
 import Engine from "../../../../../engine-core/Engine";
 import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 

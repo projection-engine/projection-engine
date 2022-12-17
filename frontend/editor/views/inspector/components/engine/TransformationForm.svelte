@@ -2,14 +2,14 @@
     import SelectionStore from "../../../../stores/SelectionStore";
     import Engine from "../../../../../../engine-core/Engine";
     import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
-    import Range from "shared-resources/frontend/components/range/Range.svelte"
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte"
+    import Range from "frontend/shared/components/range/Range.svelte"
     import {onDestroy} from "svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte"
+    import Icon from "frontend/shared/components/icon/Icon.svelte"
     import {quat} from "gl-matrix";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.json";
+    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
 
     const tempQuat = quat.create()
     const toRad = Math.PI / 180

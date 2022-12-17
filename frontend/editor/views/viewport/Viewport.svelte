@@ -3,7 +3,7 @@
     import Localization from "../../templates/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.json";
+    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
     import SettingsStore from "../../stores/SettingsStore";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";

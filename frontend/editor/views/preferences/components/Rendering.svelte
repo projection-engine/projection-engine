@@ -1,5 +1,5 @@
 <script>
-    import Range from "shared-resources/frontend/components/range/Range.svelte";
+    import Range from "frontend/shared/components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import VisualsStore from "../../../stores/VisualsStore";

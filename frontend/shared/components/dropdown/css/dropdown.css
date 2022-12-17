@@ -1,0 +1,40 @@
+
+.modal.dropdown {
+    display: none;
+    align-items: center;
+
+    width: 225px;
+
+    height: fit-content;
+
+    position: fixed;
+    z-index: -1;
+
+    color: var(--pj-color-secondary);
+    box-shadow: var(--pj-boxshadow);
+    border-radius: 3px;
+    background-color: var(--pj-background-tertiary);
+    border: var(--pj-border-primary) 1px solid;
+}
+
+.modal.dropdown  > button {
+    height: 25px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+}
+.highlight.dropdown{
+
+    background: var(--pj-accent-color) !important;
+    color: white !important;
+
+    border-radius: 3px;
+    height: fit-content;
+}
+.highlight.dropdown > * {
+    color: white !important;
+    border-color: transparent;
+
+}

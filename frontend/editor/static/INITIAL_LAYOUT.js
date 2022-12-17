@@ -1,5 +1,5 @@
 import VIEWS from "../components/view/static/VIEWS";
-import VIEWPORT_TABS from "./VIEWPORT_TABS.json";
+import VIEWPORT_TABS from "./VIEWPORT_TABS.ts";
 
 export default [
     {

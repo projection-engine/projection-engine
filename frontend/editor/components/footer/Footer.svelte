@@ -1,17 +1,18 @@
 <script>
     import {onDestroy} from "svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../lib/fs/ErrorLoggerAPI";
     import SettingsStore from "../../stores/SettingsStore";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte"
+    import NodeFS from "frontend/shared/libs/NodeFS";
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
+    import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
     const {shell} = window.require("electron")
 
@@ -24,15 +25,15 @@
         if (await NodeFS.exists(ErrorLoggerAPI.path))
             shell.openPath(ErrorLoggerAPI.path).catch()
         else
-            window.consoleAPI.error("No logs found")
+            ConsoleAPI.error("No logs found")
     }
     async function updateStructure() {
-        window.consoleAPI.warn(Localization.UPDATING_STRUCTURE)
+        ConsoleAPI.warn(Localization.UPDATING_STRUCTURE)
 
         await ScriptsAPI.updateAllScripts()
         await UIAPI.updateAllElements()
 
-        window.consoleAPI.log(Localization.DONE)
+        ConsoleAPI.log(Localization.DONE)
     }
 </script>
 

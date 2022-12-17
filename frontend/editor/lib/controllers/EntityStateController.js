@@ -10,6 +10,7 @@ import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
 import MaterialAPI from "../../../../engine-core/lib/rendering/MaterialAPI";
+import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class EntityStateController {
     static #state = []
@@ -19,7 +20,7 @@ export default class EntityStateController {
     static async startPlayState() {
         if (EntityStateController.#isPlaying)
             return
-        window.consoleAPI.warn("Saving state")
+        ConsoleAPI.warn("Saving state")
         EntityStateController.cameraSerialization = CameraAPI.serializeState()
         EntityStateController.#isPlaying = true
         CameraTracker.stopTracking()
@@ -33,7 +34,7 @@ export default class EntityStateController {
         if (!EntityStateController.#isPlaying)
             return
         MaterialAPI.entityMaterial.clear()
-        window.consoleAPI.warn("Restoring state")
+        ConsoleAPI.warn("Restoring state")
         EntityStateController.#isPlaying = false
         Engine.environment = ENVIRONMENT.DEV
 

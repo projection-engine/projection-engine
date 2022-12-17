@@ -5,8 +5,9 @@
     import GPU from "../../../../../../engine-core/lib/GPU";
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import NodeFS from "frontend/shared/libs/NodeFS";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
+    import ConsoleAPI from "../../../../../../engine-core/lib/utils/ConsoleAPI";
 
     export let item
     let wasUpdated = false
@@ -25,7 +26,7 @@
             GPUAPI.destroyMesh(item.registryID)
             GPUAPI.allocateMesh(item.registryID, data)
         }
-        window.consoleAPI.warn(LOCALIZATION_EN.UPDATING_ASSET)
+        ConsoleAPI.warn(LOCALIZATION_EN.UPDATING_ASSET)
     }
 </script>
 

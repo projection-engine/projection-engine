@@ -8,6 +8,7 @@ import {vec3, vec4} from "gl-matrix";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../../engine-core/Engine";
+import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
 
 export default class ViewportActions {
@@ -81,7 +82,7 @@ export default class ViewportActions {
             }
         }
         dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
-        window.consoleAPI.warn(`Pasted ${ViewportActions.toCopy.length} entities.`)
+        ConsoleAPI.warn(`Pasted ${ViewportActions.toCopy.length} entities.`)
 
     }
 

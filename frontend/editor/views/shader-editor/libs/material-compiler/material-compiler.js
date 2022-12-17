@@ -1,7 +1,7 @@
 import NODE_TYPES from "./templates/NODE_TYPES"
 import cloneClass from "../../../../../../engine-core/utils/clone-class";
 import compileFragmentShader from "./utils/compile-fragment-shader";
-import MATERIAL_OUTPUT_FORMAT from "../../../../../../engine-core/static/MATERIAL_OUTPUT_FORMAT.json"
+import MATERIAL_OUTPUT_FORMAT from "../../../../../../engine-core/static/MATERIAL_OUTPUT_FORMAT.ts"
 
 export default async function materialCompiler(n, links) {
     const nodes = n.map(nn => cloneClass(nn))

@@ -1,7 +1,7 @@
 import FilesAPI from "../../../lib/fs/FilesAPI";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ShaderEditorTools from "../libs/ShaderEditorTools";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
 import ShaderLink from "../libs/ShaderLink";
 
 export default async function parseFile(openFile, setNodes, setLinks) {

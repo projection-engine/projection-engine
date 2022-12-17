@@ -25,16 +25,6 @@ export default class SelectedSystem {
 
     static drawSilhouette(selected, settings) {
 
-        if (settings.showOutline) {
-            gpu.activeTexture(gpu.TEXTURE0)
-            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.entityIDSampler)
-            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
-
-            gpu.uniform1i(outlineShaderUniforms.isOutline, 1)
-            gpu.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
-
-            drawQuad()
-        }
 
 
         const length = selected.length
@@ -56,6 +46,16 @@ export default class SelectedSystem {
             fbo.stopMapping()
         }
         outlineShader.bind()
+        if (settings.showOutline) {
+            gpu.activeTexture(gpu.TEXTURE0)
+            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.entityIDSampler)
+            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
+
+            gpu.uniform1i(outlineShaderUniforms.isOutline, 1)
+            gpu.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
+
+            drawQuad()
+        }
         if (length > 0) {
             gpu.activeTexture(gpu.TEXTURE0)
             gpu.bindTexture(gpu.TEXTURE_2D, fbo.colors[0])

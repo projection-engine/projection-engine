@@ -13,13 +13,14 @@ import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import UndoRedoAPI from "../utils/UndoRedoAPI";
 import EntityConstructor from "../controllers/EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
 import GPU from "../../../../engine-core/lib/GPU";
 import Entity from "../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import {v4} from "uuid";
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
-import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS.json";
+import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS.ts";
+import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
 
 export default class Loader {
@@ -134,7 +135,7 @@ export default class Loader {
                         entity.components.get(comp).materialID = data
                         UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     } else
-                        window.consoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
+                        ConsoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break
                 }
                 case FILE_TYPES.TERRAIN: {
@@ -143,14 +144,14 @@ export default class Loader {
                     break
                 }
                 default:
-                    window.consoleAPI.error(new Error("Not valid file type"))
+                    ConsoleAPI.error(new Error("Not valid file type"))
                     break
             }
         }
 
         if (entitiesToPush.length > 0) {
             dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entitiesToPush})
-            window.consoleAPI.log(LOCALIZATION_EN.ENTITIES_CREATED)
+            ConsoleAPI.log(LOCALIZATION_EN.ENTITIES_CREATED)
         }
     }
 

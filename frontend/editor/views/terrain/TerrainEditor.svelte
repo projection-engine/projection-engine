@@ -1,14 +1,14 @@
 <script>
     import CameraBar from "../../components/CameraGizmo.svelte";
-    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.json";
+    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.ts";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import ResizableBar from "shared-resources/frontend/components/resizable/ResizableBar.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
+    import ResizableBar from "frontend/shared/components/resizable/ResizableBar.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import NodeFS from "frontend/shared/libs/NodeFS";
     import Header from "./Header.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import {onDestroy} from "svelte";

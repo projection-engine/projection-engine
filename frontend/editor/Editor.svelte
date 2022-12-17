@@ -1,12 +1,12 @@
 <script>
-    import Alert from "shared-resources/frontend/components/alert/Alert.svelte";
+    import Alert from "frontend/shared/components/alert/Alert.svelte";
     import {onDestroy} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
     import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "./components/view/Views.svelte";
     import SettingsStore from "./stores/SettingsStore";
-    import ContextMenu from "shared-resources/frontend/components/context-menu/ContextMenu.svelte";
+    import ContextMenu from "frontend/shared/components/context-menu/ContextMenu.svelte";
     import WindowOptions from "./components/frame-options/WindowOptions.svelte";
 
     const FALLBACK = {
@@ -41,7 +41,6 @@
 </script>
 
 <div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
-    <Alert/>
     <WindowOptions/>
     <ContextMenu/>
     <div class="middle">

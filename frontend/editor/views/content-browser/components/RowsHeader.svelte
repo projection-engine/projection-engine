@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import {onMount} from "svelte";
 
     export let items

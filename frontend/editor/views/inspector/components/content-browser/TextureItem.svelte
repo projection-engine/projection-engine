@@ -1,7 +1,7 @@
 <script>
     import Localization from "../../../../templates/LOCALIZATION_EN";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";

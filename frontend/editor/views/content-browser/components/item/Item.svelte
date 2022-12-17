@@ -1,10 +1,8 @@
 <script>
     import handleDropFolder from "../../utils/handle-drop-folder"
-    import FILE_TYPES from "shared-resources/FILE_TYPES";
     import FilesStore from "../../../../stores/FilesStore";
     import {onDestroy, onMount} from "svelte";
     import dragDrop from "../../../../components/drag-drop/drag-drop";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import getTypeName from "../../utils/get-type-name";
     import getItemDragImage from "../../utils/get-item-dragimage";
     import getItemIcon from "../../utils/get-item-icon";
@@ -12,8 +10,11 @@
     import Card from "./Card.svelte";
     import ITEM_TYPES from "../../templates/ITEM_TYPES";
     import Row from "./Row.svelte";
-    import PROJECT_FOLDER_STRUCTURE from "shared-resources/PROJECT_FOLDER_STRUCTURE";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../../../shared-resources/PROJECT_FOLDER_STRUCTURE";
+    import FILE_TYPES from "../../../../../../shared-resources/FILE_TYPES";
+    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+
 
     export let childQuantity
     export let reset

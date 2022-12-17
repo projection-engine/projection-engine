@@ -6,8 +6,9 @@ import SelectionStore from "../stores/SelectionStore";
 import importFile from "../utils/import-file";
 import Localization from "./LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
 import RegistryAPI from "../lib/fs/RegistryAPI";
+import ConsoleAPI from "../../../engine-core/lib/utils/ConsoleAPI";
 
 const {shell, clipboard} = window.require("electron")
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
@@ -44,7 +45,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             label: "Refresh",
             require: settings.contentBrowserHotkeys.REFRESH,
             callback: () => {
-                window.consoleAPI.log(Localization.REFRESHING)
+                ConsoleAPI.log(Localization.REFRESHING)
                 FilesStore.refreshFiles().catch()
             }
         },
@@ -106,7 +107,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
                 onClick: () => {
                     const ID = RegistryAPI.getByPath(SelectionStore.contentBrowserSelected[0])
                     if(ID){
-                        window.consoleAPI.log(Localization.COPIED)
+                        ConsoleAPI.log(Localization.COPIED)
                         clipboard.writeText(ID)
                     }
                 }

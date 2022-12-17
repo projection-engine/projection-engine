@@ -1,20 +1,21 @@
 <script>
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import FilesStore from "../../../stores/FilesStore";
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
 
-    import Input from "shared-resources/frontend/components/input/Input.svelte";
-    import NodeFS from "shared-resources/frontend/libs/NodeFS"
+    import Input from "frontend/shared/components/input/Input.svelte";
+    import NodeFS from "frontend/shared/libs/NodeFS"
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import FILE_TYPES from "shared-resources/FILE_TYPES";
     import importFile from "../../../utils/import-file";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -66,7 +67,7 @@
                 disabled={loading}
                 data-view-header-button="-"
                 on:click={() => {
-                    window.consoleAPI.warn(Localization.REFRESHING)
+                    ConsoleAPI.warn(Localization.REFRESHING)
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
         >

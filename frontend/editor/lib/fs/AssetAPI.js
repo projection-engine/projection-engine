@@ -1,4 +1,4 @@
-import NodeFS from "shared-resources/frontend/libs/NodeFS"
+import NodeFS from "frontend/shared/libs/NodeFS"
 import {v4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";

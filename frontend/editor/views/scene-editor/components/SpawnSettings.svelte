@@ -1,6 +1,6 @@
 <script>
-    import Range from "shared-resources/frontend/components/range/Range.svelte"
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte"
+    import Range from "frontend/shared/components/range/Range.svelte"
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte"
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";

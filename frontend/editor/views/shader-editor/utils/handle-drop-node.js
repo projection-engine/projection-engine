@@ -1,5 +1,6 @@
 import ShaderEditorTools from "../libs/ShaderEditorTools";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) {
     const doIt = (n) => {
@@ -22,7 +23,7 @@ export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) 
             return n
         }
         else
-            window.consoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED)
+            ConsoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED)
     }
     if (Array.isArray(dataToPush)) {
         const result = dataToPush.map(d => doIt(d)).flat()

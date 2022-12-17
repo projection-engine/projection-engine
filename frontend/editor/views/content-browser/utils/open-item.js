@@ -1,11 +1,12 @@
 import FILE_TYPES from "shared-resources/FILE_TYPES";
 import LevelController from "../../../lib/utils/LevelController";
-import NodeFS from "shared-resources/frontend/libs/NodeFS";
+import NodeFS from "frontend/shared/libs/NodeFS";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../components/view/static/VIEWS";
 import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools";
+import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 const {shell} = window.require("electron")
 
@@ -21,17 +22,17 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case ".js":
             case ".json":
                 shell.openPath(NodeFS.ASSETS_PATH + NodeFS.sep + data.id).catch()
-                window.consoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
+                ConsoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 break
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:
             case FILE_TYPES.TEXTURE:
             case FILE_TYPES.TERRAIN:
                 Loader.load(data.registryID, true).catch()
-                window.consoleAPI.warn(LOCALIZATION_EN.CREATING_ENTITY)
+                ConsoleAPI.warn(LOCALIZATION_EN.CREATING_ENTITY)
                 break
             case FILE_TYPES.LEVEL:
-                window.consoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
+                ConsoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 LevelController.loadLevel(data).catch()
                 break
             case FILE_TYPES.MATERIAL:

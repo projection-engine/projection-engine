@@ -1,7 +1,7 @@
 import EngineStore from "../stores/EngineStore";
 import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
-import GIZMOS from "../static/GIZMOS.json";
+import GIZMOS from "../static/GIZMOS.ts";
 import SelectionStore from "../stores/SelectionStore";
 import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
@@ -9,7 +9,7 @@ import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import selectEntityHierarchy from "./utils/select-entity-hierarchy";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/dispatch-renderer-entities";
 import snap from "./utils/snap";
-import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE.json";
+import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE.ts";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../../engine-tools/static/CAMERA_ROTATIONS";

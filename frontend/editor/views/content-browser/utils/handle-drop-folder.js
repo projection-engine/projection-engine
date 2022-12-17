@@ -1,8 +1,9 @@
-import NodeFS from "shared-resources/frontend/libs/NodeFS"
+import NodeFS from "frontend/shared/libs/NodeFS"
 import FilesStore from "../../../stores/FilesStore";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 
 export default async function handleDropFolder(event, target) {
@@ -34,7 +35,7 @@ export default async function handleDropFolder(event, target) {
                 if (!(await NodeFS.exists(newPath))) {
                     await ContentBrowserAPI.rename(NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + textData), NodeFS.resolvePath(newPath))
                     await FilesStore.refreshFiles()
-                } else window.consoleAPI.error(LOCALIZATION_EN.ITEM_ALREADY_EXISTS)
+                } else ConsoleAPI.error(LOCALIZATION_EN.ITEM_ALREADY_EXISTS)
             }
         }
     } catch (error) {

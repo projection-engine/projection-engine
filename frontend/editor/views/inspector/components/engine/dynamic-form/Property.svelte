@@ -1,13 +1,13 @@
 <script>
-    import Range from "shared-resources/frontend/components/range/Range.svelte";
+    import Range from "frontend/shared/components/range/Range.svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
-    import ColorPicker from "shared-resources/frontend/components/color-picker/ColorPicker.svelte";
-    import Input from "shared-resources/frontend/components/input/Input.svelte";
-    import Dropdown from "shared-resources/frontend/components/dropdown/Dropdown.svelte";
+    import ColorPicker from "frontend/shared/components/color-picker/ColorPicker.svelte";
+    import Input from "frontend/shared/components/input/Input.svelte";
+    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import Component from "../../../../../../../engine-core/templates/components/Component";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../../stores/EngineStore";
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import Localization from "../../../../../templates/LOCALIZATION_EN";
 
     export let component = undefined
