@@ -16,8 +16,8 @@ export default class CameraTracker {
 
     static gizmoReference
 
-    static toApplyTranslation = vec4.create()
-    static currentTranslation = vec4.create()
+    static toApplyTranslation = vec3.create()
+    static currentTranslation = vec3.create()
     static #initialized = false
     static rotationChanged = false
     static forceUpdate = false
@@ -27,7 +27,10 @@ export default class CameraTracker {
         left: "KeyA",
         right: "KeyD",
         invertDirection: false,
-        fasterJonny: "ShiftLeft"
+        fasterJonny: "ShiftLeft",
+
+        mouseLeft: false,
+        mouseRight: false,
 
     }
     static #keysOnHold = {
@@ -98,9 +101,10 @@ export default class CameraTracker {
         if (CameraTracker.rotationChanged) {
             const pitch = quat.fromEuler([], CameraTracker.yRotation * toDeg, 0, 0)
             const yaw = quat.fromEuler([], 0, CameraTracker.xRotation * toDeg, 0)
-            quat.copy(CameraAPI.rotationBuffer, pitch)
+            const RBuffer = <quat>CameraAPI.rotationBuffer
+            quat.copy(RBuffer, pitch)
             CameraTracker.rotationChanged = false
-            quat.multiply(CameraAPI.rotationBuffer, yaw, CameraAPI.rotationBuffer)
+            quat.multiply(RBuffer, yaw, RBuffer)
             changed = true
         }
 
@@ -251,8 +255,8 @@ export default class CameraTracker {
         document.addEventListener("keydown", CameraTracker.#handleInput)
         document.addEventListener("keyup", CameraTracker.#handleInput)
         document.addEventListener("mouseup", CameraTracker.#handleInput)
-        gpu.canvas.addEventListener("mousedown", CameraTracker.#handleInput)
-        gpu.canvas.addEventListener("wheel", CameraTracker.#handleInput)
+        GPUCanvas.addEventListener("mousedown", CameraTracker.#handleInput)
+        GPUCanvas.addEventListener("wheel", CameraTracker.#handleInput)
 
     }
 
@@ -265,8 +269,8 @@ export default class CameraTracker {
         document.removeEventListener("keyup", CameraTracker.#handleInput)
         document.removeEventListener("mouseup", CameraTracker.#handleInput)
         document.removeEventListener("mousemove", CameraTracker.#handleInput)
-        gpu.canvas.removeEventListener("mousedown", CameraTracker.#handleInput)
-        gpu.canvas.removeEventListener("wheel", CameraTracker.#handleInput)
+        GPUCanvas.removeEventListener("mousedown", CameraTracker.#handleInput)
+        GPUCanvas.removeEventListener("wheel", CameraTracker.#handleInput)
     }
 
 

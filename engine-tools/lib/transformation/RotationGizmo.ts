@@ -1,5 +1,5 @@
-import {mat4, quat, vec3} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../../frontend/editor/static/TRANSFORMATION_TYPE.ts"
+import {mat4, quat, vec3, vec4} from "gl-matrix"
+import TRANSFORMATION_TYPE from "../../../frontend/editor/static/TRANSFORMATION_TYPE"
 import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI";
@@ -12,27 +12,26 @@ import EngineTools from "../../EngineTools";
 import UndoRedoAPI from "../../../frontend/editor/lib/utils/UndoRedoAPI";
 import gizmoRotateEntity from "../../utils/gizmo-rotate-entity";
 import drawGizmoToDepth from "../../utils/draw-gizmo-to-depth";
+import GizmoInterface from "../GizmoInterface";
 
 const toRad = Math.PI / 180
-
-export default class RotationGizmo {
+const cacheVec3 = vec3.create()
+const cacheQuat = quat.create()
+export default class RotationGizmo extends GizmoInterface {
     tracking = false
-    static currentRotation = [0, 0, 0]
-    static gridSize = toRad
+    static currentRotation = vec3.create()
+    static gridSize: number = toRad
     static currentIncrement = 0
     static shader
 
     constructor() {
-
+        super()
         this.xGizmo = mapGizmoMesh("x", "ROTATION")
         this.yGizmo = mapGizmoMesh("y", "ROTATION")
         this.zGizmo = mapGizmoMesh("z", "ROTATION")
-
-
-        this.texture = GPU.textures.get(STATIC_TEXTURES.ROTATION_GIZMO)
     }
 
-    onMouseDown(event) {
+    onMouseDown(event: MouseEvent) {
         this.x = event.clientX
         this.y = event.clientY
 
@@ -52,7 +51,7 @@ export default class RotationGizmo {
     }
 
 
-    onMouseMove(event) {
+    onMouseMove(event: MouseEvent) {
         if (!GizmoSystem.mainEntity)
             return
         if (!GizmoSystem.hasStarted) {
@@ -79,7 +78,7 @@ export default class RotationGizmo {
                 gizmoRotateEntity([0, 0, mappedValue])
                 break
             case AXIS.SCREEN_SPACE:
-                const position = vec3.add([], RotationGizmo.currentRotation, ScreenSpaceGizmo.onMouseMove(event, toRad, RotationGizmo.gridSize))
+                const position = vec3.add(cacheVec3, RotationGizmo.currentRotation, ScreenSpaceGizmo.onMouseMove(event))
                 gizmoRotateEntity(position, true)
                 break
             default:
@@ -95,19 +94,17 @@ export default class RotationGizmo {
             this.xGizmo.matrix,
             this.yGizmo.matrix,
             this.zGizmo.matrix,
-
         ])
         const pickID = PickingAPI.readEntityID(this.x, this.y)
         GizmoSystem.clickedAxis = pickID
 
         if (pickID === 0)
-            this.onMouseUp(true)
+            this.onMouseUp()
         else {
             GizmoSystem.wasOnGizmo = true
             this.tracking = true
-            gpu.canvas.requestPointerLock()
+            GPUCanvas.requestPointerLock()
         }
-
     }
 
     #rotateGizmo(axis, entity) {
@@ -145,8 +142,10 @@ export default class RotationGizmo {
                 default:
                     break
             }
-        } else if (axis !== undefined && GizmoSystem.targetRotation)
-            mat4.fromRotationTranslationScale(matrix, quat.multiply([], GizmoSystem.targetRotation, entity._rotationQuat), GizmoSystem.mainEntity.__pivotOffset, entity.scaling)
+        } else if (axis !== undefined && GizmoSystem.targetRotation) {
+            quat.multiply(cacheQuat, GizmoSystem.targetRotation, entity._rotationQuat)
+            mat4.fromRotationTranslationScale(matrix, cacheQuat, GizmoSystem.mainEntity.__pivotOffset, entity.scaling)
+        }
     }
 
     transformGizmo() {
@@ -173,7 +172,6 @@ export default class RotationGizmo {
             transformMatrix,
             axis,
             translation: GizmoSystem.mainEntity.__pivotOffset,
-
             selectedAxis: GizmoSystem.clickedAxis,
             cameraIsOrthographic: CameraAPI.isOrthographic
         })

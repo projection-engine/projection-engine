@@ -35,14 +35,14 @@ export default class SculptingGizmo {
 
         this.handlerBound = this.handler.bind(this)
 
-        gpu.canvas.addEventListener("mousedown", this.handlerBound)
+        GPUCanvas.addEventListener("mousedown", this.handlerBound)
         document.addEventListener("mouseup", this.handlerBound)
 
     }
 
     destroy() {
         document.removeEventListener("mousemove", this.handlerBound)
-        gpu.canvas.removeEventListener("mousedown", this.handlerBound)
+        GPUCanvas.removeEventListener("mousedown", this.handlerBound)
         document.removeEventListener("mouseup", this.handlerBound)
     }
 
@@ -50,7 +50,7 @@ export default class SculptingGizmo {
 
         switch (e.type) {
             case "mousedown": {
-                if (e.button !== MOUSE_LEFT || e.target !== gpu.canvas)
+                if (e.button !== MOUSE_LEFT || e.target !== GPUCanvas)
                     return
                 clearInterval(this.interval)
                 this.interval = setInterval(() => this.updateMesh(), 300)

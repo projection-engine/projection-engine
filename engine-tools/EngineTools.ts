@@ -52,14 +52,16 @@ import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";
 import GizmoAPI from "./lib/GizmoAPI";
 import LineRenderer from "./runtime/LineRenderer";
 import Controller from "../engine-core/lib/Controller";
+import Entity from "../engine-core/instances/Entity";
 
 
-let selected = [], settings
-export default class EngineTools extends Controller{
-    static selected = selected
-    static selectionMap = new Map()
+let settings
+let selected:Entity[]
+export default class EngineTools extends Controller {
+    static selected: Entity[] = []
+    static selectionMap = new Map<string, boolean>()
 
-    static async initialize():Promise<void>{
+    static async initialize(): Promise<void> {
         super.initialize()
 
         UIAPI.useIframe = true
@@ -74,7 +76,7 @@ export default class EngineTools extends Controller{
         GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE_OUTLINE, SILHOUETTE_VERT, SILHOUETTE_FRAG)
         SelectedSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE, MESH_MAP_VERT, MESH_MAP_FRAG)
 
-        try{
+        try {
             const res = await fetch("./STATIC_GIZMO_DATA.json")
             const {TRANSLATION_MESH, ROTATION_MESH, SCALE_MESH, DUAL_AXIS_MESH, ICON_IMG} = await res.json()
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO, DUAL_AXIS_MESH)
@@ -82,7 +84,7 @@ export default class EngineTools extends Controller{
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.SCALE_GIZMO, SCALE_MESH)
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO, TRANSLATION_MESH)
             IconsSystem.iconsTexture = (await GPUAPI.allocateTexture(ICON_IMG, STATIC_TEXTURES.ICONS)).texture
-        }catch (err){
+        } catch (err) {
             console.error(err)
         }
 
@@ -96,19 +98,20 @@ export default class EngineTools extends Controller{
         LineRenderer.initialize()
     }
 
-    static updateSelectionData(data) {
+    static updateSelectionData(data: string[]) {
         EngineTools.selectionMap.clear()
-        for(let i = 0; i < selected.length; i++)
-            selected[i].__isSelected = false
-        selected = []
-        EngineTools.selected = selected
 
+        for (let i = 0; i < EngineTools.selected.length; i++) {
+            const entity = EngineTools.selected[i]
+            entity.addProperty<boolean>("__isSelected", false)
+        }
 
+        EngineTools.selected.length = 0
         data.forEach(d => {
-            const c = Engine.entitiesMap.get(d)
-            if (c) {
-                selected.push(c)
-                c.__isSelected = true
+            const entity = Engine.entitiesMap.get(d)
+            if (entity !== undefined) {
+                EngineTools.selected.push(entity)
+                entity.addProperty<boolean>("__isSelected", true)
                 EngineTools.selectionMap.set(d, true)
             }
         })
@@ -120,6 +123,7 @@ export default class EngineTools extends Controller{
             GizmoSystem.mainEntity = undefined
             GizmoSystem.hasStarted = false
         }
+        selected = EngineTools.selected
     }
 
     static afterDrawing() {
@@ -128,7 +132,7 @@ export default class EngineTools extends Controller{
 
         gpu.disable(gpu.CULL_FACE)
         gpu.disable(gpu.DEPTH_TEST)
-        if(settings.showGrid)
+        if (settings.showGrid)
             GridSystem.execute()
         CollisionVisualizationSystem.execute(selected)
         SelectedSystem.drawSilhouette(selected, settings)

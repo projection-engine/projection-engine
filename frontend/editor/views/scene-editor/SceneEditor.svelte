@@ -59,7 +59,7 @@
         CameraTracker.startTracking()
         ViewportInteractionHandler.initialize()
         draggable.onMount({
-            targetElement: gpu.canvas,
+            targetElement: GPUCanvas,
             onDrop: (data, event) => {
                 Loader.load(data, false, event.clientX, event.clientY).catch()
             },
@@ -92,7 +92,7 @@
         {/if}
     </ViewHeader>
     <SelectBox
-            targetElement={gpu.canvas}
+            targetElement={GPUCanvas}
             allowAll={true}
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}

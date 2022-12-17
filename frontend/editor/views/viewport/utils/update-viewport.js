@@ -10,10 +10,10 @@ export default function updateViewport(engine, currentView) {
         Engine.start()
         if (Engine.isDev)
             CameraTracker.startTracking()
-        gpu.canvas.style.opacity = "1"
+        GPUCanvas.style.opacity = "1"
     } else {
         CameraTracker.stopTracking()
         Engine.stop()
-        gpu.canvas.style.opacity = "0"
+        GPUCanvas.style.opacity = "0"
     }
 }

@@ -9,7 +9,8 @@
     "publish": "electron-forge publish",
     "svelte-build": "rollup -c",
     "svelte-dev": "rollup -c -w",
-    "svelte-start": "sirv ."
+    "svelte-start": "sirv .",
+    "check": "npx svelte-check"
   },
   "keywords": [],
   "author": "facobackup",

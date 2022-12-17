@@ -52,6 +52,7 @@
                     value={settings.maxDistanceIcon}
                     minValue={1}
             />
+        </fieldset>
     </div>
 </fieldset>
 

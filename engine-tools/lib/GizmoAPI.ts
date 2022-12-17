@@ -1,29 +1,31 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.ts"
-
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
 import GizmoSystem from "../runtime/GizmoSystem";
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import GPU from "../../engine-core/lib/GPU";
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
+import Shader from "../../engine-core/instances/Shader";
+import Controller from "../../engine-core/lib/Controller";
+import Entity from "../../engine-core/instances/Entity";
 
-let shader, uniforms
-export default class GizmoAPI {
-
-    static initialize(){
+let shader: Shader, uniforms: { [key: string]: WebGLUniformLocation }
+const cacheVec3 = vec3.create()
+const cacheQuat = quat.create()
+export default class GizmoAPI extends Controller {
+    static initialize() {
+        super.initialize()
         shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.GIZMO)
         uniforms = shader.uniformMap
     }
-
-    static translateMatrix(entity, keepMatrix) {
+    static translateMatrix(entity:Entity, keepMatrix:Boolean): Float32Array {
         if (!GizmoSystem.mainEntity)
             return
-        const matrix = keepMatrix ? entity.matrix : mat4.copy([], entity.matrix)
+        const matrix = keepMatrix ? entity.matrix : <Float32Array>mat4.copy(mat4.create(), entity.matrix)
         GizmoAPI.applyTransformation(matrix, entity._rotationQuat, entity._translation, entity._scaling)
-
         return matrix
     }
 
-    static applyTransformation(matrix, q, t, s) {
+    static applyTransformation(matrix: Float32Array, quaternion: Float32Array, translation: Float32Array, scale: Float32Array): void {
         const m = GizmoSystem.mainEntity
         if (!m)
             return
@@ -32,12 +34,14 @@ export default class GizmoAPI {
             const quatToMultiply = isRelative ? GizmoSystem.targetRotation : m.parent._rotationQuat
             if (!quatToMultiply)
                 return;
+            vec3.add(cacheVec3, m.__pivotOffset, translation)
+            quat.multiply(cacheQuat, quatToMultiply, quaternion)
             mat4.fromRotationTranslationScaleOrigin(
                 matrix,
-                quat.multiply([], quatToMultiply, q),
-                vec3.add([], m.__pivotOffset, t),
-                s,
-                t
+                cacheQuat,
+                cacheVec3,
+                scale,
+                translation
             )
         } else {
             matrix[12] += m.__pivotOffset[0]
@@ -53,10 +57,7 @@ export default class GizmoAPI {
         gpu.uniform3fv(uniforms.translation, GizmoSystem.mainEntity.__pivotOffset)
         gpu.uniform1i(uniforms.axis, axis)
         gpu.uniform1i(uniforms.selectedAxis, clickedAxis)
-
         gpu.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
-
-
         mesh.simplifiedDraw()
     }
 }

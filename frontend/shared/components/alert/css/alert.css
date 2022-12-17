@@ -15,7 +15,7 @@
     max-width: 25vw;
     height: 25px;
     position: relative;
-    border-radius: 12.5px;
+    border-radius: 12px;
     box-shadow: var(--pj-boxshadow);
     overflow: hidden;
     opacity: 0;

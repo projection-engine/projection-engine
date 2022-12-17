@@ -1,11 +1,11 @@
 import EngineTools from "../EngineTools";
 import GizmoSystem from "../runtime/GizmoSystem";
 import {quat, vec3} from "gl-matrix";
-import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.ts";
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE";
 import RotationGizmo from "../lib/transformation/RotationGizmo";
 
 
-export default function gizmoRotateEntity(vec, screenSpace) {
+export default function gizmoRotateEntity(vec:[number, number, number]|Float32Array, screenSpace?:boolean) {
     let firstEntity = GizmoSystem.mainEntity
     if (!firstEntity)
         return;

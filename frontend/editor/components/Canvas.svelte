@@ -13,11 +13,11 @@
 
     export let onReady
 
-    let canvasRef: HTMLCanvasElement|null = null
+    let canvasRef
     let done = false
-    let engine:MutableObject = {}
-    let settings:MutableObject = {}
-    let visuals:MutableObject = {}
+    let engine = {}
+    let settings = {}
+    let visuals = {}
     let selected = []
     const unsubscribeSelection = SelectionStore.getStore(() => selected = SelectionStore.engineSelected)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)

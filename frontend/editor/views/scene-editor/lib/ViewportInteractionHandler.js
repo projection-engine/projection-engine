@@ -11,13 +11,13 @@ export default class ViewportInteractionHandler {
     static mouseDelta = {x: 0, y: 0}
 
     static initialize() {
-        const parentElement = gpu.canvas
+        const parentElement = GPUCanvas
         parentElement.addEventListener("mousedown", ViewportInteractionHandler.onMouseDown)
         parentElement.addEventListener("mouseup", ViewportInteractionHandler.onMouseUp)
     }
 
     static destroy() {
-        const parentElement = gpu.canvas
+        const parentElement = GPUCanvas
         parentElement.removeEventListener("mousedown", ViewportInteractionHandler.onMouseDown)
         parentElement.removeEventListener("mouseup", ViewportInteractionHandler.onMouseUp)
     }

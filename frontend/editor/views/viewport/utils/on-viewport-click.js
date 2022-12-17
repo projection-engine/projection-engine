@@ -6,7 +6,7 @@ import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 const MAX_DELTA = 50, LEFT_BUTTON = 0
 
 export default function onViewportClick(event, mouseDelta, settings, setContext) {
-    if (gpu.canvas !== event.target || event.button !== LEFT_BUTTON)
+    if (GPUCanvas !== event.target || event.button !== LEFT_BUTTON)
         return
     const deltaX = Math.abs(mouseDelta.x - event.clientX)
     const deltaY = Math.abs(mouseDelta.y - event.clientY)

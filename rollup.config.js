@@ -84,9 +84,7 @@ export default [
                 preprocess: autoPreprocess(),
                 compilerOptions: {
                     dev: !PRODUCTION,
-                    css: css => {
-                        css.write(`build/frontend.css`);
-                    }
+                    css: css => css.write(`build/frontend.css`)
                 }
             }),
             css({output: `frontend.css`}),

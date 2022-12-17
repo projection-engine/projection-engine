@@ -1,53 +1,64 @@
 import TranslationGizmo from "../lib/transformation/TranslationGizmo"
 import RotationGizmo from "../lib/transformation/RotationGizmo"
 import ScalingGizmo from "../lib/transformation/ScalingGizmo"
-import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.ts"
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
 import GPU from "../../engine-core/lib/GPU";
 import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import AXIS from "../static/AXIS";
-import {mat4} from "gl-matrix";
+import {mat4, quat, vec3} from "gl-matrix";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import GizmoAPI from "../lib/GizmoAPI";
 import LineRenderer from "./LineRenderer";
+import Entity from "../../engine-core/instances/Entity";
+import Shader from "../../engine-core/instances/Shader";
+import Controller from "../../engine-core/lib/Controller";
+import Mesh from "../../engine-core/instances/Mesh";
 
 
-const lineMatrix = mat4.create()
+const lineMatrix = <Float32Array>mat4.create()
+const NULL_QUAT = <Float32Array>quat.create()
+const NULL_VEC3 = <Float32Array>vec3.create()
+const NULL_VEC3_1 = <Float32Array>vec3.create().fill(1)
 
 const LINE_SIZE = 1000000;
-export default class GizmoSystem {
-    static mainEntity
-    static onStart
-    static onStop
-    static targetRotation
-    static targetGizmo
-    static toBufferShader
-    static clickedAxis
+export default class GizmoSystem extends Controller {
+    static mainEntity?: Entity
+    static onStart?: Function
+    static onStop?: Function
+    static targetRotation?: Float32Array
+    static targetGizmo?: TranslationGizmo | RotationGizmo | ScalingGizmo
+    static toBufferShader?: Shader
+    static clickedAxis?: number
     static sensitivity = .001
     static hasStarted = false
-    static _wasOnGizmo = false
+    static #wasOnGizmo = false
+    static highlightX: boolean = false
+    static highlightY: boolean = false
+    static highlightZ: boolean = false
+
     static get wasOnGizmo() {
-        return GizmoSystem._wasOnGizmo
+        return GizmoSystem.#wasOnGizmo
     }
 
     static set wasOnGizmo(data) {
-        GizmoSystem._wasOnGizmo = data
+        GizmoSystem.#wasOnGizmo = data
         if (data)
             GizmoSystem.onStart?.()
         else
             GizmoSystem.onStop?.()
     }
 
-    static rotationGizmoMesh
-    static scaleGizmoMesh
-    static translationGizmoMesh
-    static dualAxisGizmoMesh
-    static screenSpaceMesh
+    static rotationGizmoMesh?: Mesh
+    static scaleGizmoMesh?: Mesh
+    static translationGizmoMesh?: Mesh
+    static dualAxisGizmoMesh?: Mesh
+    static screenSpaceMesh?: Mesh
     static tooltip
-    static translationGizmo
-    static scaleGizmo
-    static rotationGizmo
+    static translationGizmo?: TranslationGizmo
+    static scaleGizmo?: ScalingGizmo
+    static rotationGizmo?: RotationGizmo
     static transformationType = TRANSFORMATION_TYPE.GLOBAL
 
     static updateGizmoToolTip = () => null
@@ -58,10 +69,11 @@ export default class GizmoSystem {
         GizmoSystem.mainEntity = main
         GizmoSystem.targetGizmo.transformGizmo()
         GizmoSystem.targetRotation = main._rotationQuat
-        RotationGizmo.currentRotation = [0, 0, 0]
+        RotationGizmo.currentRotation.fill(0)
     }
 
     static initialize() {
+        super.initialize()
         GizmoSystem.screenSpaceMesh = GPU.meshes.get(STATIC_MESHES.PRODUCTION.SPHERE)
         GizmoSystem.dualAxisGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO)
         GizmoSystem.translationGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO)
@@ -94,7 +106,7 @@ export default class GizmoSystem {
                     ScreenSpaceGizmo.drawGizmo()
                 t.drawGizmo()
                 mat4.identity(lineMatrix)
-                GizmoAPI.applyTransformation(lineMatrix, [0, 0, 0, 1], [0, 0, 0], [1, 1, 1])
+                GizmoAPI.applyTransformation(lineMatrix, NULL_QUAT, NULL_VEC3, NULL_VEC3_1)
             }
 
             LineRenderer.setState(0, 0, LINE_SIZE)

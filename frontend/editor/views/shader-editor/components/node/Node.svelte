@@ -116,6 +116,8 @@
         transform={`translate(${node.x} ${node.y})`}
 >
     <foreignObject
+            width="0"
+            height="0"
             data-id={node.id}
             data-node={node.canBeDeleted ? node.id : undefined}
             id={node.id}

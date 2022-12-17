@@ -7,18 +7,13 @@ import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
 import UndoRedoAPI from "../../frontend/editor/lib/utils/UndoRedoAPI";
 import EngineTools from "../EngineTools";
 import drawGizmoToDepth from "../utils/draw-gizmo-to-depth";
+import Mesh from "../../engine-core/instances/Mesh";
+import Entity from "../../engine-core/instances/Entity";
+import GizmoInterface from "./GizmoInterface";
 
-export default class Inheritance {
-    tracking = false
-    xGizmo
-    yGizmo
-    zGizmo
-    xyz
-    gridSize
-    updateTransformationRealtime = false
+export default class Inheritance extends GizmoInterface  {
 
-
-    onMouseMove() {
+    onMouseMove(event?:MouseEvent) {
         if (!GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = true
             UndoRedoAPI.save(EngineTools.selected)
@@ -26,7 +21,7 @@ export default class Inheritance {
         }
     }
 
-    onMouseDown(event) {
+    onMouseDown(event:MouseEvent) {
         this.x = event.clientX
         this.y = event.clientY
         GizmoSystem.targetGizmo.transformGizmo()
@@ -40,7 +35,6 @@ export default class Inheritance {
             GizmoSystem.hasStarted = false
             UndoRedoAPI.save(EngineTools.selected)
         }
-        this.tracking = false
         GizmoSystem.hasStarted = false
         document.exitPointerLock()
         GizmoSystem.clickedAxis = -1
@@ -61,11 +55,10 @@ export default class Inheritance {
         GizmoSystem.clickedAxis = pickID
 
         if (pickID === 0)
-            this.onMouseUp(true)
+            this.onMouseUp()
         else {
             GizmoSystem.wasOnGizmo = true
-            this.tracking = true
-            gpu.canvas.requestPointerLock()
+            GPUCanvas.requestPointerLock()
         }
     }
 

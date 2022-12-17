@@ -47,7 +47,7 @@ export default function InitializeWindow(openAbout) {
                 openAbout()
                 break
             case "fullscreen":
-               window.gpu.canvas.requestFullscreen().catch()
+               window.GPUCanvas.requestFullscreen().catch()
                 break
 
             case "preferences":

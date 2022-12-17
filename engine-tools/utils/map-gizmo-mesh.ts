@@ -1,11 +1,11 @@
 import Entity from "../../engine-core/instances/Entity"
 import TransformationAPI from "../../engine-core/lib/math/TransformationAPI"
 import getPickerId from "../../engine-core/utils/get-picker-id";
-import {mat4} from "gl-matrix";
+import {mat4, quat, vec3} from "gl-matrix";
 
 const toDeg = 57.29
-export default function mapGizmoMesh(axis, type) {
-    const e = new Entity(undefined)
+export default function mapGizmoMesh(axis:string, type:string):Entity {
+    const entity = new Entity()
     let s, t = [0, 0, 0], r, index
     switch (axis) {
         case "x":
@@ -85,13 +85,20 @@ export default function mapGizmoMesh(axis, type) {
             break
         }
     }
-    const q = TransformationAPI.quat.fromEuler([], toDeg * r[0], toDeg * r[1], toDeg * r[2])
-    e.pickID = getPickerId(index)
-    TransformationAPI.vec3.copy(e._translation, t)
-    TransformationAPI.vec3.copy(e._scaling, s)
-    TransformationAPI.quat.copy(e._rotationQuat, q)
 
-    e.matrix = TransformationAPI.transformMovable(e)
-    e.__cacheMatrix = mat4.copy([], e.matrix)
-    return e
+    TransformationAPI.quat.fromEuler(<quat>entity._rotationQuat, toDeg * r[0], toDeg * r[1], toDeg * r[2])
+    const pickID = getPickerId(index)
+    entity.pickID[0] = pickID[0]
+    entity.pickID[1] = pickID[1]
+    entity.pickID[2] = pickID[2]
+    TransformationAPI.vec3.copy(<vec3>entity._translation, <vec3>t)
+    TransformationAPI.vec3.copy(<vec3>entity._scaling, <vec3>s)
+    TransformationAPI.transformMovable(entity)
+
+    const M = new Float32Array(16)
+    mat4.copy(M, entity.matrix)
+
+    entity.addProperty<Float32Array>("__cacheMatrix", M)
+
+    return entity
 }
