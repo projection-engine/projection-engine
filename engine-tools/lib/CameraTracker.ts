@@ -6,6 +6,9 @@ let holding, toApplyTranslation
 const toDeg = 180 / Math.PI, halfPI = Math.PI / 2
 const MOUSE_RIGHT = 2, MOUSE_LEFT = 0
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
+
+const cachePitch = quat.create()
+const cacheYaw = quat.create()
 export default class CameraTracker {
     static #isTracking = false
     static xRotation = 0
@@ -99,8 +102,8 @@ export default class CameraTracker {
         }
 
         if (CameraTracker.rotationChanged) {
-            const pitch = quat.fromEuler([], CameraTracker.yRotation * toDeg, 0, 0)
-            const yaw = quat.fromEuler([], 0, CameraTracker.xRotation * toDeg, 0)
+            const pitch = quat.fromEuler(cachePitch, CameraTracker.yRotation * toDeg, 0, 0)
+            const yaw = quat.fromEuler(cacheYaw, 0, CameraTracker.xRotation * toDeg, 0)
             const RBuffer = <quat>CameraAPI.rotationBuffer
             quat.copy(RBuffer, pitch)
             CameraTracker.rotationChanged = false
