@@ -8,7 +8,7 @@ import AXIS from "../../static/AXIS";
 import ScreenSpaceGizmo from "./ScreenSpaceGizmo";
 import GPU from "../../../engine-core/lib/GPU";
 import STATIC_TEXTURES from "../../../engine-core/static/resources/STATIC_TEXTURES";
-import Wrapper from "../../Wrapper";
+import EngineTools from "../../EngineTools";
 import UndoRedoAPI from "../../../frontend/editor/lib/utils/UndoRedoAPI";
 import gizmoRotateEntity from "../../utils/gizmo-rotate-entity";
 import drawGizmoToDepth from "../../utils/draw-gizmo-to-depth";
@@ -43,7 +43,7 @@ export default class RotationGizmo {
     onMouseUp() {
         if (GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = false
-            UndoRedoAPI.save(Wrapper.selected)
+            UndoRedoAPI.save(EngineTools.selected)
         }
 
         document.exitPointerLock()
@@ -57,7 +57,7 @@ export default class RotationGizmo {
             return
         if (!GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = true
-            UndoRedoAPI.save(Wrapper.selected)
+            UndoRedoAPI.save(EngineTools.selected)
             GizmoSystem.updateGizmoToolTip()
         }
 

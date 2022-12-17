@@ -65,10 +65,10 @@ export default [
             PRODUCTION && terser()
         ]
     },
-    worker("engine-core/workers/entity-worker.js", "build/entity-worker.js"),
-    worker("engine-core/workers/camera-worker.js", "build/camera-worker.js"),
-    worker("engine-core/workers/terrain-worker.js", "build/terrain-worker.js"),
-    worker("engine-core/workers/image-worker.js", "build/image-worker.js"),
+    worker("engine-core/workers/entity-worker.ts", "build/entity-worker.js"),
+    worker("engine-core/workers/camera-worker.ts", "build/camera-worker.js"),
+    worker("engine-core/workers/terrain-worker.ts", "build/terrain-worker.js"),
+    worker("engine-core/workers/image-worker.ts", "build/image-worker.js"),
 
     {
         input: `frontend/index.ts`,

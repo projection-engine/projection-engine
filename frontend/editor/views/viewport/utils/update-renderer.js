@@ -1,6 +1,6 @@
 import Engine from "../../../../../engine-core/Engine";
 import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
-import Wrapper from "../../../../../engine-tools/Wrapper";
+import EngineTools from "../../../../../engine-tools/EngineTools";
 import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
 import DirectionalShadows from "../../../../../engine-core/runtime/rendering/DirectionalShadows";
 import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
@@ -17,7 +17,7 @@ import GIZMOS from "../../../static/GIZMOS.ts";
 
 export default function updateRenderer(selected, engine, settings) {
     CameraTracker.initialize(settings)
-    Wrapper.updateSelectionData(selected)
+    EngineTools.updateSelectionData(selected)
     RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
     TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
     ScalingGizmo.gridSize = settings.gizmoGrid.scaleGizmo || .001
@@ -44,7 +44,7 @@ export default function updateRenderer(selected, engine, settings) {
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
     }
     if (Engine.environment === ENVIRONMENT.DEV)
-        Loop.linkToExecutionPipeline(Wrapper.afterDrawing, undefined)
+        Loop.linkToExecutionPipeline(EngineTools.afterDrawing, undefined)
     else
         Loop.linkToExecutionPipeline()
 

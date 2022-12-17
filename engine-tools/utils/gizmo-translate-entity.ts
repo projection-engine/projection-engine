@@ -1,7 +1,7 @@
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
 import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.ts";
-import Wrapper from "../Wrapper";
+import EngineTools from "../EngineTools";
 import {vec3, vec4} from "gl-matrix";
 import TranslationGizmo from "../lib/transformation/TranslationGizmo";
 
@@ -12,13 +12,13 @@ export default function gizmoTranslateEntity(event){
     const g = event.ctrlKey ? 1 : TranslationGizmo.gridSize
     const vec = ScreenSpaceGizmo.onMouseMove(event, GizmoSystem.sensitivity)
 
-    if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || Wrapper.selected.length > 1)
+    if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || EngineTools.selected.length > 1)
         toApply = vec
     else
         toApply = vec4.transformQuat([], [...vec, 1], firstEntity._rotationQuat)
     vec3.add(TranslationGizmo.cache, TranslationGizmo.cache, toApply)
     if (Math.abs(TranslationGizmo.cache[0]) >= g || Math.abs(TranslationGizmo.cache[1]) >= g || Math.abs(TranslationGizmo.cache[2]) >= g) {
-        const entities = Wrapper.selected
+        const entities = EngineTools.selected
         const SIZE = entities.length
         if (SIZE === 1 && entities[0].lockedTranslation)
             return

@@ -5,7 +5,7 @@ import DualAxisGizmo from "./transformation/DualAxisGizmo";
 import GizmoAPI from "./GizmoAPI";
 import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
 import UndoRedoAPI from "../../frontend/editor/lib/utils/UndoRedoAPI";
-import Wrapper from "../Wrapper";
+import EngineTools from "../EngineTools";
 import drawGizmoToDepth from "../utils/draw-gizmo-to-depth";
 
 export default class Inheritance {
@@ -21,7 +21,7 @@ export default class Inheritance {
     onMouseMove() {
         if (!GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = true
-            UndoRedoAPI.save(Wrapper.selected)
+            UndoRedoAPI.save(EngineTools.selected)
             GizmoSystem.updateGizmoToolTip()
         }
     }
@@ -38,7 +38,7 @@ export default class Inheritance {
     onMouseUp() {
         if (GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = false
-            UndoRedoAPI.save(Wrapper.selected)
+            UndoRedoAPI.save(EngineTools.selected)
         }
         this.tracking = false
         GizmoSystem.hasStarted = false

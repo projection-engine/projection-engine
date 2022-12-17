@@ -1,4 +1,4 @@
-import Wrapper from "../Wrapper";
+import EngineTools from "../EngineTools";
 import GizmoSystem from "../runtime/GizmoSystem";
 import {quat, vec3} from "gl-matrix";
 import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.ts";
@@ -9,7 +9,7 @@ export default function gizmoRotateEntity(vec, screenSpace) {
     let firstEntity = GizmoSystem.mainEntity
     if (!firstEntity)
         return;
-    const targets = Wrapper.selected, SIZE = targets.length
+    const targets = EngineTools.selected, SIZE = targets.length
     if (SIZE === 1 && firstEntity.lockedRotation)
         return
     const quatA = quat.create()

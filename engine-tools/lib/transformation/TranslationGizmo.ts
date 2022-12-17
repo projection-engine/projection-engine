@@ -3,7 +3,7 @@ import GizmoSystem from "../../runtime/GizmoSystem";
 import Inheritance from "../Inheritance";
 import gizmoTranslateEntity from "../../utils/gizmo-translate-entity";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../frontend/editor/stores/dispatch-renderer-entities";
-import Wrapper from "../../Wrapper";
+import EngineTools from "../../EngineTools";
 
 export default class TranslationGizmo extends Inheritance {
     static gridSize = 1
@@ -29,7 +29,7 @@ export default class TranslationGizmo extends Inheritance {
     onMouseMove(event) {
         super.onMouseMove()
         if(!TranslationGizmo.hasCloned && event.shiftKey){
-            const clones = Wrapper.selected.map(m => m.clone())
+            const clones = EngineTools.selected.map(m => m.clone())
             dispatchRendererEntities({
                 type: ENTITY_ACTIONS.PUSH_BLOCK,
                 payload: clones

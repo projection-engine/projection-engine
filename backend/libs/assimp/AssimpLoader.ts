@@ -6,6 +6,7 @@ import {v4} from "uuid";
 import ProjectController from "../ProjectController";
 
 import {mat4} from "gl-matrix";
+import MutableObject from "../../../engine-core/MutableObject";
 
 const path = require("path")
 const fs = require("fs")
@@ -19,7 +20,7 @@ interface NodeType {
 }
 
 interface GLTFType {
-    meshes: undefined | { [key: string]: any }[],
+    meshes: undefined | MutableObject[],
     rootnode: NodeType | undefined
 }
 
@@ -122,7 +123,7 @@ export default class AssimpLoader {
         }
     }
 
-    static #mapChildren(collection, meshes: { [key: string]: string }, node: NodeType, parent?: string): undefined {
+    static #mapChildren(collection, meshes: MutableObject, node: NodeType, parent?: string): undefined {
         if (!node)
             return;
         const nodeID = v4()

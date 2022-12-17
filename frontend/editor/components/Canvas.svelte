@@ -6,17 +6,18 @@
     import SettingsStore from "../stores/SettingsStore";
     import SelectionStore from "../stores/SelectionStore";
     import AssetAPI from "../lib/fs/AssetAPI";
-    import initializer from "../../../engine-tools/initializer";
     import VisualsStore from "../stores/VisualsStore";
     import Engine from "../../../engine-core/Engine";
+    import EngineTools from "../../../engine-tools/EngineTools";
+    import MutableObject from "../../../engine-core/MutableObject";
 
     export let onReady
 
-    let canvasRef = null
+    let canvasRef: HTMLCanvasElement|null = null
     let done = false
-    let engine = {}
-    let settings = {}
-    let visuals = {}
+    let engine:MutableObject = {}
+    let settings:MutableObject = {}
+    let visuals:MutableObject = {}
     let selected = []
     const unsubscribeSelection = SelectionStore.getStore(() => selected = SelectionStore.engineSelected)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -24,7 +25,7 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        Engine.initialize(
+        Engine.initializeContext(
             canvasRef,
             {w: settings.resolution[0], h: settings.resolution[1]},
             AssetAPI.readAsset,
@@ -32,7 +33,7 @@
             true
         )
             .then(async () => {
-                await initializer()
+                await EngineTools.initialize()
                 onReady()
                 done = true
                 EngineStore.updateStore({...engine, viewportInitialized: true})

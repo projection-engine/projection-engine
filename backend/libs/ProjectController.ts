@@ -2,6 +2,7 @@ import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
 import readTypedFile from "../utils/read-typed-file";
 import FILE_TYPES from "../../static/FILE_TYPES";
 import PROJECT_STATIC_DATA from "../../static/PROJECT_STATIC_DATA";
+import MutableObject from "../../engine-core/MutableObject";
 
 const {BrowserWindow} = require("electron")
 const fs = require("fs")
@@ -16,7 +17,7 @@ export default class ProjectController {
     static pathToRegistry: string
     static registry: { [key: string]:  {id: string, path: string} } = {}
     static window: typeof BrowserWindow
-    static metadata: { [key: string]: any }
+    static metadata: MutableObject
     private static initialized: boolean = false
 
     private static async initialize(): Promise<void> {
@@ -50,7 +51,7 @@ export default class ProjectController {
 
     static async prepareForUse(pathTo: string) {
         ProjectController.pathToRegistry = pathTo + path.sep + FILE_TYPES.REGISTRY
-        ProjectController.metadata = <{[key: string]: any}>await readTypedFile(pathTo + path.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "json") || {}
+        ProjectController.metadata = <MutableObject>await readTypedFile(pathTo + path.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "json") || {}
         ProjectController.registry = <{[key: string]: { id: string, path: string }}>await readTypedFile(ProjectController.pathToRegistry, "json") || {}
         console.trace(ProjectController.registry)
         await ProjectController.initialize()

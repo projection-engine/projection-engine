@@ -1,7 +1,7 @@
 import GizmoSystem from "../runtime/GizmoSystem";
 import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE.ts";
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
-import Wrapper from "../Wrapper";
+import EngineTools from "../EngineTools";
 import {vec3, vec4} from "gl-matrix";
 import ScalingGizmo from "../lib/transformation/ScalingGizmo";
 import AXIS from "../static/AXIS";
@@ -38,7 +38,7 @@ export default function gizmoScaleEntity(event) {
     }
 
 
-    if (isGlobal || Wrapper.selected.length > 1)
+    if (isGlobal || EngineTools.selected.length > 1)
         toApply = vec4.transformQuat([], [...vec, 1], firstEntity._rotationQuat)
     else
         toApply = vec
@@ -49,7 +49,7 @@ export default function gizmoScaleEntity(event) {
         reversed = vec3.scale([], ScalingGizmo.cache, -1)
 
     if (Math.abs(ScalingGizmo.cache[0]) >= g || Math.abs(ScalingGizmo.cache[1]) >= g || Math.abs(ScalingGizmo.cache[2]) >= g) {
-        const entities = Wrapper.selected
+        const entities = EngineTools.selected
         const SIZE = entities.length
         if (SIZE === 1 && entities[0].lockedScaling)
             return
