@@ -10,7 +10,7 @@ import NodeFS from "../../../../shared/libs/NodeFS";
 export default async function loadTerrain(reg) {
     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")
     if (!file.image) {
-        ConsoleAPI.error("No height-map present")
+        console.error("No height-map present")
         return
     }
     // const data = await TerrainGenerator.generate(file.image, file.scale, file.dimensions)

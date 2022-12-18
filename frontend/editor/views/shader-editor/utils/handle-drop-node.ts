@@ -23,7 +23,7 @@ export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) 
             return n
         }
         else
-            ConsoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED)
+            console.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED)
     }
     if (Array.isArray(dataToPush)) {
         const result = dataToPush.map(d => doIt(d)).flat()

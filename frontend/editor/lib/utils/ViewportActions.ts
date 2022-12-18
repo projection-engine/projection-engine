@@ -82,7 +82,7 @@ export default class ViewportActions {
             }
         }
         dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
-        ConsoleAPI.warn(`Pasted ${ViewportActions.toCopy.length} entities.`)
+        console.warn(`Pasted ${ViewportActions.toCopy.length} entities.`)
 
     }
 

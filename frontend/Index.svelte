@@ -21,7 +21,7 @@
     let fullyLoaded = false
 
     onMount(() => {
-        ipcRenderer.on("console", (_, data) => ConsoleAPI.error(...data))
+        ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
             clearInterval(interval)

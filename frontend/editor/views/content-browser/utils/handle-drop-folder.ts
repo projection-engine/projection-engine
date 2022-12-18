@@ -35,7 +35,7 @@ export default async function handleDropFolder(event:string[]|string, target?:st
                 if (!NodeFS.exists(newPath)) {
                     await ContentBrowserAPI.rename(NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + textData), NodeFS.resolvePath(newPath))
                     await FilesStore.refreshFiles()
-                } else ConsoleAPI.error(LOCALIZATION_EN.ITEM_ALREADY_EXISTS)
+                } else console.error(LOCALIZATION_EN.ITEM_ALREADY_EXISTS)
             }
         }
     } catch (error) {

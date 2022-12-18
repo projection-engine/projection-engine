@@ -69,7 +69,7 @@ export default class LevelController {
     static async loadLevel(level:string|{registryID:string}= PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
         await RegistryAPI.readRegistry()
         if (LevelController.#loadedLevel === level) {
-            ConsoleAPI.warn(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
+            console.warn(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
             return
         }
         LevelController.#loadedLevel = level
@@ -133,11 +133,11 @@ export default class LevelController {
 
     static async save() {
         if(EngineStore.engine.executingAnimation){
-            ConsoleAPI.warn(Localization.EXECUTING_SIMULATION)
+            console.warn(Localization.EXECUTING_SIMULATION)
             return
         }
         await ErrorLoggerAPI.save()
-        ConsoleAPI.warn(Localization.SAVING)
+        console.warn(Localization.SAVING)
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta
@@ -165,7 +165,7 @@ export default class LevelController {
             else {
                 const reg = RegistryAPI.getRegistryEntry(EngineStore.engine.currentLevel.registryID)
                 if (!reg) {
-                    ConsoleAPI.warn(LOCALIZATION_EN.LEVEL_NOT_FOUND)
+                    console.warn(LOCALIZATION_EN.LEVEL_NOT_FOUND)
                     pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
                     break pathElse
                 }
@@ -184,7 +184,7 @@ export default class LevelController {
             console.error(err)
             return
         }
-        ConsoleAPI.log(LOCALIZATION_EN.PROJECT_SAVED)
+        console.log(LOCALIZATION_EN.PROJECT_SAVED)
 
 
     }

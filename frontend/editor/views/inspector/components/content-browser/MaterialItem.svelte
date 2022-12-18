@@ -65,7 +65,7 @@
             const instance = GPU.materials.get(item.registryID)
             if (instance) {
                 await instance.updateUniformGroup(temp.response.uniformsData)
-                ConsoleAPI.log(LOCALIZATION_EN.MATERIAL_UPDATED)
+                console.log(LOCALIZATION_EN.MATERIAL_UPDATED)
 
                 GPUAPI.cleanUpTextures()
             }

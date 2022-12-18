@@ -56,7 +56,7 @@
 
             if (all.find(a => JSON.stringify(a) === c) != null) {
                 currentShortcut = [...shortcut]
-                ConsoleAPI.error(LOCALIZATION_EN.SHORTCUT_ALREADY_LINKED)
+                console.error(LOCALIZATION_EN.SHORTCUT_ALREADY_LINKED)
             }
             update(currentShortcut)
         } else if (!event.repeat) {

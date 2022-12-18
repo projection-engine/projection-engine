@@ -25,15 +25,15 @@
         if (NodeFS.exists(ErrorLoggerAPI.path))
             shell.openPath(ErrorLoggerAPI.path).catch()
         else
-            ConsoleAPI.error("No logs found")
+            console.error("No logs found")
     }
     async function updateStructure() {
-        ConsoleAPI.warn(Localization.UPDATING_STRUCTURE)
+        console.warn(Localization.UPDATING_STRUCTURE)
 
         await ScriptsAPI.updateAllScripts()
         await UIAPI.updateAllElements()
 
-        ConsoleAPI.log(Localization.DONE)
+        console.log(Localization.DONE)
     }
 </script>
 

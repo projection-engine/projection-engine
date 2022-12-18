@@ -66,7 +66,7 @@
                 disabled={loading}
                 data-view-header-button="-"
                 on:click={() => {
-                    ConsoleAPI.warn(Localization.REFRESHING)
+                    console.warn(Localization.REFRESHING)
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
         >

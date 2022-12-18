@@ -79,7 +79,7 @@ export default class UndoRedoAPI {
     static undo() {
         const action = UndoRedoAPI.#cache.undo()
         if (action) {
-            ConsoleAPI.warn(LOCALIZATION_EN.UNDOING_CHANGES)
+            console.warn(LOCALIZATION_EN.UNDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 
@@ -88,7 +88,7 @@ export default class UndoRedoAPI {
     static redo() {
         const action = UndoRedoAPI.#cache.redo()
         if (action) {
-            ConsoleAPI.warn(LOCALIZATION_EN.REDOING_CHANGES)
+            console.warn(LOCALIZATION_EN.REDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 

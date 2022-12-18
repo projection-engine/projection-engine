@@ -96,7 +96,7 @@ export default class ShaderEditorTools {
                 openFile.registryID,
                 JSON.stringify(materialData)
             )
-            ConsoleAPI.log(LOCALIZATION_EN.SAVED)
+            console.log(LOCALIZATION_EN.SAVED)
         } catch (err) {
             console.error(err)
         }

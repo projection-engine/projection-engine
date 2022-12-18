@@ -26,7 +26,7 @@
             GPUAPI.destroyMesh(item.registryID)
             GPUAPI.allocateMesh(item.registryID, data)
         }
-        ConsoleAPI.warn(LOCALIZATION_EN.UPDATING_ASSET)
+        console.warn(LOCALIZATION_EN.UPDATING_ASSET)
     }
 </script>
 

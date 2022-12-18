@@ -8,7 +8,7 @@ import MutableObject from "../../../engine-core/MutableObject";
 export default async function importFile(currentDirectory) {
     const {filesImported} = await getCall<MutableObject>(ROUTES.FILE_DIALOG, {currentDirectory: currentDirectory.id}, false)
     if(filesImported.length > 0) {
-        ConsoleAPI.log(LOCALIZATION_EN.IMPORT_SUCCESSFUL)
+        console.log(LOCALIZATION_EN.IMPORT_SUCCESSFUL)
         await FilesStore.refreshFiles()
     }
 

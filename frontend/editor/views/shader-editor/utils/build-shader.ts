@@ -14,7 +14,7 @@ export default async function buildShader(nodes, links, openFile) {
 
     if (functionDeclaration) {
         if (!GPU.materials.get(openFile.registryID)) {
-            ConsoleAPI.warn(LOCALIZATION_EN.NOT_APPLIED)
+            console.warn(LOCALIZATION_EN.NOT_APPLIED)
             return
         }
         GPUAPI.asyncDestroyMaterial(openFile.registryID)
@@ -25,5 +25,5 @@ export default async function buildShader(nodes, links, openFile) {
             settings
         }, openFile.registryID)
     } else
-        ConsoleAPI.error(LOCALIZATION_EN.ERROR_DURING_COMPILATION)
+        console.error(LOCALIZATION_EN.ERROR_DURING_COMPILATION)
 }

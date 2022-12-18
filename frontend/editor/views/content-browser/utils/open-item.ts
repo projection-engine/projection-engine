@@ -22,17 +22,17 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case ".js":
             case ".json":
                 shell.openPath(NodeFS.ASSETS_PATH + NodeFS.sep + data.id).catch()
-                ConsoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
+                console.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 break
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:
             case FILE_TYPES.TEXTURE:
             case FILE_TYPES.TERRAIN:
                 Loader.load(data.registryID, true).catch()
-                ConsoleAPI.warn(LOCALIZATION_EN.CREATING_ENTITY)
+                console.warn(LOCALIZATION_EN.CREATING_ENTITY)
                 break
             case FILE_TYPES.LEVEL:
-                ConsoleAPI.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
+                console.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 LevelController.loadLevel(data).catch()
                 break
             case FILE_TYPES.MATERIAL:
