@@ -3,11 +3,15 @@ import GPU from "../../engine-core/lib/GPU";
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";
+import Controller from "../../engine-core/lib/Controller";
+import RigidBodyComponent from "../../engine-core/templates/components/RigidBodyComponent";
+import PhysicsColliderComponent from "../../engine-core/templates/components/PhysicsColliderComponent";
 
 const EMPTY_MATRIX = mat4.create()
 
 let shader, uniforms
-export default class CollisionVisualizationSystem {
+const translationCache = vec3.create()
+export default class CollisionVisualizationSystem extends Controller{
     static cube
     static sphere
     static shader
@@ -29,14 +33,14 @@ export default class CollisionVisualizationSystem {
             const entity = selected[i]
             if (!entity.active)
                 continue
-            const collision = entity.components.get(COMPONENTS.PHYSICS_COLLIDER)
+            const collision = <PhysicsColliderComponent>entity.components.get(COMPONENTS.PHYSICS_COLLIDER)
 
             if (!collision)
                 continue
             if (entity.changesApplied || !entity.__collisionTransformationMatrix) {
                 entity.collisionUpdated = true
                 const m = entity.__collisionTransformationMatrix || mat4.clone(EMPTY_MATRIX)
-                const translation = vec3.add([], collision.center, entity.absoluteTranslation)
+                vec3.add(translationCache, <vec3>collision.center, entity.absoluteTranslation)
                 let scale
                 const rotation = entity._rotationQuat
                 if (collision.collisionType === COLLISION_TYPES.BOX)
@@ -45,7 +49,7 @@ export default class CollisionVisualizationSystem {
                     const r = collision.radius
                     scale = [r, r, r]
                 }
-                mat4.fromRotationTranslationScale(m, rotation, translation, scale)
+                mat4.fromRotationTranslationScale(m, rotation, translationCache, scale)
                 entity.__collisionTransformationMatrix = m
             }
 
