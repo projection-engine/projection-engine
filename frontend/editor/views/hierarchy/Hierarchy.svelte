@@ -1,12 +1,8 @@
 <script>
     import Localization from "../../templates/LOCALIZATION_EN";
-    import Input from "frontend/shared/components/input/Input.svelte";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import EngineHierarchyView from "./components/View.svelte";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
@@ -18,6 +14,10 @@
     import handleDrop from "./utils/handle-drop";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
     import EntityConstructor from "../../lib/controllers/EntityConstructor";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import Input from "../../../shared/components/input/Input.svelte";
 
     export let switchView = undefined
     export let orientation = undefined

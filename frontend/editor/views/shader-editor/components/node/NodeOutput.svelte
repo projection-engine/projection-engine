@@ -1,6 +1,6 @@
 <script>
     import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
-    import "../../css/NodeIO.css"
+
     import ShaderEditorTools from "../../libs/ShaderEditorTools";
 
     export let handleLinkDrag

@@ -1,10 +1,10 @@
 <script>
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import entityCreationOptions from "../../../templates/entity-creation-options";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
 
     const options = entityCreationOptions()
 </script>

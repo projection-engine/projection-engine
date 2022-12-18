@@ -1,7 +1,7 @@
 import FilesAPI from "./FilesAPI";
-import PROJECT_STATIC_DATA from "../../../../static/PROJECT_STATIC_DATA";
+import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 import NodeFS from "../../../shared/libs/NodeFS";
-import PROJECT_FOLDER_STRUCTURE from "../../../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class ErrorLoggerAPI {

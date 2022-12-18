@@ -1,9 +1,9 @@
 <script>
-    import Range from "frontend/shared/components/range/Range.svelte";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import VisualsStore from "../../../stores/VisualsStore";
     import AA_METHODS from "../../../../../engine-core/static/AA_METHODS";
+    import Range from "../../../../shared/components/range/Range.svelte";
 
     export let visualSettings
 

@@ -1,18 +1,18 @@
 <script>
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import ShadingOption from "./components/ShadingModels.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import EntityStateController from "../../lib/controllers/EntityStateController";
-    import Icon from "frontend/shared/components/icon/Icon.svelte"
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
     import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
     import SettingsStore from "../../stores/SettingsStore";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
 
     export let settings
     export let engine

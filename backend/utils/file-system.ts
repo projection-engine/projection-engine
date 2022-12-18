@@ -3,7 +3,7 @@ import directoryStructure from "../../backend/utils/directory-structure";
 import readdir from "../../backend/utils/readdir";
 import rm from "../../backend/utils/rm";
 import readFile from "../../backend/utils/read-file";
-import FILE_TYPES from "../../static/FILE_TYPES";
+import FILE_TYPES from "../../static/objects/FILE_TYPES";
 
 const {ipcMain} = require("electron")
 const fs = require("fs")

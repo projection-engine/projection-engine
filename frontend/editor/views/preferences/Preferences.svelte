@@ -8,9 +8,9 @@
     import VisualsStore from "../../stores/VisualsStore";
     import CameraSettings from "./components/CameraSettings.svelte";
     import GridSettings from "./components/GridSettings.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
-    import Icon from "frontend/shared/components/icon/Icon.svelte"
     import TABS from "./TABS";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
 
     let settings
     let visuals

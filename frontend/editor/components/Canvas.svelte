@@ -9,7 +9,6 @@
     import VisualsStore from "../stores/VisualsStore";
     import Engine from "../../../engine-core/Engine";
     import EngineTools from "../../../engine-tools/EngineTools";
-    import MutableObject from "../../../engine-core/MutableObject";
 
     export let onReady
 

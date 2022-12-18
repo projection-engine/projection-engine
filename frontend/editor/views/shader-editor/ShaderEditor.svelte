@@ -9,17 +9,17 @@
     import Material from "./libs/nodes/Material";
     import BOARD_SIZE from "./static/BOARD_SIZE";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
-    import NodeFS from "frontend/shared/libs/NodeFS";
     import SEContextController from "./libs/SEContextController";
     import ShaderCanvas from "./components/ShaderCanvas.svelte";
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import NodeFS from "../../../shared/libs/NodeFS";
 
     const {shell} = window.require("electron")
 

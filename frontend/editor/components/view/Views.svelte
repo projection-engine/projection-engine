@@ -1,11 +1,11 @@
 <script>
-    import ResizableBar from "frontend/shared/components/resizable/ResizableBar.svelte";
     import View from "./components/View.svelte";
     import ViewGroup from "./components/ViewGroup.svelte";
     import onResizeEndSplitter from "./utils/on-resize-end-splitter";
     import switchView from "./utils/switch-view";
     import removeTab from "./utils/remove-tab";
     import addTab from "./utils/add-tab";
+    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
 
     export let resizePosition
     export let orientation

@@ -4,13 +4,12 @@
     import SELECTION_TYPES from "../static/SELECT_ACTIONS"
 
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
-
     import ShaderEditorTools from "../libs/ShaderEditorTools";
     import Selector from "../../../components/selector/Selector.svelte";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 
     export let save
     export let openFile

@@ -1,5 +1,4 @@
 <script>
-    import Input from "frontend/shared/components/input/Input.svelte";
     import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
@@ -11,6 +10,7 @@
     import EngineStore from "../../../../stores/EngineStore";
     import HierarchyController from "../../../../lib/controllers/HierarchyController";
     import {v4} from "uuid";
+    import Input from "../../../../../shared/components/input/Input.svelte";
 
     const nativeComponents = getNativeComponents()
     export let entity

@@ -2,10 +2,7 @@
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import FilesStore from "../../stores/FilesStore";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import LevelController from "../../lib/utils/LevelController";
     import FRAME_OPTIONS from "../../templates/FRAME_OPTIONS";
     import SettingsStore from "../../stores/SettingsStore";
@@ -14,6 +11,9 @@
     import CreationController from "./components/CreationController.svelte";
     import OtherSettings from "./GlobalOptions.svelte";
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
 
     let engine
     let store

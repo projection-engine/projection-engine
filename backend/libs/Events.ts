@@ -1,5 +1,5 @@
 import levelLoader from "../utils/level-loader";
-import PROJECT_FILE_EXTENSION from "../../shared-resources/PROJECT_FILE_EXTENSION";
+
 import ROUTES from "../static/ROUTES";
 import readTypedFile from "../utils/read-typed-file";
 import importFiles from "../utils/import-files";
@@ -7,8 +7,8 @@ import ProjectController from "./ProjectController";
 import resolveFileName from "../utils/resolve-file-name";
 
 import createRegistryEntry from "../utils/create-registry-entry";
-import directoryStructure from "../../shared-resources/backend/utils/directory-structure";
-import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import directoryStructure from "../utils/directory-structure";
+import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import parseContentBrowserData from "../utils/parse-content-browser-data";
 
 const {ipcMain, dialog, app, screen} = require("electron")
@@ -82,7 +82,7 @@ export default class Events {
     }
 
     static loadLevel(_, pathToLevel) {
-        levelLoader(ProjectController.window.webContents, pathToLevel, ProjectController.pathToProject.replace(PROJECT_FILE_EXTENSION, ""))
+        levelLoader(ProjectController.window.webContents, pathToLevel).catch()
     }
 
     static loadProjectMetadata(event) {

@@ -1,7 +1,6 @@
 <script>
     import {onMount, onDestroy} from 'svelte';
-    import Range from "frontend/shared/components/range/Range.svelte"
-
+    import Range from "../range/Range.svelte";
     export let startColor = [0, 0, 0];
     export let submit = undefined
 
@@ -17,7 +16,6 @@
     let pickerSquare;
 
     onMount(() => {
-        Number.prototype.mod = n => ((this % n) + n) % n
         document.addEventListener("mouseup", mouseUp);
         document.addEventListener("touchend", mouseUp);
         document.addEventListener("mousemove", mouseMove);

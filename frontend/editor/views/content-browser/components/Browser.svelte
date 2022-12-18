@@ -1,5 +1,4 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import handleRename from "../utils/handle-rename";
     import Item from "./item/Item.svelte";
     import SelectBox from "../../../components/select-box/SelectBox.svelte";
@@ -10,10 +9,10 @@
     import HotKeysController from "../../../lib/utils/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import ContextMenuController from "frontend/shared/libs/ContextMenuController";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import RowsHeader from "./RowsHeader.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
 
     const CARD_SIZE = 115
     export let fileType

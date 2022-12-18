@@ -1,11 +1,10 @@
 <script>
     import VIEWS from "../../view/static/VIEWS";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
-    import Icon from "frontend/shared/components/icon/Icon.svelte"
-
     import SettingsStore from "../../../stores/SettingsStore";
     import {onDestroy} from "svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)

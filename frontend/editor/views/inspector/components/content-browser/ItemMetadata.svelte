@@ -1,10 +1,10 @@
 <script>
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import Localization from "../../../../templates/LOCALIZATION_EN";
-    import NodeFS from "frontend/shared/libs/NodeFS"
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import getTypeName from "../../../content-browser/utils/get-type-name";
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController";
+    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import NodeFS from "../../../../../shared/libs/NodeFS";
 
     export let item
     let data

@@ -6,8 +6,7 @@
     import Material from "../../libs/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
     import ShaderEditorTools from "../../libs/ShaderEditorTools";
-    import Icon from "frontend/shared/components/icon/Icon.svelte"
-
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
     export let links
     export let node
     export let selectionMap

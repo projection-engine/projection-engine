@@ -3,7 +3,7 @@ import ProjectController from "./ProjectController";
 
 import AssimpLoader from "./assimp/AssimpLoader";
 import Events from "./Events";
-import PROJECT_STATIC_DATA from "../../static/PROJECT_STATIC_DATA";
+import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
 
 export default async function window(pathToProject:string, isDev:boolean):Promise<boolean> {
     try {

@@ -1,11 +1,11 @@
-import readFile from "../../shared-resources/backend/utils/read-file";
+import readFile from "../utils/read-file";
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
-import CHANNELS from "../static/CHANNELS";
+import ROUTES from "../static/ROUTES";
 
 const fs = require("fs");
 const DEFAULT = {entities: []}
 
-export default async function levelLoader(sender, levelPath, pathToProject) {
+export default async function levelLoader(sender, levelPath) {
     let level
     try {
         level = (fs.existsSync(levelPath) ? JSON.parse((await readFile(levelPath))[1]) : DEFAULT)
@@ -14,7 +14,7 @@ export default async function levelLoader(sender, levelPath, pathToProject) {
         level = DEFAULT
     }
     const entities = level.entities
-    sender.send(CHANNELS.ENTITIES, level)
+    sender.send(ROUTES.ENTITIES, level)
     const toLoadData = {
         meshes: new Set(),
         materials: new Set()

@@ -1,8 +1,8 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import KEYS from "../../static/KEYS.ts";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte"
     import {onDestroy, onMount} from "svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
 
 
     export let addNewTab

@@ -2,7 +2,6 @@ import FilesAPI from "../fs/FilesAPI"
 import UndoRedoAPI from "./UndoRedoAPI";
 import Engine from "../../../../engine-core/Engine";
 import RegistryAPI from "../fs/RegistryAPI";
-import CHANNELS from "../../../../backend/static/CHANNELS";
 import GPU from "../../../../engine-core/lib/GPU";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
@@ -23,10 +22,12 @@ import serializeStructure from "../../../../engine-core/utils/serialize-structur
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import NodeFS from "../../../shared/libs/NodeFS";
 import ROUTES from "../../../../backend/static/ROUTES";
-import PROJECT_STATIC_DATA from "../../../../static/PROJECT_STATIC_DATA";
-import PROJECT_FOLDER_STRUCTURE from "../../../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
+import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
+import UIComponent from "../../../../engine-core/templates/components/UIComponent";
+import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -100,7 +101,7 @@ export default class LevelController {
         })
         UndoRedoAPI.clear()
         ipcRenderer.on(
-            CHANNELS.ENTITIES,
+            ROUTES.ENTITIES,
             async (_, data) => {
                 const {entities} = data
 
@@ -109,7 +110,7 @@ export default class LevelController {
                     const entity = EntityAPI.parseEntityObject(entities[i])
                     for (let i = 0; i < entity.scripts.length; i++)
                         await componentConstructor(entity, entity.scripts[i].id, false)
-                    const imgID = entity.components.get(COMPONENTS.SPRITE)?.imageID
+                    const imgID = (<SpriteComponent>entity.components.get(COMPONENTS.SPRITE))?.imageID
                     checkTexture: if (imgID) {
                         const textures = GPU.textures
                         if (textures.get(imgID) != null && Object.values(STATIC_TEXTURES).find(v => v === imgID) != null)
@@ -117,7 +118,7 @@ export default class LevelController {
                         await EngineStore.loadTextureFromImageID(imgID)
                     }
 
-                    const uiID = entity.components.get(COMPONENTS.UI)?.uiLayoutID
+                    const uiID = (<UIComponent|undefined>entity.components.get(COMPONENTS.UI))?.uiLayoutID
                     if (uiID) {
                         const rs = RegistryAPI.getRegistryEntry(uiID)
                         Engine.UILayouts.set(uiID, await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path))

@@ -1,13 +1,10 @@
 <script>
     import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE.ts"
 
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
     import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
     import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
@@ -15,6 +12,9 @@
     import ROTATION_GRID from "../static/ROTATION_GRID";
     import SCALE_GRID from "../static/SCALE_GRID";
     import TRANSLATION_GRID from "../static/TRANSLATION_GRID";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 
     const BUTTON_DROPDOWN = "border-radius: 25px; height: 25px; background: var(--pj-background-tertiary);"
     const BUTTON_DROPDOWN_INT = "background: transparent; box-shadow: none; width: 50px; justify-content: center; gap: 6px"

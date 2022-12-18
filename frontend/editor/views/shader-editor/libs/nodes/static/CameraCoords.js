@@ -18,7 +18,7 @@ export default class CameraCoords extends ShaderNode {
         return NODE_TYPES.STATIC
     }
     getFunctionCall() {
-        this.placement = "cameraPosition"
+        this.cameraPosition = "placement"
         return ""
     }
 }

@@ -1,9 +1,10 @@
 import Entity from "../../engine-core/instances/Entity"
 import TransformationAPI from "../../engine-core/lib/math/TransformationAPI"
 import getPickerId from "../../engine-core/utils/get-picker-id";
-import {mat4, quat, vec3} from "gl-matrix";
+import {mat4, quat, vec3, vec4} from "gl-matrix";
 
 const toDeg = 57.29
+const cacheVec4 = vec4.create()
 export default function mapGizmoMesh(axis:string, type:string):Entity {
     const entity = new Entity()
     let s, t = [0, 0, 0], r, index
@@ -93,7 +94,12 @@ export default function mapGizmoMesh(axis:string, type:string):Entity {
     entity.pickID[2] = pickID[2]
     TransformationAPI.vec3.copy(<vec3>entity._translation, <vec3>t)
     TransformationAPI.vec3.copy(<vec3>entity._scaling, <vec3>s)
-    TransformationAPI.transformMovable(entity)
+    const translation = entity._translation
+    const rotate = entity._rotationQuat
+    const scale = entity._scaling
+    const matrix = entity.matrix
+    quat.normalize(cacheVec4, <quat>rotate)
+    mat4.fromRotationTranslationScale(matrix, cacheVec4, <vec3>translation, <vec3>scale)
 
     const M = new Float32Array(16)
     mat4.copy(M, entity.matrix)

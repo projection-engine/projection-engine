@@ -8,7 +8,6 @@
     import dragDrop from "../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
-    import ContextMenuController from "frontend/shared/libs/ContextMenuController";
     import Localization from "../../templates/LOCALIZATION_EN";
     import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
@@ -19,12 +18,12 @@
     import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
     import Engine from "../../../../engine-core/Engine";
     import EntityStateController from "../../lib/controllers/EntityStateController";
-    import Icon from "frontend/shared/components/icon/Icon.svelte"
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
     import getUnderSelectionBox from "./utils/get-under-selection-box";
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
 
     let selectedSize = -1
     let mainEntity

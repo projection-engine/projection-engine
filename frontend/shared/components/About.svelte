@@ -1,7 +1,7 @@
 <script>
-    import createPortal from "./create-portal";
     import {onDestroy, onMount} from "svelte";
     import Localization from "../libs/Localization";
+    import Portal from "./Portal";
 
     export let handleClose
     const translate = (key) => Localization.COMPONENTS.ABOUT[key]
@@ -15,7 +15,7 @@
         }
     }
 
-    const portal = createPortal(999)
+    const portal = new Portal(999)
     onMount(() => {
         portal.create(content)
         portal.open()

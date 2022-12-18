@@ -3,17 +3,18 @@
     import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.ts";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import ResizableBar from "frontend/shared/components/resizable/ResizableBar.svelte";
+
     import Localization from "../../templates/LOCALIZATION_EN";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
-    import NodeFS from "frontend/shared/libs/NodeFS";
     import Header from "./Header.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import {onDestroy} from "svelte";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import EngineStore from "../../stores/EngineStore";
+    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import NodeFS from "../../../shared/libs/NodeFS";
 
     let settings = {}
     let engine = {}

@@ -1,11 +1,10 @@
 <script>
     import {ALL_NODES} from "../static/ALL_NODES"
-    import Input from "frontend/shared/components/input/Input.svelte";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import "../../../components/selector/css/selector.css"
     import Localization from "../../../templates/LOCALIZATION_EN";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Input from "../../../../shared/components/input/Input.svelte";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 
     const parseStr = (str) => str.toLowerCase().replace(/\s/g, "")
     let searchString = ""

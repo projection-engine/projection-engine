@@ -1,15 +1,13 @@
 <script>
     import Localization from "../../../templates/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import {v4} from "uuid";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
-    import createPortal from "frontend/shared/components/create-portal";
-
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     export let engine
     const internalID = v4()
     const TYPES = ConsoleAPI.TYPES

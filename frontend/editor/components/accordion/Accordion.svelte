@@ -1,6 +1,6 @@
 <script>
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
 
     export let title
     export let background

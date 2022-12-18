@@ -1,9 +1,8 @@
 <script>
     import DATA_TYPES from "../../../../../engine-core/static/DATA_TYPES";
     import Selector from "../../../components/selector/Selector.svelte";
-    import Range from "frontend/shared/components/range/Range.svelte";
-    import ColorPicker from "frontend/shared/components/color-picker/ColorPicker.svelte";
-
+    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
+    import Range from "../../../../shared/components/range/Range.svelte";
     export let uniforms
     export let update
 </script>

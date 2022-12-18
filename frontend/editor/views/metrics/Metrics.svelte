@@ -1,16 +1,16 @@
 <script>
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import {onDestroy, onMount} from "svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import BenchmarkAPI from "../../../../engine-core/lib/utils/BenchmarkAPI";
     import Engine from "../../../../engine-core/Engine";
-    import Range from "frontend/shared/components/range/Range.svelte"
     import {v4} from "uuid";
     import BENCHMARK_KEYS from "../../../../engine-core/static/BENCHMARK_KEYS";
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import SettingsStore from "../../stores/SettingsStore";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Range from "../../../shared/components/range/Range.svelte";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
 
     export let viewID
     export let viewIndex

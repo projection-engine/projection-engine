@@ -5,9 +5,9 @@
     import GPU from "../../../../../../engine-core/lib/GPU";
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
-    import NodeFS from "frontend/shared/libs/NodeFS";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import ConsoleAPI from "../../../../../../engine-core/lib/utils/ConsoleAPI";
+    import NodeFS from "../../../../../shared/libs/NodeFS";
 
     export let item
     let wasUpdated = false

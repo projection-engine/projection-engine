@@ -1,6 +1,5 @@
 <script>
     import SideBarItem from "./SideBarItem.svelte";
-    import NodeFS from "frontend/shared/libs/NodeFS";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import FilesHierarchyStore from "../../../stores/FilesHierarchyStore";
     import {onDestroy} from "svelte";

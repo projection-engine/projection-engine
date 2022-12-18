@@ -1,10 +1,9 @@
 <script>
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
-    import Range from "frontend/shared/components/range/Range.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
-    import ColorPicker from "frontend/shared/components/color-picker/ColorPicker.svelte";
-
+    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
+    import Range from "../../../../shared/components/range/Range.svelte";
     export let settings
 
     function update(key, value) {

@@ -9,7 +9,6 @@
     import {onDestroy, onMount} from "svelte";
     import Node from "./node/Node.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
-    import ContextMenuController from "frontend/shared/libs/ContextMenuController";
     import HotKeysController from "../../../lib/utils/HotKeysController";
     import Link from "./Link.svelte";
     import SEContextController from "../libs/SEContextController";

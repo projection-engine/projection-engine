@@ -53,6 +53,7 @@
             />
         {:else}
             <div
+                    on:mousedown={handleDragStart}
                     class="header"
                     style={`background: rgb(${rgb})`}
                     id={node.id + "-node"}

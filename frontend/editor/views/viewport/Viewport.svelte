@@ -60,10 +60,10 @@
     }))
     $: isCanvasHidden = viewTab[currentTab] !== VIEWPORT_TABS.EDITOR //&& viewTab[currentTab] !== VIEWPORT_TABS.TERRAIN
     $: {
-        if (isCanvasHidden && window.gpu) {
+        if (isCanvasHidden && gpu) {
             GPUCanvas.style.zIndex = "-1"
             GPUCanvas.style.position = "absolute"
-        } else if (window.gpu) {
+        } else if (gpu) {
             GPUCanvas.style.zIndex = "1"
             GPUCanvas.style.position = "relative"
         }

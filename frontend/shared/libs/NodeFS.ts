@@ -1,7 +1,6 @@
 import {v4} from "uuid"
-import PROJECT_PATH from "../../../shared-resources/PROJECT_PATH";
-import PROJECT_FOLDER_STRUCTURE from "../../../static/PROJECT_FOLDER_STRUCTURE";
-import PROJECT_STATIC_DATA from "../../../static/PROJECT_STATIC_DATA";
+import PROJECT_FOLDER_STRUCTURE from "../../../static/objects/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_STATIC_DATA from "../../../static/objects/PROJECT_STATIC_DATA";
 
 const {ipcRenderer} = window.require("electron")
 const pathRequire = window.require("path")
@@ -40,7 +39,7 @@ export default class NodeFS {
     static ASSETS_PATH
 
     static initializePaths() {
-        NodeFS.path = pathRequire.resolve(sessionStorage.getItem(PROJECT_PATH).replace(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "") + NodeFS.sep)
+        NodeFS.path = pathRequire.resolve(sessionStorage.getItem(PROJECT_STATIC_DATA.PROJECT_PATH).replace(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "") + NodeFS.sep)
         NodeFS.temp = pathRequire.resolve(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.TEMP + NodeFS.sep)
         NodeFS.PREVIEW_PATH = pathRequire.resolve(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep)
         NodeFS.ASSETS_PATH = pathRequire.resolve(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + NodeFS.sep)

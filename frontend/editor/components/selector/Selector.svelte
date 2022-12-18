@@ -3,13 +3,13 @@
     import FilesStore from "../../stores/FilesStore";
     import {onDestroy} from "svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import Options from "./components/Options.svelte";
     import STATIC_MESHES from "../../../../engine-core/static/resources/STATIC_MESHES";
     import getType from "./utils/get-type";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import getIcon from "./utils/get-icon";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
 
 
     export let type

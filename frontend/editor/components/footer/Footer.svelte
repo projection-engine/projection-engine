@@ -1,18 +1,17 @@
 <script>
     import {onDestroy} from "svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import ErrorLoggerAPI from "../../lib/fs/ErrorLoggerAPI";
     import SettingsStore from "../../stores/SettingsStore";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
-    import NodeFS from "frontend/shared/libs/NodeFS";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
     import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
 
     const {shell} = window.require("electron")
 

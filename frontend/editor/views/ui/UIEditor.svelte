@@ -8,8 +8,9 @@
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
+
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
 
     let engine = {}
     let settings = {}

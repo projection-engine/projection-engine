@@ -1,10 +1,9 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import "../css/Branch.css"
     import DraggableEntity from "./Draggable.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import EntityConstructor from "../../../lib/controllers/EntityConstructor";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
 
     export let depth = undefined
     export let nodeRef = undefined

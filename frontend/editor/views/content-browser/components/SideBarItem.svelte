@@ -2,8 +2,7 @@
     import dragDrop from "../../../components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import handleDropFolder from "../utils/handle-drop-folder";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
     export let depth
     export let setCurrentDirectory
     export let currentDirectory

@@ -1,11 +1,11 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
     import {onMount} from "svelte";
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte"
     import VirtualList from "@sveltejs/svelte-virtual-list"
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 
     export let engine
     let currentIndex

@@ -1,12 +1,11 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import Input from "frontend/shared/components/input/Input.svelte";
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
     import STATIC_MESHES from "../../../../../engine-core/static/resources/STATIC_MESHES";
-    import "../css/selector.css"
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Input from "../../../../shared/components/input/Input.svelte";
 
     export let handleChange
     export let type

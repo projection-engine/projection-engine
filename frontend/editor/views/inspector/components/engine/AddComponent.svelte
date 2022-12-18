@@ -1,7 +1,4 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import FilesStore from "../../../../stores/FilesStore";
     import {onDestroy} from "svelte";
     import getNativeComponents from "../../utils/get-native-components";
@@ -10,6 +7,9 @@
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
     import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
 
     const nativeComponents = getNativeComponents()
 

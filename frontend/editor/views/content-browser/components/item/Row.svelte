@@ -1,9 +1,8 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import Preview from "../../../../components/preview/Preview.svelte";
     import ItemInput from "./ItemInput.svelte";
     import openItem from "../../utils/open-item";
-    import FILE_TYPES from "static/FILE_TYPES";
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
 
     export let currentDirectory
     export let items

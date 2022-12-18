@@ -1,21 +1,19 @@
 <script>
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import FilesStore from "../../../stores/FilesStore";
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
 
-    import Input from "frontend/shared/components/input/Input.svelte";
-    import NodeFS from "frontend/shared/libs/NodeFS"
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
-    import FILE_TYPES from "static/FILE_TYPES";
     import importFile from "../../../utils/import-file";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
     import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import Input from "../../../../shared/components/input/Input.svelte";
 
     export let currentDirectory
     export let setCurrentDirectory

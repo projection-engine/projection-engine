@@ -2,7 +2,6 @@
     import Localization from "../../templates/LOCALIZATION_EN";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
@@ -13,6 +12,7 @@
     import ShaderNode from "../shader-editor/libs/ShaderNode";
     import AttributeEditor from "./components/shader-editor/AttributeEditor.svelte";
     import {v4} from "uuid";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
 
     export let switchView = undefined
     export let orientation = undefined

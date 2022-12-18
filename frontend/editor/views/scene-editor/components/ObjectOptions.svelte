@@ -1,8 +1,8 @@
 <script>
     import viewportContext from "../../../templates/viewport-context";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte"
     import Localization from "../../../templates/LOCALIZATION_EN";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 
     export let settings
     $: mappedOptions = viewportContext(settings, true)

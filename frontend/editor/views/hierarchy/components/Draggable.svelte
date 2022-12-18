@@ -1,9 +1,7 @@
 <script>
     import dragDrop from "../../../components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import getEngineIcon from "../utils/get-engine-icon";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
     import updateSelection from "../utils/update-selection";
     import EntityNameController from "../../../lib/controllers/EntityNameController";
     import KEYS from "../../../static/KEYS.ts";
@@ -12,11 +10,12 @@
     import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS.ts";
     import SelectionStore from "../../../stores/SelectionStore";
     import Engine from "../../../../../engine-core/Engine";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
 
     export let node
     export let lockedEntity
     export let setLockedEntity
-    export let updateOpen
     export let open
 
     let isOnEdit = false

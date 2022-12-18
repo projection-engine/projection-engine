@@ -11,8 +11,7 @@ export default class Add extends ShaderNode {
             {label: "B", key: "b", accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2 ]}
         ], [
             {label: "Result", key: "addRes", type: DATA_TYPES.UNDEFINED}
-        ])
-        this.equalTypeInputs = true
+        ]) 
         this.name = "Add"
         this.size = 2
     }

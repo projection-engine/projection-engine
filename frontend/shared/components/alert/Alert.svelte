@@ -1,6 +1,5 @@
 <script>
     import {onMount} from "svelte";
-    import "./css/alert.css"
     import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
     let target

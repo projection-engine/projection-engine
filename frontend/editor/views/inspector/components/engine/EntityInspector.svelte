@@ -2,9 +2,7 @@
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte"
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import Localization from "../../../../templates/LOCALIZATION_EN";
     import dragDrop from "../../../../components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";
@@ -16,6 +14,8 @@
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import GPU from "../../../../../../engine-core/lib/GPU";
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
 
     export let entity
 

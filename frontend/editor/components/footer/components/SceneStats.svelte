@@ -3,8 +3,8 @@
     import {onDestroy, onMount} from "svelte";
     import GPU from "../../../../../engine-core/lib/GPU";
     import Engine from "../../../../../engine-core/Engine";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte"
     import Localization from "../../../templates/LOCALIZATION_EN";
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
 
     let engine
     const unsubscribe = EngineStore.getStore(v => engine = v)

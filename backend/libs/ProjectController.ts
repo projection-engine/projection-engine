@@ -1,7 +1,7 @@
-import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import readTypedFile from "../utils/read-typed-file";
-import FILE_TYPES from "../../static/FILE_TYPES";
-import PROJECT_STATIC_DATA from "../../static/PROJECT_STATIC_DATA";
+import FILE_TYPES from "../../static/objects/FILE_TYPES";
+import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
 import MutableObject from "../../engine-core/MutableObject";
 
 const {BrowserWindow} = require("electron")

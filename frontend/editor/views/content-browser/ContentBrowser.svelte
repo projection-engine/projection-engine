@@ -3,15 +3,15 @@
     import FilesStore from "../../stores/FilesStore";
     import NavigationHistory from "./libs/NavigationHistory";
     import SideBar from "./components/SideBar.svelte";
-    import ResizableBar from "frontend/shared/components/resizable/ResizableBar.svelte";
     import Browser from "./components/Browser.svelte";
     import Header from "./components/Header.svelte";
     import {v4} from "uuid";
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import ITEM_TYPES from "./templates/ITEM_TYPES";
-    import NodeFS from "frontend/shared/libs/NodeFS";
     import SettingsStore from "../../stores/SettingsStore";
+    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
+    import NodeFS from "../../../shared/libs/NodeFS";
 
 
     export let viewID

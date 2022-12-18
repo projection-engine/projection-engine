@@ -1,10 +1,10 @@
 import {v4} from "uuid";
-import FILE_TYPES from "../../static/FILE_TYPES";
+import FILE_TYPES from "../../static/objects/FILE_TYPES";
 import TEXTURE_TEMPLATE from "../../engine-core/static/TEXTURE_TEMPLATE";
 import ProjectController from "../libs/ProjectController";
 import readTypedFile from "./read-typed-file";
 import createRegistryEntry from "./create-registry-entry";
-import PROJECT_FOLDER_STRUCTURE from "../../static/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import AssimpLoader from "../libs/assimp/AssimpLoader";
 import glTF from "../libs/gltf/glTF";
 import * as Buffer from "buffer";

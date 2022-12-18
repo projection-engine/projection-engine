@@ -1,5 +1,4 @@
 <script>
-    import Range from "frontend/shared/components/range/Range.svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../stores/SettingsStore";
     import Checkbox from "../../components/checkbox/Checkbox.svelte";
@@ -10,8 +9,9 @@
     import Selector from "../../components/selector/Selector.svelte";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
-    import NodeFS from "frontend/shared/libs/NodeFS";
     import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
+    import Range from "../../../shared/components/range/Range.svelte";
+    import NodeFS from "../../../shared/libs/NodeFS";
 
     export let settings
     export let selectedTerrain

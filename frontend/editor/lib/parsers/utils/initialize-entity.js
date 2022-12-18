@@ -3,9 +3,7 @@ import Entity from "../../../../../engine-core/instances/Entity";
 
 
 export default function initializeEntity(data, meshID, parent, index = 0) {
-    const entity = new Entity()
-    entity.name = data.name ? data.name : "primitive-" + index
-
+    const entity = new Entity(data?.id, data.name ? data.name : "primitive-" + index)
     try {
         if (parent != null) {
             entity.parent = parent

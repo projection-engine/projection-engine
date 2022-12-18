@@ -6,11 +6,11 @@
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import NodeFS from "frontend/shared/libs/NodeFS";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import ConsoleAPI from "../../../../../../engine-core/lib/utils/ConsoleAPI";
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
+    import NodeFS from "../../../../../shared/libs/NodeFS";
 
     export let data
     export let item

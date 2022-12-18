@@ -2,15 +2,14 @@
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import Branch from "./Node.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
     import HierarchyController from "../../../lib/controllers/HierarchyController";
-    import ContextMenuController from "frontend/shared/libs/ContextMenuController";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";
     import Engine from "../../../../../engine-core/Engine";
+    import Icon from "../../../../shared/components/icon/Icon.svelte";
 
     export let ID
     export let searchString

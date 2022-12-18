@@ -3,7 +3,7 @@
     import transformModal from "./utils/transform-modal.js";
     import {onDestroy, onMount} from "svelte";
     import "./css/dropdown.css"
-    import createPortal from "../create-portal";
+    import Portal from "../Portal";
 
     export let asButton
     export let noBackground = undefined
@@ -44,7 +44,7 @@
             close()
     }
 
-    const portal = createPortal(500, false)
+    const portal = new Portal(500, false)
     $: open ? portal.open() : portal.close()
     onMount(() => {
         document.onpointerlockchange = () => {

@@ -1,20 +1,26 @@
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 
 const MOUSE_LEFT = 0
+
 export default class SculptingGizmo {
     ctx = null
     brushImage = null
     currentImage = null
-    callback
-
+    callback?: Function
+    canvas?: HTMLCanvasElement
+    handlerBound?: Function
     updateMesh = () => null
-    updateSettings(brushSize, brushScale, brushStrength){
+    wasDown:boolean = false
+    interval?:NodeJS.Timer
+
+    updateSettings(brushSize, brushScale, brushStrength) {
         this.ctx.lineWidth = brushSize
         const d = brushStrength * 255
         this.ctx.strokeStyle = `rgb(${d}, ${d}, ${d}, ${brushScale})`
         this.ctx.fillStyle = `rgb(${d}, ${d}, ${d}, ${brushScale})`
     }
-    updateImage(image){
+
+    updateImage(image) {
         this.currentImage = new Image();
         this.currentImage.onload = () => {
             this.canvas.width = this.currentImage.naturalWidth
@@ -33,16 +39,21 @@ export default class SculptingGizmo {
 
         this.updateImage(image)
 
-        this.handlerBound = this.handler.bind(this)
+        this.handlerBound = <Function>this.handler.bind(this)
 
+        // @ts-ignore
         GPUCanvas.addEventListener("mousedown", this.handlerBound)
+        // @ts-ignore
         document.addEventListener("mouseup", this.handlerBound)
 
     }
 
     destroy() {
+        // @ts-ignore
         document.removeEventListener("mousemove", this.handlerBound)
+        // @ts-ignore
         GPUCanvas.removeEventListener("mousedown", this.handlerBound)
+        // @ts-ignore
         document.removeEventListener("mouseup", this.handlerBound)
     }
 
@@ -55,9 +66,9 @@ export default class SculptingGizmo {
                 clearInterval(this.interval)
                 this.interval = setInterval(() => this.updateMesh(), 300)
                 this.ctx.beginPath()
-                const {texCoords} = PickingAPI.readUV(e.clientX, e.clientY, this.currentImage.naturalWidth, this.currentImage.naturalHeight)
-                this.ctx.moveTo(texCoords.x, texCoords.y)
-
+                // const {texCoords} = PickingAPI.readUV(e.clientX, e.clientY, this.currentImage.naturalWidth, this.currentImage.naturalHeight)
+                // this.ctx.moveTo(texCoords.x, texCoords.y)
+                // @ts-ignore
                 document.addEventListener("mousemove", this.handlerBound)
                 this.wasDown = true
                 break
@@ -67,14 +78,15 @@ export default class SculptingGizmo {
                     clearInterval(this.interval)
                     this.wasDown = false
                     this.updateMesh()
+                    // @ts-ignore
                     document.removeEventListener("mousemove", this.handlerBound)
                 }
                 break
             case "mousemove": {
                 const ctx = this.ctx
-                const {texCoords} = PickingAPI.readUV(e.clientX, e.clientY, this.currentImage.naturalWidth, this.currentImage.naturalHeight)
+                // const {texCoords} = PickingAPI.readUV(e.clientX, e.clientY, this.currentImage.naturalWidth, this.currentImage.naturalHeight)
 
-                ctx.lineTo(texCoords.x, texCoords.y)
+                // ctx.lineTo(texCoords.x, texCoords.y)
                 ctx.stroke();
                 break
             }

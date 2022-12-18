@@ -1,5 +1,5 @@
 <script>
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
 
     export let checked
     export let handleCheck

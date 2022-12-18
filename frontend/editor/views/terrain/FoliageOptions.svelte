@@ -5,8 +5,8 @@
     import SettingsStore from "../../stores/SettingsStore";
     import Localization from "../../templates/LOCALIZATION_EN";
     import NodeFS from "../../../shared/libs/NodeFS";
-    import PROJECT_FOLDER_STRUCTURE from "../../../../static/PROJECT_FOLDER_STRUCTURE";
-    import FILE_TYPES from "../../../../static/FILE_TYPES";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
+    import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
     import Range from "../../../shared/components/range/Range.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
 

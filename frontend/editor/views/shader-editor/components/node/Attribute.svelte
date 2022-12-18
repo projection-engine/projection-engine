@@ -2,11 +2,11 @@
     import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import Selector from "../../../../components/selector/Selector.svelte";
-    import Range from "frontend/shared/components/range/Range.svelte";
-    import Dropdown from "frontend/shared/components/dropdown/Dropdown.svelte";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
-    import ColorPicker from "frontend/shared/components/color-picker/ColorPicker.svelte";
     import getDropdownHeaderStyles from "../../../../utils/get-dropdown-header-styles";
+    import Range from "../../../../../shared/components/range/Range.svelte";
+    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import Icon from "../../../../../shared/components/icon/Icon.svelte";
 
     export let attribute
     export let node

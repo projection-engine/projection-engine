@@ -1,6 +1,6 @@
 <script>
     import Localization from "../../templates/LOCALIZATION_EN";
-    import Icon from "frontend/shared/components/icon/Icon.svelte";
+
     import SelectionStore from "../../stores/SelectionStore";
     import GIZMOS from "../../static/GIZMOS.ts";
     import SettingsStore from "../../stores/SettingsStore";
@@ -10,7 +10,9 @@
     import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import ToolTip from "frontend/shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+
 
     export let isAlreadyOpen
     export let settings
