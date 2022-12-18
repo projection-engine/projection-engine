@@ -1,13 +1,14 @@
 import STYLES from "./STYLES";
 
 export default class DragDropController {
-    static dropTarget
+    static dropTarget?:HTMLElement
     static dragData
-    static onDragTarget
-    static dataTransfer
+    static onDragTarget?:HTMLElement
+    static dataTransfer?:any
     static #initialized = false
-    static alertModal
-    static changedElements = []
+    static alertModal?:HTMLElement
+    static changedElements:HTMLElement[] = []
+    static dragImageElement?:HTMLElement
 
     static onLeave() {
         if (!DragDropController.dropTarget)
@@ -26,7 +27,7 @@ export default class DragDropController {
         }
     }
 
-    static createElement(html) {
+    static createElement(html?:string):HTMLElement {
         const element = document.createElement("div")
         element.innerHTML = html
         Object.assign(element.style, STYLES)

@@ -13,8 +13,8 @@ export default async function loadTerrain(reg) {
         ConsoleAPI.error("No height-map present")
         return
     }
-    const data = await TerrainGenerator.generate(file.image, file.scale, file.dimensions)
-    GPUAPI.allocateMesh(reg.id, data)
+    // const data = await TerrainGenerator.generate(file.image, file.scale, file.dimensions)
+    // GPUAPI.allocateMesh(reg.id, data)
     const entity = new Entity()
     entity.addComponent(COMPONENTS.TERRAIN)
 

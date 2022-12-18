@@ -5,14 +5,14 @@ import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
 import DirectionalShadows from "../../../../../engine-core/runtime/rendering/DirectionalShadows";
 import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
 import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
-import GPU from "../../../../../engine-core/lib/GPU";
+import GPU from "../../../../../engine-core/GPU";
 import ENVIRONMENT from "../../../../../engine-core/static/ENVIRONMENT";
 import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS";
 import Loop from "../../../../../engine-core/Loop";
 import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
 import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
-import GIZMOS from "../../../static/GIZMOS.ts";
+import GIZMOS from "../../../static/GIZMOS";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -38,7 +38,6 @@ export default function updateRenderer(selected, engine, settings) {
 
         CameraAPI.metadata.gamma = settings.gamma
         CameraAPI.metadata.exposure = settings.exposure
-        CameraAPI.metadata.fxaa = settings.fxaa
 
         if (settings.shadingModel === SHADING_MODELS.DETAIL)
             CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)

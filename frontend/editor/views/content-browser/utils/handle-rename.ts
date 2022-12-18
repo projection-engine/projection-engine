@@ -1,5 +1,6 @@
 import FilesStore from "../../../stores/FilesStore";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
+import NodeFS from "../../../../shared/libs/NodeFS";
 
 export default async function handleRename(item, newName, currentDirectory, setCurrentDirectory, setCurrentItem) {
     if(newName !== item.name) {
@@ -20,7 +21,7 @@ export default async function handleRename(item, newName, currentDirectory, setC
             if (newName !== item.name) {
                 const targetPath = NodeFS.ASSETS_PATH  + (item.parent ? item.parent + NodeFS.sep : NodeFS.sep) + nameToApply
 
-                if (!(await NodeFS.exists(targetPath))) {
+                if ( NodeFS.exists(targetPath)) {
                     await ContentBrowserAPI.rename(NodeFS.ASSETS_PATH  + item.id, targetPath)
                     FilesStore.refreshFiles().catch()
                 }

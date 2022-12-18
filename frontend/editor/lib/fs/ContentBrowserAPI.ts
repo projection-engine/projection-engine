@@ -48,19 +48,6 @@ export default class ContentBrowserAPI {
         }
     }
 
-    static async foldersFromDirectory(startPath) {
-        if (!(await NodeFS.exists(startPath))) return []
-        let res = []
-
-        let files = await NodeFS.readdir(startPath)
-        for (let i = 0; i < files.length; i++) {
-            const filename = pathRequire.join(startPath, files[i])
-            const stat = await NodeFS.stat(filename)
-
-            if (stat.isDirectory) res.push(filename)
-        }
-        return res
-    }
 
 
     static async refresh() {

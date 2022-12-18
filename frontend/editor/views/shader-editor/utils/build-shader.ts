@@ -1,5 +1,5 @@
 import materialCompiler from "../libs/material-compiler/material-compiler"
-import GPU from "../../../../../engine-core/lib/GPU";
+import GPU from "../../../../../engine-core/GPU";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI";
 import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";

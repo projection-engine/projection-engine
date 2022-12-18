@@ -1,4 +1,5 @@
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
+import GPU from "../../../engine-core/GPU";
 
 const MOUSE_LEFT = 0
 
@@ -42,7 +43,7 @@ export default class SculptingGizmo {
         this.handlerBound = <Function>this.handler.bind(this)
 
         // @ts-ignore
-        GPUCanvas.addEventListener("mousedown", this.handlerBound)
+        GPU.canvas.addEventListener("mousedown", this.handlerBound)
         // @ts-ignore
         document.addEventListener("mouseup", this.handlerBound)
 
@@ -52,7 +53,7 @@ export default class SculptingGizmo {
         // @ts-ignore
         document.removeEventListener("mousemove", this.handlerBound)
         // @ts-ignore
-        GPUCanvas.removeEventListener("mousedown", this.handlerBound)
+        GPU.canvas.removeEventListener("mousedown", this.handlerBound)
         // @ts-ignore
         document.removeEventListener("mouseup", this.handlerBound)
     }
@@ -61,7 +62,7 @@ export default class SculptingGizmo {
 
         switch (e.type) {
             case "mousedown": {
-                if (e.button !== MOUSE_LEFT || e.target !== GPUCanvas)
+                if (e.button !== MOUSE_LEFT || e.target !== GPU.canvas)
                     return
                 clearInterval(this.interval)
                 this.interval = setInterval(() => this.updateMesh(), 300)

@@ -53,16 +53,19 @@ import GizmoAPI from "./lib/GizmoAPI";
 import LineRenderer from "./runtime/LineRenderer";
 import Controller from "../engine-core/lib/Controller";
 import Entity from "../engine-core/instances/Entity";
+import GPU from "../engine-core/GPU";
 
 
 let settings
 let selected:Entity[]
-export default class EngineTools extends Controller {
+export default class EngineTools {
     static selected: Entity[] = []
     static selectionMap = new Map<string, boolean>()
-
+    static #initialized = false
     static async initialize(): Promise<void> {
-        super.initialize()
+        if(EngineTools.#initialized)
+            return
+        EngineTools.#initialized = true
 
         UIAPI.useIframe = true
         GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ICONS, ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
@@ -83,6 +86,7 @@ export default class EngineTools extends Controller {
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.ROTATION_GIZMO, ROTATION_MESH)
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.SCALE_GIZMO, SCALE_MESH)
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO, TRANSLATION_MESH)
+
             IconsSystem.iconsTexture = (await GPUAPI.allocateTexture(ICON_IMG, STATIC_TEXTURES.ICONS)).texture
         } catch (err) {
             console.error(err)
@@ -130,17 +134,17 @@ export default class EngineTools extends Controller {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
 
-        gpu.disable(gpu.CULL_FACE)
-        gpu.disable(gpu.DEPTH_TEST)
+        GPU.context.disable(GPU.context.CULL_FACE)
+        GPU.context.disable(GPU.context.DEPTH_TEST)
         if (settings.showGrid)
             GridSystem.execute()
         CollisionVisualizationSystem.execute(selected)
         SelectedSystem.drawSilhouette(selected, settings)
         IconsSystem.drawIcons(settings)
-        gpu.enable(gpu.DEPTH_TEST)
-        gpu.clear(gpu.DEPTH_BUFFER_BIT)
+        GPU.context.enable(GPU.context.DEPTH_TEST)
+        GPU.context.clear(GPU.context.DEPTH_BUFFER_BIT)
 
         GizmoSystem.execute()
-        gpu.enable(gpu.CULL_FACE)
+        GPU.context.enable(GPU.context.CULL_FACE)
     }
 }

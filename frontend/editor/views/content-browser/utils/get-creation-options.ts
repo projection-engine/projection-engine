@@ -5,7 +5,9 @@ import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMP
 import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE";
 import TERRAIN_TEMPLATE from "../../../../../engine-core/static/templates/TERRAIN_TEMPLATE";
 import Localization from "../../../templates/LOCALIZATION_EN";
-export default function getCreationOptions(currentDirectory, materials) {
+import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
+import NodeFS from "../../../../shared/libs/NodeFS";
+export default function getCreationOptions(currentDirectory) {
     async function createFile(name, type, data) {
         let path = await resolveFileName(currentDirectory.id + NodeFS.sep + name, type)
         await AssetAPI.writeAsset(path, typeof data === "object" ? JSON.stringify(data) : data)

@@ -1,13 +1,14 @@
 import {get, writable} from "svelte/store";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import Engine from "../../../engine-core/Engine";
+import Entity from "../../../engine-core/instances/Entity";
 
 const TYPES = {
     ENGINE: "ENGINE",
     CONTENT_BROWSER: "CONTENT_BROWSER",
     SHADER_EDITOR: "SHADER_EDITOR"
 }
-const selection = writable({TARGET: TYPES.ENGINE, map: new Map(), array: []});
+const selection = writable({TARGET: TYPES.ENGINE, map: new Map(), array: [], lockedEntity: undefined});
 export default class SelectionStore {
     static data = get(selection)
     static TYPES = TYPES
@@ -81,7 +82,7 @@ export default class SelectionStore {
     }
 
 
-    static get selectedEntity() {
+    static get selectedEntity():Entity {
         return QueryAPI.getEntityByID(SelectionStore.mainEntity)
     }
 

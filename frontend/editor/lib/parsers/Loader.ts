@@ -12,15 +12,17 @@ import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import UndoRedoAPI from "../utils/UndoRedoAPI";
 import EntityConstructor from "../controllers/EntityConstructor";
 import loadTerrain from "./utils/load-terrain";
-import GPU from "../../../../engine-core/lib/GPU";
+import GPU from "../../../../engine-core/GPU";
 import Entity from "../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import {v4} from "uuid";
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
-import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS.ts";
+import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
 import NodeFS from "../../../shared/libs/NodeFS";
+import MeshComponent from "../../../../engine-core/templates/components/MeshComponent";
+import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 
 
 export default class Loader {
@@ -51,7 +53,7 @@ export default class Loader {
             if (file) {
                 for (let i = 0; i < file.entities.length; i++) {
                     const currentEntity = file.entities[i]
-                    if(currentEntity.meshID) {
+                    if (currentEntity.meshID) {
                         const primitiveRegistry = RegistryAPI.getRegistryEntry(currentEntity.meshID)
                         if (primitiveRegistry) {
                             const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
@@ -77,7 +79,7 @@ export default class Loader {
         }
     }
 
-    static async load(event, asID, mouseX, mouseY) {
+    static async load(event, asID, mouseX?: number, mouseY?: number) {
         const items = [], entitiesToPush = []
 
         if (asID)
@@ -98,9 +100,9 @@ export default class Loader {
             switch ("." + res.path.split(".").pop()) {
                 case FILE_TYPES.PRIMITIVE: {
                     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
-                    const materialID = await Loader.mesh(file, data, asID)
+                    const materialID = await Loader.mesh(file, data)
                     const entity = new Entity(undefined, "New primitive")
-                    const instance = entity.addComponent(COMPONENTS.MESH)
+                    const instance = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
                     entity.addComponent(COMPONENTS.CULLING)
                     instance.materialID = materialID
                     instance.meshID = data
@@ -117,7 +119,7 @@ export default class Loader {
                     if (res) {
                         const sprite = new Entity(undefined, Localization.SPRITE_RENDERER)
                         EntityConstructor.translateEntity(sprite)
-                        const c = sprite.addComponent(COMPONENTS.SPRITE)
+                        const c = sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE)
                         c.imageID = data
                         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
                     }
@@ -129,19 +131,18 @@ export default class Loader {
                     if (!entity || !entity.components.get(COMPONENTS.MESH)) return;
                     const result = await FileSystemAPI.loadMaterial(data)
                     if (result) {
-                        const comp = entity.components.get(COMPONENTS.TERRAIN) ? COMPONENTS.TERRAIN : COMPONENTS.MESH
                         UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
-                        entity.components.get(comp).materialID = data
+                        const component = <MeshComponent>entity.components.get(COMPONENTS.MESH)
+                        component.materialID = data
                         UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     } else
                         ConsoleAPI.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break
                 }
-                case FILE_TYPES.TERRAIN: {
-                    await loadTerrain(res)
-
-                    break
-                }
+                // case FILE_TYPES.TERRAIN: {
+                //     await loadTerrain(res)
+                //     break
+                // }
                 default:
                     ConsoleAPI.error(new Error("Not valid file type"))
                     break

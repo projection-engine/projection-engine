@@ -1,6 +1,7 @@
-import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts";
+import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
 import Engine from "../../../../../engine-core/Engine";
 import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
+import GPU from "../../../../../engine-core/GPU";
 
 
 export default function updateViewport(engine, currentView) {
@@ -10,10 +11,10 @@ export default function updateViewport(engine, currentView) {
         Engine.start()
         if (Engine.isDev)
             CameraTracker.startTracking()
-        GPUCanvas.style.opacity = "1"
+        GPU.canvas.style.opacity = "1"
     } else {
         CameraTracker.stopTracking()
         Engine.stop()
-        GPUCanvas.style.opacity = "0"
+        GPU.canvas.style.opacity = "0"
     }
 }

@@ -1,10 +1,13 @@
 import {get, writable} from "svelte/store";
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
-import ROUTES from "../../../backend/static/ROUTES.ts";
+import ROUTES from "../../../backend/static/ROUTES";
 import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
 import Localization from "../templates/LOCALIZATION_EN";
 import resolveFileName from "../templates/utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
+import NodeFS from "../../shared/libs/NodeFS";
+import {getCall} from "../../shared/libs/get-call";
+import MutableObject from "../../../engine-core/MutableObject";
 
 const contentBrowserStore = writable({
     isLoading: true,
@@ -27,9 +30,6 @@ export default class FilesStore {
     static data = get(contentBrowserStore)
     static initialized = false
 
-    static #isWatching = false
-
-
     static getStore(onChange) {
         if (!FilesStore.initialized) {
             FilesStore.initialized = true
@@ -46,7 +46,7 @@ export default class FilesStore {
 
     static async refreshFiles() {
         try {
-            const data = await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: NodeFS.path + NodeFS.sep}, false)
+            const data = await getCall<MutableObject[]>(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: NodeFS.path + NodeFS.sep}, false)
             const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
         } catch (err) {
@@ -68,14 +68,12 @@ export default class FilesStore {
     }
 
 
-    static paste(target, setCurrentDirectory) {
+    static paste(target?:string) {
         if (FilesStore.data.toCut.length > 0) {
             handleDropFolder(
                 [...FilesStore.data.toCut],
-                target,
-                {id: target},
-                setCurrentDirectory
-            )
+                target
+            ).catch(err => console.error(err))
             FilesStore.data.toCut = []
         }
     }

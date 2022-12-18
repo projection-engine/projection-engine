@@ -1,5 +1,5 @@
 import LineAPI from "../../engine-core/lib/rendering/LineAPI";
-import GPU from "../../engine-core/lib/GPU";
+import GPU from "../../engine-core/GPU";
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
 import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
@@ -33,39 +33,39 @@ export default class LineRenderer{
     static #bind(){
         if(finished) {
             lineShader.bind()
-            gpu.uniform1i(lineUniforms.darker, darker)
-            gpu.uniform1f(lineUniforms.size, size)
-            gpu.uniform1i(lineUniforms.atOrigin, atOrigin)
+            GPU.context.uniform1i(lineUniforms.darker, darker)
+            GPU.context.uniform1f(lineUniforms.size, size)
+            GPU.context.uniform1i(lineUniforms.atOrigin, atOrigin)
 
-            gpu.activeTexture(gpu.TEXTURE0)
-            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.depthSampler)
-            gpu.uniform1i(lineUniforms.depthSampler, 0)
-            gpu.uniform2fv(lineUniforms.bufferResolution, bufferRes)
+            GPU.context.activeTexture(GPU.context.TEXTURE0)
+            GPU.context.bindTexture(GPU.context.TEXTURE_2D, VisibilityRenderer.depthSampler)
+            GPU.context.uniform1i(lineUniforms.depthSampler, 0)
+            GPU.context.uniform2fv(lineUniforms.bufferResolution, bufferRes)
 
             finished = false
         }else if(needsStateUpdate){
-            gpu.uniform1i(lineUniforms.darker, darker)
-            gpu.uniform1f(lineUniforms.size, size)
-            gpu.uniform1i(lineUniforms.atOrigin, atOrigin)
+            GPU.context.uniform1i(lineUniforms.darker, darker)
+            GPU.context.uniform1f(lineUniforms.size, size)
+            GPU.context.uniform1i(lineUniforms.atOrigin, atOrigin)
             needsStateUpdate = false
         }
     }
     static drawX(matrix){
         LineRenderer.#bind()
-        gpu.uniform3fv(lineUniforms.axis, X)
-        gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
+        GPU.context.uniform3fv(lineUniforms.axis, X)
+        GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
         LineAPI.drawX()
     }
     static drawY(matrix){
         LineRenderer.#bind()
-        gpu.uniform3fv(lineUniforms.axis, Y)
-        gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
+        GPU.context.uniform3fv(lineUniforms.axis, Y)
+        GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
         LineAPI.drawY()
     }
     static drawZ(matrix){
         LineRenderer.#bind()
-        gpu.uniform3fv(lineUniforms.axis, Z)
-        gpu.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
+        GPU.context.uniform3fv(lineUniforms.axis, Z)
+        GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
         LineAPI.drawZ()
     }
 }

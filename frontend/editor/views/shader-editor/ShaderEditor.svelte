@@ -38,9 +38,6 @@
     let isReady = false
 
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    onMount(() => {
-        window.test = () => console.trace(gpu.getParameter(gpu.MAX_VERTEX_TEXTURE_IMAGE_UNITS))
-    })
 
     function initializeStructure() {
         SEContextController.deleteContext(openFile?.registryID)
@@ -77,7 +74,6 @@
     }
 
     function initializeFromFile(v) {
-        console.trace("FILE INITIALIZATION", v)
         if (!v) {
             UndoRedoAPI.clearShaderEditorStates()
             SEContextController.deleteContext(openFile?.registryID)

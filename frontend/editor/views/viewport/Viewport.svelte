@@ -16,6 +16,7 @@
     import View from "../../components/view/components/View.svelte";
     import getViewIcon from "../../components/view/utils/get-view-icon";
     import TabsStore from "../../stores/TabsStore";
+    import GPU from "../../../../engine-core/GPU";
 
     export let updateView
     export let viewTab
@@ -60,12 +61,12 @@
     }))
     $: isCanvasHidden = viewTab[currentTab] !== VIEWPORT_TABS.EDITOR //&& viewTab[currentTab] !== VIEWPORT_TABS.TERRAIN
     $: {
-        if (isCanvasHidden && gpu) {
-            GPUCanvas.style.zIndex = "-1"
-            GPUCanvas.style.position = "absolute"
-        } else if (gpu) {
-            GPUCanvas.style.zIndex = "1"
-            GPUCanvas.style.position = "relative"
+        if (isCanvasHidden && GPU.context) {
+            GPU.canvas.style.zIndex = "-1"
+            GPU.canvas.style.position = "absolute"
+        } else if (GPU.context) {
+            GPU.canvas.style.zIndex = "1"
+            GPU.canvas.style.position = "relative"
         }
 
     }

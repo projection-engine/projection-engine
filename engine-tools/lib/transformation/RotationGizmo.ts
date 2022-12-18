@@ -6,7 +6,7 @@ import CameraAPI from "../../../engine-core/lib/utils/CameraAPI";
 import GizmoSystem from "../../runtime/GizmoSystem";
 import AXIS from "../../static/AXIS";
 import ScreenSpaceGizmo from "./ScreenSpaceGizmo";
-import GPU from "../../../engine-core/lib/GPU";
+import GPU from "../../../engine-core/GPU";
 import STATIC_TEXTURES from "../../../engine-core/static/resources/STATIC_TEXTURES";
 import EngineTools from "../../EngineTools";
 import UndoRedoAPI from "../../../frontend/editor/lib/utils/UndoRedoAPI";
@@ -103,7 +103,7 @@ export default class RotationGizmo extends GizmoInterface {
         else {
             GizmoSystem.wasOnGizmo = true
             this.tracking = true
-            GPUCanvas.requestPointerLock()
+            GPU.canvas.requestPointerLock()
         }
     }
 

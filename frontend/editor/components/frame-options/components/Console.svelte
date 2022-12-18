@@ -8,10 +8,11 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import Portal from "../../../../shared/components/Portal";
     export let engine
     const internalID = v4()
     const TYPES = ConsoleAPI.TYPES
-    const portal = createPortal(999)
+    const portal = new Portal(999)
 
     let metadata
     let toRender = []
@@ -67,7 +68,7 @@
 
 
     $: objectOpen != null ? portal.open() : portal.close()
-    $: console.trace(toRender)
+
 </script>
 
 <Dropdown hideArrow={true} styles="width: clamp(250px, 20vw, 1000px" onOpen={_ => newMessages = false}>

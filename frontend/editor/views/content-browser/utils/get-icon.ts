@@ -1,3 +1,5 @@
+import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
+
 export default function getIcon(icon, metadata, childQuantity, type) {
     if (icon)
         return icon

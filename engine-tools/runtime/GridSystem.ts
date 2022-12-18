@@ -1,5 +1,5 @@
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
-import GPU from "../../engine-core/lib/GPU";
+import GPU from "../../engine-core/GPU";
 import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
 import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
 import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
@@ -23,13 +23,13 @@ export default class GridSystem {
     static execute() {
         shader.bind()
 
-        gpu.uniform4fv(uniforms.settings, buffer)
+        GPU.context.uniform4fv(uniforms.settings, buffer)
 
-        gpu.activeTexture(gpu.TEXTURE0)
-        gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.depthSampler)
-        gpu.uniform1i(uniforms.depthSampler, 0)
+        GPU.context.activeTexture(GPU.context.TEXTURE0)
+        GPU.context.bindTexture(GPU.context.TEXTURE_2D, VisibilityRenderer.depthSampler)
+        GPU.context.uniform1i(uniforms.depthSampler, 0)
 
-        gpu.uniform2fv(uniforms.resolution, resolution)
+        GPU.context.uniform2fv(uniforms.resolution, resolution)
 
         planeMesh.draw()
     }

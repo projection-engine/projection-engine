@@ -1,11 +1,12 @@
 import {get, writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
+import MutableObject from "../../../engine-core/MutableObject";
 
 
-const store = writable({});
+const store = writable(<MutableObject>{});
 
 export default class TabsStore {
-    static data = get(store)
+    static data:MutableObject = get(store)
 
     static get focused() {
         return TabsStore.data.focused
@@ -18,9 +19,10 @@ export default class TabsStore {
         return store.subscribe(newValue => onChange(newValue))
     }
 
-    static updateStore(value = TabsStore.data) {
-        TabsStore.data = value
-        store.set(value)
+    static updateStore(value ?:MutableObject) {
+        const V = value||TabsStore.data
+        TabsStore.data = V
+        store.set(V)
     }
 
     static update(direction, group, value) {

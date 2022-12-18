@@ -14,7 +14,7 @@ import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 export default class ViewportActions {
     static toCopy = []
 
-    static copy(single, target) {
+    static copy(single?:boolean, target?:string) {
         const selected = SelectionStore.engineSelected
         if (target)
             ViewportActions.toCopy = [target]
@@ -33,9 +33,9 @@ export default class ViewportActions {
 
         vec3.copy(CameraAPI.translationBuffer, entity._translation)
 
-        const position = [0,0, 10,1]
+        const position = <vec4>[0,0, 10,1]
         vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
-        vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, position)
+        vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, <vec3>position)
 
         CameraTracker.forceUpdate = true
     }
@@ -62,7 +62,7 @@ export default class ViewportActions {
         SelectionStore.engineSelected = newArr
     }
 
-    static paste(parent) {
+    static paste(parent?:string) {
         let block = []
         if (!ViewportActions.toCopy)
             return

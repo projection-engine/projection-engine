@@ -1,12 +1,13 @@
 import SHADING_MODELS from "../../../engine-core/static/SHADING_MODELS"
-import GIZMOS from "./GIZMOS.ts"
-import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE.ts"
-import TERRAIN_TOOLS from "./TERRAIN_TOOLS.ts";
-import KEYS from "./KEYS.ts";
+import GIZMOS from "./GIZMOS"
+import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
+import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
+import KEYS from "./KEYS";
 import INITIAL_LAYOUT from "./INITIAL_LAYOUT";
 
 const toRad = Math.PI / 180
 export default {
+    spawnOnOrigin: false,
     maxDistanceIcon: 50,
     cameraGizmoSize: 25,
 

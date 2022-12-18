@@ -9,8 +9,9 @@ import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import getPickerId from "../../../engine-core/utils/get-picker-id";
 import Engine from "../../../engine-core/Engine";
 import EntityAPI from "../../../engine-core/lib/utils/EntityAPI";
-import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS.ts";
+import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS";
 import getPivotPointMatrix from "../../../engine-tools/utils/get-pivot-point-matrix";
+import Entity from "../../../engine-core/instances/Entity";
 
 export const ENTITY_ACTIONS = {
     ADD: "ADD",
@@ -23,9 +24,7 @@ export const ENTITY_ACTIONS = {
     LINK_MULTIPLE: "LINK_MULTIPLE"
 }
 
-function deleteEntity(entity, single) {
-    if (!entity)
-        return
+function deleteEntity(entity:Entity, single?:boolean) {
     if (!single)
         SelectionStore.updateStore({
             ...SelectionStore.data,

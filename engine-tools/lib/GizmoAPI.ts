@@ -2,7 +2,7 @@ import {mat4, quat, vec3} from "gl-matrix"
 import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
 import GizmoSystem from "../runtime/GizmoSystem";
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
-import GPU from "../../engine-core/lib/GPU";
+import GPU from "../../engine-core/GPU";
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import Shader from "../../engine-core/instances/Shader";
 import Controller from "../../engine-core/lib/Controller";
@@ -53,11 +53,11 @@ export default class GizmoAPI extends Controller {
     static drawGizmo(mesh, transformMatrix, axis) {
         const clickedAxis = GizmoSystem.clickedAxis
         shader.bind()
-        gpu.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
-        gpu.uniform3fv(uniforms.translation, GizmoSystem.mainEntity.__pivotOffset)
-        gpu.uniform1i(uniforms.axis, axis)
-        gpu.uniform1i(uniforms.selectedAxis, clickedAxis)
-        gpu.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
+        GPU.context.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
+        GPU.context.uniform3fv(uniforms.translation, GizmoSystem.mainEntity.__pivotOffset)
+        GPU.context.uniform1i(uniforms.axis, axis)
+        GPU.context.uniform1i(uniforms.selectedAxis, clickedAxis)
+        GPU.context.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
         mesh.simplifiedDraw()
     }
 }

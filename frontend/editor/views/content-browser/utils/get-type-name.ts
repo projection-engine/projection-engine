@@ -1,3 +1,5 @@
+import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
+
 export default function getTypeName(type) {
     switch ("." + type) {
         case FILE_TYPES.PRIMITIVE:
@@ -12,7 +14,6 @@ export default function getTypeName(type) {
             return "Material"
         case FILE_TYPES.TEXTURE:
             return "Texture"
-
         case FILE_TYPES.COLLECTION:
             return "Scene"
         case FILE_TYPES.TERRAIN:

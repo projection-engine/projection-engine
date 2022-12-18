@@ -12,6 +12,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import NodeFS from "../../../shared/libs/NodeFS";
 
     const {shell} = window.require("electron")
 
@@ -21,7 +22,7 @@
     onDestroy(() => unsubscribeSettings())
 
     const openLogs = async () => {
-        if (await NodeFS.exists(ErrorLoggerAPI.path))
+        if (NodeFS.exists(ErrorLoggerAPI.path))
             shell.openPath(ErrorLoggerAPI.path).catch()
         else
             ConsoleAPI.error("No logs found")

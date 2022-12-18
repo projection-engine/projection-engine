@@ -2,28 +2,28 @@ import ENGINE from "../static/ENGINE";
 
 import FilesAPI from "../lib/fs/FilesAPI"
 import RegistryAPI from "../lib/fs/RegistryAPI";
-import GPU from "../../../engine-core/lib/GPU";
+import GPU from "../../../engine-core/GPU";
 import {writable} from "svelte/store";
 import GPUAPI from "../../../engine-core/lib/rendering/GPUAPI";
+import MutableObject from "../../../engine-core/MutableObject";
+import NodeFS from "../../shared/libs/NodeFS";
 
-const engine = writable(ENGINE);
+const engine = writable(<MutableObject>ENGINE);
 
 export default class EngineStore {
-    static engine = ENGINE
+    static engine:MutableObject = ENGINE
 
-    static getStore(onChange) {
-        return engine.subscribe(newValue => {
-            onChange(newValue)
-        })
+    static getStore(onChange:Function):Function {
+        return engine.subscribe(newValue => onChange(newValue))
     }
 
-    static updateStore(value = EngineStore.engine) {
-        let updated = {...value}
+    static updateStore(value?:MutableObject) {
+        let updated = {...(value||EngineStore.engine)}
         EngineStore.engine = updated
         engine.set(updated)
     }
 
-    static async loadTextureFromImageID(registryID) {
+    static async loadTextureFromImageID(registryID:string) {
         if (GPU.textures.get(registryID) != null)
             return true
         try {

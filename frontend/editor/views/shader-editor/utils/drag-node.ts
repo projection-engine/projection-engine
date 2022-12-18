@@ -76,6 +76,7 @@ export default function dragNode(event, parent, contextID) {
                     target.callback.onMouseMove(ev)
                     if (i === 0 && tooltip)
                         tooltip.textContent = "X: " + (target.callback.current.x - BOARD_SIZE / 2) + " | Y: " + (target.callback.current.y - BOARD_SIZE / 2)
+                    // @ts-ignore
                     const links = target.element.linksToUpdate
                     if (!links)
                         continue
@@ -96,6 +97,7 @@ export default function dragNode(event, parent, contextID) {
                 const target = targets[i]
                 try {
                     target.callback.onMouseUp()
+                    // @ts-ignore
                     const links = target.element.linksToUpdate
                     if (links) {
                         for (let j = 0; j < links.length; j++)

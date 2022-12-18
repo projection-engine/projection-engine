@@ -1,6 +1,7 @@
 import createEnv from "./utils/create-env";
 const {app, BrowserWindow} = require("electron");
 
+
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=16384');
 app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
 

@@ -13,8 +13,8 @@ export default async function buildPrimitive(materialsMap, meshName, index, prim
 
     const [min, max] = PrimitiveProcessor.computeBoundingBox(accessors[indices.vertices].data)
 
-    const normals = (indices.normals === -1 || indices.normals === undefined) ? PrimitiveProcessor.computeNormals(accessors[indices.indices]?.data, accessors[indices.vertices]?.data, true) : accessors[indices.normals]?.data
-    const tangents = (indices.tangents === -1 || indices.tangents === undefined) ? PrimitiveProcessor.computeTangents(accessors[indices.indices]?.data, accessors[indices.vertices]?.data, accessors[indices.uvs]?.data, normals, true) : accessors[indices.tangents]?.data
+    const normals = (indices.normals === -1 || indices.normals === undefined) ? PrimitiveProcessor.computeNormals(accessors[indices.indices]?.data, accessors[indices.vertices]?.data) : accessors[indices.normals]?.data
+    const tangents = (indices.tangents === -1 || indices.tangents === undefined) ? PrimitiveProcessor.computeTangents(accessors[indices.indices]?.data, accessors[indices.vertices]?.data, accessors[indices.uvs]?.data, normals) : accessors[indices.tangents]?.data
 
     return {
         material: materialsMap[primitive.material],

@@ -1,25 +1,12 @@
-import {mat3, mat4, quat, vec3, vec4} from "gl-matrix"
-import FilesAPI from "../lib/fs/FilesAPI";
 import LevelController from "../lib/utils/LevelController";
 import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
-import ROUTES from "../../../backend/static/ROUTES.ts";
-import VisualsStore from "../stores/VisualsStore";
-import NodeFS from "../../shared/libs/NodeFS";
+import GPU from "../../../engine-core/GPU";
 const {ipcRenderer, shell} = window.require("electron")
-export default function InitializeWindow(openAbout) {
-
-    NodeFS.initializePaths()
-    FilesAPI.initializeFolders().catch()
-    Math.mat4 = mat4
-    Math.mat3 = mat3
-    Math.vec4 = vec4
-    Math.vec3 = vec3
-    Math.quat = quat
-
-
-    window.frameOptionsCallback = (id) => {
+export default class WindowUtils {
+    static openAbout?:Function
+    static callMethod(id:string) {
         switch (id) {
             case "save":
                 LevelController.save().catch()
@@ -43,10 +30,10 @@ export default function InitializeWindow(openAbout) {
                 shell.openExternal("https://github.com/projection-engine").catch()
                 break
             case "about":
-                openAbout()
+                WindowUtils.openAbout?.()
                 break
             case "fullscreen":
-               GPUCanvas.requestFullscreen().catch()
+               GPU.canvas.requestFullscreen().catch()
                 break
             case "reload":
                 ipcRenderer.send("reload")

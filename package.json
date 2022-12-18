@@ -3,13 +3,12 @@
   "version": "2.0.0-beta",
   "main": "build/electron.js",
   "scripts": {
-    "start": "concurrently \"yarn svelte-dev\" \"electron-forge start\"",
+    "sdev": "electron-forge start &",
+    "bdev": "rollup -c",
+
     "package": "yarn svelte-build && electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "svelte-build": "rollup -c",
-    "svelte-dev": "rollup -c -w",
-    "svelte-start": "sirv .",
     "check": "npx svelte-check"
   },
   "keywords": [],
@@ -30,7 +29,7 @@
     "@rollup/plugin-node-resolve": "^7.0.0",
     "@tsconfig/svelte": "^3.0.0",
     "@types/electron": "^1.6.10",
-    "@types/node": "^18.11.16",
+    "@types/node": "^18.11.17",
     "@types/uuid": "^9.0.0",
     "@types/webgl2": "^0.0.6",
     "concurrently": "^5.1.0",

@@ -1,11 +1,12 @@
 import {mat4, quat} from "gl-matrix";
 import {v4} from "uuid";
 import DataController from "../instances/DataController";
+import MutableObject from "../../../../engine-core/MutableObject";
 
 export default function buildNode(index, node, sceneMap, primitivesMap) {
     if (!node.children && node.mesh === undefined)
         return;
-    const parsedNode = {
+    const parsedNode = <MutableObject>{
         id: v4(),
         children: node.children,
         mesh: node.mesh,
@@ -19,7 +20,7 @@ export default function buildNode(index, node, sceneMap, primitivesMap) {
     else
         mat4.fromRotationTranslationScale(
             parsedNode.baseTransformationMatrix,
-            quat.normalize([], node.rotation || [0, 0, 0, 1]),
+            quat.normalize([0,0,0,0], node.rotation || [0, 0, 0, 1]),
             node.translation || [0, 0, 0],
             node.scale || [1, 1, 1]
         )
@@ -36,7 +37,7 @@ export default function buildNode(index, node, sceneMap, primitivesMap) {
             if (!primitiveID)
                 continue
             if (i > 1) {
-                const clone = {...parsedNode}
+                const clone = <MutableObject>{...parsedNode}
                 clone.id = v4()
                 clone.meshID = primitiveID
                 sceneMap.entities.push(clone)

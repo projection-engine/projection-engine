@@ -1,15 +1,17 @@
 import {v4 as uuidv4} from "uuid";
-import NodeFS, {getCall} from "../../../shared/libs/NodeFS";
+import NodeFS from "../../../shared/libs/NodeFS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
+import {getCall} from "../../../shared/libs/get-call";
+import RegistryFile from "../../../../static/objects/RegistryFile";
 
 
 const {ipcRenderer} = window.require("electron")
 export default class RegistryAPI {
-    static registry = {}
+    static registry: { [key: string]: RegistryFile } = {}
 
-    static async readRegistry() {
-        const registry = await getCall("read-registry", {}, false)
+    static async readRegistry():Promise<RegistryFile[]> {
+        const registry = await getCall<{ [key: string]: RegistryFile }>("read-registry", {}, false)
         RegistryAPI.registry = registry
         return Object.values(registry)
     }
@@ -29,7 +31,7 @@ export default class RegistryAPI {
     }
 
     static async createRegistryEntry(fID = uuidv4(), pathToFile) {
-        await getCall("create-registry", {id: fID, path: pathToFile}, false)
+        await getCall<undefined>("create-registry", {id: fID, path: pathToFile}, false)
     }
 
     static getByPath(path) {

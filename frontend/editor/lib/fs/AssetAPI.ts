@@ -2,6 +2,8 @@ import {v4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
 import NodeFS from "../../../shared/libs/NodeFS";
+import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
+import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 const fs = window.require("fs")
 
 export default class AssetAPI {
@@ -12,7 +14,7 @@ export default class AssetAPI {
     }
 
 
-    static async writeAsset(path, fileData, previewImage, registryID) {
+    static async writeAsset(path, fileData, previewImage?:boolean, registryID?:string) {
         const fileID = registryID !== undefined ? registryID : v4()
         await NodeFS.write(NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + path), fileData)
         if (previewImage)
@@ -37,7 +39,7 @@ export default class AssetAPI {
         }
     }
 
-    static async updateAsset(registryID, fileData, previewImage) {
+    static async updateAsset(registryID, fileData, previewImage?:boolean) {
         const res = RegistryAPI.getRegistryEntry(registryID)
         if (res)
             await AssetAPI.writeAsset(res.path, fileData, previewImage, registryID)

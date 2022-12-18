@@ -1,5 +1,5 @@
 import Engine from "../../engine-core/Engine";
-import GPU from "../../engine-core/lib/GPU";
+import GPU from "../../engine-core/GPU";
 
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
@@ -81,16 +81,16 @@ export default class IconsSystem {
                 break
             case LIGHT_TYPES.SPHERE:
                 index = -1
-                gpu.uniform1i(iconsUniforms.drawSphere, 1)
-                gpu.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
-                gpu.uniform1i(iconsUniforms.removeSphereCenter, 0)
+                GPU.context.uniform1i(iconsUniforms.drawSphere, 1)
+                GPU.context.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
+                GPU.context.uniform1i(iconsUniforms.removeSphereCenter, 0)
                 break
             case LIGHT_TYPES.DISK:
                 index = -1
-                gpu.uniform1i(iconsUniforms.doNotFaceCamera, 1)
-                gpu.uniform1i(iconsUniforms.drawSphere, 1)
-                gpu.uniform1i(iconsUniforms.removeSphereCenter, 1)
-                gpu.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
+                GPU.context.uniform1i(iconsUniforms.doNotFaceCamera, 1)
+                GPU.context.uniform1i(iconsUniforms.drawSphere, 1)
+                GPU.context.uniform1i(iconsUniforms.removeSphereCenter, 1)
+                GPU.context.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
                 break
         }
 
@@ -104,15 +104,15 @@ export default class IconsSystem {
             index = 5
         }
         if (index !== -1)
-            gpu.uniform1i(iconsUniforms.drawSphere, 0)
-        gpu.uniform1f(iconsUniforms.imageIndex, hasMore ? 0 : index)
+            GPU.context.uniform1i(iconsUniforms.drawSphere, 0)
+        GPU.context.uniform1f(iconsUniforms.imageIndex, hasMore ? 0 : index)
         getPivotPointMatrix(entity)
-        gpu.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
-        gpu.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
-        drawQuad()
+        GPU.context.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
+        GPU.context.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
+        GPU.drawQuad()
         if (index === -1) {
-            gpu.uniform1i(iconsUniforms.doNotFaceCamera, 0)
-            gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
+            GPU.context.uniform1i(iconsUniforms.doNotFaceCamera, 0)
+            GPU.context.uniform1f(iconsUniforms.scale, settings.iconScale)
         }
     }
 
@@ -151,9 +151,9 @@ export default class IconsSystem {
             return
 
         iconsShader.bind()
-        gpu.activeTexture(gpu.TEXTURE0)
-        gpu.bindTexture(gpu.TEXTURE_2D, IconsSystem.iconsTexture)
-        gpu.uniform1f(iconsUniforms.scale, settings.iconScale)
+        GPU.context.activeTexture(GPU.context.TEXTURE0)
+        GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
+        GPU.context.uniform1f(iconsUniforms.scale, settings.iconScale)
 
         if (settings.showIcons)
             IconsSystem.loop(IconsSystem.#drawIcon, settings)

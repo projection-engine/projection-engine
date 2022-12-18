@@ -3,9 +3,10 @@ import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
+import NodeFS from "../../../../shared/libs/NodeFS";
 
 
-export default async function handleDropFolder(event, target) {
+export default async function handleDropFolder(event:string[]|string, target?:string) {
     try {
         const items = Array.isArray(event) ? event : JSON.parse(event)
         for (let i = 0; i < items.length; i++) {
@@ -31,7 +32,7 @@ export default async function handleDropFolder(event, target) {
                 }
             } else if (textData.includes(NodeFS.sep)) {
                 const newPath = NodeFS.ASSETS_PATH + NodeFS.sep + textData.split(NodeFS.sep).pop()
-                if (!(await NodeFS.exists(newPath))) {
+                if (!NodeFS.exists(newPath)) {
                     await ContentBrowserAPI.rename(NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + textData), NodeFS.resolvePath(newPath))
                     await FilesStore.refreshFiles()
                 } else ConsoleAPI.error(LOCALIZATION_EN.ITEM_ALREADY_EXISTS)

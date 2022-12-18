@@ -5,6 +5,8 @@ import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../components/view/static/VIEWS";
 import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools";
 import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
+import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
+import NodeFS from "../../../../shared/libs/NodeFS";
 
 const {shell} = window.require("electron")
 
@@ -40,9 +42,7 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             default:
                 setSelected(data.id)
                 break
-
         }
-
     } else {
         reset()
         setCurrentDirectory(data)

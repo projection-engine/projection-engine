@@ -60,9 +60,19 @@ export default function viewportContext(settings, forDropdown) {
                         const comp = SelectionStore.selectedEntity
                         comp.baseTransformationMatrix = comp.matrix
 
-                        comp.translation = [0, 0, 0]
-                        comp.scaling = [1, 1, 1]
-                        comp._rotationQuat = [0, 0, 0, 1]
+                        comp._translation[0] = 0
+                        comp._translation[1] = 0
+                        comp._translation[2] = 0
+
+                        comp._scaling[0] = 1
+                        comp._scaling[1] = 1
+                        comp._scaling[2] = 1
+
+                        comp._rotationQuat[0] = 0
+                        comp._rotationQuat[1] = 0
+                        comp._rotationQuat[2] = 0
+                        comp._rotationQuat[3] = 1
+
                         comp.__pivotChanged = true
                     }
                 },

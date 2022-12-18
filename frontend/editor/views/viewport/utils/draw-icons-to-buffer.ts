@@ -1,4 +1,4 @@
-import GPU from "../../../../../engine-core/lib/GPU";
+import GPU from "../../../../../engine-core/GPU";
 import STATIC_MESHES from "../../../../../engine-core/static/resources/STATIC_MESHES";
 import Engine from "../../../../../engine-core/Engine";
 
@@ -31,7 +31,7 @@ function drawIcon(mesh, meshID, transformMatrix) {
 
     shader.bind()
 
-    gpu.uniform3fv(uniforms.entityID, meshID)
-    gpu.uniformMatrix4fv(uniforms.modelMatrix, false, transformMatrix)
+    GPU.context.uniform3fv(uniforms.entityID, meshID)
+    GPU.context.uniformMatrix4fv(uniforms.modelMatrix, false, transformMatrix)
     mesh.simplifiedDraw()
 }

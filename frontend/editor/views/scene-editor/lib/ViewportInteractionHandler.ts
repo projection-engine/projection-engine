@@ -3,6 +3,7 @@ import Engine from "../../../../../engine-core/Engine";
 import onViewportClick from "../../viewport/utils/on-viewport-click";
 import SelectionStore from "../../../stores/SelectionStore";
 import SettingsStore from "../../../stores/SettingsStore";
+import GPU from "../../../../../engine-core/GPU";
 
 
 const LEFT_BUTTON = 0
@@ -11,13 +12,13 @@ export default class ViewportInteractionHandler {
     static mouseDelta = {x: 0, y: 0}
 
     static initialize() {
-        const parentElement = GPUCanvas
+        const parentElement = GPU.canvas
         parentElement.addEventListener("mousedown", ViewportInteractionHandler.onMouseDown)
         parentElement.addEventListener("mouseup", ViewportInteractionHandler.onMouseUp)
     }
 
     static destroy() {
-        const parentElement = GPUCanvas
+        const parentElement = GPU.canvas
         parentElement.removeEventListener("mousedown", ViewportInteractionHandler.onMouseDown)
         parentElement.removeEventListener("mouseup", ViewportInteractionHandler.onMouseUp)
     }

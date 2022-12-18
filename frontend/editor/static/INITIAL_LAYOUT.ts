@@ -1,5 +1,5 @@
 import VIEWS from "../components/view/static/VIEWS";
-import VIEWPORT_TABS from "./VIEWPORT_TABS.ts";
+import VIEWPORT_TABS from "./VIEWPORT_TABS";
 
 export default [
     {
@@ -31,7 +31,7 @@ export default [
         top: [],
         bottom: [[VIEWS.FILES]],
         left: [[VIEWS.COMPONENT]],
-        viewport: [VIEWPORT_TABS.UI],
+        viewport: [VIEWS.UI],
         right: [[VIEWS.HIERARCHY]]
     }
 ]

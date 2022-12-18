@@ -1,7 +1,9 @@
 import UndoRedo from "../../../lib/utils/UndoRedo";
 import NodeFS from "../../../../shared/libs/NodeFS";
 export default class NavigationHistory extends UndoRedo {
-    constructor(setCurrentDirectory) {
+    setCurrentDirectory?:Function
+
+    constructor(setCurrentDirectory:Function) {
         super()
         this.setCurrentDirectory = setCurrentDirectory
     }

@@ -1,13 +1,13 @@
 import drawIconsToBuffer from "../../viewport/utils/draw-icons-to-buffer";
 import ConversionAPI from "../../../../../engine-core/lib/math/ConversionAPI";
-import GPU from "../../../../../engine-core/lib/GPU";
+import GPU from "../../../../../engine-core/GPU";
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import Engine from "../../../../../engine-core/Engine";
-import SelectionStore from "../../../stores/SelectionStore";
-import selectionQueryWorker from "./selection-query-worker";
+import SelectionStore from "../../../stores/SelectionStore"; 
+import SelectionWorker from "./SelectionWorker";
 
 export default function getUnderSelectionBox(_, startCoords, endCoords) {
-    selectionQueryWorker()
+    const worker = SelectionWorker.worker
     if (startCoords && endCoords) {
         drawIconsToBuffer()
         const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
@@ -15,8 +15,8 @@ export default function getUnderSelectionBox(_, startCoords, endCoords) {
 
         try {
             const data = PickingAPI.readBlock(nStart, nEnd)
-            selectionWorker.postMessage({entities: Engine.entities.map(e => ({id: e.id, pick: e.pickID})), data}, [data.buffer])
-            selectionWorker.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
+            worker.postMessage({entities: Engine.entities.map(e => ({id: e.id, pick: e.pickID})), data}, [data.buffer])
+            worker.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
         } catch (err) {
             console.error(err, startCoords, nStart)
         }

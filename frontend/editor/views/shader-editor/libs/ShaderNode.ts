@@ -1,4 +1,5 @@
 import {v4} from "uuid"
+import MutableObject from "../../../../../engine-core/MutableObject";
 
 const types = {
     vec2: 0,
@@ -10,6 +11,12 @@ export default class ShaderNode {
     canBeDeleted = true
     dynamicInputs = false
     size = 0
+    x:number
+    y:number
+    id:string
+    uniformName:string
+    output: MutableObject[]
+    inputs: MutableObject[]
 
     constructor(inputs, output = [], dynamicInputs) {
         this.x = 10
@@ -22,10 +29,8 @@ export default class ShaderNode {
         this.dynamicInputs = dynamicInputs
     }
 
-    static getMinimalType(...typesToCompare) {
+    static getMinimalType(...typesToCompare):string|undefined {
         const min = Math.min(...typesToCompare.map(t => types[t]).filter(t => t !== undefined))
         return typesInverted[min]
     }
-
-
 }

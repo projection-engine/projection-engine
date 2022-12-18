@@ -1,5 +1,5 @@
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js"
-import GPU from "../../engine-core/lib/GPU";
+import GPU from "../../engine-core/GPU";
 import STATIC_FRAMEBUFFERS from "../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
 import VisibilityRenderer from "../../engine-core/runtime/rendering/VisibilityRenderer";
 import SettingsStore from "../../frontend/editor/stores/SettingsStore";
@@ -39,29 +39,29 @@ export default class SelectedSystem {
                 if (!mesh)
                     continue
 
-                gpu.uniform3fv(uniforms.meshID, current.pickID)
-                gpu.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
+                GPU.context.uniform3fv(uniforms.meshID, current.pickID)
+                GPU.context.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
                 mesh.draw()
             }
             fbo.stopMapping()
         }
         outlineShader.bind()
         if (settings.showOutline) {
-            gpu.activeTexture(gpu.TEXTURE0)
-            gpu.bindTexture(gpu.TEXTURE_2D, VisibilityRenderer.entityIDSampler)
-            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
+            GPU.context.activeTexture(GPU.context.TEXTURE0)
+            GPU.context.bindTexture(GPU.context.TEXTURE_2D, VisibilityRenderer.entityIDSampler)
+            GPU.context.uniform1i(outlineShaderUniforms.silhouette, 0)
 
-            gpu.uniform1i(outlineShaderUniforms.isOutline, 1)
-            gpu.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
+            GPU.context.uniform1i(outlineShaderUniforms.isOutline, 1)
+            GPU.context.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
 
-            drawQuad()
+            GPU.drawQuad()
         }
         if (length > 0) {
-            gpu.activeTexture(gpu.TEXTURE0)
-            gpu.bindTexture(gpu.TEXTURE_2D, fbo.colors[0])
-            gpu.uniform1i(outlineShaderUniforms.silhouette, 0)
-            gpu.uniform1i(outlineShaderUniforms.isOutline, 0)
-            drawQuad()
+            GPU.context.activeTexture(GPU.context.TEXTURE0)
+            GPU.context.bindTexture(GPU.context.TEXTURE_2D, fbo.colors[0])
+            GPU.context.uniform1i(outlineShaderUniforms.silhouette, 0)
+            GPU.context.uniform1i(outlineShaderUniforms.isOutline, 0)
+            GPU.drawQuad()
         }
 
     }

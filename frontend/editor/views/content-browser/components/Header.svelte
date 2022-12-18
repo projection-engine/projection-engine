@@ -14,6 +14,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import Input from "../../../../shared/components/input/Input.svelte";
+    import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 
     export let currentDirectory
     export let setCurrentDirectory

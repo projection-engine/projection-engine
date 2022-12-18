@@ -3,6 +3,7 @@ import readTypedFile from "../utils/read-typed-file";
 import FILE_TYPES from "../../static/objects/FILE_TYPES";
 import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
 import MutableObject from "../../engine-core/MutableObject";
+import RegistryFile from "../../static/objects/RegistryFile";
 
 const {BrowserWindow} = require("electron")
 const fs = require("fs")
@@ -15,7 +16,7 @@ export default class ProjectController {
     static pathToAssets: string
     static pathToPreviews: string
     static pathToRegistry: string
-    static registry: { [key: string]:  {id: string, path: string} } = {}
+    static registry: { [key: string]:  RegistryFile } = {}
     static window: typeof BrowserWindow
     static metadata: MutableObject
     private static initialized: boolean = false
@@ -52,8 +53,8 @@ export default class ProjectController {
     static async prepareForUse(pathTo: string) {
         ProjectController.pathToRegistry = pathTo + path.sep + FILE_TYPES.REGISTRY
         ProjectController.metadata = <MutableObject>await readTypedFile(pathTo + path.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "json") || {}
-        ProjectController.registry = <{[key: string]: { id: string, path: string }}>await readTypedFile(ProjectController.pathToRegistry, "json") || {}
-        console.trace(ProjectController.registry)
+        ProjectController.registry = <{[key: string]: RegistryFile}>await readTypedFile(ProjectController.pathToRegistry, "json") || {}
+
         await ProjectController.initialize()
         await ProjectController.window.webContents.executeJavaScript(`sessionStorage.setItem("${PROJECT_STATIC_DATA.PROJECT_PATH}", "${pathTo.replaceAll("\\", "\\\\")}"); `)
 
@@ -64,7 +65,7 @@ export default class ProjectController {
 
 
         Object.entries(ProjectController.registry)
-            .forEach((param: [string, {id: string, path: string}]) => {
+            .forEach((param: [string, RegistryFile]) => {
                 const exists = fs.existsSync(path.resolve(ProjectController.pathToAssets + path.sep + param[1].path))
                 if (!exists)
                     delete ProjectController.registry[param[0]]

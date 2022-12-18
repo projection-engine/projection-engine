@@ -1,4 +1,4 @@
-import KEYS from "../../static/KEYS.ts";
+import KEYS from "../../static/KEYS";
 import Engine from "../../../../engine-core/Engine";
 import ENVIRONMENT from "../../../../engine-core/static/ENVIRONMENT";
 

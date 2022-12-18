@@ -2,11 +2,12 @@ import drawIconsToBuffer from "./draw-icons-to-buffer"
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
+import GPU from "../../../../../engine-core/GPU";
 
 const MAX_DELTA = 50, LEFT_BUTTON = 0
 
 export default function onViewportClick(event, mouseDelta, settings, setContext) {
-    if (GPUCanvas !== event.target || event.button !== LEFT_BUTTON)
+    if (GPU.canvas !== event.target || event.button !== LEFT_BUTTON)
         return
     const deltaX = Math.abs(mouseDelta.x - event.clientX)
     const deltaY = Math.abs(mouseDelta.y - event.clientY)

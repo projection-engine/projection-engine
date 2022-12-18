@@ -8,6 +8,7 @@ import Localization from "./LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
 import ConsoleAPI from "../../../engine-core/lib/utils/ConsoleAPI";
+import NodeFS from "../../shared/libs/NodeFS";
 
 const {shell, clipboard} = window.require("electron")
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
@@ -94,7 +95,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
         PASTE: {
             label: Localization.PASTE,
             require: settings.contentBrowserHotkeys.PASTE,
-            callback: () => FilesStore.paste(currentDirectory.id, setCurrentDirectory)
+            callback: () => FilesStore.paste(currentDirectory.id)
         }
     }
 
@@ -140,7 +141,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             {
                 label: "Create",
                 icon: "add",
-                children: getCreationOptions(currentDirectory, materials)
+                children: getCreationOptions(currentDirectory)
             }
         ]
     }

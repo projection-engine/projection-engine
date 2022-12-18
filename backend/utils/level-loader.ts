@@ -8,7 +8,8 @@ const DEFAULT = {entities: []}
 export default async function levelLoader(sender, levelPath) {
     let level
     try {
-        level = (fs.existsSync(levelPath) ? JSON.parse((await readFile(levelPath))[1]) : DEFAULT)
+        const file = await readFile(levelPath)
+        level = (fs.existsSync(levelPath) ? JSON.parse(file[1]) : DEFAULT)
     } catch (err) {
         console.error(err)
         level = DEFAULT

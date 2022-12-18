@@ -45,7 +45,7 @@ export default class ShaderEditorTools {
     static copy(nodes) {
         ShaderEditorTools.copied.clear()
         for (let i = 0; i < nodes.length; i++)
-            if(nodes[i])
+            if (nodes[i])
                 ShaderEditorTools.copied.set(nodes[i].id, ShaderEditorTools.#serializeNode(nodes[i]))
     }
 
@@ -58,7 +58,7 @@ export default class ShaderEditorTools {
     }
 
     static #serializeNode(n) {
-        const docNode = document.getElementById(n.id).parentNode
+        const docNode = document.getElementById(n.id).parentElement
         const transformation = docNode
             .getAttribute("transform")
             .replace("translate(", "")
@@ -85,8 +85,6 @@ export default class ShaderEditorTools {
 
     static async save(openFile, nodes, links) {
         try {
-            const reg = RegistryAPI.getRegistryEntry(openFile.registryID)
-            const isLevel = reg.path.includes(FILE_TYPES.LEVEL)
             const {compiled, parsedNodes} = await ShaderEditorTools.compile(nodes, links)
             const materialData = {
                 nodes: parsedNodes,
@@ -94,13 +92,10 @@ export default class ShaderEditorTools {
                 response: compiled,
                 type: compiled.variant
             }
-            if (isLevel) {
-
-            } else
-                await AssetAPI.updateAsset(
-                    openFile.registryID,
-                    JSON.stringify(materialData)
-                )
+            await AssetAPI.updateAsset(
+                openFile.registryID,
+                JSON.stringify(materialData)
+            )
             ConsoleAPI.log(LOCALIZATION_EN.SAVED)
         } catch (err) {
             console.error(err)

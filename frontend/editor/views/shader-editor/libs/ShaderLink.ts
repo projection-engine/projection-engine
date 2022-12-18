@@ -2,16 +2,22 @@ import getBezierCurve from "../utils/get-bezier-curve";
 import ShaderEditorTools from "./ShaderEditorTools";
 
 export default class ShaderLink {
+    // TODO - INTERFACE FOR NODE ATTRIBUTE
     targetRef
     sourceRef
+    target?:string
+    source?:string
+    #targetElement?:HTMLElement
+    #sourceElement?:HTMLElement
+    #canvasElement?:HTMLElement
+    #linkElement?:HTMLElement
 
-    #targetElement
-    #sourceElement
-    #canvasElement
-    #linkElement
-
-    CONTEXT_ID
-    identifier
+    readonly CONTEXT_ID?:string
+    identifier?:string
+    targetKey?:string
+    sourceKey?:string
+    sourceType?:string
+    targetType?:string
 
     static getPattern(l) {
         return l.target + "-" + l.source
@@ -48,7 +54,7 @@ export default class ShaderLink {
             this.#linkElement = document.getElementById(this.identifier)
         if (!this.#canvasElement)
             this.#canvasElement = document.getElementById(this.CONTEXT_ID)
-        
+
         if (!this.#targetElement || !this.#sourceElement || !this.#canvasElement || !this.#linkElement)
             return
         let canvasBBox = this.#canvasElement.getBoundingClientRect()
@@ -58,7 +64,8 @@ export default class ShaderLink {
         }
 
         const scale = ShaderEditorTools.scale
-        const sourceBBox = this.#sourceElement.getBoundingClientRect(), targetBBox = this.#targetElement.getBoundingClientRect()
+        const sourceBBox = this.#sourceElement.getBoundingClientRect(),
+            targetBBox = this.#targetElement.getBoundingClientRect()
 
         const OFFSET = 7.5
         const curve = getBezierCurve(

@@ -1,12 +1,21 @@
+import MutableObject from "../../../engine-core/MutableObject";
+
 const {ipcRenderer} = window.require("electron")
 
 function getOptionID(label, parent) {
-    if (typeof label !== "string")
-        console.trace(label)
     return label.toUpperCase().trim() + parent
 }
+interface ContextMenuOption{
+    divider?:boolean
+    onClick?:Function
+    callback?:Function
+    label?:string
+    require?:string[]
+    accelerator?:string
+    children?:ContextMenuOption[]
+}
 
-function buildOptions(options, id) {
+function buildOptions(options:ContextMenuOption[], id) {
     const template = []
     options.forEach(option => {
         if (option.divider)
@@ -17,7 +26,7 @@ function buildOptions(options, id) {
 
             if (cb) {
 
-                const temp = {
+                const temp = <MutableObject>{
                     label: option.label,
                     id: internalID
                 }
@@ -67,7 +76,7 @@ export default class ContextMenuController {
     static data = {targets: {}, focused: undefined}
     static #initialized = false
 
-    static mount(metadata, options, target, triggers = [], onFocus) {
+    static mount(metadata, options:ContextMenuOption[], target, triggers = [], onFocus) {
         if (!ContextMenuController.#initialized) {
             ipcRenderer.on("context-menu", (ev, {id, group}) => {
                 const groupData = ContextMenuController.data.targets[group]

@@ -1,5 +1,5 @@
 import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
-import GPU from "../../engine-core/lib/GPU";
+import GPU from "../../engine-core/GPU";
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";
@@ -53,7 +53,7 @@ export default class CollisionVisualizationSystem extends Controller{
                 entity.__collisionTransformationMatrix = m
             }
 
-            gpu.uniformMatrix4fv(uniforms.transformMatrix, false, entity.__collisionTransformationMatrix)
+            GPU.context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.__collisionTransformationMatrix)
             switch (collision.collisionType) {
                 case COLLISION_TYPES.SPHERE:
                     CollisionVisualizationSystem.sphere.draw()

@@ -8,6 +8,7 @@ import buildNode from "./utils/build-node";
 import {v4} from "uuid";
 import DataController from "./instances/DataController";
 import linkNodeToStructure from "./utils/link-node-to-structure";
+import FILE_TYPES from "../../../static/objects/FILE_TYPES";
 
 /**
  * Execution order:
@@ -21,15 +22,14 @@ export default async function glTF(targetDirectory, pathToFile, file) {
     resourceRoot = resourceRoot.join(path.sep)
     const primitives = {},
         materials = {},
-        nodes = {},
         images = {},
         accessors = [],
         buffers = [],
-
         scene = {
             name: pathToFile.replace(".gltf", "").split(path.sep).pop(),
             entities: []
         }
+
     let basePath = path.resolve(targetDirectory + path.sep + scene.name)
 
     try {

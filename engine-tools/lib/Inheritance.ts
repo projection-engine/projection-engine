@@ -10,6 +10,7 @@ import drawGizmoToDepth from "../utils/draw-gizmo-to-depth";
 import Mesh from "../../engine-core/instances/Mesh";
 import Entity from "../../engine-core/instances/Entity";
 import GizmoInterface from "./GizmoInterface";
+import GPU from "../../engine-core/GPU";
 
 export default class Inheritance extends GizmoInterface  {
 
@@ -58,7 +59,7 @@ export default class Inheritance extends GizmoInterface  {
             this.onMouseUp()
         else {
             GizmoSystem.wasOnGizmo = true
-            GPUCanvas.requestPointerLock()
+            GPU.canvas.requestPointerLock()
         }
     }
 

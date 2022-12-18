@@ -14,9 +14,9 @@ export default class FilesAPI {
 
     static async initializeFolders(): Promise<void> {
         await NodeFS.mkdir(NodeFS.temp)
-        if (!await NodeFS.exists(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS)) await NodeFS.mkdir(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS)
-        if (!await NodeFS.exists(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)) await NodeFS.mkdir(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)
-        if (!await NodeFS.exists(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)) await NodeFS.mkdir(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)
+        if (NodeFS.exists(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS)) await NodeFS.mkdir(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS)
+        if (NodeFS.exists(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)) await NodeFS.mkdir(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)
+        if (NodeFS.exists(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)) await NodeFS.mkdir(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)
     }
 
     static async writeFile(pathName: string, data: any, absolute: boolean) {

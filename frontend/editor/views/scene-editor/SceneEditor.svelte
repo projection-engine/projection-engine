@@ -24,6 +24,8 @@
     import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
+    import ContextMenuController from "../../../shared/libs/ContextMenuController";
+    import GPU from "../../../../engine-core/GPU";
 
     let selectedSize = -1
     let mainEntity
@@ -58,7 +60,7 @@
         CameraTracker.startTracking()
         ViewportInteractionHandler.initialize()
         draggable.onMount({
-            targetElement: GPUCanvas,
+            targetElement: GPU.canvas,
             onDrop: (data, event) => {
                 Loader.load(data, false, event.clientX, event.clientY).catch()
             },
@@ -91,7 +93,7 @@
         {/if}
     </ViewHeader>
     <SelectBox
-            targetElement={GPUCanvas}
+            targetElement={GPU.canvas}
             allowAll={true}
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}

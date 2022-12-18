@@ -2,7 +2,7 @@
     import {onMount} from "svelte";
     import ROUTES from "../backend/static/ROUTES.ts";
     import Editor from "./editor/Editor.svelte";
-    import InitializeWindow from "./editor/utils/initialize-window";
+    import WindowUtils from "./editor/utils/WindowUtils";
     import LevelController from "./editor/lib/utils/LevelController";
     import Canvas from "./editor/components/Canvas.svelte";
     import RENDER_TARGET from "./editor/static/RENDER_TARGET";
@@ -11,6 +11,8 @@
     import ConsoleAPI from "../engine-core/lib/utils/ConsoleAPI";
     import Alert from "./shared/components/alert/Alert.svelte";
     import About from "./shared/components/About.svelte";
+    import NodeFS from "./shared/libs/NodeFS";
+    import FilesAPI from "./editor/lib/fs/FilesAPI";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -23,7 +25,9 @@
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {
             clearInterval(interval)
-            InitializeWindow(_ => isAboutOpen = true)
+            NodeFS.initialize()
+            FilesAPI.initializeFolders().catch()
+            WindowUtils.openAbout = () => isAboutOpen = true
             LevelController.initialize(() => {
                 initialized = true
             })

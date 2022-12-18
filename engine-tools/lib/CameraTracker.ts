@@ -1,6 +1,7 @@
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import {quat, vec3, vec4} from "gl-matrix";
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS";
+import GPU from "../../engine-core/GPU";
 
 let holding, toApplyTranslation
 const toDeg = 180 / Math.PI, halfPI = Math.PI / 2
@@ -258,8 +259,8 @@ export default class CameraTracker {
         document.addEventListener("keydown", CameraTracker.#handleInput)
         document.addEventListener("keyup", CameraTracker.#handleInput)
         document.addEventListener("mouseup", CameraTracker.#handleInput)
-        GPUCanvas.addEventListener("mousedown", CameraTracker.#handleInput)
-        GPUCanvas.addEventListener("wheel", CameraTracker.#handleInput)
+        GPU.canvas.addEventListener("mousedown", CameraTracker.#handleInput)
+        GPU.canvas.addEventListener("wheel", CameraTracker.#handleInput)
 
     }
 
@@ -272,8 +273,8 @@ export default class CameraTracker {
         document.removeEventListener("keyup", CameraTracker.#handleInput)
         document.removeEventListener("mouseup", CameraTracker.#handleInput)
         document.removeEventListener("mousemove", CameraTracker.#handleInput)
-        GPUCanvas.removeEventListener("mousedown", CameraTracker.#handleInput)
-        GPUCanvas.removeEventListener("wheel", CameraTracker.#handleInput)
+        GPU.canvas.removeEventListener("mousedown", CameraTracker.#handleInput)
+        GPU.canvas.removeEventListener("wheel", CameraTracker.#handleInput)
     }
 
 

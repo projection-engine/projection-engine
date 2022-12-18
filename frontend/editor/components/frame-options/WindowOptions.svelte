@@ -14,6 +14,7 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import WindowUtils from "../../utils/WindowUtils";
 
     let engine
     let store
@@ -69,7 +70,7 @@
             {#if subOption.type !== "separator" }
                 <button
                         on:click={e => {
-                             window.frameOptionsCallback(subOption.id)
+                             WindowUtils.callMethod(subOption.id)
                              e.currentTarget.closeDropdown?.()
                         }}
                         style="padding-left: 25px; max-width: unset; min-height: unset"

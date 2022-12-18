@@ -11,10 +11,7 @@
     export let settings
 
     $: shading = getLabel(settings?.shadingModel)
-    $: {
-        console.trace("IM HERE", SceneRenderer.debugShadingModel, settings.shadingModel)
-        SceneRenderer.debugShadingModel = settings?.shadingModel||SHADING_MODELS.DETAIL
-    }
+    $:SceneRenderer.debugShadingModel = settings?.shadingModel || SHADING_MODELS.DETAIL
 </script>
 
 

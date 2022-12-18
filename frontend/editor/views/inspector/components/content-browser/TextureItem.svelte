@@ -3,7 +3,7 @@
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
-    import GPU from "../../../../../../engine-core/lib/GPU";
+    import GPU from "../../../../../../engine-core/GPU";
     import TEXTURE_FILTERING from "../../../../../../engine-core/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../../engine-core/static/texture/TEXTURE_WRAPPING";
 

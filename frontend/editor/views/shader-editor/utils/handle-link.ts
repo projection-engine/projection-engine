@@ -6,7 +6,7 @@ export default function handleLink(src, target, CONTEXT_ID) {
     let newLinks = [...ctx.getLinks()]
     const existing = newLinks.filter(newLinks => newLinks.targetRef.id === target.id && newLinks.targetRef.attribute.key === target.attribute.key)
     newLinks = newLinks.filter(cc => !existing.find(e => e === cc))
-    console.trace(!target.attribute.componentRequired || src.attribute.components.includes(target.attribute.componentRequired))
+
     if (!target.attribute.componentRequired || src.attribute.components.includes(target.attribute.componentRequired))
         newLinks.push(new ShaderLink(target, src, CONTEXT_ID))
 

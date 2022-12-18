@@ -9,6 +9,8 @@ import {v4} from "uuid";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import SettingsStore from "../../stores/SettingsStore";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
+import MeshComponent from "../../../../engine-core/templates/components/MeshComponent";
+import LightComponent from "../../../../engine-core/templates/components/LightComponent";
 
 
 export default class EntityConstructor {
@@ -19,9 +21,9 @@ export default class EntityConstructor {
             return
         }
 
-        const position = [0, 0, -(SettingsStore.data.spawnDistanceFromCamera || 10), 1]
+        const position = <vec4>[0, 0, -(SettingsStore.data.spawnDistanceFromCamera || 10), 1]
         vec4.transformQuat(position, position, rotation)
-        vec3.add(entity._translation, translation, position)
+        vec3.add(entity._translation, translation, <vec3>position)
         entity.__changedBuffer[0] = 1
     }
 
@@ -31,7 +33,7 @@ export default class EntityConstructor {
 
     static createMesh(id) {
         const entity = new Entity(undefined, Localization.MESH_RENDERER)
-        const m = entity.addComponent(COMPONENTS.MESH)
+        const m = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
         entity.addComponent(COMPONENTS.CULLING)
         m.meshID = id
         EntityConstructor.translateEntity(entity)
@@ -49,7 +51,7 @@ export default class EntityConstructor {
     static createLight(type) {
         const entity = new Entity(undefined, Localization.DIRECTIONAL_LIGHT)
         EntityConstructor.translateEntity(entity)
-        const comp = entity.addComponent(COMPONENTS.LIGHT)
+        const comp = entity.addComponent<LightComponent>(COMPONENTS.LIGHT)
         comp.type = type
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
     }

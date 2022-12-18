@@ -2,7 +2,7 @@ import FilesAPI from "../fs/FilesAPI"
 import UndoRedoAPI from "./UndoRedoAPI";
 import Engine from "../../../../engine-core/Engine";
 import RegistryAPI from "../fs/RegistryAPI";
-import GPU from "../../../../engine-core/lib/GPU";
+import GPU from "../../../../engine-core/GPU";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
 import STATIC_TEXTURES from "../../../../engine-core/static/resources/STATIC_TEXTURES";

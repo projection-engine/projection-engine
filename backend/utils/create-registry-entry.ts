@@ -3,7 +3,7 @@ import ProjectController from "../libs/ProjectController";
 const pathRequire = require("path")
 const fs = require("fs")
 
-export default async function createRegistryEntry(fID, pathToFile) {
+export default async function createRegistryEntry(fID:string, pathToFile:string) {
     const path = pathToFile.replaceAll(pathRequire.sep + pathRequire.sep, pathRequire.sep)
     try {
         ProjectController.registry[fID] = {id: fID, path}

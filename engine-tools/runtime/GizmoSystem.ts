@@ -3,7 +3,7 @@ import RotationGizmo from "../lib/transformation/RotationGizmo"
 import ScalingGizmo from "../lib/transformation/ScalingGizmo"
 import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
-import GPU from "../../engine-core/lib/GPU";
+import GPU from "../../engine-core/GPU";
 import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import AXIS from "../static/AXIS";

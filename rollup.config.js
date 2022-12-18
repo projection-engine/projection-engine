@@ -10,13 +10,15 @@ import typescript from 'rollup-plugin-typescript2';
 import autoPreprocess from 'svelte-preprocess';
 
 
-const PRODUCTION = !process.env.ROLLUP_WATCH;
+const PRODUCTION = false //!process.env.ROLLUP_WATCH;
 
 const TS = typescript({
     sourceMap: false,
     tsconfigDefaults: { compilerOptions: { declaration: true } },
     tsconfig: "tsconfig.json",
-    tsconfigOverride: { compilerOptions: { declaration: false } }
+    tsconfigOverride: { compilerOptions: { declaration: false } },
+    // clean: false,
+    check: false
 })
 
 const worker = (fileName, output) => ({
@@ -48,13 +50,12 @@ export default [
 
             copy({
                 targets: [
-
-                    { src: 'public/APP_LOGO.png', dest: 'build' },
+                    { src: 'static/APP_LOGO.png', dest: 'build' },
                     { src: 'engine-tools/static/STATIC_GIZMO_DATA.json', dest: 'build' },
                     { src: 'engine-core/static/STATIC_MESHES.json', dest: 'build' },
                     { src: 'engine-core/lib/ammo.wasm.wasm', dest: 'build' },
                     { src: 'backend/libs/assimp/assimpjs.wasm', dest: 'build' },
-                    { src: 'public/index.html', dest: 'build' }
+                    { src: 'static/index.html', dest: 'build' }
                 ]
             }),
             resolve({
