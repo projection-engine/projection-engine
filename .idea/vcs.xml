@@ -2,15 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/am" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/color-picker" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/engine-core" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/public/ammo" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/public/engine" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/public/engine/ammo" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/shared-resources" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/src/app/windows/project/libs/engine" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/src/components/color-picker" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/svelte-color-picker" vcs="Git" />
   </component>
 </project>

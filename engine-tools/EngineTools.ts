@@ -47,13 +47,13 @@ import MESH_MAP_VERT from "./shaders/MESH_MAP.vert";
 // @ts-ignore
 import MESH_MAP_FRAG from "./shaders/MESH_MAP.frag";
 import STATIC_MESHES from "../engine-core/static/resources/STATIC_MESHES";
-import STATIC_TEXTURES from "../engine-core/static/resources/STATIC_TEXTURES";
 import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";
 import GizmoAPI from "./lib/GizmoAPI";
 import LineRenderer from "./runtime/LineRenderer";
-import Controller from "../engine-core/lib/Controller";
+import Controller from "../engine-core/templates/Controller";
 import Entity from "../engine-core/instances/Entity";
 import GPU from "../engine-core/GPU";
+import Texture from "../engine-core/instances/Texture";
 
 
 let settings
@@ -87,7 +87,9 @@ export default class EngineTools {
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.SCALE_GIZMO, SCALE_MESH)
             GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO, TRANSLATION_MESH)
 
-            IconsSystem.iconsTexture = (await GPUAPI.allocateTexture(ICON_IMG, STATIC_TEXTURES.ICONS)).texture
+            const t = new Texture()
+            await t.initialize({img: ICON_IMG})
+            IconsSystem.iconsTexture = t.texture
         } catch (err) {
             console.error(err)
         }

@@ -5,7 +5,7 @@ import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import GPU from "../../engine-core/GPU";
 import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import Shader from "../../engine-core/instances/Shader";
-import Controller from "../../engine-core/lib/Controller";
+import Controller from "../../engine-core/templates/Controller";
 import Entity from "../../engine-core/instances/Entity";
 
 let shader: Shader, uniforms: { [key: string]: WebGLUniformLocation }

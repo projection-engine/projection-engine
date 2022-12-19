@@ -2,7 +2,7 @@ import Engine from "../../../../../engine-core/Engine";
 import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 import EngineTools from "../../../../../engine-tools/EngineTools";
 import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
-import DirectionalShadows from "../../../../../engine-core/runtime/rendering/DirectionalShadows";
+import DirectionalShadows from "../../../../../engine-core/runtime/DirectionalShadows";
 import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
 import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
 import GPU from "../../../../../engine-core/GPU";
@@ -13,6 +13,7 @@ import RotationGizmo from "../../../../../engine-tools/lib/transformation/Rotati
 import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
 import GIZMOS from "../../../static/GIZMOS";
+import MotionBlur from "../../../../../engine-core/runtime/MotionBlur";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -40,7 +41,8 @@ export default function updateRenderer(selected, engine, settings) {
         CameraAPI.metadata.exposure = settings.exposure
 
         if (settings.shadingModel === SHADING_MODELS.DETAIL)
-            CameraAPI.updateMotionBlurState(settings.motionBlurEnabled)
+            MotionBlur.enabled = settings.motionBlurEnabled
+
     }
     if (Engine.environment === ENVIRONMENT.DEV)
         Loop.linkToExecutionPipeline(EngineTools.afterDrawing, undefined)

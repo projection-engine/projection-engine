@@ -3,7 +3,7 @@
     import getLabel from "../utils/get-label";
     import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
     import Options from "./ShadingModelOptions.svelte";
-    import SceneRenderer from "../../../../../engine-core/runtime/rendering/SceneRenderer";
+    import SceneRenderer from "../../../../../engine-core/runtime/SceneRenderer";
     import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 

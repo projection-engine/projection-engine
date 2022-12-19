@@ -7,7 +7,6 @@ import GizmoSystem from "../../runtime/GizmoSystem";
 import AXIS from "../../static/AXIS";
 import ScreenSpaceGizmo from "./ScreenSpaceGizmo";
 import GPU from "../../../engine-core/GPU";
-import STATIC_TEXTURES from "../../../engine-core/static/resources/STATIC_TEXTURES";
 import EngineTools from "../../EngineTools";
 import UndoRedoAPI from "../../../frontend/editor/lib/utils/UndoRedoAPI";
 import gizmoRotateEntity from "../../utils/gizmo-rotate-entity";

@@ -6,6 +6,7 @@ import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import LIGHT_TYPES from "../../engine-core/static/LIGHT_TYPES";
 import LineRenderer from "./LineRenderer";
+import StaticMeshesController from "../../engine-core/lib/StaticMeshesController";
 
 
 let lineShader, lineUniforms
@@ -109,7 +110,7 @@ export default class IconsSystem {
         getPivotPointMatrix(entity)
         GPU.context.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
         GPU.context.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
-        GPU.drawQuad()
+        StaticMeshesController.drawQuad()
         if (index === -1) {
             GPU.context.uniform1i(iconsUniforms.doNotFaceCamera, 0)
             GPU.context.uniform1f(iconsUniforms.scale, settings.iconScale)

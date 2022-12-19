@@ -1,15 +1,14 @@
 import GPU from "../../../../../engine-core/GPU";
 import STATIC_MESHES from "../../../../../engine-core/static/resources/STATIC_MESHES";
 import Engine from "../../../../../engine-core/Engine";
-
-import STATIC_SHADERS from "../../../../../engine-core/static/resources/STATIC_SHADERS";
-import VisibilityRenderer from "../../../../../engine-core/runtime/rendering/VisibilityRenderer";
-import STATIC_FRAMEBUFFERS from "../../../../../engine-core/static/resources/STATIC_FRAMEBUFFERS";
+import VisibilityRenderer from "../../../../../engine-core/runtime/VisibilityRenderer";
+import StaticFBOsController from "../../../../../engine-core/lib/StaticFBOsController";
+import StaticShadersController from "../../../../../engine-core/lib/StaticShadersController";
 
 export default function drawIconsToBuffer() {
     const entities = Engine.entities
-    const FBO = GPU.frameBuffers.get(STATIC_FRAMEBUFFERS.VISIBILITY_BUFFER)
-    FBO.use()
+
+    StaticFBOsController.visibility.use()
     const CUBE = GPU.meshes.get(STATIC_MESHES.PRODUCTION.CUBE)
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]
@@ -21,16 +20,13 @@ export default function drawIconsToBuffer() {
             entity.matrix,
         )
     }
-    FBO.stop()
+    StaticFBOsController.visibility.stop()
     VisibilityRenderer.needsUpdate = true
 }
 
 function drawIcon(mesh, meshID, transformMatrix) {
-    const shader = GPU.shaders.get(STATIC_SHADERS.PRODUCTION.VISIBILITY_BUFFER)
-    const uniforms = shader.uniformMap
-
-    shader.bind()
-
+    const uniforms = StaticShadersController.visibilityUniforms
+    StaticShadersController.visibility.bind()
     GPU.context.uniform3fv(uniforms.entityID, meshID)
     GPU.context.uniformMatrix4fv(uniforms.modelMatrix, false, transformMatrix)
     mesh.simplifiedDraw()

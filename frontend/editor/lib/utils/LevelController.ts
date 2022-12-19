@@ -5,7 +5,7 @@ import RegistryAPI from "../fs/RegistryAPI";
 import GPU from "../../../../engine-core/GPU";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
-import STATIC_TEXTURES from "../../../../engine-core/static/resources/STATIC_TEXTURES";
+
 import EngineStore from "../../stores/EngineStore";
 import SelectionStore from "../../stores/SelectionStore";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
@@ -113,7 +113,7 @@ export default class LevelController {
                     const imgID = (<SpriteComponent>entity.components.get(COMPONENTS.SPRITE))?.imageID
                     checkTexture: if (imgID) {
                         const textures = GPU.textures
-                        if (textures.get(imgID) != null && Object.values(STATIC_TEXTURES).find(v => v === imgID) != null)
+                        if (textures.get(imgID) != null)
                             break checkTexture
                         await EngineStore.loadTextureFromImageID(imgID)
                     }

@@ -13,7 +13,7 @@ import GizmoAPI from "../lib/GizmoAPI";
 import LineRenderer from "./LineRenderer";
 import Entity from "../../engine-core/instances/Entity";
 import Shader from "../../engine-core/instances/Shader";
-import Controller from "../../engine-core/lib/Controller";
+import Controller from "../../engine-core/templates/Controller";
 import Mesh from "../../engine-core/instances/Mesh";
 
 

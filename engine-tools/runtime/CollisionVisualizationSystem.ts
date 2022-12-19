@@ -3,7 +3,7 @@ import GPU from "../../engine-core/GPU";
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";
-import Controller from "../../engine-core/lib/Controller";
+import Controller from "../../engine-core/templates/Controller";
 import RigidBodyComponent from "../../engine-core/templates/components/RigidBodyComponent";
 import PhysicsColliderComponent from "../../engine-core/templates/components/PhysicsColliderComponent";
 
