@@ -1,4 +1,3 @@
-import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 import GPU from "../../../engine-core/GPU";
 
 const MOUSE_LEFT = 0

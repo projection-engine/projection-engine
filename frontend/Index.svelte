@@ -8,7 +8,6 @@
     import RENDER_TARGET from "./editor/static/RENDER_TARGET";
     import Localization from "./editor/templates/LOCALIZATION_EN";
     import HotKeysController from "./editor/lib/utils/HotKeysController";
-    import ConsoleAPI from "../engine-core/lib/utils/ConsoleAPI";
     import Alert from "./shared/components/alert/Alert.svelte";
     import About from "./shared/components/About.svelte";
     import NodeFS from "./shared/libs/NodeFS";

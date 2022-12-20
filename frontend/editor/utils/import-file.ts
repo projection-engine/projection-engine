@@ -1,7 +1,6 @@
 import FilesStore from "../stores/FilesStore";
 import ROUTES from "../../../backend/static/ROUTES";
 import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
-import ConsoleAPI from "../../../engine-core/lib/utils/ConsoleAPI";
 import {getCall} from "../../shared/libs/get-call";
 import MutableObject from "../../../engine-core/MutableObject";
 

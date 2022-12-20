@@ -4,6 +4,7 @@ import Inheritance from "../Inheritance";
 import gizmoTranslateEntity from "../../utils/gizmo-translate-entity";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../frontend/editor/stores/dispatch-renderer-entities";
 import EngineTools from "../../EngineTools";
+import StaticEditorMeshes from "../StaticEditorMeshes";
 
 export default class TranslationGizmo extends Inheritance {
     static gridSize = 1
@@ -12,7 +13,7 @@ export default class TranslationGizmo extends Inheritance {
 
     constructor() {
         super()
-        this.xyz = GizmoSystem.translationGizmoMesh
+        this.xyz = StaticEditorMeshes.translationGizmo
         this.xGizmo = mapGizmoMesh("x", "TRANSLATION")
         this.yGizmo = mapGizmoMesh("y", "TRANSLATION")
         this.zGizmo = mapGizmoMesh("z", "TRANSLATION")

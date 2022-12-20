@@ -1,10 +1,7 @@
 import FilesAPI from "../../fs/FilesAPI";
-import TerrainGenerator from "../../../../../engine-core/lib/math/TerrainGenerator";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-renderer-entities";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import Entity from "../../../../../engine-core/instances/Entity";
-import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI";
-import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 import NodeFS from "../../../../shared/libs/NodeFS";
 
 export default async function loadTerrain(reg) {

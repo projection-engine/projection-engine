@@ -8,7 +8,6 @@
     import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
-    import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";

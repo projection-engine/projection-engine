@@ -1,5 +1,3 @@
-import PrimitiveProcessor from "../../engine-core/lib/math/PrimitiveProcessor";
-
 const path = require("path");
 const fs = require("fs");
 

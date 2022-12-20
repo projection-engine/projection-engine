@@ -3,20 +3,12 @@ import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYP
 import GizmoSystem from "../runtime/GizmoSystem";
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import GPU from "../../engine-core/GPU";
-import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
-import Shader from "../../engine-core/instances/Shader";
-import Controller from "../../engine-core/templates/Controller";
 import Entity from "../../engine-core/instances/Entity";
+import StaticEditorShaders from "./StaticEditorShaders";
 
-let shader: Shader, uniforms: { [key: string]: WebGLUniformLocation }
 const cacheVec3 = vec3.create()
 const cacheQuat = quat.create()
-export default class GizmoAPI extends Controller {
-    static initialize() {
-        super.initialize()
-        shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.GIZMO)
-        uniforms = shader.uniformMap
-    }
+export default class GizmoAPI  {
     static translateMatrix(entity:Entity, keepMatrix:Boolean): Float32Array {
         if (!GizmoSystem.mainEntity)
             return
@@ -52,7 +44,8 @@ export default class GizmoAPI extends Controller {
 
     static drawGizmo(mesh, transformMatrix, axis) {
         const clickedAxis = GizmoSystem.clickedAxis
-        shader.bind()
+        StaticEditorShaders.gizmo.bind()
+        const uniforms = StaticEditorShaders.gizmoUniforms
         GPU.context.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
         GPU.context.uniform3fv(uniforms.translation, GizmoSystem.mainEntity.__pivotOffset)
         GPU.context.uniform1i(uniforms.axis, axis)

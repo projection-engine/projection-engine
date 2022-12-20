@@ -3,18 +3,13 @@ import RotationGizmo from "../lib/transformation/RotationGizmo"
 import ScalingGizmo from "../lib/transformation/ScalingGizmo"
 import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
-import GPU from "../../engine-core/GPU";
-import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
-import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import AXIS from "../static/AXIS";
 import {mat4, quat, vec3} from "gl-matrix";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import GizmoAPI from "../lib/GizmoAPI";
 import LineRenderer from "./LineRenderer";
 import Entity from "../../engine-core/instances/Entity";
-import Shader from "../../engine-core/instances/Shader";
 import Controller from "../../engine-core/templates/Controller";
-import Mesh from "../../engine-core/instances/Mesh";
 
 
 const lineMatrix = <Float32Array>mat4.create()
@@ -29,7 +24,7 @@ export default class GizmoSystem extends Controller {
     static onStop?: Function
     static targetRotation?: Float32Array
     static targetGizmo?: TranslationGizmo | RotationGizmo | ScalingGizmo
-    static toBufferShader?: Shader
+
     static clickedAxis?: number
     static sensitivity = .001
     static hasStarted = false
@@ -50,11 +45,7 @@ export default class GizmoSystem extends Controller {
             GizmoSystem.onStop?.()
     }
 
-    static rotationGizmoMesh?: Mesh
-    static scaleGizmoMesh?: Mesh
-    static translationGizmoMesh?: Mesh
-    static dualAxisGizmoMesh?: Mesh
-    static screenSpaceMesh?: Mesh
+
     static tooltip
     static translationGizmo?: TranslationGizmo
     static scaleGizmo?: ScalingGizmo
@@ -74,15 +65,7 @@ export default class GizmoSystem extends Controller {
 
     static initialize() {
         super.initialize()
-        GizmoSystem.screenSpaceMesh = GPU.meshes.get(STATIC_MESHES.PRODUCTION.SPHERE)
-        GizmoSystem.dualAxisGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO)
-        GizmoSystem.translationGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO)
 
-        GizmoSystem.rotationGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.ROTATION_GIZMO)
-        GizmoSystem.scaleGizmoMesh = GPU.meshes.get(STATIC_MESHES.EDITOR.SCALE_GIZMO)
-
-
-        GizmoSystem.toBufferShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER)
         GizmoSystem.translationGizmo = new TranslationGizmo()
         GizmoSystem.scaleGizmo = new ScalingGizmo()
         GizmoSystem.rotationGizmo = new RotationGizmo()

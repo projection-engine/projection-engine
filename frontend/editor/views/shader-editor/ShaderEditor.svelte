@@ -4,7 +4,7 @@
 
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import parseFile from "./utils/parse-file";
     import Material from "./libs/nodes/Material";
     import BOARD_SIZE from "./static/BOARD_SIZE";
@@ -17,7 +17,6 @@
     import ShaderCanvas from "./components/ShaderCanvas.svelte";
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
-    import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import NodeFS from "../../../shared/libs/NodeFS";
 

@@ -1,4 +1,3 @@
-
 import directoryStructure from "../../backend/utils/directory-structure";
 import readdir from "../../backend/utils/readdir";
 import rm from "../../backend/utils/rm";

@@ -1,6 +1,7 @@
 <script>
-    import {onMount, onDestroy} from 'svelte';
+    import {onDestroy, onMount} from 'svelte';
     import Range from "../range/Range.svelte";
+
     export let startColor = [0, 0, 0];
     export let submit = undefined
 

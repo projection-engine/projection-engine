@@ -5,7 +5,6 @@
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import KEYS from "../../../static/KEYS.ts";
     import SettingsStore from "../../../stores/SettingsStore";
-    import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
 

@@ -24,7 +24,6 @@ import NodeFS from "../../../shared/libs/NodeFS";
 import ROUTES from "../../../../backend/static/ROUTES";
 import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
-import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import UIComponent from "../../../../engine-core/templates/components/UIComponent";
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";

@@ -8,7 +8,6 @@
     import compareObjects from "../../utils/compare-objects";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import MaterialUniforms from "../MaterialUniforms.svelte";
-    import ConsoleAPI from "../../../../../../engine-core/lib/utils/ConsoleAPI";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import NodeFS from "../../../../../shared/libs/NodeFS";
 

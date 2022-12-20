@@ -4,7 +4,9 @@ import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
 import VisibilityRenderer from "../../engine-core/runtime/VisibilityRenderer";
 import GPU from "../../engine-core/GPU";
-import StaticFBOsController from "../../engine-core/lib/StaticFBOsController";
+import StaticFBO from "../../engine-core/lib/StaticFBO";
+import StaticEditorShaders from "../lib/StaticEditorShaders";
+import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 
 export default function drawGizmoToDepth(mesh, transforms){
     const data = {
@@ -12,10 +14,10 @@ export default function drawGizmoToDepth(mesh, transforms){
         cameraIsOrthographic: CameraAPI.isOrthographic
     }
     GPU.context.disable(GPU.context.CULL_FACE)
-    StaticFBOsController.visibility.startMapping()
+    StaticFBO.visibility.startMapping()
 
     for (let i = 0; i < transforms.length; i++) {
-        GizmoSystem.toBufferShader.bindForUse({
+        StaticEditorShaders.toDepthBuffer.bindForUse({
             ...data,
             transformMatrix: transforms[i],
             uID: getPickerId(i + 2),
@@ -23,16 +25,16 @@ export default function drawGizmoToDepth(mesh, transforms){
         mesh.draw()
     }
     if(GizmoSystem.targetGizmo !== GizmoSystem.rotationGizmo) {
-        GizmoSystem.toBufferShader.bindForUse({
+        StaticEditorShaders.toDepthBuffer.bindForUse({
             ...data,
             transformMatrix: GizmoSystem.mainEntity.__cacheCenterMatrix,
             uID: getPickerId(1)
         })
-        GizmoSystem.screenSpaceMesh.draw()
+        StaticMeshes.sphere.draw()
     }
 
     DualAxisGizmo.drawToBuffer(data)
-    StaticFBOsController.visibility.stopMapping()
+    StaticFBO.visibility.stopMapping()
     VisibilityRenderer.needsUpdate = true
     GPU.context.enable(GPU.context.CULL_FACE)
 }

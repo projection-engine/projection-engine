@@ -1,7 +1,6 @@
 import FilesAPI from "../../../lib/fs/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
 import Localization from "../../../templates/LOCALIZATION_EN";
-import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 import NodeFS from "../../../../shared/libs/NodeFS";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {

@@ -1,6 +1,5 @@
 import ShaderEditorTools from "../libs/ShaderEditorTools";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default function handleDropNode(dataToPush, event, ref, nodes, setNodes) {
     const doIt = (n) => {

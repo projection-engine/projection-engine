@@ -10,7 +10,6 @@ import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
 import MaterialAPI from "../../../../engine-core/lib/rendering/MaterialAPI";
-import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class EntityStateController {
     static #state = []

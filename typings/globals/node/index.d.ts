@@ -612,7 +612,6 @@ declare module "events" {
 }
 
 declare module "http" {
-    import * as events from "events";
     import * as net from "net";
     import * as stream from "stream";
 
@@ -1326,7 +1325,6 @@ declare module "os" {
 
 declare module "https" {
     import * as tls from "tls";
-    import * as events from "events";
     import * as http from "http";
 
     export interface ServerOptions {
@@ -1393,7 +1391,6 @@ declare module "punycode" {
 }
 
 declare module "repl" {
-    import * as stream from "stream";
     import * as readline from "readline";
 
     export interface ReplOptions {
@@ -1451,7 +1448,6 @@ declare module "repl" {
 
 declare module "readline" {
     import * as events from "events";
-    import * as stream from "stream";
 
     export interface Key {
         sequence?: string;

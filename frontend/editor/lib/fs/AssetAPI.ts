@@ -2,8 +2,8 @@ import {v4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
 import NodeFS from "../../../shared/libs/NodeFS";
-import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
+
 const fs = window.require("fs")
 
 export default class AssetAPI {

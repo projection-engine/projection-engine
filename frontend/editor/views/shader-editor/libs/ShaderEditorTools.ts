@@ -6,8 +6,6 @@ import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "./nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
-import RegistryAPI from "../../../lib/fs/RegistryAPI";
-import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class ShaderEditorTools {
 

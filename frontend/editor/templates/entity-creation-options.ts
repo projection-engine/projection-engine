@@ -1,4 +1,4 @@
-import STATIC_MESHES from "../../../engine-core/static/resources/STATIC_MESHES";
+import STATIC_MESHES from "../../../engine-core/static/STATIC_MESHES";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import Localization from "./LOCALIZATION_EN";
 import LIGHT_TYPES from "../../../engine-core/static/LIGHT_TYPES";
@@ -14,22 +14,22 @@ export default function entityCreationOptions() {
         {
             icon: "category",
             label: Localization.CUBE,
-            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.CUBE)
+            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.CUBE)
         },
         {
             icon: "category",
             label: Localization.SPHERE,
-            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.SPHERE)
+            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.SPHERE)
         },
         {
             icon: "category",
             label: Localization.PLANE,
-            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.PLANE)
+            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PLANE)
         },
         {
             icon: "category",
             label: Localization.CYLINDER,
-            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.PRODUCTION.CYLINDER)
+            onClick: () => EntityConstructor.createMesh(STATIC_MESHES.CYLINDER)
         },
         {divider: true, label: Localization.LIGHTS},
         {

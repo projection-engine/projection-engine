@@ -7,8 +7,6 @@ import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
 import UndoRedoAPI from "../../frontend/editor/lib/utils/UndoRedoAPI";
 import EngineTools from "../EngineTools";
 import drawGizmoToDepth from "../utils/draw-gizmo-to-depth";
-import Mesh from "../../engine-core/instances/Mesh";
-import Entity from "../../engine-core/instances/Entity";
 import GizmoInterface from "./GizmoInterface";
 import GPU from "../../engine-core/GPU";
 

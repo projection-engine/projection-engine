@@ -1,34 +1,20 @@
-import STATIC_MESHES from "../../engine-core/static/resources/STATIC_MESHES";
 import GPU from "../../engine-core/GPU";
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";
 import Controller from "../../engine-core/templates/Controller";
-import RigidBodyComponent from "../../engine-core/templates/components/RigidBodyComponent";
 import PhysicsColliderComponent from "../../engine-core/templates/components/PhysicsColliderComponent";
+import StaticMeshes from "../../engine-core/lib/StaticMeshes";
+import StaticEditorShaders from "../lib/StaticEditorShaders";
 
 const EMPTY_MATRIX = mat4.create()
-
-let shader, uniforms
 const translationCache = vec3.create()
-export default class CollisionVisualizationSystem extends Controller{
-    static cube
-    static sphere
-    static shader
-
-    static initialize() {
-        shader = CollisionVisualizationSystem.shader
-        uniforms = shader.uniformMap
-        CollisionVisualizationSystem.cube = GPU.meshes.get(STATIC_MESHES.PRODUCTION.CUBE)
-        CollisionVisualizationSystem.sphere = GPU.meshes.get(STATIC_MESHES.PRODUCTION.SPHERE)
-
-    }
-
+export default class CollisionVisualizationSystem extends Controller {
     static execute(selected) {
         const size = selected.length
         if (size === 0)
             return
-        shader.bind()
+        StaticEditorShaders.wireframe.bind()
         for (let i = 0; i < size; i++) {
             const entity = selected[i]
             if (!entity.active)
@@ -53,13 +39,13 @@ export default class CollisionVisualizationSystem extends Controller{
                 entity.__collisionTransformationMatrix = m
             }
 
-            GPU.context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.__collisionTransformationMatrix)
+            GPU.context.uniformMatrix4fv(StaticEditorShaders.wireframeUniforms.transformMatrix, false, entity.__collisionTransformationMatrix)
             switch (collision.collisionType) {
                 case COLLISION_TYPES.SPHERE:
-                    CollisionVisualizationSystem.sphere.draw()
+                    StaticMeshes.sphere.draw()
                     break
                 case COLLISION_TYPES.BOX:
-                    CollisionVisualizationSystem.cube.drawLines()
+                    StaticMeshes.cube.drawLines()
                     break
             }
         }

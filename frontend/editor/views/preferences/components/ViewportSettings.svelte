@@ -4,6 +4,7 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
     import Range from "../../../../shared/components/range/Range.svelte";
+
     export let settings
 
     function update(key, value) {

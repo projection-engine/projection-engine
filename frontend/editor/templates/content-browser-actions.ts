@@ -7,7 +7,6 @@ import importFile from "../utils/import-file";
 import Localization from "./LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
-import ConsoleAPI from "../../../engine-core/lib/utils/ConsoleAPI";
 import NodeFS from "../../shared/libs/NodeFS";
 
 const {shell, clipboard} = window.require("electron")

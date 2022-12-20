@@ -1,28 +1,15 @@
 import Engine from "../../engine-core/Engine";
 import GPU from "../../engine-core/GPU";
-
-import STATIC_SHADERS from "../../engine-core/static/resources/STATIC_SHADERS";
 import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import LIGHT_TYPES from "../../engine-core/static/LIGHT_TYPES";
 import LineRenderer from "./LineRenderer";
-import StaticMeshesController from "../../engine-core/lib/StaticMeshesController";
+import StaticMeshes from "../../engine-core/lib/StaticMeshes";
+import StaticEditorShaders from "../lib/StaticEditorShaders";
 
-
-let lineShader, lineUniforms
-let iconsShader, iconsUniforms
 
 export default class IconsSystem {
-    static iconsTexture
-    static shader
-
-    static initialize() {
-        lineShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.LINE)
-        lineUniforms = lineShader.uniformMap
-        IconsSystem.shader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.UNSHADED)
-        iconsShader = GPU.shaders.get(STATIC_SHADERS.DEVELOPMENT.ICONS)
-        iconsUniforms = iconsShader.uniformMap
-    }
+    static iconsTexture?:WebGLTexture
 
     static loop(cb, settings) {
         const tracking = CameraAPI.trackingEntity
@@ -68,7 +55,7 @@ export default class IconsSystem {
         let hasMore = false
         const lightComponent = entity.__lightComp
         const lightType = lightComponent?.type
-
+        const iconsUniforms = StaticEditorShaders.iconUniforms
 
         switch (lightType) {
             case LIGHT_TYPES.DIRECTIONAL:
@@ -110,7 +97,7 @@ export default class IconsSystem {
         getPivotPointMatrix(entity)
         GPU.context.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
         GPU.context.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
-        StaticMeshesController.drawQuad()
+        StaticMeshes.drawQuad()
         if (index === -1) {
             GPU.context.uniform1i(iconsUniforms.doNotFaceCamera, 0)
             GPU.context.uniform1f(iconsUniforms.scale, settings.iconScale)
@@ -151,10 +138,10 @@ export default class IconsSystem {
         if (!IconsSystem.iconsTexture)
             return
 
-        iconsShader.bind()
+        StaticEditorShaders.icon.bind()
         GPU.context.activeTexture(GPU.context.TEXTURE0)
         GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
-        GPU.context.uniform1f(iconsUniforms.scale, settings.iconScale)
+        GPU.context.uniform1f(StaticEditorShaders.iconUniforms.scale, settings.iconScale)
 
         if (settings.showIcons)
             IconsSystem.loop(IconsSystem.#drawIcon, settings)

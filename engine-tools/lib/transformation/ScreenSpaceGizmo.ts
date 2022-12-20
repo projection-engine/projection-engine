@@ -3,7 +3,7 @@ import GizmoSystem from "../../runtime/GizmoSystem";
 import AXIS from "../../static/AXIS";
 import ConversionAPI from "../../../engine-core/lib/math/ConversionAPI";
 import {vec3} from "gl-matrix";
-import getPickerId from "../../../engine-core/utils/get-picker-id";
+import StaticMeshes from "../../../engine-core/lib/StaticMeshes";
 
 export default class ScreenSpaceGizmo {
     static onMouseMove(event:MouseEvent): [number, number, number] {
@@ -51,6 +51,6 @@ export default class ScreenSpaceGizmo {
     }
 
     static drawGizmo() {
-        GizmoAPI.drawGizmo(GizmoSystem.screenSpaceMesh, GizmoSystem.mainEntity.__cacheCenterMatrix, AXIS.SCREEN_SPACE)
+        GizmoAPI.drawGizmo(StaticMeshes.sphere, GizmoSystem.mainEntity.__cacheCenterMatrix, AXIS.SCREEN_SPACE)
     }
 }

@@ -2,7 +2,6 @@ import FilesStore from "../../../stores/FilesStore";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 import NodeFS from "../../../../shared/libs/NodeFS";
 
 

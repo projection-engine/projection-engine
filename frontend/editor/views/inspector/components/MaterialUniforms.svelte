@@ -3,6 +3,7 @@
     import Selector from "../../../components/selector/Selector.svelte";
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
     import Range from "../../../../shared/components/range/Range.svelte";
+
     export let uniforms
     export let update
 </script>

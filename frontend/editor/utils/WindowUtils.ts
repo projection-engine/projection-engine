@@ -3,6 +3,7 @@ import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import GPU from "../../../engine-core/GPU";
+
 const {ipcRenderer, shell} = window.require("electron")
 export default class WindowUtils {
     static openAbout?:Function

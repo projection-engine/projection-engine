@@ -1,4 +1,4 @@
-import {mat4, quat, vec3, vec4} from "gl-matrix"
+import {mat4, quat, vec3} from "gl-matrix"
 import TRANSFORMATION_TYPE from "../../../frontend/editor/static/TRANSFORMATION_TYPE"
 import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
@@ -12,6 +12,8 @@ import UndoRedoAPI from "../../../frontend/editor/lib/utils/UndoRedoAPI";
 import gizmoRotateEntity from "../../utils/gizmo-rotate-entity";
 import drawGizmoToDepth from "../../utils/draw-gizmo-to-depth";
 import GizmoInterface from "../GizmoInterface";
+import StaticEditorMeshes from "../StaticEditorMeshes";
+import StaticEditorShaders from "../StaticEditorShaders";
 
 const toRad = Math.PI / 180
 const cacheVec3 = vec3.create()
@@ -21,7 +23,6 @@ export default class RotationGizmo extends GizmoInterface {
     static currentRotation = vec3.create()
     static gridSize: number = toRad
     static currentIncrement = 0
-    static shader
 
     constructor() {
         super()
@@ -89,7 +90,7 @@ export default class RotationGizmo extends GizmoInterface {
     #testClick() {
         if (!GizmoSystem.mainEntity)
             return
-        drawGizmoToDepth(GizmoSystem.rotationGizmoMesh, [
+        drawGizmoToDepth(StaticEditorMeshes.rotationGizmo, [
             this.xGizmo.matrix,
             this.yGizmo.matrix,
             this.zGizmo.matrix,
@@ -167,13 +168,13 @@ export default class RotationGizmo extends GizmoInterface {
     }
 
     #draw(transformMatrix, axis) {
-        RotationGizmo.shader.bindForUse({
+        StaticEditorShaders.rotation.bindForUse({
             transformMatrix,
             axis,
             translation: GizmoSystem.mainEntity.__pivotOffset,
             selectedAxis: GizmoSystem.clickedAxis,
             cameraIsOrthographic: CameraAPI.isOrthographic
         })
-        GizmoSystem.rotationGizmoMesh.draw()
+        StaticEditorMeshes.rotationGizmo.draw()
     }
 }

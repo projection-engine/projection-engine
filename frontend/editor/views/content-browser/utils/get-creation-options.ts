@@ -7,6 +7,7 @@ import TERRAIN_TEMPLATE from "../../../../../engine-core/static/templates/TERRAI
 import Localization from "../../../templates/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 import NodeFS from "../../../../shared/libs/NodeFS";
+
 export default function getCreationOptions(currentDirectory) {
     async function createFile(name, type, data) {
         let path = await resolveFileName(currentDirectory.id + NodeFS.sep + name, type)

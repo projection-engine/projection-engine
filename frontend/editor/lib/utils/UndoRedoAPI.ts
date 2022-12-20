@@ -6,7 +6,6 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-re
 import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityNameController from "../controllers/EntityNameController";
-import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
 
 export default class UndoRedoAPI {
     static #cache = new UndoRedo()

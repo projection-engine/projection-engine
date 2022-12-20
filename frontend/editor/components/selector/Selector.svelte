@@ -1,16 +1,14 @@
 <script>
-
     import FilesStore from "../../stores/FilesStore";
     import {onDestroy} from "svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import Options from "./components/Options.svelte";
-    import STATIC_MESHES from "../../../../engine-core/static/resources/STATIC_MESHES";
+    import STATIC_MESHES from "../../../../engine-core/static/STATIC_MESHES";
     import getType from "./utils/get-type";
     import getIcon from "./utils/get-icon";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-
 
     export let type
     export let handleChange
@@ -21,20 +19,18 @@
     export let disabled
     export let terrainMaterials
 
-
     let store = {}
     const unsubscribeStore = FilesStore.getStore(v => store = v)
     onDestroy(() => unsubscribeStore())
 
-
     let state
     $: {
-        if (type === "parent") {
+        if (type === "parent")
             state = selected ? selected : {name: Localization.EMPTY}
-        } else if (selected) {
-            if (Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected))
+        else if (selected) {
+            if (Object.values(STATIC_MESHES).find(s => s === selected))
                 state = {
-                    name: Localization[Object.values(STATIC_MESHES.PRODUCTION).find(s => s === selected)],
+                    name: Localization[Object.values(STATIC_MESHES).find(s => s === selected)],
                     registryID: selected
                 }
             else {

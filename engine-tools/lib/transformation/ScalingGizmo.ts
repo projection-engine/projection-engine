@@ -1,7 +1,7 @@
 import mapGizmoMesh from "../../utils/map-gizmo-mesh"
-import GizmoSystem from "../../runtime/GizmoSystem";
 import Inheritance from "../Inheritance";
 import gizmoScaleEntity from "../../utils/gizmo-scale-entity";
+import StaticEditorMeshes from "../StaticEditorMeshes";
 
 export default class ScalingGizmo extends Inheritance {
     static gridSize = 1
@@ -11,7 +11,7 @@ export default class ScalingGizmo extends Inheritance {
 
     constructor() {
         super()
-        this.xyz = GizmoSystem.scaleGizmoMesh
+        this.xyz = StaticEditorMeshes.scaleGizmo
         this.xGizmo = mapGizmoMesh("x", "SCALE")
         this.yGizmo = mapGizmoMesh("y", "SCALE")
         this.zGizmo = mapGizmoMesh("z", "SCALE")

@@ -7,8 +7,6 @@ import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
 import SettingsStore from "../frontend/editor/stores/SettingsStore";
 import UIAPI from "../engine-core/lib/rendering/UIAPI";
-import GPUAPI from "../engine-core/lib/rendering/GPUAPI";
-import STATIC_SHADERS from "../engine-core/static/resources/STATIC_SHADERS";
 // @ts-ignore
 import ICONS_SPRITE_VERT from "./shaders/ICONS_SPRITE.vert";
 // @ts-ignore
@@ -29,7 +27,6 @@ import GIZMO_FRAG from "./shaders/GIZMO.frag";
 import WIREFRAME_VERT from "./shaders/WIREFRAME.vert";
 // @ts-ignore
 import WIREFRAME_FRAG from "./shaders/WIREFRAME.frag";
-import RotationGizmo from "./lib/transformation/RotationGizmo";
 // @ts-ignore
 import ROTATION_GIZMO_VERT from "./shaders/ROTATION_GIZMO.vert";
 // @ts-ignore
@@ -46,61 +43,33 @@ import SILHOUETTE_FRAG from "./shaders/SILHOUETTE.frag";
 import MESH_MAP_VERT from "./shaders/MESH_MAP.vert";
 // @ts-ignore
 import MESH_MAP_FRAG from "./shaders/MESH_MAP.frag";
-import STATIC_MESHES from "../engine-core/static/resources/STATIC_MESHES";
 import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";
-import GizmoAPI from "./lib/GizmoAPI";
 import LineRenderer from "./runtime/LineRenderer";
-import Controller from "../engine-core/templates/Controller";
 import Entity from "../engine-core/instances/Entity";
 import GPU from "../engine-core/GPU";
-import Texture from "../engine-core/instances/Texture";
+import StaticEditorMeshes from "./lib/StaticEditorMeshes";
+import StaticEditorShaders from "./lib/StaticEditorShaders";
 
 
 let settings
-let selected:Entity[]
+let selected: Entity[]
 export default class EngineTools {
     static selected: Entity[] = []
     static selectionMap = new Map<string, boolean>()
     static #initialized = false
-    static async initialize(): Promise<void> {
-        if(EngineTools.#initialized)
+
+    static async initialize() {
+        if (EngineTools.#initialized)
             return
         EngineTools.#initialized = true
-
         UIAPI.useIframe = true
-        GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ICONS, ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
-        GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.LINE, LINE_VERT, LINE_FRAG)
-        GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.TO_BUFFER, GIZMO_TO_DEPTH_VERT, GIZMO_TO_DEPTH_FRAG)
-        GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GIZMO, GIZMO_VERT, GIZMO_FRAG)
-
-        CollisionVisualizationSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.WIREFRAME, WIREFRAME_VERT, WIREFRAME_FRAG)
-        RotationGizmo.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.ROTATION_GIZMO, ROTATION_GIZMO_VERT, ROTATION_GIZMO_FRAG)
-        GridSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.GRID, GRID_VERT, GRID_FRAG)
-        GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE_OUTLINE, SILHOUETTE_VERT, SILHOUETTE_FRAG)
-        SelectedSystem.shader = GPUAPI.allocateShader(STATIC_SHADERS.DEVELOPMENT.SILHOUETTE, MESH_MAP_VERT, MESH_MAP_FRAG)
-
-        try {
-            const res = await fetch("./STATIC_GIZMO_DATA.json")
-            const {TRANSLATION_MESH, ROTATION_MESH, SCALE_MESH, DUAL_AXIS_MESH, ICON_IMG} = await res.json()
-            GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.DUAL_AXIS_GIZMO, DUAL_AXIS_MESH)
-            GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.ROTATION_GIZMO, ROTATION_MESH)
-            GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.SCALE_GIZMO, SCALE_MESH)
-            GPUAPI.allocateMesh(STATIC_MESHES.EDITOR.TRANSLATION_GIZMO, TRANSLATION_MESH)
-
-            const t = new Texture()
-            await t.initialize({img: ICON_IMG})
-            IconsSystem.iconsTexture = t.texture
-        } catch (err) {
-            console.error(err)
-        }
+        StaticEditorShaders.initialize()
+        await StaticEditorMeshes.initialize()
 
         Engine.environment = ENVIRONMENT.DEV
-        CollisionVisualizationSystem.initialize()
+
         GridSystem.initialize()
-        IconsSystem.initialize()
-        SelectedSystem.initialize()
         GizmoSystem.initialize()
-        GizmoAPI.initialize()
         LineRenderer.initialize()
     }
 
