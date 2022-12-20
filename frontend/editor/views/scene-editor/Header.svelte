@@ -13,6 +13,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import ViewportSettings from "../preferences/components/ViewportSettings.svelte";
 
     export let settings
     export let engine
@@ -30,7 +31,7 @@
     </button>
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <AddOptions/>
-    <Dropdown styles="width: 250px" buttonStyles={getDropdownHeaderStyles()}>
+    <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
         <button slot="button" data-view-header-dropdown="-">
             {Localization.CAMERA}
         </button>
@@ -86,6 +87,11 @@
 
     </Dropdown>
     <ShadingOption engine={engine} settings={settings}/>
+    <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
+        <div style="padding: 8px 4px">
+            <ViewportSettings settings={settings}/>
+        </div>
+    </Dropdown>
 </div>
 
 

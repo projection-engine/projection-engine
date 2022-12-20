@@ -75,8 +75,11 @@
                         }}
                         style="padding-left: 25px; max-width: unset; min-height: unset"
                 >
+                    <Icon styles="font-size: 1rem">{subOption.icon}</Icon>
                     {subOption.label}
                 </button>
+                {:else}
+                <div data-divider="-"></div>
             {/if}
         {/each}
     </Dropdown>

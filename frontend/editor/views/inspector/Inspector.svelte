@@ -13,14 +13,12 @@
     import AttributeEditor from "./components/shader-editor/AttributeEditor.svelte";
     import {v4} from "uuid";
     import Icon from "../../../shared/components/icon/Icon.svelte";
-
-    export let switchView = undefined
-    export let orientation = undefined
+    import Engine from "../../../../engine-core/Engine";
+    import EngineStore from "../../stores/EngineStore";
 
     const internalID = v4()
     let ui = {}
     let parent
-    let savedState = false
 
     let target
     let entity
@@ -60,6 +58,7 @@
         }
         entity = targetInstance
     })
+
     onDestroy(() => unsubscribeSelection())
 </script>
 {#if entity == null}
