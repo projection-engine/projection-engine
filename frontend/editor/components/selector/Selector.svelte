@@ -3,7 +3,7 @@
     import {onDestroy} from "svelte";
     import Localization from "../../templates/LOCALIZATION_EN";
     import Options from "./components/Options.svelte";
-    import STATIC_MESHES from "../../../../engine-core/static/STATIC_MESHES";
+    import EmbeddedMeshes from "../../../../engine-core/templates/EmbeddedMeshes";
     import getType from "./utils/get-type";
     import getIcon from "./utils/get-icon";
     import Icon from "../../../shared/components/icon/Icon.svelte";
@@ -28,9 +28,9 @@
         if (type === "parent")
             state = selected ? selected : {name: Localization.EMPTY}
         else if (selected) {
-            if (Object.values(STATIC_MESHES).find(s => s === selected))
+            if (Object.values(EmbeddedMeshes).find(s => s === selected))
                 state = {
-                    name: Localization[Object.values(STATIC_MESHES).find(s => s === selected)],
+                    name: Localization[Object.values(EmbeddedMeshes).find(s => s === selected)],
                     registryID: selected
                 }
             else {

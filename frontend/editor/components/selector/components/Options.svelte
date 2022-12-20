@@ -1,7 +1,7 @@
 <script>
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
-    import STATIC_MESHES from "../../../../../engine-core/static/STATIC_MESHES";
+    import EmbeddedMeshes from "../../../../../engine-core/templates/EmbeddedMeshes";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import Localization from "../../../templates/LOCALIZATION_EN";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
@@ -29,7 +29,7 @@
             current = [...temp]
         if (!noDefault) {
             if (type === "mesh")
-                Object.entries(STATIC_MESHES).forEach(sm => {
+                Object.entries(EmbeddedMeshes).forEach(sm => {
                     if (Localization[sm[0]] != null)
                         current.push({
                             name: Localization[sm[0]],
