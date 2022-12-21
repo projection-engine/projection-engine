@@ -1,6 +1,6 @@
 {
   "name": "projection-engine",
-  "version": "2.0.0-beta",
+  "version": "next",
   "main": "build/index.js",
   "scripts": {
     "sdev": "electron-forge start",
