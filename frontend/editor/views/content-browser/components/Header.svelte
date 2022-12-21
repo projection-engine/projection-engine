@@ -8,7 +8,7 @@
     import getFileTypes from "../utils/get-file-types";
     import importFile from "../../../utils/import-file";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
-    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";

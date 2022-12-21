@@ -1,13 +1,13 @@
 import fileSystem from "./file-system"
-import window from "../libs/Window";
 import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
+import ProjectController from "../libs/ProjectController";
 
-const {app} = require("electron");
+const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, } = require("electron")
 const isDev = require("electron-is-dev")
 const os = require("os")
 const path = require("path");
 export default async function createEnv():Promise<void> {
-    fileSystem()
+
 
     let pathToProject:string|undefined
     if (isDev)
@@ -20,7 +20,7 @@ export default async function createEnv():Promise<void> {
         return
     }
 
-    const result = await window(pathToProject, isDev)
-    if (!result)
-        app.quit()
+    await ProjectController.initialize()
+    const basePath = pathToProject.replace(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "")
+    await ProjectController.prepareForUse(basePath)
 }

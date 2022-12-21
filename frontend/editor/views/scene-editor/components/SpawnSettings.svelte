@@ -2,7 +2,7 @@
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
-    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import Range from "../../../../shared/components/range/Range.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 

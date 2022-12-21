@@ -10,13 +10,13 @@ import createRegistryEntry from "../utils/create-registry-entry";
 import directoryStructure from "../utils/directory-structure";
 import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import parseContentBrowserData from "../utils/parse-content-browser-data";
+const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, screen} = require("electron")
 
-const {ipcMain, dialog, app, screen} = require("electron")
 const fs = require("fs")
 const pathRequire = require("path")
 
 export default class Events {
-    static initializeListeners(isDev){
+    static initializeListeners() {
         ipcMain.on("reload", Events.reloadWindow)
         ipcMain.on(ROUTES.LOAD_LEVEL, Events.loadLevel)
         ipcMain.on(ROUTES.OPEN_FULL, Events.openFull)
@@ -30,14 +30,10 @@ export default class Events {
         ipcMain.on("create-registry", Events.createRegistry)
         ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, Events.refreshContentBrowser)
         ipcMain.on("read-registry", Events.readRegistry)
-
-        ProjectController.window.setMenu(null)
-        ProjectController.window.on("ready-to-show", () => ProjectController.window.show())
-        if (isDev)
-            ProjectController.window.openDevTools({mode: "detach"})
     }
-    static reloadWindow() {
-        dialog.showMessageBox(ProjectController.window, {
+
+    static async reloadWindow() {
+        const result = await dialog.showMessageBox(ProjectController.window, {
             'type': 'question',
             'title': 'Reload project',
             'message': "Are you sure?",
@@ -45,12 +41,11 @@ export default class Events {
                 'Yes',
                 'No'
             ]
-        }).then((result) => {
-            if (result.response !== 0)
-                return;
-            app.relaunch()
-            app.exit()
         })
+        if (result.response !== 0)
+            return;
+        ProjectController.closeWindow(true)
+        await ProjectController.openWindow()
     }
 
     static openFull() {
@@ -90,7 +85,7 @@ export default class Events {
     }
 
     static async fileDialog(ev, {listenID, currentDirectory}) {
-        const properties = ["openFile", "multiSelections"]
+        const properties = <("openFile" | "multiSelections")[]>["openFile", "multiSelections"]
         const result = await dialog.showOpenDialog({
             properties,
             filters: [{name: "Assets", extensions: ["bin", "jpg", "png", "jpeg", "gltf", "fbx", "glb", "dae"]}]

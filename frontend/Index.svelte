@@ -12,6 +12,7 @@
     import About from "./shared/components/About.svelte";
     import NodeFS from "./shared/libs/NodeFS";
     import FilesAPI from "./editor/lib/fs/FilesAPI";
+    import PROJECT_STATIC_DATA from "../static/objects/PROJECT_STATIC_DATA";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -20,6 +21,7 @@
     let fullyLoaded = false
 
     onMount(() => {
+        ipcRenderer.on("project-identifier", (_, data) => sessionStorage.setItem(PROJECT_STATIC_DATA.PROJECT_PATH, data))
         ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         let interval = setInterval(() => {

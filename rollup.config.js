@@ -1,7 +1,6 @@
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import image from "@rollup/plugin-image";
 import css from "rollup-plugin-css-only";
 import {terser} from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
@@ -10,14 +9,14 @@ import typescript from 'rollup-plugin-typescript2';
 import autoPreprocess from 'svelte-preprocess';
 
 
-const PRODUCTION = false //!process.env.ROLLUP_WATCH;
+const PRODUCTION = !process.env.ROLLUP_WATCH;
 
 const TS = typescript({
     sourceMap: false,
     tsconfigDefaults: { compilerOptions: { declaration: true } },
     tsconfig: "tsconfig.json",
     tsconfigOverride: { compilerOptions: { declaration: false } },
-    // clean: false,
+
     check: false
 })
 
@@ -43,11 +42,10 @@ export default [
         output: {
             strict: false,
             sourcemap: false,
-            file: "build/electron.js",
+            file: "build/index.js",
             format: 'cjs'
         },
         plugins: [
-
             copy({
                 targets: [
                     { src: 'static/APP_LOGO.png', dest: 'build' },
@@ -58,11 +56,12 @@ export default [
                     { src: 'static/index.html', dest: 'build' }
                 ]
             }),
+
             resolve({
                 dedupe: ["electron", "sharp"]
             }),
-            commonjs({ignore: ["electron", "sharp"], sourceMap: false }),
             TS,
+            commonjs({ignore: ["electron", "sharp"], sourceMap: false }),
             PRODUCTION && terser()
         ]
     },
@@ -98,7 +97,7 @@ export default [
             TS,
 
             PRODUCTION && terser(),
-            image(),
+
             string({
                 include: ["**/*.glsl", "**/*.frag","**/*.vert", "**/*.base64"]
             })

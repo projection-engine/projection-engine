@@ -1,12 +1,13 @@
 {
   "name": "projection-engine",
   "version": "2.0.0-beta",
-  "main": "build/electron.js",
+  "main": "build/index.js",
   "scripts": {
     "sdev": "electron-forge start &",
-    "bdev": "rollup -c",
+    "bdev": "rollup -c -w",
 
-    "package": "yarn svelte-build && electron-forge package",
+    "package": "yarn build && electron-forge package",
+    "build": "rollup -c",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "check": "npx svelte-check"
@@ -25,7 +26,6 @@
   "devDependencies": {
     "@electron-forge/cli": "6.0.0-beta.67",
     "@rollup/plugin-commonjs": "^11.0.0",
-    "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "@tsconfig/svelte": "^3.0.0",
     "@types/electron": "^1.6.10",

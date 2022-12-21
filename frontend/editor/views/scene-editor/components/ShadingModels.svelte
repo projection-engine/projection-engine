@@ -1,7 +1,7 @@
 <script>
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import getLabel from "../utils/get-label";
-    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import Options from "./ShadingModelOptions.svelte";
     import SceneRenderer from "../../../../../engine-core/runtime/SceneRenderer";
     import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS";
@@ -11,7 +11,7 @@
     export let settings
 
     $: shading = getLabel(settings?.shadingModel)
-    $:SceneRenderer.debugShadingModel = settings?.shadingModel || SHADING_MODELS.DETAIL
+    $:SceneRenderer.debugShadingModel = settings?.shadingModel || SHADING_MODELS.ALBEDO
 </script>
 
 

@@ -4,7 +4,7 @@
     import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
     import FilesStore from "../../stores/FilesStore";
     import LevelController from "../../lib/utils/LevelController";
-    import FRAME_OPTIONS from "../../templates/FRAME_OPTIONS";
+    import FRAME_OPTIONS from "./utils/get-frame-options";
     import SettingsStore from "../../stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";
     import VIEWS from "../view/static/VIEWS";
@@ -15,6 +15,8 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import WindowUtils from "../../utils/WindowUtils";
+    import SingleSelectDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte";
+    import getFrameOptions from "./utils/get-frame-options";
 
     let engine
     let store
@@ -61,28 +63,14 @@
         <Icon>save</Icon>
         <ToolTip content={LOCALIZATION_EN.SAVE}/>
     </button>
-    <Dropdown hideArrow="true">
-        <button slot="button">
-            <Icon>menu</Icon>
-            <ToolTip content={LOCALIZATION_EN.OPTIONS}/>
-        </button>
-        {#each FRAME_OPTIONS as subOption}
-            {#if subOption.type !== "separator" }
-                <button
-                        on:click={e => {
-                             WindowUtils.callMethod(subOption.id)
-                             e.currentTarget.closeDropdown?.()
-                        }}
-                        style="padding-left: 25px; max-width: unset; min-height: unset"
-                >
-                    <Icon styles="font-size: 1rem">{subOption.icon}</Icon>
-                    {subOption.label}
-                </button>
-                {:else}
-                <div data-divider="-"></div>
-            {/if}
-        {/each}
-    </Dropdown>
+    <SingleSelectDropdown
+            cleanLayout={true}
+            options={getFrameOptions()}
+            label="menu"
+            autoClose={true}
+            labelAsIcon={true}
+            tooltip={LOCALIZATION_EN.OPTIONS}
+    />
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <CreationController/>
     <div data-vertdivider="-" style="height: 15px;"></div>
@@ -103,7 +91,15 @@
 </div>
 
 <style>
-
+    .dropdown-button {
+        padding: 0 8px;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        justify-content: flex-start;
+        max-width: unset;
+        min-height: unset;
+    }
 
     .container {
         border-bottom: var(--pj-border-primary) 1px solid;

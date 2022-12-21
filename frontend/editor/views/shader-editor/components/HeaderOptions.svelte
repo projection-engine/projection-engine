@@ -6,7 +6,7 @@
     import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
     import ShaderEditorTools from "../libs/ShaderEditorTools";
     import Selector from "../../../components/selector/Selector.svelte";
-    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";

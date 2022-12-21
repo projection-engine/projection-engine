@@ -2,7 +2,7 @@
     import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
     import Selector from "../../../../components/selector/Selector.svelte";
-    import getDropdownHeaderStyles from "../../../../utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import Range from "../../../../../shared/components/range/Range.svelte";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";

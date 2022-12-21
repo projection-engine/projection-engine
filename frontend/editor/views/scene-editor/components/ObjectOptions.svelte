@@ -1,7 +1,7 @@
 <script>
     import viewportContext from "../../../templates/viewport-context";
     import Localization from "../../../templates/LOCALIZATION_EN";
-    import getDropdownHeaderStyles from "../../../utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
 
     export let settings

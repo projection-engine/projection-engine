@@ -12,7 +12,7 @@
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";
-    import getDropdownHeaderStyles from "../../utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import EntityConstructor from "../../lib/controllers/EntityConstructor";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";

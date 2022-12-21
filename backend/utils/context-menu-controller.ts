@@ -1,5 +1,4 @@
-const {Menu, ipcMain} = require("electron")
-
+const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, } = require("electron")
 function mapMenu(window, e, parent) {
     return Array.isArray(e.submenu) ? e.submenu.map(s => {
         if (s.id == null)
