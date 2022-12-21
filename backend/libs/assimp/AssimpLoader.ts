@@ -1,4 +1,4 @@
-import AssimpJS from "./assimpjs";
+import AssimpJS from "./Assimp.js";
 import PrimitiveProcessor from "../../../engine-core/lib/math/PrimitiveProcessor";
 import FILE_TYPES from "../../../static/objects/FILE_TYPES";
 import createRegistryEntry from "../../utils/create-registry-entry";

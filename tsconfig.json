@@ -104,8 +104,12 @@
 
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true
+    "skipLibCheck": true,
     /* Skip type checking all .d.ts files. */
+    "typeRoots": [
+      "./frontend/global.d.ts",
+      "node_modules/@types"
+    ]
   },
   "exclude": [
     "node_modules"

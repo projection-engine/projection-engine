@@ -11,7 +11,7 @@ export default class SculptingGizmo {
     handlerBound?: Function
     updateMesh = () => null
     wasDown:boolean = false
-    interval?:NodeJS.Timer
+    interval
 
     updateSettings(brushSize, brushScale, brushStrength) {
         this.ctx.lineWidth = brushSize

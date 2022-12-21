@@ -1,4 +1,3 @@
-// @ts-ignore
 import Main from './Index.svelte';
 
 export default new Main({

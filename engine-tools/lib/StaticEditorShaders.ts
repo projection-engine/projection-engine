@@ -1,39 +1,21 @@
 import Controller from "../../engine-core/templates/Controller";
-// @ts-ignore
 import ICONS_SPRITE_VERT from "../shaders/ICONS_SPRITE.vert";
-// @ts-ignore
 import ICONS_SPRITE_FRAG from "../shaders/ICONS_SPRITE.frag";
-// @ts-ignore
 import LINE_VERT from "../shaders/LINE.vert";
-// @ts-ignore
 import LINE_FRAG from "../shaders/LINE.frag";
-// @ts-ignore
 import GIZMO_TO_DEPTH_VERT from "../shaders/GIZMO_TO_DEPTH.vert";
-// @ts-ignore
 import GIZMO_TO_DEPTH_FRAG from "../shaders/GIZMO_TO_DEPTH.frag";
-// @ts-ignore
 import GIZMO_VERT from "../shaders/GIZMO.vert";
-// @ts-ignore
 import GIZMO_FRAG from "../shaders/GIZMO.frag";
-// @ts-ignore
 import WIREFRAME_VERT from "../shaders/WIREFRAME.vert";
-// @ts-ignore
 import WIREFRAME_FRAG from "../shaders/WIREFRAME.frag";
-// @ts-ignore
 import ROTATION_GIZMO_VERT from "../shaders/ROTATION_GIZMO.vert";
-// @ts-ignore
 import ROTATION_GIZMO_FRAG from "../shaders/ROTATION_GIZMO.frag";
-// @ts-ignore
 import GRID_VERT from "../shaders/GRID.vert";
-// @ts-ignore
 import GRID_FRAG from "../shaders/GRID.frag";
-// @ts-ignore
 import SILHOUETTE_VERT from "../shaders/SILHOUETTE.vert";
-// @ts-ignore
 import SILHOUETTE_FRAG from "../shaders/SILHOUETTE.frag";
-// @ts-ignore
 import MESH_MAP_VERT from "../shaders/MESH_MAP.vert";
-// @ts-ignore
 import MESH_MAP_FRAG from "../shaders/MESH_MAP.frag";
 import Shader from "../../engine-core/instances/Shader";
 
