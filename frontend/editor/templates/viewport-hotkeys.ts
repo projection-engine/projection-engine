@@ -36,7 +36,6 @@ export default function viewportHotkeys(settings) {
                         payload: entity.clone()
                     })
             },
-            icon: "content_copy",
             require: settings.viewportHotkeys.DUPLICATE,
         },
 
@@ -148,12 +147,10 @@ export default function viewportHotkeys(settings) {
         },
         SNAP_TO_GRID: {
             label: "Snap to grid",
-            icon: "grid_4x4",
             callback: () => snap(),
             require: settings.viewportHotkeys.SNAP_TO_GRID,
         },
         FOCUS: {
-            icon: "place",
             label: "Focus on active",
             require: settings.viewportHotkeys.FOCUS,
             callback: ViewportActions.focus
@@ -183,28 +180,24 @@ export default function viewportHotkeys(settings) {
             callback: () => ViewportActions.group()
         },
         FIXATE_ACTIVE: {
-            icon: "push_pin",
             label: "Fixate active",
             require: settings.viewportHotkeys.FIXATE_ACTIVE,
             callback: () => ViewportActions.fixateActive()
         },
 
         COPY: {
-            icon: "copy_all",
             label: "Copy",
             require: settings.viewportHotkeys.COPY,
             callback: () => ViewportActions.copy()
         },
 
         DELETE: {
-            icon: "delete_forever",
             label: "Delete",
             require: settings.viewportHotkeys.DELETE,
             callback: () => ViewportActions.deleteSelected()
         },
         PASTE: {
 
-            icon: "content_paste_go",
             label: "Paste",
             require: settings.viewportHotkeys.PASTE,
             callback: () => ViewportActions.paste()

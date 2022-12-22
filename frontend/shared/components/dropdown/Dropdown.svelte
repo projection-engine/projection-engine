@@ -19,46 +19,49 @@
     let open = false
     let modal
     let button
+    let mutation
     $: {
-        if (modal && button && open) {
-            const mutation = new MutationObserver(() => {
-                Array.from(modal.children).forEach(c => c.closeDropdown = () => close())
-                transformModal(modal, button)
-            })
-            mutation.observe(modal, {childList: true})
-        }
+        if (modal && button && open)
+            transformModal(modal, button)
     }
 
     function close() {
-        if (onClose && open)
-            onClose()
+        onClose?.()
         open = false
-        if(modal != null) {
+        if (modal != null) {
             modal.style.display = "none"
             modal.style.zIndex = "-1"
         }
     }
 
     function handler(event) {
-        if (!modal.contains(event.target) && !button.contains(event.target))
+        if (!open)
+            return
+        if (event.type === "click") {
+            if (!modal.contains(event.target) && !button.contains(event.target))
+                close()
+        } else if (document.pointerLockElement != null)
             close()
     }
 
     const portal = new Portal(500, false)
     $: open ? portal.open() : portal.close()
     onMount(() => {
-        document.onpointerlockchange = () => {
-            if (document.pointerLockElement != null)
-                close()
-        }
+        mutation = new MutationObserver(() => {
+            Array.from(modal.children).forEach(c => c.closeDropdown = () => close())
+            transformModal(modal, button)
+        })
+        mutation.observe(modal, {childList: true})
+        document.addEventListener("pointerlockchange", handler)
         portal.create(modal)
         modal.closeDropdown = () => close()
     })
     onDestroy(() => {
+        mutation.disconnect()
         portal.destroy()
+        document.removeEventListener("pointerlockchange", handler)
         document.removeEventListener("click", handler)
     })
-
 
     $: {
         if (modal) {
@@ -74,8 +77,7 @@
         bind:this={button}
         on:click={() => {
             if(!open && !disabled){
-                if(onOpen)
-                    onOpen()
+                onOpen?.()
                 open = true
             }
         }}
@@ -120,6 +122,4 @@
         color: var(--pj-accent-color);
         background: var(--pj-background-primary);
     }
-
-
 </style>

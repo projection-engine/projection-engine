@@ -9,8 +9,8 @@ let watch = false
 if (process.argv[2] === 'watch')
     watch = {
         onRebuild(error) {
-            if (error) console.error('esbuild: Watch build failed:', error.getMessage())
-            else console.log('esbuild: Watch build succeeded')
+            if (error) console.error((new Date()).toDateString() + ' FAILED: ', error.getMessage())
+            else console.log((new Date()).toLocaleTimeString() + ' SUCCEEDED')
         }
     }
 
@@ -20,7 +20,7 @@ const worker = (fileName, output) => ({
     bundle: true,
     watch,
     format: 'iife',
-    target: 'chrome',
+    target: 'es6',
     minify: production,
     sourcemap: false,
     outfile: output,
@@ -81,7 +81,7 @@ esbuild.build({
         bundle: true,
         watch,
         format: 'iife',
-        target: 'chrome',
+        target: 'es6',
         minify: production,
         sourcemap: false,
         outfile: './build/frontend.js',

@@ -17,6 +17,7 @@
             requestAnimationFrame(cb)
         }
         requestAnimationFrame(cb)
+
         const updateMem = () => {
             const data = window.performance.memory.usedJSHeapSize / 1e+6
             mem.textContent = data.toFixed(2) + "mb"

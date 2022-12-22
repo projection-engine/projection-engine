@@ -7,27 +7,29 @@ import entityCreationOptions from "./entity-creation-options";
 export default function viewportContext(settings, forDropdown) {
     const VIEWPORT_HOTKEYS = viewportHotkeys(settings)
     const data = [
+        {divider: true, label: "Selection"},
         VIEWPORT_HOTKEYS.SELECT_NONE,
         VIEWPORT_HOTKEYS.SELECT_ALL,
         VIEWPORT_HOTKEYS.INVERT_SELECTION,
         VIEWPORT_HOTKEYS.SELECT_HIERARCHY,
-        VIEWPORT_HOTKEYS.FOCUS_ON_CAMERA,
-        {divider: true},
+
+        {divider: true, label: "Copy/paste"},
         VIEWPORT_HOTKEYS.COPY,
         VIEWPORT_HOTKEYS.PASTE,
         VIEWPORT_HOTKEYS.DELETE,
-        {divider: true},
+        {divider: true, label: "Active"},
+        VIEWPORT_HOTKEYS.FOCUS_ON_CAMERA,
         VIEWPORT_HOTKEYS.GROUP,
         VIEWPORT_HOTKEYS.DUPLICATE,
-        {divider: true},
+
         VIEWPORT_HOTKEYS.HIDE_ACTIVE,
         VIEWPORT_HOTKEYS.FOCUS,
         VIEWPORT_HOTKEYS.FIXATE_ACTIVE,
         {
-            label: "Pivot point",
+            label: "Transformation",
             children: [
                 {
-                    label: "To origin",
+                    label: "Pivot point to origin",
                     onClick: () => {
                         const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
                         if (selected) {
@@ -37,12 +39,7 @@ export default function viewportContext(settings, forDropdown) {
                             selected.__pivotChanged = true
                         }
                     }
-                }
-            ]
-        },
-        {
-            label: "Transformation",
-            children: [
+                },
                 VIEWPORT_HOTKEYS.ROUND_TRANSFORMATION,
                 VIEWPORT_HOTKEYS.SNAP_TO_ORIGIN,
                 VIEWPORT_HOTKEYS.SNAP_TO_GRID,
@@ -85,7 +82,7 @@ export default function viewportContext(settings, forDropdown) {
             children: entityCreationOptions()
         }
     ]
-    if(forDropdown)
+    if (forDropdown)
         data.pop()
     return data
 }

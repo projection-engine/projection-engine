@@ -84,9 +84,8 @@
                 resizePosition={"top"}
         />
     </div>
-    {#if !settings.hideFooter}
-        <Footer engine={engine}/>
-    {/if}
+
+    <Footer engine={engine} settings={settings} />
 </div>
 
 

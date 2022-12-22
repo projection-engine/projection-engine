@@ -5,7 +5,7 @@ import {mat4, quat, vec3, vec4} from "gl-matrix";
 
 const toDeg = 57.29
 const cacheVec4 = vec4.create()
-export default function mapGizmoMesh(axis:string, type:string):Entity {
+export default function mapGizmoMesh(axis: string, type: string): Entity {
     const entity = new Entity()
     let s, t = [0, 0, 0], r, index
     switch (axis) {
@@ -37,17 +37,16 @@ export default function mapGizmoMesh(axis:string, type:string):Entity {
             }
             break
         case "ROTATION":
+            s = [1.5, .1, 1.5]
             switch (axis) {
                 case "x":
-                    s = [1, .1, 1]
                     r = [0, 0, 1.57]
                     break
                 case "y":
-                    s = [1, .1, 1]
                     r = [0, 0, 0]
                     break
                 case "z":
-                    s = [1, .1, 1]
+
                     r = [1.57, 0, 0]
                     break
             }

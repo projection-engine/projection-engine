@@ -15,10 +15,9 @@
 
     const {shell} = window.require("electron")
 
+    export let settings
     export let engine
-    let settings = {}
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    onDestroy(() => unsubscribeSettings())
+
 
     const openLogs = async () => {
         if (NodeFS.exists(ErrorLoggerAPI.path))
@@ -36,7 +35,7 @@
     }
 </script>
 
-<div class="wrapper">
+<div class="wrapper" style={settings.hideFooter ? "display: none" : undefined}>
     <FrameMetadata settings={settings}/>
     <div class="meta-data">
         <button

@@ -14,13 +14,15 @@ import drawGizmoToDepth from "../../utils/draw-gizmo-to-depth";
 import GizmoInterface from "../GizmoInterface";
 import StaticEditorMeshes from "../StaticEditorMeshes";
 import StaticEditorShaders from "../StaticEditorShaders";
+import Entity from "../../../engine-core/instances/Entity";
 
 const toRad = Math.PI / 180
+const toDeg = 180 / Math.PI
 const cacheVec3 = vec3.create()
 const cacheQuat = quat.create()
 export default class RotationGizmo extends GizmoInterface {
     tracking = false
-    static currentRotation = vec3.create()
+    static currentRotation: vec3 = vec3.create()
     static gridSize: number = toRad
     static currentIncrement = 0
 
@@ -107,69 +109,43 @@ export default class RotationGizmo extends GizmoInterface {
         }
     }
 
-    #rotateGizmo(axis, entity) {
+    #rotateGizmo(entity: Entity) {
         const m = GizmoSystem.mainEntity
         if (!m)
             return
         const matrix = entity.matrix
-        switch (axis) {
-            case "x":
-                mat4.copy(matrix, entity.__cacheMatrix)
-                break
-            case "y":
-                mat4.copy(matrix, entity.__cacheMatrix)
-                break
-            case "z":
-                mat4.copy(matrix, entity.__cacheMatrix)
-                break
-        }
+        mat4.copy(matrix, entity.__cacheMatrix)
 
         matrix[12] += m.__pivotOffset[0]
         matrix[13] += m.__pivotOffset[1]
         matrix[14] += m.__pivotOffset[2]
-
-        if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL && axis !== undefined) {
-            switch (axis) {
-                case "x":
-                    mat4.rotateY(matrix, matrix, -RotationGizmo.currentRotation[0])
-                    break
-                case "y":
-                    mat4.rotateY(matrix, matrix, RotationGizmo.currentRotation[1])
-                    break
-                case "z":
-                    mat4.rotateY(matrix, matrix, RotationGizmo.currentRotation[2])
-                    break
-                default:
-                    break
-            }
-        } else if (axis !== undefined && GizmoSystem.targetRotation) {
-            quat.multiply(cacheQuat, GizmoSystem.targetRotation, entity._rotationQuat)
-            mat4.fromRotationTranslationScale(matrix, cacheQuat, GizmoSystem.mainEntity.__pivotOffset, entity.scaling)
-        }
     }
 
     transformGizmo() {
         if (!GizmoSystem.mainEntity)
             return
-        this.#rotateGizmo("x", this.xGizmo)
-        this.#rotateGizmo("y", this.yGizmo)
-        this.#rotateGizmo("z", this.zGizmo)
+        this.#rotateGizmo(this.xGizmo)
+        this.#rotateGizmo(this.yGizmo)
+        this.#rotateGizmo(this.zGizmo)
     }
 
     drawGizmo() {
         if (!GizmoSystem.mainEntity)
             return
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.X || !this.tracking)
-            this.#draw(this.xGizmo.matrix, AXIS.X)
+            RotationGizmo.#draw(this.xGizmo.matrix, AXIS.X)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Y || !this.tracking)
-            this.#draw(this.yGizmo.matrix, AXIS.Y)
+            RotationGizmo.#draw(this.yGizmo.matrix, AXIS.Y)
         if (this.tracking && GizmoSystem.clickedAxis === AXIS.Z || !this.tracking)
-            this.#draw(this.zGizmo.matrix, AXIS.Z)
+            RotationGizmo.#draw(this.zGizmo.matrix, AXIS.Z)
     }
 
-    #draw(transformMatrix, axis) {
+    static #draw(transformMatrix, axis) {
+
         StaticEditorShaders.rotation.bindForUse({
             transformMatrix,
+            increment: RotationGizmo.gridSize * toRad,
+            rotated: RotationGizmo.currentRotation[axis - 2],
             axis,
             translation: GizmoSystem.mainEntity.__pivotOffset,
             selectedAxis: GizmoSystem.clickedAxis,

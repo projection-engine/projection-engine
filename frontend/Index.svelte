@@ -21,18 +21,17 @@
     let fullyLoaded = false
 
     onMount(() => {
-        ipcRenderer.on("project-identifier", (_, data) => sessionStorage.setItem(PROJECT_STATIC_DATA.PROJECT_PATH, data))
-        ipcRenderer.on("console", (_, data) => console.error(...data))
-        ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
-        let interval = setInterval(() => {
-            clearInterval(interval)
+        ipcRenderer.on("project-identifier", (_, data) => {
+            sessionStorage.setItem(PROJECT_STATIC_DATA.PROJECT_PATH, data)
             NodeFS.initialize()
             FilesAPI.initializeFolders().catch()
             WindowUtils.openAbout = () => isAboutOpen = true
             LevelController.initialize(() => {
                 initialized = true
             })
-        }, 100)
+        })
+        ipcRenderer.on("console", (_, data) => console.error(...data))
+        ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
         HotKeysController.initializeListener()
     })
 

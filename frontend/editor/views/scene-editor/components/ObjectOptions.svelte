@@ -3,39 +3,30 @@
     import Localization from "../../../templates/LOCALIZATION_EN";
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import OptionDropdown from "../../../../shared/components/dropdown/OptionDropdown.svelte";
 
     export let settings
-    $: mappedOptions = viewportContext(settings, true)
+    let mappedOptions = []
+    $: {
+        const cache = []
+
+        viewportContext(settings, true).forEach((v, i, arr) => {
+            if(i >= arr.length - 1)
+                return
+            if (v.children) {
+                cache.push({divider: true, label: v.label})
+                v.children.forEach(v => {
+                    cache.push(v)
+                })
+            } else
+                cache.push(v)
+        })
+        mappedOptions = cache
+    }
 </script>
 
-<Dropdown styles="width: 250px; max-height: 40vh; overflow-y: auto" buttonStyles={getDropdownHeaderStyles()}>
-    <button slot="button" data-view-header-dropdown="-">
-        {Localization.OBJECT}
-    </button>
-    {#each mappedOptions as option}
-        {#if option.divider}
-            <div data-divider="-"></div>
-        {:else if !option.children}
-            <button on:click={option.onClick || option.callback} style="padding-left: 25px;">
-                {option.label}
-            </button>
-        {:else if option.children}
-            <div class="group dropdown-list">
-                <strong style="white-space: nowrap; padding-left: 4px">{option.label}</strong>
-                <div data-divider="-"></div>
-            </div>
-            {#each option.children as option}
-                {#if option.divider}
-                    <div data-divider="-"></div>
-                {:else if !option.children}
-                    <button
-                            on:click={option.onClick || option.callback}
-                            style="padding-left: 25px;"
-                    >
-                        {option.label}
-                    </button>
-                {/if}
-            {/each}
-        {/if}
-    {/each}
-</Dropdown>
+<OptionDropdown
+        options={mappedOptions}
+        label={Localization.OBJECT}
+        autoClose={true}
+/>

@@ -14,6 +14,8 @@ import Entity from "../engine-core/instances/Entity";
 import GPU from "../engine-core/GPU";
 import StaticEditorMeshes from "./lib/StaticEditorMeshes";
 import StaticEditorShaders from "./lib/StaticEditorShaders";
+import StaticShaders from "../engine-core/lib/StaticShaders";
+import Shader from "../engine-core/instances/Shader";
 
 
 let settings
@@ -26,7 +28,19 @@ export default class EngineTools {
     static async initialize() {
         if (EngineTools.#initialized)
             return
-        EngineTools.#initialized = true
+
+        EngineTools.#initialized = true;
+
+
+        // TODO - ONLY DEV
+        // @ts-ignore
+        window.devMapper = StaticEditorShaders;
+        // @ts-ignore
+        window.createInstance = (vertex, fragment) => new Shader(vertex, fragment);
+        // @ts-ignore
+        window.prodMapper = StaticShaders;
+
+
         UIAPI.useIframe = true
         StaticEditorShaders.initialize()
         await StaticEditorMeshes.initialize()
