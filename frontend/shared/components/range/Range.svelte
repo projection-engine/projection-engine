@@ -15,7 +15,6 @@
     export let disabled = undefined;
     export let incrementPercentage = .001
     export let value = 0
-    export let noOriginal
     export let handleChange
     export let isAngle
     export let integer = undefined;
@@ -37,7 +36,7 @@
     $: percentageFilled = minValue != null && maxValue != null ? getPercentage(currentValue, maxValue) : undefined
     $: incrementData = (incrementPercentage ? incrementPercentage : 0.1)
     const handleMouseMove = (e) => {
-        try{
+        try {
 
             const multiplier = -e.movementX
             dragged = true
@@ -56,10 +55,11 @@
                 currentValue = minValue
             if (!changed)
                 changed = true
-            inputRef.value = parseToString(currentValue * (isAngle ? toDeg : 1))
+            if (inputRef)
+                inputRef.value = parseToString(currentValue * (isAngle ? toDeg : 1))
             if (handleChange)
                 handleChange(currentValue)
-        }catch(err){
+        } catch (err) {
             console.warn(err)
             document.body.removeEventListener("mousemove", handleMouseMove)
         }
@@ -128,7 +128,7 @@
 </script>
 
 
-<div class="wrapper" style={disabled ? "background: transparent; color: #999" : ""}>
+<div class="wrapper" style={disabled ? "background: transparent; color: #999" : ""} data-israngeinput="-">
     {#if percentageFilled != null}
         <div class="percentage" style="width: {percentageFilled}%"></div>
     {/if}

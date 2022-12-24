@@ -9,6 +9,8 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import SettingsStore from "../../../stores/SettingsStore";
+    import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 
     export let engine
     export let settings
@@ -21,6 +23,7 @@
         cameraIsOrtho = negated
     }
     $: cameras = engine.changeID ? Engine.entities.filter(entity => entity.components.get(COMPONENTS.CAMERA) != null) : []
+    $: CameraTracker.screenSpaceMovement = settings.screenSpaceMovement
 </script>
 
 
@@ -62,9 +65,20 @@
         {/if}
     </button>
 
-    <button disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center" on:click={() => ViewportActions.focus()}>
+    <button disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
+            on:click={() => ViewportActions.focus()}>
         <ToolTip content={LOCALIZATION_EN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
+    </button>
+
+    <button disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
+            on:click={() => SettingsStore.updateStore({...settings, screenSpaceMovement: !settings.screenSpaceMovement})}>
+        <ToolTip content={LOCALIZATION_EN.TOGGLE_CAMERA_MOVEMENT}/>
+        {#if settings.screenSpaceMovement}
+            <Icon styles="font-size: 1rem">lock_outline</Icon>
+        {:else}
+            <Icon styles="font-size: 1rem">lock_open</Icon>
+        {/if}
     </button>
 
     <CameraGizmo/>

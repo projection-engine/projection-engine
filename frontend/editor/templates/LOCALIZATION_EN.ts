@@ -39,7 +39,7 @@ export default {
     DISABLED: "Disabled",
     TAA: "Temporal AA",
     TAB_COLOR: "Tab color",
-
+    TOGGLE_CAMERA_MOVEMENT: "Toggle camera movement",
     DEPTH_THICKNESS: "Depth thickness",
     HAS_SSS: "Has screen-space shadows",
     INVALID_TYPE: "Invalid type",

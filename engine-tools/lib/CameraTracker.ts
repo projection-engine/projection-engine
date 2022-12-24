@@ -19,7 +19,7 @@ export default class CameraTracker {
     static turnSpeed = .1
 
     static gizmoReference
-
+    static screenSpaceMovement = false
     static toApplyTranslation = vec3.create()
     static currentTranslation = vec3.create()
     static #initialized = false
@@ -127,11 +127,15 @@ export default class CameraTracker {
 
     static forceRotationTracking() {
         if (!holding) {
-            document.body.requestPointerLock()
+            GPU.canvas.requestPointerLock()
             document.addEventListener("mousemove", CameraTracker.#handleInput)
             holding = true
         }
         CameraTracker.#keysOnHold.mouseLeft = true
+    }
+
+    static #getMouseAcceleration() {
+        return CameraTracker.#keysOnHold.fasterJonny ? 10 * CameraTracker.movementSpeed : CameraTracker.movementSpeed
     }
 
     static #handleInput(event) {
@@ -140,23 +144,32 @@ export default class CameraTracker {
         try {
             switch (event.type) {
                 case "mousemove": {
-                    if (!document.pointerLockElement)
-                        document.body.requestPointerLock()
-                    if (map.mouseLeft && map.mouseRight || event.ctrlKey) {
-                        const multiplier = map.fasterJonny ? 10 * CameraTracker.movementSpeed : CameraTracker.movementSpeed
+                    if (CameraTracker.screenSpaceMovement) {
+                        const multiplier = CameraTracker.#getMouseAcceleration()
                         toApplyTranslation[0] = -event.movementX * multiplier
                         toApplyTranslation[1] = event.movementY * multiplier
                         toApplyTranslation[2] = 0
                         toApplyTranslation[3] = 1
                         CameraTracker.forceUpdate = true
                     } else {
-                        CameraTracker.rotationChanged = true
-                        let multiplier = -1
-                        if (CameraTracker.movementKeys.invertDirection)
-                            multiplier = 1
-                        CameraTracker.xRotation += multiplier * event.movementX * CameraTracker.turnSpeed
-                        CameraTracker.yRotation += multiplier * event.movementY * CameraTracker.turnSpeed
-                        CameraTracker.yRotation = clamp(CameraTracker.yRotation, -halfPI, halfPI)
+                        if (!document.pointerLockElement)
+                            GPU.canvas.requestPointerLock()
+                        if (map.mouseLeft && map.mouseRight || event.ctrlKey) {
+                            const multiplier = CameraTracker.#getMouseAcceleration()
+                            toApplyTranslation[0] = -event.movementX * multiplier
+                            toApplyTranslation[1] = event.movementY * multiplier
+                            toApplyTranslation[2] = 0
+                            toApplyTranslation[3] = 1
+                            CameraTracker.forceUpdate = true
+                        } else {
+                            CameraTracker.rotationChanged = true
+                            let multiplier = -1
+                            if (CameraTracker.movementKeys.invertDirection)
+                                multiplier = 1
+                            CameraTracker.xRotation += multiplier * event.movementX * CameraTracker.turnSpeed
+                            CameraTracker.yRotation += multiplier * event.movementY * CameraTracker.turnSpeed
+                            CameraTracker.yRotation = clamp(CameraTracker.yRotation, -halfPI, halfPI)
+                        }
                     }
                     break
                 }
@@ -167,7 +180,8 @@ export default class CameraTracker {
                         map.mouseRight = true
 
                     if (!holding && map.mouseRight === true) {
-
+                        if (CameraTracker.screenSpaceMovement)
+                            GPU.canvas.style.cursor = "grabbing"
                         document.addEventListener("mousemove", CameraTracker.#handleInput)
                         holding = true
                     }
@@ -180,7 +194,11 @@ export default class CameraTracker {
                         map.mouseLeft = false
                     if (event.button === MOUSE_RIGHT)
                         map.mouseRight = false
+
+
                     if (!keys.mouseRight && !keys.mouseLeft) {
+                        if (CameraTracker.screenSpaceMovement)
+                            GPU.canvas.style.cursor = "default"
                         document.removeEventListener("mousemove", CameraTracker.#handleInput)
                         holding = false
                     }
@@ -238,9 +256,13 @@ export default class CameraTracker {
 
                     event.preventDefault();
                     const multiplier = event.ctrlKey ? 10 * 2 : 2
-                    toApplyTranslation[0] = toApplyTranslation[1] = 0
-                    toApplyTranslation[3] = 1
-                    toApplyTranslation[2] += multiplier * Math.sign(event.deltaY)
+                    if (CameraAPI.isOrthographic) {
+                        CameraAPI.orthographicProjectionSize += multiplier * Math.sign(event.deltaY)
+                    } else {
+                        toApplyTranslation[0] = toApplyTranslation[1] = 0
+                        toApplyTranslation[2] += multiplier * Math.sign(event.deltaY)
+                        toApplyTranslation[3] = 1
+                    }
                     CameraTracker.#transform()
                     break
                 default:

@@ -8,8 +8,9 @@
 
     let startPosition = undefined
     let contextMenu
-
     let open = false
+    let interval
+    let wasPointerLocked = false
 
     function checkMouseOffset(startPosition, event) {
         return Math.abs(startPosition.x - event.clientX) < 10 && Math.abs(startPosition.y - event.clientY) < 10
@@ -17,7 +18,8 @@
 
 
     const handleContext = (event) => {
-        if(document.pointerLockElement != null)
+        clearInterval(interval)
+        if(wasPointerLocked)
             return
         if (startPosition &&  ContextMenuController.data.focused) {
             event.preventDefault()
@@ -69,6 +71,12 @@
     }
 
     const handleMouseDown = (event) => {
+        interval = setInterval(() => {
+            if(document.pointerLockElement != null && !wasPointerLocked)
+                wasPointerLocked = true
+            else if(!document.pointerLockElement && wasPointerLocked)
+                wasPointerLocked = false
+        }, 250)
         if (event.button === RIGHT_BUTTON) {
             const elements = document.elementsFromPoint(event.clientX, event.clientY)
             let focused

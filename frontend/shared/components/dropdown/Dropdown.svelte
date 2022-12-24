@@ -37,11 +37,9 @@
     function handler(event) {
         if (!open)
             return
-        if (event.type === "click") {
-            const found = event.path.find(e => "getAttribute" in e && e.getAttribute("data-iscolorpicker"))
-            if (!found && !modal.contains(event.target) && !button.contains(event.target))
-                close()
-        } else if (document.pointerLockElement != null)
+        const found = event.path.find(e => e.getAttribute?.("data-iscolorpicker") || e.getAttribute?.("data-israngeinput") || e.getAttribute?.("data-icon"))
+        console.log(found)
+        if (!found && !modal.contains(event.target) && !button.contains(event.target))
             close()
     }
 
@@ -53,23 +51,21 @@
             transformModal(modal, button)
         })
         mutation.observe(modal, {childList: true})
-        document.addEventListener("pointerlockchange", handler)
         portal.create(modal)
         modal.closeDropdown = () => close()
     })
     onDestroy(() => {
         mutation.disconnect()
         portal.destroy()
-        document.removeEventListener("pointerlockchange", handler)
-        document.removeEventListener("click", handler)
+        document.removeEventListener("mousedown", handler)
     })
 
     $: {
         if (modal) {
             if (open)
-                document.addEventListener("click", handler)
+                document.addEventListener("mousedown", handler)
             else
-                document.removeEventListener("click", handler)
+                document.removeEventListener("mousedown", handler)
         }
     }
 </script>

@@ -21,7 +21,7 @@ export default {
     hideFooter: false,
     projectCreationDate: (new Date()).toDateString(),
     loggingEnabled: true,
-
+    screenSpaceMovement: false,
     gridOpacity: 1,
     gridColor: .3,
     gridScale: 1,

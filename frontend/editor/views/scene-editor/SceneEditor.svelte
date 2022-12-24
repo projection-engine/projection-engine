@@ -104,7 +104,6 @@
     <div class="top-bar">
         <GizmoSettings settings={settings} engine={engine}/>
         <CameraSettings engine={engine} settings={settings}/>
-
     </div>
     {#if focusedCamera}
         <div class="focused-camera" data-inline="-">
