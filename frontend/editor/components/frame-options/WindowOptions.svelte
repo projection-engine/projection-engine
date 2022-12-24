@@ -39,7 +39,7 @@
                 name: LOCALIZATION_EN.NEW_TAB + SettingsStore.data.views.length,
                 bottom: [[VIEWS.FILES]],
                 right: [[VIEWS.HIERARCHY]],
-                viewport: [VIEWPORT_TABS.EDITOR],
+                viewport: [ VIEWPORT_TABS.EDITOR],
                 left: [],
                 top: []
             }

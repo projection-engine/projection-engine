@@ -38,7 +38,7 @@
 
     const setViewportTab = (value, index = currentTab) => {
         const clone = [...viewTab]
-        clone[index] = value
+        clone[index].type = value
         updateViewport(engine, value)
         updateView(clone)
     }
@@ -54,12 +54,16 @@
     }
 
     $: updateViewport(engine, viewTab[currentTab])
-    $: tabs = viewTab.map(v => ({name: Localization[v], icon: getViewIcon(v)}))
+    $: tabs = viewTab.map(v => {
+        v.name = Localization[v.type]
+        v.icon = getViewIcon(v.type)
+        return v
+    })
     $: viewTemplates = [...Object.values(VIEWS), VIEWPORT_TABS.EDITOR].map(value => ({
         name: Localization[value],
         id: value
     }))
-    $: isCanvasHidden = viewTab[currentTab] !== VIEWPORT_TABS.EDITOR //&& viewTab[currentTab] !== VIEWPORT_TABS.TERRAIN
+    $: isCanvasHidden = viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR
     $: {
         if (isCanvasHidden && GPU.context) {
             GPU.canvas.style.zIndex = "-1"
@@ -106,7 +110,7 @@
         <div bind:this={canvasRef}></div>
         {#if engine.isReady}
             <View
-                    instance={viewTab[currentTab]}
+                    instance={viewTab[currentTab]?.type}
                     id={"VIEWPORT"}
                     index={currentTab}
                     groupIndex={0}

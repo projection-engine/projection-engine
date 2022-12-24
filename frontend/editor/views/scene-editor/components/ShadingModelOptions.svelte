@@ -16,7 +16,7 @@
     {LOCALIZATION_EN.SHADING_DETAIL}
 </button>
 
-<fieldset class="wrapper">
+<fieldset>
     <legend>{LOCALIZATION_EN.MATERIAL}</legend>
     <div class="row">
         <button data-highlight={shadingModel === SHADING_MODELS.ALBEDO ? "-" : ""}

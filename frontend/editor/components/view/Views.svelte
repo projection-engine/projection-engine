@@ -64,14 +64,13 @@
 >
     {#each tabs as views, groupIndex}
         <ViewGroup
-
                 views={views}
                 groupIndex={groupIndex}
                 id={id}
                 let:view
                 let:index
                 switchView={(newView, index) => switchView(newView, groupIndex, tabs, index, setTabs)}
-                addNewTab={_ => addTab(tabs, setTabs, groupIndex)}
+                addNewTab={item => addTab(tabs, setTabs, groupIndex, item)}
                 removeTab={(i, cb, currentTab) => removeTab(i, tabs, groupIndex, setTabs, currentTab, cb)}
         >
                 <View

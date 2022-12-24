@@ -9,7 +9,7 @@ export default function switchView(newView, groupIndex, tabs, index, setTabs,) {
         return
     }
     const copy = [...tabs]
-    copy[groupIndex][index] = newView
+    copy[groupIndex][index].type = newView
     setTabs(copy)
 
 }

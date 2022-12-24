@@ -38,7 +38,8 @@
         if (!open)
             return
         if (event.type === "click") {
-            if (!modal.contains(event.target) && !button.contains(event.target))
+            const found = event.path.find(e => "getAttribute" in e && e.getAttribute("data-iscolorpicker"))
+            if (!found && !modal.contains(event.target) && !button.contains(event.target))
                 close()
         } else if (document.pointerLockElement != null)
             close()

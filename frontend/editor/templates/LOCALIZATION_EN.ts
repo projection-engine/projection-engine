@@ -38,7 +38,7 @@ export default {
     DISK: "Disk",
     DISABLED: "Disabled",
     TAA: "Temporal AA",
-
+    TAB_COLOR: "Tab color",
 
     DEPTH_THICKNESS: "Depth thickness",
     HAS_SSS: "Has screen-space shadows",
@@ -91,7 +91,7 @@ export default {
     UNKNOWN: "Unknown buffer",
     CUTOFF_SMOOTHING: "Cutoff smoothing",
     OVERDRAW: "Overdraw",
-
+    VIEWS: "Views",
     CUTOFF: "Cutoff",
     SHOW_OVERLAY: "Show overlay",
     NO_SKYLIGHT_COMPONENT_FOUND: "No Skylight component found on entity",

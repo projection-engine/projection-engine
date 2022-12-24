@@ -2,12 +2,13 @@ import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS";
 import Engine from "../../../../../engine-core/Engine";
 import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 import GPU from "../../../../../engine-core/GPU";
+import ViewTabItem from "../../../templates/ViewTabItem";
 
 
-export default function updateViewport(engine, currentView) {
+export default function updateViewport(engine, currentView:ViewTabItem) {
     if (!engine.isReady || engine.focusedCamera)
         return
-    if (currentView === VIEWPORT_TABS.EDITOR) {
+    if (currentView.type === VIEWPORT_TABS.EDITOR) {
         Engine.start()
         if (Engine.isDev)
             CameraTracker.startTracking()

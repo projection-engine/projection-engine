@@ -29,8 +29,13 @@
 
     $: currentTab = TabsStore.getValue(id, groupIndex, currentView)
     $: if (groupIndex != null) currentTab = 0
-    $: view = views[currentTab]
-    $: tabs = views.map(v => ({name: Localization[v], icon: getViewIcon(v), id: v}))
+    $: view = views[currentTab]?.type
+    $: tabs = views.map(v => {
+        v.name = Localization[v.type]
+        v.icon = getViewIcon(v.type)
+        v.id = v.type
+        return v
+    })
     $: viewTemplates = Object.values(VIEWS).map(value => ({
         name: Localization[value],
         id: value
@@ -43,7 +48,7 @@
 </script>
 
 <div class="wrapper" bind:this={ref} on:mousedown={_ => TabsStore.focused = ref}>
-    <div class="tabs" >
+    <div class="tabs">
         <Tabs
                 focused={focused}
                 updateView={switchView}

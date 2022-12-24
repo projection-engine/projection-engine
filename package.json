@@ -19,6 +19,7 @@
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
     "sharp": "^0.31.1",
+    "sortablejs": "^1.15.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "@tsconfig/svelte": "^3.0.0",
     "@types/node": "^18.11.17",
     "@types/offscreencanvas": "^2019.7.0",
+    "@types/sortablejs": "^1.15.0",
     "@types/uuid": "^9.0.0",
     "@types/webgl2": "^0.0.6",
     "@typescript-eslint/eslint-plugin": "^5.47.0",

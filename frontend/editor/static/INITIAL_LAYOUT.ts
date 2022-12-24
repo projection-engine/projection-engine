@@ -4,34 +4,34 @@ import VIEWPORT_TABS from "./VIEWPORT_TABS";
 export default [
     {
         name: "Level",
-        bottom: [[VIEWS.FILES]],
+        bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
         left: [],
         top: [],
-        viewport: [VIEWPORT_TABS.EDITOR],
-        right: [[VIEWS.HIERARCHY], [VIEWS.COMPONENT]]
+        viewport: [{color: [255,255,255], type: VIEWPORT_TABS.EDITOR}],
+        right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}], [{color: [255, 255, 255], type: VIEWS.COMPONENT}]]
     },
     {
         top: [],
         name: "Debug",
-        bottom: [[VIEWS.FILES]],
+        bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
         left: [],
-        viewport: [VIEWPORT_TABS.EDITOR],
+        viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
         right: []
     },
     {
         name: "Shading",
         top: [],
-        bottom: [[VIEWS.BLUEPRINT, VIEWS.FILES]],
+        bottom: [[{color: [255, 255, 255], type: VIEWS.BLUEPRINT}, {color: [255, 255, 255], type: VIEWS.FILES}]],
         left: [],
-        viewport: [VIEWPORT_TABS.EDITOR],
-        right: [[VIEWS.HIERARCHY, VIEWS.COMPONENT]]
+        viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
+        right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}, {color: [255, 255, 255], typee: VIEWS.COMPONENT}]]
     },
     {
         name: "UI",
         top: [],
-        bottom: [[VIEWS.FILES]],
-        left: [[VIEWS.COMPONENT]],
-        viewport: [VIEWS.UI],
-        right: [[VIEWS.HIERARCHY]]
+        bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
+        left: [[{color: [255, 255, 255], type: VIEWS.COMPONENT}]],
+        viewport: [{color: [255, 255, 255], type: VIEWS.UI}],
+        right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]]
     }
 ]
