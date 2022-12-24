@@ -1,11 +1,11 @@
 import SelectionStore from "../../../stores/SelectionStore";
 
-export default function updateSelection(entity, ctrlKey) {
+export default function updateSelection(entityID:string, ctrlKey?:boolean) {
     if (ctrlKey) {
-        if (!SelectionStore.engineSelected.includes(entity))
-            SelectionStore.engineSelected = [...SelectionStore.engineSelected, entity]
+        if (!SelectionStore.engineSelected.includes(entityID))
+            SelectionStore.engineSelected = [...SelectionStore.engineSelected, entityID]
         else
-            SelectionStore.engineSelected = SelectionStore.engineSelected.filter(e => e !== entity)
+            SelectionStore.engineSelected = SelectionStore.engineSelected.filter(e => e !== entityID)
     } else
-        SelectionStore.engineSelected = [entity]
+        SelectionStore.engineSelected = [entityID]
 }

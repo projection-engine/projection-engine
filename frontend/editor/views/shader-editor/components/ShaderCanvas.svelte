@@ -14,7 +14,7 @@
     import SEContextController from "../libs/SEContextController";
     import handleWheelZoom from "../utils/handle-wheel-zoom";
     import initializeCanvas from "../utils/initialize-canvas";
-    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
 
     const EMPTY_MAP = new Map()
     export let openFile

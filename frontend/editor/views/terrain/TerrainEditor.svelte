@@ -14,7 +14,7 @@
     import EngineStore from "../../stores/EngineStore";
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../shared/libs/NodeFS";
+    import NodeFS from "../../../shared/libs/FS/NodeFS";
 
     let settings = {}
     let engine = {}

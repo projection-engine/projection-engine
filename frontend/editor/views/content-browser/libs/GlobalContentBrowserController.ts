@@ -1,4 +1,4 @@
-import NodeFS from "../../../../shared/libs/NodeFS";
+import NodeFS from "../../../../shared/libs/FS/NodeFS";
 
 export default class GlobalContentBrowserController{
     static subscribed = new Map()

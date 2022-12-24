@@ -4,7 +4,7 @@
     import getTypeName from "../../../content-browser/utils/get-type-name";
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
 
     export let item
     let data

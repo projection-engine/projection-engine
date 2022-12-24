@@ -3,7 +3,7 @@ export default {
     DISK_AREA: "Disk area-light",
     PLANE_AREA: "Plane area-light",
 
-
+    HIERARCHY_COLOR: "Hierarchy color",
     UPDATING_SKYLIGHT: "Updating skylight",
     ACTIVE_SKYLIGHT: "Active skylight",
     OUTLINE: "Outline",

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
@@ -8,12 +8,14 @@
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";
     import EntityAPI from "../../../../../../engine-core/lib/utils/EntityAPI";
     import EngineStore from "../../../../stores/EngineStore";
-    import HierarchyController from "../../../../lib/controllers/HierarchyController";
+    import HierarchyController from "../../../hierarchy/lib/HierarchyController";
     import {v4} from "uuid";
     import Input from "../../../../../shared/components/input/Input.svelte";
+    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
+    import Entity from "../../../../../../engine-core/instances/Entity";
 
     const nativeComponents = getNativeComponents()
-    export let entity
+    export let entity: Entity | undefined
 </script>
 
 
@@ -28,7 +30,17 @@
             placeholder={Localization.MY_ENTITY}
     />
 </fieldset>
-
+<fieldset>
+    <legend>{Localization.COLOR}</legend>
+    <ColorPicker
+            label={Localization.HIERARCHY_COLOR}
+            value={entity._hierarchyColor||[255,255,255]}
+            submit={(_, arr) => {
+                entity._hierarchyColor = arr
+                EngineStore.updateStore({...EngineStore.engine, changeID: crypto.randomUUID()})
+            }}
+    />
+</fieldset>
 <fieldset>
     <legend>{Localization.QUERY_KEY}</legend>
     <Input

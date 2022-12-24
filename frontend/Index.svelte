@@ -10,7 +10,7 @@
     import HotKeysController from "./editor/lib/utils/HotKeysController";
     import Alert from "./shared/components/alert/Alert.svelte";
     import About from "./shared/components/About.svelte";
-    import NodeFS from "./shared/libs/NodeFS";
+    import NodeFS from "./shared/libs/FS/NodeFS";
     import FilesAPI from "./editor/lib/fs/FilesAPI";
     import PROJECT_STATIC_DATA from "../static/objects/PROJECT_STATIC_DATA";
 

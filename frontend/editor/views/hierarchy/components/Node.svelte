@@ -1,31 +1,21 @@
-<script>
+<script lang="ts">
     import DraggableEntity from "./Draggable.svelte";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import EntityConstructor from "../../../lib/controllers/EntityConstructor";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import Entity from "../../../../../engine-core/instances/Entity";
+    import MutableObject from "../../../../../engine-core/MutableObject";
 
-    export let depth = undefined
-    export let nodeRef = undefined
-    export let open = undefined
-    export let updateOpen = undefined
-    export let selected = undefined
-    export let lockedEntity = undefined
-    export let setLockedEntity = undefined
+    export let depth: number
+    export let nodeRef: Entity
+    export let open: { [key: string]: boolean }
+    export let updateOpen: Function
+    export let selected: Map<string, boolean>
+    export let lockedEntity: string
+    export let setLockedEntity: Function
 
-
-    let ref
-
-    $: {
-        if (ref) {
-            const length = selected.length
-            let is = false
-            for (let i = 0; i < length; i++)
-                is = is || selected[i] === nodeRef.id
-
-            ref.setAttribute("data-selected", is ? "-" : "")
-        }
-    }
+    $: isSelected = selected.has(nodeRef.id)
 
     const onExpand = () => {
         if (!open[nodeRef.id]) {
@@ -46,13 +36,15 @@
         }
     }
 
-
     $: isOpen = open[nodeRef.id]
+
+
 </script>
 
 <div
+        data-selected={isSelected ? "-" : ""}
         data-node={nodeRef.id}
-        bind:this={ref}
+
         class="wrapper hierarchy-branch"
         style={"padding-left:" +  (depth * 18 + "px;") + (nodeRef.active ? "" : "opacity: .5") }
 >

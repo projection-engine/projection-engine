@@ -6,7 +6,7 @@ import GPU from "../../../engine-core/GPU";
 import {writable} from "svelte/store";
 import GPUAPI from "../../../engine-core/lib/rendering/GPUAPI";
 import MutableObject from "../../../engine-core/MutableObject";
-import NodeFS from "../../shared/libs/NodeFS";
+import NodeFS from "../../shared/libs/FS/NodeFS";
 
 const engine = writable(<MutableObject>ENGINE);
 

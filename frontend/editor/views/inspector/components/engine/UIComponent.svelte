@@ -10,7 +10,7 @@
     import Engine from "../../../../../../engine-core/Engine";
     import Input from "../../../../../shared/components/input/Input.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
 
     export let entity
     export let submit

@@ -24,7 +24,7 @@
     import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../shared/libs/ContextMenuController";
+    import ContextMenuController from "../../../shared/libs/context-menu/ContextMenuController";
     import GPU from "../../../../engine-core/GPU";
 
     let selectedSize = -1

@@ -12,7 +12,7 @@
     import Row from "./Row.svelte";
     import PROJECT_FOLDER_STRUCTURE from "../../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
 
 

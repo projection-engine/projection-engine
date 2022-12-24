@@ -8,7 +8,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import Portal from "../../../../shared/components/Portal";
+    import Portal from "../../../../shared/libs/Portal";
 
     export let engine
     const internalID = v4()

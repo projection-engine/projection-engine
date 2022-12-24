@@ -18,7 +18,7 @@
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import Icon from "../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../shared/libs/NodeFS";
+    import NodeFS from "../../../shared/libs/FS/NodeFS";
 
     const {shell} = window.require("electron")
 

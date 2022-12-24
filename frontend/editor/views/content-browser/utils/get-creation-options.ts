@@ -6,7 +6,7 @@ import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE
 import TERRAIN_TEMPLATE from "../../../../../engine-core/static/templates/TERRAIN_TEMPLATE";
 import Localization from "../../../templates/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
-import NodeFS from "../../../../shared/libs/NodeFS";
+import NodeFS from "../../../../shared/libs/FS/NodeFS";
 
 export default function getCreationOptions(currentDirectory) {
     async function createFile(name, type, data) {

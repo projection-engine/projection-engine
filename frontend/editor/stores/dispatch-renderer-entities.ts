@@ -4,7 +4,7 @@ import EntityNameController from "../lib/controllers/EntityNameController";
 import AXIS from "../../../engine-tools/static/AXIS";
 import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import SelectionStore from "./SelectionStore";
-import HierarchyController from "../lib/controllers/HierarchyController";
+import HierarchyController from "../views/hierarchy/lib/HierarchyController";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import getPickerId from "../../../engine-core/utils/get-picker-id";
 import Engine from "../../../engine-core/Engine";

@@ -1,5 +1,16 @@
 import DragDropController from "./DragDropController";
 
+interface DragDropAttributes {
+    noTransformation?: boolean
+    targetElement?: HTMLElement
+    onDragStart?: Function
+    onDrop?: Function
+    onMouseMove?: Function
+    dragImage?: Function
+    onDragOver?: Function
+    onDragEnd?: Function
+}
+
 export default function dragDrop(draggable) {
     let dragImageElement,
         noTargetTransformation,
@@ -32,7 +43,7 @@ export default function dragDrop(draggable) {
                     dragImageElement.style.right = "100%"
                     if (!dragImageElement.parentElement)
                         document.body.appendChild(dragImageElement);
-                    if(getDragImage)
+                    if (getDragImage)
                         dragImageElement.innerHTML = getDragImage()
                     event.dataTransfer.setDragImage(dragImageElement, 0, 0)
                 }
@@ -71,20 +82,21 @@ export default function dragDrop(draggable) {
 
 
     return {
-        onMount: ({
-                      noTransformation,
-                      targetElement,
-                      onDragStart,
-                      onDrop,
-                      onMouseMove,
-                      dragImage,
-                      onDragOver,
-                      onDragEnd
-                  }) => {
+        onMount: (attributes: DragDropAttributes) => {
+            const {
+                noTransformation,
+                targetElement,
+                onDragStart,
+                onDrop,
+                onMouseMove,
+                dragImage,
+                onDragOver,
+                onDragEnd
+            } = attributes
             DragDropController.initialize()
             draggableElement = targetElement
             noTargetTransformation = noTransformation
-            if(typeof dragImage === "function")
+            if (typeof dragImage === "function")
                 getDragImage = dragImage
             dragImageElement = DragDropController.createElement(getDragImage ? getDragImage() : dragImage)
 

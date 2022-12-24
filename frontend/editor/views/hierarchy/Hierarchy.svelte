@@ -7,7 +7,7 @@
     import HotKeysController from "../../lib/utils/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
     import dragDrop from "../../components/drag-drop/drag-drop";
-    import HierarchyController from "../../lib/controllers/HierarchyController";
+    import HierarchyController from "./lib/HierarchyController";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";

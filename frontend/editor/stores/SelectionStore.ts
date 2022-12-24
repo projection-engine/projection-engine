@@ -8,24 +8,25 @@ const TYPES = {
     CONTENT_BROWSER: "CONTENT_BROWSER",
     SHADER_EDITOR: "SHADER_EDITOR"
 }
-const selection = writable({TARGET: TYPES.ENGINE, map: new Map(), array: [], lockedEntity: undefined});
+const selection = writable({TARGET: TYPES.ENGINE, map: new Map<string,boolean>(), array: <string[]>[], lockedEntity: undefined});
 export default class SelectionStore {
     static data = get(selection)
     static TYPES = TYPES
+    static EMPTY_MAP = new Map<string,boolean>()
 
-    static get TARGET() {
+    static get TARGET():string {
         return SelectionStore.data.TARGET
     }
 
-    static get map() {
+    static get map():Map<string,boolean> {
         return SelectionStore.data.map
     }
 
-    static get array() {
+    static get array():string[] {
         return SelectionStore.data.array
     }
 
-    static getStore(onChange) {
+    static getStore(onChange):Function {
         return selection.subscribe(newValue => onChange(newValue))
     }
 

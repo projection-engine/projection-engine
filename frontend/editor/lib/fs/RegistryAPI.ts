@@ -1,8 +1,8 @@
 import {v4 as uuidv4} from "uuid";
-import NodeFS from "../../../shared/libs/NodeFS";
+import NodeFS from "../../../shared/libs/FS/NodeFS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-import {getCall} from "../../../shared/libs/get-call";
+import {getCall} from "../../../shared/libs/FS/get-call";
 import RegistryFile from "../../../../static/objects/RegistryFile";
 
 

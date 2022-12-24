@@ -11,7 +11,7 @@
     import ITEM_TYPES from "./templates/ITEM_TYPES";
     import SettingsStore from "../../stores/SettingsStore";
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
-    import NodeFS from "../../../shared/libs/NodeFS";
+    import NodeFS from "../../../shared/libs/FS/NodeFS";
 
 
     export let viewID

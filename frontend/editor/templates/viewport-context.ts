@@ -3,8 +3,10 @@ import viewportHotkeys from "./viewport-hotkeys";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import entityCreationOptions from "./entity-creation-options";
+import MutableObject from "../../../engine-core/MutableObject";
+import ContextMenuOption from "../../shared/libs/context-menu/templates/ContextMenuOptions";
 
-export default function viewportContext(settings, forDropdown) {
+export default function viewportContext(settings:MutableObject, forDropdown?:boolean):ContextMenuOption[] {
     const VIEWPORT_HOTKEYS = viewportHotkeys(settings)
     const data = [
         {divider: true, label: "Selection"},

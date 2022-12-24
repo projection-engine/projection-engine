@@ -1,9 +1,9 @@
-import PROJECT_FOLDER_STRUCTURE from "../../../static/objects/PROJECT_FOLDER_STRUCTURE";
-import PROJECT_STATIC_DATA from "../../../static/objects/PROJECT_STATIC_DATA";
-import {Stats} from "fs";
+import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
+import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
+import {Stats} from "";
 import {getCall} from "./get-call";
-import MutableObject from "../../../engine-core/MutableObject";
-import Controller from "../../../engine-core/templates/Controller";
+import MutableObject from "../../../../engine-core/MutableObject";
+import Controller from "../../../../engine-core/templates/Controller";
 
 const pathRequire = window.require("path")
 const fs = window.require("fs")

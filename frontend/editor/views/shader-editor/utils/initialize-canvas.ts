@@ -5,7 +5,7 @@ import Localization from "../../../templates/LOCALIZATION_EN";
 import SelectionStore from "../../../stores/SelectionStore";
 import BOARD_SIZE from "../static/BOARD_SIZE";
 import handleWheelZoom from "./handle-wheel-zoom";
-import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
 
 
 export default function initializeCanvas(openFile, ref, ctx, setGraphData) {

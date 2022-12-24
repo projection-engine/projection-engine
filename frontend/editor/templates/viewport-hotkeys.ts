@@ -18,9 +18,10 @@ import CameraTracker from "../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../engine-core/Engine";
 import LOCALIZATION_EN from "./LOCALIZATION_EN";
 import focusOnCamera from "../utils/focus-on-camera";
+import ContextMenuOption from "../../shared/libs/context-menu/templates/ContextMenuOptions";
 
 
-export default function viewportHotkeys(settings) {
+export default function viewportHotkeys(settings): { [key: string]: ContextMenuOption } {
 
     return {
         DUPLICATE: {

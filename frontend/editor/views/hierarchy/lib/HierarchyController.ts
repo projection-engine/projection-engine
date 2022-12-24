@@ -1,13 +1,15 @@
-import Engine from "../../../../engine-core/Engine";
-import SelectionStore from "../../stores/SelectionStore";
+import Engine from "../../../../../engine-core/Engine";
+import SelectionStore from "../../../stores/SelectionStore";
+import Entity from "../../../../../engine-core/instances/Entity";
+import ToRenderElement from "../template/ToRenderElement";
 
 
 export default class HierarchyController {
-    static hierarchy = []
+    static hierarchy:ToRenderElement[] = []
 
     static updateHierarchy() {
-        const data = [], entitiesArray = Array.from(Engine.entitiesMap.values())
-        const callback = (node, depth) => {
+        const data:ToRenderElement[] = [], entitiesArray = Array.from(Engine.entitiesMap.values())
+        const callback = (node:Entity, depth:number) => {
             data.push({node, depth})
             for (let i = 0; i < node.children.length; i++)
                 callback(node.children[i], depth + 1)

@@ -2,11 +2,12 @@ import EngineStore from "../../stores/EngineStore";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import {v4} from "uuid";
 import SelectionStore from "../../stores/SelectionStore";
+import Entity from "../../../../engine-core/instances/Entity";
 
 export default class EntityNameController {
-    static byName = new Map()
+    static byName = new Map<string, string>()
 
-    static renameEntity(newName, entity) {
+    static renameEntity(newName:string, entity:Entity) {
         const found = EntityNameController.byName.get(newName)
         let validName = true
         if (found !== entity.id)
@@ -16,7 +17,6 @@ export default class EntityNameController {
             EntityNameController.byName.set(newName, entity.id)
             EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
             SelectionStore.updateStore()
-
         } else{
             {
                 const subWord = ".00"

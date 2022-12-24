@@ -13,7 +13,7 @@
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import RowsHeader from "./RowsHeader.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
 
     const CARD_SIZE = 115
     export let fileType

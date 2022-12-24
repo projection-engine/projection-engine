@@ -5,8 +5,8 @@ import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
 import Localization from "../templates/LOCALIZATION_EN";
 import resolveFileName from "../templates/utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
-import NodeFS from "../../shared/libs/NodeFS";
-import {getCall} from "../../shared/libs/get-call";
+import NodeFS from "../../shared/libs/FS/NodeFS";
+import {getCall} from "../../shared/libs/FS/get-call";
 import MutableObject from "../../../engine-core/MutableObject";
 
 const contentBrowserStore = writable({

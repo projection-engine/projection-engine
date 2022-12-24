@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import HsvPicker from "./HsvPicker.svelte";
@@ -6,21 +6,18 @@
 
     let changed = false
 
-    export let submit
+    export let submit: Function
     export let height = "25px"
-    export let value
-    export let label
-    export let disabled
+    export let value: number[]
+    export let timeout = 250
+    export let label: string
+    export let disabled: boolean
 
+    let submitTimeout
     let startColor = [0, 0, 0]
-    let initializationChanged
 
-    $: {
-        if (value && !initializationChanged) {
-            startColor = [value[0], value[1], value[2]]
-            initializationChanged = false
-        }
-    }
+    $: if (value) startColor = [value[0], value[1], value[2]]
+
 </script>
 
 
@@ -43,8 +40,12 @@
     <HsvPicker
             startColor={startColor}
             submit={({r,g,b}) => {
-                startColor = [r,g,b]
-                submit({r,g,b})
+                clearTimeout(submitTimeout)
+                submitTimeout = setTimeout(() => {
+                    startColor = [r,g,b]
+                    submit({r,g,b}, startColor)
+                }, timeout)
+
             }}
     />
 </Dropdown>

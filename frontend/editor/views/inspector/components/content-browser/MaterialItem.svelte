@@ -9,7 +9,7 @@
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
 
     export let data
     export let item

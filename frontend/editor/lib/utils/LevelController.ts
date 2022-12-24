@@ -20,7 +20,7 @@ import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
-import NodeFS from "../../../shared/libs/NodeFS";
+import NodeFS from "../../../shared/libs/FS/NodeFS";
 import ROUTES from "../../../../backend/static/ROUTES";
 import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";

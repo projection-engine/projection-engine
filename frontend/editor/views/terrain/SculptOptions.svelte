@@ -11,7 +11,7 @@
     import FilesAPI from "../../lib/fs/FilesAPI";
     import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
     import Range from "../../../shared/components/range/Range.svelte";
-    import NodeFS from "../../../shared/libs/NodeFS";
+    import NodeFS from "../../../shared/libs/FS/NodeFS";
 
     export let settings
     export let selectedTerrain

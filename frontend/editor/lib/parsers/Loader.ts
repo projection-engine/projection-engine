@@ -18,7 +18,7 @@ import {v4} from "uuid";
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-import NodeFS from "../../../shared/libs/NodeFS";
+import NodeFS from "../../../shared/libs/FS/NodeFS";
 import MeshComponent from "../../../../engine-core/templates/components/MeshComponent";
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 

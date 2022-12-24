@@ -9,7 +9,7 @@
     import TerrainItem from "./TerrainItem.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
 
     const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION,  FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
 

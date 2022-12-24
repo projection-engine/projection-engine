@@ -6,7 +6,7 @@
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
 
     export let item
     let wasUpdated = false

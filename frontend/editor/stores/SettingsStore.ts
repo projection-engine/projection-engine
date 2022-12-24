@@ -6,7 +6,7 @@ const settingsStore = writable(SETTINGS);
 export default class SettingsStore {
     static data = get(settingsStore)
 
-    static getStore(onChange) {
+    static getStore(onChange):Function {
         return settingsStore.subscribe(newValue => onChange(newValue))
     }
 

@@ -1,5 +1,5 @@
 import RegistryAPI from "./RegistryAPI";
-import NodeFS from "../../../shared/libs/NodeFS";
+import NodeFS from "../../../shared/libs/FS/NodeFS";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
 
 const pathRequire = window.require("path")

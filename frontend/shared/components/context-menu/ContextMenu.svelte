@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import ContextMenuController from "../../libs/ContextMenuController";
+    import ContextMenuController from "../../libs/context-menu/ContextMenuController";
 
 
     const {ipcRenderer} = window.require("electron")

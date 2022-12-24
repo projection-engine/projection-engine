@@ -8,7 +8,7 @@
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import Range from "../../../../../shared/components/range/Range.svelte";
-    import NodeFS from "../../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
 
     export let item
     export let data

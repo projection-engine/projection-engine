@@ -1,6 +1,6 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
-    import NodeFS from "../../../../shared/libs/NodeFS";
+    import NodeFS from "../../../../shared/libs/FS/NodeFS";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import PROJECT_FOLDER_STRUCTURE from "../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 

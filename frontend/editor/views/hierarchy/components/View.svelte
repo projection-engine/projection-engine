@@ -1,31 +1,33 @@
-<script>
+<script lang="ts">
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import Branch from "./Node.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
-    import HierarchyController from "../../../lib/controllers/HierarchyController";
+    import HierarchyController from "../lib/HierarchyController";
     import Localization from "../../../templates/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";
     import Engine from "../../../../../engine-core/Engine";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../../shared/libs/ContextMenuController";
+    import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
+    import MutableObject from "../../../../../engine-core/MutableObject";
+    import ToRenderElement from "../template/ToRenderElement";
 
-    export let ID
-    export let searchString
-    export let filteredComponent
-    export let setIsEmpty
-    export let openTree
-    export let setOpenTree
-    let engine = {}
-    let settings = {}
+    export let ID:string
+    export let searchString:string
+    export let filteredComponent:string
+    export let setIsEmpty:Function
+    export let openTree:{[key:string]:boolean}
+    export let setOpenTree:Function
+    let engine:MutableObject = {}
+    let settings:MutableObject = {}
 
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-    let toRender = []
-    let selected = []
+    let toRender:ToRenderElement[] = []
+    let selected:Map<string, boolean>
     let lockedEntity
     const testSearch = (node) => {
         const s = searchString, f = filteredComponent
@@ -34,7 +36,7 @@
     }
 
     const unsubscribeSelection = SelectionStore.getStore(() => {
-        selected = SelectionStore.engineSelected
+        selected = SelectionStore.TARGET === SelectionStore.TYPES.ENGINE ? SelectionStore.map : SelectionStore.EMPTY_MAP
         lockedEntity = SelectionStore.lockedEntity
     })
 
@@ -44,7 +46,7 @@
             const hierarchy = HierarchyController.hierarchy
             const data = []
             if (!searchString && !filteredComponent) {
-                const data = []
+                const data:ToRenderElement[] = []
                 for (let i = 0; i < hierarchy.length; i++) {
 
                     if (!hierarchy[i].node.parent || openTree[hierarchy[i].node.parent.id])
@@ -80,7 +82,6 @@
         unsubscribeEngine()
         ContextMenuController.destroy(ID)
     })
-
 </script>
 
 

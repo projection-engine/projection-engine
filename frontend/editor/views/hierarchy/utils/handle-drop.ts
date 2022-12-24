@@ -2,7 +2,7 @@ import EntityAPI from "../../../../../engine-core/lib/utils/EntityAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import EngineStore from "../../../stores/EngineStore";
 import {v4} from "uuid";
-import HierarchyController from "../../../lib/controllers/HierarchyController";
+import HierarchyController from "../lib/HierarchyController";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-renderer-entities";
 
 export default function handleDrop(event, entityDragged, node) {

@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import Localization from "../libs/Localization";
-    import Portal from "./Portal";
+    import Portal from "../libs/Portal";
 
     export let handleClose
     const translate = (key) => Localization.COMPONENTS.ABOUT[key]

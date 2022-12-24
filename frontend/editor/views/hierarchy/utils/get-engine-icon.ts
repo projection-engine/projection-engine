@@ -1,7 +1,7 @@
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS.js";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
 
-export default function getEngineIcon(nodeRef) {
+export default function getEngineIcon(nodeRef): { icon: string, label: string }[] {
     let icons = []
     if (nodeRef) {
 
@@ -33,7 +33,7 @@ export default function getEngineIcon(nodeRef) {
                 label: LOCALIZATION_EN.UI_LAYOUT
             })
 
-        if ( nodeRef.__hasLight)
+        if (nodeRef.__hasLight)
             icons.push({
                 icon: "light_mode",
                 label: LOCALIZATION_EN.LIGHT

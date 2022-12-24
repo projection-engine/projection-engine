@@ -5,6 +5,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
+    --pj-selection-color: var(--pj-accent-color-light);
 }
 
 
@@ -28,9 +29,6 @@
 .wrapper.hierarchy-branch:hover{
     background: var(--pj-border-primary);
 }
-
-
-
 
 
 .button-small.hierarchy-branch {

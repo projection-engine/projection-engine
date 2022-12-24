@@ -2,7 +2,7 @@ import FilesStore from "../../../stores/FilesStore";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-import NodeFS from "../../../../shared/libs/NodeFS";
+import NodeFS from "../../../../shared/libs/FS/NodeFS";
 
 
 export default async function handleDropFolder(event:string[]|string, target?:string) {

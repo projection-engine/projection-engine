@@ -11,7 +11,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import NodeFS from "../../../shared/libs/NodeFS";
+    import NodeFS from "../../../shared/libs/FS/NodeFS";
 
     const {shell} = window.require("electron")
 

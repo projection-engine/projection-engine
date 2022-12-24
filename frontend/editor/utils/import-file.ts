@@ -1,7 +1,7 @@
 import FilesStore from "../stores/FilesStore";
 import ROUTES from "../../../backend/static/ROUTES";
 import LOCALIZATION_EN from "../templates/LOCALIZATION_EN";
-import {getCall} from "../../shared/libs/get-call";
+import {getCall} from "../../shared/libs/FS/get-call";
 import MutableObject from "../../../engine-core/MutableObject";
 
 export default async function importFile(currentDirectory) {

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import dragDrop from "../../../components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import getEngineIcon from "../utils/get-engine-icon";
@@ -12,15 +12,16 @@
     import Engine from "../../../../../engine-core/Engine";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Entity from "../../../../../engine-core/instances/Entity";
 
-    export let node
-    export let lockedEntity
-    export let setLockedEntity
-    export let open
+    export let node:Entity
+    export let lockedEntity:string
+
+    export let setLockedEntity:Function
 
     let isOnEdit = false
-    let ref
-    let cacheName
+    let ref:HTMLElement
+    let cacheName:string
     $: cacheName = node.name
 
     $: icons = getEngineIcon(node)
@@ -30,6 +31,7 @@
     function getDragTarget(){
         return SelectionStore.engineSelected.length > 0 ? SelectionStore.engineSelected.map(e => Engine.entitiesMap.get(e)) : node
     }
+
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
@@ -45,13 +47,14 @@
         EntityNameController.renameEntity(cacheName, node)
         UndoRedoAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
     }
+    $: nodeColor = lockedEntity === node.id ? undefined : node._hierarchyColor ? `color: rgb(${node._hierarchyColor})` : "color: var(--folder-color)";
 </script>
 
 <div class="info hierarchy-branch" data-node={node.id}>
     <button
             data-locked={lockedEntity === node.id ? "-" : ""}
             class="buttonIcon hierarchy-branch"
-            style={lockedEntity === node.id ? undefined : "color: var(--folder-color)"}
+            style={nodeColor}
             on:click={() => setLockedEntity(node.id)}
     >
         <Icon>view_in_ar</Icon>

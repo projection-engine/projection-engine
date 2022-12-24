@@ -1,7 +1,7 @@
 import FilesAPI from "../../../lib/fs/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
 import Localization from "../../../templates/LOCALIZATION_EN";
-import NodeFS from "../../../../shared/libs/NodeFS";
+import NodeFS from "../../../../shared/libs/FS/NodeFS";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
     const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
