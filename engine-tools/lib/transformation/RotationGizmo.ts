@@ -17,9 +17,8 @@ import StaticEditorShaders from "../StaticEditorShaders";
 import Entity from "../../../engine-core/instances/Entity";
 
 const toRad = Math.PI / 180
-const toDeg = 180 / Math.PI
+const uniformCache = new Float32Array(4)
 const cacheVec3 = vec3.create()
-const cacheQuat = quat.create()
 export default class RotationGizmo extends GizmoInterface {
     tracking = false
     static currentRotation: vec3 = vec3.create()
@@ -141,16 +140,20 @@ export default class RotationGizmo extends GizmoInterface {
     }
 
     static #draw(transformMatrix, axis) {
+        StaticEditorShaders.rotation.bind()
+        const uniforms = StaticEditorShaders.rotationUniforms
+        const context = GPU.context
 
-        StaticEditorShaders.rotation.bindForUse({
-            transformMatrix,
-            increment: RotationGizmo.gridSize * toRad,
-            rotated: RotationGizmo.currentRotation[axis - 2],
-            axis,
-            translation: GizmoSystem.mainEntity.__pivotOffset,
-            selectedAxis: GizmoSystem.clickedAxis,
-            cameraIsOrthographic: CameraAPI.isOrthographic
-        })
+        context.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
+        context.uniform3fv(uniforms.translation, GizmoSystem.mainEntity.__pivotOffset)
+        context.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
+
+        uniformCache[0] = axis
+        uniformCache[1] = GizmoSystem.clickedAxis
+        uniformCache[2] = RotationGizmo.currentRotation[axis - 2]
+        uniformCache[3] = RotationGizmo.gridSize * toRad
+        context.uniform4fv(uniforms.metadata, uniformCache)
+
         StaticEditorMeshes.rotationGizmo.draw()
     }
 }

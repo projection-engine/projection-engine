@@ -14,10 +14,8 @@ precision highp float;
 // IN
 in vec2 uv;
 
-uniform int axis;
-uniform int selectedAxis;
-uniform float rotated;
-uniform float increment;
+uniform vec4 metadata;
+
 out vec4 fragColor;
 
 float sdfSegment(vec2 p, vec2 a, vec2 b){
@@ -56,6 +54,11 @@ float arc(vec2 uv, vec2 up, float angle, float radius, float thick){
 
 
 void main(){
+    int axis = int(metadata.x);
+    int selectedAxis = int(metadata.y);
+    float rotated = metadata.z;
+    float increment = metadata.w;
+
     float d  = 0.;
     float minimumAngle = radians(1.);
     float totalRotated = 0.;

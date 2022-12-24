@@ -2,7 +2,8 @@ export default {
     SPHERE_AREA: "Sphere area-light",
     DISK_AREA: "Disk area-light",
     PLANE_AREA: "Plane area-light",
-
+    DISTANCE_MULTIPLIER: 'Distance multiplier',
+    SCREEN_DOOR: "Screen-door effect",
     HIERARCHY_COLOR: "Hierarchy color",
     UPDATING_SKYLIGHT: "Updating skylight",
     ACTIVE_SKYLIGHT: "Active skylight",

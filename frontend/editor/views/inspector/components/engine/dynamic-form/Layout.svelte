@@ -4,6 +4,7 @@
     import Localization from "../../../../../templates/LOCALIZATION_EN";
     import Component from "../../../../../../../engine-core/templates/components/Component";
     import Icon from "../../../../../../shared/components/icon/Icon.svelte";
+    import getComponentLabel from "../../../utils/get-component-label";
 
     export let key
     export let index
@@ -11,7 +12,7 @@
     export let entity
     export let submit
 
-    $: title = Localization[component.name] || component.name
+    $: title = getComponentLabel(key) || component.name
 
     function checkIsDisabled(propAttr) {
         return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]
