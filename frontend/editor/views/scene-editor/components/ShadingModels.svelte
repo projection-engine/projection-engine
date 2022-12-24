@@ -1,11 +1,11 @@
 <script>
-    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import getLabel from "../utils/get-label";
-    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../../components/dropdown/utils/get-dropdown-header-styles";
     import Options from "./ShadingModelOptions.svelte";
     import SceneRenderer from "../../../../../engine-core/runtime/SceneRenderer";
     import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
 
     export let engine
     export let settings

@@ -1,9 +1,9 @@
 <script>
     import viewportContext from "../../../templates/viewport-context";
-    import Localization from "../../../templates/LOCALIZATION_EN";
-    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import OptionDropdown from "../../../../shared/components/dropdown/OptionDropdown.svelte";
+    import Localization from "../../../../static/LOCALIZATION_EN";
+    import getDropdownHeaderStyles from "../../../../components/dropdown/utils/get-dropdown-header-styles";
+    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
+    import OptionDropdown from "../../../../components/dropdown/OptionDropdown.svelte";
 
     export let settings
     let mappedOptions = []

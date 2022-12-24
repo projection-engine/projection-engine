@@ -1,19 +1,19 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import RENDER_TARGET from "../../static/RENDER_TARGET";
-    import SelectBox from "../../components/select-box/SelectBox.svelte";
-    import GIZMOS from "../../static/GIZMOS.ts";
+    import RENDER_TARGET from "../../../static/RENDER_TARGET";
+    import SelectBox from "../../../components/select-box/SelectBox.svelte";
+    import GIZMOS from "../../../static/GIZMOS.ts";
     import Loader from "../../lib/parsers/Loader";
     import GizmoSystem from "../../../../engine-tools/runtime/GizmoSystem";
-    import dragDrop from "../../components/drag-drop/drag-drop";
+    import dragDrop from "../../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import Localization from "../../../static/LOCALIZATION_EN";
     import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import EntityInformation from "./components/EntityInformation.svelte";
     import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
     import Engine from "../../../../engine-core/Engine";
@@ -22,9 +22,9 @@
     import getUnderSelectionBox from "./utils/get-under-selection-box";
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../shared/libs/context-menu/ContextMenuController";
+    import ToolTip from "../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
+    import ContextMenuController from "../../../lib/context-menu/ContextMenuController";
     import GPU from "../../../../engine-core/GPU";
 
     let selectedSize = -1
@@ -45,7 +45,6 @@
     $: {
         if (settings?.viewportHotkeys != null)
             ContextMenuController.mount(
-                {icon: "public", label: Localization.VIEWPORT},
                 viewportContext(settings),
                 RENDER_TARGET,
                 ["data-viewport"]

@@ -2,15 +2,15 @@
     import {onMount} from "svelte";
     import ROUTES from "../backend/static/ROUTES.ts";
     import Editor from "./editor/Editor.svelte";
-    import WindowUtils from "./editor/utils/WindowUtils";
+    import WindowUtils from "./editor/lib/WindowUtils";
     import LevelController from "./editor/lib/utils/LevelController";
-    import Canvas from "./editor/components/Canvas.svelte";
-    import RENDER_TARGET from "./editor/static/RENDER_TARGET";
-    import Localization from "./editor/templates/LOCALIZATION_EN";
+    import Canvas from "./editor/views/scene-editor/Canvas.svelte";
+    import RENDER_TARGET from "./static/RENDER_TARGET";
+    import Localization from "./static/LOCALIZATION_EN";
     import HotKeysController from "./editor/lib/utils/HotKeysController";
-    import Alert from "./shared/components/alert/Alert.svelte";
-    import About from "./shared/components/About.svelte";
-    import NodeFS from "./shared/libs/FS/NodeFS";
+    import Alert from "./components/alert/Alert.svelte";
+    import About from "./components/About.svelte";
+    import NodeFS from "./lib/FS/NodeFS";
     import FilesAPI from "./editor/lib/fs/FilesAPI";
     import PROJECT_STATIC_DATA from "../static/objects/PROJECT_STATIC_DATA";
 

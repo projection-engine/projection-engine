@@ -2,23 +2,23 @@
     import buildShader from "./utils/build-shader"
     import FilesAPI from "../../lib/fs/FilesAPI"
 
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import parseFile from "./utils/parse-file";
     import Material from "./libs/nodes/Material";
     import BOARD_SIZE from "./static/BOARD_SIZE";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
-    import ViewStateController from "../../components/view/libs/ViewStateController";
+    import ViewStateController from "../../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
     import SEContextController from "./libs/SEContextController";
     import ShaderCanvas from "./components/ShaderCanvas.svelte";
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../shared/libs/FS/NodeFS";
+    import Icon from "../../../components/icon/Icon.svelte";
+    import NodeFS from "../../../lib/FS/NodeFS";
 
     const {shell} = window.require("electron")
 

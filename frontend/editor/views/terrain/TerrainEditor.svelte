@@ -1,20 +1,20 @@
 <script>
-    import CameraBar from "../../components/CameraGizmo.svelte";
-    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.ts";
+    import CameraBar from "../scene-editor/components/CameraGizmo.svelte";
+    import TERRAIN_TOOLS from "../../../static/TERRAIN_TOOLS.ts";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
 
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import Localization from "../../../static/LOCALIZATION_EN";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
     import Header from "./Header.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import {onDestroy} from "svelte";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import EngineStore from "../../stores/EngineStore";
-    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../shared/libs/FS/NodeFS";
+    import ResizableBar from "../../../components/resizable/ResizableBar.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
+    import NodeFS from "../../../lib/FS/NodeFS";
 
     let settings = {}
     let engine = {}

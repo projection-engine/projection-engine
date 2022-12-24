@@ -4,10 +4,10 @@ import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import importFile from "../utils/import-file";
-import Localization from "./LOCALIZATION_EN";
+import Localization from "../../static/LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
-import NodeFS from "../../shared/libs/FS/NodeFS";
+import NodeFS from "../../lib/FS/NodeFS";
 
 const {shell, clipboard} = window.require("electron")
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {

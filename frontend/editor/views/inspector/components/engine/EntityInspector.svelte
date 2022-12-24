@@ -3,8 +3,8 @@
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
-    import Localization from "../../../../templates/LOCALIZATION_EN";
-    import dragDrop from "../../../../components/drag-drop/drag-drop";
+    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";
     import updateEntityComponent from "../../utils/update-entity-component";
@@ -12,10 +12,10 @@
     import getEntityTabs from "../../utils/get-entity-tabs";
     import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
-    import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import GPU from "../../../../../../engine-core/GPU";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
 
     export let entity
 

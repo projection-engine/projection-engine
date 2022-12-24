@@ -4,13 +4,13 @@
     import Branch from "./Node.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
     import HierarchyController from "../lib/HierarchyController";
-    import Localization from "../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../static/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";
     import Engine from "../../../../../engine-core/Engine";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
+    import Icon from "../../../../components/icon/Icon.svelte";
+    import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
     import MutableObject from "../../../../../engine-core/MutableObject";
     import ToRenderElement from "../template/ToRenderElement";
 
@@ -66,10 +66,7 @@
     $: setIsEmpty(SIZE === 0)
     $: {
         if (settings?.viewportHotkeys != null) {
-            ContextMenuController.mount({
-                    icon: "account_tree",
-                    label: Localization.HIERARCHY
-                },
+            ContextMenuController.mount(
                 viewportContext(settings),
                 ID
             )

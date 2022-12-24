@@ -1,24 +1,24 @@
 import EngineStore from "../stores/EngineStore";
 import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
-import GIZMOS from "../static/GIZMOS";
+import GIZMOS from "../../static/GIZMOS";
 import SelectionStore from "../stores/SelectionStore";
 import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 
-import selectEntityHierarchy from "./utils/select-entity-hierarchy";
+import selectEntityHierarchy from "../utils/select-entity-hierarchy";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/dispatch-renderer-entities";
-import snap from "./utils/snap";
-import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE";
+import snap from "../utils/snap";
+import TRANSFORMATION_TYPE from "../../static/TRANSFORMATION_TYPE";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../../engine-tools/static/CAMERA_ROTATIONS";
 import LevelController from "../lib/utils/LevelController";
 import CameraTracker from "../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../engine-core/Engine";
-import LOCALIZATION_EN from "./LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import focusOnCamera from "../utils/focus-on-camera";
-import ContextMenuOption from "../../shared/libs/context-menu/templates/ContextMenuOptions";
+import ContextMenuOption from "../../lib/context-menu/templates/ContextMenuOptions";
 
 
 export default function viewportHotkeys(settings): { [key: string]: ContextMenuOption } {

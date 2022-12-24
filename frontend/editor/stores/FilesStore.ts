@@ -2,11 +2,11 @@ import {get, writable} from "svelte/store";
 import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../../backend/static/ROUTES";
 import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
-import Localization from "../templates/LOCALIZATION_EN";
-import resolveFileName from "../templates/utils/resolve-file-name";
+import Localization from "../../static/LOCALIZATION_EN";
+import resolveFileName from "../utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
-import NodeFS from "../../shared/libs/FS/NodeFS";
-import {getCall} from "../../shared/libs/FS/get-call";
+import NodeFS from "../../lib/FS/NodeFS";
+import {getCall} from "../../lib/FS/get-call";
 import MutableObject from "../../../engine-core/MutableObject";
 
 const contentBrowserStore = writable({

@@ -3,13 +3,13 @@
     import selection from "../utils/selection"
     import SELECTION_TYPES from "../static/SELECT_ACTIONS"
 
-    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import ShaderEditorTools from "../libs/ShaderEditorTools";
-    import Selector from "../../../components/selector/Selector.svelte";
-    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
+    import Selector from "../../../../components/selector/Selector.svelte";
+    import getDropdownHeaderStyles from "../../../../components/dropdown/utils/get-dropdown-header-styles";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
+    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
 
     export let save
     export let openFile

@@ -7,11 +7,11 @@
     import Header from "./components/Header.svelte";
     import {v4} from "uuid";
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
-    import ViewStateController from "../../components/view/libs/ViewStateController";
+    import ViewStateController from "../../../components/view/libs/ViewStateController";
     import ITEM_TYPES from "./templates/ITEM_TYPES";
     import SettingsStore from "../../stores/SettingsStore";
-    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
-    import NodeFS from "../../../shared/libs/FS/NodeFS";
+    import ResizableBar from "../../../components/resizable/ResizableBar.svelte";
+    import NodeFS from "../../../lib/FS/NodeFS";
 
 
     export let viewID

@@ -1,8 +1,8 @@
 <script>
-    import Localization from "../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
-    import Range from "../../../../shared/components/range/Range.svelte";
+    import Range from "../../../../components/range/Range.svelte";
 
     export let settings
 

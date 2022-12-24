@@ -4,11 +4,11 @@
     import focusOnCamera from "../../../utils/focus-on-camera";
     import Engine from "../../../../../engine-core/Engine";
     import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
-    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-    import CameraGizmo from "../../../components/CameraGizmo.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import CameraGizmo from "./CameraGizmo.svelte";
+    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 

@@ -1,9 +1,9 @@
 <script>
     import Property from "./Property.svelte";
     import removeComponent from "../../../utils/remove-component";
-    import Localization from "../../../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../../../static/LOCALIZATION_EN";
     import Component from "../../../../../../../engine-core/templates/components/Component";
-    import Icon from "../../../../../../shared/components/icon/Icon.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
     import getComponentLabel from "../../../utils/get-component-label";
 
     export let key

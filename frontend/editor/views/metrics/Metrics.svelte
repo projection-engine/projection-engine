@@ -1,16 +1,16 @@
 <script>
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import {onDestroy, onMount} from "svelte";
     import BenchmarkAPI from "../../../../engine-core/lib/utils/BenchmarkAPI";
     import Engine from "../../../../engine-core/Engine";
     import {v4} from "uuid";
     import BENCHMARK_KEYS from "../../../../engine-core/static/BENCHMARK_KEYS";
-    import ViewStateController from "../../components/view/libs/ViewStateController";
+    import ViewStateController from "../../../components/view/libs/ViewStateController";
     import SettingsStore from "../../stores/SettingsStore";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import Range from "../../../shared/components/range/Range.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
+    import Range from "../../../components/range/Range.svelte";
+    import ToolTip from "../../../components/tooltip/ToolTip.svelte";
 
     export let viewID
     export let viewIndex

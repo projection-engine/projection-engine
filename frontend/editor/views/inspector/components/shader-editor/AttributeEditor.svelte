@@ -1,9 +1,9 @@
 <script>
     import Attribute from "../../../shader-editor/components/node/Attribute.svelte";
     import SEContextController from "../../../shader-editor/libs/SEContextController";
-    import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
-    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Input from "../../../../../shared/components/input/Input.svelte";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
+    import Input from "../../../../../components/input/Input.svelte";
 
     export let node
     export let internalID

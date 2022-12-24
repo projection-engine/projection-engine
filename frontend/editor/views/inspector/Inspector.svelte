@@ -1,6 +1,6 @@
 <script>
-    import Localization from "../../templates/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import Localization from "../../../static/LOCALIZATION_EN";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
@@ -12,7 +12,7 @@
     import ShaderNode from "../shader-editor/libs/ShaderNode";
     import AttributeEditor from "./components/shader-editor/AttributeEditor.svelte";
     import {v4} from "uuid";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
     import Engine from "../../../../engine-core/Engine";
     import EngineStore from "../../stores/EngineStore";
 

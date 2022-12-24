@@ -1,9 +1,9 @@
 <script>
-    import Checkbox from "../../../components/checkbox/Checkbox.svelte";
-    import Localization from "../../../templates/LOCALIZATION_EN";
+    import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
+    import Localization from "../../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
-    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Range from "../../../../shared/components/range/Range.svelte";
+    import ColorPicker from "../../../../components/color-picker/ColorPicker.svelte";
+    import Range from "../../../../components/range/Range.svelte";
 
     export let settings
 

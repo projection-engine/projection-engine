@@ -1,5 +1,5 @@
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS.js";
-import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 
 export default function getEngineIcon(nodeRef): { icon: string, label: string }[] {
     let icons = []

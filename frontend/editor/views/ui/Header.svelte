@@ -1,17 +1,17 @@
 <script>
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import Localization from "../../../static/LOCALIZATION_EN";
 
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../static/GIZMOS.ts";
+    import GIZMOS from "../../../static/GIZMOS.ts";
     import SettingsStore from "../../stores/SettingsStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
     import Entity from "../../../../engine-core/instances/Entity";
     import Engine from "../../../../engine-core/Engine";
     import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
+    import ToolTip from "../../../components/tooltip/ToolTip.svelte";
 
 
     export let isAlreadyOpen

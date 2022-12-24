@@ -1,4 +1,4 @@
-import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
 export default [
     {

@@ -1,4 +1,4 @@
-import Localization from "../../../templates/LOCALIZATION_EN";
+import Localization from "../../../../static/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 
 export default function getFileTypes() {

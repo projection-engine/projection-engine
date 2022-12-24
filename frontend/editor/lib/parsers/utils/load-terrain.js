@@ -2,7 +2,7 @@ import FilesAPI from "../../fs/FilesAPI";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-renderer-entities";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import Entity from "../../../../../engine-core/instances/Entity";
-import NodeFS from "../../../../shared/libs/FS/NodeFS";
+import NodeFS from "../../../../lib/FS/NodeFS";
 
 export default async function loadTerrain(reg) {
     const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")

@@ -1,5 +1,5 @@
 import UndoRedo from "../../../lib/utils/UndoRedo";
-import NodeFS from "../../../../shared/libs/FS/NodeFS";
+import NodeFS from "../../../../lib/FS/NodeFS";
 
 export default class NavigationHistory extends UndoRedo {
     setCurrentDirectory?:Function

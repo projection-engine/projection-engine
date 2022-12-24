@@ -1,11 +1,11 @@
 import SEContextController from "../libs/SEContextController";
 import shaderActions from "../../../templates/shader-actions";
 import HotKeysController from "../../../lib/utils/HotKeysController";
-import Localization from "../../../templates/LOCALIZATION_EN";
+import Localization from "../../../../static/LOCALIZATION_EN";
 import SelectionStore from "../../../stores/SelectionStore";
 import BOARD_SIZE from "../static/BOARD_SIZE";
 import handleWheelZoom from "./handle-wheel-zoom";
-import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
+import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
 
 
 export default function initializeCanvas(openFile, ref, ctx, setGraphData) {
@@ -22,7 +22,6 @@ export default function initializeCanvas(openFile, ref, ctx, setGraphData) {
     HotKeysController.unbindAction(ref)
     ContextMenuController.destroy(openFile.registryID)
     ContextMenuController.mount(
-        {icon: "texture", label: Localization.SHADER_EDITOR},
         contextMenu,
         openFile.registryID,
         [],

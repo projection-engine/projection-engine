@@ -1,19 +1,19 @@
 <script>
     import handleRename from "../utils/handle-rename";
     import Item from "./item/Item.svelte";
-    import SelectBox from "../../../components/select-box/SelectBox.svelte";
+    import SelectBox from "../../../../components/select-box/SelectBox.svelte";
     import contentBrowserActions from "../../../templates/content-browser-actions";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
     import HotKeysController from "../../../lib/utils/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Localization from "../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import RowsHeader from "./RowsHeader.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
+    import Icon from "../../../../components/icon/Icon.svelte";
+    import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
 
     const CARD_SIZE = 115
     export let fileType
@@ -74,10 +74,6 @@
             HotKeysController.unbindAction(ref)
             ContextMenuController.destroy(internalID)
             ContextMenuController.mount(
-                {
-                    icon: "folder",
-                    label: Localization.CONTENT_BROWSER
-                },
                 actions.contextMenu,
                 internalID,
                 TRIGGERS,
@@ -133,7 +129,7 @@
         data-wrapper={internalID}
         on:mousedown={e => {
             const key = "data-isitem"
-            if(e.path.find(element => element.getAttribute?.(key) != null) == null)
+            if(e.composedPath().find(element => element.getAttribute?.(key) != null) == null)
                 SelectionStore.contentBrowserSelected = []
         }}
         style={viewType === ITEM_TYPES.ROW  && toRender.length > 0? "padding: 0;": undefined}

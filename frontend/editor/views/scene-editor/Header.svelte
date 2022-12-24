@@ -2,17 +2,17 @@
     import ShadingOption from "./components/ShadingModels.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
-    import Localization from "../../templates/LOCALIZATION_EN";
-    import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
-    import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../components/dropdown/utils/get-dropdown-header-styles";
     import SettingsStore from "../../stores/SettingsStore";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
+    import ToolTip from "../../../components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../components/dropdown/Dropdown.svelte";
     import ViewportSettings from "../preferences/components/ViewportSettings.svelte";
 
     export let settings

@@ -1,17 +1,17 @@
 <script lang="ts">
-    import dragDrop from "../../../components/drag-drop/drag-drop";
+    import dragDrop from "../../../../components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import getEngineIcon from "../utils/get-engine-icon";
     import updateSelection from "../utils/update-selection";
     import EntityNameController from "../../../lib/controllers/EntityNameController";
-    import KEYS from "../../../static/KEYS.ts";
+    import KEYS from "../../../../static/KEYS.ts";
     import handleDrop from "../utils/handle-drop";
     import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS.ts";
+    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
     import SelectionStore from "../../../stores/SelectionStore";
     import Engine from "../../../../../engine-core/Engine";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
 
     export let node:Entity

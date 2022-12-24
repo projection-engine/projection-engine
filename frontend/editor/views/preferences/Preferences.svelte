@@ -1,6 +1,6 @@
 <script>
     import {onDestroy} from "svelte";
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import Localization from "../../../static/LOCALIZATION_EN";
     import Rendering from "./components/Rendering.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";
@@ -9,8 +9,8 @@
     import CameraSettings from "./components/CameraSettings.svelte";
     import GridSettings from "./components/GridSettings.svelte";
     import TABS from "./TABS";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
 
     let settings
     let visuals

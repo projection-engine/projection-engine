@@ -1,19 +1,21 @@
+import ProjectController from "../libs/ProjectController";
+
 const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, } = require("electron")
-function mapMenu(window, e, parent) {
+function mapMenu( e, parent) {
     return Array.isArray(e.submenu) ? e.submenu.map(s => {
         if (s.id == null)
             return s
         const newData = {...s}
         if (Array.isArray(s.submenu))
-            newData.submenu = mapMenu(window, s, parent)
+            newData.submenu = mapMenu(s, parent)
         else
-            newData.click = () => window.webContents.send("context-menu", {id: s.id, group: parent})
+            newData.click = () => ProjectController.window.webContents.send("context-menu", {id: s.id, group: parent})
 
         return newData
     }) : undefined
 }
 
-export default function contextMenuController(window) {
+export default function contextMenuController() {
     this.menus = new Map()
     ipcMain.on(
         "REGISTER_CONTEXT_MENU",
@@ -24,9 +26,9 @@ export default function contextMenuController(window) {
                 return
             const mapped = template.map(e => {
                 if (e.submenu)
-                    return {...e, submenu: mapMenu(window, e, id)}
+                    return {...e, submenu: mapMenu( e, id)}
                 if (e.id)
-                    return {...e, click: () => window.webContents.send("context-menu", {id: e.id, group: id})}
+                    return {...e, click: () => ProjectController.window.webContents.send("context-menu", {id: e.id, group: id})}
                 return e
             })
             const menu = Menu.buildFromTemplate(mapped)

@@ -1,14 +1,14 @@
 <script>
-    import Localization from "../../../../templates/LOCALIZATION_EN";
-    import Selector from "../../../../components/selector/Selector.svelte";
+    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import Selector from "../../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import TerrainGenerator from "../../../../../../engine-core/lib/math/TerrainGenerator";
-    import Accordion from "../../../../components/accordion/Accordion.svelte";
+    import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
-    import Range from "../../../../../shared/components/range/Range.svelte";
-    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
+    import Range from "../../../../../components/range/Range.svelte";
+    import NodeFS from "../../../../../lib/FS/NodeFS";
 
     export let item
     export let data

@@ -1,17 +1,17 @@
 <script>
-    import Localization from "../../templates/LOCALIZATION_EN";
+    import Localization from "../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../stores/SettingsStore";
-    import Checkbox from "../../components/checkbox/Checkbox.svelte";
+    import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import {onDestroy, onMount} from "svelte";
     import SculptingGizmo from "../../../../engine-tools/lib/terrain/SculptingGizmo";
     import TerrainGenerator from "../../../../engine-core/lib/math/TerrainGenerator";
 
-    import Selector from "../../components/selector/Selector.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
     import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
-    import Range from "../../../shared/components/range/Range.svelte";
-    import NodeFS from "../../../shared/libs/FS/NodeFS";
+    import Range from "../../../components/range/Range.svelte";
+    import NodeFS from "../../../lib/FS/NodeFS";
 
     export let settings
     export let selectedTerrain

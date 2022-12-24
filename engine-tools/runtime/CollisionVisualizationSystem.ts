@@ -2,14 +2,13 @@ import GPU from "../../engine-core/GPU";
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";
-import Controller from "../../engine-core/templates/Controller";
 import PhysicsColliderComponent from "../../engine-core/templates/components/PhysicsColliderComponent";
 import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
-export default class CollisionVisualizationSystem extends Controller {
+export default class CollisionVisualizationSystem  {
     static execute(selected) {
         const size = selected.length
         if (size === 0)

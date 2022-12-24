@@ -2,7 +2,7 @@ import FilesAPI from "../../../lib/fs/FilesAPI";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ShaderEditorTools from "../libs/ShaderEditorTools";
 import ShaderLink from "../libs/ShaderLink";
-import NodeFS from "../../../../shared/libs/FS/NodeFS";
+import NodeFS from "../../../../lib/FS/NodeFS";
 
 export default async function parseFile(openFile, setNodes, setLinks) {
     const res = RegistryAPI.getRegistryEntry(openFile.registryID)

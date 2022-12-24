@@ -4,12 +4,12 @@
     import getNativeComponents from "../../utils/get-native-components";
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
-    import Localization from "../../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../../static/LOCALIZATION_EN";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import ACTION_HISTORY_TARGETS from "../../../../../static/ACTION_HISTORY_TARGETS.ts";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
 
     const nativeComponents = getNativeComponents()
 

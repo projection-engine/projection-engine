@@ -1,7 +1,7 @@
 import DATA_TYPES from "../../../../../engine-core/static/DATA_TYPES";
 import handleLink from "./handle-link";
 import ShaderEditorTools from "../libs/ShaderEditorTools";
-import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 
 export default function linkNodes(inputData, node) {
     const data = ShaderEditorTools.connectionOnDrag

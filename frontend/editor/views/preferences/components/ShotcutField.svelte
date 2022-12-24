@@ -1,12 +1,12 @@
 <script>
 
-    import SETTINGS from "../../../static/SETTINGS";
-    import Localization from "../../../templates/LOCALIZATION_EN";
-    import LOCALIZATION_EN from "../../../templates/LOCALIZATION_EN";
-    import KEYS from "../../../static/KEYS.ts";
+    import SETTINGS from "../../../../static/SETTINGS";
+    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import KEYS from "../../../../static/KEYS.ts";
     import SettingsStore from "../../../stores/SettingsStore";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
 
     export let shortcut = []
     export let key

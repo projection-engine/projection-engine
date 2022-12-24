@@ -1,14 +1,14 @@
 <script>
-    import Selector from "../../components/selector/Selector.svelte";
-    import Preview from "../../components/preview/Preview.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
+    import Preview from "../../../components/preview/Preview.svelte";
     import {onMount} from "svelte";
     import SettingsStore from "../../stores/SettingsStore";
-    import Localization from "../../templates/LOCALIZATION_EN";
-    import NodeFS from "../../../shared/libs/FS/NodeFS";
+    import Localization from "../../../static/LOCALIZATION_EN";
+    import NodeFS from "../../../lib/FS/NodeFS";
     import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
     import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-    import Range from "../../../shared/components/range/Range.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import Range from "../../../components/range/Range.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
 
     export let settings
 

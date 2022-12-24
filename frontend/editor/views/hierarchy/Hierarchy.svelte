@@ -1,23 +1,23 @@
 <script>
-    import Localization from "../../templates/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
+    import Localization from "../../../static/LOCALIZATION_EN";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"
     import EngineHierarchyView from "./components/View.svelte";
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
-    import dragDrop from "../../components/drag-drop/drag-drop";
+    import dragDrop from "../../../components/drag-drop/drag-drop";
     import HierarchyController from "./lib/HierarchyController";
     import SettingsStore from "../../stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";
-    import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
+    import getDropdownHeaderStyles from "../../../components/dropdown/utils/get-dropdown-header-styles";
     import EntityConstructor from "../../lib/controllers/EntityConstructor";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-    import Input from "../../../shared/components/input/Input.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
+    import ToolTip from "../../../components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../components/dropdown/Dropdown.svelte";
+    import Input from "../../../components/input/Input.svelte";
 
     export let switchView = undefined
     export let orientation = undefined
@@ -52,7 +52,7 @@
         draggable.onMount({
             targetElement: ref,
             onDrop: (entityDragged, event) => {
-                const node = event.path.find(n => n?.getAttribute?.("data-node") != null)?.getAttribute?.("data-node")
+                const node = event.composedPath().find(n => n?.getAttribute?.("data-node") != null)?.getAttribute?.("data-node")
                 let dropTarget
                 if (node)
                     dropTarget = Engine.entitiesMap.get(node)

@@ -1,7 +1,7 @@
 <script>
-    import Localization from "../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../static/LOCALIZATION_EN";
     import {onMount} from "svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import Icon from "../../../../components/icon/Icon.svelte";
 
     export let items
     export let updateItems

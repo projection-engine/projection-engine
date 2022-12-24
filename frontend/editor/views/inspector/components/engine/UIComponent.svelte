@@ -1,16 +1,16 @@
 <script>
     import StyleField from "./UIStyles.svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS.js"
-    import Localization from "../../../../templates/LOCALIZATION_EN";
-    import Selector from "../../../../components/selector/Selector.svelte";
+    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import Selector from "../../../../../components/selector/Selector.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import UIAPI from "../../../../../../engine-core/lib/rendering/UIAPI";
     import Engine from "../../../../../../engine-core/Engine";
-    import Input from "../../../../../shared/components/input/Input.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
+    import Input from "../../../../../components/input/Input.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import NodeFS from "../../../../../lib/FS/NodeFS";
 
     export let entity
     export let submit

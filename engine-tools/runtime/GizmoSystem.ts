@@ -1,7 +1,7 @@
 import TranslationGizmo from "../lib/transformation/TranslationGizmo"
 import RotationGizmo from "../lib/transformation/RotationGizmo"
 import ScalingGizmo from "../lib/transformation/ScalingGizmo"
-import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../frontend/static/TRANSFORMATION_TYPE"
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
 import AXIS from "../static/AXIS";
 import {mat4, quat, vec3} from "gl-matrix";
@@ -9,7 +9,6 @@ import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import GizmoAPI from "../lib/GizmoAPI";
 import LineRenderer from "./LineRenderer";
 import Entity from "../../engine-core/instances/Entity";
-import Controller from "../../engine-core/templates/Controller";
 
 
 const lineMatrix = <Float32Array>mat4.create()
@@ -18,7 +17,7 @@ const NULL_VEC3 = <Float32Array>vec3.create()
 const NULL_VEC3_1 = <Float32Array>vec3.create().fill(1)
 
 const LINE_SIZE = 1000000;
-export default class GizmoSystem extends Controller {
+export default class GizmoSystem   {
     static mainEntity?: Entity
     static onStart?: Function
     static onStop?: Function
@@ -63,8 +62,11 @@ export default class GizmoSystem extends Controller {
         RotationGizmo.currentRotation.fill(0)
     }
 
+    static #initialized = false
     static initialize() {
-        super.initialize()
+        if (GizmoSystem.#initialized)
+            return
+        GizmoSystem.#initialized = true
 
         GizmoSystem.translationGizmo = new TranslationGizmo()
         GizmoSystem.scaleGizmo = new ScalingGizmo()

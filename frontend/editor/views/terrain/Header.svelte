@@ -1,11 +1,11 @@
 <script>
-    import Localization from "../../templates/LOCALIZATION_EN";
-    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.ts";
+    import Localization from "../../../static/LOCALIZATION_EN";
+    import TERRAIN_TOOLS from "../../../static/TERRAIN_TOOLS.ts";
     import SettingsStore from "../../stores/SettingsStore";
-    import Selector from "../../components/selector/Selector.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
     import ShadingOption from "../scene-editor/components/ShadingModels.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
+    import ToolTip from "../../../components/tooltip/ToolTip.svelte";
+    import Icon from "../../../components/icon/Icon.svelte";
 
     export let engine
     export let settings

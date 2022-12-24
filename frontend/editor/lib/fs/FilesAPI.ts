@@ -1,7 +1,7 @@
 import {v4} from "uuid"
 import RegistryAPI from "./RegistryAPI";
 import ROUTES from "../../../../backend/static/ROUTES";
-import NodeFS from "../../../shared/libs/FS/NodeFS";
+import NodeFS from "../../../lib/FS/NodeFS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 
 

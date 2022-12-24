@@ -1,10 +1,10 @@
 <script>
-    import Localization from "../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../static/LOCALIZATION_EN";
     import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";
     import {onDestroy} from "svelte";
-    import Range from "../../../../shared/components/range/Range.svelte";
+    import Range from "../../../../components/range/Range.svelte";
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)

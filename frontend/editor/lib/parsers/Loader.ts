@@ -4,8 +4,8 @@ import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
-import Localization from "../../templates/LOCALIZATION_EN";
-import LOCALIZATION_EN from "../../templates/LOCALIZATION_EN";
+import Localization from "../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
@@ -16,9 +16,9 @@ import Entity from "../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import {v4} from "uuid";
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
-import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
+import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-import NodeFS from "../../../shared/libs/FS/NodeFS";
+import NodeFS from "../../../lib/FS/NodeFS";
 import MeshComponent from "../../../../engine-core/templates/components/MeshComponent";
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 

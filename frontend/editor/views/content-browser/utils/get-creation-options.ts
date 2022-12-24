@@ -1,12 +1,12 @@
 import FilesStore from "../../../stores/FilesStore";
-import resolveFileName from "../../../templates/utils/resolve-file-name";
+import resolveFileName from "../../../utils/resolve-file-name";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE";
 import TERRAIN_TEMPLATE from "../../../../../engine-core/static/templates/TERRAIN_TEMPLATE";
-import Localization from "../../../templates/LOCALIZATION_EN";
+import Localization from "../../../../static/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
-import NodeFS from "../../../../shared/libs/FS/NodeFS";
+import NodeFS from "../../../../lib/FS/NodeFS";
 
 export default function getCreationOptions(currentDirectory) {
     async function createFile(name, type, data) {

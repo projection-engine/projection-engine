@@ -1,14 +1,14 @@
 <script>
-    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
+    import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
     import Component from "../../../../../../../engine-core/templates/components/Component";
-    import Selector from "../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../../stores/EngineStore";
-    import Localization from "../../../../../templates/LOCALIZATION_EN";
-    import ColorPicker from "../../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Input from "../../../../../../shared/components/input/Input.svelte";
-    import Dropdown from "../../../../../../shared/components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../../shared/components/icon/Icon.svelte";
-    import Range from "../../../../../../shared/components/range/Range.svelte";
+    import Localization from "../../../../../../static/LOCALIZATION_EN";
+    import ColorPicker from "../../../../../../components/color-picker/ColorPicker.svelte";
+    import Input from "../../../../../../components/input/Input.svelte";
+    import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
+    import Icon from "../../../../../../components/icon/Icon.svelte";
+    import Range from "../../../../../../components/range/Range.svelte";
 
     export let component = undefined
     export let submit = undefined

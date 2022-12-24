@@ -1,4 +1,4 @@
-import Controller from "../../engine-core/templates/Controller";
+
 import ICONS_SPRITE_VERT from "../shaders/ICONS_SPRITE.vert";
 import ICONS_SPRITE_FRAG from "../shaders/ICONS_SPRITE.frag";
 import LINE_VERT from "../shaders/LINE.vert";
@@ -19,7 +19,7 @@ import MESH_MAP_VERT from "../shaders/MESH_MAP.vert";
 import MESH_MAP_FRAG from "../shaders/MESH_MAP.frag";
 import Shader from "../../engine-core/instances/Shader";
 
-export default class StaticEditorShaders extends Controller {
+export default class StaticEditorShaders {
     static icon?: Shader
     static line?: Shader
     static toDepthBuffer?: Shader
@@ -40,8 +40,11 @@ export default class StaticEditorShaders extends Controller {
     static silhouetteUniforms?: { [key: string]: WebGLUniformLocation }
     static outlineUniforms?: { [key: string]: WebGLUniformLocation }
 
+    static #initialized = false
     static initialize() {
-        super.initialize()
+        if (StaticEditorShaders.#initialized)
+            return
+        StaticEditorShaders.#initialized = true
 
         StaticEditorShaders.icon = new Shader(ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
         StaticEditorShaders.line = new Shader(LINE_VERT, LINE_FRAG)

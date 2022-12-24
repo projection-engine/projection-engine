@@ -1,15 +1,15 @@
 <script>
-    import Localization from "../../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../../static/LOCALIZATION_EN";
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS";
-    import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
+    import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
     import TEXTURE_FILTERING from "../../../../../../engine-core/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../../engine-core/static/texture/TEXTURE_WRAPPING";
 
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
 
     const {shell} = window.require("electron")
     const B = "height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"

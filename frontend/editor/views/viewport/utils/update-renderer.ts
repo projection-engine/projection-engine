@@ -12,7 +12,7 @@ import Loop from "../../../../../engine-core/Loop";
 import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
 import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
-import GIZMOS from "../../../static/GIZMOS";
+import GIZMOS from "../../../../static/GIZMOS";
 import MotionBlur from "../../../../../engine-core/runtime/MotionBlur";
 
 

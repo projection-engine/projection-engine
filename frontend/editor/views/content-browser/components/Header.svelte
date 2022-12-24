@@ -3,16 +3,16 @@
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
 
-    import Localization from "../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../static/LOCALIZATION_EN";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import importFile from "../../../utils/import-file";
-    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
-    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import Input from "../../../../shared/components/input/Input.svelte";
+    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import getDropdownHeaderStyles from "../../../../components/dropdown/utils/get-dropdown-header-styles";
+    import Icon from "../../../../components/icon/Icon.svelte";
+    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
+    import Input from "../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 
     export let currentDirectory

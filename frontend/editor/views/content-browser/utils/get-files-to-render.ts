@@ -1,4 +1,4 @@
-import NodeFS from "../../../../shared/libs/FS/NodeFS";
+import NodeFS from "../../../../lib/FS/NodeFS";
 
 function map(check, items, elementsPerRow) {
     let newArr = []

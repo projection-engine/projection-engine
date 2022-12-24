@@ -1,15 +1,15 @@
 <script>
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
-    import Localization from "../../../../templates/LOCALIZATION_EN";
-    import LOCALIZATION_EN from "../../../../templates/LOCALIZATION_EN";
+    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import MaterialUniforms from "../MaterialUniforms.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import NodeFS from "../../../../../lib/FS/NodeFS";
 
     export let data
     export let item

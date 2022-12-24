@@ -67,7 +67,7 @@ export default class ProjectController {
             icon: path.resolve(__dirname, RELATIVE_LOGO_PATH)
         })
 
-        contextMenuController(ProjectController.window)
+        contextMenuController()
         ProjectController.window.setMenu(null)
         ProjectController.window.on("ready-to-show", () => ProjectController.window.show())
         if (isDev) { // @ts-ignore

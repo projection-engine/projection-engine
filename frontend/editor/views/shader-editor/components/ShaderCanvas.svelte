@@ -1,7 +1,7 @@
 <script>
 
     import Comment from "./node/Comment.svelte";
-    import SelectBox from "../../../components/select-box/SelectBox.svelte";
+    import SelectBox from "../../../../components/select-box/SelectBox.svelte";
     import handleBoardScroll from "../utils/handle-board-scroll";
     import handleDropNode from "../utils/handle-drop-node";
     import handleDropBoard from "../utils/handle-drop-board";
@@ -14,7 +14,7 @@
     import SEContextController from "../libs/SEContextController";
     import handleWheelZoom from "../utils/handle-wheel-zoom";
     import initializeCanvas from "../utils/initialize-canvas";
-    import ContextMenuController from "../../../../shared/libs/context-menu/ContextMenuController";
+    import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
 
     const EMPTY_MAP = new Map()
     export let openFile

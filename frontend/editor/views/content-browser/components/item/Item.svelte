@@ -2,7 +2,7 @@
     import handleDropFolder from "../../utils/handle-drop-folder"
     import FilesStore from "../../../../stores/FilesStore";
     import {onDestroy, onMount} from "svelte";
-    import dragDrop from "../../../../components/drag-drop/drag-drop";
+    import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import getTypeName from "../../utils/get-type-name";
     import getItemDragImage from "../../utils/get-item-dragimage";
     import getItemIcon from "../../utils/get-item-icon";
@@ -12,8 +12,8 @@
     import Row from "./Row.svelte";
     import PROJECT_FOLDER_STRUCTURE from "../../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import NodeFS from "../../../../../shared/libs/FS/NodeFS";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
 
 
     export let childQuantity
