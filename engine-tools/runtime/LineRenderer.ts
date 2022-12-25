@@ -22,7 +22,7 @@ export default class LineRenderer {
     static initialize() {
         bufferRes[0] = GPU.internalResolution.w
         bufferRes[1] = GPU.internalResolution.h
-        lineUniforms = StaticEditorShaders.iconUniforms
+        lineUniforms = StaticEditorShaders.lineUniforms
     }
 
     static finish() {
@@ -32,7 +32,7 @@ export default class LineRenderer {
     static #bind() {
 
         if (finished) {
-            StaticEditorShaders.icon.bind()
+            StaticEditorShaders.line.bind()
 
             GPU.context.uniform1i(lineUniforms.darker, darker)
             GPU.context.uniform1f(lineUniforms.size, size)

@@ -25,13 +25,11 @@ export default class IconsSystem {
             const hasLight = entity.__hasLight
             const hasSkylight = entity.__hasSkylight
             const hasCamera = entity.__hasCamera
-
+            const doesntHaveIcon = !hasLight && !hasSkylight && !hasCamera
             if (
                 tracking === entity ||
-                entity.__meshRef ||
-                !hasLight &&
-                !hasSkylight &&
-                !hasCamera
+                entity.__meshRef && !entity.__materialRef?.isSky||
+                doesntHaveIcon && entity.__meshRef && !entity.__materialRef?.isSky
             )
                 continue
             cb(

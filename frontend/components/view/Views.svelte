@@ -73,6 +73,11 @@
                 switchView={(newView, index) => switchView(newView, groupIndex, tabs, index, setTabs)}
                 addNewTab={item => addTab(tabs, setTabs, groupIndex, item)}
                 removeTab={(i, cb, currentTab) => removeTab(i, tabs, groupIndex, setTabs, currentTab, cb)}
+                removeMultipleTabs={_ => {
+                    const clone = [...tabs]
+                    clone.splice(groupIndex, 1)
+                    setTabs(clone)
+                }}
         >
                 <View
 

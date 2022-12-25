@@ -37,9 +37,9 @@
             ...SettingsStore.data.views,
             {
                 name: LOCALIZATION_EN.NEW_TAB + SettingsStore.data.views.length,
-                bottom: [[VIEWS.FILES]],
-                right: [[VIEWS.HIERARCHY]],
-                viewport: [ VIEWPORT_TABS.EDITOR],
+                bottom: [[{color: [255,255,255], type: VIEWS.FILES}]],
+                right: [[{color: [255,255,255], type:VIEWS.HIERARCHY}]],
+                viewport: [ {color: [255,255,255], type:VIEWPORT_TABS.EDITOR}],
                 left: [],
                 top: []
             }
@@ -75,6 +75,10 @@
     <CreationController/>
     <div data-vertdivider="-" style="height: 15px;"></div>
     <Tabs
+            removeMultipleTabs={() => {
+                const currentView = settings.views[settings.currentView]
+                SettingsStore.updateStore({...settings, views: [currentView]})
+            }}
             allowRenaming={true}
             addNewTab={addNewTab}
             removeTab={removeTab}
@@ -91,15 +95,6 @@
 </div>
 
 <style>
-    .dropdown-button {
-        padding: 0 8px;
-        display: flex;
-        gap: 4px;
-        align-items: center;
-        justify-content: flex-start;
-        max-width: unset;
-        min-height: unset;
-    }
 
     .container {
         border-bottom: var(--pj-border-primary) 1px solid;

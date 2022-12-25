@@ -17,6 +17,7 @@
     import getViewIcon from "../../../components/view/utils/get-view-icon";
     import TabsStore from "../../stores/TabsStore";
     import GPU from "../../../../engine-core/GPU";
+    import addTab from "../../../components/view/utils/add-tab";
 
     export let updateView
     export let viewTab
@@ -98,8 +99,17 @@
                 disabled={engine.executingAnimation}
                 updateView={setViewportTab}
                 templates={viewTemplates}
-                addNewTab={_ => addNewTab(viewTab, updateView)}
+                addNewTab={item => {
+                        const clone  = [...tabs]
+                        clone.push({color: [255, 255, 255], type: item?.id || VIEWS.PREFERENCES })
+                        updateView(clone)
+                }}
                 removeTab={i => removeTab(i, viewTab,  updateView, currentTab, v => TabsStore.update("viewport", undefined, v))}
+                removeMultipleTabs={_ => {
+                    const current = tabs[currentTab]
+                    TabsStore.update("viewport", undefined, 0)
+                    updateView([current])
+                }}
                 tabs={tabs}
                 currentTab={currentTab}
                 setCurrentView={v => TabsStore.update("viewport", undefined, v)}

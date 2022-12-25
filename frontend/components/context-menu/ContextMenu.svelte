@@ -18,11 +18,10 @@
 
 
     const handleContext = (event) => {
-        clearInterval(interval)
-        if(wasPointerLocked)
+        if (wasPointerLocked)
             return
         console.trace(ContextMenuController.data.focused)
-        if (startPosition &&  ContextMenuController.data.focused) {
+        if (startPosition && ContextMenuController.data.focused) {
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {
                 let targetElement
@@ -52,6 +51,7 @@
                         }
                     }
                 }
+
                 if (targetElement) {
                     let trigger = allowAll ? targetElement : undefined
                     if (!trigger)
@@ -61,7 +61,7 @@
                                 trigger = has
                         })
                     open = true
-                    if(ContextMenuController.data.focused.onFocus)
+                    if (ContextMenuController.data.focused.onFocus)
                         ContextMenuController.data.focused.onFocus(trigger, targetElement, event)
                     ipcRenderer.send("OPEN_CONTEXT_MENU", ContextMenuController.data.focused.id)
                 }
@@ -71,17 +71,17 @@
     }
 
     const handleMouseDown = (event) => {
+
+        clearInterval(interval)
+        wasPointerLocked = document.pointerLockElement != null && !wasPointerLocked
         interval = setInterval(() => {
-            if(document.pointerLockElement != null && !wasPointerLocked)
-                wasPointerLocked = true
-            else if(!document.pointerLockElement && wasPointerLocked)
-                wasPointerLocked = false
+            wasPointerLocked = !(!document.pointerLockElement && wasPointerLocked)
         }, 250)
         if (event.button === RIGHT_BUTTON) {
             const elements = document.elementsFromPoint(event.clientX, event.clientY)
             let focused
             for (let i = 0; i < elements.length; i++) {
-                if("getAttribute" in elements[i]) {
+                if ("getAttribute" in elements[i]) {
                     const ID = elements[i].id
                     const dataID = elements[i].getAttribute("data-contextid")
                     const found = ContextMenuController.data.targets[ID] || ContextMenuController.data.targets[dataID]

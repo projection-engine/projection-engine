@@ -13,6 +13,8 @@
 
     export let addNewTab: Function
     export let removeTab: Function
+    export let removeMultipleTabs: Function
+
     export let tabs: TabData[]
 
     export let currentTab: number
@@ -93,7 +95,12 @@
             },
             direction: "horizontal"
         });
-        TabContextController.registerContext(internalID, id => console.log(id))
+        TabContextController.registerContext(internalID, id => {
+            if(id === "CREATE")
+                addNewTab()
+            else
+                removeMultipleTabs()
+        })
     })
     onDestroy(() => {
         sortable.destroy()

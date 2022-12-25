@@ -15,6 +15,7 @@
     export let views: ViewTabItem[]
     export let addNewTab
     export let removeTab
+    export let removeMultipleTabs
     export let switchView
     export let id
     export let settings
@@ -73,6 +74,7 @@
     <div></div>
     <div class="tabs">
         <Tabs
+                removeMultipleTabs={removeMultipleTabs}
                 focused={focused}
                 updateView={switchView}
                 templates={viewTemplates}

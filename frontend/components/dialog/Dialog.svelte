@@ -38,7 +38,8 @@
         (modalRef as MutableObject).closeDropdown = () => closeModal(true)
     })
     onDestroy(() => {
-        mutation.disconnect()
+        if(mutation)
+            mutation.disconnect()
         portal.destroy()
         document.removeEventListener("mousedown", closeModal)
     })

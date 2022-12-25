@@ -2,6 +2,7 @@
 import ContextMenuController from "../../../lib/context-menu/ContextMenuController";
 import Localization from "../../../static/LOCALIZATION_EN";
 import SelectionStore from "../../../editor/stores/SelectionStore";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
 
 export default class TabContextController {
@@ -19,9 +20,12 @@ export default class TabContextController {
         ContextMenuController.mount(
             [
                 {
-                    label: "Clique aqui",
-                    callback: () => console.trace("HELLO"),
-
+                    label: LOCALIZATION_EN.CLOSE_ALL,
+                    callback: () => TabContextController.activeContext?.("CLOSE_ALL")
+                },
+                {
+                    label: LOCALIZATION_EN.CREATE,
+                    callback: () => TabContextController.activeContext?.("CREATE")
                 }
             ],
             TabContextController.contextID

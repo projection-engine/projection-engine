@@ -112,12 +112,12 @@
     {/if}
     {#if settings.shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
         <div class="complexity-gradient">
-            <small>{Localization.NOTHING}</small>
-            <small>{Localization.ALL_LIGHTS}</small>
+            <small>{Localization.NO_CONTRIBUTION}</small>
+            <small>{Localization.ALL_SCENE_LIGHTS}</small>
         </div>
     {:else if settings.shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
         <div class="complexity-gradient">
-            <small>{Localization.NOTHING}</small>
+            <small>{Localization.NO_CONTRIBUTION}</small>
             <small>{Localization.MAXIMUM_NUMBER_OF_LIGHTS}</small>
         </div>
     {/if}
