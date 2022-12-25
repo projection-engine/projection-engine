@@ -15,6 +15,8 @@ if (process.argv[2] === 'watch')
     }
 
 const worker = (fileName, output) => ({
+    tsconfig: "tsconfig.json",
+    treeShaking: true,
     platform: "browser",
     entryPoints: [fileName],
     bundle: true,
@@ -28,6 +30,8 @@ const worker = (fileName, output) => ({
 })
 
 const electron = {
+    tsconfig: "tsconfig.json",
+    treeShaking: true,
     platform: "node",
     entryPoints: ['./backend/index.ts'],
     bundle: true,
@@ -76,6 +80,8 @@ esbuild.build(electron)
 
 
 esbuild.build({
+        tsconfig: "tsconfig.json",
+        treeShaking: true,
         platform: "browser",
         entryPoints: ['./frontend/index.ts'],
         bundle: true,
@@ -88,7 +94,7 @@ esbuild.build({
 
         plugins: [
             sveltePlugin({
-                preprocess: sveltePreprocess({typescript: {tsconfigFile: "./tsconfig.json"}}),
+                preprocess: sveltePreprocess({typescript: {tsconfigFile: "tsconfig.json"}}),
                 filterWarnings: () => false
             })
         ],

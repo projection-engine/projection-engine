@@ -6,10 +6,13 @@ import LIGHT_TYPES from "../../engine-core/static/LIGHT_TYPES";
 import LineRenderer from "./LineRenderer";
 import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
+import {mat4} from "gl-matrix";
 
+const DEFAULT_COLOR = [255,255,255]
 
+const iconAttributes = mat4.create()
 export default class IconsSystem {
-    static iconsTexture?:WebGLTexture
+    static iconsTexture?: WebGLTexture
 
     static loop(cb, settings) {
         const tracking = CameraAPI.trackingEntity
@@ -28,7 +31,7 @@ export default class IconsSystem {
             const doesntHaveIcon = !hasLight && !hasSkylight && !hasCamera
             if (
                 tracking === entity ||
-                entity.__meshRef && !entity.__materialRef?.isSky||
+                entity.__meshRef && !entity.__materialRef?.isSky ||
                 doesntHaveIcon && entity.__meshRef && !entity.__materialRef?.isSky
             )
                 continue
@@ -49,57 +52,67 @@ export default class IconsSystem {
         hasCamera,
         settings
     ) {
-        let index = 0
-        let hasMore = false
+        const context = GPU.context
         const lightComponent = entity.__lightComp
         const lightType = lightComponent?.type
         const iconsUniforms = StaticEditorShaders.iconUniforms
+        let doNotFaceCamera = 0,
+            drawSphere = 0,
+            removeSphereCenter = 0,
+            scale = settings.iconScale,
+            imageIndex = 0,
+            isSelected = entity.__isSelected ? 1 : 0,
+            color = entity._hierarchyColor||DEFAULT_COLOR
 
         switch (lightType) {
             case LIGHT_TYPES.DIRECTIONAL:
-                index = 1
+                imageIndex = 1
                 break
             case LIGHT_TYPES.POINT:
-                index = 2
+                imageIndex = 2
                 break
             case LIGHT_TYPES.SPOT:
-                index = 4
+                imageIndex = 4
                 break
             case LIGHT_TYPES.SPHERE:
-                index = -1
-                GPU.context.uniform1i(iconsUniforms.drawSphere, 1)
-                GPU.context.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
-                GPU.context.uniform1i(iconsUniforms.removeSphereCenter, 0)
+                imageIndex = -1
+                drawSphere = 1
+                scale = lightComponent.areaRadius
+                removeSphereCenter = 0
                 break
             case LIGHT_TYPES.DISK:
-                index = -1
-                GPU.context.uniform1i(iconsUniforms.doNotFaceCamera, 1)
-                GPU.context.uniform1i(iconsUniforms.drawSphere, 1)
-                GPU.context.uniform1i(iconsUniforms.removeSphereCenter, 1)
-                GPU.context.uniform1f(iconsUniforms.scale, lightComponent.areaRadius)
+                imageIndex = -1
+                doNotFaceCamera = 1
+                drawSphere = 1
+                removeSphereCenter = 1
+                scale = lightComponent.areaRadius
                 break
         }
 
-        if (hasSkylight) {
-            hasMore = index !== 0
-            index = 3
-        }
+        if (hasSkylight)
+            imageIndex = imageIndex !== 0 ? 0 : 3
 
-        if (hasCamera) {
-            hasMore = index !== 0
-            index = 5
-        }
-        if (index !== -1)
-            GPU.context.uniform1i(iconsUniforms.drawSphere, 0)
-        GPU.context.uniform1f(iconsUniforms.imageIndex, hasMore ? 0 : index)
+        if (hasCamera)
+            imageIndex = imageIndex !== 0 ? 0 : 5
+
+
+        iconAttributes[0] = doNotFaceCamera
+        iconAttributes[1] = drawSphere
+        iconAttributes[2] = removeSphereCenter
+        iconAttributes[3] = scale
+
+        iconAttributes[4] = imageIndex
+        iconAttributes[5] = isSelected
+
+        iconAttributes[8] = color[0]
+        iconAttributes[9]= color[1]
+        iconAttributes[10]= color[2]
+
+
         getPivotPointMatrix(entity)
-        GPU.context.uniform1i(iconsUniforms.isSelected, entity.__isSelected ? 1 : 0)
-        GPU.context.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
+        context.uniformMatrix4fv(iconsUniforms.settings, false, iconAttributes)
+        context.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
         StaticMeshes.drawQuad()
-        if (index === -1) {
-            GPU.context.uniform1i(iconsUniforms.doNotFaceCamera, 0)
-            GPU.context.uniform1f(iconsUniforms.scale, settings.iconScale)
-        }
     }
 
     static #drawVisualizations(
@@ -139,7 +152,6 @@ export default class IconsSystem {
         StaticEditorShaders.icon.bind()
         GPU.context.activeTexture(GPU.context.TEXTURE0)
         GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
-        GPU.context.uniform1f(StaticEditorShaders.iconUniforms.scale, settings.iconScale)
 
         if (settings.showIcons)
             IconsSystem.loop(IconsSystem.#drawIcon, settings)

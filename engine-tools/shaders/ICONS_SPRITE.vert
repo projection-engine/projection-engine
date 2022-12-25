@@ -8,12 +8,17 @@ const mat4  ROTATION_MATRIX = mat4(
 //import(cameraUBO)
 
 uniform mat4 transformationMatrix;
-uniform float scale;
-uniform bool doNotFaceCamera;
+
+uniform mat4 settings;
+
 out vec2 texCoords;
+out mat4 S;
 
 void main(){
+    S = settings;
 
+    float scale = settings[0][3];
+    bool doNotFaceCamera = settings[0][0] == 1.;
 
     texCoords = position.xy * .5 + .5;
     mat4 m;
