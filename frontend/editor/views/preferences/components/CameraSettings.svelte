@@ -8,7 +8,7 @@
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)
-    const toDeg = 180 / Math.PI, toRad = Math.PI / 180
+    const toDeg = 180 / Math.PI
 
     let state = {
         zFar: settings.zFar,
@@ -18,7 +18,8 @@
         rotationSmoothing: settings.camera.rotationSmoothing,
         ortho: settings.ortho,
         movementSpeed: settings.camera.movementSpeed,
-        turnSpeed: settings.camera.turnSpeed
+        turnSpeed: settings.camera.turnSpeed,
+        screenSpaceMovementSpeed: settings.camera.screenSpaceMovementSpeed||1
     }
 
     const updateCamera = (key, value, full) => {
@@ -38,7 +39,6 @@
         <Range
                 minLabelWidth={"30px"}
                 label={Localization.FAR}
-                variant="embedded"
                 incrementPercentage={1}
                 onFinish={(v) => {
                     SettingsStore.updateStore({...settings, zFar: v})
@@ -53,7 +53,6 @@
         />
         <Range
                 minLabelWidth={"30px"}
-                variant="embedded"
                 label={Localization.NEAR}
                 onFinish={(v) => {
                     SettingsStore.updateStore({...settings, zNear: v})
@@ -69,7 +68,6 @@
             }}
         />
         <Range
-                variant="embedded"
                 label={Localization.FOV}
                 minValue={10}
                 maxValue={150}
@@ -93,9 +91,15 @@
     <legend>{Localization.MOVEMENT_SPEED}</legend>
     <div data-form="-">
         <Range
-                variant="embedded"
-                precision={4}
-                incrementPercentage={.001}
+                incrementPercentage={.1}
+                label={Localization.SCREEN_GRABBING_SPEED}
+                onFinish={(v) => updateCamera("screenSpaceMovementSpeed", v, true)}
+                value={state.screenSpaceMovementSpeed}
+                handleChange={v => updateCamera("screenSpaceMovementSpeed", v)}
+        />
+
+        <Range
+                incrementPercentage={.1}
                 label={Localization.TRANSLATION}
                 onFinish={(v) => updateCamera("movementSpeed", v, true)}
                 value={state.movementSpeed}
@@ -103,7 +107,6 @@
         />
 
         <Range
-                variant="embedded"
                 precision={4}
                 incrementPercentage={.001}
                 label={Localization.ROTATION}
@@ -120,8 +123,6 @@
     <legend>{Localization.SMOOTHING}</legend>
     <div data-form="-">
         <Range
-                variant="embedded"
-                precision={3}
                 minValue={.0001}
                 incrementPercentage={.001}
                 label={Localization.TRANSLATION}
@@ -130,8 +131,6 @@
                 handleChange={v => updateCamera("smoothing", v)}
         />
         <Range
-                variant="embedded"
-                precision={3}
                 minValue={.0001}
                 incrementPercentage={.001}
                 label={Localization.ROTATION}

@@ -25,6 +25,7 @@ export default function updateRenderer(selected, engine, settings) {
     if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
         CameraAPI.trackingEntity = undefined
         if (settings.camera) {
+            CameraTracker.screenSpaceMovementSpeed = settings.camera.screenSpaceMovementSpeed || 1
             CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
             CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
             if (settings.camera.smoothing != null)

@@ -113,6 +113,7 @@ export default {
     },
 
     camera: {
+        screenSpaceMovementSpeed: 1,
         cameraTranslation: [0, 0, 0],
         cameraRotation: [0, 0, 0, 1],
         movementSpeed: 1,

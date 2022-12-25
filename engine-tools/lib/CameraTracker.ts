@@ -15,6 +15,7 @@ export default class CameraTracker {
     static xRotation = 0
     static yRotation = 0
 
+    static screenSpaceMovementSpeed = 1
     static movementSpeed = 0.1
     static turnSpeed = .1
 
@@ -134,9 +135,6 @@ export default class CameraTracker {
         CameraTracker.#keysOnHold.mouseLeft = true
     }
 
-    static #getMouseAcceleration() {
-        return CameraTracker.#keysOnHold.fasterJonny ? 10 * CameraTracker.movementSpeed : CameraTracker.movementSpeed
-    }
 
     static #handleInput(event) {
         const keys = CameraTracker.movementKeys
@@ -145,9 +143,8 @@ export default class CameraTracker {
             switch (event.type) {
                 case "mousemove": {
                     if (CameraTracker.screenSpaceMovement) {
-                        const multiplier = CameraTracker.#getMouseAcceleration()
-                        toApplyTranslation[0] = -event.movementX * multiplier
-                        toApplyTranslation[1] = event.movementY * multiplier
+                        toApplyTranslation[0] = -event.movementX * CameraTracker.screenSpaceMovementSpeed/2
+                        toApplyTranslation[1] = event.movementY * CameraTracker.screenSpaceMovementSpeed/2
                         toApplyTranslation[2] = 0
                         toApplyTranslation[3] = 1
                         CameraTracker.forceUpdate = true
@@ -155,7 +152,7 @@ export default class CameraTracker {
                         if (!document.pointerLockElement)
                             GPU.canvas.requestPointerLock()
                         if (map.mouseLeft && map.mouseRight || event.ctrlKey) {
-                            const multiplier = CameraTracker.#getMouseAcceleration()
+                            const multiplier = CameraTracker.#keysOnHold.fasterJonny ? 10 * CameraTracker.movementSpeed : CameraTracker.movementSpeed
                             toApplyTranslation[0] = -event.movementX * multiplier
                             toApplyTranslation[1] = event.movementY * multiplier
                             toApplyTranslation[2] = 0

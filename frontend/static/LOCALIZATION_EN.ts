@@ -10,6 +10,7 @@ enum Localization {
     OUTLINE = "Outline",
     TYPE = "Type",
     SETTINGS = "Settings",
+    SCREEN_GRABBING_SPEED= "Screen drag speed",
     VELOCITY_DEF = "Per-object velocity",
     JSON = "JSON",
     SHADING_VELOCITY = "Velocity",
