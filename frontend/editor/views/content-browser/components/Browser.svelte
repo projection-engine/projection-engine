@@ -8,7 +8,7 @@
     import getFilesToRender from "../utils/get-files-to-render";
     import HotKeysController from "../../../lib/utils/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import RowsHeader from "./RowsHeader.svelte";
@@ -87,7 +87,7 @@
                 ref,
                 actions.hotKeys,
                 "folder",
-                Localization.CONTENT_BROWSER
+                LOCALIZATION_EN.CONTENT_BROWSER
             )
         }
     }
@@ -173,7 +173,7 @@
         <div data-empty="-">
             <Icon styles="font-size: 100px">folder</Icon>
             <div style="font-size: .8rem">
-                {Localization.EMPTY}
+                {LOCALIZATION_EN.EMPTY}
             </div>
         </div>
     {/if}

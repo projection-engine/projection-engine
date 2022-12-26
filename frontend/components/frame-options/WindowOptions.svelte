@@ -4,7 +4,7 @@
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import FilesStore from "../../editor/stores/FilesStore";
     import LevelController from "../../editor/lib/utils/LevelController";
-    import FRAME_OPTIONS from "./utils/get-frame-options";
+    import getFrameOptions from "./utils/get-frame-options";
     import SettingsStore from "../../editor/stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";
     import VIEWS from "../view/static/VIEWS";
@@ -13,10 +13,7 @@
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Icon from "../icon/Icon.svelte";
-    import Dropdown from "../dropdown/Dropdown.svelte";
-    import WindowUtils from "../../editor/lib/WindowUtils";
     import SingleSelectDropdown from "../dropdown/OptionDropdown.svelte";
-    import getFrameOptions from "./utils/get-frame-options";
     import About from "../About.svelte";
 
     let engine

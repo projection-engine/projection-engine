@@ -1,7 +1,4 @@
-
 import ContextMenuController from "../../../lib/context-menu/ContextMenuController";
-import Localization from "../../../static/LOCALIZATION_EN";
-import SelectionStore from "../../../editor/stores/SelectionStore";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
 

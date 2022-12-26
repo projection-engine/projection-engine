@@ -1,6 +1,6 @@
 <script>
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import ColorPicker from "../../../../components/color-picker/ColorPicker.svelte";
     import Range from "../../../../components/range/Range.svelte";
@@ -15,10 +15,10 @@
 
 
 <fieldset>
-    <legend>{Localization.CAMERA_GIZMO}</legend>
+    <legend>{LOCALIZATION_EN.CAMERA_GIZMO}</legend>
     <div data-form="-">
         <Range
-                label={Localization.SIZE}
+                label={LOCALIZATION_EN.SIZE}
                 onFinish={v => {
                     update("cameraGizmoSize", v)
                 }}
@@ -31,10 +31,10 @@
 </fieldset>
 
 <fieldset>
-    <legend>{Localization.ICONS}</legend>
+    <legend>{LOCALIZATION_EN.ICONS}</legend>
     <div data-form="-">
         <Range
-                label={Localization.SIZE}
+                label={LOCALIZATION_EN.SIZE}
                 onFinish={v => {
                     update("iconScale", v)
                 }}
@@ -42,9 +42,9 @@
                 minValue={.01}
         />
         <fieldset style="padding: 0">
-            <legend>{Localization.CULLING}</legend>
+            <legend>{LOCALIZATION_EN.CULLING}</legend>
             <Range
-                    label={Localization.MAX_DISTANCE}
+                    label={LOCALIZATION_EN.MAX_DISTANCE}
                     onFinish={v => {
                         update("maxDistanceIcon", v)
                     }}
@@ -59,10 +59,10 @@
 
 
 <fieldset>
-    <legend>{Localization.GIZMOS}</legend>
+    <legend>{LOCALIZATION_EN.GIZMOS}</legend>
     <div data-form="-">
         <Range
-                label={Localization.SENSITIVITY}
+                label={LOCALIZATION_EN.SENSITIVITY}
                 onFinish={v => {
                     SettingsStore.updateStore({...settings, gizmoGrid:{...settings.gizmoGrid, sensitivity: v / 100}})
                 }}
@@ -73,7 +73,7 @@
 </fieldset>
 
 <fieldset>
-    <legend>{Localization.RESOLUTION}</legend>
+    <legend>{LOCALIZATION_EN.RESOLUTION}</legend>
     <div data-form="-">
         <Range
                 label={"X"}
@@ -98,39 +98,39 @@
 
 
 <fieldset>
-    <legend>{Localization.VIEWPORT}</legend>
+    <legend>{LOCALIZATION_EN.VIEWPORT}</legend>
     <div data-form="-">
         <Checkbox
                 checked={settings.showGrid}
                 handleCheck={() => {
                     update("showGrid", !settings.showGrid)
                 }}
-                label={Localization.GRID}
+                label={LOCALIZATION_EN.GRID}
         />
         <Checkbox
                 checked={settings.showIcons}
                 handleCheck={() => {
                     update("showIcons", !settings.showIcons)
                 }}
-                label={Localization.ICONS}
+                label={LOCALIZATION_EN.ICONS}
         />
         <Checkbox
                 checked={settings.showLines}
                 handleCheck={() => {
                     update("showLines", !settings.showLines)
                 }}
-                label={Localization.LINES}
+                label={LOCALIZATION_EN.LINES}
         />
         <Checkbox
                 checked={settings.showOutline}
                 handleCheck={() => {
                     update("showOutline", !settings.showOutline)
                 }}
-                label={Localization.OUTLINE}
+                label={LOCALIZATION_EN.OUTLINE}
         />
         <ColorPicker
                 value={settings.outlineColor.map(v => v * 255)}
-                label={Localization.OUTLINE}
+                label={LOCALIZATION_EN.OUTLINE}
                 submit={({r,g,b}) => update("outlineColor", [r/255,g/255,b/255])}
         />
     </div>

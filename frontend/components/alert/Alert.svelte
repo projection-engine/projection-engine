@@ -1,6 +1,5 @@
 <script>
     import {onMount} from "svelte";
-    import ConsoleAPI from "../../../engine-core/lib/utils/ConsoleAPI";
     import AlertController from "./AlertController";
 
     let target

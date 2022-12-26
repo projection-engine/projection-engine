@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
@@ -46,7 +46,7 @@
 </script>
 
 <fieldset>
-    <legend>{Localization.IMPORT_IMAGE}</legend>
+    <legend>{LOCALIZATION_EN.IMPORT_IMAGE}</legend>
     <Selector
             type="image"
             selected={temp.imageID}
@@ -58,11 +58,11 @@
     {/if}
 </fieldset>
 
-<Accordion title={Localization.DIMENSIONS}>
+<Accordion title={LOCALIZATION_EN.DIMENSIONS}>
     <Range
             value={temp.scale}
             disabled={isDisabled}
-            label={Localization.HEIGHT_SCALE}
+            label={LOCALIZATION_EN.HEIGHT_SCALE}
             precision={4}
             minValue={.001}
             onFinish={v => updateAsset("scale", v)}
@@ -70,7 +70,7 @@
     <Range
             value={temp.dimensions}
             disabled={isDisabled}
-            label={Localization.DIMENSION_MULTIPLIER}
+            label={LOCALIZATION_EN.DIMENSION_MULTIPLIER}
 
             minValue={.001}
             onFinish={v => updateAsset("dimensions", v)}

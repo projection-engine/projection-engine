@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import {onMount} from "svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
 
@@ -46,7 +46,7 @@
                 changeSort()
             }}
     >
-        {Localization.NAME}
+        {LOCALIZATION_EN.NAME}
         {#if sortKey === SORTS_KEYS[0]}
             <Icon styles={sort === SORTS[0] ? "transform: rotate(180deg)" : undefined}>
                     arrow_drop_down
@@ -61,7 +61,7 @@
                 changeSort()
             }}
     >
-        {Localization.CREATION}
+        {LOCALIZATION_EN.CREATION}
         {#if sortKey === SORTS_KEYS[1]}
             <Icon styles={sort === SORTS[0] ? "transform: rotate(180deg)" : undefined}>
                 arrow_drop_down
@@ -75,7 +75,7 @@
                 changeSort()
             }}
     >
-        {Localization.SIZE}
+        {LOCALIZATION_EN.SIZE}
         {#if sortKey === SORTS_KEYS[2]}
             <Icon styles={sort === SORTS[0] ? "transform: rotate(180deg)" : undefined}>
                 arrow_drop_down

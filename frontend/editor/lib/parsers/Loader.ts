@@ -4,7 +4,6 @@ import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
-import Localization from "../../../static/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
@@ -116,7 +115,7 @@ export default class Loader {
                 case FILE_TYPES.TEXTURE: {
                     const res = await EngineStore.loadTextureFromImageID(data)
                     if (res) {
-                        const sprite = new Entity(undefined, Localization.SPRITE_RENDERER)
+                        const sprite = new Entity(undefined, LOCALIZATION_EN.SPRITE_RENDERER)
                         EntityConstructor.translateEntity(sprite)
                         const c = sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE)
                         c.imageID = data

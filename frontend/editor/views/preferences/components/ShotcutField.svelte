@@ -1,7 +1,6 @@
 <script>
 
     import SETTINGS from "../../../../static/SETTINGS";
-    import Localization from "../../../../static/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import KEYS from "../../../../static/KEYS.ts";
     import SettingsStore from "../../../stores/SettingsStore";
@@ -85,7 +84,7 @@
                     <div data-vertdivider="-" style="margin: 0"></div>
                     <button on:click={() => currentShortcut = [...original]}>
                         <Icon styles="font-size: .9rem">close</Icon>
-                        <ToolTip content={Localization.ORIGINAL}/>
+                        <ToolTip content={LOCALIZATION_EN.ORIGINAL}/>
                     </button>
                 {/if}
             {/if}

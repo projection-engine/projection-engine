@@ -2,7 +2,7 @@
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import ShotcutField from "./ShotcutField.svelte";
     import SETTINGS from "../../../../static/SETTINGS";
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings
@@ -36,21 +36,21 @@
 </script>
 
 
-<Accordion title={Localization.VIEWPORT}>
+<Accordion title={LOCALIZATION_EN.VIEWPORT}>
     <div class="shortcuts">
         {#each shortcuts.viewport as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
         {/each}
     </div>
 </Accordion>
-<Accordion title={Localization.SHADER_EDITOR}>
+<Accordion title={LOCALIZATION_EN.SHADER_EDITOR}>
     <div class="shortcuts">
         {#each shortcuts.shaderEditor as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
         {/each}
     </div>
 </Accordion>
-<Accordion title={Localization.CONTENT_BROWSER}>
+<Accordion title={LOCALIZATION_EN.CONTENT_BROWSER}>
     <div class="shortcuts">
         {#each shortcuts.contentBrowser as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
@@ -64,7 +64,7 @@
             update("shaderEditorHotkeys", SETTINGS.shaderEditorHotkeys)
         }}
 >
-    {Localization.RESET}
+    {LOCALIZATION_EN.RESET}
 </button>
 <style>
     legend {

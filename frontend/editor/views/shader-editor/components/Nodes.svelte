@@ -1,6 +1,6 @@
 <script>
     import {ALL_NODES} from "../static/ALL_NODES"
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import getDropdownHeaderStyles from "../../../../components/dropdown/utils/get-dropdown-header-styles";
     import Icon from "../../../../components/icon/Icon.svelte";
     import Input from "../../../../components/input/Input.svelte";
@@ -20,7 +20,7 @@
 <Dropdown buttonStyles={getDropdownHeaderStyles()}>
     <button slot="button" data-view-header-dropdown="-">
         <Icon style="font-size: 1rem">add</Icon>
-        {Localization.ADD}
+        {LOCALIZATION_EN.ADD}
     </button>
     <div class="modal-available-nodes selector">
         <div class="content">
@@ -40,7 +40,7 @@
                 width={"100%"}
                 searchString={searchString}
                 setSearchString={v => searchString  = v}
-                placeholder={Localization.SEARCH}
+                placeholder={LOCALIZATION_EN.SEARCH}
             >
                 <Icon slot="icon">search</Icon>
             </Input>

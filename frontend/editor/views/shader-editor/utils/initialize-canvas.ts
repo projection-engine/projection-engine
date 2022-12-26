@@ -1,7 +1,7 @@
 import SEContextController from "../libs/SEContextController";
 import shaderActions from "../../../templates/shader-actions";
 import HotKeysController from "../../../lib/utils/HotKeysController";
-import Localization from "../../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 import SelectionStore from "../../../stores/SelectionStore";
 import BOARD_SIZE from "../static/BOARD_SIZE";
 import handleWheelZoom from "./handle-wheel-zoom";
@@ -51,7 +51,7 @@ export default function initializeCanvas(openFile, ref, ctx, setGraphData) {
         ref,
         hotkeys,
         "texture",
-        Localization.SHADER_EDITOR
+        LOCALIZATION_EN.SHADER_EDITOR
     )
     ref.parentElement.scrollTop = BOARD_SIZE / 2
     ref.parentElement.scrollLeft = BOARD_SIZE / 2

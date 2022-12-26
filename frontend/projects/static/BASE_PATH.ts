@@ -1,0 +1,1 @@
+export default "BASE-PATH-CACHE"

@@ -10,7 +10,7 @@ export default function addComment(nodes:ShaderNode[], setNodes:Function) {
         biggestX:number|undefined,
         biggestY:number|undefined
 
-    const nodesG = SelectionStore.shaderEditorSelected.map(h => document.getElementById(h)?.parentElement).filter(n => n)
+    const nodesG = SelectionStore.shaderEditorSelected.map(h => document.getElementById(h.id)?.parentElement).filter(n => n)
     nodesG
         .forEach(n => {
             const transformation = n

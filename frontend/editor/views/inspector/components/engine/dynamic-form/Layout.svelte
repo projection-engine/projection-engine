@@ -1,7 +1,7 @@
 <script>
     import Property from "./Property.svelte";
     import removeComponent from "../../../utils/remove-component";
-    import Localization from "../../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/LOCALIZATION_EN";
     import Component from "../../../../../../../engine-core/templates/components/Component";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import getComponentLabel from "../../../utils/get-component-label";
@@ -29,7 +29,7 @@
     {#each component.props as propAttr}
         {#if propAttr.type === Component.propTypes.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
             <fieldset>
-                <legend>{Localization[propAttr.label] || propAttr.label}</legend>
+                <legend>{LOCALIZATION_EN[propAttr.label] || propAttr.label}</legend>
                 {#each propAttr.children as attribute}
                     {#if !checkIsDisabled(attribute)}
                         <Property

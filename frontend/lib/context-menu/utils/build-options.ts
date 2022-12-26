@@ -1,4 +1,3 @@
-import MutableObject from "../../../../engine-core/MutableObject";
 import ContextMenuOption from "../templates/ContextMenuOptions";
 import getOptionID from "./get-option-id";
 import MappedOption from "../templates/MappedOption";

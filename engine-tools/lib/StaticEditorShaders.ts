@@ -1,4 +1,3 @@
-
 import ICONS_SPRITE_VERT from "../shaders/ICONS_SPRITE.vert";
 import ICONS_SPRITE_FRAG from "../shaders/ICONS_SPRITE.frag";
 import LINE_VERT from "../shaders/LINE.vert";

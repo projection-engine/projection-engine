@@ -1,4 +1,4 @@
-enum Localization {
+enum LOCALIZATION_EN {
     NEW_MESSAGE =  "New console message",
 
     LICENSE = "Projection Engine is licensed under the GNU General Public License, Version 3.\n Some files may have other compatible licenses.",
@@ -28,9 +28,11 @@ enum Localization {
     TOGGLE_DOWNLOADS = "Toggle downloads",
     LAST_MODIFIED = "Last modified",
     RECENT = "Recent",
+    OPEN = "Open",
     DOUBLE_CLICK_TO_RENAME = "Double click to rename.",
-    FAVORITE = "Toggle favorite.",
-    DOWNLOAD_FINISHED = "Download finished.",
+    NEW_PROJECT = "New project",
+    FAVORITE = "Toggle favorite",
+    DOWNLOAD_FINISHED = "Download finished",
     NOT_COMPATIBLE = "This version is not compatible with your OS.",
     UNINSTALL = "Uninstall",
     CHANGE_BASE_DIR = "Change source directory",
@@ -685,4 +687,4 @@ enum Localization {
 
 }
 
-export default Localization
+export default LOCALIZATION_EN

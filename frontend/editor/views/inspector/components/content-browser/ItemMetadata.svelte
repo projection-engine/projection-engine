@@ -1,6 +1,6 @@
 <script>
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import getTypeName from "../../../content-browser/utils/get-type-name";
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
@@ -25,42 +25,42 @@
     }
 </script>
 
-<Accordion title={Localization.MORE_INFO} type="">
+<Accordion title={LOCALIZATION_EN.MORE_INFO} type="">
    <div class="wrapper">
        {#if !item.isFolder && data}
            <div class="section">
                <ToolTip content="{data.size.toFixed(4)} MB"/>
-               <b>{Localization.FILE_SIZE}: </b><small data-overflow="-">{data.size.toFixed(4)} MB</small>
+               <b>{LOCALIZATION_EN.FILE_SIZE}: </b><small data-overflow="-">{data.size.toFixed(4)} MB</small>
            </div>
 
            <div class="section">
                <ToolTip content={item.type}/>
-               <b>{Localization.FILE_EXTENSION}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
+               <b>{LOCALIZATION_EN.FILE_EXTENSION}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
            </div>
            <div class="section">
                <ToolTip content={item.registryID}/>
-               <b>{Localization.REGISTRY_ID}: </b><small data-overflow="-">{item.registryID}</small>
+               <b>{LOCALIZATION_EN.REGISTRY_ID}: </b><small data-overflow="-">{item.registryID}</small>
            </div>
        {:else}
            <div class="section">
                <ToolTip content={item.children}/>
-               <b>{Localization.CHILDREN}: </b><small data-overflow="-">{item.children}</small>
+               <b>{LOCALIZATION_EN.CHILDREN}: </b><small data-overflow="-">{item.children}</small>
            </div>
        {/if}
        <div class="section">
            <ToolTip content={item.creationDate}/>
-           <b>{Localization.CREATION_DATE}: </b><small data-overflow="-">{item.creationDate}</small>
+           <b>{LOCALIZATION_EN.CREATION_DATE}: </b><small data-overflow="-">{item.creationDate}</small>
        </div>
        <div class="section">
            <ToolTip content={item.id}/>
-           <b>{Localization.ASSETS_PATH}: </b>
+           <b>{LOCALIZATION_EN.ASSETS_PATH}: </b>
            <small
                    data-overflow="-"
                    class="link"
                    on:click={showInFolder}
            >
                {item.id}
-               <ToolTip content={Localization.SHOW_ON_CB}/>
+               <ToolTip content={LOCALIZATION_EN.SHOW_ON_CB}/>
            </small>
        </div>
    </div>

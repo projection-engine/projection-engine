@@ -2,6 +2,7 @@ import {get, writable} from "svelte/store";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import Engine from "../../../engine-core/Engine";
 import Entity from "../../../engine-core/instances/Entity";
+import MutableObject from "../../../engine-core/MutableObject";
 
 const TYPES = {
     ENGINE: "ENGINE",
@@ -75,11 +76,12 @@ export default class SelectionStore {
     }
 
     static set shaderEditorSelected(data) {
+        // @ts-ignore
         SelectionStore.updateStore({...SelectionStore.data, TARGET: TYPES.SHADER_EDITOR, array: data})
     }
 
-    static get shaderEditorSelected():string[] {
-        return SelectionStore.TARGET === TYPES.SHADER_EDITOR ? SelectionStore.array : []
+    static get shaderEditorSelected():MutableObject[] {
+        return <MutableObject[]><unknown>(SelectionStore.TARGET === TYPES.SHADER_EDITOR ? SelectionStore.array : [])
     }
 
 

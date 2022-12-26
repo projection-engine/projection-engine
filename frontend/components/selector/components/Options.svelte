@@ -3,7 +3,7 @@
     import Option from "./Option.svelte";
     import EmbeddedMeshes from "../../../../engine-core/templates/EmbeddedMeshes";
     import VirtualList from '@sveltejs/svelte-virtual-list';
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import Icon from "../../icon/Icon.svelte";
     import Input from "../../input/Input.svelte";
 
@@ -30,9 +30,9 @@
         if (!noDefault) {
             if (type === "mesh")
                 Object.entries(EmbeddedMeshes).forEach(sm => {
-                    if (Localization[sm[0]] != null)
+                    if (LOCALIZATION_EN[sm[0]] != null)
                         current.push({
-                            name: Localization[sm[0]],
+                            name: LOCALIZATION_EN[sm[0]],
                             registryID: sm[1]
                         })
                 })
@@ -57,7 +57,7 @@
         {:else}
             <div data-empty="-">
                 <Icon styles="font-size: 2rem">folder</Icon>
-                {Localization.NOTHING}
+                {LOCALIZATION_EN.NOTHING}
             </div>
         {/if}
     </div>
@@ -66,7 +66,7 @@
                 width={"100%"}
                 searchString={searchString}
                 setSearchString={v => searchString  = v}
-                placeholder={Localization.SEARCH}
+                placeholder={LOCALIZATION_EN.SEARCH}
         >
             <Icon slot="icon">search</Icon>
         </Input>

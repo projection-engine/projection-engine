@@ -3,9 +3,6 @@
     import {onMount} from "svelte";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
     import CAMERA_ROTATIONS from "../../../../../engine-tools/static/CAMERA_ROTATIONS";
-    import EngineStore from "../../../stores/EngineStore";
-    import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
-    import EntityStateController from "../../../lib/controllers/EntityStateController";
 
     let ref
     let cameraRef

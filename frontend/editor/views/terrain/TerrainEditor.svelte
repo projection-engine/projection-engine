@@ -4,7 +4,7 @@
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
 
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
     import Header from "./Header.svelte";
@@ -50,13 +50,13 @@
             {#if settings.terrainTool === TERRAIN_TOOLS.SCULPT}
                 <div class="header">
                     <Icon styles="font-size: 1.2rem">carpenter</Icon>
-                    {Localization.SCULPT_TOOL}
+                    {LOCALIZATION_EN.SCULPT_TOOL}
                 </div>
                 <SculptOptions settings={settings} selectedTerrain={selectedTerrain}/>
             {:else if settings.terrainTool === TERRAIN_TOOLS.FOLIAGE}
                 <div class="header">
                     <Icon styles="font-size: 1.2rem">grass</Icon>
-                    {Localization.FOLIAGE_TOOL}
+                    {LOCALIZATION_EN.FOLIAGE_TOOL}
                 </div>
                 <FoliageOptions settings={settings}/>
             {/if}

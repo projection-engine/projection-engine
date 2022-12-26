@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";
@@ -34,11 +34,11 @@
 
 
 <fieldset>
-    <legend>{Localization.VIEW}</legend>
+    <legend>{LOCALIZATION_EN.VIEW}</legend>
     <div data-form="-">
         <Range
                 minLabelWidth={"30px"}
-                label={Localization.FAR}
+                label={LOCALIZATION_EN.FAR}
                 incrementPercentage={1}
                 onFinish={(v) => {
                     SettingsStore.updateStore({...settings, zFar: v})
@@ -53,7 +53,7 @@
         />
         <Range
                 minLabelWidth={"30px"}
-                label={Localization.NEAR}
+                label={LOCALIZATION_EN.NEAR}
                 onFinish={(v) => {
                     SettingsStore.updateStore({...settings, zNear: v})
 
@@ -68,7 +68,7 @@
             }}
         />
         <Range
-                label={Localization.FOV}
+                label={LOCALIZATION_EN.FOV}
                 minValue={10}
                 maxValue={150}
                 disabled={state.ortho}
@@ -88,11 +88,11 @@
 </fieldset>
 
 <fieldset>
-    <legend>{Localization.MOVEMENT_SPEED}</legend>
+    <legend>{LOCALIZATION_EN.MOVEMENT_SPEED}</legend>
     <div data-form="-">
         <Range
                 incrementPercentage={.1}
-                label={Localization.SCREEN_GRABBING_SPEED}
+                label={LOCALIZATION_EN.SCREEN_GRABBING_SPEED}
                 onFinish={(v) => updateCamera("screenSpaceMovementSpeed", v, true)}
                 value={state.screenSpaceMovementSpeed}
                 handleChange={v => updateCamera("screenSpaceMovementSpeed", v)}
@@ -100,7 +100,7 @@
 
         <Range
                 incrementPercentage={.1}
-                label={Localization.TRANSLATION}
+                label={LOCALIZATION_EN.TRANSLATION}
                 onFinish={(v) => updateCamera("movementSpeed", v, true)}
                 value={state.movementSpeed}
                 handleChange={v => updateCamera("movementSpeed", v)}
@@ -109,7 +109,7 @@
         <Range
                 precision={4}
                 incrementPercentage={.001}
-                label={Localization.ROTATION}
+                label={LOCALIZATION_EN.ROTATION}
                 onFinish={(v) => updateCamera("turnSpeed", v, true)}
                 value={state.turnSpeed}
                 handleChange={v => updateCamera("turnSpeed", v)}
@@ -120,12 +120,12 @@
 
 
 <fieldset>
-    <legend>{Localization.SMOOTHING}</legend>
+    <legend>{LOCALIZATION_EN.SMOOTHING}</legend>
     <div data-form="-">
         <Range
                 minValue={.0001}
                 incrementPercentage={.001}
-                label={Localization.TRANSLATION}
+                label={LOCALIZATION_EN.TRANSLATION}
                 onFinish={(v) => updateCamera("smoothing", v, true)}
                 value={state.smoothing}
                 handleChange={v => updateCamera("smoothing", v)}
@@ -133,7 +133,7 @@
         <Range
                 minValue={.0001}
                 incrementPercentage={.001}
-                label={Localization.ROTATION}
+                label={LOCALIZATION_EN.ROTATION}
                 onFinish={(v) => updateCamera("rotationSmoothing", v, true)}
                 value={state.rotationSmoothing}
                 handleChange={v => updateCamera("rotationSmoothing", v)}

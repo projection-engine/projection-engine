@@ -1,9 +1,6 @@
 <script lang="ts">
     import Icon from "../icon/Icon.svelte";
-    import transformModal from "../dialog/transform-modal.ts";
-    import {onDestroy, onMount} from "svelte";
     import "./css/dropdown.css"
-    import Portal from "../../lib/Portal";
     import Dialog from "../dialog/Dialog.svelte";
 
     export let asButton

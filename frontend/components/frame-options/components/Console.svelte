@@ -1,5 +1,4 @@
 <script>
-    import Localization from "../../../static/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
@@ -124,7 +123,7 @@
                         <div style="width: 1.1rem"></div>
                     {/if}
                     {#if item.object}
-                        <ToolTip content={Localization.CLICK_TO_SHOW_OBJECT}/>
+                        <ToolTip content={LOCALIZATION_EN.CLICK_TO_SHOW_OBJECT}/>
                     {/if}
                     <small data-overflow="-">{item.message}</small>
                     <ToolTip content={item.src.includes("file://") ? LOCALIZATION_EN.INTERNAL_ERROR : item.str}/>

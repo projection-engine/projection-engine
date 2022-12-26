@@ -5,8 +5,6 @@
     import Dropdown from "../dropdown/Dropdown.svelte";
     import {Sortable} from "sortablejs";
     import TabData from "./static/TabData";
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import ColorPicker from "../color-picker/ColorPicker.svelte";
     import Tab from "./components/Tab.svelte";
     import TabContextController from "./lib/TabContextController";
 

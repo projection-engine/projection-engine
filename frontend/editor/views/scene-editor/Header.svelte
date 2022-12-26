@@ -2,7 +2,6 @@
     import ShadingOption from "./components/ShadingModels.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
-    import Localization from "../../../static/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
@@ -27,13 +26,13 @@
             data-view-header-button="-"
     >
         <Icon styles="font-size: 1rem">play_arrow</Icon>
-        <ToolTip content={Localization.PLAY}/>
+        <ToolTip content={LOCALIZATION_EN.PLAY}/>
     </button>
     <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
     <AddOptions/>
     <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
         <button slot="button" data-view-header-dropdown="-">
-            {Localization.CAMERA}
+            {LOCALIZATION_EN.CAMERA}
         </button>
         <div style="padding: 8px 4px">
             <CameraSettings/>

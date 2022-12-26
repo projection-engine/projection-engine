@@ -1,5 +1,4 @@
 import ContextMenuOptions from "./ContextMenuOptions";
-import MutableObject from "../../../../engine-core/MutableObject";
 import MappedOption from "./MappedOption";
 
 interface ContextMenuTarget {

@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import KEYS from "../../../../../static/KEYS.ts";
 
 
@@ -60,7 +60,7 @@
 <div class="wrapper" bind:this={ref}>
     <input
             on:input={() => changed = true}
-            placeholder={Localization.KEY}
+            placeholder={LOCALIZATION_EN.KEY}
             on:blur={e => apply(e.currentTarget.value, true)}
             on:keydown={e => {
                 if(e.code !== KEYS.Enter)
@@ -71,7 +71,7 @@
     :
     <input
             on:input={() => changed = true}
-            placeholder={Localization.VALUE}
+            placeholder={LOCALIZATION_EN.VALUE}
             on:blur={e => apply(e.currentTarget.value)}
             on:keydown={e => {
                 if(e.code !== KEYS.Enter)

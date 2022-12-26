@@ -3,7 +3,7 @@
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
 
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import importFile from "../../../utils/import-file";
@@ -15,6 +15,7 @@
     import Input from "../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
     import AlertController from "../../../../components/alert/AlertController";
+    import NodeFS from "../../../../lib/FS/NodeFS";
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -42,14 +43,14 @@
                 on:click={() => navigationHistory.undo()}
         >
             <Icon styles="font-size: .9rem">arrow_back</Icon>
-            <ToolTip content={Localization.BACK_DIR}/>
+            <ToolTip content={LOCALIZATION_EN.BACK_DIR}/>
         </button>
         <button
                 data-view-header-button="-"
                 on:click={() => navigationHistory.redo()}
         >
             <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
-            <ToolTip content={Localization.FORWARD_DIR}/>
+            <ToolTip content={LOCALIZATION_EN.FORWARD_DIR}/>
         </button>
         <button
                 data-view-header-button="-"
@@ -60,25 +61,25 @@
                 }}
         >
             <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
-            <ToolTip content={Localization.PARENT_DIR}/>
+            <ToolTip content={LOCALIZATION_EN.PARENT_DIR}/>
         </button>
         <button
                 disabled={loading}
                 data-view-header-button="-"
                 on:click={() => {
-                    AlertController.warn(Localization.REFRESHING)
+                    AlertController.warn(LOCALIZATION_EN.REFRESHING)
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
         >
             <Icon styles="font-size: .9rem">sync</Icon>
-            <ToolTip content={Localization.REFRESH}/>
+            <ToolTip content={LOCALIZATION_EN.REFRESH}/>
         </button>
         <button
                 data-view-header-button="-"
                 on:click={() => FilesStore.createFolder(currentDirectory).catch()}
         >
             <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
-            <ToolTip content={Localization.CREATE_FOLDER}/>
+            <ToolTip content={LOCALIZATION_EN.CREATE_FOLDER}/>
         </button>
         <div data-vertdivider="-"></div>
 
@@ -86,13 +87,13 @@
                 width="50%"
                 hasBorder={true}
                 height="22px"
-                placeholder={Localization.SEARCH}
+                placeholder={LOCALIZATION_EN.SEARCH}
                 searchString={searchString}
                 setSearchString={setSearchString}
         />
         <Dropdown buttonStyles={getDropdownHeaderStyles(fileType != null)}>
             <button slot="button" data-view-header-dropdown="-">
-                <ToolTip content={Localization.FILTER_TYPE}/>
+                <ToolTip content={LOCALIZATION_EN.FILTER_TYPE}/>
                 <Icon styles="font-size: .9rem">filter_alt</Icon>
             </button>
             {#each fileTypes as k, i}
@@ -117,7 +118,7 @@
                 data-view-header-button="-"
         >
             <Icon styles="font-size: .9rem">view_stream</Icon>
-            <ToolTip content={Localization.ROW_VIEW}/>
+            <ToolTip content={LOCALIZATION_EN.ROW_VIEW}/>
         </button>
         <button
                 data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
@@ -125,7 +126,7 @@
                 data-view-header-button="-"
         >
             <Icon styles="transform: rotate(180deg)">grid_view</Icon>
-            <ToolTip content={Localization.CARD_VIEW}/>
+            <ToolTip content={LOCALIZATION_EN.CARD_VIEW}/>
         </button>
         <div data-vertdivider="-"></div>
         <button
@@ -133,7 +134,7 @@
                 data-focusbutton="-"
                 style="max-height: 22px"
         >
-            {Localization.IMPORT}
+            {LOCALIZATION_EN.IMPORT}
             <Icon styles="font-size: .9rem">open_in_new</Icon>
         </button>
     </div>

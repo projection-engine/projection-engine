@@ -3,7 +3,7 @@
     import Component from "../../../../../../../engine-core/templates/components/Component";
     import Selector from "../../../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../../stores/EngineStore";
-    import Localization from "../../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/LOCALIZATION_EN";
     import ColorPicker from "../../../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
@@ -14,7 +14,7 @@
     export let submit = undefined
     export let attribute = undefined
 
-    $: label = Localization[attribute.label] ? Localization[attribute.label] : attribute.label
+    $: label = LOCALIZATION_EN[attribute.label] ? LOCALIZATION_EN[attribute.label] : attribute.label
     $: value = component[attribute.key]
     $: isDisabled = typeof attribute.disabledIf === "function" ? attribute.disabledIf(component) : component[attribute.disabledIf]
 
@@ -84,7 +84,7 @@
                     minValue={attribute.min}
                     maxValue={attribute.max}
 
-                    label={Localization[partial] || partial}
+                    label={LOCALIZATION_EN[partial] || partial}
                     value={value[index]}
             />
         {/each}
@@ -97,7 +97,7 @@
                          submit(attribute.key, value, true)
                     }}>
                 <Icon styles="font-size: .9rem">undo</Icon>
-                {Localization.UNDO}
+                {LOCALIZATION_EN.UNDO}
             </button>
         {/if}
     {:else if attribute.type === Component.propTypes.BOOLEAN}
@@ -110,11 +110,11 @@
     {:else if attribute.type === Component.propTypes.OPTIONS}
         <Dropdown disabled={isDisabled} width="100%">
             <button slot="button" disabled={isDisabled} class="dropdown">
-                {Localization[dropdownLabel?.label] || dropdownLabel?.label}
+                {LOCALIZATION_EN[dropdownLabel?.label] || dropdownLabel?.label}
             </button>
             {#each attribute.options as option}
                 <button on:click={() =>  submit(attribute.key, option.value, true)}>
-                    {Localization[option.label] || option.label}
+                    {LOCALIZATION_EN[option.label] || option.label}
                 </button>
             {/each}
         </Dropdown>

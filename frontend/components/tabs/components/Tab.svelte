@@ -19,7 +19,8 @@
     export let value: ViewTabItem
     $: spplitedTemplates = templates ? templates.reduce((all, one, i) => {
         const ch = Math.floor(i / 2);
-        all[ch] = [].concat((all[ch] || []), one);
+        all[ch] = all[ch]||[]
+        all[ch].push(one);
         return all
     }, []) : undefined
 

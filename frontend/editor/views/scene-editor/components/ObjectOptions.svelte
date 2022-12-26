@@ -1,8 +1,6 @@
 <script>
     import viewportContext from "../../../templates/viewport-context";
-    import Localization from "../../../../static/LOCALIZATION_EN";
-    import getDropdownHeaderStyles from "../../../../components/dropdown/utils/get-dropdown-header-styles";
-    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import OptionDropdown from "../../../../components/dropdown/OptionDropdown.svelte";
 
     export let settings
@@ -27,6 +25,6 @@
 
 <OptionDropdown
         options={mappedOptions}
-        label={Localization.OBJECT}
+        label={LOCALIZATION_EN.OBJECT}
         autoClose={true}
 />

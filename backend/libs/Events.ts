@@ -10,6 +10,7 @@ import createRegistryEntry from "../utils/create-registry-entry";
 import directoryStructure from "../utils/directory-structure";
 import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import parseContentBrowserData from "../utils/parse-content-browser-data";
+
 const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, screen} = require("electron")
 
 const fs = require("fs")

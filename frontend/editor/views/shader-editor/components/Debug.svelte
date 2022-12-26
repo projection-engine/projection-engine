@@ -7,7 +7,7 @@
 <div class="contentWrapper">
     <div class="wrapper">
 <!--        <Tabs open={open} setOpen={setOpen} styles={{padding: "4px"}}>-->
-<!--            <Tab label={Localization.INFORMATION} class="content">-->
+<!--            <Tab label={LOCALIZATION_EN.INFORMATION} class="content">-->
 <!--                {#if status.info && status.info.length > 0}-->
 <!--                    {#each status.info as s, i}-->
 <!--                        <Accordion title={s?.label}>-->
@@ -17,11 +17,11 @@
 <!--                {:else}-->
 <!--                    <div class="empty">-->
 <!--                        <icon styles="font-size: 90px">code</icon>-->
-<!--                        {Localization.NEEDS_COMPILATION}-->
+<!--                        {LOCALIZATION_EN.NEEDS_COMPILATION}-->
 <!--                    </div>-->
 <!--                {/if}-->
 <!--            </Tab>-->
-<!--            <Tab label={Localization.ERRORS} class="content">-->
+<!--            <Tab label={LOCALIZATION_EN.ERRORS} class="content">-->
 <!--                {#if status.messages && status.messages.length > 0 }-->
 <!--                    {#each status.messages as s, i}-->
 <!--                        <Accordion title={s?.label}>-->
@@ -45,9 +45,9 @@
 <!--                            {/if}-->
 <!--                        </icon>-->
 <!--                        {#if !status.messages}-->
-<!--                            {Localization.NEEDS_COMPILATION}-->
+<!--                            {LOCALIZATION_EN.NEEDS_COMPILATION}-->
 <!--                        {:else}-->
-<!--                            {Localization.NO_ERRORS}-->
+<!--                            {LOCALIZATION_EN.NO_ERRORS}-->
 <!--                        {/if}-->
 <!--                    </div>-->
 <!--                {/if}-->

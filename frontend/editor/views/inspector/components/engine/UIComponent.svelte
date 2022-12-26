@@ -1,7 +1,7 @@
 <script>
     import StyleField from "./UIStyles.svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS.js"
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
@@ -40,13 +40,13 @@
 
 <fieldset>
     <legend class="legend">
-        {Localization.UI_COMPONENT}
+        {LOCALIZATION_EN.UI_COMPONENT}
         <button class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
             <Icon>delete_forever</Icon>
         </button>
     </legend>
     <fieldset>
-        <legend>{Localization.IMPORT_LAYOUT}</legend>
+        <legend>{LOCALIZATION_EN.IMPORT_LAYOUT}</legend>
         <Selector
                 selected={component.uiLayoutID}
                 type="ui"
@@ -54,10 +54,10 @@
         />
     </fieldset>
     <fieldset>
-        <legend>{Localization.ANCHOR_ELEMENT_ID}</legend>
+        <legend>{LOCALIZATION_EN.ANCHOR_ELEMENT_ID}</legend>
         <Input
                 searchString={component.anchorElement}
-                placeholder={Localization.ELEMENT_ID}
+                placeholder={LOCALIZATION_EN.ELEMENT_ID}
                 onBlur={(_, v) => update("anchorElement", v)}
                 onEnter={v => update("anchorElement", v)}
                 setSearchString={v =>  update("anchorElement", v)}
@@ -65,7 +65,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>{Localization.WRAPPER_STYLES}</legend>
+        <legend>{LOCALIZATION_EN.WRAPPER_STYLES}</legend>
         <StyleField
                 component={component}
                 isInput={true}

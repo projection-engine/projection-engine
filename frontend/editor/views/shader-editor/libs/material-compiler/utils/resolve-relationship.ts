@@ -1,4 +1,8 @@
-export default function resolveRelationship(currentNode, outputs, links, nodes, body, isVertex) {
+import MutableObject from "../../../../../../../engine-core/MutableObject";
+import {Output} from "../../ShaderNode";
+import ShaderLink from "../../ShaderLink";
+
+export default function resolveRelationship(currentNode:MutableObject, outputs:Output[], links:ShaderLink[], nodes:MutableObject[], body:string[], isVertex?:boolean) {
     const inputs = {}
     const linksToResolve = links.filter(l => l.targetRef.id === currentNode.id)
     linksToResolve.forEach(link => {

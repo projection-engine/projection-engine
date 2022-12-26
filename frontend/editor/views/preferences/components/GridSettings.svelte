@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
     import Range from "../../../../components/range/Range.svelte";
@@ -13,13 +13,13 @@
 </script>
 
 <fieldset>
-    <legend>{Localization.COLOR}</legend>
+    <legend>{LOCALIZATION_EN.COLOR}</legend>
     <div data-form="-">
 
         <Range
                 minValue={0}
                 maxValue={1}
-                label={Localization.BRIGHTNESS}
+                label={LOCALIZATION_EN.BRIGHTNESS}
 
                 onFinish={(v) => update("gridColor", v)}
                 handleChange={v => {
@@ -31,7 +31,7 @@
 
                 minValue={0}
                 maxValue={1}
-                label={Localization.OPACITY}
+                label={LOCALIZATION_EN.OPACITY}
 
                 onFinish={(v) => update("gridOpacity", v)}
                 handleChange={v => {
@@ -45,12 +45,12 @@
 
 
 <fieldset>
-    <legend>{Localization.DIMENSIONS}</legend>
+    <legend>{LOCALIZATION_EN.DIMENSIONS}</legend>
     <div data-form="-">
         <Range
                 increment={.01}
                 minValue={.001}
-                label={Localization.THRESHOLD}
+                label={LOCALIZATION_EN.THRESHOLD}
 
                 onFinish={(v) => update("gridThreshold", v)}
                 handleChange={v => {
@@ -61,7 +61,7 @@
         <Range
                 increment={.0001}
                 minValue={.00001}
-                label={Localization.SCALE}
+                label={LOCALIZATION_EN.SCALE}
 
                 onFinish={(v) => update("gridScale", v)}
                 handleChange={v => {

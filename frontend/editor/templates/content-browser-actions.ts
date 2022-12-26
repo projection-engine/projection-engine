@@ -4,7 +4,7 @@ import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import importFile from "../utils/import-file";
-import Localization from "../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
 import NodeFS from "../../lib/FS/NodeFS";
@@ -45,7 +45,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             label: "Refresh",
             require: settings.contentBrowserHotkeys.REFRESH,
             callback: () => {
-                AlertController.success(Localization.REFRESHING)
+                AlertController.success(LOCALIZATION_EN.REFRESHING)
                 FilesStore.refreshFiles().catch()
             }
         },
@@ -74,7 +74,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             },
         },
         DELETE: {
-            label: Localization.DELETE,
+            label: LOCALIZATION_EN.DELETE,
             require: settings.contentBrowserHotkeys.DELETE,
             callback: () => {
                 const s = [...SelectionStore.contentBrowserSelected]
@@ -85,7 +85,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             }
         },
         CUT: {
-            label: Localization.CUT,
+            label: LOCALIZATION_EN.CUT,
             require: settings.contentBrowserHotkeys.CUT,
             callback: () => FilesStore.updateStore({
                 ...FilesStore.data,
@@ -93,7 +93,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             })
         },
         PASTE: {
-            label: Localization.PASTE,
+            label: LOCALIZATION_EN.PASTE,
             require: settings.contentBrowserHotkeys.PASTE,
             callback: () => FilesStore.paste(currentDirectory.id)
         }
@@ -103,11 +103,11 @@ export default function contentBrowserActions(settings, navigationHistory, curre
         hotKeys: Object.values(hotKeys),
         contextMenu: [
             {
-                label: Localization.COPY_ID,
+                label: LOCALIZATION_EN.COPY_ID,
                 onClick: () => {
                     const ID = RegistryAPI.getByPath(SelectionStore.contentBrowserSelected[0])
                     if(ID){
-                        AlertController.success(Localization.COPIED)
+                        AlertController.success(LOCALIZATION_EN.COPIED)
                         clipboard.writeText(ID)
                     }
                 }
@@ -121,7 +121,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             hotKeys.FORWARD,
             {divider: true},
             {
-                label: Localization.IMPORT,
+                label: LOCALIZATION_EN.IMPORT,
                 onClick: () => importFile(currentDirectory)
             },
             hotKeys.REFRESH,

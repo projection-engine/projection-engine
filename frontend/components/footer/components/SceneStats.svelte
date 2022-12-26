@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import GPU from "../../../../engine-core/GPU";
     import Engine from "../../../../engine-core/Engine";
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ToolTip from "../../tooltip/ToolTip.svelte";
 
     let engine
@@ -40,16 +40,16 @@
 
 <small>Entities {entities}</small>
 <div data-vertdivider="-"></div>
-<small>Meshes {meshes}<ToolTip content={Localization.NATIVE_MESHES}/></small>
+<small>Meshes {meshes}<ToolTip content={LOCALIZATION_EN.NATIVE_MESHES}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Triangles {triangles}<ToolTip content={Localization.NATIVE_MESHES}/></small>
+<small>Triangles {triangles}<ToolTip content={LOCALIZATION_EN.NATIVE_MESHES}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Materials {materials}<ToolTip content={Localization.NATIVE_MATERIALS}/></small>
+<small>Materials {materials}<ToolTip content={LOCALIZATION_EN.NATIVE_MATERIALS}/></small>
 
 <div data-vertdivider="-"></div>
-<small>Textures {textures}<ToolTip content={Localization.NATIVE_TEXTURES}/></small>
+<small>Textures {textures}<ToolTip content={LOCALIZATION_EN.NATIVE_TEXTURES}/></small>
 
 
 <style>

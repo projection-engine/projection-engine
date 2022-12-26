@@ -12,7 +12,6 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-re
 import SettingsStore from "../../stores/SettingsStore";
 import VisualsStore from "../../stores/VisualsStore";
 import SETTINGS from "../../../static/SETTINGS";
-import Localization from "../../../static/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import TabsStore from "../../stores/TabsStore";
@@ -133,11 +132,11 @@ export default class LevelController {
 
     static async save() {
         if(EngineStore.engine.executingAnimation){
-            AlertController.warn(Localization.EXECUTING_SIMULATION)
+            AlertController.warn(LOCALIZATION_EN.EXECUTING_SIMULATION)
             return
         }
         await ErrorLoggerAPI.save()
-        AlertController.warn(Localization.SAVING)
+        AlertController.warn(LOCALIZATION_EN.SAVING)
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta

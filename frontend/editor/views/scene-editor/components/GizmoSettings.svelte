@@ -3,7 +3,6 @@
 
     import SettingsStore from "../../../stores/SettingsStore";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
-    import Localization from "../../../../static/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
     import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
@@ -48,12 +47,12 @@
     >
         {#if settings.transformationType === TRANSFORMATION_TYPE.RELATIVE}
             <Icon styles="font-size: .9rem">place</Icon>
-            {Localization.LOCAL}
+            {LOCALIZATION_EN.LOCAL}
         {:else}
             <Icon styles="font-size: .9rem">language</Icon>
-            {Localization.GLOBAL}
+            {LOCALIZATION_EN.GLOBAL}
         {/if}
-        <ToolTip content={Localization.TOGGLE_TRANSFORMATION_TYPE}/>
+        <ToolTip content={LOCALIZATION_EN.TOGGLE_TRANSFORMATION_TYPE}/>
     </button>
 
     <Dropdown hideArrow={true} buttonStyles={BUTTON_DROPDOWN}>

@@ -3,6 +3,7 @@ import readdir from "../../backend/utils/readdir";
 import rm from "../../backend/utils/rm";
 import readFile from "../../backend/utils/read-file";
 import FILE_TYPES from "../../static/objects/FILE_TYPES";
+
 const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, } = require("electron")
 
 const fs = require("fs")

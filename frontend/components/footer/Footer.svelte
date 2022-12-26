@@ -1,8 +1,6 @@
 <script>
-    import {onDestroy} from "svelte";
-    import Localization from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ErrorLoggerAPI from "../../editor/lib/fs/ErrorLoggerAPI";
-    import SettingsStore from "../../editor/stores/SettingsStore";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
     import ScriptsAPI from "../../../engine-core/lib/utils/ScriptsAPI";
@@ -27,12 +25,12 @@
             console.error("No logs found")
     }
     async function updateStructure() {
-        AlertController.warn(Localization.UPDATING_STRUCTURE)
+        AlertController.warn(LOCALIZATION_EN.UPDATING_STRUCTURE)
 
         await ScriptsAPI.updateAllScripts()
         await UIAPI.updateAllElements()
 
-        AlertController.success(Localization.DONE)
+        AlertController.success(LOCALIZATION_EN.DONE)
     }
 </script>
 
@@ -46,8 +44,8 @@
                 disabled={engine.executingAnimation}
         >
             <Icon styles="font-size: 1rem">refresh</Icon>
-            {Localization.REFRESH_STRUCTURE}
-            <ToolTip content={Localization.REFRESH_SCRIPTS_AND_PROBES}/>
+            {LOCALIZATION_EN.REFRESH_STRUCTURE}
+            <ToolTip content={LOCALIZATION_EN.REFRESH_SCRIPTS_AND_PROBES}/>
         </button>
         <div data-vertdivider="-"></div>
         <SceneStats/>
@@ -60,20 +58,20 @@
                 {#if settings.loggingEnabled}
                     <Icon>check</Icon>
                 {/if}
-                {Localization.LOGGING_ENABLED}
+                {LOCALIZATION_EN.LOGGING_ENABLED}
             </button>
             <button on:click={openLogs}>
                 <Icon>open_in_new</Icon>
-                {Localization.SHOW_ERROR_LOGS}
+                {LOCALIZATION_EN.SHOW_ERROR_LOGS}
             </button>
             <button on:click={() => FilesAPI.deleteFile(ErrorLoggerAPI.path)}>
                 <Icon>delete_forever</Icon>
-                {Localization.CLEAR_CACHE}
+                {LOCALIZATION_EN.CLEAR_CACHE}
             </button>
         </Dropdown>
         <div data-vertdivider="-"></div>
         <div class="version" on:click={() => shell.openExternal("https://github.com/projection-engine")}>
-            {Localization.VERSION}
+            {LOCALIZATION_EN.VERSION}
         </div>
     </div>
 </div>

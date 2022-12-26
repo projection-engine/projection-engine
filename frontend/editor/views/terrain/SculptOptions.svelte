@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../stores/SettingsStore";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import {onDestroy, onMount} from "svelte";
@@ -43,7 +43,7 @@
     }
 </script>
 <fieldset>
-    <legend>{Localization.IMPORT}</legend>
+    <legend>{LOCALIZATION_EN.IMPORT}</legend>
     <Selector
             type="image"
             handleChange={updateImage}
@@ -53,21 +53,21 @@
 
 <div class="boxes">
     <Checkbox
-            label={Localization.LOWER}
+            label={LOCALIZATION_EN.LOWER}
             checked={terrainSettings.brushOnDecrease}
             handleCheck={() => update("brushOnDecrease", true)}/>
     <Checkbox
-            label={Localization.RAISE}
+            label={LOCALIZATION_EN.RAISE}
             checked={!terrainSettings.brushOnDecrease}
             handleCheck={() => update("brushOnDecrease", false)}/>
 </div>
 <fieldset>
-    <legend>{Localization.STROKE}</legend>
+    <legend>{LOCALIZATION_EN.STROKE}</legend>
     <Range
             minValue={0}
             precision={4}
             incrementPercentage={.001}
-            label={Localization.WIDTH}
+            label={LOCALIZATION_EN.WIDTH}
             value={terrainSettings.brushSize}
             onFinish={v => update("brushSize", v)}
     />
@@ -76,7 +76,7 @@
             maxValue={1}
             precision={4}
             incrementPercentage={.001}
-            label={Localization.STRENGTH}
+            label={LOCALIZATION_EN.STRENGTH}
             value={terrainSettings.brushStrength}
             onFinish={v => update("brushStrength", v)}
     />
@@ -85,7 +85,7 @@
             maxValue={1}
             precision={4}
             incrementPercentage={.001}
-            label={Localization.SCALE}
+            label={LOCALIZATION_EN.SCALE}
             value={terrainSettings.brushScale * 100}
             onFinish={v => update("brushScale", v/100)}
     />

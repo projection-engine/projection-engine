@@ -3,7 +3,7 @@
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import dragDrop from "../../../../../components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";
@@ -36,7 +36,7 @@
         draggable.onMount({
             targetElement: ref,
             onDrop: d => handleComponentDrop(entity, d),
-            onDragOver: () => Localization.ADD_DRAG_DROP
+            onDragOver: () => LOCALIZATION_EN.ADD_DRAG_DROP
         })
     })
     onDestroy(() => draggable.onDestroy())
@@ -82,7 +82,7 @@
                 {:else}
                     <div data-empty="-">
                         <Icon styles="font-size: 75px">code</Icon>
-                        {Localization.NO_CUSTOM_COMPONENTS_LINKED}
+                        {LOCALIZATION_EN.NO_CUSTOM_COMPONENTS_LINKED}
                     </div>
                 {/if}
             {:else if tabIndex === -2}
@@ -104,9 +104,9 @@
                     />
                     {#if components[tabIndex][0] === COMPONENTS.MESH && components[tabIndex][1].materialUniforms}
                         <fieldset>
-                            <legend>{Localization.MATERIAL_VALUES}</legend>
+                            <legend>{LOCALIZATION_EN.MATERIAL_VALUES}</legend>
                             <Checkbox
-                                    label={Localization.OVERRIDE_PROPERTIES}
+                                    label={LOCALIZATION_EN.OVERRIDE_PROPERTIES}
                                     handleCheck={() => updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !components[tabIndex][1].overrideMaterialUniforms, true, components[tabIndex])}
                                     checked={components[tabIndex][1].overrideMaterialUniforms}
                             />
@@ -124,13 +124,13 @@
                         </fieldset>
                     {:else if components[tabIndex][0] === COMPONENTS.SKYLIGHT}
                         <fieldset>
-                            <legend>{Localization.PROBE}</legend>
+                            <legend>{LOCALIZATION_EN.PROBE}</legend>
                             <button
                                     class="recompute-button"
                                     on:click={() => {
                                     GPU.activeSkylightEntity = entity
                                 }}>
-                                {Localization.RECOMPUTE_CAPTURE}
+                                {LOCALIZATION_EN.RECOMPUTE_CAPTURE}
                             </button>
                         </fieldset>
                     {/if}

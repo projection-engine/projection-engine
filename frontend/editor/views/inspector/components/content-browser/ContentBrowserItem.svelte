@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import TextureItem from "./TextureItem.svelte";
     import CodeItem from "./CodeItem.svelte";
@@ -49,7 +49,7 @@
         <div class="empty-wrapper">
             <div data-empty="-" style="position: relative">
                 <Icon styles="font-size: 75px">category</Icon>
-                {Localization.CONTENT_BROWSER}
+                {LOCALIZATION_EN.CONTENT_BROWSER}
             </div>
         </div>
     {/if}

@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import {v4} from "uuid"
     import EngineHierarchyView from "./components/View.svelte";
@@ -36,7 +36,7 @@
                 ref,
                 Object.values(viewportHotkeys(settings)),
                 "public",
-                Localization.VIEWPORT
+                LOCALIZATION_EN.VIEWPORT
             )
         }
     }
@@ -74,21 +74,21 @@
             }}
             data-view-header-button="-"
     >
-        <ToolTip content={Localization.SHOW_MAIN_ENTITY}/>
+        <ToolTip content={LOCALIZATION_EN.SHOW_MAIN_ENTITY}/>
         <Icon styles="font-size: .9rem">center_focus_strong</Icon>
     </button>
     <button
             on:click={() => EntityConstructor.createEmpty()}
             data-view-header-button="-"
     >
-        <ToolTip content={Localization.CREATE_ENTITY}/>
+        <ToolTip content={LOCALIZATION_EN.CREATE_ENTITY}/>
         <Icon styles="font-size: .9rem">add</Icon>
     </button>
     <Input
             hasBorder={true}
             width="50%"
             height="22px"
-            placeholder={Localization.SEARCH}
+            placeholder={LOCALIZATION_EN.SEARCH}
             searchString={search}
             setSearchString={v => search = v}
     />
@@ -96,7 +96,7 @@
     <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined) + "margin-left: auto"}>
         <button slot="button" data-view-header-dropdown="-">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
-            <ToolTip content={Localization.COMPONENT_FILTER}/>
+            <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
         </button>
         {#each nativeComponents as component}
             <button

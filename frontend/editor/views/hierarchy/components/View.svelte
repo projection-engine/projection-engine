@@ -4,7 +4,7 @@
     import Branch from "./Node.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
     import HierarchyController from "../lib/HierarchyController";
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../stores/SettingsStore";
@@ -99,6 +99,6 @@
 {:else}
     <div data-empty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>
-        {Localization.HIERARCHY}
+        {LOCALIZATION_EN.HIERARCHY}
     </div>
 {/if}

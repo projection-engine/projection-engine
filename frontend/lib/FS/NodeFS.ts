@@ -4,7 +4,7 @@ import PROJECT_STATIC_DATA from "../../../static/objects/PROJECT_STATIC_DATA";
 import {getCall} from "./get-call";
 import MutableObject from "../../../engine-core/MutableObject";
 
-
+const os = window.require("os")
 const pathRequire = window.require("path")
 const fs = window.require("fs")
 export default class NodeFS  {
@@ -12,6 +12,7 @@ export default class NodeFS  {
     static path?:string
     static temp?:string
     static PREVIEW_PATH?:string
+    static rootDir = os.homedir()
     static ASSETS_PATH?:string
     static #initialized = false
     static initialize() {

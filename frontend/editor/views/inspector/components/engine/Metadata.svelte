@@ -2,7 +2,7 @@
     import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";
@@ -20,20 +20,20 @@
 
 
 <fieldset>
-    <legend>{Localization.NAME}</legend>
+    <legend>{LOCALIZATION_EN.NAME}</legend>
     <Input
             width="100%"
             hasBorder={true}
             onBlur={(_,v) => EntityNameController.renameEntity(v, entity)}
             onEnter={v => EntityNameController.renameEntity(v, entity)}
             searchString={entity.name}
-            placeholder={Localization.MY_ENTITY}
+            placeholder={LOCALIZATION_EN.MY_ENTITY}
     />
 </fieldset>
 <fieldset>
-    <legend>{Localization.COLOR}</legend>
+    <legend>{LOCALIZATION_EN.COLOR}</legend>
     <ColorPicker
-            label={Localization.HIERARCHY_COLOR}
+            label={LOCALIZATION_EN.HIERARCHY_COLOR}
             value={entity._hierarchyColor||[255,255,255]}
             submit={(_, arr) => {
                 entity._hierarchyColor = arr
@@ -42,7 +42,7 @@
     />
 </fieldset>
 <fieldset>
-    <legend>{Localization.QUERY_KEY}</legend>
+    <legend>{LOCALIZATION_EN.QUERY_KEY}</legend>
     <Input
             width="100%"
             hasBorder={true}
@@ -52,12 +52,12 @@
                     entity.queryKey = v
                 }}
             searchString={entity.queryKey}
-            placeholder={Localization.QUERY_KEY}
+            placeholder={LOCALIZATION_EN.QUERY_KEY}
     />
 </fieldset>
 
 <fieldset>
-    <legend style="font-weight: 500">{Localization.RELATIONS}</legend>
+    <legend style="font-weight: 500">{LOCALIZATION_EN.RELATIONS}</legend>
     <Selector
             type="parent"
             selected={entity.parent}
@@ -70,7 +70,7 @@
 </fieldset>
 
 <fieldset>
-    <legend style="font-weight: 500">{Localization.VISIBILITY}</legend>
+    <legend style="font-weight: 500">{LOCALIZATION_EN.VISIBILITY}</legend>
     <Checkbox
             checked={entity.active}
             handleCheck={_ =>  {
@@ -78,6 +78,6 @@
                 EntityConstructor.toggleEntityVisibility(entity)
                 entity.active = inv
             }}
-            label={Localization.ACTIVE}
+            label={LOCALIZATION_EN.ACTIVE}
     />
 </fieldset>

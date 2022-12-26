@@ -6,10 +6,19 @@ import NODE_TYPES from "../../material-compiler/templates/NODE_TYPES"
 export default class Multiply extends ShaderNode {
     a = 0
     b = 0
+
     constructor() {
         super([
-            {label: "A", key: "a", accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2 ]},
-            {label: "B", key: "b", accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2 ] }
+            {
+                label: "A",
+                key: "a",
+                accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2]
+            },
+            {
+                label: "B",
+                key: "b",
+                accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2]
+            }
         ], [
             {label: "Result", key: "multRes", type: DATA_TYPES.UNDEFINED}
         ])
@@ -20,9 +29,10 @@ export default class Multiply extends ShaderNode {
     get type() {
         return NODE_TYPES.FUNCTION
     }
-    getFunctionCall({a={name: this.a},b={name: this.b}}, index) {
+
+    getFunctionCall({a = {name: this.a, type: DATA_TYPES.FLOAT}, b = {name: this.b, type: DATA_TYPES.FLOAT}}, index) {
         this.multRes = "multRes" + index
-        if(b && a)
+        if (b && a)
             return `${a.type} ${this.multRes} = ${a.name} * ${b.name};`
         else
             return `${a.type} ${this.multRes};`

@@ -1,6 +1,6 @@
 <script>
     import {onDestroy} from "svelte";
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import Rendering from "./components/Rendering.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";
@@ -40,26 +40,26 @@
     </div>
   <div class="content">
       {#if tab === 0}
-          <strong>{Localization.VIEWPORT}</strong>
+          <strong>{LOCALIZATION_EN.VIEWPORT}</strong>
           <ViewportSettings settings={settings}/>
       {:else if tab === 1}
 
-          <strong>{Localization.RENDERING}</strong>
+          <strong>{LOCALIZATION_EN.RENDERING}</strong>
           <Rendering visualSettings={visuals}/>
 
       {:else if tab === 2}
 
-          <strong>{Localization.SHORTCUTS}</strong>
+          <strong>{LOCALIZATION_EN.SHORTCUTS}</strong>
           <Shortcuts settings={settings}/>
 
       {:else if tab === 3}
 
-          <strong>{Localization.CAMERA}</strong>
+          <strong>{LOCALIZATION_EN.CAMERA}</strong>
           <CameraSettings/>
 
       {:else if tab === 4}
 
-          <strong>{Localization.GRID}</strong>
+          <strong>{LOCALIZATION_EN.GRID}</strong>
           <GridSettings settings={settings}/>
       {/if}
   </div>

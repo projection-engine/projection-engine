@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
@@ -13,8 +13,6 @@
     import AttributeEditor from "./components/shader-editor/AttributeEditor.svelte";
     import {v4} from "uuid";
     import Icon from "../../../components/icon/Icon.svelte";
-    import Engine from "../../../../engine-core/Engine";
-    import EngineStore from "../../stores/EngineStore";
 
     const internalID = v4()
     let ui = {}
@@ -34,17 +32,17 @@
             switch (v.TARGET) {
                 case T.CONTENT_BROWSER:
                     targetInstance = FilesStore.data.items.find(i => i.id === v.array[0])
-                    targetType = Localization.CONTENT_BROWSER
+                    targetType = LOCALIZATION_EN.CONTENT_BROWSER
                     break
                 case T.SHADER_EDITOR:
                     if (v.array[0] instanceof ShaderNode) {
                         targetInstance = v.array[0]
-                        targetType = Localization.SHADER_EDITOR
+                        targetType = LOCALIZATION_EN.SHADER_EDITOR
                     }
                     break
                 case T.ENGINE:
                     targetInstance = QueryAPI.getEntityByID(v.array[0])
-                    targetType = Localization.ENGINE
+                    targetType = LOCALIZATION_EN.ENGINE
                     break
                 default:
                     targetInstance = undefined
@@ -54,7 +52,7 @@
 
         if (!targetInstance && v.lockedEntity != null) {
             targetInstance = QueryAPI.getEntityByID(v.lockedEntity)
-            targetType = Localization.ENGINE
+            targetType = LOCALIZATION_EN.ENGINE
         }
         entity = targetInstance
     })
@@ -64,7 +62,7 @@
 {#if entity == null}
     <div data-empty="-">
         <Icon styles="font-size: 75px">category</Icon>
-        {Localization.INSPECTOR}
+        {LOCALIZATION_EN.INSPECTOR}
     </div>
 {:else}
     <ViewHeader>

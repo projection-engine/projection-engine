@@ -1,7 +1,7 @@
 <script>
     import FilesStore from "../../editor/stores/FilesStore";
     import {onDestroy} from "svelte";
-    import Localization from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import Options from "./components/Options.svelte";
     import EmbeddedMeshes from "../../../engine-core/templates/EmbeddedMeshes";
     import getType from "./utils/get-type";
@@ -26,11 +26,11 @@
     let state
     $: {
         if (type === "parent")
-            state = selected ? selected : {name: Localization.EMPTY}
+            state = selected ? selected : {name: LOCALIZATION_EN.EMPTY}
         else if (selected) {
             if (Object.values(EmbeddedMeshes).find(s => s === selected))
                 state = {
-                    name: Localization[Object.values(EmbeddedMeshes).find(s => s === selected)],
+                    name: LOCALIZATION_EN[Object.values(EmbeddedMeshes).find(s => s === selected)],
                     registryID: selected
                 }
             else {
@@ -39,10 +39,10 @@
                 if (data?.registryID !== undefined)
                     state = data
                 else
-                    state = {name: Localization.EMPTY}
+                    state = {name: LOCALIZATION_EN.EMPTY}
             }
         } else
-            state = {name: Localization.EMPTY}
+            state = {name: LOCALIZATION_EN.EMPTY}
     }
 </script>
 
@@ -84,7 +84,7 @@
     <div data-vertdivider="-" style="margin: 0"></div>
     <button class="remove-button" on:click={_ => handleChange(null)}>
         <Icon styles="font-size: 1rem">clear</Icon>
-        <ToolTip content={Localization.CLEAR}/>
+        <ToolTip content={LOCALIZATION_EN.CLEAR}/>
     </button>
 </div>
 

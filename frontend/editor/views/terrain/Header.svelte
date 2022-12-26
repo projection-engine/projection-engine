@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import TERRAIN_TOOLS from "../../../static/TERRAIN_TOOLS.ts";
     import SettingsStore from "../../stores/SettingsStore";
     import Selector from "../../../components/selector/Selector.svelte";
@@ -16,17 +16,17 @@
     <button on:click={() => SettingsStore.updateStore({...settings, terrainTool: TERRAIN_TOOLS.SCULPT})}
             class="button viewport" data-highlight={settings.terrainTool === TERRAIN_TOOLS.SCULPT ? "-" : ""}>
         <Icon styles="font-size: .9rem">carpenter</Icon>
-        <ToolTip content={Localization.SCULPT}/>
+        <ToolTip content={LOCALIZATION_EN.SCULPT}/>
     </button>
     <button on:click={() => SettingsStore.updateStore({...settings, terrainTool: TERRAIN_TOOLS.PAINT})}
             class="button viewport" data-highlight={settings.terrainTool === TERRAIN_TOOLS.PAINT ? "-" : ""}>
         <Icon styles="font-size: .9rem">brush</Icon>
-        <ToolTip content={Localization.PAINT_LAYERS}/>
+        <ToolTip content={LOCALIZATION_EN.PAINT_LAYERS}/>
     </button>
     <button on:click={() => SettingsStore.updateStore({...settings, terrainTool: TERRAIN_TOOLS.FOLIAGE})}
             class="button viewport" data-highlight={settings.terrainTool === TERRAIN_TOOLS.FOLIAGE ? "-" : ""}>
         <Icon styles="font-size: .9rem">grass</Icon>
-        <ToolTip content={Localization.PAINT_FOLIAGE}/>
+        <ToolTip content={LOCALIZATION_EN.PAINT_FOLIAGE}/>
     </button>
 </div>
 

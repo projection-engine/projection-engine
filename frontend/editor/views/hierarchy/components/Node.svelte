@@ -1,11 +1,10 @@
 <script lang="ts">
     import DraggableEntity from "./Draggable.svelte";
-    import Localization from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import EntityConstructor from "../../../lib/controllers/EntityConstructor";
     import Icon from "../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
-    import MutableObject from "../../../../../engine-core/MutableObject";
 
     export let depth: number
     export let nodeRef: Entity
@@ -70,7 +69,7 @@
             class="button-small hierarchy-branch"
             on:click={() => EntityConstructor.toggleEntityVisibility(nodeRef)}
     >
-        <ToolTip content={Localization.DEACTIVATE}/>
+        <ToolTip content={LOCALIZATION_EN.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">
             {#if nodeRef.active}
                 visibility

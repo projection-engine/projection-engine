@@ -23,8 +23,8 @@ export default async function compileFragmentShader(startPoint, nodes, links) {
         }
     }
 
-    let body = []
-    resolveRelationship(startPoint, [], links.filter(l => l.targetRef.id !== startPoint.id || l.targetRef.id === startPoint.id), nodes, body, false)
+    let body:string[] = []
+    resolveRelationship(startPoint, [], links.filter(l => l.targetRef.id !== startPoint.id || l.targetRef.id === startPoint.id), nodes, body)
     return {
         functionDeclaration: constants.join("\n") + "\n" + body.join("\n"),
         uniformsDeclaration: uniformDeclarations.join("\n"),

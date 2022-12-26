@@ -1,7 +1,6 @@
 <script>
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
-    import Localization from "../../../../../static/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
@@ -80,7 +79,7 @@
     <div class="empty-wrapper">
         <div data-empty="-" style="position: relative">
             <Icon styles="font-size: 75px">texture</Icon>
-            {Localization.NO_UNIFORMS}
+            {LOCALIZATION_EN.NO_UNIFORMS}
         </div>
     </div>
 {/if}

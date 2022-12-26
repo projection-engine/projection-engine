@@ -81,6 +81,7 @@ body {
     --background-input: #545454;
     --background-input-lighter: #565656;
     color: var(--pj-color-secondary);
+    background: var(--pj-background-secondary) !important;
 }
 
 button {

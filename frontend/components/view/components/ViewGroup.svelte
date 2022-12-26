@@ -1,15 +1,13 @@
 <script lang="ts">
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../static/VIEWS";
     import TabsStore from "../../../editor/stores/TabsStore";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import SettingsStore from "../../../editor/stores/SettingsStore";
-    import Portal from "../../../lib/Portal";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../dialog/Dialog.svelte";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
     export let groupIndex
     export let views: ViewTabItem[]
@@ -37,13 +35,13 @@
     $: if (groupIndex != null) currentTab = 0
     $: view = views[currentTab]?.type
     $: tabs = views.map(v => {
-        v.name = Localization[v.type]
+        v.name = LOCALIZATION_EN[v.type]
         v.icon = getViewIcon(v.type)
         v.id = v.type
         return v
     })
     $: viewTemplates = Object.values(VIEWS).map(value => ({
-        name: Localization[value],
+        name: LOCALIZATION_EN[value],
         id: value
     }))
 

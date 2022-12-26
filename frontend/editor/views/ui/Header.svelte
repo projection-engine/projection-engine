@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
     import SelectionStore from "../../stores/SelectionStore";
     import GIZMOS from "../../../static/GIZMOS.ts";
@@ -54,16 +54,16 @@
     {#if isAlreadyOpen && !engine.executingAnimation}
         <button on:click={focusOnView} data-view-header-button="-" style="max-width: unset">
             <Icon styles="font-size: .9rem">place</Icon>
-            {Localization.FOCUS_ON_THIS_VIEW}
+            {LOCALIZATION_EN.FOCUS_ON_THIS_VIEW}
         </button>
     {:else if !isAlreadyOpen}
         <div class="left-content">
             <button on:click={addUiElement} data-view-header-button="-" style="max-width: unset">
                 <Icon styles="font-size: .9rem">add</Icon>
-                {Localization.ADD_ELEMENT}
+                {LOCALIZATION_EN.ADD_ELEMENT}
             </button>
             <button on:click={selectAll} data-view-header-button="-" style="max-width: unset">
-                {Localization.SELECT_ALL}
+                {LOCALIZATION_EN.SELECT_ALL}
             </button>
         </div>
 
@@ -72,7 +72,7 @@
                 <Icon>
                     highlight_alt
                 </Icon>
-                <ToolTip content={Localization.PICKER}/>
+                <ToolTip content={LOCALIZATION_EN.PICKER}/>
             </button>
         </div>
     {/if}

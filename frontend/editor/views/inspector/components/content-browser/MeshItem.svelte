@@ -1,5 +1,4 @@
 <script>
-    import Localization from "../../../../../static/LOCALIZATION_EN";
     import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
@@ -31,6 +30,6 @@
 </script>
 
 <button on:click={() => updateAsset()} disabled={wasUpdated}>
-    {Localization.REGENERATE_NORMALS_AND_TANGENTS}
+    {LOCALIZATION_EN.REGENERATE_NORMALS_AND_TANGENTS}
 </button>
 

@@ -1,9 +1,11 @@
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS.js";
 import Entity from "../../../../../engine-core/instances/Entity";
+import MutableObject from "../../../../../engine-core/MutableObject";
+import MeshComponent from "../../../../../engine-core/templates/components/MeshComponent";
 
 
-export default function initializeEntity(data, meshID, parent, index = 0) {
-    const entity = new Entity(data?.id, data.name ? data.name : "primitive-" + index)
+export default function initializeEntity(data: MutableObject, meshID: string, parent?: Entity, index?: number) {
+    const entity = new Entity(data?.id, data.name ? data.name : "primitive-" + (index || 0))
     try {
         if (parent != null) {
             entity.parent = parent
@@ -14,10 +16,10 @@ export default function initializeEntity(data, meshID, parent, index = 0) {
         for (let i = 0; i < 16; i++)
             entity.baseTransformationMatrix[i] = data.baseTransformationMatrix[i]
 
-        const e = entity.addComponent(COMPONENTS.MESH)
+        const comp = <MeshComponent>entity.addComponent(COMPONENTS.MESH)
         entity.addComponent(COMPONENTS.CULLING)
-        e.materialID = data.material
-        e.meshID = meshID
+        comp.materialID = data.material
+        comp.meshID = meshID
         return entity
     } catch (err) {
         console.error(err)

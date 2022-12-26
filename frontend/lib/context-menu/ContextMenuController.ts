@@ -1,9 +1,7 @@
 import ContextMenuOption from "./templates/ContextMenuOptions";
 import findOptions from "./utils/find-options";
 import buildOptions from "./utils/build-options";
-import MappedOption from "./templates/MappedOption";
 import ContextMenuTarget from "./templates/ContextMenuTarget";
-import MutableObject from "../../../engine-core/MutableObject";
 
 const {ipcRenderer} = window.require("electron")
 

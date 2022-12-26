@@ -2,11 +2,12 @@ import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../material-compiler/templates/NODE_TYPES"
 import RegistryAPI from "../../../../lib/fs/RegistryAPI";
+import MutableObject from "../../../../../../engine-core/MutableObject";
 
 
 export default class TextureSample extends ShaderNode {
     uniform = true
-    _texture = {}
+    _texture:MutableObject = {}
 
     get texture() {
         return this._texture

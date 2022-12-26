@@ -28,6 +28,7 @@ export default class AssimpLoader {
     static instance
 
     static async initialize() {
+        // @ts-ignore
         AssimpLoader.instance = await AssimpJS()
     }
 

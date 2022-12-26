@@ -1,5 +1,5 @@
 <script>
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
@@ -67,14 +67,14 @@
 </script>
 
 <fieldset>
-    <legend>{Localization.FLIP_TEXTURE}</legend>
-    <Checkbox label={Localization.FLIP_Y} checked={data?.flipY}
+    <legend>{LOCALIZATION_EN.FLIP_TEXTURE}</legend>
+    <Checkbox label={LOCALIZATION_EN.FLIP_Y} checked={data?.flipY}
               handleCheck={ async () => await updateAsset("flipY", !data.flipY, data)}/>
-    <Checkbox label={Localization.FLIP_X} checked={data?.flipX}
+    <Checkbox label={LOCALIZATION_EN.FLIP_X} checked={data?.flipX}
               handleCheck={async() => await updateAsset("flipX", !data.flipX, data)}/>
 </fieldset>
 <fieldset>
-    <legend>{Localization.TEXTURE_FORMAT}</legend>
+    <legend>{LOCALIZATION_EN.TEXTURE_FORMAT}</legend>
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
             {data?.internalFormat}
@@ -91,75 +91,75 @@
     </Dropdown>
 </fieldset>
 <fieldset>
-    <legend>{Localization.TEXTURE_FILTERING}</legend>
+    <legend>{LOCALIZATION_EN.TEXTURE_FILTERING}</legend>
 
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
-            {Localization[data?.minFilter]}
+            {LOCALIZATION_EN[data?.minFilter]}
             <small>
-                {Localization.TEXTURE_MIN_FILTER}
+                {LOCALIZATION_EN.TEXTURE_MIN_FILTER}
             </small>
         </button>
         <button on:click={() => updateAsset("minFilter",  TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_LINEAR)}>
-            {Localization.NEAREST_MIPMAP_LINEAR}
+            {LOCALIZATION_EN.NEAREST_MIPMAP_LINEAR}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_NEAREST)}>
-            {Localization.LINEAR_MIPMAP_NEAREST}
+            {LOCALIZATION_EN.LINEAR_MIPMAP_NEAREST}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_LINEAR)}>
-            {Localization.LINEAR_MIPMAP_LINEAR}
+            {LOCALIZATION_EN.LINEAR_MIPMAP_LINEAR}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_NEAREST)}>
-            {Localization.NEAREST_MIPMAP_NEAREST}
+            {LOCALIZATION_EN.NEAREST_MIPMAP_NEAREST}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR)}>
-            {Localization.LINEAR}
+            {LOCALIZATION_EN.LINEAR}
         </button>
         <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST)}>
-            {Localization.NEAREST}
+            {LOCALIZATION_EN.NEAREST}
         </button>
     </Dropdown>
 
     <Dropdown buttonStyles={B}>
         <button slot="button" class="dropdown">
 
-            {Localization[data?.magFilter]}
+            {LOCALIZATION_EN[data?.magFilter]}
             <small>
-                {Localization.TEXTURE_MAG_FILTER}
+                {LOCALIZATION_EN.TEXTURE_MAG_FILTER}
             </small>
         </button>
         <button on:click={() => updateAsset("magFilter",  TEXTURE_FILTERING.MAG.NEAREST)}>
-            {Localization.NEAREST}
+            {LOCALIZATION_EN.NEAREST}
         </button>
         <button on:click={() => updateAsset("magFilter", TEXTURE_FILTERING.MAG.LINEAR)}>
-            {Localization.LINEAR}
+            {LOCALIZATION_EN.LINEAR}
         </button>
     </Dropdown>
 </fieldset>
 
 <fieldset>
-    <legend>{Localization.TEXTURE_WRAPPING}</legend>
+    <legend>{LOCALIZATION_EN.TEXTURE_WRAPPING}</legend>
     {#each ["wrapS", "wrapT"] as key}
         <Dropdown buttonStyles={B}>
             <button slot="button" class="dropdown">
                 {#if data}
-                    {Localization[data[key]]}
+                    {LOCALIZATION_EN[data[key]]}
                 {/if}
                 <small>
-                    {Localization[key]}
+                    {LOCALIZATION_EN[key]}
                 </small>
             </button>
             <button on:click={() => updateAsset(key,  TEXTURE_WRAPPING.MIRRORED_REPEAT)}>
-                {Localization.MIRRORED_REPEAT}
+                {LOCALIZATION_EN.MIRRORED_REPEAT}
             </button>
             <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.REPEAT)}>
-                {Localization.REPEAT}
+                {LOCALIZATION_EN.REPEAT}
             </button>
             <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_EDGE)}>
-                {Localization.CLAMP_TO_EDGE}
+                {LOCALIZATION_EN.CLAMP_TO_EDGE}
             </button>
             <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_BORDER)}>
-                {Localization.CLAMP_TO_BORDER}
+                {LOCALIZATION_EN.CLAMP_TO_BORDER}
             </button>
         </Dropdown>
     {/each}
@@ -168,7 +168,7 @@
 <div class="link"
      on:click={() => shell.openExternal("https://registry.khronos.org/OpenGL-Refpages/es2.0/xhtml/glTexParameter.xml")}>
     <Icon>help</Icon>
-    {Localization.OPENGL_DOCS}
+    {LOCALIZATION_EN.OPENGL_DOCS}
 </div>
 
 <style>

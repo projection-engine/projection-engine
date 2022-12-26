@@ -6,13 +6,15 @@
     import LevelController from "./editor/lib/utils/LevelController";
     import Canvas from "./editor/views/scene-editor/Canvas.svelte";
     import RENDER_TARGET from "./static/RENDER_TARGET";
-    import Localization from "./static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "./static/LOCALIZATION_EN";
     import HotKeysController from "./editor/lib/utils/HotKeysController";
     import Alert from "./components/alert/Alert.svelte";
     import About from "./components/About.svelte";
     import NodeFS from "./lib/FS/NodeFS";
     import FilesAPI from "./editor/lib/fs/FilesAPI";
     import PROJECT_STATIC_DATA from "../static/objects/PROJECT_STATIC_DATA";
+    import WindowOptions from "./components/frame-options/WindowOptions.svelte";
+    import ContextMenu from "./components/context-menu/ContextMenu.svelte";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -26,9 +28,7 @@
             NodeFS.initialize()
             FilesAPI.initializeFolders().catch()
             WindowUtils.openAbout = () => isAboutOpen = true
-            LevelController.initialize(() => {
-                initialized = true
-            })
+            LevelController.initialize(() => initialized = true)
         })
         ipcRenderer.on("console", (_, data) => console.error(...data))
         ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
@@ -43,6 +43,8 @@
     {/if}
 </div>
 
+<WindowOptions/>
+<ContextMenu/>
 <Alert/>
 {#if fullyLoaded}
     <Editor/>
@@ -50,14 +52,15 @@
     <div class="wrapper">
         <img src={"./APP_LOGO.png"} alt="logo">
         <div class="title">
-            <div class="label">{Localization.PROJECTION_ENGINE}</div>
-            <small>{Localization.VERSION}</small>
+            <div class="label">{LOCALIZATION_EN.PROJECTION_ENGINE}</div>
+            <small>{LOCALIZATION_EN.VERSION}</small>
         </div>
     </div>
 {/if}
 {#if isAboutOpen}
     <About handleClose={() => isAboutOpen = false}/>
 {/if}
+
 <style>
     .label {
         font-size: 1.1rem;

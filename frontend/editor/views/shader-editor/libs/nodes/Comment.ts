@@ -6,7 +6,7 @@ export default class Comment extends ShaderNode {
     height = 100
     color = [150, 150, 150, .5]
 
-    constructor(width, height, smallestX, smallestY) {
+    constructor(width?:number, height?:number, smallestX?:number, smallestY?:number) {
         super([], [])
 
         this.x = smallestX

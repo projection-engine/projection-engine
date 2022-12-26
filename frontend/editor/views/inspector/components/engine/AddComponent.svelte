@@ -4,7 +4,7 @@
     import getNativeComponents from "../../utils/get-native-components";
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
-    import Localization from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
     import ACTION_HISTORY_TARGETS from "../../../../../static/ACTION_HISTORY_TARGETS.ts";
     import Icon from "../../../../../components/icon/Icon.svelte";
@@ -28,8 +28,8 @@
             data-overflow="-"
     >
         <Icon>add</Icon>
-        {Localization.ADD_COMPONENT}
-        <ToolTip content={Localization.ADD_COMPONENT}/>
+        {LOCALIZATION_EN.ADD_COMPONENT}
+        <ToolTip content={LOCALIZATION_EN.ADD_COMPONENT}/>
     </button>
 
     {#each nativeComponents as [key,  label, icon]}

@@ -3,7 +3,7 @@
     import Preview from "../../../components/preview/Preview.svelte";
     import {onMount} from "svelte";
     import SettingsStore from "../../stores/SettingsStore";
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import NodeFS from "../../../lib/FS/NodeFS";
     import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
     import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
@@ -43,10 +43,10 @@
     />
 </div>
 <fieldset>
-    <legend>{Localization.FOLIAGE_DISPLACEMENT}</legend>
-    <Range label={Localization.DENSITY} value={tS.foliageDensity} minValue={0}
+    <legend>{LOCALIZATION_EN.FOLIAGE_DISPLACEMENT}</legend>
+    <Range label={LOCALIZATION_EN.DENSITY} value={tS.foliageDensity} minValue={0}
            onFinish={v => update("foliageDensity", v)}/>
-    <Range label={Localization.TOTAL_QUANTITY} value={tS.foliageQuantity} minValue={0}
+    <Range label={LOCALIZATION_EN.TOTAL_QUANTITY} value={tS.foliageQuantity} minValue={0}
            onFinish={v => update("foliageQuantity", v)}/>
 </fieldset>
 

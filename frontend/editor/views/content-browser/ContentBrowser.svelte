@@ -21,7 +21,9 @@
     const internalID = v4()
     let store = {}
     let viewType = ITEM_TYPES.ROW
-    const unsubscribeStore = FilesStore.getStore(v => store = v)
+    const unsubscribeStore = FilesStore.getStore(v => {
+        store = v
+    })
 
     let currentDirectory = {id: NodeFS.sep}
     let wasInitialized = false
@@ -47,6 +49,7 @@
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
 
     onMount(() => {
+        FilesStore.initializeContentBrowser()
         GlobalContentBrowserController.subscribe(internalID, newDir => {
             navigationHistory.updateCurrentDirectory({id: newDir}, currentDirectory)
         })

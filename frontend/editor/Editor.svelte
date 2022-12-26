@@ -5,8 +5,6 @@
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../components/view/Views.svelte";
     import SettingsStore from "./stores/SettingsStore";
-    import WindowOptions from "../components/frame-options/WindowOptions.svelte";
-    import ContextMenu from "../components/context-menu/ContextMenu.svelte";
 
     const FALLBACK = {
         name: "Default",
@@ -40,8 +38,7 @@
 </script>
 
 <div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
-    <WindowOptions/>
-    <ContextMenu/>
+
     <div class="middle">
         <ViewsContainer
                 id="left"

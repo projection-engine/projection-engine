@@ -1,6 +1,6 @@
 <script>
     import LevelController from "../../../editor/lib/utils/LevelController";
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import Icon from "../../icon/Icon.svelte";
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Dropdown from "../../dropdown/Dropdown.svelte";
@@ -17,10 +17,10 @@
             {#if engine.currentLevel}
                 {engine.currentLevel.name}
             {:else}
-                {Localization.DEFAULT_LEVEL}
+                {LOCALIZATION_EN.DEFAULT_LEVEL}
             {/if}
         </div>
-        <ToolTip content={Localization.LEVEL}/>
+        <ToolTip content={LOCALIZATION_EN.LEVEL}/>
     </button>
     <button on:click={() => LevelController.loadLevel()} style="max-width: unset; min-height: unset">
         {#if !engine.currentLevel}
@@ -28,7 +28,7 @@
         {:else}
             <div style="width: .9rem"></div>
         {/if}
-        {Localization.DEFAULT_LEVEL}
+        {LOCALIZATION_EN.DEFAULT_LEVEL}
     </button>
     <div data-divider="-"></div>
     {#each store.levels as level}

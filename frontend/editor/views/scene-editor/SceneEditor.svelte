@@ -8,7 +8,7 @@
     import dragDrop from "../../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
-    import Localization from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
@@ -65,7 +65,7 @@
             },
             onDragOver: () => `
                 <span data-icon="-" style="font-size: 70px">add</span>
-                ${Localization.DRAG_DROP}
+                ${LOCALIZATION_EN.DRAG_DROP}
             `
         })
     })
@@ -112,19 +112,19 @@
     {/if}
     {#if settings.shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
         <div class="complexity-gradient">
-            <small>{Localization.NO_CONTRIBUTION}</small>
-            <small>{Localization.ALL_SCENE_LIGHTS}</small>
+            <small>{LOCALIZATION_EN.NO_CONTRIBUTION}</small>
+            <small>{LOCALIZATION_EN.ALL_SCENE_LIGHTS}</small>
         </div>
     {:else if settings.shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
         <div class="complexity-gradient">
-            <small>{Localization.NO_CONTRIBUTION}</small>
-            <small>{Localization.MAXIMUM_NUMBER_OF_LIGHTS}</small>
+            <small>{LOCALIZATION_EN.NO_CONTRIBUTION}</small>
+            <small>{LOCALIZATION_EN.MAXIMUM_NUMBER_OF_LIGHTS}</small>
         </div>
     {/if}
 {:else}
     <button class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
         <Icon styles="font-size: .85rem">pause</Icon>
-        <ToolTip content={Localization.STOP}/>
+        <ToolTip content={LOCALIZATION_EN.STOP}/>
     </button>
 {/if}
 

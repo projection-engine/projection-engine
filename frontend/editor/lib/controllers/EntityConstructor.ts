@@ -2,7 +2,6 @@ import Entity from "../../../../engine-core/instances/Entity";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import {vec3, vec4} from "gl-matrix";
-import Localization from "../../../static/LOCALIZATION_EN";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import EngineStore from "../../stores/EngineStore";
 import {v4} from "uuid";
@@ -32,7 +31,7 @@ export default class EntityConstructor {
     }
 
     static createMesh(id) {
-        const entity = new Entity(undefined, Localization.MESH_RENDERER)
+        const entity = new Entity(undefined, LOCALIZATION_EN.MESH_RENDERER)
         const m = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
         entity.addComponent(COMPONENTS.CULLING)
         m.meshID = id
@@ -49,7 +48,7 @@ export default class EntityConstructor {
 
 
     static createLight(type) {
-        const entity = new Entity(undefined, Localization.DIRECTIONAL_LIGHT)
+        const entity = new Entity(undefined, LOCALIZATION_EN.DIRECTIONAL_LIGHT)
         EntityConstructor.translateEntity(entity)
         const comp = entity.addComponent<LightComponent>(COMPONENTS.LIGHT)
         comp.type = type
@@ -57,7 +56,7 @@ export default class EntityConstructor {
     }
 
     static createCamera() {
-        const entity = new Entity(undefined, Localization.CAMERA)
+        const entity = new Entity(undefined, LOCALIZATION_EN.CAMERA)
         entity.addComponent(COMPONENTS.CAMERA)
         EntityConstructor.translateEntity(entity)
 
@@ -65,7 +64,7 @@ export default class EntityConstructor {
     }
 
     static createSprite() {
-        const entity = new Entity(undefined, Localization.SPRITE_RENDERER)
+        const entity = new Entity(undefined, LOCALIZATION_EN.SPRITE_RENDERER)
         entity.addComponent(COMPONENTS.SPRITE)
         dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
 
