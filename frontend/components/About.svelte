@@ -1,10 +1,10 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import Localization from "../lib/Localization";
+
     import Portal from "../lib/Portal";
+    import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
 
     export let handleClose
-    const translate = (key) => Localization.COMPONENTS.ABOUT[key]
     let content
 
     function handler(event) {
@@ -17,7 +17,7 @@
 
     const portal = new Portal(999)
     onMount(() => {
-        portal.create(content)
+        portal.create(content, {backdropFilter: "blur(2px)", brightness: "98%"})
         portal.open()
         document.addEventListener("mousedown", handler)
     })
@@ -30,21 +30,23 @@
 <div class="content" bind:this={content}>
     <div class="logo">
         <img draggable="false" alt={"logo"} src={"./APP_LOGO.png"} class="image"/>
-        {translate("TITLE")}
+        {LOCALIZATION_EN.ABOUT}
         <div class="info">
-            {translate("VERSION")}
+            {LOCALIZATION_EN.VERSION}
         </div>
     </div>
 
     <div>
         <div class="info">
-            {translate("FOOTER")}
+            {LOCALIZATION_EN.FOOTER}
         </div>
+
         <div class="info">
-            {translate("MIT")}
+            {LOCALIZATION_EN.LICENSE}
         </div>
+        <br>
         <div class="info">
-            {translate("COPYRIGHT")}
+            {LOCALIZATION_EN.COPYRIGHT}
         </div>
     </div>
 </div>
@@ -94,7 +96,7 @@
         width: fit-content;
         font-weight: 550;
 
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
 
 

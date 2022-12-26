@@ -15,16 +15,6 @@
         const face = parseInt(e.target.getAttribute("data-face"))
         if(!isNaN(face))
             CameraTracker.rotate(face)
-        else {
-            if (EntityStateController.cameraSerialization)
-                CameraAPI.restoreState(EntityStateController.cameraSerialization)
-            if (EngineStore.engine.focusedCamera) {
-                CameraTracker.startTracking()
-                EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
-                EntityStateController.cameraSerialization = undefined
-            }
-            CameraTracker.forceRotationTracking()
-        }
     }
 </script>
 
@@ -100,7 +90,7 @@
         border-radius: 50%;
         padding: 4px;
         transition: 150ms linear;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(2px);
         opacity: .85;
         border: var(--pj-transparent-border) 1px solid;
         --gizmo-wrapper-size: calc(var(--cube-size) * 2 + 10px);
@@ -110,16 +100,7 @@
         max-height: var(--gizmo-wrapper-size);
     }
 
-    .gizmo-wrapper:hover {
-        background: rgb(255 255 255 / 25%);
-        opacity: 1;
-    }
 
-    .gizmo-wrapper:active {
-        opacity: 1;
-        cursor: none;
-        background: rgb(255 255 255 / 50%);
-    }
 
     .camera-view {
         width: calc(var(--cube-size) * 2);

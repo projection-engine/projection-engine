@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte";
     import ConsoleAPI from "../../../engine-core/lib/utils/ConsoleAPI";
+    import AlertController from "./AlertController";
 
     let target
     const close = (newElement) => {
@@ -11,7 +12,7 @@
         }, {once: true})
     }
 
-    function pushAlert(message, type, onClick, delay = 3500) {
+    function pushAlert(message, type, onClick) {
         let variant
         switch (type) {
             case "success":
@@ -39,7 +40,7 @@
         target.appendChild(newElement)
         target.style.zIndex = "9999"
 
-        setTimeout(() => close(newElement), delay)
+        setTimeout(() => close(newElement), AlertController.defaultDelay)
         newElement.innerHTML = `
                 <div class="alertContainer alert-modal" style="--background: ${variant.color}">
                     <div class="content alert-modal">
@@ -66,16 +67,18 @@
     }
 
     onMount(() => {
-        ConsoleAPI.onLog = (messages) => {
+        AlertController.log = (...messages) => {
             pushAlert(messages.join(" "), "info")
         }
-        ConsoleAPI.onWarn = (messages) => {
+        AlertController.warn = (...messages) => {
             pushAlert(messages.join(" "), "alert")
         }
-        ConsoleAPI.onError = (messages) => {
+        AlertController.error = (...messages) => {
             pushAlert(messages.join(" "), "error")
         }
-
+        AlertController.success = (...messages) => {
+            pushAlert(messages.join(" "), "success")
+        }
     })
 </script>
 

@@ -6,6 +6,7 @@ import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "./nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
+import AlertController from "../../../../components/alert/AlertController";
 
 export default class ShaderEditorTools {
 
@@ -94,7 +95,7 @@ export default class ShaderEditorTools {
                 openFile.registryID,
                 JSON.stringify(materialData)
             )
-            console.log(LOCALIZATION_EN.SAVED)
+            AlertController.success(LOCALIZATION_EN.SAVED)
         } catch (err) {
             console.error(err)
         }

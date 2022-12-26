@@ -28,7 +28,7 @@ export default class NodeFS  {
         return pathRequire.resolve(path)
     }
 
-    static async read(path:string, options?: MutableObject | string) {
+    static async read(path:string, options?: MutableObject | string):Promise<any> {
         return getCall("fs-read", {path, options})
     }
 
@@ -44,7 +44,7 @@ export default class NodeFS  {
         return getCall("fs-mkdir", {path})
     }
 
-    static async stat(path:string, options?: MutableObject | string){
+    static async stat(path:string, options?: MutableObject | string):Promise<MutableObject>{
         return getCall("fs-stat", {path, options})
     }
 

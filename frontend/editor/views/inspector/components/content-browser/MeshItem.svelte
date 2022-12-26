@@ -7,6 +7,7 @@
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import NodeFS from "../../../../../lib/FS/NodeFS";
+    import AlertController from "../../../../../components/alert/AlertController";
 
     export let item
     let wasUpdated = false
@@ -25,7 +26,7 @@
             GPUAPI.destroyMesh(item.registryID)
             GPUAPI.allocateMesh(item.registryID, data)
         }
-        console.warn(LOCALIZATION_EN.UPDATING_ASSET)
+        AlertController.log(LOCALIZATION_EN.UPDATING_ASSET)
     }
 </script>
 

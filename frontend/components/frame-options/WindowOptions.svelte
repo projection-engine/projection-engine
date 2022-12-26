@@ -17,11 +17,13 @@
     import WindowUtils from "../../editor/lib/WindowUtils";
     import SingleSelectDropdown from "../dropdown/OptionDropdown.svelte";
     import getFrameOptions from "./utils/get-frame-options";
+    import About from "../About.svelte";
 
     let engine
     let store
     let settings
     let historyChangeType = null
+    let isAboutOpen = false
     const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
@@ -37,9 +39,9 @@
             ...SettingsStore.data.views,
             {
                 name: LOCALIZATION_EN.NEW_TAB + SettingsStore.data.views.length,
-                bottom: [[{color: [255,255,255], type: VIEWS.FILES}]],
-                right: [[{color: [255,255,255], type:VIEWS.HIERARCHY}]],
-                viewport: [ {color: [255,255,255], type:VIEWPORT_TABS.EDITOR}],
+                bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
+                right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]],
+                viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
                 left: [],
                 top: []
             }
@@ -65,7 +67,7 @@
     </button>
     <SingleSelectDropdown
             cleanLayout={true}
-            options={getFrameOptions()}
+            options={getFrameOptions(() => isAboutOpen = true)}
             label="menu"
             autoClose={true}
             labelAsIcon={true}
@@ -92,6 +94,9 @@
             settings={settings}
             engine={engine}
     />
+    {#if isAboutOpen}
+        <About handleClose={() => isAboutOpen = false}/>
+    {/if}
 </div>
 
 <style>

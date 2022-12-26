@@ -14,6 +14,7 @@
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
+    import AlertController from "../../../../components/alert/AlertController";
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -65,7 +66,7 @@
                 disabled={loading}
                 data-view-header-button="-"
                 on:click={() => {
-                    console.warn(Localization.REFRESHING)
+                    AlertController.warn(Localization.REFRESHING)
                     FilesStore.refreshFiles().then(() => loading = false).catch()
                 }}
         >

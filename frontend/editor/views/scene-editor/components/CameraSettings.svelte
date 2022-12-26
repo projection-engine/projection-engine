@@ -54,7 +54,7 @@
             </button>
         {/each}
     </Dropdown>
-    <button class="button viewport" on:click={toggleProjection}>
+    <button disabled={engine.focusedCamera} class="button viewport" on:click={toggleProjection}>
         <ToolTip content={LOCALIZATION_EN.SWITCH_PROJECTION}/>
         {#if !cameraIsOrtho}
             <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">

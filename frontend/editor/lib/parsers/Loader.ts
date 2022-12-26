@@ -21,6 +21,7 @@ import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
 import NodeFS from "../../../lib/FS/NodeFS";
 import MeshComponent from "../../../../engine-core/templates/components/MeshComponent";
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
+import AlertController from "../../../components/alert/AlertController";
 
 
 export default class Loader {
@@ -149,7 +150,7 @@ export default class Loader {
 
         if (entitiesToPush.length > 0) {
             dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entitiesToPush})
-            console.log(LOCALIZATION_EN.ENTITIES_CREATED)
+            AlertController.success(LOCALIZATION_EN.ENTITIES_CREATED)
         }
     }
 

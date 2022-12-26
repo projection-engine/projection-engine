@@ -1,6 +1,6 @@
 import WindowUtils from "../../../editor/lib/WindowUtils";
 
-export default function getFrameOptions() {
+export default function getFrameOptions(openAbout:Function) {
     return [
         {divider: true, label: "File"},
         {
@@ -34,7 +34,7 @@ export default function getFrameOptions() {
         {
             label: 'About',
             icon: "info",
-            onClick: () => WindowUtils.callMethod("learn-more")
+            onClick: openAbout
         }
     ]
 }

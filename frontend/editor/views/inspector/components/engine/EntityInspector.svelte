@@ -117,7 +117,7 @@
                                             const uniforms = components[tabIndex][1].materialUniforms
                                             uniforms[index].data = value
                                             components[tabIndex][1].materialUniforms = uniforms
-                                            console.log(components[tabIndex], entity)
+
                                         }}
                                 />
                             {/if}

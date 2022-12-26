@@ -78,7 +78,7 @@ export default class SelectionStore {
         SelectionStore.updateStore({...SelectionStore.data, TARGET: TYPES.SHADER_EDITOR, array: data})
     }
 
-    static get shaderEditorSelected() {
+    static get shaderEditorSelected():string[] {
         return SelectionStore.TARGET === TYPES.SHADER_EDITOR ? SelectionStore.array : []
     }
 

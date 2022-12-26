@@ -20,13 +20,12 @@
     const handleContext = (event) => {
         if (wasPointerLocked)
             return
-        console.trace(ContextMenuController.data.focused)
         if (startPosition && ContextMenuController.data.focused) {
             event.preventDefault()
             if (checkMouseOffset(startPosition, event)) {
                 let targetElement
                 const allowAll = !ContextMenuController.data.focused.triggers || ContextMenuController.data.focused.triggers.length === 0
-                console.trace(allowAll)
+
                 if (allowAll)
                     targetElement = event.target
                 else {

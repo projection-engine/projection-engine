@@ -27,6 +27,7 @@ import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import UIComponent from "../../../../engine-core/templates/components/UIComponent";
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
+import AlertController from "../../../components/alert/AlertController";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -68,7 +69,7 @@ export default class LevelController {
     static async loadLevel(level:string|{registryID:string}= PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
         await RegistryAPI.readRegistry()
         if (LevelController.#loadedLevel === level) {
-            console.warn(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
+            AlertController.warn(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
             return
         }
         LevelController.#loadedLevel = level
@@ -132,11 +133,11 @@ export default class LevelController {
 
     static async save() {
         if(EngineStore.engine.executingAnimation){
-            console.warn(Localization.EXECUTING_SIMULATION)
+            AlertController.warn(Localization.EXECUTING_SIMULATION)
             return
         }
         await ErrorLoggerAPI.save()
-        console.warn(Localization.SAVING)
+        AlertController.warn(Localization.SAVING)
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta
@@ -164,7 +165,7 @@ export default class LevelController {
             else {
                 const reg = RegistryAPI.getRegistryEntry(EngineStore.engine.currentLevel.registryID)
                 if (!reg) {
-                    console.warn(LOCALIZATION_EN.LEVEL_NOT_FOUND)
+                    AlertController.warn(LOCALIZATION_EN.LEVEL_NOT_FOUND)
                     pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
                     break pathElse
                 }
@@ -183,7 +184,7 @@ export default class LevelController {
             console.error(err)
             return
         }
-        console.log(LOCALIZATION_EN.PROJECT_SAVED)
+        AlertController.success(LOCALIZATION_EN.PROJECT_SAVED)
 
 
     }

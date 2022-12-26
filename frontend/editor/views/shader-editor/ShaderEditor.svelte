@@ -19,6 +19,7 @@
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import Icon from "../../../components/icon/Icon.svelte";
     import NodeFS from "../../../lib/FS/NodeFS";
+    import AlertController from "../../../components/alert/AlertController";
 
     const {shell} = window.require("electron")
 
@@ -78,7 +79,7 @@
             SEContextController.deleteContext(openFile?.registryID)
             openFile = v
         } else if (SEContextController.getContext(v.registryID))
-            console.warn(LOCALIZATION_EN.FILE_ALREADY_OPEN)
+            AlertController.warn(LOCALIZATION_EN.FILE_ALREADY_OPEN)
         else {
             UndoRedoAPI.clearShaderEditorStates()
             isReady = false

@@ -44,7 +44,6 @@
                 percentage: (elapsed > 0 ? (elapsed / sampleCountInterval) * 100 : 0)
             })
         })
-        console.log(cache)
         toShow = cache.sort((a, b) => b.percentage - a.percentage)
     }
 

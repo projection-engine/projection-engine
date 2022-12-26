@@ -10,6 +10,7 @@
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import NodeFS from "../../../../../lib/FS/NodeFS";
+    import AlertController from "../../../../../components/alert/AlertController";
 
     export let data
     export let item
@@ -64,7 +65,7 @@
             const instance = GPU.materials.get(item.registryID)
             if (instance) {
                 await instance.updateUniformGroup(temp.response.uniformsData)
-                console.log(LOCALIZATION_EN.MATERIAL_UPDATED)
+                AlertController.success(LOCALIZATION_EN.MATERIAL_UPDATED)
 
                 GPUAPI.cleanUpTextures()
             }

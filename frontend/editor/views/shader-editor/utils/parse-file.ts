@@ -15,6 +15,8 @@ export default async function parseFile(openFile, setNodes, setLinks) {
                 const node = dataToParse.nodes[i]
 
                 const parsed = ShaderEditorTools.parseNode(node)
+                if(!parsed)
+                    continue
                 parsed.CONTEXT_ID = openFile.registryID
                 newNodes.push(parsed)
             }

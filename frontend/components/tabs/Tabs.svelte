@@ -91,7 +91,6 @@
                     const item = tabs[i]
                     item.index = ids[item.type]
                 }
-                console.trace(tabs)
             },
             direction: "horizontal"
         });

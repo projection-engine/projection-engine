@@ -2,6 +2,7 @@ import materialCompiler from "../libs/material-compiler/material-compiler"
 import GPU from "../../../../../engine-core/GPU";
 import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI";
+import AlertController from "../../../../components/alert/AlertController";
 
 export default async function buildShader(nodes, links, openFile) {
     const {
@@ -13,7 +14,7 @@ export default async function buildShader(nodes, links, openFile) {
 
     if (functionDeclaration) {
         if (!GPU.materials.get(openFile.registryID)) {
-            console.warn(LOCALIZATION_EN.NOT_APPLIED)
+            AlertController.warn(LOCALIZATION_EN.NOT_APPLIED)
             return
         }
         GPUAPI.asyncDestroyMaterial(openFile.registryID)

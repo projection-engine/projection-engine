@@ -8,6 +8,7 @@ import {vec3, vec4} from "gl-matrix";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../../engine-core/Engine";
+import AlertController from "../../../components/alert/AlertController";
 
 
 export default class ViewportActions {
@@ -49,7 +50,7 @@ export default class ViewportActions {
     static invertSelection() {
         const newArr = []
         const notValid = {}
-        const oldSelected = SelectionStore.engineSelected
+        const oldSelected = <string[]>SelectionStore.engineSelected
         for (let i = 0; i < oldSelected.length; i++)
             notValid[oldSelected[i]] = true
         const entities = Engine.entities
@@ -81,7 +82,7 @@ export default class ViewportActions {
             }
         }
         dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
-        console.warn(`Pasted ${ViewportActions.toCopy.length} entities.`)
+        AlertController.log(`Pasted ${ViewportActions.toCopy.length} entities.`)
 
     }
 

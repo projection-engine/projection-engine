@@ -8,6 +8,7 @@ import Localization from "../../static/LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
 import NodeFS from "../../lib/FS/NodeFS";
+import AlertController from "../../components/alert/AlertController";
 
 const {shell, clipboard} = window.require("electron")
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
@@ -44,7 +45,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             label: "Refresh",
             require: settings.contentBrowserHotkeys.REFRESH,
             callback: () => {
-                console.log(Localization.REFRESHING)
+                AlertController.success(Localization.REFRESHING)
                 FilesStore.refreshFiles().catch()
             }
         },
@@ -106,7 +107,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
                 onClick: () => {
                     const ID = RegistryAPI.getByPath(SelectionStore.contentBrowserSelected[0])
                     if(ID){
-                        console.log(Localization.COPIED)
+                        AlertController.success(Localization.COPIED)
                         clipboard.writeText(ID)
                     }
                 }

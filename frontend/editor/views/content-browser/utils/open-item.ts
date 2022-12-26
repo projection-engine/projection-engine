@@ -6,6 +6,7 @@ import VIEWS from "../../../../components/view/static/VIEWS";
 import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 import NodeFS from "../../../../lib/FS/NodeFS";
+import AlertController from "../../../../components/alert/AlertController";
 
 const {shell} = window.require("electron")
 
@@ -21,17 +22,17 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case ".js":
             case ".json":
                 shell.openPath(NodeFS.ASSETS_PATH + NodeFS.sep + data.id).catch()
-                console.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
+                AlertController.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 break
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:
             case FILE_TYPES.TEXTURE:
             case FILE_TYPES.TERRAIN:
                 Loader.load(data.registryID, true).catch()
-                console.warn(LOCALIZATION_EN.CREATING_ENTITY)
+                AlertController.warn(LOCALIZATION_EN.CREATING_ENTITY)
                 break
             case FILE_TYPES.LEVEL:
-                console.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
+                AlertController.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 LevelController.loadLevel(data).catch()
                 break
             case FILE_TYPES.MATERIAL:

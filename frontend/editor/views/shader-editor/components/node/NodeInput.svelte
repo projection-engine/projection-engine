@@ -18,7 +18,7 @@
         e.preventDefault()
         if (ShaderEditorTools.connectionOnDrag !== undefined) {
             document.getElementById(ShaderEditorTools.connectionOnDrag.nodeID + "-path").setAttribute("d", "")
-            console.log(attribute)
+
             if (!attribute.disabled)
                 linkNodes(attribute, node)
             ShaderEditorTools.connectionOnDrag = undefined

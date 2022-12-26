@@ -6,6 +6,7 @@ import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-re
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityNameController from "../controllers/EntityNameController";
+import AlertController from "../../../components/alert/AlertController";
 
 export default class UndoRedoAPI {
     static #cache = new UndoRedo()
@@ -78,7 +79,7 @@ export default class UndoRedoAPI {
     static undo() {
         const action = UndoRedoAPI.#cache.undo()
         if (action) {
-            console.warn(LOCALIZATION_EN.UNDOING_CHANGES)
+            AlertController.log(LOCALIZATION_EN.UNDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 
@@ -87,7 +88,7 @@ export default class UndoRedoAPI {
     static redo() {
         const action = UndoRedoAPI.#cache.redo()
         if (action) {
-            console.warn(LOCALIZATION_EN.REDOING_CHANGES)
+            AlertController.log(LOCALIZATION_EN.REDOING_CHANGES)
             UndoRedoAPI.#apply(action)
         }
 

@@ -12,6 +12,7 @@
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import NodeFS from "../../lib/FS/NodeFS";
+    import AlertController from "../alert/AlertController";
 
     const {shell} = window.require("electron")
 
@@ -26,12 +27,12 @@
             console.error("No logs found")
     }
     async function updateStructure() {
-        console.warn(Localization.UPDATING_STRUCTURE)
+        AlertController.warn(Localization.UPDATING_STRUCTURE)
 
         await ScriptsAPI.updateAllScripts()
         await UIAPI.updateAllElements()
 
-        console.log(Localization.DONE)
+        AlertController.success(Localization.DONE)
     }
 </script>
 
