@@ -1,0 +1,60 @@
+
+.wrapper.card-home {
+    position: relative;
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+    transition: 150ms linear;
+    padding: 4px;
+    color: var(--pj-color-secondary);
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--pj-background-secondary);
+    height: 45px;
+
+    border: transparent 2px solid;
+}
+
+
+.section.card-home {
+    width: fit-content;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    overflow: hidden;
+}
+
+.info.card-home {
+    width: 100%;
+    padding-left: 4px;
+    display: grid;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.button.card-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 25px;
+    max-height: 25px;
+    min-width: 25px;
+    max-width: 25px;
+    font-size: 0.7rem;
+    font-weight: 550;
+    padding: 0 !important;
+    gap: 4px;
+    border: none !important;
+}
+
+.button.card-home:active, .button.card-home[data-highlight = "true"] {
+    color: white;
+    background: var(--pj-accent-color);
+}
+
+
