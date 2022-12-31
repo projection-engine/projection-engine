@@ -14,7 +14,7 @@ export default class Max extends ShaderNode {
             {label: "Result", key: "maxRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "Max"
-        this.size = 2
+        
     }
 
     get type() {

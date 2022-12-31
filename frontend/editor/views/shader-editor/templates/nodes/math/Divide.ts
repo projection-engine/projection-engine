@@ -13,7 +13,7 @@ export default class Divide extends ShaderNode {
             {label: "Result", key: "divideRes", type: DATA_TYPES.UNDEFINED}
         ])
         this.name = "Divide"
-        this.size = 2
+        
     }
 
     get type() {

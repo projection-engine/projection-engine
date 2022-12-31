@@ -8,7 +8,7 @@ import {v4} from "uuid";
 import AlertController from "../../../../components/alert/AlertController";
 import OpenFile from "../static/OPEN_FILE";
 import Canvas from "./Canvas";
-import ShaderNode from "../templates/ShaderNode";
+import type ShaderNode from "../templates/ShaderNode";
 
 export default class ShaderEditorTools {
 
@@ -16,14 +16,13 @@ export default class ShaderEditorTools {
     static scale = 1
     static grid = ShaderEditorTools.GRID_SIZE
     static copied = new Map()
-    static connectionOnDrag
     static toOpenFile
 
-    static parseNode(node):ShaderNode {
+    static parseNode(node): ShaderNode | undefined {
         if (!node)
             return
-        const nodeInstance = getNewInstance(node.instance)
-        if (!nodeInstance)
+        const nodeInstance = <ShaderNode | null>getNewInstance(node.instance)
+        if (nodeInstance === null)
             return;
         Object.keys(node).forEach(o => {
             if (o !== "inputs" && o !== "output") {
@@ -38,8 +37,6 @@ export default class ShaderEditorTools {
                 }
             }
         })
-        // nodeInstance.x = node.x + BOARD_SIZE / 2
-        // nodeInstance.y = node.y + BOARD_SIZE / 2
         return nodeInstance
     }
 
@@ -71,7 +68,8 @@ export default class ShaderEditorTools {
         return {compiled, serializedNodes}
     }
 
-    static async save(openFile: OpenFile, canvasAPI: Canvas) {
+    static async save(canvasAPI: Canvas) {
+        const openFile = canvasAPI.openFile
         try {
             const {compiled, serializedNodes} = await ShaderEditorTools.compile(canvasAPI)
             const materialData = {

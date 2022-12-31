@@ -13,7 +13,7 @@ export default class CosineH extends ShaderNode {
         ])
         this.equalTypeInputs = true
         this.name = "CosineH"
-        this.size = 2
+        
     }
 
     get type() {

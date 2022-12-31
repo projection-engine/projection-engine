@@ -14,7 +14,7 @@ export default class ViewDirection extends ShaderNode {
         ])
 
         this.name = "ViewDirection"
-        this.size = 1
+        
     }
 
     get type() {

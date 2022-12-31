@@ -12,7 +12,7 @@ export default class SineH extends ShaderNode {
             {label: "Result", key: "sineHRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "SineH"
-        this.size = 2
+        
     }
 
     get type() {

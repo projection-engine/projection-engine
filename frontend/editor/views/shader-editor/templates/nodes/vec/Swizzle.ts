@@ -46,7 +46,7 @@ export default class Swizzle extends ShaderNode {
             ]
         }
         this.name = "Swizzle"
-        this.size = 1
+        
     }
 
     get type() {

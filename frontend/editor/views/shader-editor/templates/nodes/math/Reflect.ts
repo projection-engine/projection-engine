@@ -12,7 +12,7 @@ export default class Reflect extends ShaderNode {
             {label: "Result", key: "reflectRes", type: DATA_TYPES.VEC3}
         ])
         this.name = "Reflect"
-        this.size = 2
+        
     }
 
     get type() {

@@ -4,7 +4,7 @@ import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 
 
 export default class Add extends ShaderNode {
-
+    addRes
     constructor() {
         super([
             {label: "A", key: "a", accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2 ]},
@@ -13,7 +13,7 @@ export default class Add extends ShaderNode {
             {label: "Result", key: "addRes", type: DATA_TYPES.UNDEFINED}
         ]) 
         this.name = "Add"
-        this.size = 2
+        
     }
 
     get type() {

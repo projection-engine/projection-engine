@@ -14,7 +14,7 @@ export default class Refract extends ShaderNode {
             {label: "Result", key: "refractRes", type: DATA_TYPES.VEC3}
         ])
         this.name = "Refract"
-        this.size = 2
+        
     }
 
     get type() {

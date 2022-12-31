@@ -12,7 +12,7 @@ export default class OneMinus extends ShaderNode {
             {label: "Result", key: "oneMinusRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "1-X"
-        this.size = 1
+        
     }
 
     get type() {

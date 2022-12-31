@@ -12,7 +12,7 @@ export default class Tan extends ShaderNode {
             {label: "Result", key: "tanRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "Tangent"
-        this.size = 2
+        
     }
 
     get type() {

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Attribute from "./node/Attribute.svelte";
+    import Attribute from "./Attribute.svelte";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import ColorPicker from "../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../components/input/Input.svelte";

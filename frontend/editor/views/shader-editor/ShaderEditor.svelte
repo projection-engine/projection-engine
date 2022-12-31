@@ -1,24 +1,24 @@
 <script>
     import buildShader from "./libs/material-compiler/build-shader"
     import FilesAPI from "../../lib/fs/FilesAPI"
-
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";
-    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
-    import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
     import ViewStateController from "../../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
-
-
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import Icon from "../../../components/icon/Icon.svelte";
     import NodeFS from "../../../lib/FS/NodeFS";
     import AlertController from "../../../components/alert/AlertController";
     import Canvas from "./libs/Canvas";
+    import Material from "./templates/nodes/Material";
+    import getOnDropEvent from "./utils/get-on-drop-event";
+    import shaderActions from "../../templates/shader-actions";
+    import HotKeysController from "../../lib/utils/HotKeysController";
+    import ContextMenuController from "../../../lib/context-menu/ContextMenuController";
 
     const {shell} = window.require("electron")
 
@@ -26,28 +26,50 @@
     export let viewIndex
     export let groupIndex
 
-    const canvas = new Canvas()
-    let openFile
-    let dragWillStart
-    let ref
     let engine
+
+    const canvas = new Canvas()
+    const internalID = crypto.randomUUID()
+    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+
+    let openFile
+    let ref
+
     let wasInitialized = false
     let isReady = false
     let canvasElement
 
     onMount(() => {
         canvas.initialize(canvasElement)
+        const data = shaderActions(canvas)
+        ContextMenuController.mount(
+            data.contextMenu,
+            internalID,
+            []
+        )
+        HotKeysController.bindAction(
+            canvas.ctx.canvas,
+            data.hotkeys,
+            "texture",
+            LOCALIZATION_EN.SHADER_EDITOR
+        )
     })
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
+
+    onDestroy(() => {
+        unsubscribeEngine()
+        UndoRedoAPI.clearShaderEditorStates()
+        ContextMenuController.destroy(internalID)
+        HotKeysController.unbindAction(canvas.ctx.canvas)
+    })
 
     async function initializeStructure() {
         canvas.selectionMap.clear()
         canvas.lastSelection = undefined
         canvas.openFile = openFile
 
-        SelectionStore.shaderEditorSelected = []
-
         await parseFile(openFile, canvas)
+
+        canvas.nodes.push(new Material())
         canvas.clear()
         isReady = true
     }
@@ -96,36 +118,27 @@
         }
     }
 
-    onDestroy(() => {
-        unsubscribeEngine()
-        UndoRedoAPI.clearShaderEditorStates()
-    })
+
 </script>
 
-<ViewHeader>
-    <small style={dragWillStart && !openFile?.registryID ? undefined : "display: none"}
-           id={openFile?.registryID + "-T"}></small>
-    {#if !openFile?.registryID}
-        <HeaderOptions
-                save={async () => {
-                    await buildShader(canvas, openFile)
-                    await ShaderEditorTools.save(openFile, canvas)
-                }}
-                openFile={openFile}
-                compile={() => buildShader(canvas, openFile).catch()}
-                initializeFromFile={initializeFromFile}
-                canvasAPI={canvas}
-                openSourceCode={async () => {
-                    const {shader} = await materialCompiler(canvas.nodes, canvas.links)
-                    const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
-                    await FilesAPI.writeFile(newFile, shader, true)
-                    shell.openPath(newFile).catch()
-                }}
-        />
-    {/if}
-</ViewHeader>
+<HeaderOptions
+        save={async () => {
+                await buildShader(canvas, openFile)
+                await ShaderEditorTools.save(canvas)
+            }}
+        openFile={openFile}
+        compile={() => buildShader(canvas, openFile).catch()}
+        initializeFromFile={initializeFromFile}
+        canvasAPI={canvas}
+        openSourceCode={async () => {
+                const {shader} = await materialCompiler(canvas.nodes, canvas.links)
+                const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
+                await FilesAPI.writeFile(newFile, shader, true)
+                shell.openPath(newFile).catch()
+            }}
+/>
 <div class="wrapper" bind:this={ref}>
-    <canvas class="canvas" bind:this={canvasElement}></canvas>
+    <canvas on:drop={getOnDropEvent(canvas)} on:dragover={e => e.preventDefault()} class="canvas" bind:this={canvasElement}></canvas>
     {#if !openFile?.registryID}
         <div data-empty="-">
             <Icon styles="font-size: 75px">texture</Icon>
@@ -138,7 +151,8 @@
     small {
         font-size: .7rem;
     }
-    .canvas{
+
+    .canvas {
         left: 0;
         top: 0;
         z-index: 0;
@@ -148,6 +162,7 @@
         background: var(--pj-background-quaternary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
         background-size: 20px 20px;
     }
+
     .wrapper {
         z-index: 0;
         position: relative;

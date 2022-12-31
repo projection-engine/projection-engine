@@ -4,6 +4,8 @@ import type Canvas from "../libs/Canvas";
 import DATA_TYPES from "../static/DATA_TYPES";
 import Draggable from "./Draggable";
 import CanvasRenderer from "../libs/CanvasRenderer";
+import {Input} from "./Input";
+import {Output} from "./Output";
 
 const types = {
     vec2: 0,
@@ -11,27 +13,6 @@ const types = {
     vec4: 2
 }
 const typesInverted = ["vec2", "vec3", "vec4"]
-
-export interface Output {
-    [key: string]: any
-
-    label: string
-    key: string
-    type: string
-}
-
-export interface Input {
-    [key: string]: any
-
-    onChange?:Function
-    label: string
-    key: string
-    accept?: string[]
-    type?: string
-    disabled?: boolean
-}
-
-
 export default class ShaderNode extends Draggable {
     [key: string]: any
 

@@ -11,7 +11,7 @@ export default class AbsoluteWorldPosition extends ShaderNode {
         ])
 
         this.name = "AbsoluteWorldPosition"
-        this.size = 2
+        
     }
 
     get type() {

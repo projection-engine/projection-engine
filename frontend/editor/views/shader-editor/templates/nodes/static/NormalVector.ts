@@ -12,7 +12,7 @@ export default class NormalVector extends ShaderNode {
         ])
 
         this.name = "NormalVector"
-        this.size = 2
+        
     }
 
     get type() {

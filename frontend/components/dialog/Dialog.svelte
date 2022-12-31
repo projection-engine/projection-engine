@@ -21,6 +21,8 @@
     $: isOpen ? portal.open() : portal.close()
 
     function closeModal(e:boolean|MouseEvent){
+        if(!isOpen)
+            return
         const result = handleClose(e, modalRef)
         if (modalRef != null && result) {
             modalRef.style.display = "none"
@@ -36,6 +38,7 @@
         mutation.observe(modalRef, {childList: true})
         portal.create(modalRef);
         (modalRef as MutableObject).closeDropdown = () => closeModal(true)
+        document.addEventListener("mousedown", closeModal)
     })
     onDestroy(() => {
         if(mutation)
@@ -43,16 +46,6 @@
         portal.destroy()
         document.removeEventListener("mousedown", closeModal)
     })
-
-    $: {
-        if (modalRef) {
-            if (isOpen)
-                document.addEventListener("mousedown", closeModal)
-            else
-                document.removeEventListener("mousedown", closeModal)
-        }
-    }
-
 </script>
 
 <div style={styles} bind:this={modalRef} class="modal dropdown">

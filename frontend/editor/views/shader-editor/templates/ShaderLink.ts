@@ -1,26 +1,28 @@
-import type ShaderNode, {Input, Output} from "./ShaderNode";
+import type ShaderNode from "./ShaderNode";
 import Canvas from "../libs/Canvas";
 import AlertController from "../../../../components/alert/AlertController";
 import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+import {Input} from "./Input";
+import {Output} from "./Output";
 
 export default class ShaderLink {
-    targetRef:Input
-    sourceRef:Output
-    targetNode:ShaderNode
-    sourceNode:ShaderNode
-    target:string
-    source:string
-    identifier:string
-    targetKey:string
-    sourceKey:string
-    sourceType:string
-    targetType:string
+    targetRef: Input
+    sourceRef: Output
+    targetNode: ShaderNode
+    sourceNode: ShaderNode
+    target: string
+    source: string
+    identifier: string
+    targetKey: string
+    sourceKey: string
+    sourceType: string
+    targetType: string
 
     static getPattern(l) {
         return l.target + "-" + l.source
     }
 
-    constructor(target:ShaderNode, source:ShaderNode, tR:Input, sR:Output) {
+    constructor(target: ShaderNode, source: ShaderNode, tR: Input, sR: Output) {
         this.targetNode = target
         this.sourceNode = source
         this.targetRef = tR
@@ -36,8 +38,8 @@ export default class ShaderLink {
         this.targetType = this.targetRef.type
     }
 
-    static handleLink(canvasAPI:Canvas, event:MouseEvent,x:number,y:number, sourceNode:ShaderNode, sourceIO:Output){
-        if(!sourceIO || !sourceNode)
+    static handleLink(canvasAPI: Canvas, event: MouseEvent, x: number, y: number, sourceNode: ShaderNode, sourceIO: Output) {
+        if (!sourceIO || !sourceNode)
             return
         const N = canvasAPI.nodes
         const X = (event.clientX - x) / Canvas.scale
@@ -51,11 +53,11 @@ export default class ShaderLink {
                 if (targetIO && targetIO.accept.includes(sourceIO.type)) {
                     const foundExisting = canvasAPI.links.findIndex(l => l.targetRef === targetIO)
                     const newLink = new ShaderLink(node, sourceNode, targetIO, sourceIO)
-                    if(foundExisting > -1)
+                    if (foundExisting > -1)
                         canvasAPI.links[foundExisting] = newLink
                     else
                         canvasAPI.links.push(newLink)
-                }else if(targetIO)
+                } else if (targetIO)
                     AlertController.error(LOCALIZATION_EN.INVALID_TYPE)
                 break
             }

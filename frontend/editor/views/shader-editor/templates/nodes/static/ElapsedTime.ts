@@ -11,7 +11,7 @@ export default class ElapsedTime extends ShaderNode {
         ])
 
         this.name = "ElapsedTime"
-        this.size = 2
+        
     }
 
     get type() {

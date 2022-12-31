@@ -12,7 +12,7 @@ export default class DDY extends ShaderNode {
             {label: "Result", key: "ddyRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "DDY"
-        this.size = 2
+        
     }
 
     get type() {

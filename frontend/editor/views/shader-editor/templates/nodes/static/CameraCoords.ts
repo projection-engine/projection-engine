@@ -11,7 +11,7 @@ export default class CameraCoords extends ShaderNode {
         ])
 
         this.name = "CameraCoords"
-        this.size = 2
+        
     }
 
     get type() {

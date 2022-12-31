@@ -21,7 +21,7 @@ export default class BreakVector extends ShaderNode {
         ])
 
         this.name = "BreakVector"
-        this.size = 1
+        
     }
 
     get type() {

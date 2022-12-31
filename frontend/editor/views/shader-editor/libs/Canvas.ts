@@ -6,7 +6,6 @@ import type Comment from "../templates/Comment";
 import CanvasRenderer from "./CanvasRenderer";
 import OpenFile from "../static/OPEN_FILE";
 
-
 export default class Canvas {
     static grid = 20
     static scale = 1
@@ -52,7 +51,6 @@ export default class Canvas {
 
         canvas.addEventListener("contextmenu", e => e.preventDefault())
         document.addEventListener("mousedown", getMousedownEvent(this, canvas))
-
         canvas.addEventListener("wheel", getCanvasZoomEvent(this, canvas), {passive: false})
         this.clear()
     }

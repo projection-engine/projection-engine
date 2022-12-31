@@ -12,7 +12,7 @@ export default class TextureCoords extends ShaderNode {
         ])
 
         this.name = "TextureCoords"
-        this.size = 2
+        
     }
 
     get type() {

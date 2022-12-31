@@ -23,7 +23,7 @@ export default class Multiply extends ShaderNode {
             {label: "Result", key: "multRes", type: DATA_TYPES.UNDEFINED}
         ])
         this.name = "Multiply"
-        this.size = 2
+        
     }
 
     get type() {

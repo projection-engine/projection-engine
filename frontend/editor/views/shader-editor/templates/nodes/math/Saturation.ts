@@ -13,7 +13,7 @@ export default class Saturation extends ShaderNode {
             {label: "Result", key: "saturationRes", type: DATA_TYPES.VEC3}
         ])
         this.name = "Saturation"
-        this.size = 2
+        
     }
 
     get type() {

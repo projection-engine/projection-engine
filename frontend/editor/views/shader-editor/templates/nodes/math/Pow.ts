@@ -14,7 +14,7 @@ export default class Pow extends ShaderNode {
             {label: "Result", key: "powRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "Pow"
-        this.size = 2
+        
     }
 
     get type() {

@@ -3,6 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import Icon from "../icon/Icon.svelte";
     import Dropdown from "../dropdown/Dropdown.svelte";
+    // @ts-ignore
     import {Sortable} from "sortablejs";
     import TabData from "./static/TabData";
     import Tab from "./components/Tab.svelte";
@@ -100,6 +101,7 @@
         })
     })
     onDestroy(() => {
+        // @ts-ignore
         sortable.destroy()
         TabContextController.removeContext(internalID)
         ref.removeEventListener("wheel", handler);

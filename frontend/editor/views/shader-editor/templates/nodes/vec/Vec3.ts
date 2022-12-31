@@ -21,7 +21,7 @@ export default class Vec3 extends ShaderNode {
         ])
 
         this.name = "Vec3"
-        this.size = 2
+        
     }
 
     get type() {

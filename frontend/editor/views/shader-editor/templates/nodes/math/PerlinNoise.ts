@@ -48,7 +48,7 @@ export default class PerlinNoise extends ShaderNode {
             {label: "Noise", key: "res", type: DATA_TYPES.FLOAT}
         ])
         this.name = "PerlinNoise"
-        this.size = 2
+        
     }
 
     get type() {

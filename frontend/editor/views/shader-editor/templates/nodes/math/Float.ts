@@ -21,7 +21,7 @@ export default class Float extends ShaderNode {
         ])
 
         this.name = "Float"
-        this.size = 2
+        
     }
 
     get type() {

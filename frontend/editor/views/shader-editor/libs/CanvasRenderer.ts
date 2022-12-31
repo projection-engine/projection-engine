@@ -1,4 +1,4 @@
-import ShaderNode, {Input, Output} from "../templates/ShaderNode";
+import ShaderNode from "../templates/ShaderNode";
 import DATA_TYPES from "../static/DATA_TYPES";
 import IO_RADIUS from "../static/IO_RADIUS";
 import Canvas from "./Canvas";
@@ -6,10 +6,12 @@ import type ShaderLink from "../templates/ShaderLink";
 import HEADER_HEIGHT from "../static/HEADER_HEIGHT";
 import type Comment from "../templates/Comment";
 import NODE_TYPES from "../static/NODE_TYPES";
+import {Input} from "../templates/Input";
+import {Output} from "../templates/Output";
 
-export default class CanvasRenderer{
-    static drawBezierCurve(ctx:CanvasRenderingContext2D, x1,x2,y1,y2){
-        const diff = Math.abs((x1 - x2)/2)
+export default class CanvasRenderer {
+    static drawBezierCurve(ctx: CanvasRenderingContext2D, x1, x2, y1, y2) {
+        const diff = Math.abs((x1 - x2) / 2)
         const pivot = Math.min(x1, x2) + diff
 
         ctx.lineWidth = 2
@@ -19,7 +21,7 @@ export default class CanvasRenderer{
         ctx.stroke();
     }
 
-    static drawIO(ctx: CanvasRenderingContext2D, asOutput:boolean, node:ShaderNode, index:number, attribute:Input|Output) {
+    static drawIO(ctx: CanvasRenderingContext2D, asOutput: boolean, node: ShaderNode, index: number, attribute: Input | Output) {
         ctx.font = asOutput ? "bold 8px Arial" : "8px Arial";
 
         const isColor = attribute.type === DATA_TYPES.COLOR
@@ -41,12 +43,12 @@ export default class CanvasRenderer{
 
         ctx.beginPath()
 
-        if(isColor && !attribute.accept){
+        if (isColor && !attribute.accept) {
             const data = node[attribute.key]
-            if(!data)
+            if (!data)
                 return;
-            ctx.fillStyle = `rgb(${data[0]*255},${data[1]*255},${data[2]*255})`
-            ctx.roundRect(X + IO_RADIUS, Y - H/2, W/2, H, 3)
+            ctx.fillStyle = `rgb(${data[0] * 255},${data[1] * 255},${data[2] * 255})`
+            ctx.roundRect(X + IO_RADIUS, Y - H / 2, W / 2, H, 3)
             ctx.fill()
             return
         }
@@ -79,29 +81,41 @@ export default class CanvasRenderer{
 
         ctx.closePath()
     }
-    static drawNodePosition(ctx: CanvasRenderingContext2D, node:Comment|ShaderNode) {
-        ctx.font= "bold 10px Arial"
+
+    static drawNodePosition(ctx: CanvasRenderingContext2D, node: Comment | ShaderNode) {
+        ctx.font = "bold 10px Arial"
 
         const TEXT = `X ${node.x} Y ${node.y} W ${node.width} H ${node.height}`
         let Y = node.y - 10
-        if(Y < 0)
+        if (Y < 0)
             Y = node.y + node.height + 10
         ctx.beginPath()
         ctx.fillStyle = "white"
-        ctx.fillText(TEXT, node.x , Y )
+        ctx.fillText(TEXT, node.x, Y)
 
     }
+
     static drawLink(ctx: CanvasRenderingContext2D, link: ShaderLink) {
         const T = link.targetNode, S = link.sourceNode
         const x1 = S.x + S.width, x2 = T.x,
-            y1 = S.y +HEADER_HEIGHT + IO_RADIUS *3 + S.output.indexOf(link.sourceRef)* 20,
-            y2 = T.y + HEADER_HEIGHT + IO_RADIUS *3 + T.inputs.indexOf(link.targetRef) * 20
+            y1 = S.y + HEADER_HEIGHT + IO_RADIUS * 3 + S.output.indexOf(link.sourceRef) * 20,
+            y2 = T.y + HEADER_HEIGHT + IO_RADIUS * 3 + T.inputs.indexOf(link.targetRef) * 20
 
         ctx.strokeStyle = ShaderNode.getIOColor(link.sourceRef)
 
         CanvasRenderer.drawBezierCurve(ctx, x1, x2, y1, y2)
     }
-    static drawNodeHeader(ctx: CanvasRenderingContext2D, node:ShaderNode|Comment, type?:number) {
+
+    static drawTempLink(event: MouseEvent, parentElement, parentBBox, tempLink, canvasAPI) {
+        tempLink.x1 = (event.clientX - parentBBox.x + parentElement.scrollLeft) / Canvas.scale
+        tempLink.y1 = (event.clientY - parentBBox.y + parentElement.scrollTop) / Canvas.scale
+
+        canvasAPI.clear()
+        canvasAPI.ctx.strokeStyle = "#0095ff"
+        CanvasRenderer.drawBezierCurve(canvasAPI.ctx, tempLink.x, tempLink.x1, tempLink.y, tempLink.y1)
+    }
+
+    static drawNodeHeader(ctx: CanvasRenderingContext2D, node: ShaderNode | Comment, type?: number) {
         const name = node.name
         ctx.beginPath();
 
@@ -133,7 +147,7 @@ export default class CanvasRenderer{
 
         ctx.fillStyle = fontFill
         ctx.fillText(name, node.x + IO_RADIUS, node.y + 15);
-        if((node as ShaderNode).uniform){
+        if ((node as ShaderNode).uniform) {
             const length = ctx.measureText(name + "T").width
             ctx.font = "6px Arial";
             ctx.fillStyle = "#999"
@@ -142,16 +156,17 @@ export default class CanvasRenderer{
         ctx.closePath()
 
     }
-    static drawRoundedRect(ctx: CanvasRenderingContext2D, node:ShaderNode|Comment, r: number, isSelected:boolean, isFirstSelected:boolean, color:string) {
+
+    static drawRoundedRect(ctx: CanvasRenderingContext2D, node: ShaderNode | Comment, r: number, isSelected: boolean, isFirstSelected: boolean, color: string) {
         const w = node.width, h = node.height, x = node.x, y = node.y
         if (w < 2 * r) r = w / 2;
         if (h < 2 * r) r = h / 2;
         let outlineColor = Canvas.borderColor
-        if(isSelected)
+        if (isSelected)
             outlineColor = isFirstSelected ? "white" : "darkorange"
 
         ctx.fillStyle = color
-        ctx.lineWidth = isSelected ? 2: 1
+        ctx.lineWidth = isSelected ? 2 : 1
         ctx.strokeStyle = outlineColor
 
         ctx.beginPath();

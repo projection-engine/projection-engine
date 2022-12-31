@@ -12,7 +12,7 @@ export default class Saturate extends ShaderNode {
             {label: "Result", key: "saturateRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "Saturate"
-        this.size = 2
+        
     }
 
     get type() {

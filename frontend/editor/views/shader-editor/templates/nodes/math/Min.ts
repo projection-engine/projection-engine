@@ -14,7 +14,7 @@ export default class Min extends ShaderNode {
             {label: "Result", key: "minRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "Min"
-        this.size = 2
+        
     }
 
     get type() {

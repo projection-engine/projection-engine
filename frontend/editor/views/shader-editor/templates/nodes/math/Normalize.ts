@@ -12,7 +12,7 @@ export default class Normalize extends ShaderNode {
         ])
         this.equalTypeInputs = true
         this.name = "Normalize"
-        this.size = 2
+        
     }
 
     get type() {

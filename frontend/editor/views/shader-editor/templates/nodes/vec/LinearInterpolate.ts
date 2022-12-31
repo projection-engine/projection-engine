@@ -18,7 +18,7 @@ export default class LinearInterpolate extends ShaderNode {
             }
         ])
         this.name = "LinearInterpolate"
-        this.size = 1
+        
     }
 
     get type() {

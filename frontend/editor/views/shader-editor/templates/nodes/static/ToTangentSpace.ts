@@ -11,7 +11,7 @@ export default class ToTangentSpace extends ShaderNode {
         ])
 
         this.name = "ToTangentSpace"
-        this.size = 2
+        
     }
 
     get type() {

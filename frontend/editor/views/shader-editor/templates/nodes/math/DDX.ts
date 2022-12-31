@@ -12,7 +12,7 @@ export default class DDX extends ShaderNode {
             {label: "Result", key: "ddxRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "DDX"
-        this.size = 2
+        
     }
 
     get type() {

@@ -14,7 +14,7 @@ export default class DotProduct extends ShaderNode {
         ])
 
         this.name = "DotProduct"
-        this.size = 2
+        
     }
 
     get type() {

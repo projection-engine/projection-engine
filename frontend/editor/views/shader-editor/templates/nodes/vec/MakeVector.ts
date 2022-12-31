@@ -18,7 +18,7 @@ export default class MakeVector extends ShaderNode {
             {label: "Vec4", key: "vec4MakerRes", type: DATA_TYPES.VEC4, color: "blue"}
         ])
         this.name = "MakeVector"
-        this.size = 1
+        
     }
 
     get type() {

@@ -64,6 +64,7 @@
             <ToolTip content={LOCALIZATION_EN.PARENT_DIR}/>
         </button>
         <button
+
                 disabled={loading}
                 data-view-header-button="-"
                 on:click={() => {

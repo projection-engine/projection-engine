@@ -12,7 +12,7 @@ export default class Cosine extends ShaderNode {
             {label: "Result", key: "cosRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "Cosine"
-        this.size = 2
+        
     }
 
     get type() {

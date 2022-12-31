@@ -16,7 +16,7 @@ export default class Clamp extends ShaderNode {
             {label: "Result", key: "clampRes", type: DATA_TYPES.FLOAT}
         ])
         this.name = "Clamp"
-        this.size = 2
+        
     }
 
     get type() {

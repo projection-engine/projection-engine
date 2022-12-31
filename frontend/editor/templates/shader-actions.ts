@@ -2,7 +2,6 @@ import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools";
 import addComment from "../views/shader-editor/utils/add-comment";
 
 import SettingsStore from "../stores/SettingsStore";
-import OpenFile from "../views/shader-editor/static/OPEN_FILE";
 import Canvas from "../views/shader-editor/libs/Canvas";
 import type ShaderNode from "../views/shader-editor/templates/ShaderNode";
 import Comment from "../views/shader-editor/templates/Comment";
@@ -20,7 +19,7 @@ export function selectAllNodes(canvasAPI:Canvas){
     canvasAPI.lastSelection = last
     canvasAPI.clear()
 }
-export default function shaderActions(openFile: OpenFile, canvasAPI: Canvas) {
+export default function shaderActions( canvasAPI: Canvas) {
     const settings = SettingsStore.data
 
     const options = {
@@ -37,7 +36,7 @@ export default function shaderActions(openFile: OpenFile, canvasAPI: Canvas) {
         SAVE: {
             label: "Save",
             require: settings.shaderEditorHotkeys.SAVE,
-            callback: () => ShaderEditorTools.save(openFile, canvasAPI).catch()
+            callback: () => ShaderEditorTools.save( canvasAPI).catch()
         },
         COPY: {
             label: "Copy",
@@ -52,6 +51,7 @@ export default function shaderActions(openFile: OpenFile, canvasAPI: Canvas) {
             label: "Delete selected",
             require: settings.shaderEditorHotkeys.DELETE,
             callback: () => {
+                console.trace("IM HERE")
                 const toRemoveFromSelection = []
                 canvasAPI.selectionMap.forEach(s => {
                     toRemoveFromSelection.push(s.id)
