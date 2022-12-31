@@ -4,7 +4,7 @@ import SCALE_BUTTON_SIZE from "../static/SCALE_BUTTON_SIZE";
 
 export default class Draggable {
     readonly id = crypto.randomUUID()
-
+    isOnDrag = false
     width = 200
     height = HEADER_HEIGHT
     minWidth = 10
@@ -42,13 +42,14 @@ export default class Draggable {
         ctx.fill()
     }
 
-    static drag(event: MouseEvent, node: Draggable, asPositionChange: boolean): { onMouseUp: Function, onMouseMove: Function } {
+    static drag(event: MouseEvent, node: Draggable, asPositionChange: boolean): { onMouseUp: Function, onMouseMove: Function, node: Draggable } {
         const bounding = {
             x: !asPositionChange ? 0 : node.x * Canvas.scale - event.clientX,
             y: !asPositionChange ? 0 : node.y * Canvas.scale - event.clientY
         }
 
         return {
+            node: node,
             onMouseUp: () => {
                 if (!asPositionChange)
                     return

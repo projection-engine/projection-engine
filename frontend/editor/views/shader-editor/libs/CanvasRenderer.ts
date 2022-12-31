@@ -18,6 +18,7 @@ export default class CanvasRenderer{
         ctx.bezierCurveTo(pivot, y1, pivot, y2, x2, y2);
         ctx.stroke();
     }
+
     static drawIO(ctx: CanvasRenderingContext2D, asOutput:boolean, node:ShaderNode, index:number, attribute:Input|Output) {
         ctx.font = asOutput ? "bold 8px Arial" : "8px Arial";
 
@@ -77,6 +78,18 @@ export default class CanvasRenderer{
             ctx.fillText(label, X + LABEL_OFFSET, Y - T_SIZE / 2);
 
         ctx.closePath()
+    }
+    static drawNodePosition(ctx: CanvasRenderingContext2D, node:Comment|ShaderNode) {
+        ctx.font= "bold 10px Arial"
+
+        const TEXT = `X ${node.x} Y ${node.y} W ${node.width} H ${node.height}`
+        let Y = node.y - 10
+        if(Y < 0)
+            Y = node.y + node.height + 10
+        ctx.beginPath()
+        ctx.fillStyle = "white"
+        ctx.fillText(TEXT, node.x , Y )
+
     }
     static drawLink(ctx: CanvasRenderingContext2D, link: ShaderLink) {
         const T = link.targetNode, S = link.sourceNode

@@ -68,12 +68,16 @@ export default class Canvas {
         this.draw()
     }
 
+
     private draw() {
         const ctx = this.ctx
         const C = this.comments
         const CS = C.length
         for (let i = 0; i < CS; i++) {
-            C[i].draw(ctx, this)
+            const comment = C[i]
+            if(comment.isOnDrag)
+                CanvasRenderer.drawNodePosition(ctx, comment)
+            comment.draw(ctx, this)
         }
 
         const L = this.links
@@ -84,9 +88,11 @@ export default class Canvas {
 
         const N = this.nodes
         const NS = N.length
-        for (let i = 0; i < NS; i++)
-            N[i].drawToCanvas(ctx, this)
-
-
+        for (let i = 0; i < NS; i++) {
+            const node = N[i]
+            if(node.isOnDrag)
+                CanvasRenderer.drawNodePosition(ctx, node)
+            node.drawToCanvas(ctx, this)
+        }
     }
 }
