@@ -19,15 +19,15 @@ function map(check, items, elementsPerRow) {
     return newArr
 }
 
-export default function getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow) {
+export default function getFilesToRender(currentDirectory, fileType, items, inputValue, elementsPerRow) {
     let type = fileType?.split("")
     if (type) {
         type.shift()
         type = type.join("")
     }
-    if (searchString || fileType)
+    if (inputValue || fileType)
         return map(
-            file => searchString.trim() && file.name.includes(searchString) || type && file.type === type && !file.isFolder,
+            file => inputValue.trim() && file.name.includes(inputValue) || type && file.type === type && !file.isFolder,
             items,
             elementsPerRow
         )

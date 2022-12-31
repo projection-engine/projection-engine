@@ -120,8 +120,8 @@
         </Dropdown>
     {:else if attribute.type === Component.propTypes.STRING}
         <Input
-                searchString={value}
-                setSearchString={v => submit(attribute.key, v, true)}
+                inputValue={value}
+                onChange={v => submit(attribute.key, v, true)}
                 onEnter={v => submit(attribute.key, v, true)}
                 onBlur={(_,v) => submit(attribute.key, v, true)}
                 placeholder={label}

@@ -1,5 +1,5 @@
 import resolveRelationship from "./resolve-relationship";
-import TextureSample from "../../nodes/TextureSample";
+import TextureSample from "../../../templates/nodes/TextureSample";
 
 export default async function compileFragmentShader(startPoint, nodes, links) {
     const uniforms = [],

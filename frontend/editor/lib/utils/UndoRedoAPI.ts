@@ -54,8 +54,6 @@ export default class UndoRedoAPI {
     static clearShaderEditorStates() {
         UndoRedoAPI.#cache.history = UndoRedoAPI.#cache.history.filter(h => !h || h.target !== ACTION_HISTORY_TARGETS.SHADER_EDITOR)
         UndoRedoAPI.#cache.index = Math.max(UndoRedoAPI.#cache.history.length - 1, 0)
-
-
         UndoRedoAPI.onChange?.(UndoRedoAPI.#cache.history, UndoRedoAPI.#cache.index)
     }
 

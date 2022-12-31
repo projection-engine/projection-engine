@@ -3,7 +3,7 @@
     import dragNode from "../../utils/drag-node";
     import NodeInput from "./NodeInput.svelte";
     import NodeOutput from "./NodeOutput.svelte";
-    import Material from "../../libs/nodes/Material";
+    import Material from "../../templates/nodes/Material";
     import SelectionStore from "../../../../stores/SelectionStore";
     import ShaderEditorTools from "../../libs/ShaderEditorTools";
     import Icon from "../../../../../components/icon/Icon.svelte";

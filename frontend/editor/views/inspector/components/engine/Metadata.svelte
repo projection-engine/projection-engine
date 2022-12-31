@@ -26,7 +26,7 @@
             hasBorder={true}
             onBlur={(_,v) => EntityNameController.renameEntity(v, entity)}
             onEnter={v => EntityNameController.renameEntity(v, entity)}
-            searchString={entity.name}
+            inputValue={entity.name}
             placeholder={LOCALIZATION_EN.MY_ENTITY}
     />
 </fieldset>
@@ -46,12 +46,12 @@
     <Input
             width="100%"
             hasBorder={true}
-            setSearchString={v => {
+            onChange={v => {
                     Engine.queryMap.delete(entity.queryKey)
                     Engine.queryMap.set(v, entity)
                     entity.queryKey = v
                 }}
-            searchString={entity.queryKey}
+            inputValue={entity.queryKey}
             placeholder={LOCALIZATION_EN.QUERY_KEY}
     />
 </fieldset>

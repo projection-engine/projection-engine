@@ -1,32 +1,34 @@
-<script>
+<script lang="ts">
     import {onMount} from "svelte";
 
     const DELAY = 250, ENTER = "Enter"
-    export let width = "initial"
-    export let height = "initial"
-    export let onBlur = () => null
-    export let noPadding = false
-    export let setSearchString = () => null
-    export let searchString = ""
+    export let width:string
+    export let height:string
+    export let onBlur:Function
+    export let noPadding:boolean
+    export let onChange:Function
+    export let inputValue:string
     export let noAutoSubmit = false
     export let placeholder = undefined
     export let onEnter = undefined
     export let directChange = undefined
     export let minWidth = undefined
     export let hasBorder = undefined
-    export let disabled
+    export let disabled:boolean
 
     let changed = false
-    let timeout, input
-    const onChange = (input) => {
+    let timeout:NodeJS.Timeout
+    let input:HTMLInputElement
+
+    const handler = (input) => {
         clearTimeout(timeout)
         timeout = setTimeout(() => {
-            setSearchString(input.value)
+            onChange(input.value)
             changed = false
         }, DELAY)
     }
-    onMount(() => input.value = searchString)
-    $: if (input) input.value = searchString
+    onMount(() => input.value = inputValue|| "")
+    $: if (input) input.value = inputValue|| ""
 
 </script>
 
@@ -40,26 +42,22 @@
         </div>
     {/if}
     <input
-            placeholder={placeholder}
+            placeholder={placeholder||""}
             disabled={disabled}
-            draggable={false}
+            draggable="false"
             bind:this={input}
             on:input={e => {
-                if(directChange)
-                    directChange(e.target.value)
+                directChange?.(e.target.value)
                 changed = true
                 if(!noAutoSubmit)
-                    onChange(e.target)
+                    handler(e.target)
             }}
-            on:blur={(e) => {
-                if(onBlur)
-                    onBlur(changed, e.currentTarget.value)
-            }}
+            on:blur={(e) => onBlur?.(changed, e.currentTarget.value)}
             on:keydown={e => {
                 if(e.code === ENTER){
-                   setSearchString(e.target.value)
-                   if(onEnter)
-                        onEnter(e.target.value)
+                   handler(e.target.value)
+
+                        onEnter?.(e.target.value)
                     changed = false
                 }
             }}

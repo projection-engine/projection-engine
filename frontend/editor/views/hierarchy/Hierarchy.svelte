@@ -89,8 +89,8 @@
             width="50%"
             height="22px"
             placeholder={LOCALIZATION_EN.SEARCH}
-            searchString={search}
-            setSearchString={v => search = v}
+            inputValue={search}
+            onChange={v => search = v}
     />
 
     <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined) + "margin-left: auto"}>
@@ -130,7 +130,7 @@
             openTree={openTree}
             setOpenTree={v => openTree = v}
             setIsEmpty={v => isEmpty = v}
-            searchString={search}
+            inputValue={search}
             filteredComponent={filteredComponent}
 
             ID={ID}

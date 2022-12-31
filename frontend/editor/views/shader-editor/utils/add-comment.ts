@@ -1,43 +1,28 @@
-import Comment from "../libs/nodes/Comment"
-import SelectionStore from "../../../stores/SelectionStore";
-import ShaderNode from "../libs/ShaderNode";
+import Canvas from "../libs/Canvas";
+import Comment from "../templates/Comment";
 
-export default function addComment(nodes:ShaderNode[], setNodes:Function) {
-    let smallestX:number|undefined,
-        smallestY:number|undefined,
-        width:number|undefined,
-        height:number|undefined,
-        biggestX:number|undefined,
-        biggestY:number|undefined
+export default function addComment(canvasAPI: Canvas) {
+    let smallestX: number | undefined,
+        smallestY: number | undefined,
+        width: number | undefined,
+        height: number | undefined,
+        biggestX: number | undefined,
+        biggestY: number | undefined
 
-    const nodesG = SelectionStore.shaderEditorSelected.map(h => document.getElementById(h.id)?.parentElement).filter(n => n)
-    nodesG
+
+    canvasAPI.selectionMap
         .forEach(n => {
-            const transformation = n
-                .getAttribute("transform")
-                .replace("translate(", "")
-                .replace(")", "")
-                .split(" ")
+            if (n instanceof Comment)
+                return
+            if (!smallestX || n.x < smallestX)
+                smallestX = n.x
+            if (!smallestY || n.y < smallestY)
+                smallestY = n.y
 
-            const child  = n.firstElementChild
-
-            const cX = parseFloat(transformation[0])
-            const cY = parseFloat(transformation[1])
-            // @ts-ignore
-            const cW = parseFloat(child.style.width.replace("px", ""))
-            // @ts-ignore
-            const cH = parseFloat(child.style.height.replace("px", ""))
-            if (!smallestX || cX < smallestX)
-                smallestX = cX
-            if (!smallestY || cY < smallestY)
-                smallestY = cY
-
-            if (!biggestX || cX + cW > biggestX)
-                biggestX = cX + cW
-            if (!biggestY || cY + cH > biggestY)
-                biggestY = cY + cH
-
-
+            if (!biggestX || n.x + n.width > biggestX)
+                biggestX = n.x + n.width
+            if (!biggestY || n.y + n.height > biggestY)
+                biggestY = n.y + n.height
         })
 
 
@@ -47,9 +32,9 @@ export default function addComment(nodes:ShaderNode[], setNodes:Function) {
     smallestX -= 4
     smallestY -= 36
 
-    setNodes([
-        ...nodes,
-        new Comment(width, height, smallestX, smallestY)
-    ])
-
+    const comment = new Comment(smallestX, smallestY)
+    comment.width = width
+    comment.height = height
+    canvasAPI.comments.push(comment)
+    canvasAPI.clear()
 }

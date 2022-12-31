@@ -16,15 +16,15 @@
     export let mergeMaterials
     export let terrainMaterials
 
-    let searchString = ""
+    let inputValue = ""
     let filtered
 
 
     $: {
         const temp = getType(store, type, mergeMaterials, terrainMaterials)
         let current
-        if (searchString)
-            current = temp.filter(e => e.name.includes(searchString))
+        if (inputValue)
+            current = temp.filter(e => e.name.includes(inputValue))
         else
             current = [...temp]
         if (!noDefault) {
@@ -64,8 +64,8 @@
     <div class="header-available-nodes selector">
         <Input
                 width={"100%"}
-                searchString={searchString}
-                setSearchString={v => searchString  = v}
+                inputValue={inputValue}
+                onChange={v => inputValue  = v}
                 placeholder={LOCALIZATION_EN.SEARCH}
         >
             <Icon slot="icon">search</Icon>

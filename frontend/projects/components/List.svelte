@@ -95,10 +95,10 @@
                 hasBorder="true"
                 placeholder={LOCALIZATION_EN.SEARCH}
                 onEnter={v => filter = v}
-                setSearchString={v => filter = v}
+                onChange={v => filter = v}
                 height="30px"
                 onBlur={(_, v) => filter = v}
-                searchString={filter}>
+                inputValue={filter}>
             <Icon slot="icon" styles="font-size: 1rem">
                 search
             </Icon>

@@ -9,8 +9,6 @@
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
-    import ShaderNode from "../shader-editor/libs/ShaderNode";
-    import AttributeEditor from "./components/shader-editor/AttributeEditor.svelte";
     import {v4} from "uuid";
     import Icon from "../../../components/icon/Icon.svelte";
 
@@ -33,12 +31,6 @@
                 case T.CONTENT_BROWSER:
                     targetInstance = FilesStore.data.items.find(i => i.id === v.array[0])
                     targetType = LOCALIZATION_EN.CONTENT_BROWSER
-                    break
-                case T.SHADER_EDITOR:
-                    if (v.array[0] instanceof ShaderNode) {
-                        targetInstance = v.array[0]
-                        targetType = LOCALIZATION_EN.SHADER_EDITOR
-                    }
                     break
                 case T.ENGINE:
                     targetInstance = QueryAPI.getEntityByID(v.array[0])
@@ -78,8 +70,6 @@
             <EntityInspector entity={entity}/>
         {:else if target === SelectionStore.TYPES.CONTENT_BROWSER}
             <ContentBrowserItem item={entity}/>
-        {:else if target === SelectionStore.TYPES.SHADER_EDITOR}
-            <AttributeEditor node={entity} internalID={internalID}/>
         {/if}
     </div>
 {/if}

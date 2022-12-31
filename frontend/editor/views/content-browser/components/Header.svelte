@@ -20,8 +20,8 @@
     export let currentDirectory
     export let setCurrentDirectory
     export let fileType
-    export let setSearchString
-    export let searchString
+    export let onChange
+    export let inputValue
     export let navigationHistory
     export let viewType
     export let setViewType
@@ -88,8 +88,8 @@
                 hasBorder={true}
                 height="22px"
                 placeholder={LOCALIZATION_EN.SEARCH}
-                searchString={searchString}
-                setSearchString={setSearchString}
+                inputValue={inputValue}
+                onChange={onChange}
         />
         <Dropdown buttonStyles={getDropdownHeaderStyles(fileType != null)}>
             <button slot="button" data-view-header-dropdown="-">

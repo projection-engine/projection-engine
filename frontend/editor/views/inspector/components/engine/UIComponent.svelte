@@ -56,11 +56,11 @@
     <fieldset>
         <legend>{LOCALIZATION_EN.ANCHOR_ELEMENT_ID}</legend>
         <Input
-                searchString={component.anchorElement}
+                inputValue={component.anchorElement}
                 placeholder={LOCALIZATION_EN.ELEMENT_ID}
                 onBlur={(_, v) => update("anchorElement", v)}
                 onEnter={v => update("anchorElement", v)}
-                setSearchString={v =>  update("anchorElement", v)}
+                onChange={v =>  update("anchorElement", v)}
         />
     </fieldset>
 

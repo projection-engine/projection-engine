@@ -58,9 +58,9 @@
         {#if openForChange}
             <Input
                     placeholder={data.meta.name}
-                    searchString={data.meta.name}
+                    inputValue={data.meta.name}
                     width="200%"
-                    setSearchString={v => {
+                    onChange={v => {
                     data.meta.name = v
                     onRename(v)
                 }}

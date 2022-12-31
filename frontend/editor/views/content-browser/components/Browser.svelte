@@ -18,8 +18,8 @@
     const CARD_SIZE = 115
     export let fileType
     export let setFileType
-    export let searchString
-    export let setSearchString
+    export let inputValue
+    export let onChange
     export let currentDirectory
     export let navigationHistory
     export let setCurrentDirectory
@@ -60,13 +60,13 @@
 
     function resetItem() {
         SelectionStore.contentBrowserSelected = []
-        setSearchString("")
+        onChange("")
         setFileType(undefined)
     }
 
     $: lineHeight = viewType === ITEM_TYPES.ROW ? 23 : CARD_SIZE
     $: items = store.items
-    $: toRender = getFilesToRender(currentDirectory, fileType, items, searchString, elementsPerRow)
+    $: toRender = getFilesToRender(currentDirectory, fileType, items, inputValue, elementsPerRow)
 
     $: {
         if (ref) {

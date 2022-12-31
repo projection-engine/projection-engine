@@ -1,6 +1,6 @@
 import MutableObject from "../../../../../../../engine-core/MutableObject";
-import {Output} from "../../ShaderNode";
-import ShaderLink from "../../ShaderLink";
+import {Output} from "../../../templates/ShaderNode";
+import ShaderLink from "../../../templates/ShaderLink";
 
 export default function resolveRelationship(currentNode:MutableObject, outputs:Output[], links:ShaderLink[], nodes:MutableObject[], body:string[], isVertex?:boolean) {
     const inputs = {}

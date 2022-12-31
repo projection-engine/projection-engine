@@ -1,25 +1,29 @@
 import SELECTION_TYPES from "../static/SELECT_ACTIONS"
-import SelectionStore from "../../../stores/SelectionStore";
+import {selectAllNodes} from "../../../templates/shader-actions";
+import type Canvas from "../libs/Canvas";
+import type ShaderNode from "../templates/ShaderNode";
+import type Comment from "../templates/Comment";
 
-export default function selection(type, nodes) {
+export default function selection(type: number, canvasAPI: Canvas) {
     switch (type) {
-    case SELECTION_TYPES.INVERT: {
-        const toSelect = []
-        for (let i = 0; i < nodes.length; i++) {
-            if (!SelectionStore.shaderEditorSelected.includes(nodes[i]))
-                toSelect.push(nodes[i])
+        case SELECTION_TYPES.INVERT: {
+            const nodes = [...canvasAPI.nodes, ...canvasAPI.comments]
+            let last: ShaderNode | Comment
+            for (let i = 0; i < nodes.length; i++) {
+                if (!canvasAPI.selectionMap.get(nodes[i].id)) {
+                    canvasAPI.selectionMap.set(nodes[i].id, nodes[i])
+                    last = nodes[i]
+                } else
+                    canvasAPI.selectionMap.delete(nodes[i].id)
+            }
+            canvasAPI.lastSelection = last
+            break
         }
-        SelectionStore.shaderEditorSelected = toSelect
-        break
-    }
-    case SELECTION_TYPES.NONE:
-        SelectionStore.shaderEditorSelected = []
-        break
-    case SELECTION_TYPES.ALL: {
-        SelectionStore.shaderEditorSelected = nodes
-        break
-    }
-    default:
-        break
+        case SELECTION_TYPES.NONE:
+            canvasAPI.selectionMap.clear()
+            canvasAPI.lastSelection = undefined
+            break
+        case SELECTION_TYPES.ALL:
+            selectAllNodes(canvasAPI)
     }
 }

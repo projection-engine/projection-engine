@@ -12,8 +12,8 @@
 
     export let setProjectsToShow
     export let projectsToShow
-    export let setSearchString
-    export let searchString
+    export let onChange
+    export let inputValue
     export let setBasePath
     export let basePath
 

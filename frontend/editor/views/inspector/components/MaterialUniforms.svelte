@@ -19,7 +19,6 @@
             />
         {/if}
         {#if uniform.type === DATA_TYPES.FLOAT}
-
             <Range
                     value={uniform.data}
                     onFinish={v => update(i, v)}

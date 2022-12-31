@@ -1,12 +1,14 @@
-import BOARD_SIZE from "../static/BOARD_SIZE";
 import materialCompiler from "./material-compiler/material-compiler";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 import getNewInstance from "../utils/get-new-instance";
-import TextureSample from "./nodes/TextureSample";
+import TextureSample from "../templates/nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
 import AlertController from "../../../../components/alert/AlertController";
+import OpenFile from "../static/OPEN_FILE";
+import Canvas from "./Canvas";
+import ShaderNode from "../templates/ShaderNode";
 
 export default class ShaderEditorTools {
 
@@ -17,7 +19,7 @@ export default class ShaderEditorTools {
     static connectionOnDrag
     static toOpenFile
 
-    static parseNode(node) {
+    static parseNode(node):ShaderNode {
         if (!node)
             return
         const nodeInstance = getNewInstance(node.instance)
@@ -36,8 +38,8 @@ export default class ShaderEditorTools {
                 }
             }
         })
-        nodeInstance.x = node.x + BOARD_SIZE / 2
-        nodeInstance.y = node.y + BOARD_SIZE / 2
+        // nodeInstance.x = node.x + BOARD_SIZE / 2
+        // nodeInstance.y = node.y + BOARD_SIZE / 2
         return nodeInstance
     }
 
@@ -48,46 +50,33 @@ export default class ShaderEditorTools {
                 ShaderEditorTools.copied.set(nodes[i].id, ShaderEditorTools.#serializeNode(nodes[i]))
     }
 
-    static paste(updateNodes) {
-        const newNodes = []
+    static paste(canvasAPI: Canvas) {
         ShaderEditorTools.copied.forEach(d => {
-            newNodes.push(ShaderEditorTools.parseNode({...d, id: v4()}))
+            canvasAPI.nodes.push(ShaderEditorTools.parseNode({...d, id: v4()}))
         })
-        updateNodes(newNodes)
+        canvasAPI.clear()
     }
 
-    static #serializeNode(n) {
-        const docNode = document.getElementById(n.id).parentElement
-        const transformation = docNode
-            .getAttribute("transform")
-            .replace("translate(", "")
-            .replace(")", "")
-            .split(" ")
-
-        const bBox = docNode.getBoundingClientRect()
+    static #serializeNode(n: ShaderNode) {
         return {
             ...n,
-            x: parseFloat(transformation[0]) - BOARD_SIZE / 2,
-            y: parseFloat(transformation[1]) - BOARD_SIZE / 2,
-            width: bBox.width,
-            height: bBox.height,
             instance: n.constructor.name,
             texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
         }
     }
 
-    static async compile(nodes, links) {
-        const parsedNodes = nodes.map(ShaderEditorTools.#serializeNode)
-        const compiled = await materialCompiler(nodes.filter(n => !n.isComment), links)
-        return {compiled, parsedNodes}
+    static async compile(canvasAPI: Canvas) {
+        const serializedNodes = canvasAPI.nodes.map(ShaderEditorTools.#serializeNode)
+        const compiled = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
+        return {compiled, serializedNodes}
     }
 
-    static async save(openFile, nodes, links) {
+    static async save(openFile: OpenFile, canvasAPI: Canvas) {
         try {
-            const {compiled, parsedNodes} = await ShaderEditorTools.compile(nodes, links)
+            const {compiled, serializedNodes} = await ShaderEditorTools.compile(canvasAPI)
             const materialData = {
-                nodes: parsedNodes,
-                links,
+                nodes: serializedNodes,
+                links: canvasAPI.links,
                 response: compiled,
                 type: compiled.variant
             }

@@ -2,12 +2,10 @@ import {get, writable} from "svelte/store";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import Engine from "../../../engine-core/Engine";
 import Entity from "../../../engine-core/instances/Entity";
-import MutableObject from "../../../engine-core/MutableObject";
 
 const TYPES = {
     ENGINE: "ENGINE",
-    CONTENT_BROWSER: "CONTENT_BROWSER",
-    SHADER_EDITOR: "SHADER_EDITOR"
+    CONTENT_BROWSER: "CONTENT_BROWSER"
 }
 const selection = writable({TARGET: TYPES.ENGINE, map: new Map<string,boolean>(), array: <string[]>[], lockedEntity: undefined});
 export default class SelectionStore {
@@ -75,14 +73,6 @@ export default class SelectionStore {
         return SelectionStore.TARGET === TYPES.CONTENT_BROWSER ? SelectionStore.array : []
     }
 
-    static set shaderEditorSelected(data) {
-        // @ts-ignore
-        SelectionStore.updateStore({...SelectionStore.data, TARGET: TYPES.SHADER_EDITOR, array: data})
-    }
-
-    static get shaderEditorSelected():MutableObject[] {
-        return <MutableObject[]><unknown>(SelectionStore.TARGET === TYPES.SHADER_EDITOR ? SelectionStore.array : [])
-    }
 
 
     static get selectedEntity():Entity {

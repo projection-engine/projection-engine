@@ -45,7 +45,7 @@
     }
 
     let fileType = undefined
-    let searchString = ""
+    let inputValue = ""
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
 
     onMount(() => {
@@ -68,8 +68,8 @@
         setViewType={v => viewType = v}
         viewType={viewType}
 
-        searchString={searchString}
-        setSearchString={v => searchString = v}
+        inputValue={inputValue}
+        onChange={v => inputValue = v}
         currentDirectory={currentDirectory}
         setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
         navigationHistory={navigationHistory}
@@ -91,11 +91,11 @@
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 navigationHistory={navigationHistory}
-                setSearchString={v => searchString = v}
+                onChange={v => inputValue = v}
                 fileType={fileType}
 
                 setFileType={v => fileType = v}
-                searchString={searchString}
+                inputValue={inputValue}
 
         />
     </div>

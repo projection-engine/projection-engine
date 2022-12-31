@@ -15,7 +15,7 @@
     import ToRenderElement from "../template/ToRenderElement";
 
     export let ID:string
-    export let searchString:string
+    export let inputValue:string
     export let filteredComponent:string
     export let setIsEmpty:Function
     export let openTree:{[key:string]:boolean}
@@ -30,7 +30,7 @@
     let selected:Map<string, boolean>
     let lockedEntity
     const testSearch = (node) => {
-        const s = searchString, f = filteredComponent
+        const s = inputValue, f = filteredComponent
         return (s && node.name.includes(s) || !s) &&
             (f && node.components.get(f) != null || !f)
     }
@@ -45,7 +45,7 @@
             const entities = Engine.entities
             const hierarchy = HierarchyController.hierarchy
             const data = []
-            if (!searchString && !filteredComponent) {
+            if (!inputValue && !filteredComponent) {
                 const data:ToRenderElement[] = []
                 for (let i = 0; i < hierarchy.length; i++) {
 

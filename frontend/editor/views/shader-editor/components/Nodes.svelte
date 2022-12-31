@@ -7,10 +7,10 @@
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
 
     const parseStr = (str) => str.toLowerCase().replace(/\s/g, "")
-    let searchString = ""
+    let inputValue = ""
     let nodes
     $: {
-        const s = parseStr(searchString)
+        const s = parseStr(inputValue)
         if (!s)
             nodes = ALL_NODES
         nodes = ALL_NODES.filter(i => parseStr(i.label).includes(s))
@@ -38,8 +38,8 @@
         <div class="header-available-nodes selector">
             <Input
                 width={"100%"}
-                searchString={searchString}
-                setSearchString={v => searchString  = v}
+                inputValue={inputValue}
+                onChange={v => inputValue  = v}
                 placeholder={LOCALIZATION_EN.SEARCH}
             >
                 <Icon slot="icon">search</Icon>

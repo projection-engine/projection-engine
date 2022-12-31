@@ -1,25 +1,24 @@
 <script>
-    import buildShader from "./utils/build-shader"
+    import buildShader from "./libs/material-compiler/build-shader"
     import FilesAPI from "../../lib/fs/FilesAPI"
 
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";
-    import Material from "./libs/nodes/Material";
-    import BOARD_SIZE from "./static/BOARD_SIZE";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
     import ViewStateController from "../../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
-    import SEContextController from "./libs/SEContextController";
-    import ShaderCanvas from "./components/ShaderCanvas.svelte";
+
+
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import Icon from "../../../components/icon/Icon.svelte";
     import NodeFS from "../../../lib/FS/NodeFS";
     import AlertController from "../../../components/alert/AlertController";
+    import Canvas from "./libs/Canvas";
 
     const {shell} = window.require("electron")
 
@@ -27,58 +26,37 @@
     export let viewIndex
     export let groupIndex
 
+    const canvas = new Canvas()
     let openFile
-    let nodes = []
-    let links = []
     let dragWillStart
-    let status
     let ref
     let engine
     let wasInitialized = false
     let isReady = false
+    let canvasElement
 
+    onMount(() => {
+        canvas.initialize(canvasElement)
+    })
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
 
-    function initializeStructure() {
-        SEContextController.deleteContext(openFile?.registryID)
-        status = {}
+    async function initializeStructure() {
+        canvas.selectionMap.clear()
+        canvas.lastSelection = undefined
+        canvas.openFile = openFile
+
         SelectionStore.shaderEditorSelected = []
 
-        parseFile(
-            openFile,
-            (d) => {
-                const found = d.find(dd => dd instanceof Material)
-                if (found)
-                    nodes = d
-                else {
-                    const newMat = new Material()
-                    newMat.x = newMat.x + BOARD_SIZE / 2
-                    newMat.y = newMat.y + BOARD_SIZE / 2
-                    nodes = [...d, newMat]
-                }
-                SEContextController.registerContext(
-                    openFile.registryID,
-                    v => nodes = v.map(n => {
-                        n.CONTEXT_ID = openFile.registryID
-                        return n
-                    }),
-                    v => links = v,
-                    () => nodes,
-                    () => links,
-                    v => dragWillStart = v
-                )
-                isReady = true
-            },
-            v => links = v
-        ).catch()
+        await parseFile(openFile, canvas)
+        canvas.clear()
+        isReady = true
     }
 
     function initializeFromFile(v) {
         if (!v) {
             UndoRedoAPI.clearShaderEditorStates()
-            SEContextController.deleteContext(openFile?.registryID)
             openFile = v
-        } else if (SEContextController.getContext(v.registryID))
+        } else if (canvas.openFile)
             AlertController.warn(LOCALIZATION_EN.FILE_ALREADY_OPEN)
         else {
             UndoRedoAPI.clearShaderEditorStates()
@@ -90,7 +68,13 @@
 
     $: {
         if (wasInitialized) {
-            const newState = {openFile, nodes, links}
+            const newState = {
+                openFile,
+                comments: canvas.comments,
+                selection: Array.from(canvas.selectionMap.keys()),
+                nodes: canvas.nodes,
+                links: canvas.links
+            }
             ViewStateController.updateState(viewID, viewIndex, groupIndex, newState)
         } else {
             const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
@@ -99,9 +83,14 @@
             initializeFromFile(newFile)
             ShaderEditorTools.toOpenFile = undefined
             if (state != null) {
-                nodes = state.nodes
-                links = state.links
-                status = state.status
+                canvas.nodes.push(...state.nodes)
+                canvas.links.push(...state.links)
+                canvas.comments.push(...state.comments)
+                state.selection.forEach(k => {
+                    const found = canvas.nodes.find(n => n.id === k) || canvas.comments.find(n => n.id === k)
+                    canvas.selectionMap.set(k, found)
+                })
+                canvas.clear()
             }
             wasInitialized = true
         }
@@ -110,25 +99,24 @@
     onDestroy(() => {
         unsubscribeEngine()
         UndoRedoAPI.clearShaderEditorStates()
-        SEContextController.deleteContext(openFile?.registryID)
     })
 </script>
 
 <ViewHeader>
-    <small style={dragWillStart && !openFile?.registryID ? undefined : "display: none"} id={openFile?.registryID + "-T"}></small>
-    {#if !dragWillStart || !openFile?.registryID}
+    <small style={dragWillStart && !openFile?.registryID ? undefined : "display: none"}
+           id={openFile?.registryID + "-T"}></small>
+    {#if !openFile?.registryID}
         <HeaderOptions
-                save={() => {
-                    buildShader(nodes, links, openFile, v => status = v).then(() => {
-                        ShaderEditorTools.save(openFile, nodes, links).catch(err => console.error(err))
-                    })
+                save={async () => {
+                    await buildShader(canvas, openFile)
+                    await ShaderEditorTools.save(openFile, canvas)
                 }}
                 openFile={openFile}
-                compile={() => buildShader(nodes, links, openFile, v => status = v).catch()}
+                compile={() => buildShader(canvas, openFile).catch()}
                 initializeFromFile={initializeFromFile}
-                nodes={nodes}
+                canvasAPI={canvas}
                 openSourceCode={async () => {
-                    const {shader} = await materialCompiler(nodes, links)
+                    const {shader} = await materialCompiler(canvas.nodes, canvas.links)
                     const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
                     await FilesAPI.writeFile(newFile, shader, true)
                     shell.openPath(newFile).catch()
@@ -137,18 +125,8 @@
     {/if}
 </ViewHeader>
 <div class="wrapper" bind:this={ref}>
-    {#if openFile?.registryID}
-        {#if isReady}
-            {#key openFile}
-                <ShaderCanvas openFile={openFile}/>
-            {/key}
-        {:else}
-            <div data-empty="-">
-                <Icon styles="font-size: 75px">texture</Icon>
-                {LOCALIZATION_EN.LOADING_MATERIAL}
-            </div>
-        {/if}
-    {:else}
+    <canvas class="canvas" bind:this={canvasElement}></canvas>
+    {#if !openFile?.registryID}
         <div data-empty="-">
             <Icon styles="font-size: 75px">texture</Icon>
             {LOCALIZATION_EN.NO_MATERIAL_SELECTED}
@@ -160,9 +138,19 @@
     small {
         font-size: .7rem;
     }
-
+    .canvas{
+        left: 0;
+        top: 0;
+        z-index: 0;
+        position: relative;
+        box-shadow: var(--pj-boxshadow);
+        color-rendering: optimizespeed;
+        background: var(--pj-background-quaternary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
+        background-size: 20px 20px;
+    }
     .wrapper {
-        display: flex;
+        z-index: 0;
+        position: relative;
         height: 100%;
         width: 100%;
         overflow: hidden;

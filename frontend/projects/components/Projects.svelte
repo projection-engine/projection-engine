@@ -17,7 +17,7 @@
     const {ipcRenderer, shell} = window.require("electron")
 
     let basePath
-    let searchString = ""
+    let inputValue = ""
     let projectsToShow = []
     let currentVersion
     let selected
@@ -69,8 +69,8 @@
         defaultVersion={defaultVersion}
         basePath={basePath}
         setBasePath={v => basePath = v}
-        setSearchString={v => searchString = v}
-        searchString={searchString}
+        onChange={v => inputValue = v}
+        inputValue={inputValue}
         projectsToShow={projectsToShow}
         setProjectsToShow={v => projectsToShow = v}
 />
