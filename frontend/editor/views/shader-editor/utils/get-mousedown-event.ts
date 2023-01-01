@@ -39,6 +39,8 @@ export default function getMousedownEvent(canvasAPI: Canvas, canvas: HTMLCanvasE
     }
 
     return e => {
+        if(e.target !== canvas)
+            return
         const BBox = canvas.getBoundingClientRect()
         parentBBox = parentElement.getBoundingClientRect()
         isOnScroll = e.button === 2

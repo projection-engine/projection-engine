@@ -5,6 +5,7 @@ import type ShaderLink from "../templates/ShaderLink";
 import type Comment from "../templates/Comment";
 import CanvasRenderer from "./CanvasRenderer";
 import OpenFile from "../static/OPEN_FILE";
+import Draggable from "../templates/Draggable";
 
 export default class Canvas {
     static grid = 20
@@ -16,7 +17,10 @@ export default class Canvas {
     static rectColor = "#353535"
     static borderColor = "#6b6b6b"
 
+
+    #initialized = false
     openFile?:OpenFile
+
     get rectColor() {
         return Canvas.rectColor
     }
@@ -25,15 +29,29 @@ export default class Canvas {
     links: ShaderLink[] = []
     comments: Comment[] = []
 
-
-
     ctx?: CanvasRenderingContext2D
-    private canvas?: HTMLCanvasElement
-    private initialized = false
+    canvas?: HTMLCanvasElement
 
+    lastSelectionListener?:Function
     selectionMap = new Map<string, ShaderNode|Comment>()
-    lastSelection: ShaderNode | Comment | undefined
+    #lastSelection: ShaderNode | Comment | undefined
 
+    get lastSelection(){
+        return this.#lastSelection
+    }
+
+    set lastSelection(data:ShaderNode | Comment | undefined){
+        this.#lastSelection = data
+        this.lastSelectionListener?.()
+    }
+    clearState(){
+        this.links.length = 0
+        this.comments.length = 0
+        this.nodes.length = 0
+        this.selectionMap.clear()
+        this.lastSelection = undefined
+        this.clear()
+    }
     updateCanvasSize() {
         this.canvas.width = Canvas.width
         this.canvas.height = Canvas.height
@@ -42,9 +60,9 @@ export default class Canvas {
     }
 
     initialize(canvas: HTMLCanvasElement) {
-        if (this.initialized)
+        if (this.#initialized)
             return
-        this.initialized = true
+        this.#initialized = true
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")
         this.updateCanvasSize()
@@ -57,6 +75,8 @@ export default class Canvas {
 
     clear() {
         const ctx = this.ctx
+        if(!ctx)
+            return
         const canvas = this.canvas
         const scale = Canvas.scale || .01
 
@@ -69,6 +89,7 @@ export default class Canvas {
 
     private draw() {
         const ctx = this.ctx
+
         const C = this.comments
         const CS = C.length
         for (let i = 0; i < CS; i++) {

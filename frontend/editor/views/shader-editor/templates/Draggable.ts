@@ -42,10 +42,14 @@ export default class Draggable {
         ctx.fill()
     }
 
-    static drag(event: MouseEvent, node: Draggable, asPositionChange: boolean): { onMouseUp: Function, onMouseMove: Function, node: Draggable } {
+    static drag(event: MouseEvent, node: Draggable, parentBbox, asPositionChange: boolean): { onMouseUp: Function, onMouseMove: Function, node: Draggable } {
         const bounding = {
             x: !asPositionChange ? 0 : node.x * Canvas.scale - event.clientX,
             y: !asPositionChange ? 0 : node.y * Canvas.scale - event.clientY
+        }
+        if(!asPositionChange) {
+            bounding.x -= parentBbox.left
+            bounding.y -= parentBbox.top
         }
 
         return {
@@ -71,10 +75,11 @@ export default class Draggable {
                 } else {
                     X -= node.x
                     Y -= node.y
-                    if (X > node.minWidth && Y > node.minHeight) {
+                    if (X > node.minWidth)
                         node.width = X
+                    if (Y > node.minHeight)
                         node.height = Y
-                    }
+
                 }
 
             }

@@ -12,6 +12,8 @@
     let resize
     let mutation
     let initial = {}
+    let bBox
+    let prevBbox
 
     function updateTarget(element, value) {
         if (type === "width" && value <= parentBBox.width && value > 0)
@@ -24,16 +26,17 @@
         try {
             if (onResize)
                 onResize()
-            const bBox = ref.previousElementSibling.getBoundingClientRect()
-            const prevBbox = ref.nextElementSibling.getBoundingClientRect()
             if (type === "width") {
-                const newW = (event.clientX - bBox.left)
+
+                const newW = event.clientX - bBox.left
                 const offset = newW - bBox.width
+
                 updateTarget(ref.previousElementSibling, event.clientX - bBox.left)
                 updateTarget(ref.nextElementSibling, prevBbox.width - offset)
             } else {
                 const newH = (event.clientY - bBox.top)
                 const offset = newH - bBox.height
+
                 updateTarget(ref.previousElementSibling, event.clientY - bBox.top)
                 updateTarget(ref.nextElementSibling, prevBbox.height - offset)
             }
@@ -56,6 +59,8 @@
         }
     }
     const handleMouseDown = (event) => {
+        bBox = ref.previousElementSibling.getBoundingClientRect()
+        prevBbox = ref.nextElementSibling.getBoundingClientRect()
         parentBBox = ref.parentElement.getBoundingClientRect()
         if (!disabled) {
             const siblings = Array.from(event.currentTarget.parentElement.children)

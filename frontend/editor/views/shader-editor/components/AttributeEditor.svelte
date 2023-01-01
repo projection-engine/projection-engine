@@ -9,13 +9,14 @@
     import MutableObject from "../../../../../engine-core/MutableObject";
 
     export let node: ShaderNode | Comment
-    export let canvasAPI: Canvas
+    export let updateCanvas:Function
+
 
     function handleNodeChange(value: any, attr: MutableObject) {
-        const N = (node as ShaderNode)
-        N[attr.key] = value
-        const input = N.inputs.find(i => i.key === attr.key)
+        node[attr.key] = value
+        const input = (node as ShaderNode).inputs.find(i => i.key === attr.key)
         input.onChange?.(value)
+        updateCanvas()
     }
 </script>
 
@@ -28,7 +29,10 @@
                     inputValue={node.name}
                     width={"100%"}
                     height="30px"
-                    onChange={ev => node.name = ev}
+                    onChange={ev => {
+                        node.name = ev
+                        updateCanvas()
+                    }}
                     placeholder={LOCALIZATION_EN.NAME}
             />
         </fieldset>
@@ -36,7 +40,10 @@
             <fieldset>
                 <legend>{LOCALIZATION_EN.COLOR}</legend>
                 <ColorPicker
-                        submit={(_, arr) => node.color = arr}
+                        submit={(_, arr) => {
+                            node.color = arr
+                            updateCanvas()
+                        }}
                         value={node.color}
                 />
             </fieldset>

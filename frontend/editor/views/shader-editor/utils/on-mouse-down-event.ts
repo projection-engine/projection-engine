@@ -6,9 +6,6 @@ import {Input} from "../templates/Input";
 import {Output} from "../templates/Output";
 
 export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvasAPI:Canvas, parentBBox, parentElement:HTMLElement, isOnScroll:boolean, event:MouseEvent){
-
-
-
     if (!isOnScroll) {
         const N = canvasAPI.nodes
         const C = canvasAPI.comments
@@ -20,7 +17,7 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
             canvasAPI.selectionMap.clear()
         } else
             canvasAPI.selectionMap.forEach(node => {
-                nodesOnDrag.push(Draggable.drag(event, node, true))
+                nodesOnDrag.push(Draggable.drag(event, node, parentBBox,true))
             })
 
         let wasBroken = false
@@ -30,12 +27,12 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
             const onHeader = node.checkHeaderClick(X, Y)
             if (onHeader || onBody) {
                 if (onHeader) {
-                    nodesOnDrag.push(Draggable.drag(event, node, true))
+                    nodesOnDrag.push(Draggable.drag(event, node, parentBBox,true))
                     node.isOnDrag = true
                 } else if (!event.ctrlKey) {
                     const isOnScale = node.checkAgainstScale(X, Y)
                     if (isOnScale) {
-                        nodesOnDrag.push(Draggable.drag(event, node, false))
+                        nodesOnDrag.push(Draggable.drag(event, node, parentBBox,false))
                         node.isOnDrag = true
                     } else {
                         const output = node.checkAgainstIO<Output>(X, Y)
@@ -79,12 +76,12 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
                 const onHeader = comment.checkHeaderClick(X, Y)
                 if (onHeader || onBody) {
                     if (onHeader) {
-                        nodesOnDrag.push(Draggable.drag(event, comment, true))
+                        nodesOnDrag.push(Draggable.drag(event, comment, parentBBox,true))
                         comment.isOnDrag = true
                     } else if (!event.ctrlKey) {
                         const isOnScale = comment.checkAgainstScale(X, Y)
                         if (isOnScale) {
-                            nodesOnDrag.push(Draggable.drag(event, comment, false))
+                            nodesOnDrag.push(Draggable.drag(event, comment, parentBBox,false))
                             comment.isOnDrag = true
                         }
                     }

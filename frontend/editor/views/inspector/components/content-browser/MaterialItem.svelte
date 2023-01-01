@@ -31,18 +31,18 @@
             temp = {
                 ...temp,
                 uniforms: originalMat.response.uniforms,
-                uniformsData: originalMat.response.uniformsData
+                uniformValues: originalMat.response.uniformValues
             }
             await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
         }
     }
 
-    $: uniforms = temp?.response?.uniformsData
+    $: uniforms = temp?.response?.uniformValues
 
     const updateAsset = (index, value, t) => {
         clearTimeout(timeout)
         timeout = setTimeout(async () => {
-            const update = temp.response.uniformsData.map((u, i) => {
+            const update = temp.response.uniformValues.map((u, i) => {
                 if (i === index)
                     return {...u, data: value}
                 return u
@@ -51,19 +51,13 @@
                 ...temp,
                 response: {
                     ...temp.response,
-                    uniformsData: update
+                    uniformValues: update
                 },
-                // nodes: temp.nodes.map(n => {
-                //     const target =temp.response.uniformsData[index]
-                //     if(n.uniformName === target?.key && target?.internalKey)
-                //         n[target.internalKey]  = target.data
-                //     return n
-                // })
             }
             await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
             const instance = GPU.materials.get(item.registryID)
             if (instance) {
-                await instance.updateUniformGroup(temp.response.uniformsData)
+                await instance.updateUniformGroup(temp.response.uniformValues)
                 AlertController.success(LOCALIZATION_EN.MATERIAL_UPDATED)
 
                 GPUAPI.cleanUpTextures()

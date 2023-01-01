@@ -65,7 +65,8 @@ export default function getNewInstance(name: string): ShaderNode | Comment | nul
             return new Refract()
         case Normalize.name:
             return new Normalize()
-
+        case Material.name:
+            return new Material()
         case SceneColor.name:
             return new SceneColor()
         case Add.name:

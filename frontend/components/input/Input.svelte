@@ -55,9 +55,7 @@
             on:blur={(e) => onBlur?.(changed, e.currentTarget.value)}
             on:keydown={e => {
                 if(e.code === ENTER){
-                   handler(e.target.value)
-
-                        onEnter?.(e.target.value)
+                    onEnter?.(e.target.value)
                     changed = false
                 }
             }}

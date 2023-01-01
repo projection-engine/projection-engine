@@ -52,6 +52,8 @@ export default class CanvasRenderer {
             ctx.fill()
             return
         }
+        if(!asOutput && !attribute.accept)
+            return;
         // if(isTexture){
         //     const data = node[attribute.key]?.label
         //     if(!data)

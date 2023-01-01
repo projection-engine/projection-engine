@@ -6,6 +6,7 @@ import Draggable from "./Draggable";
 import CanvasRenderer from "../libs/CanvasRenderer";
 import {Input} from "./Input";
 import {Output} from "./Output";
+import MutableObject from "../../../../../engine-core/MutableObject";
 
 const types = {
     vec2: 0,
@@ -107,4 +108,6 @@ export default class ShaderNode extends Draggable {
 
         return {x: xIO, y: yIO, height: H, width: w, rowY: Y}
     }
+
+    getFunctionCall?(data:MutableObject, index?: number,outputs?:string[], body?:string[] ): string;
 }

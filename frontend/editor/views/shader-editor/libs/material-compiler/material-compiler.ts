@@ -7,7 +7,7 @@ import type ShaderLink from "../../templates/ShaderLink";
 import type ShaderNode from "../../templates/ShaderNode";
 
 export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<MutableObject | undefined> {
-    const nodes = <MutableObject[]>n.map(nn => cloneClass(nn))
+    const nodes = n.map(nn => cloneClass<ShaderNode>(nn))
     const startPoint = nodes.find(n => n.type === NODE_TYPES.OUTPUT)
 
     if (!startPoint) return

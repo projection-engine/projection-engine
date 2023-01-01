@@ -19,6 +19,7 @@
     import shaderActions from "../../templates/shader-actions";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import ContextMenuController from "../../../lib/context-menu/ContextMenuController";
+    import SideBar from "./components/SideBar.svelte";
 
     const {shell} = window.require("electron")
 
@@ -36,9 +37,11 @@
     let ref
 
     let wasInitialized = false
-    let isReady = false
     let canvasElement
-
+    $: {
+        canvas.openFile = openFile
+        canvas.clearState()
+    }
     onMount(() => {
         canvas.initialize(canvasElement)
         const data = shaderActions(canvas)
@@ -65,27 +68,22 @@
     async function initializeStructure() {
         canvas.selectionMap.clear()
         canvas.lastSelection = undefined
-        canvas.openFile = openFile
 
         await parseFile(openFile, canvas)
-
-        canvas.nodes.push(new Material())
+        if (!canvas.nodes.find(n => n instanceof Material))
+            canvas.nodes.push(new Material())
         canvas.clear()
-        isReady = true
     }
 
     function initializeFromFile(v) {
         if (!v) {
             UndoRedoAPI.clearShaderEditorStates()
             openFile = v
-        } else if (canvas.openFile)
-            AlertController.warn(LOCALIZATION_EN.FILE_ALREADY_OPEN)
-        else {
-            UndoRedoAPI.clearShaderEditorStates()
-            isReady = false
-            openFile = v
-            initializeStructure()
+            return
         }
+        UndoRedoAPI.clearShaderEditorStates()
+        openFile = v
+        initializeStructure()
     }
 
     $: {
@@ -138,36 +136,30 @@
             }}
 />
 <div class="wrapper" bind:this={ref}>
-    <canvas on:drop={getOnDropEvent(canvas)} on:dragover={e => e.preventDefault()} class="canvas" bind:this={canvasElement}></canvas>
-    {#if !openFile?.registryID}
-        <div data-empty="-">
-            <Icon styles="font-size: 75px">texture</Icon>
-            {LOCALIZATION_EN.NO_MATERIAL_SELECTED}
-        </div>
-    {/if}
+    <canvas on:drop={getOnDropEvent(canvas)} on:dragover={e => e.preventDefault()} class="canvas"
+            bind:this={canvasElement}></canvas>
 </div>
+{#if !openFile?.registryID}
+    <div data-empty="-">
+        <Icon styles="font-size: 75px">texture</Icon>
+        {LOCALIZATION_EN.NO_MATERIAL_SELECTED}
+    </div>
+{:else}
+    <SideBar canvasAPI={canvas}/>
+{/if}
 
 <style>
-    small {
-        font-size: .7rem;
-    }
 
     .canvas {
-        left: 0;
-        top: 0;
-        z-index: 0;
-        position: relative;
-        box-shadow: var(--pj-boxshadow);
         color-rendering: optimizespeed;
         background: var(--pj-background-quaternary) radial-gradient(var(--pj-border-primary) 1px, transparent 0);
         background-size: 20px 20px;
     }
 
     .wrapper {
-        z-index: 0;
-        position: relative;
         height: 100%;
         width: 100%;
         overflow: hidden;
+        position: relative;
     }
 </style>

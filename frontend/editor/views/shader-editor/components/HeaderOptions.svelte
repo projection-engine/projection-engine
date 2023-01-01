@@ -11,6 +11,7 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import addComment from "../utils/add-comment";
 
     export let save
     export let openFile
@@ -18,6 +19,8 @@
     export let initializeFromFile
     export let nodes
     export let openSourceCode
+    export let canvasAPI
+
     $: activeGrid = ShaderEditorTools.grid = ShaderEditorTools.GRID_SIZE
 </script>
 
@@ -51,14 +54,16 @@
                 handleChange={initializeFromFile}
                 selected={openFile}
         />
-
-        {#if openFile}
-            <div data-vertdivider="-"></div>
-            <Nodes/>
-        {/if}
     </div>
     {#if openFile}
         <div data-inline="-" style="width: 100%; justify-content: flex-end">
+            <button
+                    data-view-header-button="-"
+                    on:click={() => addComment(canvasAPI)}
+            >
+                <Icon styles="font-size: .9rem">chat_bubble_outline</Icon>
+                <ToolTip content={LOCALIZATION_EN.ADD_COMMENT}/>
+            </button>
             <button
                     data-view-header-button="-"
                     on:click={openSourceCode}

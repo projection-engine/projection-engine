@@ -14,7 +14,7 @@ export default async function buildShader(canvasAPI:Canvas, openFile: MutableObj
         functionDeclaration,
         uniformsDeclaration,
         settings,
-        uniformsData
+        uniformValues
     } = DATA
 
     if (functionDeclaration) {
@@ -26,7 +26,7 @@ export default async function buildShader(canvasAPI:Canvas, openFile: MutableObj
         await GPUAPI.allocateMaterial({
             functionDeclaration,
             uniformsDeclaration,
-            uniformsData,
+            uniformValues,
             settings
         }, openFile.registryID)
     } else

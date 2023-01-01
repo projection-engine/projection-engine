@@ -1,7 +1,9 @@
 import resolveRelationship from "./resolve-relationship";
 import TextureSample from "../../../templates/nodes/TextureSample";
+import type ShaderNode from "../../../templates/ShaderNode";
+import type ShaderLink from "../../../templates/ShaderLink";
 
-export default async function compileFragmentShader(startPoint, nodes, links) {
+export default async function compileFragmentShader(startPoint:ShaderNode, nodes:ShaderNode[], links:ShaderLink[]) {
     const uniforms = [],
         uniformValues = [],
         uniformDeclarations = [],
@@ -24,7 +26,7 @@ export default async function compileFragmentShader(startPoint, nodes, links) {
     }
 
     let body:string[] = []
-    resolveRelationship(startPoint, [], links.filter(l => l.targetRef.id !== startPoint.id || l.targetRef.id === startPoint.id), nodes, body)
+    resolveRelationship(startPoint, [], links.filter(l => l.targetNode.id !== startPoint.id || l.targetNode.id === startPoint.id), nodes, body)
     return {
         functionDeclaration: constants.join("\n") + "\n" + body.join("\n"),
         uniformsDeclaration: uniformDeclarations.join("\n"),

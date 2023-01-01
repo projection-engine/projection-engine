@@ -1,20 +1,22 @@
-import MutableObject from "../../../../../../../engine-core/MutableObject";
-import ShaderLink from "../../../templates/ShaderLink";
+import type ShaderLink from "../../../templates/ShaderLink";
 import {Output} from "../../../templates/Output";
+import type ShaderNode from "../../../templates/ShaderNode";
 
-export default function resolveRelationship(currentNode:MutableObject, outputs:Output[], links:ShaderLink[], nodes:MutableObject[], body:string[], isVertex?:boolean) {
+export default function resolveRelationship(currentNode:ShaderNode, outputs:string[], links:ShaderLink[], nodes:ShaderNode[], body:string[], isVertex?:boolean) {
     const inputs = {}
-    const linksToResolve = links.filter(l => l.targetRef.id === currentNode.id)
+    const linksToResolve = links.filter(l => l.targetNode.id === currentNode.id)
     linksToResolve.forEach(link => {
-        const source = nodes.find(n => n.id === link.sourceRef.id)
-        if (!source.ready)
-            resolveRelationship(source, links.filter(l => l.sourceRef.id === source.id).map(l => l.sourceRef.attribute.key), links, nodes, body)
+        const source = nodes.find(n => n.id === link.sourceNode.id)
+        if (!source.ready) {
+            const localOutputs = links.filter(l => l.sourceNode.id === source.id).map(l => l.sourceRef.key)
+            resolveRelationship(source, localOutputs, links, nodes, body)
+        }
 
-        inputs[link.targetRef.attribute.key] = {
-            name: source[link.sourceRef.attribute.key],
-            type: link.sourceRef.attribute.type
+        inputs[link.targetRef.key] = {
+            name: source[link.sourceRef.key],
+            type: link.sourceRef.type
         }
     })
-    body.push(currentNode.getFunctionCall(inputs, nodes.findIndex(n => n.id === currentNode.id), outputs, body, isVertex))
+    body.push(currentNode.getFunctionCall(inputs, nodes.findIndex(n => n.id === currentNode.id), outputs, body))
     currentNode.ready = true
 }

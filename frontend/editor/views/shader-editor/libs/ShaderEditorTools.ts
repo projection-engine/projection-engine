@@ -76,6 +76,7 @@ export default class ShaderEditorTools {
                 nodes: serializedNodes,
                 links: canvasAPI.links,
                 response: compiled,
+                comments: canvasAPI.comments,
                 type: compiled.variant
             }
             await AssetAPI.updateAsset(

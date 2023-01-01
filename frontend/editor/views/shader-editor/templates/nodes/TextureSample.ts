@@ -83,7 +83,7 @@ export default class TextureSample extends ShaderNode {
         return ``
     }
 
-    getFunctionCall({uv}, index, outputs) {
+    getFunctionCall({uv}, index:number, outputs) {
         const samplerName = this.name + "_" + index + "_S"
         let response = [
             `vec4 ${samplerName} = texture(${this.uniformName}, ${uv !== undefined ? uv.name : "texCoords"});`
