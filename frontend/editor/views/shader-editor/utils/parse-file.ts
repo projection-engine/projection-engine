@@ -42,18 +42,17 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
                     let sourceNode, targetNode
                     for (let j = 0; j < canvasAPI.nodes.length; j++) {
                         const n = canvasAPI.nodes[j]
-                        if (n.id === current.sourceNode.id)
+                        if (n.id === current.sourceNode)
                             sourceNode = n
-                        if (n.id === current.targetNode.id)
+                        if (n.id === current.targetNode)
                             targetNode = n
                         if (targetNode && sourceNode)
                             break
                     }
-                    console.log(sourceNode, targetNode, current)
                     if (!targetNode || !sourceNode)
                         continue
-                    const targetRef = targetNode.inputs.find(i => i.key === current.targetRef.key)
-                    const sourceRef = sourceNode.output.find(i => i.key === current.sourceRef.key)
+                    const targetRef = targetNode.inputs.find(i => i.key === current.targetRef)
+                    const sourceRef = sourceNode.output.find(i => i.key === current.sourceRef)
                     const link = new ShaderLink(targetNode, sourceNode, targetRef, sourceRef)
 
                     canvasAPI.links.push(link)

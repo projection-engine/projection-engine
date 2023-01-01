@@ -10,7 +10,7 @@ export default function getEngineIcon(nodeRef): { icon: string, label: string }[
                 icon: "lens_blur",
                 label: LOCALIZATION_EN.SKYLIGHT
             })
-        if (nodeRef.components.get(COMPONENTS.MESH))
+        if (nodeRef.__meshComponent !== undefined)
 
             icons.push({
                 icon: "category",

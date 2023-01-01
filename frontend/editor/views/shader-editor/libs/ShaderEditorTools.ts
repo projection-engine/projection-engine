@@ -74,7 +74,12 @@ export default class ShaderEditorTools {
             const {compiled, serializedNodes} = await ShaderEditorTools.compile(canvasAPI)
             const materialData = {
                 nodes: serializedNodes,
-                links: canvasAPI.links,
+                links: canvasAPI.links.map(l => ({
+                    sourceNode: l.sourceNode.id,
+                    targetNode: l.targetNode.id,
+                    sourceRef: l.sourceRef.key,
+                    targetRef: l.targetRef.key,
+                })),
                 response: compiled,
                 comments: canvasAPI.comments,
                 type: compiled.variant

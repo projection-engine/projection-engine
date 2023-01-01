@@ -1,4 +1,6 @@
 <script>
+    import NodeFS from "../../lib/FS/NodeFS";
+
     export let drawOnError
     export let path
     let lastPath

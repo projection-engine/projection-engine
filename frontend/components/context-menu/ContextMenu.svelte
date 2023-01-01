@@ -72,7 +72,7 @@
     const handleMouseDown = (event) => {
 
         clearInterval(interval)
-        wasPointerLocked = document.pointerLockElement != null && !wasPointerLocked
+        wasPointerLocked = !(!document.pointerLockElement && wasPointerLocked)
         interval = setInterval(() => {
             wasPointerLocked = !(!document.pointerLockElement && wasPointerLocked)
         }, 250)

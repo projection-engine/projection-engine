@@ -52,7 +52,7 @@
                 response: {
                     ...temp.response,
                     uniformValues: update
-                },
+                }
             }
             await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
             const instance = GPU.materials.get(item.registryID)

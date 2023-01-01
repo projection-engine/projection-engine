@@ -12,7 +12,7 @@ export default function drawIconsToBuffer() {
     const CUBE = StaticMeshes.cube
     for (let i = 0; i < entities.length; i++) {
         const entity = entities[i]
-        if (!entity.active || entity.__meshRef)
+        if (!entity.active || entity.__meshRef && (entity.__materialRef && !entity.__materialRef?.isSky  || !entity.__materialRef))
             continue
         drawIcon(
             CUBE,
