@@ -22,11 +22,14 @@ export default class CanvasRenderer {
     }
 
     static drawIO(ctx: CanvasRenderingContext2D, asOutput: boolean, node: ShaderNode, index: number, attribute: Input | Output) {
-        ctx.font = asOutput ? "bold 8px Arial" : "8px Arial";
+        ctx.font = "8px Roboto";
+        ctx.strokeStyle = Canvas.borderColor
 
         const isColor = attribute.type === DATA_TYPES.COLOR
         const isTexture = attribute.type === DATA_TYPES.TEXTURE
-        const enabled = !attribute.disabled
+        if (isTexture)
+            console.log(node)
+        const isDisabled = attribute.disabled
         const label = attribute.label
 
 
@@ -52,30 +55,37 @@ export default class CanvasRenderer {
             ctx.fill()
             return
         }
-        if(!asOutput && !attribute.accept)
+        if (!asOutput && !attribute.accept && !isTexture)
             return;
-        // if(isTexture){
-        //     const data = node[attribute.key]?.label
-        //     if(!data)
-        //
-        //     ctx.fillStyle = "#d7d7d7"
-        //     ctx.fillText(label, X - labelSize + LABEL_OFFSET, Y - T_SIZE / 2);
-        //     return
-        // }
+        if (isTexture && !asOutput) {
+            ctx.fillStyle = Canvas.backgroundColor
+            ctx.roundRect(X + IO_RADIUS, Y - H / 2, W / 2, H, 3)
+            ctx.fill()
+            ctx.stroke()
 
-        ctx.fillStyle = ShaderNode.getIOColor(attribute)
-        ctx.strokeStyle = Canvas.borderColor
+            const N = node._texture?.name
+            ctx.fillStyle = N !== undefined ? "#d7d7d7" : "red"
+            const S = N || "No texture selected"
+            ctx.fillText(S.length > 20 ? S.substring(0, 20) + "..." : S, X + T_SIZE * 1.5, Y + T_SIZE / 2);
+            return
+        }
+
+        ctx.fillStyle = ShaderNode.getIOColor(attribute, isDisabled)
+
         ctx.lineWidth = .5
+
         ctx.arc(X, YA, IO_RADIUS, 0, Math.PI * 2)
         ctx.fill()
+        ctx.stroke()
+
         if (asOutput) {
             X -= T_SIZE * 2
         } else
             X -= T_SIZE
-        if (enabled)
-            ctx.stroke()
 
-        ctx.fillStyle = enabled ? "#d7d7d7" : "#afafaf"
+        if (asOutput)
+            console.log(node, isDisabled)
+        ctx.fillStyle = !isDisabled ? "#d7d7d7" : "#999"
         if (asOutput)
             ctx.fillText(label, X - labelSize + LABEL_OFFSET, Y - T_SIZE / 2);
         else
@@ -85,7 +95,7 @@ export default class CanvasRenderer {
     }
 
     static drawNodePosition(ctx: CanvasRenderingContext2D, node: Comment | ShaderNode) {
-        ctx.font = "bold 10px Arial"
+        ctx.font = "10px Roboto"
 
         const TEXT = `X ${node.x} Y ${node.y} W ${node.width} H ${node.height}`
         let Y = node.y - 10
@@ -103,7 +113,8 @@ export default class CanvasRenderer {
             y1 = S.y + HEADER_HEIGHT + IO_RADIUS * 3 + S.output.indexOf(link.sourceRef) * 20,
             y2 = T.y + HEADER_HEIGHT + IO_RADIUS * 3 + T.inputs.indexOf(link.targetRef) * 20
 
-        ctx.strokeStyle = ShaderNode.getIOColor(link.sourceRef)
+        const isSomeoneDisabled = link.sourceRef.disabled || link.targetRef.disabled
+        ctx.strokeStyle = ShaderNode.getIOColor(link.sourceRef, isSomeoneDisabled)
 
         CanvasRenderer.drawBezierCurve(ctx, x1, x2, y1, y2)
     }
@@ -145,13 +156,13 @@ export default class CanvasRenderer {
         ctx.stroke()
         ctx.fill()
 
-        ctx.font = "bold 10px Arial";
+        ctx.font = "10px Roboto";
 
         ctx.fillStyle = fontFill
         ctx.fillText(name, node.x + IO_RADIUS, node.y + 15);
         if ((node as ShaderNode).uniform) {
             const length = ctx.measureText(name + "T").width
-            ctx.font = "6px Arial";
+            ctx.font = "6px Roboto";
             ctx.fillStyle = "#999"
             ctx.fillText("(DYNAMIC)", node.x + length, node.y + 15);
         }
