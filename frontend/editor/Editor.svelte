@@ -5,15 +5,10 @@
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../components/view/Views.svelte";
     import SettingsStore from "./stores/SettingsStore";
+    import FALLBACK_VIEW from "../static/FALLBACK_VIEW";
 
-    const FALLBACK = {
-        name: "Default",
-        bottom: [],
-        left: [],
-        right: []
-    }
 
-    let view = FALLBACK
+    let view = {...FALLBACK_VIEW}
     let engine
     let settings
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)

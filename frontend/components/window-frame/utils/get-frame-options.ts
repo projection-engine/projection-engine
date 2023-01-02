@@ -1,11 +1,12 @@
 import WindowUtils from "../../../editor/lib/WindowUtils";
 
-export default function getFrameOptions(openAbout:Function) {
+export default function getFrameOptions(openAbout:Function, disabledSave:boolean) {
     return [
         {divider: true, label: "File"},
         {
             label: 'Save',
             icon: "save",
+            disabled: disabledSave,
             onClick: () => WindowUtils.callMethod("save")
         },
 

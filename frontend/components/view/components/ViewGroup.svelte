@@ -4,7 +4,7 @@
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../static/VIEWS";
     import TabsStore from "../../../editor/stores/TabsStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import SettingsStore from "../../../editor/stores/SettingsStore";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../dialog/Dialog.svelte";
@@ -16,22 +16,32 @@
     export let removeMultipleTabs
     export let switchView
     export let id
-    export let settings
 
-    let currentView
+    let previous = 0
     let currentTab = 0
     let ref: HTMLElement
     let focused = false
     let targetDialogElement
+    let view
 
-    const unsubscribeSettings = SettingsStore.getStore(v => currentView = v.currentView)
-    const unsubscribeTabs = TabsStore.getStore(_ => focused = TabsStore.focused === ref)
+    function update(views){
+        currentTab = TabsStore.getValue(id, groupIndex)
+        view = views[currentTab]?.type
+        console.trace(view, currentTab)
+    }
+    $: update(views)
+    const unsubscribe = SettingsStore.getStore(v => {
+        if (v.currentView === previous)
+            return
 
+        previous = v.currentView
+        update(views)
+    })
 
-    $: currentTab = TabsStore.getValue(id, groupIndex, currentView)
-
-    $: if (groupIndex != null) currentTab = 0
-    $: view = views[currentTab]?.type
+    const unsubscribeTabs = TabsStore.getStore(_ => {
+        update(views)
+        focused = TabsStore.focused === ref
+    })
     $: tabs = views.map(v => {
         v.name = LOCALIZATION_EN[v.type]
         v.icon = getViewIcon(v.type)
@@ -44,25 +54,23 @@
     }))
 
     function closeTarget(i) {
-
-        removeTab(i, n => TabsStore.update(id, groupIndex, n), currentTab)
+        removeTab(i, n => TabsStore.update(id, groupIndex, n), TabsStore.getValue(id, groupIndex))
     }
 
     function removeView(i: number) {
         const tab = tabs[i]
-        if(targetDialogElement)
+        if (targetDialogElement)
             targetDialogElement = undefined
 
         if (tab.type === VIEWS.BLUEPRINT || tab.type === VIEWS.UI)
             targetDialogElement = ref.querySelector(`[data-closebuttontab="${i}"]`)
         else
             closeTarget(i)
-
     }
 
     onDestroy(() => {
         unsubscribeTabs()
-        unsubscribeSettings()
+        unsubscribe()
     })
 
 </script>
@@ -109,11 +117,12 @@
 </div>
 
 <style>
-    .option{
+    .option {
         width: 100%;
         height: 20px;
         border: none;
     }
+
     .wrapper {
         width: 100%;
         height: 100%;

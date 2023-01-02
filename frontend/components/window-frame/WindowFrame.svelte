@@ -1,6 +1,6 @@
 <script>
     import EngineStore from "../../editor/stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import FilesStore from "../../editor/stores/FilesStore";
     import LevelController from "../../editor/lib/utils/LevelController";
@@ -15,17 +15,24 @@
     import Icon from "../icon/Icon.svelte";
     import SingleSelectDropdown from "../dropdown/OptionDropdown.svelte";
     import About from "../About.svelte";
+    import FALLBACK_VIEW from "../../static/FALLBACK_VIEW";
+    import UndoRedoAPI from "../../editor/lib/utils/UndoRedoAPI";
+    import ChangesTrackerStore from "../../editor/stores/ChangesTrackerStore";
 
     let engine
     let store
     let settings
     let historyChangeType = null
     let isAboutOpen = false
+    let hasChanges = false
+    const unsubscribeTracker = ChangesTrackerStore.getStore(v => hasChanges = v)
     const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
+
     onDestroy(() => {
+        unsubscribeTracker()
         unsubscribeEngine()
         unsubscribe()
         unsubscribeSettings()
@@ -34,14 +41,7 @@
     const addNewTab = () => {
         const views = [
             ...SettingsStore.data.views,
-            {
-                name: LOCALIZATION_EN.NEW_TAB + SettingsStore.data.views.length,
-                bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
-                right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]],
-                viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
-                left: [],
-                top: []
-            }
+            {...FALLBACK_VIEW}
         ]
         SettingsStore.updateStore({...settings, views})
     }
@@ -55,16 +55,17 @@
         SettingsStore.updateStore(obj)
     }
 
+    $: options = getFrameOptions(() => isAboutOpen = true, engine.executingAnimation || !hasChanges)
 </script>
 
 <div class="container">
-    <button disabled={engine.executingAnimation} on:click={_ => LevelController.save()}>
+    <button disabled={engine.executingAnimation || !hasChanges} on:click={_ => LevelController.save()}>
         <Icon>save</Icon>
         <ToolTip content={LOCALIZATION_EN.SAVE}/>
     </button>
     <SingleSelectDropdown
             cleanLayout={true}
-            options={getFrameOptions(() => isAboutOpen = true)}
+            options={options}
             label="menu"
             autoClose={true}
             labelAsIcon={true}

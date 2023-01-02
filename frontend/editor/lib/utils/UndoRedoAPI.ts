@@ -7,10 +7,12 @@ import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityNameController from "../controllers/EntityNameController";
 import AlertController from "../../../components/alert/AlertController";
+import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
 
 export default class UndoRedoAPI {
     static #cache = new UndoRedo()
     static onChange
+
 
     static clear() {
         UndoRedoAPI.#cache.index = 0
@@ -20,6 +22,7 @@ export default class UndoRedoAPI {
     }
 
     static save(value, target = ACTION_HISTORY_TARGETS.ENGINE) {
+        ChangesTrackerStore.updateStore(true)
         switch (target) {
             case ACTION_HISTORY_TARGETS.ENGINE: {
                 const data = Array.isArray(value) ? value.map(v => v.serializable()) : [value.serializable()]
@@ -79,8 +82,8 @@ export default class UndoRedoAPI {
         if (action) {
             AlertController.log(LOCALIZATION_EN.UNDOING_CHANGES)
             UndoRedoAPI.#apply(action)
-        }
-
+        }else
+            ChangesTrackerStore.updateStore(true)
     }
 
     static redo() {

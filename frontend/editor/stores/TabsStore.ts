@@ -1,6 +1,7 @@
 import {get, writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
 import MutableObject from "../../../engine-core/MutableObject";
+import ChangesTrackerStore from "./ChangesTrackerStore";
 
 
 const store = writable(<MutableObject>{});
@@ -26,6 +27,7 @@ export default class TabsStore {
     }
 
     static update(direction, group, value) {
+        ChangesTrackerStore.updateStore(true)
         const clone = {...TabsStore.data}
         if (!clone[SettingsStore.data.currentView])
             clone[SettingsStore.data.currentView] = {}
@@ -42,15 +44,12 @@ export default class TabsStore {
         store.set(clone)
     }
 
-    static getValue(direction, group, currentView = SettingsStore.data.currentView) {
+    static getValue(direction, group):number {
         let value
         if (group !== undefined)
-            value = TabsStore.data[currentView]?.[direction]?.[group]
+            value = TabsStore.data[SettingsStore.data.currentView]?.[direction]?.[group]
         else
-            value = TabsStore.data[currentView]?.[direction]
-
-
-
+            value = TabsStore.data[SettingsStore.data.currentView]?.[direction]
         return value === undefined ? 0 : value
     }
 }

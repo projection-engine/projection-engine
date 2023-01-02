@@ -14,10 +14,12 @@ import TranslationGizmo from "../../../../../engine-tools/lib/transformation/Tra
 import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
 import GIZMOS from "../../../../static/GIZMOS";
 import MotionBlur from "../../../../../engine-core/runtime/MotionBlur";
+import SettingsStore from "../../../stores/SettingsStore";
 
 
 export default function updateRenderer(selected, engine, settings) {
-    CameraTracker.initialize(settings)
+    if(SettingsStore.wasInitialized)
+        CameraTracker.initialize(settings)
     EngineTools.updateSelectionData(selected)
     RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
     TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
