@@ -14,6 +14,7 @@ const types = {
     vec4: 2
 }
 const typesInverted = ["vec2", "vec3", "vec4"]
+
 export default class ShaderNode extends Draggable {
     [key: string]: any
 
@@ -43,20 +44,20 @@ export default class ShaderNode extends Draggable {
         return typesInverted[min]
     }
 
-    static getIOColor(attribute: Output | Input) {
+    static getIOColor(attribute: Output | Input, isSomeoneDisabled:boolean) {
         const type = attribute.type || attribute.accept?.[0]
         switch (type) {
             case DATA_TYPES.VEC2:
             case DATA_TYPES.COLOR:
             case DATA_TYPES.VEC3:
             case DATA_TYPES.VEC4:
-                return "orange"
+                return `rgba(255,165,0,${isSomeoneDisabled ? .5 : 1})`
             case DATA_TYPES.TEXTURE:
-                return "purple"
+                return `rgba(138,43,226, ${isSomeoneDisabled ? .5 : 1})`
             case DATA_TYPES.ANY:
-                return "white"
+                return `rgba(255,255,255, ${isSomeoneDisabled ? .5 : 1})`
             default:
-                return "#999"
+                return `rgba(153,153,153, ${isSomeoneDisabled ? .5 : 1})`
         }
     }
 
