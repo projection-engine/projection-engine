@@ -25,13 +25,11 @@
     let targetDialogElement
 
     const unsubscribeSettings = SettingsStore.getStore(v => currentView = v.currentView)
-    const unsubscribeTabs = TabsStore.getStore(_ => {
-        currentTab = TabsStore.getValue(id, groupIndex)
-        focused = TabsStore.focused === ref
-    })
+    const unsubscribeTabs = TabsStore.getStore(_ => focused = TabsStore.focused === ref)
 
 
     $: currentTab = TabsStore.getValue(id, groupIndex, currentView)
+
     $: if (groupIndex != null) currentTab = 0
     $: view = views[currentTab]?.type
     $: tabs = views.map(v => {
@@ -46,6 +44,7 @@
     }))
 
     function closeTarget(i) {
+
         removeTab(i, n => TabsStore.update(id, groupIndex, n), currentTab)
     }
 

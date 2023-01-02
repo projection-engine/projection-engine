@@ -17,7 +17,12 @@
     let engine
     let settings
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => {
+        settings = v
+        const currentView = v.views[v.currentView]
+        if (currentView !== undefined)
+            view = currentView
+    })
 
 
     onDestroy(() => {
@@ -25,8 +30,6 @@
         unsubscribeEngine()
     })
 
-
-    $: view = settings.views[settings.currentView] ? settings.views[settings.currentView] : FALLBACK
     const updateView = (key, newView) => {
         const s = {...settings}
         const copy = [...s.views]
@@ -82,7 +85,7 @@
         />
     </div>
 
-    <Footer engine={engine} settings={settings} />
+    <Footer engine={engine} settings={settings}/>
 </div>
 
 
