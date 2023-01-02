@@ -50,19 +50,21 @@
             internalID,
             []
         )
-        HotKeysController.bindAction(
-            canvas.ctx.canvas,
-            data.hotkeys,
-            "texture",
-            LOCALIZATION_EN.SHADER_EDITOR
-        )
+        if (canvas.ctx?.canvas)
+            HotKeysController.bindAction(
+                canvas.ctx.canvas,
+                data.hotkeys,
+                "texture",
+                LOCALIZATION_EN.SHADER_EDITOR
+            )
     })
 
     onDestroy(() => {
         unsubscribeEngine()
         UndoRedoAPI.clearShaderEditorStates()
         ContextMenuController.destroy(internalID)
-        HotKeysController.unbindAction(canvas.ctx.canvas)
+        if (canvas.ctx?.canvas)
+            HotKeysController.unbindAction(canvas.ctx.canvas)
     })
 
     async function initializeStructure() {

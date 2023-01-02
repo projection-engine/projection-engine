@@ -27,6 +27,7 @@ import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import UIComponent from "../../../../engine-core/templates/components/UIComponent";
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 import AlertController from "../../../components/alert/AlertController";
+import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -131,6 +132,9 @@ export default class LevelController {
     }
 
     static async save() {
+        if(!ChangesTrackerStore.data)
+            return
+        ChangesTrackerStore.updateStore(false)
         if(EngineStore.engine.executingAnimation){
             AlertController.warn(LOCALIZATION_EN.EXECUTING_SIMULATION)
             return
@@ -140,6 +144,7 @@ export default class LevelController {
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta
+
 
             await FilesAPI.writeFile(
                 NodeFS.path + NodeFS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION,

@@ -5,6 +5,7 @@
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Icon from "../../icon/Icon.svelte";
+    import ChangesTrackerStore from "../../../editor/stores/ChangesTrackerStore";
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)

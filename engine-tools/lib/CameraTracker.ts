@@ -2,6 +2,7 @@ import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import {quat, vec3, vec4} from "gl-matrix";
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS";
 import GPU from "../../engine-core/GPU";
+import ChangesTrackerStore from "../../frontend/editor/stores/ChangesTrackerStore";
 
 let holding, toApplyTranslation
 const toDeg = 180 / Math.PI, halfPI = Math.PI / 2
@@ -115,7 +116,6 @@ export default class CameraTracker {
 
         if (changed)
             CameraTracker.#transform()
-
     }
 
     static #transform() {

@@ -40,6 +40,7 @@
             </div>
         {:else}
             <button
+                    disabled={option.disabled}
                     on:click={e => {
                         option.onClick()
                         if(autoClose)

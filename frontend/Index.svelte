@@ -13,7 +13,7 @@
     import NodeFS from "./lib/FS/NodeFS";
     import FilesAPI from "./editor/lib/fs/FilesAPI";
     import PROJECT_STATIC_DATA from "../static/objects/PROJECT_STATIC_DATA";
-    import WindowOptions from "./components/frame-options/WindowOptions.svelte";
+    import WindowOptions from "./components/window-frame/WindowFrame.svelte";
     import ContextMenu from "./components/context-menu/ContextMenu.svelte";
 
     const {ipcRenderer} = window.require("electron")
