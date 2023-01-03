@@ -64,7 +64,7 @@ export default class ShaderEditorTools {
 
     static async compile(canvasAPI: Canvas) {
         const serializedNodes = canvasAPI.nodes.map(ShaderEditorTools.#serializeNode)
-        const compiled = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
+        const [compiled] = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
         return {compiled, serializedNodes}
     }
 
@@ -81,8 +81,7 @@ export default class ShaderEditorTools {
                     targetRef: l.targetRef.key,
                 })),
                 response: compiled,
-                comments: canvasAPI.comments,
-                type: compiled.variant
+                comments: canvasAPI.comments
             }
             await AssetAPI.updateAsset(
                 openFile.registryID,

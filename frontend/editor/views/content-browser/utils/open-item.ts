@@ -36,8 +36,8 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
                 LevelController.loadLevel(data).catch()
                 break
             case FILE_TYPES.MATERIAL:
-                openBottomView(VIEWS.BLUEPRINT)
                 ShaderEditorTools.toOpenFile = data
+                openBottomView(VIEWS.BLUEPRINT)
                 break
             default:
                 setSelected(data.id)
