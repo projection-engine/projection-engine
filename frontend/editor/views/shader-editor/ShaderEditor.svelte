@@ -38,10 +38,7 @@
 
     let wasInitialized = false
     let canvasElement
-    $: {
-        canvas.openFile = openFile
-        canvas.clearState()
-    }
+
     onMount(() => {
         canvas.initialize(canvasElement)
         const data = shaderActions(canvas)
@@ -68,8 +65,8 @@
     })
 
     async function initializeStructure() {
-        canvas.selectionMap.clear()
-        canvas.lastSelection = undefined
+        canvas.openFile = openFile
+        canvas.clearState()
 
         await parseFile(openFile, canvas)
         if (!canvas.nodes.find(n => n instanceof Material))
@@ -78,13 +75,10 @@
     }
 
     function initializeFromFile(v) {
-        if (!v) {
-            UndoRedoAPI.clearShaderEditorStates()
-            openFile = v
-            return
-        }
         UndoRedoAPI.clearShaderEditorStates()
         openFile = v
+        if (!v)
+            return
         initializeStructure()
     }
 
@@ -131,7 +125,7 @@
         initializeFromFile={initializeFromFile}
         canvasAPI={canvas}
         openSourceCode={async () => {
-                const {shader} = await materialCompiler(canvas.nodes, canvas.links)
+                const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
                 const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
                 await FilesAPI.writeFile(newFile, shader, true)
                 shell.openPath(newFile).catch()

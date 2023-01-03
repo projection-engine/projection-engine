@@ -5,11 +5,14 @@ import MATERIAL_OUTPUT_FORMAT from "../../../../../../engine-core/static/MATERIA
 import MutableObject from "../../../../../../engine-core/MutableObject";
 import type ShaderLink from "../../templates/ShaderLink";
 import type ShaderNode from "../../templates/ShaderNode";
+import MaterialAsset from "../../static/MaterialAsset";
+import MaterialUniform from "../../../../../../engine-core/templates/MaterialUniform";
 
-export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<MutableObject | undefined> {
+export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<[MaterialAsset, string] | undefined> {
     const nodes = n.map(nn => cloneClass<ShaderNode>(nn))
     const startPoint = nodes.find(n => n.type === NODE_TYPES.OUTPUT)
 
+    const executionSignature = {signature: ""}
     if (!startPoint) return
 
     const {
@@ -17,7 +20,7 @@ export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[
         uniformsDeclaration,
         uniforms,
         uniformValues
-    } = await compileFragmentShader(startPoint, nodes, links)
+    } = await compileFragmentShader(startPoint, nodes, links, executionSignature)
 
     const template = {...MATERIAL_OUTPUT_FORMAT}
     template.functionDeclaration = functionDeclaration
@@ -29,7 +32,8 @@ export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[
     template.settings.ssrEnabled = startPoint.ssrEnabled
 
     template.uniforms = uniforms
-    template.uniformValues = uniformValues
-    return template
+    template.executionSignature = executionSignature.signature
+    template.uniformValues = <MaterialUniform[]>uniformValues
+    return [template, executionSignature.signature]
 
 }

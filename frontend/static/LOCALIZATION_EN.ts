@@ -34,6 +34,7 @@ enum LOCALIZATION_EN {
     NEW_PROJECT = "New project",
     FAVORITE = "Toggle favorite",
     DOWNLOAD_FINISHED = "Download finished",
+    UPDATING_UNIFORMS = "Updating uniforms",
     NOT_COMPATIBLE = "This version is not compatible with your OS.",
     UNINSTALL = "Uninstall",
     CHANGE_BASE_DIR = "Change source directory",

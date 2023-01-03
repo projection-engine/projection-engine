@@ -2,8 +2,11 @@ import resolveRelationship from "./resolve-relationship";
 import TextureSample from "../../../templates/nodes/TextureSample";
 import type ShaderNode from "../../../templates/ShaderNode";
 import type ShaderLink from "../../../templates/ShaderLink";
+import MutableObject from "../../../../../../../engine-core/MutableObject";
+import MaterialUniform from "../../../../../../../engine-core/templates/MaterialUniform";
 
-export default async function compileFragmentShader(startPoint:ShaderNode, nodes:ShaderNode[], links:ShaderLink[]) {
+type response = { functionDeclaration: string, uniformsDeclaration: string, uniforms: Object[] , uniformValues: MaterialUniform[] }
+export default async function compileFragmentShader(startPoint: ShaderNode, nodes: ShaderNode[], links: ShaderLink[], executionSignature: {signature:string}):Promise<response> {
     const uniforms = [],
         uniformValues = [],
         uniformDeclarations = [],
@@ -15,9 +18,9 @@ export default async function compileFragmentShader(startPoint:ShaderNode, nodes
         const n = nodes[i]
         if (typeof n.getInputInstance === "function" && !typesInstantiated[n.id]) {
             const res = await n.getInputInstance(i, uniforms, uniformValues, textureOffset)
-            if(n instanceof TextureSample)
+            if (n instanceof TextureSample)
                 textureOffset++
-            if(res.includes("const "))
+            if (res.includes("const "))
                 constants.push(res)
             else
                 uniformDeclarations.push(res)
@@ -25,13 +28,12 @@ export default async function compileFragmentShader(startPoint:ShaderNode, nodes
         }
     }
 
-    let body:string[] = []
-    resolveRelationship(startPoint, [], links.filter(l => l.targetNode.id !== startPoint.id || l.targetNode.id === startPoint.id), nodes, body)
+    const body: string[] = []
+    resolveRelationship(startPoint, [], links.filter(l => l.targetNode.id !== startPoint.id || l.targetNode.id === startPoint.id), nodes, body, executionSignature)
     return {
         functionDeclaration: constants.join("\n") + "\n" + body.join("\n"),
         uniformsDeclaration: uniformDeclarations.join("\n"),
         uniforms,
         uniformValues
     }
-
 }

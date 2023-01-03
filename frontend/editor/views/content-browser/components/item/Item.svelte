@@ -47,7 +47,7 @@
         childQuantity,
         typeName: getTypeName(data.type)
     }
-
+    $: isCard = viewType === ITEM_TYPES.CARD
     $: {
         const dragDropData = getItemDragData(icon, childQuantity, data, items, setOnDrag, type, metadata)
         draggable.dragImage = dragDropData.dragImage
@@ -55,9 +55,10 @@
         draggable.onDragStart = dragDropData.onDragStart
         draggable.disabled = onDrag && type !== 0 || isOnRename
     }
-
     $: toolTipContent = getItemDragImage(childQuantity, data, type, metadata)
     $: if (isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
+
+
     onMount(() => {
         const dragDropData = getItemDragData(icon, childQuantity, data, items, setOnDrag, type, metadata)
         draggable.onMount({
@@ -66,7 +67,6 @@
             ...dragDropData
         })
     })
-
     onDestroy(() => draggable.onDestroy())
 
     $: props = {
@@ -90,7 +90,7 @@
         setOnDrag,
         selected: selectionMap
     }
-    $: isCard = viewType === ITEM_TYPES.CARD
+
 </script>
 
 <span bind:this={ref} style={isCard ? undefined : "width: 100%"}>

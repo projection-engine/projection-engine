@@ -7,6 +7,7 @@ import CanvasRenderer from "../libs/CanvasRenderer";
 import {Input} from "./Input";
 import {Output} from "./Output";
 import MutableObject from "../../../../../engine-core/MutableObject";
+import MaterialUniform from "../../../../../engine-core/templates/MaterialUniform";
 
 const types = {
     vec2: 0,
@@ -44,7 +45,7 @@ export default class ShaderNode extends Draggable {
         return typesInverted[min]
     }
 
-    static getIOColor(attribute: Output | Input, isSomeoneDisabled:boolean) {
+    static getIOColor(attribute: Output | Input, isSomeoneDisabled: boolean) {
         const type = attribute.type || attribute.accept?.[0]
         switch (type) {
             case DATA_TYPES.VEC2:
@@ -110,5 +111,7 @@ export default class ShaderNode extends Draggable {
         return {x: xIO, y: yIO, height: H, width: w, rowY: Y}
     }
 
-    getFunctionCall?(data:MutableObject, index?: number,outputs?:string[], body?:string[] ): string;
+    getFunctionCall?(data: MutableObject, index?: number, outputs?: string[], body?: string[]): string;
+
+    getInputInstance?(index: number, uniforms: MutableObject[], uniformValues: MaterialUniform[], textureOffset?: number): Promise<string>;
 }
