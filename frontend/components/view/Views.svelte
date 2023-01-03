@@ -22,13 +22,12 @@
     $: orientationName = orientation === "horizontal" ? "height" : "width"
     $: invOrientation = orientation === "horizontal" ? "width" : "height"
 
-    function onResizeStart(isWindowResize){
+    function onResizeStart(isWindowResize) {
         let obj = {}
-        if(!isWindowResize || tabs.length === 0) {
+        if (!isWindowResize || tabs.length === 0) {
             obj[orientationNameMin] = "unset"
             obj[orientationNameMin.replace("min", "max")] = tabs.length === 0 ? "0px" : "unset"
-        }
-        else if(tabs.length > 0){
+        } else if (tabs.length > 0) {
             obj[orientationNameMin] = "250px"
             obj[orientationNameMin.replace("min", "max")] = "250px"
         }
@@ -37,7 +36,7 @@
     }
 
     $: {
-        if(tabs.length === 0 && ref){
+        if (tabs.length === 0 && ref) {
             const obj = {}
             obj[orientationNameMin] = "unset"
             obj[orientationNameMin.replace("min", "max")] = "0"
@@ -51,8 +50,8 @@
 
 {#if resizePosition !== "bottom" && tabs.length > 0 && resizePosition !== "left"}
     <ResizableBar
-        type={orientationName}
-        onResizeStart={onResizeStart}
+            type={orientationName}
+            onResizeStart={onResizeStart}
     />
 {/if}
 <div
@@ -82,6 +81,7 @@
                     setTabs(clone)
                 }}
         >
+            {#if view}
                 <View
 
                         instance={view}
@@ -91,6 +91,7 @@
                         switchView={newView => switchView(newView, groupIndex, tabs, index, setTabs )}
 
                 />
+            {/if}
         </ViewGroup>
         {#if groupIndex < tabs.length - 1 && tabs.length > 1}
             <ResizableBar

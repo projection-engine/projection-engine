@@ -3,6 +3,7 @@ import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 import NodeFS from "../../../../lib/FS/NodeFS";
+import AlertController from "../../../../components/alert/AlertController";
 
 
 export default async function handleDropFolder(event:string[]|string, target?:string) {
@@ -34,7 +35,7 @@ export default async function handleDropFolder(event:string[]|string, target?:st
                 if (!NodeFS.exists(newPath)) {
                     await ContentBrowserAPI.rename(NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + textData), NodeFS.resolvePath(newPath))
                     await FilesStore.refreshFiles()
-                } else console.error(LOCALIZATION_EN.ITEM_ALREADY_EXISTS)
+                } else AlertController.error(LOCALIZATION_EN.ITEM_ALREADY_EXISTS)
             }
         }
     } catch (error) {

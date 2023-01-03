@@ -55,21 +55,6 @@ export default class CameraTracker {
             return
         toApplyTranslation = CameraTracker.toApplyTranslation
         CameraTracker.#initialized = true
-
-        if (settings.camera.serialization) {
-            const x = settings.camera.xRotation
-            const y = settings.camera.yRotation
-            const translation = settings.camera.serialization.translation
-            CameraTracker.xRotation = x || 0
-            CameraTracker.yRotation = y || 0
-            CameraTracker.rotationChanged = true
-
-            CameraAPI.translationBuffer[0] = translation[0]
-            CameraAPI.translationBuffer[1] = translation[1]
-            CameraAPI.translationBuffer[2] = translation[2]
-
-        }
-        CameraTracker.forceUpdate = true
     }
 
 

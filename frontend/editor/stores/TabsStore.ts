@@ -44,7 +44,7 @@ export default class TabsStore {
         store.set(clone)
     }
 
-    static getValue(direction, group):number {
+    static getValue(direction, group?:string):number {
         let value
         if (group !== undefined)
             value = TabsStore.data[SettingsStore.data.currentView]?.[direction]?.[group]

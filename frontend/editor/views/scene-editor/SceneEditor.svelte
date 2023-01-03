@@ -26,7 +26,34 @@
     import Icon from "../../../components/icon/Icon.svelte";
     import ContextMenuController from "../../../lib/context-menu/ContextMenuController";
     import GPU from "../../../../engine-core/GPU";
+    import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 
+    export let viewMetadata
+
+    let previousMetadata
+    $: {
+
+        if (previousMetadata !== viewMetadata) {
+            if (previousMetadata) {
+                previousMetadata.cameraMetadata = CameraAPI.serializeState()
+                previousMetadata.cameraMetadata.prevX = CameraTracker.xRotation
+                previousMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+            }
+
+            if (!viewMetadata.cameraMetadata)
+                CameraAPI.toOrigin()
+            else {
+                CameraAPI.restoreState(viewMetadata.cameraMetadata)
+                CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
+                CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
+            }
+
+            viewMetadata.cameraMetadata = CameraAPI.serializeState()
+            viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
+            viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+            previousMetadata = viewMetadata
+        }
+    }
     let selectedSize = -1
     let mainEntity
     let isOnGizmo = false
@@ -52,6 +79,8 @@
     }
 
     onMount(() => {
+        if (viewMetadata.cameraMetadata)
+            CameraAPI.restoreState(viewMetadata.cameraMetadata)
         GizmoSystem.onStart = () => isOnGizmo = true
         GizmoSystem.onStop = () => isOnGizmo = false
 
@@ -72,6 +101,7 @@
 
     onDestroy(() => {
         GizmoSystem.onStop = GizmoSystem.onStart = undefined
+        viewMetadata.cameraMetadata = CameraAPI.serializeState()
 
         unsubscribeEngine()
         unsubscribeSettings()
@@ -129,7 +159,7 @@
 {/if}
 
 <style>
-    .complexity-gradient{
+    .complexity-gradient {
         position: absolute;
         z-index: 10;
         bottom: 6px;

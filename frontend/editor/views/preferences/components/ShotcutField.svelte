@@ -6,6 +6,7 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
+    import AlertController from "../../../../components/alert/AlertController";
 
     export let shortcut = []
     export let key
@@ -54,7 +55,7 @@
 
             if (all.find(a => JSON.stringify(a) === c) != null) {
                 currentShortcut = [...shortcut]
-                console.error(LOCALIZATION_EN.SHORTCUT_ALREADY_LINKED)
+                AlertController.error(LOCALIZATION_EN.SHORTCUT_ALREADY_LINKED)
             }
             update(currentShortcut)
         } else if (!event.repeat) {

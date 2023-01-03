@@ -45,8 +45,9 @@ export default class Events {
         })
         if (result.response !== 0)
             return;
+
         ProjectController.closeWindow(true)
-        await ProjectController.openWindow()
+        await ProjectController.prepareForUse(ProjectController.pathToProject)
     }
 
     static openFull() {
