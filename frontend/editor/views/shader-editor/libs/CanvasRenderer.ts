@@ -27,8 +27,7 @@ export default class CanvasRenderer {
 
         const isColor = attribute.type === DATA_TYPES.COLOR
         const isTexture = attribute.type === DATA_TYPES.TEXTURE
-        if (isTexture)
-            console.log(node)
+
         const isDisabled = attribute.disabled
         const label = attribute.label
 

@@ -3,7 +3,7 @@ import {get, writable} from "svelte/store";
 import MutableObject from "../../../engine-core/MutableObject";
 import ChangesTrackerStore from "./ChangesTrackerStore";
 
-const settingsStore = writable(<MutableObject>SETTINGS);
+const settingsStore = writable(SETTINGS);
 
 export default class SettingsStore {
     static data = get(settingsStore)
@@ -13,13 +13,12 @@ export default class SettingsStore {
         return settingsStore.subscribe(newValue => onChange(newValue))
     }
 
-    static updateStore(value: MutableObject) {
+    static updateStore(value) {
         const V = value || SettingsStore.data
         const previous = SettingsStore.data
 
         if (SettingsStore.wasInitialized&& Object.entries(V).find(o => o[1] !== previous[o[0]]) !== undefined)
             ChangesTrackerStore.updateStore(true)
-        console.log("IM HERE")
 
         SettingsStore.wasInitialized =true
         SettingsStore.data = V

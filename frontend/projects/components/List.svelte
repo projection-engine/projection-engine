@@ -118,7 +118,7 @@
                         favorites = {...favorites, [ID]: true}
                     else
                         favorites = {...favorites, [ID]: undefined}
-                    console.log(favorites)
+
                     localStorage.setItem(favoriteKey, JSON.stringify(favorites))
                 }}
                 >

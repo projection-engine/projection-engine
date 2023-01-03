@@ -12,14 +12,14 @@
 
     export let styles: string
     export let disabled: boolean
-    export let instance: string
+    export let instance: {[key:string]:any, type: string, color: number[]}
     export let id: string
     export let groupIndex: number
     export let index: number
 
-    let component: string | undefined
+    let component
     $:  {
-        switch (instance) {
+        switch (instance.type) {
             case VIEWS.BLUEPRINT:
                 component = ShaderEditor
                 break
@@ -56,6 +56,7 @@
     <div class="view" style={styles}>
         <svelte:component
                 this={component}
+                viewMetadata={instance}
                 groupIndex={groupIndex}
                 viewID={id}
                 viewIndex={index}

@@ -10,7 +10,7 @@ import OpenFile from "../../static/OPEN_FILE";
 
 export default async function buildShader(canvasAPI: Canvas, openFile: OpenFile) {
     const data = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
-    console.trace(data)
+
     if (data === undefined)
         return
     const [{
@@ -27,7 +27,6 @@ export default async function buildShader(canvasAPI: Canvas, openFile: OpenFile)
             return
         }
 
-        console.trace(StaticShaders.uberSignature, executionSignature)
         if (!StaticShaders.uberSignature[executionSignature]) {
             GPUAPI.asyncDestroyMaterial(openFile.registryID)
             await GPUAPI.allocateMaterial({

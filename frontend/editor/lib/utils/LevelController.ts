@@ -28,6 +28,7 @@ import UIComponent from "../../../../engine-core/templates/components/UIComponen
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 import AlertController from "../../../components/alert/AlertController";
 import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
+import MutableObject from "../../../../engine-core/MutableObject";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -44,14 +45,15 @@ export default class LevelController {
         ipcRenderer.once(
             ROUTES.LOAD_PROJECT_METADATA,
             (ev, meta) => {
-
-                if (meta.settings != null) {
+                if (meta.settings !== undefined) {
                     const newSettings = {...SETTINGS, ...meta.settings}
+
                     if (newSettings.views[0].top == null)
-                        newSettings.views = SETTINGS
+                        newSettings.views = SETTINGS.views
                     newSettings.visualSettings = undefined
                     if (meta.layout)
                         TabsStore.updateStore(meta.layout)
+
                     SettingsStore.updateStore(newSettings)
                     if (meta.visualSettings)
                         VisualsStore.updateStore({...meta.visualSettings})
@@ -144,21 +146,20 @@ export default class LevelController {
         try {
             const entities = Engine.entities
             const metadata = EngineStore.engine.meta
-
+            const settings =  {...SettingsStore.data}
+            const tabIndexViewport = TabsStore.getValue("viewport")
+            const viewMetadata = <MutableObject|undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
+            if(viewMetadata !== undefined) {
+                viewMetadata.cameraMetadata = CameraAPI.serializeState()
+                viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
+                viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+            }
 
             await FilesAPI.writeFile(
                 NodeFS.path + NodeFS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION,
                 JSON.stringify({
                     ...metadata,
-                    settings: {
-                        ...SettingsStore.data,
-                        camera: {
-                            ...SettingsStore.data.camera,
-                            serialization: CameraAPI.serializeState(),
-                            xRotation: CameraTracker.xRotation,
-                            yRotation: CameraTracker.yRotation,
-                        },
-                    },
+                    settings,
                     layout: TabsStore.data,
                     visualSettings: VisualsStore.data,
                 }), true)

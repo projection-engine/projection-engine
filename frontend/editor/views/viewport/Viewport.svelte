@@ -31,7 +31,7 @@
         currentTab = TabsStore.getValue("viewport")
         focused = ref === TabsStore.focused
     })
-    $: currentTab = TabsStore.getValue("viewport", undefined, settings.currentView)
+    $: currentTab = TabsStore.getValue("viewport")
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
@@ -75,6 +75,7 @@
     }
 
     onMount(() => {
+        window.d = () => viewTab
         canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild)
     })
 
@@ -118,7 +119,7 @@
         <div bind:this={canvasRef}></div>
         {#if engine.isReady}
             <View
-                    instance={viewTab[currentTab]?.type}
+                    instance={viewTab[currentTab]}
                     id={"VIEWPORT"}
                     index={currentTab}
                     groupIndex={0}

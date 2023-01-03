@@ -49,7 +49,6 @@ export default class FilesStore {
     static async refreshFiles() {
         try {
             const data = <MutableObject[]>(await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: NodeFS.path + NodeFS.sep}, false))
-            console.trace(data)
             const fileTypes = await ContentBrowserAPI.refresh()
 
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})

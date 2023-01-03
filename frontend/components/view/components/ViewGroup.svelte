@@ -22,24 +22,21 @@
     let ref: HTMLElement
     let focused = false
     let targetDialogElement
-    let view
 
-    function update(views){
+    function update(){
         currentTab = TabsStore.getValue(id, groupIndex)
-        view = views[currentTab]?.type
-        console.trace(view, currentTab)
     }
-    $: update(views)
+
     const unsubscribe = SettingsStore.getStore(v => {
         if (v.currentView === previous)
             return
 
         previous = v.currentView
-        update(views)
+        update()
     })
 
     const unsubscribeTabs = TabsStore.getStore(_ => {
-        update(views)
+        update()
         focused = TabsStore.focused === ref
     })
     $: tabs = views.map(v => {
@@ -113,7 +110,7 @@
             </div>
         </Dialog>
     </div>
-    <slot view={view} index={currentTab}/>
+    <slot view={views[currentTab]} index={currentTab}/>
 </div>
 
 <style>

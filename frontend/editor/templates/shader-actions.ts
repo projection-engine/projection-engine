@@ -51,7 +51,6 @@ export default function shaderActions( canvasAPI: Canvas) {
             label: "Delete selected",
             require: settings.shaderEditorHotkeys.DELETE,
             callback: () => {
-                console.trace("IM HERE")
                 const toRemoveFromSelection = []
                 canvasAPI.selectionMap.forEach(s => {
                     toRemoveFromSelection.push(s.id)
