@@ -7,6 +7,7 @@ import MutableObject from "../../../../../../engine-core/MutableObject";
 import Canvas from "../Canvas";
 import StaticShaders from "../../../../../../engine-core/lib/StaticShaders";
 import OpenFile from "../../static/OPEN_FILE";
+import UberShader from "../../../../../../engine-core/utils/UberShader";
 
 export default async function buildShader(canvasAPI: Canvas, openFile: OpenFile) {
     const data = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
@@ -27,7 +28,7 @@ export default async function buildShader(canvasAPI: Canvas, openFile: OpenFile)
             return
         }
 
-        if (!StaticShaders.uberSignature[executionSignature]) {
+        if (!UberShader.uberSignature[executionSignature]) {
             GPUAPI.asyncDestroyMaterial(openFile.registryID)
             await GPUAPI.allocateMaterial({
                 functionDeclaration,
