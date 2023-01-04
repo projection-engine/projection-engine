@@ -20,10 +20,14 @@
         buttonStyles={getDropdownHeaderStyles()}
 >
     <button slot="button" data-view-header-dropdown="-">
-        <div style="--color-to-apply: white" data-shaded-material="-"></div>
-        <div style="white-space: nowrap">{LOCALIZATION_EN[shading]}</div>
+        <span style="--color-to-apply: white" data-shaded-material="-"></span>
+        <span style="white-space: nowrap">{LOCALIZATION_EN[shading]}</span>
     </button>
     <Options settings={settings}/>
 </Dropdown>
 
-
+<style>
+    button{
+        width: 7rem;
+    }
+</style>

@@ -7,7 +7,6 @@ const X = new Float32Array([1, 0, 0]), Y = new Float32Array([0, 1, 0]), Z = new 
 
 let darker = 0, atOrigin = 0, size = 10000
 let finished = true, needsStateUpdate = false
-let bufferRes = new Float32Array(2)
 let lineUniforms: { [key: string]: WebGLUniformLocation }
 
 export default class LineRenderer {
@@ -20,8 +19,6 @@ export default class LineRenderer {
     }
 
     static initialize() {
-        bufferRes[0] = GPU.internalResolution.w
-        bufferRes[1] = GPU.internalResolution.h
         lineUniforms = StaticEditorShaders.lineUniforms
     }
 
@@ -41,7 +38,7 @@ export default class LineRenderer {
             GPU.context.activeTexture(GPU.context.TEXTURE0)
             GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.visibilityDepthSampler)
             GPU.context.uniform1i(lineUniforms.depthSampler, 0)
-            GPU.context.uniform2fv(lineUniforms.bufferResolution, bufferRes)
+            GPU.context.uniform2fv(lineUniforms.bufferResolution, GPU.bufferResolution)
 
             finished = false
         } else if (needsStateUpdate) {

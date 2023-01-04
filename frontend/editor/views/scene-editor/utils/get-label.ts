@@ -15,6 +15,8 @@ export default function getLabel(shadingModel){
             return "SHADING_AO"
         case SHADING_MODELS.RANDOM:
             return  "SHADING_RANDOM"
+        case SHADING_MODELS.POSITION:
+            return  "POSITION"
         case SHADING_MODELS.DETAIL:
             return "SHADING_DETAIL"
         case SHADING_MODELS.ROUGHNESS:
