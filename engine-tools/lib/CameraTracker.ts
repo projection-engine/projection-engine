@@ -2,29 +2,25 @@ import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import {quat, vec3, vec4} from "gl-matrix";
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS";
 import GPU from "../../engine-core/GPU";
-import ChangesTrackerStore from "../../frontend/editor/stores/ChangesTrackerStore";
 
-let holding, toApplyTranslation
+let holding = false
+
 const toDeg = 180 / Math.PI, halfPI = Math.PI / 2
 const MOUSE_RIGHT = 2, MOUSE_LEFT = 0
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
-
+const toApplyTranslation = vec4.create()
 const cachePitch = quat.create()
 const cacheYaw = quat.create()
+
 export default class CameraTracker {
     static #isTracking = false
     static xRotation = 0
     static yRotation = 0
-
     static screenSpaceMovementSpeed = 1
     static movementSpeed = 0.1
     static turnSpeed = .1
-
     static gizmoReference
     static screenSpaceMovement = false
-    static toApplyTranslation = vec3.create()
-    static currentTranslation = vec3.create()
-    static #initialized = false
     static rotationChanged = false
     static forceUpdate = false
     static movementKeys = {
@@ -34,10 +30,8 @@ export default class CameraTracker {
         right: "KeyD",
         invertDirection: false,
         fasterJonny: "ShiftLeft",
-
         mouseLeft: false,
         mouseRight: false,
-
     }
     static #keysOnHold = {
         forward: false,
@@ -49,14 +43,6 @@ export default class CameraTracker {
         mouseRight: false,
         fasterJonny: false
     }
-
-    static initialize(settings) {
-        if (CameraTracker.#initialized)
-            return
-        toApplyTranslation = CameraTracker.toApplyTranslation
-        CameraTracker.#initialized = true
-    }
-
 
     static updateFrame() {
         if (CameraAPI.didChange && CameraTracker.gizmoReference)
@@ -105,9 +91,8 @@ export default class CameraTracker {
 
     static #transform() {
         CameraTracker.forceUpdate = false
-        vec3.copy(CameraTracker.currentTranslation, CameraAPI.translationBuffer)
         vec4.transformQuat(toApplyTranslation, toApplyTranslation, CameraAPI.rotationBuffer)
-        vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, toApplyTranslation)
+        vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, <vec3>toApplyTranslation)
         CameraAPI.updateView()
     }
 

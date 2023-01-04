@@ -92,6 +92,7 @@
     <div data-form="-">
         <Range
                 incrementPercentage={.1}
+                minValue={.01}
                 label={LOCALIZATION_EN.SCREEN_GRABBING_SPEED}
                 onFinish={(v) => updateCamera("screenSpaceMovementSpeed", v, true)}
                 value={state.screenSpaceMovementSpeed}
@@ -100,6 +101,7 @@
 
         <Range
                 incrementPercentage={.1}
+                minValue={.01}
                 label={LOCALIZATION_EN.TRANSLATION}
                 onFinish={(v) => updateCamera("movementSpeed", v, true)}
                 value={state.movementSpeed}
@@ -107,8 +109,9 @@
         />
 
         <Range
-                precision={4}
+
                 incrementPercentage={.001}
+                minValue={.01}
                 label={LOCALIZATION_EN.ROTATION}
                 onFinish={(v) => updateCamera("turnSpeed", v, true)}
                 value={state.turnSpeed}
@@ -120,7 +123,7 @@
 
 
 <fieldset>
-    <legend>{LOCALIZATION_EN.SMOOTHING}</legend>
+    <legend>{LOCALIZATION_EN.SMOOTHING_FALLOFF}</legend>
     <div data-form="-">
         <Range
                 minValue={.0001}

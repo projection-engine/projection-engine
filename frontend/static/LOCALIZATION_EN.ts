@@ -30,6 +30,7 @@ enum LOCALIZATION_EN {
     LAST_MODIFIED = "Last modified",
     RECENT = "Recent",
     OPEN = "Open",
+    SMOOTHING_FALLOFF = "Smoothing falloff",
     DOUBLE_CLICK_TO_RENAME = "Double click to rename.",
     NEW_PROJECT = "New project",
     FAVORITE = "Toggle favorite",

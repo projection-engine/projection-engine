@@ -35,15 +35,15 @@ export default {
     fov: 60 * toRad,
     zNear: .1,
     zFar: 5000,
-    terrainTool: TERRAIN_TOOLS.SCULPT,
-    terrainSettings: {
-        brushOnDecrease: true,
-        brushSize: 5,
-        brushStrength: .5,
-        foliageDensity: 10,
-        foliageQuantity: 1000,
-        brushScale: .05
-    },
+    // terrainTool: TERRAIN_TOOLS.SCULPT,
+    // terrainSettings: {
+    //     brushOnDecrease: true,
+    //     brushSize: 5,
+    //     brushStrength: .5,
+    //     foliageDensity: 10,
+    //     foliageQuantity: 1000,
+    //     brushScale: .05
+    // },
 
     viewportHotkeys: {
         FORWARD_MOVEMENT_CAMERA: [KEYS.KeyW],
@@ -118,12 +118,12 @@ export default {
         cameraRotation: [0, 0, 0, 1],
         movementSpeed: 1,
         smoothing: 1,
-        rotationSmoothing: 1,
-        turnSpeed: 1,
+        rotationSmoothing: 3,
+        turnSpeed: .25,
     },
 
     gizmoGrid: {
-        rotationGizmo: Math.PI / 180,
+        rotationGizmo: 1,
         translationGizmo: 1,
         scaleGizmo: 1,
         sensitivity: .001
