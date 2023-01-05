@@ -4,30 +4,17 @@ import VisibilityRenderer from "../../../../../engine-core/runtime/VisibilityRen
 import StaticFBO from "../../../../../engine-core/lib/StaticFBO";
 import StaticShaders from "../../../../../engine-core/lib/StaticShaders";
 import StaticMeshes from "../../../../../engine-core/lib/StaticMeshes";
+import StaticEditorShaders from "../../../../../engine-tools/lib/StaticEditorShaders";
+import IconsSystem from "../../../../../engine-tools/runtime/IconsSystem";
+import SettingsStore from "../../../stores/SettingsStore";
 
 export default function drawIconsToBuffer() {
-    const entities = Engine.entities
+    StaticFBO.visibility.startMapping(true)
+    StaticEditorShaders.iconToDepth.bind()
 
-    StaticFBO.visibility.use()
-    const CUBE = StaticMeshes.cube
-    for (let i = 0; i < entities.length; i++) {
-        const entity = entities[i]
-        if (!entity.active || entity.__meshRef && (entity.__materialRef && !entity.__materialRef?.isSky  || !entity.__materialRef))
-            continue
-        drawIcon(
-            CUBE,
-            entity.pickID,
-            entity.matrix,
-        )
-    }
+    GPU.context.activeTexture(GPU.context.TEXTURE0)
+    GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
+
+    IconsSystem.loop(IconsSystem.drawIcon, SettingsStore.data, StaticEditorShaders.iconToDepthUniforms)
     StaticFBO.visibility.stop()
-    VisibilityRenderer.needsUpdate = true
-}
-
-function drawIcon(mesh, meshID, transformMatrix) {
-    const uniforms = StaticShaders.visibilityUniforms
-    StaticShaders.visibility.bind()
-    GPU.context.uniform3fv(uniforms.entityID, meshID)
-    GPU.context.uniformMatrix4fv(uniforms.modelMatrix, false, transformMatrix)
-    mesh.simplifiedDraw()
 }

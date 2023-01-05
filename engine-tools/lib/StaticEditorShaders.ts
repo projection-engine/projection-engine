@@ -1,5 +1,7 @@
 import ICONS_SPRITE_VERT from "../shaders/ICONS_SPRITE.vert";
+import ICONS_SPRITE_TO_DEPTH_VERT from "../shaders/ICONS_SPRITE_TO_DEPTH.vert";
 import ICONS_SPRITE_FRAG from "../shaders/ICONS_SPRITE.frag";
+import ICONS_SPRITE_TO_DEPTH_FRAG from "../shaders/ICONS_SPRITE_TO_DEPTH.frag";
 import LINE_VERT from "../shaders/LINE.vert";
 import LINE_FRAG from "../shaders/LINE.frag";
 import GIZMO_TO_DEPTH_VERT from "../shaders/GIZMO_TO_DEPTH.vert";
@@ -28,7 +30,9 @@ export default class StaticEditorShaders {
     static grid?: Shader
     static silhouette?: Shader
     static outline?: Shader
+    static iconToDepth?: Shader
 
+    static iconToDepthUniforms?: { [key: string]: WebGLUniformLocation }
     static iconUniforms?: { [key: string]: WebGLUniformLocation }
     static lineUniforms?: { [key: string]: WebGLUniformLocation }
     static toDepthBufferUniforms?: { [key: string]: WebGLUniformLocation }
@@ -40,12 +44,14 @@ export default class StaticEditorShaders {
     static outlineUniforms?: { [key: string]: WebGLUniformLocation }
 
     static #initialized = false
+
     static initialize() {
         if (StaticEditorShaders.#initialized)
             return
         StaticEditorShaders.#initialized = true
 
         StaticEditorShaders.icon = new Shader(ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
+        StaticEditorShaders.iconToDepth = new Shader(ICONS_SPRITE_TO_DEPTH_VERT, ICONS_SPRITE_TO_DEPTH_FRAG)
         StaticEditorShaders.line = new Shader(LINE_VERT, LINE_FRAG)
         StaticEditorShaders.toDepthBuffer = new Shader(GIZMO_TO_DEPTH_VERT, GIZMO_TO_DEPTH_FRAG)
         StaticEditorShaders.gizmo = new Shader(GIZMO_VERT, GIZMO_FRAG)
@@ -55,7 +61,7 @@ export default class StaticEditorShaders {
         StaticEditorShaders.outline = new Shader(SILHOUETTE_VERT, SILHOUETTE_FRAG)
         StaticEditorShaders.silhouette = new Shader(MESH_MAP_VERT, MESH_MAP_FRAG)
 
-
+        StaticEditorShaders.iconToDepthUniforms = StaticEditorShaders.iconToDepth.uniformMap
         StaticEditorShaders.iconUniforms = StaticEditorShaders.icon.uniformMap
         StaticEditorShaders.lineUniforms = StaticEditorShaders.line.uniformMap
         StaticEditorShaders.toDepthBufferUniforms = StaticEditorShaders.toDepthBuffer.uniformMap
