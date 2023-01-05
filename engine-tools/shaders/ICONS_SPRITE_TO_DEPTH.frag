@@ -6,9 +6,13 @@ in vec2 texCoords;
 in mat4 S;
 
 uniform sampler2D image;
+uniform vec3 entityID;
+
+layout (location = 0) out vec4 v_depth;
+layout (location = 1) out vec4 v_entityid;
+layout (location = 2) out vec4 v_velocity;
 
 
-out vec4 finalColor;
 
 void main(){
     float imageIndex = S[1][0];
@@ -31,8 +35,9 @@ void main(){
         float color = texture(image, vec2(texCoords.x/6. +  imageIndex * imageSize.y/imageSize.x, 1. - texCoords.y)).a;
         if(color <= .1) discard;
     }
-    if(isSelected)
-        finalColor = vec4(1., .5, 0., 1.);
-    else
-        finalColor = vec4(iconColor, 1.);
+
+    v_entityid = vec4(entityID,1.);
+    v_depth = vec4(0.);
+    v_velocity = vec4(0.);
+
 }

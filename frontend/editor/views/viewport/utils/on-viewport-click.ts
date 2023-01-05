@@ -3,6 +3,7 @@ import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import SelectionStore from "../../../stores/SelectionStore";
 import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 import GPU from "../../../../../engine-core/GPU";
+import VisibilityRenderer from "../../../../../engine-core/runtime/VisibilityRenderer";
 
 const MAX_DELTA = 50, LEFT_BUTTON = 0
 
@@ -31,4 +32,6 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
             setContext([...selected, entity.id])
     } else
         setContext([entity.id])
+
+    VisibilityRenderer.needsUpdate = true
 }

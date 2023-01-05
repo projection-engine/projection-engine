@@ -8,21 +8,19 @@ import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import {mat4} from "gl-matrix";
 
-const DEFAULT_COLOR = [255,255,255]
+const DEFAULT_COLOR = [255, 255, 255]
 
 const iconAttributes = mat4.create()
 export default class IconsSystem {
     static iconsTexture?: WebGLTexture
 
-    static loop(cb, settings) {
+    static loop(cb, settings, uniforms?: Object) {
         const tracking = CameraAPI.trackingEntity
         const entities = Engine.entities
         const size = entities.length
 
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-
-
             if (!entity.active || entity.distanceFromCamera > settings.maxDistanceIcon)
                 continue
             const hasLight = entity.__hasLight
@@ -40,29 +38,30 @@ export default class IconsSystem {
                 hasLight,
                 hasSkylight,
                 hasCamera,
-                settings
+                settings,
+                uniforms
             )
         }
     }
 
-    static #drawIcon(
+    static drawIcon(
         entity,
         hasLight,
         hasSkylight,
         hasCamera,
-        settings
+        settings,
+        iconsUniforms
     ) {
         const context = GPU.context
         const lightComponent = entity.__lightComp
         const lightType = lightComponent?.type
-        const iconsUniforms = StaticEditorShaders.iconUniforms
         let doNotFaceCamera = 0,
             drawSphere = 0,
             removeSphereCenter = 0,
             scale = settings.iconScale,
             imageIndex = 0,
             isSelected = entity.__isSelected ? 1 : 0,
-            color = entity._hierarchyColor||DEFAULT_COLOR
+            color = entity._hierarchyColor || DEFAULT_COLOR
 
         switch (lightType) {
             case LIGHT_TYPES.DIRECTIONAL:
@@ -105,11 +104,14 @@ export default class IconsSystem {
         iconAttributes[5] = isSelected
 
         iconAttributes[8] = color[0]
-        iconAttributes[9]= color[1]
-        iconAttributes[10]= color[2]
+        iconAttributes[9] = color[1]
+        iconAttributes[10] = color[2]
 
 
         getPivotPointMatrix(entity)
+        if(iconsUniforms.entityID !== undefined)
+            context.uniform3fv(iconsUniforms.entityID, entity.pickID)
+
         context.uniformMatrix4fv(iconsUniforms.settings, false, iconAttributes)
         context.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
         StaticMeshes.drawQuad()
@@ -154,7 +156,7 @@ export default class IconsSystem {
         GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
 
         if (settings.showIcons)
-            IconsSystem.loop(IconsSystem.#drawIcon, settings)
+            IconsSystem.loop(IconsSystem.drawIcon, settings, StaticEditorShaders.iconUniforms)
         if (settings.showLines)
             IconsSystem.loop(IconsSystem.#drawVisualizations, settings)
         LineRenderer.finish()
