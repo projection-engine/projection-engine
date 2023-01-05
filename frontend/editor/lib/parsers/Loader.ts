@@ -126,11 +126,11 @@ export default class Loader {
 
                 case FILE_TYPES.MATERIAL: {
                     const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY))
-                    if (!entity || !entity.__meshComponent) return;
+                    if (!entity || !entity.meshComponent) return;
                     const result = await FileSystemAPI.loadMaterial(data)
                     if (result) {
                         UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
-                        const component = entity.__meshComponent
+                        const component = entity.meshComponent
                         component.materialID = data
                         UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     } else

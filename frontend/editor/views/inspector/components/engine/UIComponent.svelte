@@ -15,7 +15,7 @@
     export let entity
     export let submit
 
-    $: component = entity.components.get(COMPONENTS.UI)
+    $: component = entity.uiComponent
     $: styles = component.wrapperStyles
     $: hasStyles = styles.length > 0
 

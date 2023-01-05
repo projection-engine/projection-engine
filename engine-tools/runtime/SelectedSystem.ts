@@ -18,7 +18,7 @@ export default class SelectedSystem {
                 const current = selected[m]
                 if (!current || !current.active)
                     continue
-                const mesh = GPU.meshes.get(current.__meshComponent?.meshID)
+                const mesh = GPU.meshes.get(current.meshComponent?.meshID)
                 if (!mesh)
                     continue
 

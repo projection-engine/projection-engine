@@ -57,7 +57,7 @@ export default class EngineTools {
 
         for (let i = 0; i < EngineTools.selected.length; i++) {
             const entity = EngineTools.selected[i]
-            entity.addProperty<boolean>("__isSelected", false)
+            entity.__isSelected = false
         }
 
         EngineTools.selected.length = 0
@@ -65,7 +65,7 @@ export default class EngineTools {
             const entity = Engine.entitiesMap.get(d)
             if (entity !== undefined) {
                 EngineTools.selected.push(entity)
-                entity.addProperty<boolean>("__isSelected", true)
+                entity.__isSelected = true
                 EngineTools.selectionMap.set(d, true)
             }
         })

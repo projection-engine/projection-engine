@@ -22,7 +22,7 @@
         const m = [], size = Engine.entities.length
         for (let i = 0; i < size; i++) {
             const e = Engine.entities[i]
-            if (e.components.get(COMPONENTS.UI) != null)
+            if (e.uiComponent)
                 m.push(e.id)
         }
         SelectionStore.engineSelected = m

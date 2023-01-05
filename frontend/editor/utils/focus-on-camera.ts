@@ -12,7 +12,7 @@ export default function focusOnCamera(cameraTarget) {
     const isCamera = cameraTarget instanceof Entity
     if (!focused || isCamera && cameraTarget.id !== focused) {
         const current = isCamera ? cameraTarget : Engine.entitiesMap.get(SelectionStore.mainEntity)
-        if (current && current.components.get(COMPONENTS.CAMERA)) {
+        if (current && current.cameraComponent) {
             EntityStateController.cameraSerialization = CameraAPI.serializeState()
             CameraTracker.stopTracking()
             CameraAPI.updateViewTarget(current)

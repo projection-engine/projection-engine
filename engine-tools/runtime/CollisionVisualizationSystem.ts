@@ -18,7 +18,7 @@ export default class CollisionVisualizationSystem  {
             const entity = selected[i]
             if (!entity.active)
                 continue
-            const collision = <PhysicsColliderComponent>entity.components.get(COMPONENTS.PHYSICS_COLLIDER)
+            const collision = entity.physicsColliderComponent
 
             if (!collision)
                 continue
