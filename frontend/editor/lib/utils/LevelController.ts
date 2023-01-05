@@ -112,7 +112,7 @@ export default class LevelController {
                     const entity = EntityAPI.parseEntityObject(entities[i])
                     for (let i = 0; i < entity.scripts.length; i++)
                         await componentConstructor(entity, entity.scripts[i].id, false)
-                    const imgID = (<SpriteComponent>entity.components.get(COMPONENTS.SPRITE))?.imageID
+                    const imgID = entity.spriteComponent?.imageID
                     checkTexture: if (imgID) {
                         const textures = GPU.textures
                         if (textures.get(imgID) != null)
@@ -120,7 +120,7 @@ export default class LevelController {
                         await EngineStore.loadTextureFromImageID(imgID)
                     }
 
-                    const uiID = (<UIComponent|undefined>entity.components.get(COMPONENTS.UI))?.uiLayoutID
+                    const uiID = entity.uiComponent?.uiLayoutID
                     if (uiID) {
                         const rs = RegistryAPI.getRegistryEntry(uiID)
                         Engine.UILayouts.set(uiID, await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path))

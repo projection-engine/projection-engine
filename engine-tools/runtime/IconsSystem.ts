@@ -23,14 +23,14 @@ export default class IconsSystem {
             const entity = entities[i]
             if (!entity.active || entity.distanceFromCamera > settings.maxDistanceIcon)
                 continue
-            const hasLight = entity.__hasLight
-            const hasSkylight = entity.__hasSkylight
-            const hasCamera = entity.__hasCamera
+            const hasLight = entity.lightComponent !== undefined
+            const hasSkylight = entity.skylightComponent !== undefined
+            const hasCamera = entity.cameraComponent !== undefined
             const doesntHaveIcon = !hasLight && !hasSkylight && !hasCamera
             if (
                 tracking === entity ||
-                entity.__meshRef && !entity.__materialRef?.isSky ||
-                doesntHaveIcon && entity.__meshRef && !entity.__materialRef?.isSky
+                entity.meshRef && !entity.materialRef?.isSky ||
+                doesntHaveIcon && entity.meshRef && !entity.materialRef?.isSky
             )
                 continue
             cb(
@@ -53,7 +53,7 @@ export default class IconsSystem {
         iconsUniforms
     ) {
         const context = GPU.context
-        const lightComponent = entity.__lightComp
+        const lightComponent = entity.lightComponent
         const lightType = lightComponent?.type
         let doNotFaceCamera = 0,
             drawSphere = 0,
@@ -109,7 +109,7 @@ export default class IconsSystem {
 
 
         getPivotPointMatrix(entity)
-        if(iconsUniforms.entityID !== undefined)
+        if (iconsUniforms.entityID !== undefined)
             context.uniform3fv(iconsUniforms.entityID, entity.pickID)
 
         context.uniformMatrix4fv(iconsUniforms.settings, false, iconAttributes)
@@ -126,7 +126,7 @@ export default class IconsSystem {
         if (!hasLight && !hasCamera)
             return
 
-        const component = entity.__lightComp
+        const component = entity.lightComponent
         let lineSize = -50
         if (!hasCamera)
             switch (component.type) {

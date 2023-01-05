@@ -22,7 +22,7 @@
         CameraAPI.updateProjection()
         cameraIsOrtho = negated
     }
-    $: cameras = engine.changeID ? Engine.entities.filter(entity => entity.components.get(COMPONENTS.CAMERA) != null) : []
+    $: cameras = engine.changeID ? Engine.entities.filter(entity => entity.cameraComponent != null) : []
     $: CameraTracker.screenSpaceMovement = settings.screenSpaceMovement
 </script>
 

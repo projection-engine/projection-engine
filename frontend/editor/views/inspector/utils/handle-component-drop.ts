@@ -31,16 +31,16 @@ export default async function handleComponentDrop(entity, data) {
                 await componentConstructor(entity, id, true)
                 break
             case "MESH":
-                if (!entity.__meshComponent) {
+                if (!entity.meshComponent) {
                     entity.addComponent(COMPONENTS.MESH)
                     entity.addComponent(COMPONENTS.CULLING)
                 }
 
                 await Loader.load(id, true)
-                entity.__meshComponent.meshID = id
+                entity.meshComponent.meshID = id
                 break
             case "MATERIAL": {
-                entity.__meshComponent.materialID = id
+                entity.meshComponent.materialID = id
                 break
             }
             case "IMAGE": {

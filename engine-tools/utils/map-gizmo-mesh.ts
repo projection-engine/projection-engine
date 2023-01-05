@@ -103,7 +103,7 @@ export default function mapGizmoMesh(axis: string, type: string): Entity {
     const M = new Float32Array(16)
     mat4.copy(M, entity.matrix)
 
-    entity.addProperty<Float32Array>("__cacheMatrix", M)
+    entity.__cacheMatrix = M
 
     return entity
 }
