@@ -1,4 +1,4 @@
-import NodeFS from "../../../../lib/FS/NodeFS";
+import FS from "../../../../lib/FS/FS";
 
 export default class GlobalContentBrowserController{
     static subscribed = new Map()
@@ -13,7 +13,7 @@ export default class GlobalContentBrowserController{
     static pushCurrentDirectory(dir){
         let path = dir
         if(!path)
-            path = NodeFS.sep
+            path = FS.sep
         GlobalContentBrowserController.subscribed.forEach(e => e(path))
     }
 }

@@ -9,7 +9,7 @@ import Events from "./Events";
 import contextMenuController from "../utils/context-menu-controller";
 import fileSystem from "../utils/file-system";
 
-const {BrowserWindow, app, ipcMain, webContents, dialog, Menu,} = require("electron")
+const {BrowserWindow, screen, ipcMain, webContents, dialog, Menu,} = require("electron")
 const fs = require("fs")
 const path = require("path");
 const RELATIVE_LOGO_PATH = "./APP_LOGO.png"
@@ -49,9 +49,12 @@ export default class ProjectController {
     static async openWindow() {
         if (ProjectController.window)
             return;
+        const primaryDisplay = screen.getPrimaryDisplay()
+        const {width, height} = primaryDisplay.workAreaSize
+
         ProjectController.window = new BrowserWindow({
-            width: 600,
-            height: 600,
+            width: width/2,
+            height: height/2,
             darkTheme: true,
             autoHideMenuBar: true,
             webPreferences: {
@@ -69,13 +72,15 @@ export default class ProjectController {
 
         contextMenuController()
         ProjectController.window.setMenu(null)
-        ProjectController.window.on("ready-to-show", () => ProjectController.window.show())
-        if (isDev) { // @ts-ignore
+        ProjectController.window.on("ready-to-show", () => {
+            ProjectController.window.show()
+            ProjectController.window.maximize()
+        })
+        if (isDev)
+            // @ts-ignore
             ProjectController.window.openDevTools({mode: "detach"})
-        }
 
         await ProjectController.window.loadFile(path.join(__dirname, './index.html'))
-        ProjectController.window.webContents.send("project-identifier", ProjectController.pathToProject.replaceAll("\\", "\\\\"))
     }
 
     static closeWindow(preventAppClosing: boolean) {
@@ -87,6 +92,7 @@ export default class ProjectController {
     }
 
     static async prepareForUse(pathTo: string) {
+
         ProjectController.pathToRegistry = pathTo + path.sep + FILE_TYPES.REGISTRY
         ProjectController.metadata = <MutableObject>await readTypedFile(pathTo + path.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "json") || {}
         ProjectController.registry = <{ [key: string]: RegistryFile }>await readTypedFile(ProjectController.pathToRegistry, "json") || {}

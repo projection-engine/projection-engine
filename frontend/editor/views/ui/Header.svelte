@@ -1,8 +1,8 @@
 <script>
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../../static/GIZMOS.ts";
+    import GIZMOS from "../../static/GIZMOS.ts";
     import SettingsStore from "../../stores/SettingsStore";
     import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
     import Entity from "../../../../engine-core/instances/Entity";

@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import TextureItem from "./TextureItem.svelte";
     import CodeItem from "./CodeItem.svelte";
@@ -9,7 +9,7 @@
     import TerrainItem from "./TerrainItem.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import FS from "../../../../../lib/FS/FS";
 
     const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION,  FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
 
@@ -23,7 +23,7 @@
         data = undefined
         if (fileType !== FILE_TYPES.PRIMITIVE && fileType !== FILE_TYPES.LEVEL) {
             const fType = VALID.includes(fileType) ? "json" : undefined
-            FilesAPI.readFile(NodeFS.ASSETS_PATH  + item.id, fType).then(res => data = res)
+            FilesAPI.readFile(FS.ASSETS_PATH  + item.id, fType).then(res => data = res)
         } else
             data = undefined
     }

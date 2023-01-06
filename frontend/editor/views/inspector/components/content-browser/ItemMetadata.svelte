@@ -1,17 +1,17 @@
 <script>
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import getTypeName from "../../../content-browser/utils/get-type-name";
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
-    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import FS from "../../../../../lib/FS/FS";
 
     export let item
     let data
 
 
     $: {
-        NodeFS.stat(NodeFS.ASSETS_PATH + NodeFS.sep + item.id)
+        FS.stat(FS.ASSETS_PATH + FS.sep + item.id)
             .then(res => {
                 if (!res)
                     return
@@ -19,9 +19,9 @@
             })
     }
     const showInFolder = () => {
-        const id = item.id.split(NodeFS.sep)
+        const id = item.id.split(FS.sep)
         id.pop()
-        GlobalContentBrowserController.pushCurrentDirectory(id.join(NodeFS.sep))
+        GlobalContentBrowserController.pushCurrentDirectory(id.join(FS.sep))
     }
 </script>
 

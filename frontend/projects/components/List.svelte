@@ -3,7 +3,7 @@
     import {onMount} from "svelte";
     import Icon from "../../components/icon/Icon.svelte";
     import Input from "../../components/input/Input.svelte";
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
     import ToolTip from "../../components/tooltip/ToolTip.svelte";
 
     export let items

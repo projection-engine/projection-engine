@@ -4,7 +4,7 @@ import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
-import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
@@ -15,9 +15,9 @@ import Entity from "../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import {v4} from "uuid";
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
-import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
+import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-import NodeFS from "../../../lib/FS/NodeFS";
+import FS from "../../../lib/FS/FS";
 import MeshComponent from "../../../../engine-core/templates/components/MeshComponent";
 import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 import AlertController from "../../../components/alert/AlertController";
@@ -42,9 +42,9 @@ export default class Loader {
     }
 
     static async scene(path) {
-        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + path, "json")
+        const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + path, "json")
         const entities = []
-        const root = new Entity(v4(), path.replace(FILE_TYPES.COLLECTION, "").split(NodeFS.sep).pop())
+        const root = new Entity(v4(), path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop())
         entities.push(root)
         EntityConstructor.translateEntity(root)
         try {
@@ -54,7 +54,7 @@ export default class Loader {
                     if (currentEntity.meshID) {
                         const primitiveRegistry = RegistryAPI.getRegistryEntry(currentEntity.meshID)
                         if (primitiveRegistry) {
-                            const meshData = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + primitiveRegistry.path, "json")
+                            const meshData = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + primitiveRegistry.path, "json")
                             if (!meshData)
                                 continue
                             const result = await FileSystemAPI.loadMaterial(meshData.material)
@@ -97,7 +97,7 @@ export default class Loader {
                 continue
             switch ("." + res.path.split(".").pop()) {
                 case FILE_TYPES.PRIMITIVE: {
-                    const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
+                    const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + res.path, "json")
                     const materialID = await Loader.mesh(file, data)
                     const entity = new Entity(undefined, "New primitive")
                     const instance = entity.addComponent<MeshComponent>(COMPONENTS.MESH)

@@ -1,4 +1,4 @@
-import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 
 export default function getFileTypes() {

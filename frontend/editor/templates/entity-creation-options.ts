@@ -1,5 +1,5 @@
 import EntityConstructor from "../lib/controllers/EntityConstructor";
-import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
 import LIGHT_TYPES from "../../../engine-core/static/LIGHT_TYPES";
 import EmbeddedMeshes from "../../../engine-core/templates/EmbeddedMeshes";
 

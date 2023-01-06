@@ -1,6 +1,6 @@
 <script>
     import Checkbox from "../../../../components/checkbox/Checkbox.svelte";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import ColorPicker from "../../../../components/color-picker/ColorPicker.svelte";
     import Range from "../../../../components/range/Range.svelte";

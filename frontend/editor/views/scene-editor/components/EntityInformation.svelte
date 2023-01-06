@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import GIZMOS from "../../../../static/GIZMOS.ts";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import GIZMOS from "../../../static/GIZMOS.ts";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
     import {quat} from "gl-matrix";
     import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";

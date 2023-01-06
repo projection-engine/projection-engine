@@ -1,12 +1,10 @@
 import Canvas from "../libs/Canvas";
 import ShaderNode from "../templates/ShaderNode";
-import IO_RADIUS from "../static/IO_RADIUS";
 import Draggable from "../templates/Draggable";
 import CanvasRenderer from "../libs/CanvasRenderer";
 import ShaderLink from "../templates/ShaderLink";
 import MutableObject from "../../../../../engine-core/MutableObject";
 import onMouseDownEvent from "./on-mouse-down-event";
-import {Input} from "../templates/Input";
 import {Output} from "../templates/Output";
 
 

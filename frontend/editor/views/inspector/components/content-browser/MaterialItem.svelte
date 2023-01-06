@@ -1,14 +1,14 @@
 <script>
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import FS from "../../../../../lib/FS/FS";
     import AlertController from "../../../../../components/alert/AlertController";
 
     export let data
@@ -26,7 +26,7 @@
             return
         wasUpdated = true
         const reg = RegistryAPI.getRegistryEntry(ID)
-        originalMat = await FilesAPI.readFile(NodeFS.ASSETS_PATH + reg.path, "json")
+        originalMat = await FilesAPI.readFile(FS.ASSETS_PATH + reg.path, "json")
         if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
             temp = {
                 ...temp,

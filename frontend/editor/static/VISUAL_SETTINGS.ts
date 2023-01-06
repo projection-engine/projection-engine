@@ -1,4 +1,4 @@
-import AA_METHODS from "../../engine-core/static/AA_METHODS";
+import AA_METHODS from "../../../engine-core/static/AA_METHODS";
 
 export default {
     gamma: 2.2,

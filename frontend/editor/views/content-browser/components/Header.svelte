@@ -3,7 +3,7 @@
     import EngineStore from "../../../stores/EngineStore";
     import {onDestroy} from "svelte";
 
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import importFile from "../../../utils/import-file";
@@ -15,7 +15,7 @@
     import Input from "../../../../components/input/Input.svelte";
     import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
     import AlertController from "../../../../components/alert/AlertController";
-    import NodeFS from "../../../../lib/FS/NodeFS";
+    import FS from "../../../../lib/FS/FS";
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -55,7 +55,7 @@
         <button
                 data-view-header-button="-"
                 on:click={() => {
-                    if(currentDirectory.id === NodeFS.sep)
+                    if(currentDirectory.id === FS.sep)
                         return
                     navigationHistory.goToParent(currentDirectory)
                 }}

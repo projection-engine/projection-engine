@@ -1,5 +1,5 @@
 <script>
-    import RENDER_TARGET from "../../../static/RENDER_TARGET"
+    import RENDER_TARGET from "../../static/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
     import updateRenderer from "../viewport/utils/update-renderer";
     import EngineStore from "../../stores/EngineStore";
@@ -9,8 +9,8 @@
     import VisualsStore from "../../stores/VisualsStore";
     import Engine from "../../../../engine-core/Engine";
     import EngineTools from "../../../../engine-tools/EngineTools";
-
-    export let onReady
+    import LevelController from "../../lib/utils/LevelController";
+    export let initializeEditor
 
     let canvasRef
     let done = false
@@ -30,12 +30,12 @@
             AssetAPI.readAsset,
             AssetAPI.readMetadata,
             true
-        )
-            .then(async () => {
-                await EngineTools.initialize()
-                onReady()
+        ).then(async () => {
+                await EngineTools.initialize().catch()
+                await LevelController.loadLevel().catch()
                 done = true
                 EngineStore.updateStore({...engine, viewportInitialized: true})
+                initializeEditor()
             })
     })
 

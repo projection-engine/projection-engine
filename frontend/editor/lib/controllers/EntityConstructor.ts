@@ -2,7 +2,7 @@ import Entity from "../../../../engine-core/instances/Entity";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import {vec3, vec4} from "gl-matrix";
-import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import EngineStore from "../../stores/EngineStore";
 import {v4} from "uuid";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";

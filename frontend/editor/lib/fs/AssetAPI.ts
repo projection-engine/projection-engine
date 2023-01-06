@@ -1,7 +1,7 @@
 import {v4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
-import NodeFS from "../../../lib/FS/NodeFS";
+import FS from "../../../lib/FS/FS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 
 const fs = window.require("fs")
@@ -10,15 +10,15 @@ export default class AssetAPI {
     static async readAsset(id) {
         const reg = RegistryAPI.getRegistryEntry(id)
         if (reg)
-            return await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path)
+            return await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + reg.path)
     }
 
 
     static async writeAsset(path, fileData, previewImage?:boolean, registryID?:string) {
         const fileID = registryID !== undefined ? registryID : v4()
-        await NodeFS.write(NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + path), fileData)
+        await FS.write(FS.resolvePath(FS.ASSETS_PATH + FS.sep + path), fileData)
         if (previewImage)
-            await NodeFS.write(NodeFS.resolvePath(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + registryID + ".preview"), previewImage)
+            await FS.write(FS.resolvePath(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + registryID + ".preview"), previewImage)
         await RegistryAPI.createRegistryEntry(fileID, path)
     }
 
@@ -27,7 +27,7 @@ export default class AssetAPI {
         if (!reg)
             return null
         try {
-            const path = NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path)
+            const path = FS.resolvePath(FS.ASSETS_PATH + FS.sep + reg.path)
             return {
                 ...reg,
                 path,

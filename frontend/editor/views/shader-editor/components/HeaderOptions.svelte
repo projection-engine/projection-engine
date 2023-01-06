@@ -1,15 +1,9 @@
 <script>
-    import Nodes from "./Nodes.svelte"
-    import selection from "../utils/selection"
-    import SELECTION_TYPES from "../static/SELECT_ACTIONS"
-
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ShaderEditorTools from "../libs/ShaderEditorTools";
     import Selector from "../../../../components/selector/Selector.svelte";
-    import getDropdownHeaderStyles from "../../../../components/dropdown/utils/get-dropdown-header-styles";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
-    import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
     import addComment from "../utils/add-comment";
 

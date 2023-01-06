@@ -1,6 +1,6 @@
 <script>
     import Preview from "../../preview/Preview.svelte";
-    import NodeFS from "../../../lib/FS/NodeFS";
+    import FS from "../../../lib/FS/FS";
     import Icon from "../../icon/Icon.svelte";
     import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 
@@ -8,7 +8,7 @@
     export let type
     let previewPath
     $: {
-        if (state) previewPath = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + state.registryID + ".preview"
+        if (state) previewPath = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + state.registryID + ".preview"
     }
 </script>
 

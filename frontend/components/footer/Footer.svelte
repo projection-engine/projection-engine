@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
     import ErrorLoggerAPI from "../../editor/lib/fs/ErrorLoggerAPI";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
@@ -9,7 +9,7 @@
     import Icon from "../icon/Icon.svelte";
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
-    import NodeFS from "../../lib/FS/NodeFS";
+    import FS from "../../lib/FS/FS";
     import AlertController from "../alert/AlertController";
 
     const {shell} = window.require("electron")
@@ -19,7 +19,7 @@
 
 
     const openLogs = async () => {
-        if (NodeFS.exists(ErrorLoggerAPI.path))
+        if (FS.exists(ErrorLoggerAPI.path))
             shell.openPath(ErrorLoggerAPI.path).catch()
         else
             console.error("No logs found")

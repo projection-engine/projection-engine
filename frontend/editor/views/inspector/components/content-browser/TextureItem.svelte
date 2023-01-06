@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";

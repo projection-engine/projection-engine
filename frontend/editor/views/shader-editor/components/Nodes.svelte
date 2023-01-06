@@ -1,6 +1,6 @@
 <script>
     import ALL_NODES from "../static/ALL_NODES"
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import Icon from "../../../../components/icon/Icon.svelte";
     import Input from "../../../../components/input/Input.svelte";
 

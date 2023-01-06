@@ -11,7 +11,7 @@
     import ITEM_TYPES from "./templates/ITEM_TYPES";
     import SettingsStore from "../../stores/SettingsStore";
     import ResizableBar from "../../../components/resizable/ResizableBar.svelte";
-    import NodeFS from "../../../lib/FS/NodeFS";
+    import FS from "../../../lib/FS/FS";
 
 
     export let viewID
@@ -25,7 +25,7 @@
         store = v
     })
 
-    let currentDirectory = {id: NodeFS.sep}
+    let currentDirectory = {id: FS.sep}
     let wasInitialized = false
 
     $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView

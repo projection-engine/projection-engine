@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../editor/static/LOCALIZATION_EN";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
     import {v4} from "uuid";

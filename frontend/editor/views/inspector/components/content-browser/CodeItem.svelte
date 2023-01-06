@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 
     export let data
 </script>

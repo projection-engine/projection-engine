@@ -1,5 +1,5 @@
 import UndoRedo from "../../../lib/utils/UndoRedo";
-import NodeFS from "../../../../lib/FS/NodeFS";
+import FS from "../../../../lib/FS/FS";
 
 export default class NavigationHistory extends UndoRedo {
     setCurrentDirectory?:Function
@@ -34,11 +34,11 @@ export default class NavigationHistory extends UndoRedo {
     }
     goToParent(currentDirectory) {
         const found = currentDirectory.id
-        const split = found.split(NodeFS.sep)
+        const split = found.split(FS.sep)
         split.pop()
-        if (!split.join(NodeFS.sep))
-            this.updateCurrentDirectory({id: NodeFS.sep}, currentDirectory)
+        if (!split.join(FS.sep))
+            this.updateCurrentDirectory({id: FS.sep}, currentDirectory)
         else
-            this.updateCurrentDirectory({id: split.join(NodeFS.sep)}, currentDirectory)
+            this.updateCurrentDirectory({id: split.join(FS.sep)}, currentDirectory)
     }
 }

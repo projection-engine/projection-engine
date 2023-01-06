@@ -1,6 +1,5 @@
-import SETTINGS from "../../static/SETTINGS";
+import SETTINGS from "../static/SETTINGS";
 import {get, writable} from "svelte/store";
-import MutableObject from "../../../engine-core/MutableObject";
 import ChangesTrackerStore from "./ChangesTrackerStore";
 
 const settingsStore = writable(SETTINGS);

@@ -2,7 +2,7 @@ import FilesAPI from "../../../lib/fs/FilesAPI";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ShaderEditorTools from "../libs/ShaderEditorTools";
 import ShaderLink from "../templates/ShaderLink";
-import NodeFS from "../../../../lib/FS/NodeFS";
+import FS from "../../../../lib/FS/FS";
 import Canvas from "../libs/Canvas";
 import OpenFile from "../static/OPEN_FILE";
 import Comment from "../templates/Comment";
@@ -13,7 +13,7 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
 
     if (!res)
         return
-    let dataToParse = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + res.path, "json")
+    let dataToParse = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + res.path, "json")
     if (dataToParse && Object.keys(dataToParse).length > 0) {
 
         if (dataToParse.nodes)

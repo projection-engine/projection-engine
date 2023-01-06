@@ -1,5 +1,4 @@
 import type ShaderLink from "../../../templates/ShaderLink";
-import {Output} from "../../../templates/Output";
 import type ShaderNode from "../../../templates/ShaderNode";
 
 export default function resolveRelationship(currentNode: ShaderNode, outputs: string[], links: ShaderLink[], nodes: ShaderNode[], body: string[], executionSignature: { signature: string }) {

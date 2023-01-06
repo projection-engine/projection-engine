@@ -1,5 +1,5 @@
 import {get, writable} from "svelte/store";
-import VISUAL_SETTINGS from "../../static/VISUAL_SETTINGS";
+import VISUAL_SETTINGS from "../static/VISUAL_SETTINGS";
 
 
 const store = writable(VISUAL_SETTINGS);

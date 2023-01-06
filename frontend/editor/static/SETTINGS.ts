@@ -1,7 +1,6 @@
-import SHADING_MODELS from "../../engine-core/static/SHADING_MODELS"
+import SHADING_MODELS from "../../../engine-core/static/SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
-import TERRAIN_TOOLS from "./TERRAIN_TOOLS";
 import KEYS from "./KEYS";
 import INITIAL_LAYOUT from "./INITIAL_LAYOUT";
 

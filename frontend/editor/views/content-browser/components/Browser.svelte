@@ -8,7 +8,7 @@
     import getFilesToRender from "../utils/get-files-to-render";
     import HotKeysController from "../../../lib/utils/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import RowsHeader from "./RowsHeader.svelte";

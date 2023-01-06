@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
@@ -8,7 +8,7 @@
     import Accordion from "../../../../../components/accordion/Accordion.svelte";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
     import Range from "../../../../../components/range/Range.svelte";
-    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import FS from "../../../../../lib/FS/FS";
 
     export let item
     export let data
@@ -27,7 +27,7 @@
 
         if (key === "imageID") {
             const reg = RegistryAPI.getRegistryEntry(value)
-            const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + reg.path, "json")
+            const file = await FilesAPI.readFile(FS.ASSETS_PATH  + FS.sep + reg.path, "json")
 
             temp = {...temp, imageID: value, image: file.base64}
         } else

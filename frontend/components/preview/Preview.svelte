@@ -1,5 +1,5 @@
 <script>
-    import NodeFS from "../../lib/FS/NodeFS";
+    import FS from "../../lib/FS/FS";
 
     export let drawOnError
     export let path
@@ -16,7 +16,7 @@
         src = null
         timeout = setTimeout(() => {
             try {
-                NodeFS.read(path).then(res => {
+                FS.read(path).then(res => {
                     error = !res
                     if(res)
                         src= res

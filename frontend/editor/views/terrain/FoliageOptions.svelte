@@ -3,8 +3,8 @@
     import Preview from "../../../components/preview/Preview.svelte";
     import {onMount} from "svelte";
     import SettingsStore from "../../stores/SettingsStore";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-    import NodeFS from "../../../lib/FS/NodeFS";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import FS from "../../../lib/FS/FS";
     import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
     import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
     import Range from "../../../components/range/Range.svelte";
@@ -18,12 +18,12 @@
     let path
     onMount(() => {
         if (currentTexture != null)
-            path = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + currentTexture + FILE_TYPES.PREVIEW
+            path = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + currentTexture + FILE_TYPES.PREVIEW
     })
 
     async function update(key, value) {
         if (key === "foliageTexture")
-            path = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + value + FILE_TYPES.PREVIEW
+            path = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + value + FILE_TYPES.PREVIEW
 
         SettingsStore.updateStore({...settings, terrainSettings: {...tS, [key]: value}})
     }

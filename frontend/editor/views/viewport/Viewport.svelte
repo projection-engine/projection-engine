@@ -1,13 +1,11 @@
 <script>
-
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
-    import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts";
+    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
     import SettingsStore from "../../stores/SettingsStore";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import RENDER_TARGET from "../../../static/RENDER_TARGET";
     import Tabs from "../../../components/tabs/Tabs.svelte";
     import removeTab from "./utils/remove-tab";
     import updateViewport from "./utils/update-viewport";
@@ -16,12 +14,15 @@
     import getViewIcon from "../../../components/view/utils/get-view-icon";
     import TabsStore from "../../stores/TabsStore";
     import GPU from "../../../../engine-core/GPU";
+    import Canvas from "../scene-editor/Canvas.svelte";
+    import RENDER_TARGET from "../../static/RENDER_TARGET";
+
+    const {ipcRenderer} = window.require("electron")
 
     export let updateView
     export let viewTab
 
     let currentTab = 0
-    let canvasRef
     let engine = {}
     let settings = {}
     let ref
@@ -75,10 +76,9 @@
     }
 
     onMount(() => {
-        window.d = () => viewTab
-        canvasRef.replaceWith(document.getElementById(RENDER_TARGET + "VIEWPORT").firstElementChild)
+        const wrapperRef = ref.lastElementChild
+        wrapperRef.insertBefore(document.getElementById(RENDER_TARGET), wrapperRef.firstElementChild);
     })
-
     onDestroy(() => {
         unsubscribeTabs()
         HotKeysController.unbindAction(ref)
@@ -116,7 +116,6 @@
         />
     </div>
     <div class="wrapper">
-        <div bind:this={canvasRef}></div>
         {#if engine.isReady}
             <View
                     instance={viewTab[currentTab]}

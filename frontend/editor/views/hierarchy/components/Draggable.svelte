@@ -4,10 +4,10 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import updateSelection from "../utils/update-selection";
     import EntityNameController from "../../../lib/controllers/EntityNameController";
-    import KEYS from "../../../../static/KEYS.ts";
+    import KEYS from "../../../static/KEYS.ts";
     import handleDrop from "../utils/handle-drop";
     import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
+    import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS.ts";
     import SelectionStore from "../../../stores/SelectionStore";
     import Engine from "../../../../../engine-core/Engine";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";

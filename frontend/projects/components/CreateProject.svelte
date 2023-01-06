@@ -1,14 +1,14 @@
 <script lang="ts">
 
     import {v4} from "uuid";
-    import BASE_PATH from "../static/BASE_PATH";
     import ProjectMetadata from "../static/ProjectMetadata";
-    import NodeFS from "../../lib/FS/NodeFS";
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import FS from "../../lib/FS/FS";
+    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
     import PROJECT_STATIC_DATA from "../../../static/objects/PROJECT_STATIC_DATA";
     import Icon from "../../components/icon/Icon.svelte";
     import Input from "../../components/input/Input.svelte";
     import AlertController from "../../components/alert/AlertController";
+    import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
 
     export let close: Function
     export let setProjectsToShow: Function
@@ -17,23 +17,23 @@
 
     const create = async (name: string) => {
         const projectID = v4()
-        const projectPath = localStorage.getItem(BASE_PATH) + NodeFS.sep + projectID
-        if (!NodeFS.exists(NodeFS.resolvePath(localStorage.getItem(BASE_PATH)))) {
+        const projectPath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + projectID
+        if (!FS.exists(FS.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH)))) {
             AlertController.error("Directory not found, creating on root directory.")
-            localStorage.setItem(BASE_PATH, NodeFS.rootDir)
+            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FS.rootDir)
         }
 
-        const err = await NodeFS.mkdir(projectPath)
+        const err = await FS.mkdir(projectPath)
         const meta = {name: name, creationDate: (new Date()).toLocaleDateString()}
         if (!err)
-            await NodeFS.write(NodeFS.resolvePath(projectPath + NodeFS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION), JSON.stringify(meta))
+            await FS.write(FS.resolvePath(projectPath + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION), JSON.stringify(meta))
 
         setProjectsToShow([
             ...projectsToShow,
             {
                 id: projectID,
                 meta,
-                path: NodeFS.resolvePath(localStorage.getItem(BASE_PATH) + NodeFS.sep + projectID)
+                path: FS.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + projectID)
             }
         ])
 

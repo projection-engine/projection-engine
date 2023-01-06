@@ -1,5 +1,5 @@
 <script lang="ts">
-    import KEYS from "../../static/KEYS.ts";
+    import KEYS from "../../editor/static/KEYS.ts";
     import {onDestroy, onMount} from "svelte";
     import Icon from "../icon/Icon.svelte";
     import Dropdown from "../dropdown/Dropdown.svelte";

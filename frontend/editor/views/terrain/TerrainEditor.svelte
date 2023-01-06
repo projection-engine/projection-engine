@@ -1,10 +1,10 @@
 <script>
     import CameraBar from "../scene-editor/components/CameraGizmo.svelte";
-    import TERRAIN_TOOLS from "../../../static/TERRAIN_TOOLS.ts";
+    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.ts";
     import SculptOptions from "./SculptOptions.svelte";
     import FoliageOptions from "./FoliageOptions.svelte";
 
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import RegistryAPI from "../../lib/fs/RegistryAPI";
     import FilesAPI from "../../lib/fs/FilesAPI";
     import Header from "./Header.svelte";
@@ -14,7 +14,7 @@
     import EngineStore from "../../stores/EngineStore";
     import ResizableBar from "../../../components/resizable/ResizableBar.svelte";
     import Icon from "../../../components/icon/Icon.svelte";
-    import NodeFS from "../../../lib/FS/NodeFS";
+    import FS from "../../../lib/FS/FS";
 
     let settings = {}
     let engine = {}
@@ -30,7 +30,7 @@
         if (settings.selectedTerrain != null) {
             const reg = RegistryAPI.getRegistryEntry(settings.selectedTerrain)
             if (reg != null)
-                FilesAPI.readFile(NodeFS.ASSETS_PATH + reg.path, "json")
+                FilesAPI.readFile(FS.ASSETS_PATH + reg.path, "json")
                     .then(file => {
                         if (!file)
                             return

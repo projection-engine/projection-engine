@@ -1,16 +1,15 @@
 <script>
-
-
     import {onDestroy, onMount} from "svelte";
     import ContextMenuController from "../lib/context-menu/ContextMenuController";
-    import NodeFS from "../lib/FS/NodeFS";
-    import BASE_PATH from "./static/BASE_PATH";
-
+    import FS from "../lib/FS/FS";
     import List from "./components/List.svelte";
     import Header from "./components/Header.svelte";
     import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
     import ProjectRow from "./components/ProjectRow.svelte";
     import refreshProjects from "./utils/refresh-projects";
+    import {STORAGE_KEYS} from "../static/STORAGE_KEYS";
+
+    export let openProject
 
     const pathLib = window.require("path")
     const os = window.require("os")
@@ -19,22 +18,18 @@
     let basePath
     let inputValue = ""
     let projectsToShow = []
-    let currentVersion
     let selected
     let defaultVersion
 
     const internalID = crypto.randomUUID()
 
     onMount(() => {
-        defaultVersion = localStorage.getItem("CURRENT_VERSION")
-        currentVersion = localStorage.getItem("CURRENT_VERSION")
-        ContextMenuController.mount(
-            [
+        ContextMenuController.mount([
                 {
                     icon: "delete_forever",
                     label: "Delete",
                     onClick: async () => {
-                        await NodeFS.rm(NodeFS.resolvePath(localStorage.getItem(BASE_PATH) + NodeFS.sep + selected), {
+                        await FS.rm(FS.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected), {
                             recursive: true,
                             force: true
                         })
@@ -44,15 +39,15 @@
                 {
                     icon: "folder",
                     label: "Open in explorer",
-                    onClick: async () => shell.showItemInFolder(localStorage.getItem(BASE_PATH) + NodeFS.sep + selected)
+                    onClick: async () => shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected)
                 },
             ],
             internalID,
             ["data-card"]
         )
-        if (!localStorage.getItem(BASE_PATH))
-            localStorage.setItem(BASE_PATH, NodeFS.rootDir)
-        basePath = localStorage.getItem(BASE_PATH)
+        if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
+            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FS.rootDir)
+        basePath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH)
 
     })
     $: {
@@ -64,7 +59,6 @@
 </script>
 
 <div class="wrapper">
-    <div class="tab">
         <Header
 
                 defaultVersion={defaultVersion}
@@ -93,59 +87,39 @@
                     getID={e => e.id}
             >
                 <ProjectRow
-                        updateVersion={async version =>  {
-                        await NodeFS.write(
-                            item.path + NodeFS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION,
-                         JSON.stringify({
-                            ...item.meta,
-                            version
-                        }))
-                        item.meta.version = version
-                        projectsToShow = projectsToShow
-                    }}
+
                         selected={selected}
-                        open={() => {
-                     // TODO - OPEN PROJECT
-                }}
+                        open={openProject}
                         data={item}
                         onRename={async newName => {
-                        const pathName = pathLib.resolve(localStorage.getItem(BASE_PATH) + NodeFS.sep + item.id + NodeFS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION)
-                        const res = await NodeFS.read(pathName)
-                        if (!res)
-                            return
-                        await NodeFS.write(
-                            pathName,
-                         JSON.stringify({
-                            ...JSON.parse(res.toString()),
-                            name: newName
-                        }))
-                        projectsToShow = projectsToShow
-                    }}
+                            const pathName = pathLib.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + item.id + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION)
+                            const res = await FS.read(pathName)
+                            if (!res)
+                                return
+                            await FS.write(
+                                pathName,
+                             JSON.stringify({
+                                ...JSON.parse(res.toString()),
+                                name: newName
+                            }))
+                            projectsToShow = projectsToShow
+                        }}
                 />
             </List>
         </div>
-    </div>
+
 </div>
 
 <style>
-    .tab {
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-        padding: 16px 5% 4px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 4px;
-    }
 
     .wrapper {
         width: 100vw;
         height: 100vh;
         overflow: hidden;
         display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 4px;
         position: relative;
         background-color: var(--pj-background-tertiary);
     }

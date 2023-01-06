@@ -1,6 +1,6 @@
 <script>
 
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
     import ToolTip from "../../components/tooltip/ToolTip.svelte";
     import Input from "../../components/input/Input.svelte";
 
@@ -9,10 +9,12 @@
     export let onRename
     export let selected
 
-    $: isSelected = selected === data.id
+
+    let openForChange = false
     let changeDate
     let hovered
 
+    $: isSelected = selected === data.id
 
     $: {
         if (data.meta.lastModification) {
@@ -41,9 +43,6 @@
         } else
             changeDate = LOCALIZATION_EN.NEVER
     }
-
-
-    let openForChange = false
 </script>
 
 
@@ -93,7 +92,7 @@
             <small>{LOCALIZATION_EN.LAST_MODIFIED}</small>
         </div>
         <div data-vertdivider="-"></div>
-        <button on:click={() => open()} data-focusbutton="-">{LOCALIZATION_EN.OPEN}</button>
+        <button on:click={() => open(data.path)} data-focusbutton="-">{LOCALIZATION_EN.OPEN}</button>
     </div>
 </div>
 

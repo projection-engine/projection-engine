@@ -4,7 +4,6 @@ import SelectionStore from "../stores/SelectionStore";
 import EntityStateController from "../lib/controllers/EntityStateController";
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI";
 import CameraTracker from "../../../engine-tools/lib/CameraTracker";
-import COMPONENTS from "../../../engine-core/static/COMPONENTS";
 import Entity from "../../../engine-core/instances/Entity";
 
 export default function focusOnCamera(cameraTarget) {

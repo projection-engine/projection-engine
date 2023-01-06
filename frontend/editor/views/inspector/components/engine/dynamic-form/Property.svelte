@@ -3,7 +3,7 @@
     import Component from "../../../../../../../engine-core/templates/components/Component";
     import Selector from "../../../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../../stores/EngineStore";
-    import LOCALIZATION_EN from "../../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import ColorPicker from "../../../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../../components/input/Input.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";

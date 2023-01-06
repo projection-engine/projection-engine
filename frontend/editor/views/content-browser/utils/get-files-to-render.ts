@@ -1,4 +1,4 @@
-import NodeFS from "../../../../lib/FS/NodeFS";
+import FS from "../../../../lib/FS/FS";
 
 function map(check, items, elementsPerRow) {
     let newArr = []
@@ -31,7 +31,7 @@ export default function getFilesToRender(currentDirectory, fileType, items, inpu
             items,
             elementsPerRow
         )
-    if (currentDirectory.id !== NodeFS.sep)
+    if (currentDirectory.id !== FS.sep)
         return map(
             file => file.parent === currentDirectory.id,
             items,

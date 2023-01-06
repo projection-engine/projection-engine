@@ -2,7 +2,7 @@
     import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";

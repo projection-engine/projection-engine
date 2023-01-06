@@ -12,7 +12,7 @@
     import Row from "./Row.svelte";
     import PROJECT_FOLDER_STRUCTURE from "../../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import FS from "../../../../../lib/FS/FS";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
 
 
@@ -42,7 +42,7 @@
     $: icon = getItemIcon(metadata, childQuantity, type)
     $: isOnCuttingBoard = toCut.includes(data.id)
     $: metadata = {
-        path: NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep + data.registryID + FILE_TYPES.PREVIEW,
+        path: FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + data.registryID + FILE_TYPES.PREVIEW,
         type: data.type ? "." + data.type : "folder",
         childQuantity,
         typeName: getTypeName(data.type)

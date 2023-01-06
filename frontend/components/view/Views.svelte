@@ -6,8 +6,6 @@
     import removeTab from "./utils/remove-tab";
     import addTab from "./utils/add-tab";
     import ResizableBar from "../resizable/ResizableBar.svelte";
-    import SettingsStore from "../../editor/stores/SettingsStore";
-    import {onDestroy} from "svelte";
 
     export let resizePosition
     export let orientation

@@ -1,14 +1,14 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import RENDER_TARGET from "../../../static/RENDER_TARGET";
+    import RENDER_TARGET from "../../static/RENDER_TARGET";
     import SelectBox from "../../../components/select-box/SelectBox.svelte";
-    import GIZMOS from "../../../static/GIZMOS.ts";
+    import GIZMOS from "../../static/GIZMOS.ts";
     import Loader from "../../lib/parsers/Loader";
     import GizmoSystem from "../../../../engine-tools/runtime/GizmoSystem";
     import dragDrop from "../../../components/drag-drop/drag-drop";
     import SelectionStore from "../../stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";

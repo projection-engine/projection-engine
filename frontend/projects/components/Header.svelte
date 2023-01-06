@@ -1,11 +1,12 @@
 <script>
-    import Icon from "shared-resources/frontend/components/icon/Icon.svelte";
+
     import {onDestroy, onMount} from "svelte";
-    import createPortal from "shared-resources/frontend/components/create-portal";
-    import BASE_PATH from "../static/BASE_PATH";
-    import ToolTip from "shared-resources/frontend/components/tooltip/ToolTip.svelte";
     import CreateProject from "./CreateProject.svelte";
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
+    import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
+    import Portal from "../../lib/Portal";
+    import Icon from "../../components/icon/Icon.svelte";
+    import ToolTip from "../../components/tooltip/ToolTip.svelte";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -25,7 +26,7 @@
             openInput = false
     }
 
-    const portal = createPortal(999)
+    const portal = new Portal(999)
     $: openInput ? portal.open() : portal.close()
 
     onMount(() => {
@@ -35,7 +36,7 @@
         ipcRenderer.on("open-selection", (event, data) => {
             if (data != null)
                 setBasePath(data)
-            localStorage.setItem(BASE_PATH, data)
+            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, data)
         })
     })
     onDestroy(() => {

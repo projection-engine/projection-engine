@@ -2,7 +2,6 @@ import NODE_TYPES from "./templates/NODE_TYPES"
 import cloneClass from "../../../../../../engine-core/utils/clone-class";
 import compileFragmentShader from "./utils/compile-fragment-shader";
 import MATERIAL_OUTPUT_FORMAT from "../../../../../../engine-core/static/MATERIAL_OUTPUT_FORMAT"
-import MutableObject from "../../../../../../engine-core/MutableObject";
 import type ShaderLink from "../../templates/ShaderLink";
 import type ShaderNode from "../../templates/ShaderNode";
 import MaterialAsset from "../../static/MaterialAsset";

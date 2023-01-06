@@ -4,10 +4,10 @@ import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";
 import importFile from "../utils/import-file";
-import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
-import NodeFS from "../../lib/FS/NodeFS";
+import FS from "../../lib/FS/FS";
 import AlertController from "../../components/alert/AlertController";
 
 const {shell, clipboard} = window.require("electron")
@@ -53,15 +53,15 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             label: "Go to parent",
             require: settings.contentBrowserHotkeys.GO_TO_PARENT,
             callback: () => {
-                if (currentDirectory.id !== NodeFS.sep) {
+                if (currentDirectory.id !== FS.sep) {
                     const found = currentDirectory.id
                     if (found) {
-                        const split = found.split(NodeFS.sep)
+                        const split = found.split(FS.sep)
                         split.pop()
                         if (split.length === 1)
-                            setCurrentDirectory({id: NodeFS.sep})
+                            setCurrentDirectory({id: FS.sep})
                         else
-                            setCurrentDirectory({id: split.join(NodeFS.sep)})
+                            setCurrentDirectory({id: split.join(FS.sep)})
                     }
                 }
             }
@@ -134,7 +134,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             {
                 label: "Open current directory on explorer",
                 icon: "open_in_new",
-                onClick: () => shell.showItemInFolder(NodeFS.resolvePath(NodeFS.ASSETS_PATH + NodeFS.sep + currentDirectory.id))
+                onClick: () => shell.showItemInFolder(FS.resolvePath(FS.ASSETS_PATH + FS.sep + currentDirectory.id))
             },
             {divider: true},
 

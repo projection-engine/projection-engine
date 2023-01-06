@@ -1,7 +1,7 @@
 import FilesAPI from "../../../lib/fs/FilesAPI"
 import FilesStore from "../../../stores/FilesStore";
-import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
-import NodeFS from "../../../../lib/FS/NodeFS";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+import FS from "../../../../lib/FS/FS";
 import AlertController from "../../../../components/alert/AlertController";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
@@ -17,22 +17,22 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
         for (let j = 0; j < relatedFiles.length; j++) {
             const currentFile = relatedFiles[j]
             await FilesAPI.deleteFile(
-                NodeFS.ASSETS_PATH + NodeFS.sep + currentFile.id,
+                FS.ASSETS_PATH + FS.sep + currentFile.id,
                 {
                     recursive: true,
                     force: true
                 })
             if (currentDirectory.id === currentFile.id)
-                setCurrentDirectory({id: NodeFS.sep})
+                setCurrentDirectory({id: FS.sep})
         }
         await FilesAPI.deleteFile(
-            NodeFS.ASSETS_PATH + NodeFS.sep + file.id,
+            FS.ASSETS_PATH + FS.sep + file.id,
             {
                 recursive: true,
                 force: true
             })
         if (currentDirectory.id === file.id)
-            setCurrentDirectory({id: NodeFS.sep})
+            setCurrentDirectory({id: FS.sep})
     }
 
     await FilesStore.refreshFiles()

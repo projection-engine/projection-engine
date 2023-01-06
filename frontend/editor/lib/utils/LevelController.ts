@@ -3,7 +3,6 @@ import UndoRedoAPI from "./UndoRedoAPI";
 import Engine from "../../../../engine-core/Engine";
 import RegistryAPI from "../fs/RegistryAPI";
 import GPU from "../../../../engine-core/GPU";
-import COMPONENTS from "../../../../engine-core/static/COMPONENTS.js";
 import componentConstructor from "../../utils/component-constructor";
 
 import EngineStore from "../../stores/EngineStore";
@@ -11,21 +10,19 @@ import SelectionStore from "../../stores/SelectionStore";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import SettingsStore from "../../stores/SettingsStore";
 import VisualsStore from "../../stores/VisualsStore";
-import SETTINGS from "../../../static/SETTINGS";
-import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+import SETTINGS from "../../static/SETTINGS";
+import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import TabsStore from "../../stores/TabsStore";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
-import NodeFS from "../../../lib/FS/NodeFS";
+import FS from "../../../lib/FS/FS";
 import ROUTES from "../../../../backend/static/ROUTES";
 import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
-import UIComponent from "../../../../engine-core/templates/components/UIComponent";
-import SpriteComponent from "../../../../engine-core/templates/components/SpriteComponent";
 import AlertController from "../../../components/alert/AlertController";
 import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
 import MutableObject from "../../../../engine-core/MutableObject";
@@ -37,35 +34,43 @@ export default class LevelController {
     static #loadedLevel = undefined
     static #initialized = false
 
-    static initialize(cb) {
-        if (LevelController.#initialized)
-            return
-        LevelController.#initialized = true
+    static initialize():Promise<undefined> {
+        return new Promise(resolve => {
+            if (LevelController.#initialized) {
+                resolve(undefined)
+                return
+            }
+            LevelController.#initialized = true
 
-        ipcRenderer.once(
-            ROUTES.LOAD_PROJECT_METADATA,
-            (ev, meta) => {
-                if (meta.settings !== undefined) {
-                    const newSettings = {...SETTINGS, ...meta.settings}
+            ipcRenderer.once(
+                ROUTES.LOAD_PROJECT_METADATA,
+                (ev, meta) => {
+                    if(!meta) {
+                        AlertController.error(LOCALIZATION_EN.ERROR_LOADING_PROJECT)
+                        return
+                    }
+                    if (meta.settings !== undefined) {
+                        const newSettings = {...SETTINGS, ...meta.settings}
 
-                    if (newSettings.views[0].top == null)
-                        newSettings.views = SETTINGS.views
-                    newSettings.visualSettings = undefined
-                    if (meta.layout)
-                        TabsStore.updateStore(meta.layout)
+                        if (newSettings.views[0].top == null)
+                            newSettings.views = SETTINGS.views
+                        newSettings.visualSettings = undefined
+                        if (meta.layout)
+                            TabsStore.updateStore(meta.layout)
 
-                    SettingsStore.updateStore(newSettings)
-                    if (meta.visualSettings)
-                        VisualsStore.updateStore({...meta.visualSettings})
-                }
-                EngineStore.updateStore({
-                    ...EngineStore.engine,
-                    meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined},
-                    isReady: true
+                        SettingsStore.updateStore(newSettings)
+                        if (meta.visualSettings)
+                            VisualsStore.updateStore({...meta.visualSettings})
+                    }
+                    EngineStore.updateStore({
+                        ...EngineStore.engine,
+                        meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined},
+                        isReady: true
+                    })
+                    resolve(undefined)
                 })
-                cb()
-            })
-        ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
+            ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
+        })
     }
 
     static async loadLevel(level:string|{registryID:string}= PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
@@ -78,7 +83,7 @@ export default class LevelController {
         const IPC = ROUTES.LOAD_LEVEL
         let pathToLevel
         if (level === PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
-            pathToLevel = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
+            pathToLevel = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
             EngineStore.engine.currentLevel = undefined
         } else {
             const {registryID} = <{registryID:string}> level
@@ -86,7 +91,7 @@ export default class LevelController {
                 const reg = RegistryAPI.getRegistryEntry(registryID)
                 if (!reg)
                     throw new Error("Error loading level")
-                pathToLevel = NodeFS.ASSETS_PATH + NodeFS.sep + reg.path
+                pathToLevel = FS.ASSETS_PATH + FS.sep + reg.path
                 EngineStore.engine.currentLevel = level
             } catch (err) {
                 console.error(err)
@@ -123,7 +128,7 @@ export default class LevelController {
                     const uiID = entity.uiComponent?.uiLayoutID
                     if (uiID) {
                         const rs = RegistryAPI.getRegistryEntry(uiID)
-                        Engine.UILayouts.set(uiID, await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + rs.path))
+                        Engine.UILayouts.set(uiID, await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + rs.path))
                     }
                     mapped.push(entity)
                 }
@@ -156,7 +161,7 @@ export default class LevelController {
             }
 
             await FilesAPI.writeFile(
-                NodeFS.path + NodeFS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION,
+                FS.path + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION,
                 JSON.stringify({
                     ...metadata,
                     settings,
@@ -166,7 +171,7 @@ export default class LevelController {
 
             let pathToWrite
             pathElse:if (!EngineStore.engine.currentLevel)
-                pathToWrite = NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
+                pathToWrite = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
             else {
                 const reg = RegistryAPI.getRegistryEntry(EngineStore.engine.currentLevel.registryID)
                 if (!reg) {
@@ -174,9 +179,9 @@ export default class LevelController {
                     pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
                     break pathElse
                 }
-                pathToWrite = NodeFS.ASSETS_PATH + NodeFS.sep + reg.path
+                pathToWrite = FS.ASSETS_PATH + FS.sep + reg.path
             }
-            pathToWrite = NodeFS.resolvePath(pathToWrite)
+            pathToWrite = FS.resolvePath(pathToWrite)
 
             await FilesAPI.writeFile(
                 pathToWrite,

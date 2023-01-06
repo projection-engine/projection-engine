@@ -18,6 +18,7 @@ enum LOCALIZATION_EN {
     IS_DEFAULT_VERSION = "Default version",
     NO_RELEASES = "No releases found",
     SAVING_STATE = "Saving state",
+    ERROR_LOADING_PROJECT = "Error loading project",
     INSTALL = "Install",
     DOWNLOADS = "Downloads",
     RESTORING_STATE = "Restoring state",

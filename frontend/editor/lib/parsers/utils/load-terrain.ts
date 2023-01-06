@@ -2,11 +2,11 @@ import FilesAPI from "../../fs/FilesAPI";
 import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-renderer-entities";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import Entity from "../../../../../engine-core/instances/Entity";
-import NodeFS from "../../../../lib/FS/NodeFS";
+import FS from "../../../../lib/FS/FS";
 import TerrainComponent from "../../../../../engine-core/templates/components/TerrainComponent";
 
 export default async function loadTerrain(reg) {
-    const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH + NodeFS.sep + reg.path, "json")
+    const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + reg.path, "json")
     if (!file.image) {
         console.error("No height-map present")
         return

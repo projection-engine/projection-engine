@@ -3,7 +3,7 @@
     import Nodes from "./Nodes.svelte";
     import AttributeEditor from "./AttributeEditor.svelte";
     import ResizableBar from "../../../../components/resizable/ResizableBar.svelte";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import Icon from "../../../../components/icon/Icon.svelte";
     import type Canvas from "../libs/Canvas";
     import ShaderNode from "../templates/ShaderNode";

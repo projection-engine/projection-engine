@@ -1,7 +1,7 @@
 import SelectionStore from "../stores/SelectionStore";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import SettingsStore from "../stores/SettingsStore";
-import GIZMOS from "../../static/GIZMOS";
+import GIZMOS from "../static/GIZMOS";
 import GizmoSystem from "../../../engine-tools/runtime/GizmoSystem";
 
 const toRad = Math.PI/180

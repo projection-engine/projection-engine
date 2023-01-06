@@ -2,7 +2,6 @@ import resolveRelationship from "./resolve-relationship";
 import TextureSample from "../../../templates/nodes/TextureSample";
 import type ShaderNode from "../../../templates/ShaderNode";
 import type ShaderLink from "../../../templates/ShaderLink";
-import MutableObject from "../../../../../../../engine-core/MutableObject";
 import MaterialUniform from "../../../../../../../engine-core/templates/MaterialUniform";
 
 type response = { functionDeclaration: string, uniformsDeclaration: string, uniforms: Object[] , uniformValues: MaterialUniform[] }

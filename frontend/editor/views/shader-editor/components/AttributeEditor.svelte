@@ -1,9 +1,8 @@
 <script lang="ts">
     import Attribute from "./Attribute.svelte";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ColorPicker from "../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../components/input/Input.svelte";
-    import Canvas from "../libs/Canvas";
     import ShaderNode from "../templates/ShaderNode";
     import Comment from "../templates/Comment";
     import MutableObject from "../../../../../engine-core/MutableObject";

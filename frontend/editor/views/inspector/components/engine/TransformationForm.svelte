@@ -1,12 +1,12 @@
 <script>
     import SelectionStore from "../../../../stores/SelectionStore";
     import Engine from "../../../../../../engine-core/Engine";
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import {onDestroy} from "svelte";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
     import {quat} from "gl-matrix";
     import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
-    import ACTION_HISTORY_TARGETS from "../../../../../static/ACTION_HISTORY_TARGETS.ts";
+    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
     import Range from "../../../../../components/range/Range.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";

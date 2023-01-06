@@ -1,6 +1,6 @@
 import WindowUtils from "../../../editor/lib/WindowUtils";
 
-export default function getFrameOptions(openAbout:Function, disabledSave:boolean) {
+export default function getFrameOptions(closeProject:Function, disabledSave:boolean) {
     return [
         {divider: true, label: "File"},
         {
@@ -10,12 +10,7 @@ export default function getFrameOptions(openAbout:Function, disabledSave:boolean
             onClick: () => WindowUtils.callMethod("save")
         },
 
-        {divider: true, label: "Window"},
-        {
-            label: 'Reload project',
-            icon: "refresh",
-            onClick: () => WindowUtils.callMethod("reload")
-        },
+
         {divider: true, label: "Utils"},
 
         {
@@ -28,14 +23,15 @@ export default function getFrameOptions(openAbout:Function, disabledSave:boolean
             label: "Toggle footer",
             onClick: () => WindowUtils.callMethod("footer")
         },
-
-
-        {divider: true, label: "Help"},
-
+        {divider: true, label: "Other"},
         {
-            label: 'About',
-            icon: "info",
-            onClick: openAbout
-        }
+            label: 'Reload project',
+            icon: "refresh",
+            onClick: () => WindowUtils.callMethod("reload")
+        },
+        {
+            label: "Close project",
+            onClick: closeProject
+        },
     ]
 }

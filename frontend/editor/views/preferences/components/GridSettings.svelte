@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
     import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
     import Range from "../../../../components/range/Range.svelte";

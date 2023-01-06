@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import SettingsStore from "../../stores/SettingsStore";
     import Checkbox from "../../../components/checkbox/Checkbox.svelte";
     import {onDestroy, onMount} from "svelte";
@@ -11,7 +11,7 @@
     import FilesAPI from "../../lib/fs/FilesAPI";
     import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
     import Range from "../../../components/range/Range.svelte";
-    import NodeFS from "../../../lib/FS/NodeFS";
+    import FS from "../../../lib/FS/FS";
 
     export let settings
     export let selectedTerrain
@@ -36,7 +36,7 @@
 
     async function updateImage({registryID}) {
         const reg = RegistryAPI.getRegistryEntry(registryID)
-        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + reg.path, "json")
+        const file = await FilesAPI.readFile(FS.ASSETS_PATH  + reg.path, "json")
 
         TerrainGenerator.generate(file.base64, selectedTerrain.scale, selectedTerrain.dimensions)
             .then(res => GPUAPI.allocateMesh(settings.selectedTerrain, res))

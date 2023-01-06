@@ -2,92 +2,52 @@
     import {onMount} from "svelte";
     import ROUTES from "../backend/static/ROUTES.ts";
     import Editor from "./editor/Editor.svelte";
-    import WindowUtils from "./editor/lib/WindowUtils";
-    import LevelController from "./editor/lib/utils/LevelController";
-    import Canvas from "./editor/views/scene-editor/Canvas.svelte";
-    import RENDER_TARGET from "./static/RENDER_TARGET";
-    import LOCALIZATION_EN from "./static/LOCALIZATION_EN";
-    import HotKeysController from "./editor/lib/utils/HotKeysController";
     import Alert from "./components/alert/Alert.svelte";
-    import About from "./components/About.svelte";
-    import NodeFS from "./lib/FS/NodeFS";
-    import FilesAPI from "./editor/lib/fs/FilesAPI";
+    import FS from "./lib/FS/FS";
     import PROJECT_STATIC_DATA from "../static/objects/PROJECT_STATIC_DATA";
     import WindowOptions from "./components/window-frame/WindowFrame.svelte";
     import ContextMenu from "./components/context-menu/ContextMenu.svelte";
+    import {WINDOWS} from "./static/WINDOWS";
+    import {STORAGE_KEYS} from "./static/STORAGE_KEYS";
+    import Projects from "./projects/Projects.svelte";
+    import EngineStore from "./editor/stores/EngineStore";
 
     const {ipcRenderer} = window.require("electron")
 
-    let isAboutOpen = false
-    let initialized = false
-    let fullyLoaded = false
+    let openWindow = WINDOWS.PROJECTS
+    let openProjectPath
 
     onMount(() => {
-        ipcRenderer.on("project-identifier", (_, data) => {
-            sessionStorage.setItem(PROJECT_STATIC_DATA.PROJECT_PATH, data)
-            NodeFS.initialize()
-            FilesAPI.initializeFolders().catch()
-            WindowUtils.openAbout = () => isAboutOpen = true
-            LevelController.initialize(() => initialized = true)
+        const lastOpenProject = localStorage.getItem(STORAGE_KEYS.LAST_OPEN_PROJECT)
+        const blockCacheOpening = localStorage.getItem(STORAGE_KEYS.BLOCK_CACHE_OPENING)
+        if (!blockCacheOpening && lastOpenProject && FS.exists(lastOpenProject + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION)) {
+            openWindow = WINDOWS.EDITOR
+            ipcRenderer.send(ROUTES.SET_PROJECT_CONTEXT, lastOpenProject)
+            openProjectPath = lastOpenProject
+        }
+        ipcRenderer.on(ROUTES.CAN_INITIALIZE_PROJECT, () => {
+            openWindow = WINDOWS.EDITOR
         })
-        ipcRenderer.on("console", (_, data) => console.error(...data))
-        ipcRenderer.once(ROUTES.OPEN_FULL, () => fullyLoaded = true)
-        HotKeysController.initializeListener()
     })
+    $: {
 
+        if (openProjectPath) {
+            console.trace(openProjectPath)
+            ipcRenderer.send(ROUTES.SET_PROJECT_CONTEXT, openProjectPath)
+            sessionStorage?.setItem?.(STORAGE_KEYS.PROJECT_PATH, openProjectPath)
+
+        } else
+            openWindow = WINDOWS.PROJECTS
+    }
 </script>
 
-<div id={RENDER_TARGET + "VIEWPORT"} style="display: none">
-    {#if initialized}
-        <Canvas onReady={() => LevelController.loadLevel().then(_ => ipcRenderer.send(ROUTES.OPEN_FULL))}/>
-    {/if}
-</div>
 
-<WindowOptions/>
+
 <ContextMenu/>
 <Alert/>
-{#if fullyLoaded}
-    <Editor/>
+
+{#if openProjectPath}
+    <Editor pathToProject={openProjectPath} closeProject={() => openProjectPath = undefined}/>
 {:else}
-    <div class="wrapper">
-        <img src={"./APP_LOGO.png"} alt="logo">
-        <div class="title">
-            <div class="label">{LOCALIZATION_EN.PROJECTION_ENGINE}</div>
-            <small>{LOCALIZATION_EN.VERSION}</small>
-        </div>
-    </div>
+    <Projects openProject={path => openProjectPath = path}/>
 {/if}
-{#if isAboutOpen}
-    <About handleClose={() => isAboutOpen = false}/>
-{/if}
-
-<style>
-    .label {
-        font-size: 1.1rem;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .wrapper {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        background: var(--pj-background-tertiary);
-
-    }
-
-    img {
-        max-width: 60vw;
-    }
-
-    .title {
-        display: grid;
-        gap: 4px;
-        justify-content: center;
-        justify-items: center;
-    }
-</style>

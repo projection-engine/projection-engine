@@ -1,12 +1,11 @@
 import materialCompiler from "./material-compiler/material-compiler";
 import AssetAPI from "../../../lib/fs/AssetAPI";
-import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "../templates/nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
 import {v4} from "uuid";
 import AlertController from "../../../../components/alert/AlertController";
-import OpenFile from "../static/OPEN_FILE";
 import Canvas from "./Canvas";
 import type ShaderNode from "../templates/ShaderNode";
 

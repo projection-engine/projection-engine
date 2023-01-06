@@ -1,7 +1,7 @@
 <script>
     import StyleField from "./UIStyles.svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS.js"
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import Selector from "../../../../../components/selector/Selector.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
@@ -10,7 +10,7 @@
     import Engine from "../../../../../../engine-core/Engine";
     import Input from "../../../../../components/input/Input.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import FS from "../../../../../lib/FS/FS";
 
     export let entity
     export let submit
@@ -29,7 +29,7 @@
         const ref = RegistryAPI.getRegistryEntry(reg.registryID)
         if (!ref)
             return
-        const file = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + NodeFS.sep + ref.path)
+        const file = await FilesAPI.readFile(FS.ASSETS_PATH  + FS.sep + ref.path)
         if (!file)
             return
         Engine.UILayouts.set(reg.registryID, file)

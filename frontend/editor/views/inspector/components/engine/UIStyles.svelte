@@ -1,6 +1,6 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
-    import KEYS from "../../../../../static/KEYS.ts";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import KEYS from "../../../../static/KEYS.ts";
 
 
     export let initial

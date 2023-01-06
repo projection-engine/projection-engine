@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../../static/GIZMOS.ts";
+    import GIZMOS from "../../static/GIZMOS.ts";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import SettingsStore from "../../stores/SettingsStore";
     import {v4} from "uuid";
@@ -9,7 +9,7 @@
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
 
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ToolTip from "../../../components/tooltip/ToolTip.svelte";
 
     let engine = {}

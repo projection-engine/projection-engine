@@ -7,7 +7,7 @@ import MutableObject from "../../../engine-core/MutableObject";
 const os = window.require("os")
 const pathRequire = window.require("path")
 const fs = window.require("fs")
-export default class NodeFS  {
+export default class FS {
     static sep:string = <string>pathRequire.sep
     static path?:string
     static temp?:string
@@ -15,14 +15,14 @@ export default class NodeFS  {
     static rootDir = os.homedir()
     static ASSETS_PATH?:string
     static #initialized = false
-    static initialize() {
-        if (NodeFS.#initialized)
+    static initialize(path:string) {
+        if (FS.#initialized)
             return
-        NodeFS.#initialized = true
-        NodeFS.path = pathRequire.resolve(sessionStorage.getItem(PROJECT_STATIC_DATA.PROJECT_PATH).replace(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "") + NodeFS.sep)
-        NodeFS.temp = pathRequire.resolve(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.TEMP + NodeFS.sep)
-        NodeFS.PREVIEW_PATH = pathRequire.resolve(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + NodeFS.sep)
-        NodeFS.ASSETS_PATH = pathRequire.resolve(NodeFS.path + NodeFS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + NodeFS.sep)
+        FS.#initialized = true
+        FS.path = pathRequire.resolve(path.replace(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "") + FS.sep)
+        FS.temp = pathRequire.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.TEMP + FS.sep)
+        FS.PREVIEW_PATH = pathRequire.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep)
+        FS.ASSETS_PATH = pathRequire.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + FS.sep)
     }
 
     static resolvePath(path:string):string {

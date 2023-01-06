@@ -1,6 +1,6 @@
 <script>
     import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import Rendering from "./components/Rendering.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";

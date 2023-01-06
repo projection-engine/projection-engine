@@ -1,11 +1,11 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
-    import NodeFS from "../../../../../lib/FS/NodeFS";
+    import FS from "../../../../../lib/FS/FS";
     import AlertController from "../../../../../components/alert/AlertController";
 
     export let item
@@ -14,7 +14,7 @@
     const updateAsset = async () => {
         wasUpdated  = true
 
-        const data = await FilesAPI.readFile(NodeFS.ASSETS_PATH  + item.id, "json")
+        const data = await FilesAPI.readFile(FS.ASSETS_PATH  + item.id, "json")
         if (!data) return
         data.normals = PrimitiveProcessor.computeNormals(data.indices, data.vertices, true)
         data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)

@@ -1,6 +1,6 @@
 <script>
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-    import TERRAIN_TOOLS from "../../../static/TERRAIN_TOOLS.ts";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import TERRAIN_TOOLS from "../../static/TERRAIN_TOOLS.ts";
     import SettingsStore from "../../stores/SettingsStore";
     import Selector from "../../../components/selector/Selector.svelte";
     import ShadingOption from "../scene-editor/components/ShadingModels.svelte";

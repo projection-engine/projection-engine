@@ -1,8 +1,8 @@
 <script>
 
-    import SETTINGS from "../../../../static/SETTINGS";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
-    import KEYS from "../../../../static/KEYS.ts";
+    import SETTINGS from "../../../static/SETTINGS";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import KEYS from "../../../static/KEYS.ts";
     import SettingsStore from "../../../stores/SettingsStore";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";

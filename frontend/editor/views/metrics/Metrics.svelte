@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import {onDestroy, onMount} from "svelte";
     import BenchmarkAPI from "../../../../engine-core/lib/utils/BenchmarkAPI";

@@ -1,7 +1,7 @@
 <script>
     import buildShader from "./libs/material-compiler/build-shader"
     import FilesAPI from "../../lib/fs/FilesAPI"
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";
@@ -11,8 +11,7 @@
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
     import Icon from "../../../components/icon/Icon.svelte";
-    import NodeFS from "../../../lib/FS/NodeFS";
-    import AlertController from "../../../components/alert/AlertController";
+    import FS from "../../../lib/FS/FS";
     import Canvas from "./libs/Canvas";
     import Material from "./templates/nodes/Material";
     import getOnDropEvent from "./utils/get-on-drop-event";
@@ -126,7 +125,7 @@
         canvasAPI={canvas}
         openSourceCode={async () => {
                 const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
-                const newFile = NodeFS.temp + NodeFS.sep + openFile.registryID + ".log"
+                const newFile = FS.temp + FS.sep + openFile.registryID + ".log"
                 await FilesAPI.writeFile(newFile, shader, true)
                 shell.openPath(newFile).catch()
             }}

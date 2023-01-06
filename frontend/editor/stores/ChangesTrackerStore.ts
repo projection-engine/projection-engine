@@ -1,6 +1,4 @@
 import {get, writable} from "svelte/store";
-import SettingsStore from "./SettingsStore";
-import MutableObject from "../../../engine-core/MutableObject";
 
 
 const store = writable(false);

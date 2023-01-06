@@ -1,22 +1,47 @@
 <script>
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
     import Footer from "../components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
     import ViewsContainer from "../components/view/Views.svelte";
     import SettingsStore from "./stores/SettingsStore";
-    import FALLBACK_VIEW from "../static/FALLBACK_VIEW";
+    import FALLBACK_VIEW from "./static/FALLBACK_VIEW";
+    import About from "../components/About.svelte";
+    import WindowUtils from "./lib/WindowUtils";
+    import updateView from "./utils/update-view";
+    import FS from "../lib/FS/FS";
+    import FilesAPI from "./lib/fs/FilesAPI";
+    import LevelController from "./lib/utils/LevelController";
+    import HotKeysController from "./lib/utils/HotKeysController";
+    import WindowFrame from "../components/window-frame/WindowFrame.svelte";
+    import Canvas from "./views/scene-editor/Canvas.svelte";
 
+    const {ipcRenderer} = window.require("electron")
+    const FALLBACK = {...FALLBACK_VIEW}
 
-    let view = {...FALLBACK_VIEW}
+    export let pathToProject
+    export let closeProject
+
     let engine
     let settings
+    let aboutModalIsOpen = false
+    let isMetadataReady = false
+    let isContextInitialized = false
+
+    $: view = settings?.views?.[settings.currentView] || FALLBACK
+
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => {
-        settings = v
-        const currentView = v.views[v.currentView]
-        if (currentView !== undefined)
-            view = currentView
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+
+    onMount(() => {
+        WindowUtils.openAbout = () => aboutModalIsOpen = true
+
+        FS.initialize(pathToProject)
+        FilesAPI.initializeFolders().catch()
+        LevelController.initialize().then(_ => isMetadataReady = true).catch()
+
+        ipcRenderer.on("console", (_, data) => console.error(...data))
+        HotKeysController.initializeListener()
     })
 
 
@@ -24,64 +49,61 @@
         unsubscribeSettings()
         unsubscribeEngine()
     })
-
-    const updateView = (key, newView) => {
-        const s = {...settings}
-        const copy = [...s.views]
-        copy[s.currentView] = {...view, [key]: newView}
-        s.views = copy
-        SettingsStore.updateStore(s)
-    }
-
 </script>
 
-<div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
-
-    <div class="middle">
-        <ViewsContainer
-                id="left"
-                setTabs={(tabs) => updateView("left", tabs)}
-                tabs={view.left}
-                reducedOpacity={engine.executingAnimation}
-                leftOffset={"8px"}
-                orientation={"vertical"}
-                resizePosition={"left"}
-        />
-        <div class="content">
+<Canvas initializeEditor={() => isContextInitialized = true}/>
+{#if isMetadataReady && isContextInitialized}
+    <WindowFrame closeProject={closeProject}/>
+    <div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
+        <div class="middle">
+            <ViewsContainer
+                    id="left"
+                    setTabs={(tabs) => updateView("left", tabs)}
+                    tabs={view.left}
+                    reducedOpacity={engine.executingAnimation}
+                    leftOffset={"8px"}
+                    orientation={"vertical"}
+                    resizePosition={"left"}
+            />
+            <div class="content">
+                <ViewsContainer
+                        reducedOpacity={engine.executingAnimation}
+                        id="bottom"
+                        setTabs={(tabs) => updateView("top", tabs)}
+                        tabs={view.top}
+                        resizePosition={"bottom"}
+                        orientation={"horizontal"}
+                />
+                <Viewport
+                        viewTab={view.viewport}
+                        updateView={(viewTab) => updateView("viewport", viewTab)}
+                />
+                <ViewsContainer
+                        reducedOpacity={engine.executingAnimation}
+                        id="bottom"
+                        setTabs={(tabs) => updateView("bottom", tabs)}
+                        tabs={view.bottom}
+                        resizePosition={"top"}
+                        orientation={"horizontal"}
+                />
+            </div>
             <ViewsContainer
                     reducedOpacity={engine.executingAnimation}
-                    id="bottom"
-                    setTabs={(tabs) => updateView("top", tabs)}
-                    tabs={view.top}
-                    resizePosition={"bottom"}
-                    orientation={"horizontal"}
-            />
-            <Viewport
-                    viewTab={view.viewport}
-                    updateView={(viewTab) => updateView("viewport", viewTab)}
-            />
-            <ViewsContainer
-                    reducedOpacity={engine.executingAnimation}
-                    id="bottom"
-                    setTabs={(tabs) => updateView("bottom", tabs)}
-                    tabs={view.bottom}
+                    id="right"
+                    setTabs={(tabs) => updateView("right", tabs)}
+                    tabs={view.right}
+                    orientation={"vertical"}
+                    leftOffset={"0%"}
                     resizePosition={"top"}
-                    orientation={"horizontal"}
             />
         </div>
-        <ViewsContainer
-                reducedOpacity={engine.executingAnimation}
-                id="right"
-                setTabs={(tabs) => updateView("right", tabs)}
-                tabs={view.right}
-                orientation={"vertical"}
-                leftOffset={"0%"}
-                resizePosition={"top"}
-        />
-    </div>
 
-    <Footer engine={engine} settings={settings}/>
-</div>
+        <Footer engine={engine} settings={settings}/>
+    </div>
+    {#if aboutModalIsOpen}
+        <About handleClose={() => aboutModalIsOpen = false}/>
+    {/if}
+{/if}
 
 
 <style>

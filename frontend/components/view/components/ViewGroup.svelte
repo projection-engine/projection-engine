@@ -1,12 +1,12 @@
 <script lang="ts">
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../editor/static/LOCALIZATION_EN";
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../static/VIEWS";
     import TabsStore from "../../../editor/stores/TabsStore";
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import SettingsStore from "../../../editor/stores/SettingsStore";
-    import ViewTabItem from "../../../static/ViewTabItem";
+    import ViewTabItem from "../../../editor/static/ViewTabItem";
     import Dialog from "../../dialog/Dialog.svelte";
 
     export let groupIndex

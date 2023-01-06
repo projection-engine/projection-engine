@@ -2,7 +2,7 @@
     import ShadingOption from "./components/ShadingModels.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";

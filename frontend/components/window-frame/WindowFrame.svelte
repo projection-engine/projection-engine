@@ -1,29 +1,26 @@
 <script>
     import EngineStore from "../../editor/stores/EngineStore";
-    import {onDestroy, onMount} from "svelte";
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import {onDestroy} from "svelte";
+    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
     import FilesStore from "../../editor/stores/FilesStore";
     import LevelController from "../../editor/lib/utils/LevelController";
     import getFrameOptions from "./utils/get-frame-options";
     import SettingsStore from "../../editor/stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";
-    import VIEWS from "../view/static/VIEWS";
     import CreationController from "./components/CreationController.svelte";
     import OtherSettings from "./GlobalOptions.svelte";
-    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Icon from "../icon/Icon.svelte";
     import SingleSelectDropdown from "../dropdown/OptionDropdown.svelte";
-    import About from "../About.svelte";
-    import FALLBACK_VIEW from "../../static/FALLBACK_VIEW";
-    import UndoRedoAPI from "../../editor/lib/utils/UndoRedoAPI";
+    import FALLBACK_VIEW from "../../editor/static/FALLBACK_VIEW";
     import ChangesTrackerStore from "../../editor/stores/ChangesTrackerStore";
+
+    export let closeProject
 
     let engine
     let store
     let settings
     let historyChangeType = null
-    let isAboutOpen = false
     let hasChanges = false
     const unsubscribeTracker = ChangesTrackerStore.getStore(v => hasChanges = v)
     const unsubscribe = FilesStore.getStore(v => store = v)
@@ -55,11 +52,12 @@
         SettingsStore.updateStore(obj)
     }
 
-    $: options = getFrameOptions(() => isAboutOpen = true, engine.executingAnimation || !hasChanges)
+    $: options = getFrameOptions(closeProject,  engine.executingAnimation || !hasChanges)
 </script>
 
 <div class="container">
-    <button disabled={engine.executingAnimation || !hasChanges} on:click={_ => LevelController.save()}>
+    <button disabled={engine.executingAnimation || !hasChanges}
+            on:click={_ => LevelController.save()}>
         <Icon>save</Icon>
         <ToolTip content={LOCALIZATION_EN.SAVE}/>
     </button>
@@ -71,30 +69,31 @@
             labelAsIcon={true}
             tooltip={LOCALIZATION_EN.OPTIONS}
     />
-    <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
-    <CreationController/>
-    <div data-vertdivider="-" style="height: 15px;"></div>
-    <Tabs
-            removeMultipleTabs={() => {
+
+        <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
+        <CreationController/>
+
+        <div data-vertdivider="-" style="height: 15px;"></div>
+        <Tabs
+                removeMultipleTabs={() => {
                 const currentView = settings.views[settings.currentView]
                 SettingsStore.updateStore({...settings, views: [currentView]})
             }}
-            allowRenaming={true}
-            addNewTab={addNewTab}
-            removeTab={removeTab}
-            tabs={settings.views}
-            currentTab={settings.currentView}
-            setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
-    />
-    <OtherSettings
-            historyChangeType={historyChangeType}
-            store={store}
-            settings={settings}
-            engine={engine}
-    />
-    {#if isAboutOpen}
-        <About handleClose={() => isAboutOpen = false}/>
-    {/if}
+                allowRenaming={true}
+                addNewTab={addNewTab}
+                removeTab={removeTab}
+                tabs={settings.views}
+                currentTab={settings.currentView}
+                setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
+        />
+
+        <OtherSettings
+                historyChangeType={historyChangeType}
+                store={store}
+                settings={settings}
+                engine={engine}
+        />
+
 </div>
 
 <style>

@@ -1,8 +1,8 @@
 <script>
     import Accordion from "../../../../components/accordion/Accordion.svelte";
     import ShotcutField from "./ShotcutField.svelte";
-    import SETTINGS from "../../../../static/SETTINGS";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import SETTINGS from "../../../static/SETTINGS";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
 
     export let settings

@@ -1,7 +1,7 @@
 import TranslationGizmo from "../lib/transformation/TranslationGizmo"
 import RotationGizmo from "../lib/transformation/RotationGizmo"
 import ScalingGizmo from "../lib/transformation/ScalingGizmo"
-import TRANSFORMATION_TYPE from "../../frontend/static/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../frontend/editor/static/TRANSFORMATION_TYPE"
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
 import AXIS from "../static/AXIS";
 import {mat4, quat, vec3} from "gl-matrix";

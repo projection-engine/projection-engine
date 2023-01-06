@@ -1,11 +1,9 @@
 import materialCompiler from "./material-compiler"
 import GPU from "../../../../../../engine-core/GPU";
-import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
 import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
 import AlertController from "../../../../../components/alert/AlertController";
-import MutableObject from "../../../../../../engine-core/MutableObject";
 import Canvas from "../Canvas";
-import StaticShaders from "../../../../../../engine-core/lib/StaticShaders";
 import OpenFile from "../../static/OPEN_FILE";
 import UberShader from "../../../../../../engine-core/utils/UberShader";
 

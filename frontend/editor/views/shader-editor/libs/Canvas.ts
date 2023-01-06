@@ -5,7 +5,6 @@ import type ShaderLink from "../templates/ShaderLink";
 import type Comment from "../templates/Comment";
 import CanvasRenderer from "./CanvasRenderer";
 import OpenFile from "../static/OPEN_FILE";
-import Draggable from "../templates/Draggable";
 
 export default class Canvas {
     static grid = 20

@@ -1,6 +1,6 @@
 import {get, writable} from "svelte/store";
 import FilesStore from "./FilesStore";
-import NodeFS from "../../lib/FS/NodeFS";
+import FS from "../../lib/FS/FS";
 import MutableObject from "../../../engine-core/MutableObject";
 
 const store = writable({items: [], open: {}});
@@ -28,9 +28,9 @@ export default class FilesHierarchyStore {
         const open = FilesHierarchyStore.data.open
         const folders = items.filter(item => item.isFolder)
         const cache:MutableObject = {
-            [NodeFS.sep]: {
+            [FS.sep]: {
                 depth: 0,
-                item: {id: NodeFS.sep, name: "Assets", isFolder: true},
+                item: {id: FS.sep, name: "Assets", isFolder: true},
                 childQuantity: folders.length
             }
         }
@@ -49,7 +49,7 @@ export default class FilesHierarchyStore {
             }
         }
 
-        if (open[NodeFS.sep])
+        if (open[FS.sep])
             folders.filter(item => !item.parent).forEach(item => {
                 getHierarchy(item, 1, folders)
             })

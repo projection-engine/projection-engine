@@ -1,12 +1,12 @@
 import RegistryAPI from "./RegistryAPI";
-import NodeFS from "../../../lib/FS/NodeFS";
+import FS from "../../../lib/FS/FS";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
 
 const pathRequire = window.require("path")
 
 function mapAsset(reg, type) {
     return reg.map(i => new Promise(resolve => {
-        const split = i.path.split(NodeFS.sep)
+        const split = i.path.split(FS.sep)
         resolve({
             type,
             registryID: i.id,
@@ -21,25 +21,25 @@ export default class ContentBrowserAPI {
         const fromResolved = pathRequire.resolve(from)
         await RegistryAPI.readRegistry()
         try {
-            const stat = await NodeFS.stat(fromResolved)
+            const stat = await FS.stat(fromResolved)
             if (stat !== undefined && stat.isDirectory) {
-                await NodeFS.mkdir(to)
-                const res = await NodeFS.readdir(fromResolved)
+                await FS.mkdir(to)
+                const res = await FS.readdir(fromResolved)
                 if (!res) return
                 for (let i = 0; i< res.length; i++) {
                     const file = res[i]
-                    const oldPath = fromResolved + NodeFS.sep + `${file}`
-                    const newPath = to + NodeFS.sep + `${file}`
-                    if ((await NodeFS.stat(oldPath)).isDirectory)
-                        await NodeFS.rename(oldPath, newPath)
+                    const oldPath = fromResolved + FS.sep + `${file}`
+                    const newPath = to + FS.sep + `${file}`
+                    if ((await FS.stat(oldPath)).isDirectory)
+                        await FS.rename(oldPath, newPath)
                     else {
-                        await NodeFS.rename(oldPath, newPath)
+                        await FS.rename(oldPath, newPath)
                         await RegistryAPI.updateRegistry(oldPath, newPath)
                     }
                 }
-                await NodeFS.rm(fromResolved, {recursive: true, force: true})
+                await FS.rm(fromResolved, {recursive: true, force: true})
             } else if (stat !== undefined) {
-                await NodeFS.rename(fromResolved, to)
+                await FS.rename(fromResolved, to)
                 await RegistryAPI.updateRegistry(from, to)
             }
 

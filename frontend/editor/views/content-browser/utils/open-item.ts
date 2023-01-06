@@ -1,11 +1,11 @@
 import LevelController from "../../../lib/utils/LevelController";
-import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../../components/view/static/VIEWS";
 import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
-import NodeFS from "../../../../lib/FS/NodeFS";
+import FS from "../../../../lib/FS/FS";
 import AlertController from "../../../../components/alert/AlertController";
 
 const {shell} = window.require("electron")
@@ -21,7 +21,7 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case FILE_TYPES.COMPONENT:
             case ".js":
             case ".json":
-                shell.openPath(NodeFS.ASSETS_PATH + NodeFS.sep + data.id).catch()
+                shell.openPath(FS.ASSETS_PATH + FS.sep + data.id).catch()
                 AlertController.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
                 break
             case FILE_TYPES.PRIMITIVE:

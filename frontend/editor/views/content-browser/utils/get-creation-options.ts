@@ -4,13 +4,13 @@ import AssetAPI from "../../../lib/fs/AssetAPI";
 import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE";
 import TERRAIN_TEMPLATE from "../../../../../engine-core/static/templates/TERRAIN_TEMPLATE";
-import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
-import NodeFS from "../../../../lib/FS/NodeFS";
+import FS from "../../../../lib/FS/FS";
 
 export default function getCreationOptions(currentDirectory) {
     async function createFile(name, type, data) {
-        let path = await resolveFileName(currentDirectory.id + NodeFS.sep + name, type)
+        let path = await resolveFileName(currentDirectory.id + FS.sep + name, type)
         await AssetAPI.writeAsset(path, typeof data === "object" ? JSON.stringify(data) : data)
         await FilesStore.refreshFiles()
     }

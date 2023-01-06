@@ -1,13 +1,13 @@
 <script>
-    import TRANSFORMATION_TYPE from "../../../../static/TRANSFORMATION_TYPE.ts"
+    import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE.ts"
 
     import SettingsStore from "../../../stores/SettingsStore";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
     import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
     import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";
-    import GIZMOS from "../../../../static/GIZMOS.ts";
+    import GIZMOS from "../../../static/GIZMOS.ts";
     import ROTATION_GRID from "../static/ROTATION_GRID";
     import SCALE_GRID from "../static/SCALE_GRID";
     import TRANSLATION_GRID from "../static/TRANSLATION_GRID";

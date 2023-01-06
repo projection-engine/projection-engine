@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";

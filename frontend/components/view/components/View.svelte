@@ -6,7 +6,7 @@
     import ShaderEditor from "../../../editor/views/shader-editor/ShaderEditor.svelte";
     import Preferences from "../../../editor/views/preferences/Preferences.svelte";
     import UILayout from "../../../editor/views/ui/UIEditor.svelte";
-    import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts";
+    import VIEWPORT_TABS from "../../../editor/static/VIEWPORT_TABS.ts";
     import EditorLayout from "../../../editor/views/scene-editor/SceneEditor.svelte";
     import Metrics from "../../../editor/views/metrics/Metrics.svelte";
 

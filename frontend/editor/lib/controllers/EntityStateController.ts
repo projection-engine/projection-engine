@@ -11,7 +11,7 @@ import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
 import MaterialAPI from "../../../../engine-core/lib/rendering/MaterialAPI";
 import AlertController from "../../../components/alert/AlertController";
-import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 
 export default class EntityStateController {
     static #state = []
