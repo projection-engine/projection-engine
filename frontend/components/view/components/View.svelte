@@ -1,14 +1,14 @@
 <script lang="ts">
-    import Hierarchy from "../../../editor/views/hierarchy/Hierarchy.svelte";
-    import ContentBrowser from "../../../editor/views/content-browser/ContentBrowser.svelte";
-    import ComponentEditor from "../../../editor/views/inspector/Inspector.svelte";
+    import Hierarchy from "../../../views/editor/views/hierarchy/Hierarchy.svelte";
+    import ContentBrowser from "../../../views/editor/views/content-browser/ContentBrowser.svelte";
+    import ComponentEditor from "../../../views/editor/views/inspector/Inspector.svelte";
     import VIEWS from "../static/VIEWS";
-    import ShaderEditor from "../../../editor/views/shader-editor/ShaderEditor.svelte";
-    import Preferences from "../../../editor/views/preferences/Preferences.svelte";
-    import UILayout from "../../../editor/views/ui/UIEditor.svelte";
-    import VIEWPORT_TABS from "../../../editor/static/VIEWPORT_TABS.ts";
-    import EditorLayout from "../../../editor/views/scene-editor/SceneEditor.svelte";
-    import Metrics from "../../../editor/views/metrics/Metrics.svelte";
+    import ShaderEditor from "../../../views/editor/views/shader-editor/ShaderEditor.svelte";
+    import Preferences from "../../../views/editor/views/preferences/Preferences.svelte";
+    import UILayout from "../../../views/editor/views/ui/UIEditor.svelte";
+    import VIEWPORT_TABS from "../../../views/editor/static/VIEWPORT_TABS.ts";
+    import EditorLayout from "../../../views/editor/views/scene-editor/SceneEditor.svelte";
+    import Metrics from "../../../views/editor/views/metrics/Metrics.svelte";
 
     export let styles: string
     export let disabled: boolean

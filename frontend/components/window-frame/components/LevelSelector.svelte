@@ -1,6 +1,6 @@
 <script>
-    import LevelController from "../../../editor/lib/utils/LevelController";
-    import LOCALIZATION_EN from "../../../editor/static/LOCALIZATION_EN";
+    import LevelController from "../../../views/editor/lib/utils/LevelController";
+    import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
     import Icon from "../../icon/Icon.svelte";
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Dropdown from "../../dropdown/Dropdown.svelte";

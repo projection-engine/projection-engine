@@ -5,7 +5,7 @@ import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../engine-core/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
-import SettingsStore from "../frontend/editor/stores/SettingsStore";
+import SettingsStore from "../frontend/views/editor/stores/SettingsStore";
 import UIAPI from "../engine-core/lib/rendering/UIAPI";
 
 import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";

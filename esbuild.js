@@ -3,7 +3,6 @@ const sveltePreprocess = require('svelte-preprocess')
 const sveltePlugin = require('esbuild-svelte')
 const {copy} = require('esbuild-plugin-copy')
 
-
 const production = process.argv[2] === 'prod'
 let watch = false
 if (process.argv[2] === 'watch')
@@ -14,20 +13,46 @@ if (process.argv[2] === 'watch')
         }
     }
 
-const worker = (fileName, output) => ({
-    tsconfig: "tsconfig.json",
-    treeShaking: true,
-    platform: "browser",
-    entryPoints: [fileName],
-    bundle: true,
-    watch,
-    format: 'iife',
-    target: 'es6',
-    minify: production,
-    sourcemap: false,
-    outfile: output,
-    plugins: []
-})
+function worker(fileName, output) {
+    return {
+        tsconfig: "tsconfig.json",
+        treeShaking: true,
+        platform: "browser",
+        entryPoints: [fileName],
+        bundle: true,
+        watch,
+        format: 'iife',
+        target: 'es6',
+        minify: production,
+        sourcemap: false,
+        outfile: output,
+        plugins: []
+    }
+}
+
+function frontend(fileName, outputName) {
+    return {
+        tsconfig: "tsconfig.json",
+        treeShaking: true,
+        platform: "browser",
+        entryPoints: ['./frontend/views/' + fileName],
+        bundle: true,
+        watch,
+        format: 'iife',
+        target: 'es6',
+        minify: production,
+        sourcemap: false,
+        outfile: './build/' + outputName + ".js",
+
+        plugins: [
+            sveltePlugin({
+                preprocess: sveltePreprocess({typescript: {tsconfigFile: "tsconfig.json"}}),
+                filterWarnings: () => false
+            })
+        ],
+        loader: {".glsl": "text", ".frag": "text", ".vert": "text"}
+    }
+}
 
 const electron = {
     tsconfig: "tsconfig.json",
@@ -73,34 +98,14 @@ workers.forEach((worker, i) => {
         .then(() => console.log("SUCCESS - WORKER - " + i))
         .catch((err) => console.error(err))
 })
-
 esbuild.build(electron)
     .then(() => console.log("SUCCESS - BACKEND"))
     .catch((err) => console.error(err))
 
-
-esbuild.build({
-        tsconfig: "tsconfig.json",
-        treeShaking: true,
-        platform: "browser",
-        entryPoints: ['./frontend/index.ts'],
-        bundle: true,
-        watch,
-        format: 'iife',
-        target: 'es6',
-        minify: production,
-        sourcemap: false,
-        outfile: './build/frontend.js',
-
-        plugins: [
-            sveltePlugin({
-                preprocess: sveltePreprocess({typescript: {tsconfigFile: "tsconfig.json"}}),
-                filterWarnings: () => false
-            })
-        ],
-        loader: {".glsl": "text", ".frag": "text", ".vert": "text"}
-    }
-)
-    .then(() => console.log("SUCCESS - FRONTEND"))
+esbuild.build(frontend("projects/project-window.ts", "project-window"))
+    .then(() => console.log("SUCCESS - PROJECTS"))
+    .catch((err) => console.error(err))
+esbuild.build(frontend("editor/editor-window.ts", "editor-window"))
+    .then(() => console.log("SUCCESS - EDITOR"))
     .catch((err) => console.error(err))
 

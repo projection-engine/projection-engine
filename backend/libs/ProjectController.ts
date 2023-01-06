@@ -8,12 +8,19 @@ import AssimpLoader from "./assimp/AssimpLoader";
 import Events from "./Events";
 import contextMenuController from "../utils/context-menu-controller";
 import fileSystem from "../utils/file-system";
+import ROUTES from "../static/ROUTES";
 
 const {BrowserWindow, screen, ipcMain, webContents, dialog, Menu,} = require("electron")
 const fs = require("fs")
 const path = require("path");
 const RELATIVE_LOGO_PATH = "./APP_LOGO.png"
 const isDev = require("electron-is-dev")
+
+enum CurrentWindow {
+    EDITOR,
+    PROJECTS,
+    NONE
+}
 
 export default class ProjectController {
     static id?: string
@@ -25,6 +32,7 @@ export default class ProjectController {
     static window
     static metadata: MutableObject
     static preventAppClosing: boolean = false
+    static #currentWindow = CurrentWindow.NONE
 
     static async initialize() {
         const log = console.error
@@ -46,6 +54,27 @@ export default class ProjectController {
 
     }
 
+    static openEditorWindow() {
+        if (ProjectController.#currentWindow === CurrentWindow.EDITOR)
+            return
+        ProjectController.#currentWindow = CurrentWindow.EDITOR
+        ProjectController.window.loadFile(path.join(__dirname, './editor-window.html')).catch()
+        ProjectController.window.webContents.send(ROUTES.EDITOR_INITIALIZATION, ProjectController.pathToProject)
+
+        ProjectController.window.maximize()
+    }
+
+    static openProjectWindow() {
+        if (ProjectController.#currentWindow === CurrentWindow.PROJECTS)
+            return
+
+        const primaryDisplay = screen.getPrimaryDisplay()
+        const {width, height} = primaryDisplay.workAreaSize
+        ProjectController.#currentWindow = CurrentWindow.PROJECTS
+        ProjectController.window.loadFile(path.join(__dirname, './project-window.html')).catch()
+        ProjectController.window.setSize(width/2,height/2)
+    }
+
     static async openWindow() {
         if (ProjectController.window)
             return;
@@ -53,8 +82,8 @@ export default class ProjectController {
         const {width, height} = primaryDisplay.workAreaSize
 
         ProjectController.window = new BrowserWindow({
-            width: width/2,
-            height: height/2,
+            width: width / 2,
+            height: height / 2,
             darkTheme: true,
             autoHideMenuBar: true,
             webPreferences: {
@@ -74,13 +103,12 @@ export default class ProjectController {
         ProjectController.window.setMenu(null)
         ProjectController.window.on("ready-to-show", () => {
             ProjectController.window.show()
-            ProjectController.window.maximize()
         })
         if (isDev)
             // @ts-ignore
             ProjectController.window.openDevTools({mode: "detach"})
 
-        await ProjectController.window.loadFile(path.join(__dirname, './index.html'))
+        ProjectController.openProjectWindow()
     }
 
     static closeWindow(preventAppClosing: boolean) {
@@ -107,6 +135,7 @@ export default class ProjectController {
                 if (!exists)
                     delete ProjectController.registry[param[0]]
             })
-        await ProjectController.openWindow()
+        ProjectController.#currentWindow = undefined
+        ProjectController.openEditorWindow()
     }
 }

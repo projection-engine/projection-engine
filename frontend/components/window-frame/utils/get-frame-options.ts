@@ -1,6 +1,7 @@
-import WindowUtils from "../../../editor/lib/WindowUtils";
-
-export default function getFrameOptions(closeProject:Function, disabledSave:boolean) {
+import WindowUtils from "../../../views/editor/lib/WindowUtils";
+import ROUTES from "../../../../backend/static/ROUTES";
+const {ipcRenderer} = window.require("electron")
+export default function getFrameOptions( disabledSave:boolean) {
     return [
         {divider: true, label: "File"},
         {
@@ -31,7 +32,7 @@ export default function getFrameOptions(closeProject:Function, disabledSave:bool
         },
         {
             label: "Close project",
-            onClick: closeProject
+            onClick: () => ipcRenderer.send(ROUTES.CLOSE_EDITOR)
         },
     ]
 }

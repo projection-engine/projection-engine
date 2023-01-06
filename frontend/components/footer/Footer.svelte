@@ -1,11 +1,11 @@
 <script>
-    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
-    import ErrorLoggerAPI from "../../editor/lib/fs/ErrorLoggerAPI";
+    import LOCALIZATION_EN from "../../views/editor/static/LOCALIZATION_EN";
+    import ErrorLoggerAPI from "../../views/editor/lib/fs/ErrorLoggerAPI";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
     import ScriptsAPI from "../../../engine-core/lib/utils/ScriptsAPI";
     import UIAPI from "../../../engine-core/lib/rendering/UIAPI";
-    import FilesAPI from "../../editor/lib/fs/FilesAPI";
+    import FilesAPI from "../../views/editor/lib/fs/FilesAPI";
     import Icon from "../icon/Icon.svelte";
     import Dropdown from "../dropdown/Dropdown.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";

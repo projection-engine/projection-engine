@@ -23,11 +23,16 @@ export default class Events {
         ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, Events.loadProjectMetadata)
 
         ipcMain.on(ROUTES.READ_FILE, Events.readFile)
-        ipcMain.on(ROUTES.SET_PROJECT_CONTEXT, Events.setProjectContext)
+        ipcMain.on(ROUTES.SET_PROJECT_CONTEXT, (_, pathToProject) => {
+            ProjectController.prepareForUse(pathToProject).catch()
+        })
         ipcMain.on(ROUTES.FILE_DIALOG, Events.fileDialog)
         ipcMain.on(ROUTES.RESOLVE_NAME, Events.resolveName)
         ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)
 
+        ipcMain.on(ROUTES.CLOSE_EDITOR, () => {
+            ProjectController.openProjectWindow()
+        })
 
         ipcMain.on(ROUTES.CREATE_REG, Events.createRegistry)
         ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, Events.refreshContentBrowser)
@@ -56,10 +61,7 @@ export default class Events {
     static async readFile(event, {pathName, type, listenID}) {
         event.sender.send(ROUTES.READ_FILE + listenID, await readTypedFile(pathName, type))
     }
-    static setProjectContext(event, pathToProject) {
-        ProjectController.window.webContents.send(ROUTES.CAN_INITIALIZE_PROJECT)
-        ProjectController.prepareForUse(pathToProject).catch()
-    }
+
 
     static resolveName(event, {ext, path, listenID}) {
         event.sender.send(ROUTES.RESOLVE_NAME + listenID, resolveFileName(path, ext))

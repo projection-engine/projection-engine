@@ -1,4 +1,4 @@
-import SettingsStore from "../../../editor/stores/SettingsStore";
+import SettingsStore from "../../../views/editor/stores/SettingsStore";
 
 export default class ViewStateController {
     static states = {}

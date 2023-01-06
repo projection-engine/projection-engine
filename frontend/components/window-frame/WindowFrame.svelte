@@ -1,21 +1,20 @@
 <script>
-    import EngineStore from "../../editor/stores/EngineStore";
+    import EngineStore from "../../views/editor/stores/EngineStore";
     import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
-    import FilesStore from "../../editor/stores/FilesStore";
-    import LevelController from "../../editor/lib/utils/LevelController";
+    import LOCALIZATION_EN from "../../views/editor/static/LOCALIZATION_EN";
+    import FilesStore from "../../views/editor/stores/FilesStore";
+    import LevelController from "../../views/editor/lib/utils/LevelController";
     import getFrameOptions from "./utils/get-frame-options";
-    import SettingsStore from "../../editor/stores/SettingsStore";
+    import SettingsStore from "../../views/editor/stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";
     import CreationController from "./components/CreationController.svelte";
     import OtherSettings from "./GlobalOptions.svelte";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Icon from "../icon/Icon.svelte";
     import SingleSelectDropdown from "../dropdown/OptionDropdown.svelte";
-    import FALLBACK_VIEW from "../../editor/static/FALLBACK_VIEW";
-    import ChangesTrackerStore from "../../editor/stores/ChangesTrackerStore";
+    import FALLBACK_VIEW from "../../views/editor/static/FALLBACK_VIEW";
+    import ChangesTrackerStore from "../../views/editor/stores/ChangesTrackerStore";
 
-    export let closeProject
 
     let engine
     let store
@@ -52,7 +51,7 @@
         SettingsStore.updateStore(obj)
     }
 
-    $: options = getFrameOptions(closeProject,  engine.executingAnimation || !hasChanges)
+    $: options = getFrameOptions(  engine.executingAnimation || !hasChanges)
 </script>
 
 <div class="container">
