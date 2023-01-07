@@ -7,6 +7,7 @@
     import Portal from "../../../lib/Portal";
     import Icon from "../../../components/icon/Icon.svelte";
     import ToolTip from "../../../components/tooltip/ToolTip.svelte";
+    import ROUTES from "../../../../backend/static/ROUTES";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -33,7 +34,7 @@
 
         portal.create(modal, {backdropFilter: "blur(2px)"})
         document.addEventListener("mousedown", handler)
-        ipcRenderer.on("open-selection", (event, data) => {
+        ipcRenderer.on(ROUTES.OPEN_SELECTION, (event, data) => {
             if (data != null)
                 setBasePath(data)
             localStorage.setItem(STORAGE_KEYS.ROOT_PATH, data)
@@ -55,7 +56,7 @@
         <small style="font-size: .7rem">{basePath}</small>
         <button
                 class="settings-button"
-                on:click={() => ipcRenderer.send("open-selection")}
+                on:click={() => ipcRenderer.send(ROUTES.OPEN_SELECTION)}
         >
             <Icon styles="font-size: .9rem">settings</Icon>
             <ToolTip content={LOCALIZATION_EN.CHANGE_BASE_DIR}/>

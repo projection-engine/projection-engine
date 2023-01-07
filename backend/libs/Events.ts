@@ -27,6 +27,7 @@ export default class Events {
             ProjectController.prepareForUse(pathToProject).catch()
         })
         ipcMain.on(ROUTES.FILE_DIALOG, Events.fileDialog)
+        ipcMain.on(ROUTES.OPEN_SELECTION, Events.openSelection)
         ipcMain.on(ROUTES.RESOLVE_NAME, Events.resolveName)
         ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)
 
@@ -54,6 +55,12 @@ export default class Events {
         await ProjectController.prepareForUse(ProjectController.pathToProject)
     }
 
+    static async openSelection() {
+        const {canceled, filePaths} = await dialog.showOpenDialog({
+            properties: ['openDirectory']
+        })
+        ProjectController.window.webContents.send(ROUTES.OPEN_SELECTION, canceled ? null : filePaths[0])
+    }
 
 
     static async readFile(event, {pathName, type, listenID}) {

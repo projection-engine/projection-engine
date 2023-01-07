@@ -53,6 +53,7 @@
             hasBorder="true"
             placeholder={LOCALIZATION_EN.PROJECT_NAME}
             onEnter={create}
+            inputValue={input}
             width="100%"
             height={"30px"}
             directChange={v => input = v}
