@@ -1,6 +1,6 @@
 import COMPONENTS from "../../engine-core/static/COMPONENTS.js"
 import GPU from "../../engine-core/GPU";
-import SettingsStore from "../../frontend/editor/stores/SettingsStore";
+import SettingsStore from "../../frontend/views/editor/stores/SettingsStore";
 
 import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticFBO from "../../engine-core/lib/StaticFBO";

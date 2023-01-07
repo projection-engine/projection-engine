@@ -1,7 +1,7 @@
 <script>
-    import UndoRedoAPI from "../../../editor/lib/utils/UndoRedoAPI";
+    import UndoRedoAPI from "../../../views/editor/lib/utils/UndoRedoAPI";
     import {onMount} from "svelte";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import Icon from "../../icon/Icon.svelte";
     import ToolTip from "../../tooltip/ToolTip.svelte";

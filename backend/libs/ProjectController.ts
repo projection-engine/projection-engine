@@ -8,12 +8,19 @@ import AssimpLoader from "./assimp/AssimpLoader";
 import Events from "./Events";
 import contextMenuController from "../utils/context-menu-controller";
 import fileSystem from "../utils/file-system";
+import ROUTES from "../static/ROUTES";
 
-const {BrowserWindow, app, ipcMain, webContents, dialog, Menu,} = require("electron")
+const {BrowserWindow, screen, ipcMain, webContents, dialog, Menu,} = require("electron")
 const fs = require("fs")
 const path = require("path");
 const RELATIVE_LOGO_PATH = "./APP_LOGO.png"
 const isDev = require("electron-is-dev")
+
+enum CurrentWindow {
+    EDITOR,
+    PROJECTS,
+    NONE
+}
 
 export default class ProjectController {
     static id?: string
@@ -25,6 +32,7 @@ export default class ProjectController {
     static window
     static metadata: MutableObject
     static preventAppClosing: boolean = false
+    static #currentWindow = CurrentWindow.NONE
 
     static async initialize() {
         const log = console.error
@@ -46,12 +54,39 @@ export default class ProjectController {
 
     }
 
+    static openEditorWindow() {
+        if (ProjectController.#currentWindow === CurrentWindow.EDITOR)
+            return
+        ProjectController.#currentWindow = CurrentWindow.EDITOR
+        ProjectController.window.loadFile(path.join(__dirname, './editor-window.html'))
+            .then(() => {
+                ProjectController.window.webContents.send(ROUTES.EDITOR_INITIALIZATION, ProjectController.pathToProject)
+                ProjectController.window.maximize()
+            })
+            .catch()
+
+    }
+
+    static openProjectWindow() {
+        if (ProjectController.#currentWindow === CurrentWindow.PROJECTS)
+            return
+        ProjectController.window.unmaximize()
+        const primaryDisplay = screen.getPrimaryDisplay()
+        const {width, height} = primaryDisplay.workAreaSize
+        ProjectController.#currentWindow = CurrentWindow.PROJECTS
+        ProjectController.window.loadFile(path.join(__dirname, './project-window.html')).catch()
+        ProjectController.window.setSize(width / 2, height / 2)
+    }
+
     static async openWindow() {
         if (ProjectController.window)
             return;
+        const primaryDisplay = screen.getPrimaryDisplay()
+        const {width, height} = primaryDisplay.workAreaSize
+
         ProjectController.window = new BrowserWindow({
-            width: 600,
-            height: 600,
+            width: width / 2,
+            height: height / 2,
             darkTheme: true,
             autoHideMenuBar: true,
             webPreferences: {
@@ -69,13 +104,14 @@ export default class ProjectController {
 
         contextMenuController()
         ProjectController.window.setMenu(null)
-        ProjectController.window.on("ready-to-show", () => ProjectController.window.show())
-        if (isDev) { // @ts-ignore
+        ProjectController.window.on("ready-to-show", () => {
+            ProjectController.window.show()
+        })
+        if (isDev)
+            // @ts-ignore
             ProjectController.window.openDevTools({mode: "detach"})
-        }
 
-        await ProjectController.window.loadFile(path.join(__dirname, './index.html'))
-        ProjectController.window.webContents.send("project-identifier", ProjectController.pathToProject.replaceAll("\\", "\\\\"))
+        ProjectController.openProjectWindow()
     }
 
     static closeWindow(preventAppClosing: boolean) {
@@ -87,6 +123,7 @@ export default class ProjectController {
     }
 
     static async prepareForUse(pathTo: string) {
+
         ProjectController.pathToRegistry = pathTo + path.sep + FILE_TYPES.REGISTRY
         ProjectController.metadata = <MutableObject>await readTypedFile(pathTo + path.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "json") || {}
         ProjectController.registry = <{ [key: string]: RegistryFile }>await readTypedFile(ProjectController.pathToRegistry, "json") || {}
@@ -101,6 +138,7 @@ export default class ProjectController {
                 if (!exists)
                     delete ProjectController.registry[param[0]]
             })
-        await ProjectController.openWindow()
+        ProjectController.#currentWindow = undefined
+        ProjectController.openEditorWindow()
     }
 }

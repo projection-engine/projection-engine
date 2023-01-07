@@ -1,6 +1,7 @@
-import WindowUtils from "../../../editor/lib/WindowUtils";
-
-export default function getFrameOptions(openAbout:Function, disabledSave:boolean) {
+import WindowUtils from "../../../views/editor/lib/WindowUtils";
+import ROUTES from "../../../../backend/static/ROUTES";
+const {ipcRenderer} = window.require("electron")
+export default function getFrameOptions( disabledSave:boolean) {
     return [
         {divider: true, label: "File"},
         {
@@ -10,12 +11,7 @@ export default function getFrameOptions(openAbout:Function, disabledSave:boolean
             onClick: () => WindowUtils.callMethod("save")
         },
 
-        {divider: true, label: "Window"},
-        {
-            label: 'Reload project',
-            icon: "refresh",
-            onClick: () => WindowUtils.callMethod("reload")
-        },
+
         {divider: true, label: "Utils"},
 
         {
@@ -28,14 +24,15 @@ export default function getFrameOptions(openAbout:Function, disabledSave:boolean
             label: "Toggle footer",
             onClick: () => WindowUtils.callMethod("footer")
         },
-
-
-        {divider: true, label: "Help"},
-
+        {divider: true, label: "Other"},
         {
-            label: 'About',
-            icon: "info",
-            onClick: openAbout
-        }
+            label: 'Reload project',
+            icon: "refresh",
+            onClick: () => WindowUtils.callMethod("reload")
+        },
+        {
+            label: "Close project",
+            onClick: () => ipcRenderer.send(ROUTES.CLOSE_EDITOR)
+        },
     ]
 }

@@ -20,17 +20,24 @@ export default class Events {
     static initializeListeners() {
         ipcMain.on("reload", Events.reloadWindow)
         ipcMain.on(ROUTES.LOAD_LEVEL, Events.loadLevel)
-        ipcMain.on(ROUTES.OPEN_FULL, Events.openFull)
         ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, Events.loadProjectMetadata)
 
         ipcMain.on(ROUTES.READ_FILE, Events.readFile)
+        ipcMain.on(ROUTES.SET_PROJECT_CONTEXT, (_, pathToProject) => {
+            ProjectController.prepareForUse(pathToProject).catch()
+        })
         ipcMain.on(ROUTES.FILE_DIALOG, Events.fileDialog)
-        ipcMain.on("resolve-name", Events.resolveName)
-        ipcMain.on("update-registry", Events.updateRegistry)
+        ipcMain.on(ROUTES.OPEN_SELECTION, Events.openSelection)
+        ipcMain.on(ROUTES.RESOLVE_NAME, Events.resolveName)
+        ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)
 
-        ipcMain.on("create-registry", Events.createRegistry)
+        ipcMain.on(ROUTES.CLOSE_EDITOR, () => {
+            ProjectController.openProjectWindow()
+        })
+
+        ipcMain.on(ROUTES.CREATE_REG, Events.createRegistry)
         ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, Events.refreshContentBrowser)
-        ipcMain.on("read-registry", Events.readRegistry)
+        ipcMain.on(ROUTES.READ_REGISTRY, Events.readRegistry)
     }
 
     static async reloadWindow() {
@@ -45,27 +52,24 @@ export default class Events {
         })
         if (result.response !== 0)
             return;
-
-        ProjectController.closeWindow(true)
         await ProjectController.prepareForUse(ProjectController.pathToProject)
     }
 
-    static openFull() {
-        setTimeout(() => {
-            const primaryDisplay = screen.getPrimaryDisplay()
-            const {width, height} = primaryDisplay.workAreaSize
-            ProjectController.window.setSize(width / 2, height / 2)
-            ProjectController.window.maximize()
-            ProjectController.window.webContents.send(ROUTES.OPEN_FULL)
-        }, 250)
+    static async openSelection() {
+        const {canceled, filePaths} = await dialog.showOpenDialog({
+            properties: ['openDirectory']
+        })
+        ProjectController.window.webContents.send(ROUTES.OPEN_SELECTION, canceled ? null : filePaths[0])
     }
+
 
     static async readFile(event, {pathName, type, listenID}) {
         event.sender.send(ROUTES.READ_FILE + listenID, await readTypedFile(pathName, type))
     }
 
+
     static resolveName(event, {ext, path, listenID}) {
-        event.sender.send("resolve-name" + listenID, resolveFileName(path, ext))
+        event.sender.send(ROUTES.RESOLVE_NAME + listenID, resolveFileName(path, ext))
     }
 
     static async updateRegistry(event, {id, data}) {
@@ -75,7 +79,7 @@ export default class Events {
 
     static async createRegistry(event, data) {
         await createRegistryEntry(data.id, data.path)
-        event.sender.send("create-registry" + data.listenID)
+        event.sender.send(ROUTES.CREATE_REG + data.listenID)
     }
 
     static loadLevel(_, pathToLevel) {
@@ -117,6 +121,6 @@ export default class Events {
     }
 
     static readRegistry(event, {listenID}) {
-        event.sender.send("read-registry" + listenID, ProjectController.registry)
+        event.sender.send(ROUTES.READ_REGISTRY + listenID, ProjectController.registry)
     }
 }

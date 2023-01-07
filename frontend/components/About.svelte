@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte";
 
     import Portal from "../lib/Portal";
-    import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../views/editor/static/LOCALIZATION_EN";
 
     export let handleClose
     let content

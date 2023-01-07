@@ -107,7 +107,7 @@
     "skipLibCheck": true,
     /* Skip type checking all .d.ts files. */
     "typeRoots": [
-      "./frontend/global.d.ts",
+      "./global.d.ts",
       "node_modules/@types"
     ]
   },

@@ -1,11 +1,10 @@
 <script>
     import VIEWS from "../../view/static/VIEWS";
-    import SettingsStore from "../../../editor/stores/SettingsStore";
+    import SettingsStore from "../../../views/editor/stores/SettingsStore";
     import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Icon from "../../icon/Icon.svelte";
-    import ChangesTrackerStore from "../../../editor/stores/ChangesTrackerStore";
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)

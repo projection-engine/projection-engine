@@ -3,8 +3,8 @@
     import TabData from "../static/TabData";
     import ColorPicker from "../../color-picker/ColorPicker.svelte";
     import Icon from "../../icon/Icon.svelte";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-    import ViewTabItem from "../../../static/ViewTabItem";
+    import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
+    import ViewTabItem from "../../../views/editor/static/ViewTabItem";
 
     export let handler: Function
     export let removeTab: Function

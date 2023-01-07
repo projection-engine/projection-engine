@@ -1,9 +1,9 @@
 <script>
-    import EngineStore from "../../../editor/stores/EngineStore";
+    import EngineStore from "../../../views/editor/stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import GPU from "../../../../engine-core/GPU";
     import Engine from "../../../../engine-core/Engine";
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
     import ToolTip from "../../tooltip/ToolTip.svelte";
 
     let engine

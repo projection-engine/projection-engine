@@ -3,7 +3,7 @@
     import Option from "./Option.svelte";
     import EmbeddedMeshes from "../../../../engine-core/templates/EmbeddedMeshes";
     import VirtualList from '@sveltejs/svelte-virtual-list';
-    import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
     import Icon from "../../icon/Icon.svelte";
     import Input from "../../input/Input.svelte";
 
