@@ -27,6 +27,7 @@
     import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
     import GPU from "../../../../../engine-core/GPU";
     import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
+    import {quat} from "gl-matrix";
 
     export let viewMetadata
 
@@ -40,8 +41,14 @@
                 previousMetadata.cameraMetadata.prevY = CameraTracker.yRotation
             }
 
-            if (!viewMetadata.cameraMetadata)
-                CameraAPI.toOrigin()
+            if (!viewMetadata.cameraMetadata) {
+                const pitch = quat.fromEuler([], -45, 0, 0)
+                const yaw = quat.fromEuler([], 0, 45, 0)
+                const toRad = Math.PI/180
+                CameraAPI.update([5, 10, 5], quat.multiply([], yaw, pitch))
+                CameraTracker.xRotation = 45 * toRad
+                CameraTracker.yRotation = -45* toRad
+            }
             else {
                 CameraAPI.restoreState(viewMetadata.cameraMetadata)
                 CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX

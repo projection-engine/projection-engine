@@ -9,6 +9,8 @@
     import refreshProjects from "./utils/refresh-projects";
     import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
     import ROUTES from "../../../backend/static/ROUTES";
+    import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
+    import Alert from "../../components/alert/Alert.svelte";
 
 
     const pathLib = window.require("path")
@@ -58,6 +60,8 @@
 
 </script>
 
+<ContextMenu/>
+<Alert/>
 <div class="wrapper">
         <Header
 

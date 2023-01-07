@@ -17,6 +17,9 @@
     import Canvas from "./views/scene-editor/Canvas.svelte";
     import ROUTES from "../../../backend/static/ROUTES";
     import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
+    import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
+    import Alert from "../../components/alert/Alert.svelte";
+    import FilesStore from "./stores/FilesStore";
 
     const {ipcRenderer} = window.require("electron")
     const FALLBACK = {...FALLBACK_VIEW}
@@ -34,13 +37,14 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onMount(() => {
-        ipcRenderer.once(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
+        ipcRenderer.on(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
             sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
             WindowUtils.openAbout = () => aboutModalIsOpen = true
             FS.initialize(pathToProject)
             FilesAPI.initializeFolders().catch()
             LevelController.initialize().then(_ => isMetadataReady = true).catch()
             HotKeysController.initializeListener()
+            FilesStore.initializeContentBrowser()
         })
         ipcRenderer.on("console", (_, data) => console.error(...data))
     })
@@ -50,9 +54,13 @@
         unsubscribeEngine()
     })
 </script>
-
-<Canvas initializeEditor={() => isContextInitialized = true}/>
+<ContextMenu/>
+<Alert/>
+{#if isMetadataReady}
+    <Canvas initializeEditor={() => isContextInitialized = true}/>
+{/if}
 {#if isMetadataReady && isContextInitialized}
+
     <WindowFrame/>
     <div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
         <div class="middle">

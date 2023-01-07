@@ -10,7 +10,7 @@ const fs = window.require("fs")
 export default class FS {
     static sep:string = <string>pathRequire.sep
     static path?:string
-    static temp?:string
+    static TEMP?:string
     static PREVIEW_PATH?:string
     static rootDir = os.homedir()
     static ASSETS_PATH?:string
@@ -20,9 +20,16 @@ export default class FS {
             return
         FS.#initialized = true
         FS.path = pathRequire.resolve(path.replace(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "") + FS.sep)
-        FS.temp = pathRequire.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.TEMP + FS.sep)
+        FS.TEMP = pathRequire.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.TEMP + FS.sep)
         FS.PREVIEW_PATH = pathRequire.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep)
         FS.ASSETS_PATH = pathRequire.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + FS.sep)
+        if(!FS.exists(FS.ASSETS_PATH))
+            FS.mkdir(FS.ASSETS_PATH).catch()
+        if(!FS.exists(FS.PREVIEW_PATH))
+            FS.mkdir(FS.PREVIEW_PATH).catch()
+        if(!FS.exists(FS.TEMP))
+            FS.mkdir(FS.TEMP).catch()
+
     }
 
     static resolvePath(path:string):string {

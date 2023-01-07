@@ -125,7 +125,7 @@
         canvasAPI={canvas}
         openSourceCode={async () => {
                 const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
-                const newFile = FS.temp + FS.sep + openFile.registryID + ".log"
+                const newFile = FS.TEMP + FS.sep + openFile.registryID + ".log"
                 await FilesAPI.writeFile(newFile, shader, true)
                 shell.openPath(newFile).catch()
             }}

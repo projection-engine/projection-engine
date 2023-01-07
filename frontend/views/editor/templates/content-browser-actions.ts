@@ -135,6 +135,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
                 label: "Open current directory on explorer",
                 icon: "open_in_new",
                 onClick: () => shell.showItemInFolder(FS.resolvePath(FS.ASSETS_PATH + FS.sep + currentDirectory.id))
+
             },
             {divider: true},
 

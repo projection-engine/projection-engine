@@ -31,12 +31,11 @@
             AssetAPI.readMetadata,
             true
         ).then(async () => {
-                await EngineTools.initialize().catch()
-                await LevelController.loadLevel().catch()
-                done = true
-                EngineStore.updateStore({...engine, viewportInitialized: true})
-                initializeEditor()
-            })
+            await EngineTools.initialize().catch()
+            await LevelController.loadLevel().catch()
+            initializeEditor()
+            done = true
+        })
     })
 
     onDestroy(() => {

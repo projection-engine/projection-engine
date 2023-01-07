@@ -4,16 +4,15 @@ import ROUTES from "../../../../../backend/static/ROUTES";
 import FS from "../../../../lib/FS/FS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 
-
 const pathRequire = window.require("path")
-
 const {ipcRenderer} = window.require("electron")
+
 export default class FilesAPI {
     static sep = pathRequire.sep
     static registry = []
 
     static async initializeFolders(): Promise<void> {
-        await FS.mkdir(FS.temp)
+        await FS.mkdir(FS.TEMP)
         if (FS.exists(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS)) await FS.mkdir(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS)
         if (FS.exists(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)) await FS.mkdir(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)
         if (FS.exists(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)) await FS.mkdir(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.REGISTRY)

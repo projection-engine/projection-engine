@@ -49,7 +49,6 @@
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
 
     onMount(() => {
-        FilesStore.initializeContentBrowser()
         GlobalContentBrowserController.subscribe(internalID, newDir => {
             navigationHistory.updateCurrentDirectory({id: newDir}, currentDirectory)
         })

@@ -58,21 +58,24 @@ export default class ProjectController {
         if (ProjectController.#currentWindow === CurrentWindow.EDITOR)
             return
         ProjectController.#currentWindow = CurrentWindow.EDITOR
-        ProjectController.window.loadFile(path.join(__dirname, './editor-window.html')).catch()
-        ProjectController.window.webContents.send(ROUTES.EDITOR_INITIALIZATION, ProjectController.pathToProject)
+        ProjectController.window.loadFile(path.join(__dirname, './editor-window.html'))
+            .then(() => {
+                ProjectController.window.webContents.send(ROUTES.EDITOR_INITIALIZATION, ProjectController.pathToProject)
+                ProjectController.window.maximize()
+            })
+            .catch()
 
-        ProjectController.window.maximize()
     }
 
     static openProjectWindow() {
         if (ProjectController.#currentWindow === CurrentWindow.PROJECTS)
             return
-
+        ProjectController.window.unmaximize()
         const primaryDisplay = screen.getPrimaryDisplay()
         const {width, height} = primaryDisplay.workAreaSize
         ProjectController.#currentWindow = CurrentWindow.PROJECTS
         ProjectController.window.loadFile(path.join(__dirname, './project-window.html')).catch()
-        ProjectController.window.setSize(width/2,height/2)
+        ProjectController.window.setSize(width / 2, height / 2)
     }
 
     static async openWindow() {
