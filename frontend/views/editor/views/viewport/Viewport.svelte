@@ -14,7 +14,6 @@
     import getViewIcon from "../../../../components/view/utils/get-view-icon";
     import TabsStore from "../../stores/TabsStore";
     import GPU from "../../../../../engine-core/GPU";
-    import Canvas from "../scene-editor/Canvas.svelte";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
 
     const {ipcRenderer} = window.require("electron")

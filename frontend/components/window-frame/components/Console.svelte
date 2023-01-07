@@ -2,7 +2,7 @@
     import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI";
-    import {v4} from "uuid";
+
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import ToolTip from "../../tooltip/ToolTip.svelte";
     import Icon from "../../icon/Icon.svelte";
@@ -10,7 +10,7 @@
     import Portal from "../../../lib/Portal";
 
     export let engine
-    const internalID = v4()
+    const internalID = crypto.randomUUID()
     const TYPES = ConsoleAPI.TYPES
     const portal = new Portal(999)
 

@@ -9,10 +9,10 @@
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
     import EntityInspector from "./components/engine/EntityInspector.svelte";
     import AddComponent from "./components/engine/AddComponent.svelte";
-    import {v4} from "uuid";
+
     import Icon from "../../../../components/icon/Icon.svelte";
 
-    const internalID = v4()
+    const internalID = crypto.randomUUID()
     let ui = {}
     let parent
 

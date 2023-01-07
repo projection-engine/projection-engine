@@ -5,7 +5,6 @@ import createRegistryEntry from "../../utils/create-registry-entry";
 import ProjectController from "../ProjectController";
 import buildPrimitive from "./utils/build-primitive";
 import buildNode from "./utils/build-node";
-import {v4} from "uuid";
 import DataController from "./instances/DataController";
 import linkNodeToStructure from "./utils/link-node-to-structure";
 import FILE_TYPES from "../../../static/objects/FILE_TYPES";
@@ -34,7 +33,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 
     try {
         if (fs.existsSync(basePath))
-            basePath += v4()
+            basePath +=crypto.randomUUID()
 
         await fs.promises.mkdir(basePath)
         if (file.images && file.images.length > 0)
@@ -66,7 +65,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
         if (file.images)
             for (let i = 0; i < file.images.length; i++) {
                 try {
-                    const ID = v4()
+                    const ID = crypto.randomUUID()
                     const data = file.images[i]
                     textureMap[ID] = await buildImage(resourceRoot, data, ID)
                     images[i] = ID
@@ -93,7 +92,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
             primitives[i] = []
             for (let j = 0; j < data.primitives.length; j++) {
                 const primitive = data.primitives[j]
-                const ID = v4()
+                const ID = crypto.randomUUID()
                 const primitiveData = await buildPrimitive(materials, data.name, j, primitive, accessors)
                 const name = "mesh-" + i + "-primitive-" + j
                 const pathToAsset = basePath + path.sep + "primitives" + path.sep + name + FILE_TYPES.PRIMITIVE
@@ -120,7 +119,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 
         const pathToAsset = basePath + path.sep + scene.name + FILE_TYPES.COLLECTION
         await fs.promises.writeFile(pathToAsset, JSON.stringify(scene))
-        await createRegistryEntry(v4(), pathToAsset.replace(ProjectController.pathToAssets, ""))
+        await createRegistryEntry(crypto.randomUUID(), pathToAsset.replace(ProjectController.pathToAssets, ""))
     } catch (error) {
         console.error(error)
     }

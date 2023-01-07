@@ -1,8 +1,8 @@
 <script>
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
-    import {v4} from "uuid"
-    import EngineHierarchyView from "./components/View.svelte";
+
+    import EngineHierarchyView from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
@@ -19,10 +19,8 @@
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../components/input/Input.svelte";
 
-    export let switchView = undefined
-    export let orientation = undefined
     let search = ""
-    const ID = v4()
+    const ID =crypto.randomUUID()
 
     let filteredComponent = undefined
     let isEmpty = true

@@ -5,7 +5,7 @@
     import SideBar from "./components/SideBar.svelte";
     import Browser from "./components/Browser.svelte";
     import Header from "./components/Header.svelte";
-    import {v4} from "uuid";
+
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
     import ViewStateController from "../../../../components/view/libs/ViewStateController";
     import ITEM_TYPES from "./templates/ITEM_TYPES";
@@ -18,7 +18,7 @@
     export let viewIndex
     export let groupIndex
 
-    const internalID = v4()
+    const internalID =crypto.randomUUID()
     let store = {}
     let viewType = ITEM_TYPES.ROW
     const unsubscribeStore = FilesStore.getStore(v => {

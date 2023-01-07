@@ -1,9 +1,10 @@
 import FilesAPI from "../../fs/FilesAPI";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-renderer-entities";
+
 import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
 import Entity from "../../../../../../engine-core/instances/Entity";
 import FS from "../../../../../lib/FS/FS";
 import TerrainComponent from "../../../../../../engine-core/templates/components/TerrainComponent";
+import EntityManager from "../../EntityManager";
 
 export default async function loadTerrain(reg) {
     const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + reg.path, "json")
@@ -17,5 +18,5 @@ export default async function loadTerrain(reg) {
     const comp = entity.addComponent<TerrainComponent>(COMPONENTS.TERRAIN)
     comp.terrainID = reg.id
 
-    dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: entity})
+    EntityManager.add(entity)
 }

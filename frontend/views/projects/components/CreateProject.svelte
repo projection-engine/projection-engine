@@ -1,6 +1,5 @@
 <script lang="ts">
 
-    import {v4} from "uuid";
     import ProjectMetadata from "../static/ProjectMetadata";
     import FS from "../../../lib/FS/FS";
     import LOCALIZATION_EN from "../../editor/static/LOCALIZATION_EN";
@@ -16,7 +15,7 @@
     let input
 
     const create = async (name: string) => {
-        const projectID = v4()
+        const projectID = crypto.randomUUID()
         const projectPath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + projectID
         if (!FS.exists(FS.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH)))) {
             AlertController.error("Directory not found, creating on root directory.")

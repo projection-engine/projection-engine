@@ -1,5 +1,5 @@
 <script lang="ts">
-    import DraggableEntity from "./Draggable.svelte";
+    import DraggableEntity from "./EntityDraggable.svelte";
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import EntityConstructor from "../../../lib/controllers/EntityConstructor";
     import Icon from "../../../../../components/icon/Icon.svelte";

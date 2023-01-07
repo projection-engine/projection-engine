@@ -1,4 +1,3 @@
-import EngineStore from "../stores/EngineStore";
 import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import GIZMOS from "../static/GIZMOS";
@@ -7,11 +6,9 @@ import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 
 import selectEntityHierarchy from "../utils/select-entity-hierarchy";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../stores/dispatch-renderer-entities";
 import snap from "../utils/snap";
 import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
-import {v4} from "uuid";
 import CAMERA_ROTATIONS from "../../../../engine-tools/static/CAMERA_ROTATIONS";
 import LevelController from "../lib/utils/LevelController";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
@@ -19,6 +16,8 @@ import Engine from "../../../../engine-core/Engine";
 import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
 import focusOnCamera from "../utils/focus-on-camera";
 import ContextMenuOption from "../../../lib/context-menu/templates/ContextMenuOptions";
+import HierarchyController from "../views/hierarchy/lib/HierarchyController";
+import EntityManager from "../lib/EntityManager";
 
 
 export default function viewportHotkeys(settings): { [key: string]: ContextMenuOption } {
@@ -32,10 +31,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
                     return
                 const entity = QueryAPI.getEntityByID(t)
                 if (entity)
-                    dispatchRendererEntities({
-                        type: ENTITY_ACTIONS.ADD,
-                        payload: entity.clone()
-                    })
+                    EntityManager.add(entity.clone())
             },
             require: settings.viewportHotkeys.DUPLICATE,
         },
@@ -92,7 +88,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
                 const selected = SelectionStore.engineSelected
                 for (let i = 0; i < selected.length; i++)
                     EntityConstructor.toggleEntityVisibility(Engine.entitiesMap.get(selected[i]), false)
-                EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+                HierarchyController.updateHierarchy()
             },
             require: settings.viewportHotkeys.HIDE_ACTIVE,
         },

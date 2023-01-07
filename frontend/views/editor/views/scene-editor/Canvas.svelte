@@ -10,6 +10,7 @@
     import Engine from "../../../../../engine-core/Engine";
     import EngineTools from "../../../../../engine-tools/EngineTools";
     import LevelController from "../../lib/utils/LevelController";
+
     export let initializeEditor
 
     let canvasRef

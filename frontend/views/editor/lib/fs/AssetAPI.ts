@@ -1,4 +1,3 @@
-import {v4} from "uuid";
 import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
 import FS from "../../../../lib/FS/FS";
@@ -15,7 +14,7 @@ export default class AssetAPI {
 
 
     static async writeAsset(path, fileData, previewImage?:boolean, registryID?:string) {
-        const fileID = registryID !== undefined ? registryID : v4()
+        const fileID = registryID !== undefined ? registryID : crypto.randomUUID()
         await FS.write(FS.resolvePath(FS.ASSETS_PATH + FS.sep + path), fileData)
         if (previewImage)
             await FS.write(FS.resolvePath(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + registryID + ".preview"), previewImage)

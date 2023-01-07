@@ -1,8 +1,8 @@
-import EngineStore from "../../stores/EngineStore";
 import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
-import {v4} from "uuid";
+
 import SelectionStore from "../../stores/SelectionStore";
 import Entity from "../../../../../engine-core/instances/Entity";
+import HierarchyController from "../../views/hierarchy/lib/HierarchyController";
 
 export default class EntityNameController {
     static byName = new Map<string, string>()
@@ -15,7 +15,7 @@ export default class EntityNameController {
         if (validName) {
             entity.name = newName
             EntityNameController.byName.set(newName, entity.id)
-            EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+            HierarchyController.updateHierarchy()
             SelectionStore.updateStore()
         } else{
             {

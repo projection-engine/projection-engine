@@ -1,4 +1,3 @@
-import {v4} from "uuid";
 import FILE_TYPES from "../../static/objects/FILE_TYPES";
 import TEXTURE_TEMPLATE from "../../engine-core/static/TEXTURE_TEMPLATE";
 import ProjectController from "../libs/ProjectController";
@@ -20,7 +19,7 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
             const filePath = filesToLoad[i]
             const name = filePath.split(pathRequire.sep).pop()
             const newRoot = targetDir + pathRequire.sep + name.split(".")[0]
-            const fileID = v4()
+            const fileID =crypto.randomUUID()
             const type = filePath.split(/\.([a-zA-Z0-9]+)$/)[1]
             switch (type) {
                 case "png":

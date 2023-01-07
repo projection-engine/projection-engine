@@ -10,10 +10,13 @@
     import Icon from "../../../../../components/icon/Icon.svelte";
     import SettingsStore from "../../../stores/SettingsStore";
     import CameraTracker from "../../../../../../engine-tools/lib/CameraTracker";
+    import {onDestroy, onMount} from "svelte";
+    import HierarchyController from "../../hierarchy/lib/HierarchyController";
 
     export let engine
     export let settings
-
+    const internalID = crypto.randomUUID()
+    let cameras = []
     let cameraIsOrtho = false
     const toggleProjection = () => {
         const negated = !CameraAPI.isOrthographic
@@ -21,7 +24,15 @@
         CameraAPI.updateProjection()
         cameraIsOrtho = negated
     }
-    $: cameras = engine.changeID ? Engine.entities.filter(entity => entity.cameraComponent != null) : []
+    onMount(() => {
+        HierarchyController.registerListener(internalID, () => {
+            cameras = Engine.entities.filter(entity => entity.cameraComponent != null)
+        })
+    })
+    onDestroy(() => {
+        HierarchyController.removeListener(internalID)
+    })
+
     $: CameraTracker.screenSpaceMovement = settings.screenSpaceMovement
 </script>
 

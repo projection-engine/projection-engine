@@ -4,7 +4,7 @@
     import {onDestroy, onMount} from "svelte";
     import BenchmarkAPI from "../../../../../engine-core/lib/utils/BenchmarkAPI";
     import Engine from "../../../../../engine-core/Engine";
-    import {v4} from "uuid";
+
     import BENCHMARK_KEYS from "../../../../../engine-core/static/BENCHMARK_KEYS";
     import ViewStateController from "../../../../components/view/libs/ViewStateController";
     import SettingsStore from "../../stores/SettingsStore";
@@ -21,7 +21,7 @@
     let isSampling = false
     let interval
     let toShow = []
-    const loadingBarID = v4()
+    const loadingBarID = crypto.randomUUID()
     let wasInitialized
 
     onMount(() => {

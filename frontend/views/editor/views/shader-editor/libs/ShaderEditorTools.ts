@@ -4,7 +4,7 @@ import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import getNewInstance from "../utils/get-new-instance";
 import TextureSample from "../templates/nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
-import {v4} from "uuid";
+
 import AlertController from "../../../../../components/alert/AlertController";
 import Canvas from "./Canvas";
 import type ShaderNode from "../templates/ShaderNode";
@@ -48,7 +48,7 @@ export default class ShaderEditorTools {
 
     static paste(canvasAPI: Canvas) {
         ShaderEditorTools.copied.forEach(d => {
-            canvasAPI.nodes.push(ShaderEditorTools.parseNode({...d, id: v4()}))
+            canvasAPI.nodes.push(ShaderEditorTools.parseNode({...d, id: crypto.randomUUID()}))
         })
         canvasAPI.clear()
     }

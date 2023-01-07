@@ -7,7 +7,7 @@ import componentConstructor from "../../utils/component-constructor";
 
 import EngineStore from "../../stores/EngineStore";
 import SelectionStore from "../../stores/SelectionStore";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
+
 import SettingsStore from "../../stores/SettingsStore";
 import VisualsStore from "../../stores/VisualsStore";
 import SETTINGS from "../../static/SETTINGS";
@@ -26,6 +26,7 @@ import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import AlertController from "../../../../components/alert/AlertController";
 import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
 import MutableObject from "../../../../../engine-core/MutableObject";
+import EntityManager from "../EntityManager";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -132,7 +133,7 @@ export default class LevelController {
                     }
                     mapped.push(entity)
                 }
-                dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+                EntityManager.appendBlock(mapped, true)
             })
 
         ipcRenderer.send(IPC, pathToLevel)

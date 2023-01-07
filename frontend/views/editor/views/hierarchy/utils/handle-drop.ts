@@ -1,9 +1,8 @@
 import EntityAPI from "../../../../../../engine-core/lib/utils/EntityAPI";
 import SelectionStore from "../../../stores/SelectionStore";
-import EngineStore from "../../../stores/EngineStore";
-import {v4} from "uuid";
+
 import HierarchyController from "../lib/HierarchyController";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../stores/dispatch-renderer-entities";
+import EntityManager from "../../../lib/EntityManager";
 
 export default function handleDrop(event, entityDragged, node) {
 
@@ -23,10 +22,9 @@ export default function handleDrop(event, entityDragged, node) {
     }
 
     if(toAdd.length > 0)
-        dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: toAdd})
+        EntityManager.appendBlock(toAdd, false)
     else {
         SelectionStore.engineSelected = newSelection
         HierarchyController.updateHierarchy()
-        EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
     }
 }
