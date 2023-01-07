@@ -172,7 +172,6 @@
     .dropdown {
         height: 25px;
         width: 100%;
-        border: none;
     }
 
     .reset-button {
