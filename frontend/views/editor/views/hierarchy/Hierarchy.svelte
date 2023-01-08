@@ -67,9 +67,7 @@
 
 <ViewHeader>
     <button
-            on:click={() => {
-                openTree = {...openTree, ...HierarchyController.openTree()}
-            }}
+            on:click={() => HierarchyController.updateHierarchy()}
             data-view-header-button="-"
     >
         <ToolTip content={LOCALIZATION_EN.SHOW_MAIN_ENTITY}/>
@@ -126,7 +124,10 @@
 >
     <EngineHierarchyView
             openTree={openTree}
-            setOpenTree={v => openTree = v}
+            setOpenTree={v => {
+                openTree = v
+                HierarchyController.updateHierarchy()
+            }}
             setIsEmpty={v => isEmpty = v}
             inputValue={search}
             filteredComponent={filteredComponent}
@@ -137,21 +138,6 @@
 
 
 <style>
-    .dropdown {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-    }
-
-    .button {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
     .wrapper {
         position: relative;
         width: 100%;
@@ -160,15 +146,5 @@
         height: 100%;
         max-height: 100%;
 
-    }
-
-    .button {
-        padding: 0;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
     }
 </style>

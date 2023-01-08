@@ -42,7 +42,7 @@ export default class EntityManager {
             entity.pickID = getPickerId(i + AXIS.ZY + 1)
             if (!entity.parentCache && !replacedMap?.[entity.parent?.id])
                 continue
-            if (!replacedMap?.[entity.parent?.id])
+            if (entity.parent && !replacedMap?.[entity.parent?.id])
                 entity.parentCache = entity.parent.id
             const parent = QueryAPI.getEntityByID(entity.parentCache)
             if (parent) {

@@ -6,10 +6,11 @@ import type ShaderLink from "../../templates/ShaderLink";
 import type ShaderNode from "../../templates/ShaderNode";
 import MaterialAsset from "../../static/MaterialAsset";
 import MaterialUniform from "../../../../../../../engine-core/templates/MaterialUniform";
+import Material from "../../templates/nodes/Material";
 
 export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<[MaterialAsset, string] | undefined> {
     const nodes = n.map(nn => cloneClass<ShaderNode>(nn))
-    const startPoint = nodes.find(n => n.type === NODE_TYPES.OUTPUT)
+    const startPoint = <Material>nodes.find(n => n.type === NODE_TYPES.OUTPUT)
 
     const executionSignature = {signature: ""}
     if (!startPoint) return
@@ -29,6 +30,7 @@ export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[
     template.settings.doubleSided = startPoint.doubleSided
     template.settings.isAlphaTested = startPoint.alphaTested
     template.settings.ssrEnabled = startPoint.ssrEnabled
+    template.settings.flatShading = startPoint.flatShading
 
     template.uniforms = uniforms
     template.executionSignature = executionSignature.signature
