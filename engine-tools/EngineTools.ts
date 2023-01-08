@@ -16,6 +16,7 @@ import StaticEditorMeshes from "./lib/StaticEditorMeshes";
 import StaticEditorShaders from "./lib/StaticEditorShaders";
 import StaticShaders from "../engine-core/lib/StaticShaders";
 import Shader from "../engine-core/instances/Shader";
+import StaticFBO from "../engine-core/lib/StaticFBO";
 
 
 let settings
@@ -83,7 +84,9 @@ export default class EngineTools {
     static afterDrawing() {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
+        SelectedSystem.drawToBuffer(selected)
 
+        StaticFBO.postProcessing2.startMapping(true)
         GPU.context.disable(GPU.context.CULL_FACE)
         GPU.context.disable(GPU.context.DEPTH_TEST)
         if (settings.showGrid)
@@ -93,8 +96,8 @@ export default class EngineTools {
         IconsSystem.drawIcons(settings)
         GPU.context.enable(GPU.context.DEPTH_TEST)
         GPU.context.clear(GPU.context.DEPTH_BUFFER_BIT)
-
         GizmoSystem.execute()
         GPU.context.enable(GPU.context.CULL_FACE)
+        StaticFBO.postProcessing2.stopMapping()
     }
 }

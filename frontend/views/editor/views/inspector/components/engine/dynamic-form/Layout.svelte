@@ -19,12 +19,16 @@
     }
 </script>
 
-<div data-inline="-" class="title-wrapper">
-    <strong>{title}</strong>
-    <button class="button" on:click={() => removeComponent(entity, index, key)}>
-        <Icon>delete_forever</Icon>
-    </button>
-</div>
+{#if title}
+    <div data-inline="-" class="title-wrapper">
+        <strong>{title}</strong>
+        {#if entity}
+            <button class="button" on:click={() => removeComponent(entity, index, key)}>
+                <Icon>delete_forever</Icon>
+            </button>
+        {/if}
+    </div>
+{/if}
 {#if Array.isArray(component.props)}
     {#each component.props as propAttr}
         {#if propAttr.type === Component.propTypes.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}

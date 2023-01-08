@@ -17,23 +17,16 @@
     export let settings
     const internalID = crypto.randomUUID()
     let cameras = []
-    let cameraIsOrtho = false
-    const toggleProjection = () => {
-        const negated = !CameraAPI.isOrthographic
-        CameraAPI.isOrthographic = negated
-        CameraAPI.updateProjection()
-        cameraIsOrtho = negated
-    }
+
+    const toggleProjection = () => SettingsStore.updateStore({...settings, camera: {...settings.camera, ortho: !settings.camera.ortho}})
+
     onMount(() => {
         HierarchyController.registerListener(internalID, () => {
             cameras = Engine.entities.filter(entity => entity.cameraComponent != null)
         })
     })
-    onDestroy(() => {
-        HierarchyController.removeListener(internalID)
-    })
+    onDestroy(() => HierarchyController.removeListener(internalID))
 
-    $: CameraTracker.screenSpaceMovement = settings.screenSpaceMovement
 </script>
 
 
@@ -66,7 +59,7 @@
     </Dropdown>
     <button disabled={engine.focusedCamera} class="button viewport" on:click={toggleProjection}>
         <ToolTip content={LOCALIZATION_EN.SWITCH_PROJECTION}/>
-        {#if !cameraIsOrtho}
+        {#if !settings.camera.ortho}
             <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
                 <Icon styles="transform: rotateX(45deg)">grid_on</Icon>
             </div>

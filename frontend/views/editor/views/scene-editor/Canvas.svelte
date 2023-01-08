@@ -1,7 +1,7 @@
 <script>
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
-    import updateRenderer from "../viewport/utils/update-renderer";
+    import updateRenderer from "./utils/update-renderer";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
     import SelectionStore from "../../stores/SelectionStore";

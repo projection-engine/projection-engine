@@ -55,7 +55,7 @@
       {:else if tab === 3}
 
           <strong>{LOCALIZATION_EN.CAMERA}</strong>
-          <CameraSettings/>
+          <CameraSettings settings={settings}/>
 
       {:else if tab === 4}
 

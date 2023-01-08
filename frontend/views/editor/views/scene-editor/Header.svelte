@@ -34,8 +34,8 @@
         <button slot="button" data-view-header-dropdown="-">
             {LOCALIZATION_EN.CAMERA}
         </button>
-        <div style="padding: 8px 4px">
-            <CameraSettings/>
+        <div style="padding: 8px 4px; max-height: 40vh; overflow-y: auto; overflow-x: hidden">
+            <CameraSettings settings={settings}/>
         </div>
     </Dropdown>
 

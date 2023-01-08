@@ -1,10 +1,6 @@
 import AA_METHODS from "../../../../engine-core/static/AA_METHODS";
 
 export default {
-    gamma: 2.2,
-    exposure: 1,
-
-    mbVelocityScale: 1,
     AAMethod: AA_METHODS.DISABLED,
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,

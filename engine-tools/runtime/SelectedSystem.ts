@@ -8,7 +8,7 @@ import StaticEditorShaders from "../lib/StaticEditorShaders";
 
 const fallbackColor = new Float32Array([.5, .5, .5])
 export default class SelectedSystem {
-    static drawSilhouette(selected, settings) {
+    static drawToBuffer(selected){
         const length = selected.length
         if (length > 0) {
             StaticFBO.postProcessing1.startMapping()
@@ -27,6 +27,11 @@ export default class SelectedSystem {
             }
             StaticFBO.postProcessing1.stopMapping()
         }
+        else
+            StaticFBO.postProcessing1.clear()
+    }
+    static drawSilhouette(selected, settings) {
+
         StaticEditorShaders.outline.bind()
         const outlineShaderUniforms = StaticEditorShaders.outlineUniforms
         if (settings.showOutline) {

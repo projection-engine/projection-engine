@@ -18,33 +18,6 @@
     }
 </script>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.EDITOR_COLOR_CORRECTION}</legend>
-    <div data-form="-">
-        <Range
-                label={LOCALIZATION_EN.GAMMA}
-
-
-                precision={3}
-                minValue={.1}
-                maxValue={10}
-                onFinish={v => update("gamma",  v)}
-                value={visualSettings.gamma}
-        />
-
-        <Range
-                label={LOCALIZATION_EN.EXPOSURE}
-
-                minValue={.1}
-
-                precision={3}
-                maxValue={10}
-                onFinish={v => update("exposure",  v)}
-                value={visualSettings.exposure}
-        />
-    </div>
-</fieldset>
-
 
 <fieldset>
     <legend>{LOCALIZATION_EN.ANTI_ALIASING}</legend>
@@ -67,24 +40,7 @@
         />
     </div>
 </fieldset>
-<fieldset>
-    <legend>{LOCALIZATION_EN.MOTION_BLUR_SCALE}</legend>
-    <div data-form="-">
-        <Range
-                label={LOCALIZATION_EN.SCALE}
-                minValue={.0001}
-                value={visualSettings.mbVelocityScale}
-                onFinish={v => update("mbVelocityScale", v)}
-        />
-        <Range
-                label={LOCALIZATION_EN.SAMPLES}
-                minValue={1}
-                integer="true"
-                value={visualSettings.mbSamples}
-                onFinish={v => update("mbSamples", v)}
-        />
-    </div>
-</fieldset>
+
 <fieldset>
     <legend>{LOCALIZATION_EN.PHYSICS}</legend>
     <div data-form="-">
