@@ -1,4 +1,5 @@
 import ProjectController from "../libs/ProjectController";
+import ROUTES from "../static/ROUTES";
 
 const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, } = require("electron")
 function mapMenu( e, parent) {
@@ -9,7 +10,7 @@ function mapMenu( e, parent) {
         if (Array.isArray(s.submenu))
             newData.submenu = mapMenu(s, parent)
         else
-            newData.click = () => ProjectController.window.webContents.send("context-menu", {id: s.id, group: parent})
+            newData.click = () => ProjectController.window.webContents.send(ROUTES.CONTEXT_MENU_CALLBACK, {id: s.id, group: parent})
 
         return newData
     }) : undefined
@@ -18,7 +19,7 @@ function mapMenu( e, parent) {
 export default function contextMenuController() {
     this.menus = new Map()
     ipcMain.on(
-        "REGISTER_CONTEXT_MENU",
+        ROUTES.REGISTER_CONTEXT_MENU,
         (event, data) => {
             const {template, id} = data
 
@@ -28,7 +29,7 @@ export default function contextMenuController() {
                 if (e.submenu)
                     return {...e, submenu: mapMenu( e, id)}
                 if (e.id)
-                    return {...e, click: () => ProjectController.window.webContents.send("context-menu", {id: e.id, group: id})}
+                    return {...e, click: () => ProjectController.window.webContents.send(ROUTES.CONTEXT_MENU_CALLBACK, {id: e.id, group: id})}
                 return e
             })
             const menu = Menu.buildFromTemplate(mapped)
@@ -36,7 +37,7 @@ export default function contextMenuController() {
         }
     )
     ipcMain.on(
-        "DESTROY_CONTEXT_MENU",
+        ROUTES.DESTROY_CONTEXT_MENU,
         (event, id) => {
             const context = this.menus.get(id)
             if (!context)
@@ -46,7 +47,7 @@ export default function contextMenuController() {
     )
 
     ipcMain.on(
-        "OPEN_CONTEXT_MENU",
+        ROUTES.OPEN_CONTEXT_MENU,
         (event, contextID) => {
             const context = this.menus.get(contextID)
             if (context)

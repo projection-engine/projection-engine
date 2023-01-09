@@ -2,6 +2,7 @@ import ContextMenuOption from "./templates/ContextMenuOptions";
 import findOptions from "./utils/find-options";
 import buildOptions from "./utils/build-options";
 import ContextMenuTarget from "./templates/ContextMenuTarget";
+import ROUTES from "../../../backend/static/ROUTES";
 
 const {ipcRenderer} = window.require("electron")
 
@@ -14,7 +15,7 @@ export default class ContextMenuController {
 
     static mount(options: ContextMenuOption[], target: string | null, triggers?: string[], onFocus?: Function) {
         if (!ContextMenuController.#initialized) {
-            ipcRenderer.on("context-menu", (ev, {id, group}) => {
+            ipcRenderer.on(ROUTES.CONTEXT_MENU_CALLBACK, (ev, {id, group}) => {
                 const groupData = ContextMenuController.data.targets[group]
                 if (!groupData)
                     return
@@ -24,7 +25,7 @@ export default class ContextMenuController {
         }
 
         const template = buildOptions(options, target)
-        ipcRenderer.send("REGISTER_CONTEXT_MENU", {
+        ipcRenderer.send(ROUTES.REGISTER_CONTEXT_MENU, {
             id: target,
             template
         })
@@ -39,7 +40,7 @@ export default class ContextMenuController {
     }
 
     static destroy(target: string | null) {
-        ipcRenderer.send("DESTROY_CONTEXT_MENU", target)
+        ipcRenderer.send(ROUTES.DESTROY_CONTEXT_MENU, target)
         const old = ContextMenuController.data.targets[target]
         if (!old)
             return
