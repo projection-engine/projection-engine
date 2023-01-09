@@ -1,4 +1,3 @@
-import COMPONENTS from "../../engine-core/static/COMPONENTS.js"
 import GPU from "../../engine-core/GPU";
 import SettingsStore from "../../frontend/views/editor/stores/SettingsStore";
 
@@ -9,10 +8,10 @@ import StaticEditorShaders from "../lib/StaticEditorShaders";
 
 const fallbackColor = new Float32Array([.5, .5, .5])
 export default class SelectedSystem {
-    static drawSilhouette(selected, settings) {
+    static drawToBuffer(selected){
         const length = selected.length
         if (length > 0) {
-            StaticFBO.cache.startMapping()
+            StaticFBO.postProcessing1.startMapping()
             StaticEditorShaders.silhouette.bind()
             for (let m = 0; m < length; m++) {
                 const current = selected[m]
@@ -26,8 +25,13 @@ export default class SelectedSystem {
                 GPU.context.uniformMatrix4fv(StaticEditorShaders.silhouetteUniforms.transformMatrix, false, current.matrix)
                 mesh.draw()
             }
-            StaticFBO.cache.stopMapping()
+            StaticFBO.postProcessing1.stopMapping()
         }
+        else
+            StaticFBO.postProcessing1.clear()
+    }
+    static drawSilhouette(selected, settings) {
+
         StaticEditorShaders.outline.bind()
         const outlineShaderUniforms = StaticEditorShaders.outlineUniforms
         if (settings.showOutline) {
@@ -42,7 +46,7 @@ export default class SelectedSystem {
         }
         if (length > 0) {
             GPU.context.activeTexture(GPU.context.TEXTURE0)
-            GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.cache.colors[0])
+            GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.postProcessing1Sampler)
             GPU.context.uniform1i(outlineShaderUniforms.silhouette, 0)
             GPU.context.uniform1i(outlineShaderUniforms.isOutline, 0)
             StaticMeshes.drawQuad()

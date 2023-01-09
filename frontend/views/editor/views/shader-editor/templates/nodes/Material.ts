@@ -135,8 +135,7 @@ export default class Material extends ShaderNode {
             albedo = ${this.getData(al)};
             ${normal ? "computeTBN();" : ""}
             N = ${normal ? `normalize(TBN * ((${this.getData(normal)} * 2.0)- 1.0))` : "normalVec"};
-            emission = ${this.getData(emission)};
-            flatShading = ${this.flatShading};
+            emission = ${this.getData(emission)}; 
         `
     }
 }

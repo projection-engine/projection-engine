@@ -1,4 +1,3 @@
-import {v4 as uuidv4} from "uuid";
 import FS from "../../../../lib/FS/FS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
@@ -31,7 +30,7 @@ export default class RegistryAPI {
         }
     }
 
-    static async createRegistryEntry(fID = uuidv4(), pathToFile) {
+    static async createRegistryEntry(fID = crypto.randomUUID(), pathToFile) {
         await getCall<undefined>(ROUTES.CREATE_REG, {id: fID, path: pathToFile}, false)
     }
 

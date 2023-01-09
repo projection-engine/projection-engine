@@ -2,9 +2,9 @@ import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import GizmoSystem from "../../runtime/GizmoSystem";
 import Inheritance from "../Inheritance";
 import gizmoTranslateEntity from "../../utils/gizmo-translate-entity";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../../frontend/views/editor/stores/dispatch-renderer-entities";
 import EngineTools from "../../EngineTools";
 import StaticEditorMeshes from "../StaticEditorMeshes";
+import EntityManager from "../../../frontend/views/editor/lib/EntityManager";
 
 export default class TranslationGizmo extends Inheritance {
     static gridSize = 1
@@ -29,10 +29,8 @@ export default class TranslationGizmo extends Inheritance {
         super.onMouseMove()
         if(!TranslationGizmo.hasCloned && event.shiftKey){
             const clones = EngineTools.selected.map(m => m.clone())
-            dispatchRendererEntities({
-                type: ENTITY_ACTIONS.PUSH_BLOCK,
-                payload: clones
-            })
+            EntityManager.appendBlock(clones)
+
             GizmoSystem.linkEntityToGizmo(clones[0])
         }
         TranslationGizmo.hasCloned = event.shiftKey

@@ -1,8 +1,6 @@
 import GPU from "../../engine-core/GPU";
-import COMPONENTS from "../../engine-core/static/COMPONENTS.js";
 import COLLISION_TYPES from "../../engine-core/static/COLLISION_TYPES";
 import {mat4, vec3} from "gl-matrix";
-import PhysicsColliderComponent from "../../engine-core/templates/components/PhysicsColliderComponent";
 import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 

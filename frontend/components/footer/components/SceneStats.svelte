@@ -8,17 +8,13 @@
 
     let engine
     const unsubscribe = EngineStore.getStore(v => engine = v)
-    let changeID
     let entities
     let triangles = 0
     let materials = 0
     let interval
     let textures = 0
     let meshes = 0
-    $:{
-        changeID = engine.changeID
-        entities = Engine.entitiesMap.size
-    }
+
     function refresh(){
         let t = 0
         GPU.meshes.forEach(m => t = t + m.trianglesQuantity)
@@ -26,6 +22,7 @@
         meshes = GPU.meshes.size
         materials = GPU.materials.size
         textures = GPU.textures.size
+        entities = Engine.entitiesMap.size
     }
     onMount(() => {
         refresh()

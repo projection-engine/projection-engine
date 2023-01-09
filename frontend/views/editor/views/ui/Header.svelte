@@ -4,7 +4,7 @@
     import SelectionStore from "../../stores/SelectionStore";
     import GIZMOS from "../../static/GIZMOS.ts";
     import SettingsStore from "../../stores/SettingsStore";
-    import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
+
     import Entity from "../../../../../engine-core/instances/Entity";
     import Engine from "../../../../../engine-core/Engine";
     import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
@@ -12,6 +12,7 @@
     import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import EntityManager from "../../lib/EntityManager";
 
 
     export let isAlreadyOpen
@@ -40,7 +41,7 @@
     function addUiElement() {
         const e = new Entity(undefined, "UI-ShaderNode")
         e.addComponent(COMPONENTS.UI)
-        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: e})
+        EntityManager.add(e)
     }
 
     function focusOnView() {

@@ -16,5 +16,5 @@ void main() {
     vec2 quadUV = gl_FragCoord.xy/bufferResolution;
     float currentDepth = texture(depthSampler, quadUV).r;
     if(currentDepth > 0. && currentDepth < gl_FragCoord.z)
-        fragColor.rgb *= .5;
+        fragColor.rgb = vec3(1., 0., 0.);
 }

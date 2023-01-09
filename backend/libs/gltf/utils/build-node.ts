@@ -1,5 +1,4 @@
 import {mat4, quat} from "gl-matrix";
-import {v4} from "uuid";
 import DataController from "../instances/DataController";
 import MutableObject from "../../../../engine-core/MutableObject";
 
@@ -7,7 +6,7 @@ export default function buildNode(index, node, sceneMap, primitivesMap) {
     if (!node.children && node.mesh === undefined)
         return;
     const parsedNode = <MutableObject>{
-        id: v4(),
+        id: crypto.randomUUID(),
         children: node.children,
         mesh: node.mesh,
         index,
@@ -38,7 +37,7 @@ export default function buildNode(index, node, sceneMap, primitivesMap) {
                 continue
             if (i > 1) {
                 const clone = <MutableObject>{...parsedNode}
-                clone.id = v4()
+                clone.id = crypto.randomUUID()
                 clone.meshID = primitiveID
                 sceneMap.entities.push(clone)
                 m.push(clone)

@@ -26,7 +26,7 @@
         if (!open)
             return false
         if (typeof event === "object") {
-            const found = event.composedPath().find((e: HTMLElement) => e.getAttribute?.("data-iscolorpicker") || e.getAttribute?.("data-israngeinput") || e.getAttribute?.("data-icon"))
+            const found = event.composedPath().find((e: HTMLElement) => e.getAttribute?.("data-iscolorpicker"))
             if (!found && !modal.contains(<HTMLElement | undefined>event.target) && !button.contains(event.target))
                 close()
         } else

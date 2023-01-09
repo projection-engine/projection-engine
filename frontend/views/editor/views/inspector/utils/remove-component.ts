@@ -1,6 +1,6 @@
 import SelectionStore from "../../../stores/SelectionStore";
-import EngineStore from "../../../stores/EngineStore";
-import {v4} from "uuid";
+
+import HierarchyController from "../../hierarchy/lib/HierarchyController";
 
 export default function removeComponent(entity,index, key) {
     if (!entity)
@@ -11,6 +11,6 @@ export default function removeComponent(entity,index, key) {
     } else
         entity.removeComponent(key)
 
-    EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
+    HierarchyController.updateHierarchy()
     SelectionStore.updateStore()
 }

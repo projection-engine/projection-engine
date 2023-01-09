@@ -1,4 +1,3 @@
-import {v4} from "uuid"
 import RegistryAPI from "./RegistryAPI";
 import ROUTES from "../../../../../backend/static/ROUTES";
 import FS from "../../../../lib/FS/FS";
@@ -28,7 +27,7 @@ export default class FilesAPI {
 
     static readFile(pathName: string, type?: string): Promise<any> {
         return new Promise(resolve => {
-            const listenID = v4().toString()
+            const listenID =crypto.randomUUID()
             ipcRenderer.once(ROUTES.READ_FILE + listenID, (ev, data) => resolve(data))
             ipcRenderer.send(ROUTES.READ_FILE, {pathName, type, listenID})
         })

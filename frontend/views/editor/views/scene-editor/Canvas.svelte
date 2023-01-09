@@ -1,7 +1,7 @@
 <script>
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
-    import updateRenderer from "../viewport/utils/update-renderer";
+    import updateRenderer from "./utils/update-renderer";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
     import SelectionStore from "../../stores/SelectionStore";
@@ -10,6 +10,7 @@
     import Engine from "../../../../../engine-core/Engine";
     import EngineTools from "../../../../../engine-tools/EngineTools";
     import LevelController from "../../lib/utils/LevelController";
+
     export let initializeEditor
 
     let canvasRef

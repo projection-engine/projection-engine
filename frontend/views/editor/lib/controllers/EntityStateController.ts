@@ -1,5 +1,5 @@
 import ENVIRONMENT from "../../../../../engine-core/static/ENVIRONMENT";
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
+
 import EngineStore from "../../stores/EngineStore";
 import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 import UIAPI from "../../../../../engine-core/lib/rendering/UIAPI";
@@ -12,6 +12,7 @@ import ScriptsAPI from "../../../../../engine-core/lib/utils/ScriptsAPI";
 import MaterialAPI from "../../../../../engine-core/lib/rendering/MaterialAPI";
 import AlertController from "../../../../components/alert/AlertController";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+import EntityManager from "../EntityManager";
 
 export default class EntityStateController {
     static #state = []
@@ -62,7 +63,7 @@ export default class EntityStateController {
         }
 
         EntityStateController.#state = []
-        dispatchRendererEntities({type: ENTITY_ACTIONS.DISPATCH_BLOCK, payload: mapped})
+        EntityManager.appendBlock(mapped, true)
         await ScriptsAPI.updateAllScripts()
 
         CameraAPI.trackingEntity = undefined

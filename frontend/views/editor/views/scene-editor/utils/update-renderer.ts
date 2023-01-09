@@ -13,7 +13,6 @@ import RotationGizmo from "../../../../../../engine-tools/lib/transformation/Rot
 import TranslationGizmo from "../../../../../../engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../../../../engine-tools/lib/transformation/ScalingGizmo";
 import GIZMOS from "../../../static/GIZMOS";
-import MotionBlur from "../../../../../../engine-core/runtime/MotionBlur";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -22,28 +21,19 @@ export default function updateRenderer(selected, engine, settings) {
     RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
     TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
     ScalingGizmo.gridSize = settings.gizmoGrid.scaleGizmo || .001
+
     if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
         CameraAPI.trackingEntity = undefined
-        if (settings.camera) {
+        if (settings.camera !== undefined) {
             CameraTracker.screenSpaceMovementSpeed = settings.camera.screenSpaceMovementSpeed || 1
             CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
             CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
             if (settings.camera.smoothing != null)
-                CameraAPI.translationSmoothing = settings.camera?.smoothing * .001
+                CameraAPI.translationSmoothing = settings.camera.smoothing * .001
             if (settings.camera.rotationSmoothing != null)
-                CameraAPI.rotationSmoothing = settings.camera?.rotationSmoothing * .001
+                CameraAPI.rotationSmoothing = settings.camera.rotationSmoothing * .001
+            CameraAPI.updateViewTarget(settings.camera)
         }
-
-        CameraAPI.zNear = settings.zNear
-        CameraAPI.zFar = settings.zFar
-        CameraAPI.fov = settings.fov
-
-        CameraAPI.metadata.gamma = settings.gamma
-        CameraAPI.metadata.exposure = settings.exposure
-
-        if (settings.shadingModel === SHADING_MODELS.DETAIL)
-            MotionBlur.enabled = settings.motionBlurEnabled
-
     }
     if (Engine.environment === ENVIRONMENT.DEV)
         Loop.linkToExecutionPipeline(EngineTools.afterDrawing, undefined)

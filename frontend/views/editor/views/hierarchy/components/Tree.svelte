@@ -1,7 +1,6 @@
 <script lang="ts">
-    import EngineStore from "../../../stores/EngineStore";
-    import {onDestroy} from "svelte";
-    import Branch from "./Node.svelte";
+    import {onDestroy, onMount} from "svelte";
+    import Branch from "./TreeNode.svelte";
     import SelectionStore from "../../../stores/SelectionStore";
     import HierarchyController from "../lib/HierarchyController";
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
@@ -11,8 +10,8 @@
     import Engine from "../../../../../../engine-core/Engine";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import ContextMenuController from "../../../../../lib/context-menu/ContextMenuController";
-    import MutableObject from "../../../../../../engine-core/MutableObject";
     import ToRenderElement from "../template/ToRenderElement";
+
 
     export let ID:string
     export let inputValue:string
@@ -20,15 +19,20 @@
     export let setIsEmpty:Function
     export let openTree:{[key:string]:boolean}
     export let setOpenTree:Function
-    let engine:MutableObject = {}
-    let settings:MutableObject = {}
 
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+    const internalID = crypto.randomUUID()
 
     let toRender:ToRenderElement[] = []
     let selected:Map<string, boolean>
     let lockedEntity
+
+    const unsubscribeSettings = SettingsStore.getStore(v => {
+        ContextMenuController.mount(
+            viewportContext(v),
+            ID
+        )
+    })
+
     const testSearch = (node) => {
         const s = inputValue, f = filteredComponent
         return (s && node.name.includes(s) || !s) &&
@@ -40,49 +44,36 @@
         lockedEntity = SelectionStore.lockedEntity
     })
 
-    $: {
-        if (engine.changeID) {
+    onMount(() => {
+        HierarchyController.registerListener(internalID, () => {
             const entities = Engine.entities
             const hierarchy = HierarchyController.hierarchy
             const data = []
-            if (!inputValue && !filteredComponent) {
-                const data:ToRenderElement[] = []
+            if (!inputValue && !filteredComponent)
                 for (let i = 0; i < hierarchy.length; i++) {
-
                     if (!hierarchy[i].node.parent || openTree[hierarchy[i].node.parent.id])
                         data.push(hierarchy[i])
                 }
-                toRender = data
-            } else {
+             else
                 for (let i = 0; i < entities.length; i++) {
                     if (testSearch(entities[i]))
                         data.push({node: entities[i], depth: 0})
                 }
-                toRender = data
-            }
-        }
-    }
-    $: SIZE = toRender.length
-    $: setIsEmpty(SIZE === 0)
-    $: {
-        if (settings?.viewportHotkeys != null) {
-            ContextMenuController.mount(
-                viewportContext(settings),
-                ID
-            )
-        }
-    }
+            toRender = data
+            setIsEmpty(data.length === 0)
+        })
+    })
 
     onDestroy(() => {
+        HierarchyController.removeListener(internalID)
         unsubscribeSettings()
         unsubscribeSelection()
-        unsubscribeEngine()
         ContextMenuController.destroy(ID)
     })
 </script>
 
 
-{#if SIZE > 0}
+{#if toRender.length > 0}
     <VirtualList items={toRender} let:item>
         <Branch
                 nodeRef={item.node}

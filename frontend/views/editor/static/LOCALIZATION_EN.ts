@@ -391,7 +391,12 @@ enum LOCALIZATION_EN {
     TOGGLE_GRID = "Toggle grid",
     INFORMATION = "Information",
     NEEDS_COMPILATION = "Please compile the shader.",
+QUALITY = "Quality",
 
+    DEPTH_OF_FIELD = "Depth of Field",
+    FOCUS_DISTANCE = "Focus distance",
+    FOCAL_LENGTH = "Focal length",
+    APERTURE =  "Aperture",
     NO_ERRORS = "No errors were found.",
     NODE = "Node",
     STATUS = "Status",

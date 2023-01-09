@@ -6,6 +6,7 @@ interface Settings{
     ssrEnabled:boolean
     isSky:boolean
     doubleSided:boolean
+    flatShading: boolean
 }
 export default interface MaterialAsset {
 

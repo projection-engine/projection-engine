@@ -7,9 +7,8 @@
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";
     import EntityAPI from "../../../../../../../engine-core/lib/utils/EntityAPI";
-    import EngineStore from "../../../../stores/EngineStore";
     import HierarchyController from "../../../hierarchy/lib/HierarchyController";
-    import {v4} from "uuid";
+
     import Input from "../../../../../../components/input/Input.svelte";
     import ColorPicker from "../../../../../../components/color-picker/ColorPicker.svelte";
     import Entity from "../../../../../../../engine-core/instances/Entity";
@@ -37,7 +36,7 @@
             value={entity._hierarchyColor||[255,255,255]}
             submit={(_, arr) => {
                 entity._hierarchyColor = arr
-                EngineStore.updateStore({...EngineStore.engine, changeID: crypto.randomUUID()})
+                HierarchyController.updateHierarchy()
             }}
     />
 </fieldset>
@@ -64,7 +63,6 @@
             handleChange={v => {
                 EntityAPI.linkEntities(entity, v)
                 HierarchyController.updateHierarchy()
-                EngineStore.updateStore({...EngineStore.engine, changeID: v4()})
             }}
     />
 </fieldset>

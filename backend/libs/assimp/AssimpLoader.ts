@@ -2,7 +2,6 @@ import AssimpJS from "./Assimp.js";
 import PrimitiveProcessor from "../../../engine-core/lib/math/PrimitiveProcessor";
 import FILE_TYPES from "../../../static/objects/FILE_TYPES";
 import createRegistryEntry from "../../utils/create-registry-entry";
-import {v4} from "uuid";
 import ProjectController from "../ProjectController";
 
 import {mat4} from "gl-matrix";
@@ -86,7 +85,7 @@ export default class AssimpLoader {
                 collectionPath,
                 JSON.stringify(collection)
             )
-            await createRegistryEntry(v4(), collectionPath.replace(ProjectController.pathToAssets, ''))
+            await createRegistryEntry(crypto.randomUUID(), collectionPath.replace(ProjectController.pathToAssets, ''))
         } catch (err) {
             console.error(err)
         }
@@ -95,7 +94,7 @@ export default class AssimpLoader {
     static async #createMesh(dir, meshes, index, data, collectionName): Promise<void> {
         const PRIMITIVE_PATH = path.resolve(dir + path.sep + collectionName + path.sep + "primitives")
         const mesh = data[index]
-        const meshID = v4()
+        const meshID =crypto.randomUUID()
         meshes[index] = meshID
 
         const indices = mesh.faces.flat(), uvs = mesh.texturecoords[0]
@@ -127,7 +126,7 @@ export default class AssimpLoader {
     static #mapChildren(collection, meshes: MutableObject, node: NodeType, parent?: string): undefined {
         if (!node)
             return;
-        const nodeID = v4()
+        const nodeID = crypto.randomUUID()
         const {transformation, children, name} = node
 
         // @ts-ignore

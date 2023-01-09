@@ -1,5 +1,6 @@
 import WindowUtils from "../../../views/editor/lib/WindowUtils";
 import ROUTES from "../../../../backend/static/ROUTES";
+
 const {ipcRenderer} = window.require("electron")
 export default function getFrameOptions( disabledSave:boolean) {
     return [

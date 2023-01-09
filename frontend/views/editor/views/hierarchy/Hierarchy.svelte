@@ -1,8 +1,8 @@
 <script>
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
-    import {v4} from "uuid"
-    import EngineHierarchyView from "./components/View.svelte";
+
+    import EngineHierarchyView from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import getNativeComponents from "../inspector/utils/get-native-components";
@@ -19,10 +19,8 @@
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../components/input/Input.svelte";
 
-    export let switchView = undefined
-    export let orientation = undefined
     let search = ""
-    const ID = v4()
+    const ID =crypto.randomUUID()
 
     let filteredComponent = undefined
     let isEmpty = true
@@ -69,9 +67,7 @@
 
 <ViewHeader>
     <button
-            on:click={() => {
-                openTree = {...openTree, ...HierarchyController.openTree()}
-            }}
+            on:click={() => HierarchyController.updateHierarchy()}
             data-view-header-button="-"
     >
         <ToolTip content={LOCALIZATION_EN.SHOW_MAIN_ENTITY}/>
@@ -128,7 +124,10 @@
 >
     <EngineHierarchyView
             openTree={openTree}
-            setOpenTree={v => openTree = v}
+            setOpenTree={v => {
+                openTree = v
+                HierarchyController.updateHierarchy()
+            }}
             setIsEmpty={v => isEmpty = v}
             inputValue={search}
             filteredComponent={filteredComponent}
@@ -139,21 +138,6 @@
 
 
 <style>
-    .dropdown {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-    }
-
-    .button {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
     .wrapper {
         position: relative;
         width: 100%;
@@ -162,15 +146,5 @@
         height: 100%;
         max-height: 100%;
 
-    }
-
-    .button {
-        padding: 0;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
     }
 </style>

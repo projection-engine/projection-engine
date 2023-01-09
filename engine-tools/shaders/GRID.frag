@@ -28,7 +28,7 @@ void main() {
     float color     = settings.x;
     float scale     = settings.y;
     float threshold = min(100., settings.z);
-    float opacityScale   = clamp(settings.w, 0., 1.);
+    float opacityScale   = clamp(settings.w/2., 0., 1.);
  
     float distanceFromCamera = length(cameraPosition - worldPosition);
     if(distanceFromCamera > threshold)

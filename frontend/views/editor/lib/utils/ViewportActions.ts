@@ -1,4 +1,3 @@
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities";
 import EngineStore from "../../stores/EngineStore";
 
 import SelectionStore from "../../stores/SelectionStore";
@@ -9,6 +8,7 @@ import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
 import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../../../engine-core/Engine";
 import AlertController from "../../../../components/alert/AlertController";
+import EntityManager from "../EntityManager";
 
 
 export default class ViewportActions {
@@ -41,10 +41,7 @@ export default class ViewportActions {
     }
 
     static deleteSelected() {
-        dispatchRendererEntities({
-            type: ENTITY_ACTIONS.REMOVE_BLOCK,
-            payload: [...SelectionStore.engineSelected]
-        })
+        EntityManager.removeBlock(SelectionStore.engineSelected)
     }
 
     static invertSelection() {
@@ -63,7 +60,7 @@ export default class ViewportActions {
     }
 
     static paste(parent?:string) {
-        let block = []
+        const block = []
         if (!ViewportActions.toCopy)
             return
         const targetParent = parent ? QueryAPI.getEntityByID(parent) : undefined
@@ -81,7 +78,7 @@ export default class ViewportActions {
                 targetParent.children.push(clone)
             }
         }
-        dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: block})
+        EntityManager.appendBlock(block)
         AlertController.log(`Pasted ${ViewportActions.toCopy.length} entities.`)
 
     }
@@ -90,10 +87,7 @@ export default class ViewportActions {
         const selected = SelectionStore.engineSelected
         ViewportActions.toCopy = selected
         if (selected.length > 1)
-            dispatchRendererEntities({
-                type: ENTITY_ACTIONS.LINK_MULTIPLE,
-                payload: selected
-            })
+            EntityManager.linkMultiple(selected)
     }
 
     static selectAll() {

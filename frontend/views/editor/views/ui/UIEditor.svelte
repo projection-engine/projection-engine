@@ -4,27 +4,27 @@
     import GIZMOS from "../../static/GIZMOS.ts";
     import UIAPI from "../../../../../engine-core/lib/rendering/UIAPI";
     import SettingsStore from "../../stores/SettingsStore";
-    import {v4} from "uuid";
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
 
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
+    import HierarchyController from "../hierarchy/lib/HierarchyController";
+
+    const INTERNAL_ID = crypto.randomUUID()
 
     let engine = {}
     let settings = {}
+    let ref
+    let tooltip
+    let isAlreadyOpen = false
+
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-    $: isOnSelection = settings.gizmo === GIZMOS.NONE
-    let ref
-    let tooltip
-    const INTERNAL_ID = v4()
-    let isAlreadyOpen = false
-
     const handler = e => {
-        if (!isOnSelection)
+        if (settings.gizmo === GIZMOS.NONE)
             return
         switch (e.type) {
             case "click":
@@ -68,23 +68,19 @@
         })
     }
 
-    $: {
-        if (UIAPI.uiMountingPoint != null && engine.changeID)
-            update()
-    }
-
     onMount(() => {
         if (UIAPI.iframeParent)
             return
+        HierarchyController.registerListener(INTERNAL_ID, () => {
+            if (UIAPI.uiMountingPoint != null)
+                update()
+        })
         UIAPI.buildUI(ref)
         update()
     })
-    function focusOnView(){
-        UIAPI.buildUI(ref)
-        update()
-        isAlreadyOpen = false
-    }
+
     onDestroy(() => {
+        HierarchyController.removeListener(INTERNAL_ID)
         if (UIAPI.iframeParent === ref)
             UIAPI.destroyUI()
         unsubscribeSettings()
@@ -92,9 +88,7 @@
     })
 </script>
 
-    <Header engine={engine} settings={settings} isAlreadyOpen={isAlreadyOpen}/>
-
-
+<Header engine={engine} settings={settings} isAlreadyOpen={isAlreadyOpen}/>
 <div class="wrapper ui" bind:this={ref} style={`opacity: ${isAlreadyOpen ? ".5" : "1"}`}>
     {#if isAlreadyOpen}
         <ToolTip content={LOCALIZATION_EN.UI_ALREADY_OPEN}/>

@@ -1,4 +1,3 @@
-import dispatchRendererEntities, {ENTITY_ACTIONS} from "../../stores/dispatch-renderer-entities"
 import FilesAPI from "../fs/FilesAPI"
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
@@ -13,7 +12,7 @@ import EntityConstructor from "../controllers/EntityConstructor";
 import GPU from "../../../../../engine-core/GPU";
 import Entity from "../../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI";
-import {v4} from "uuid";
+
 import FileSystemAPI from "../../../../../engine-core/lib/utils/FileSystemAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
@@ -21,6 +20,7 @@ import FS from "../../../../lib/FS/FS";
 import MeshComponent from "../../../../../engine-core/templates/components/MeshComponent";
 import SpriteComponent from "../../../../../engine-core/templates/components/SpriteComponent";
 import AlertController from "../../../../components/alert/AlertController";
+import EntityManager from "../EntityManager";
 
 
 export default class Loader {
@@ -44,7 +44,7 @@ export default class Loader {
     static async scene(path) {
         const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + path, "json")
         const entities = []
-        const root = new Entity(v4(), path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop())
+        const root = new Entity(crypto.randomUUID(), path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop())
         entities.push(root)
         EntityConstructor.translateEntity(root)
         try {
@@ -69,7 +69,7 @@ export default class Loader {
 
                     entities.push(entity)
                 }
-                dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entities})
+                EntityManager.appendBlock(entities)
             } else
                 console.error("Collection not found")
         } catch (error) {
@@ -119,7 +119,7 @@ export default class Loader {
                         EntityConstructor.translateEntity(sprite)
                         const c = sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE)
                         c.imageID = data
-                        dispatchRendererEntities({type: ENTITY_ACTIONS.ADD, payload: sprite})
+                        EntityManager.add(sprite)
                     }
                     break
                 }
@@ -148,7 +148,7 @@ export default class Loader {
         }
 
         if (entitiesToPush.length > 0) {
-            dispatchRendererEntities({type: ENTITY_ACTIONS.PUSH_BLOCK, payload: entitiesToPush})
+            EntityManager.appendBlock(entitiesToPush)
             AlertController.success(LOCALIZATION_EN.ENTITIES_CREATED)
         }
     }

@@ -5,87 +5,21 @@
     import SettingsStore from "../../../stores/SettingsStore";
     import {onDestroy} from "svelte";
     import Range from "../../../../../components/range/Range.svelte";
+    import Layout from "../../inspector/components/engine/dynamic-form/Layout.svelte";
+    import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
+    import CAMERA_PROPS from "../../../../../../engine-core/static/component-props/CAMERA_PROPS";
 
-    let settings
-    const unsubscribe = SettingsStore.getStore(v => settings = v)
-    const toDeg = 180 / Math.PI
-
-    let state = {
-        zFar: settings.zFar,
-        zNear: settings.zNear,
-        fov: settings.fov * toDeg,
-        smoothing: settings.camera.smoothing,
-        rotationSmoothing: settings.camera.rotationSmoothing,
-        ortho: settings.ortho,
-        movementSpeed: settings.camera.movementSpeed,
-        turnSpeed: settings.camera.turnSpeed,
-        screenSpaceMovementSpeed: settings.camera.screenSpaceMovementSpeed||1
-    }
-
+    export let settings
     const updateCamera = (key, value, full) => {
-        if (full) {
+        console.trace(key, value, full)
+        if (full)
             SettingsStore.updateStore({...settings, camera: {...settings.camera, [key]: value}})
-            state = {...state, [key]: value}
-        }
-        CameraTracker[key] = value
+        if(CameraTracker[key] !== undefined)
+            CameraTracker[key] = value
     }
-    onDestroy(() => unsubscribe())
+    $: cameraSettings = {...settings.camera, props: CAMERA_PROPS}
 </script>
 
-
-<fieldset>
-    <legend>{LOCALIZATION_EN.VIEW}</legend>
-    <div data-form="-">
-        <Range
-                minLabelWidth={"30px"}
-                label={LOCALIZATION_EN.FAR}
-                incrementPercentage={1}
-                onFinish={(v) => {
-                    SettingsStore.updateStore({...settings, zFar: v})
-                    CameraAPI.zFar = v
-                    CameraAPI.updateProjection()
-                }}
-                value={settings.zFar}
-                handleChange={v => {
-                    CameraAPI.zFar = v
-                    CameraAPI.updateProjection()
-                }}
-        />
-        <Range
-                minLabelWidth={"30px"}
-                label={LOCALIZATION_EN.NEAR}
-                onFinish={(v) => {
-                    SettingsStore.updateStore({...settings, zNear: v})
-
-                    CameraAPI.zNear = v
-                    CameraAPI.updateProjection()
-                }}
-                value={settings.zNear}
-                handleChange={v => {
-                state.zNear = v
-                CameraAPI.zNear = v
-                CameraAPI.updateProjection()
-            }}
-        />
-        <Range
-                label={LOCALIZATION_EN.FOV}
-                minValue={10}
-                maxValue={150}
-                disabled={state.ortho}
-                onFinish={v => {
-                    const value = v / toDeg
-                    SettingsStore.updateStore({...settings, fov: value})
-                    CameraAPI.fov = value
-                    CameraAPI.updateProjection()
-                }}
-                value={settings.fov * toDeg}
-                handleChange={v => {
-                    CameraAPI.fov = v / toDeg
-                    CameraAPI.updateProjection()
-                }}
-        />
-    </div>
-</fieldset>
 
 <fieldset>
     <legend>{LOCALIZATION_EN.MOVEMENT_SPEED}</legend>
@@ -95,7 +29,7 @@
                 minValue={.01}
                 label={LOCALIZATION_EN.SCREEN_GRABBING_SPEED}
                 onFinish={(v) => updateCamera("screenSpaceMovementSpeed", v, true)}
-                value={state.screenSpaceMovementSpeed}
+                value={cameraSettings.screenSpaceMovementSpeed}
                 handleChange={v => updateCamera("screenSpaceMovementSpeed", v)}
         />
 
@@ -104,7 +38,7 @@
                 minValue={.01}
                 label={LOCALIZATION_EN.TRANSLATION}
                 onFinish={(v) => updateCamera("movementSpeed", v, true)}
-                value={state.movementSpeed}
+                value={cameraSettings.movementSpeed}
                 handleChange={v => updateCamera("movementSpeed", v)}
         />
 
@@ -114,7 +48,7 @@
                 minValue={.01}
                 label={LOCALIZATION_EN.ROTATION}
                 onFinish={(v) => updateCamera("turnSpeed", v, true)}
-                value={state.turnSpeed}
+                value={cameraSettings.turnSpeed}
                 handleChange={v => updateCamera("turnSpeed", v)}
         />
 
@@ -130,7 +64,7 @@
                 incrementPercentage={.001}
                 label={LOCALIZATION_EN.TRANSLATION}
                 onFinish={(v) => updateCamera("smoothing", v, true)}
-                value={state.smoothing}
+                value={cameraSettings.smoothing}
                 handleChange={v => updateCamera("smoothing", v)}
         />
         <Range
@@ -138,10 +72,14 @@
                 incrementPercentage={.001}
                 label={LOCALIZATION_EN.ROTATION}
                 onFinish={(v) => updateCamera("rotationSmoothing", v, true)}
-                value={state.rotationSmoothing}
+                value={cameraSettings.rotationSmoothing}
                 handleChange={v => updateCamera("rotationSmoothing", v)}
         />
     </div>
 </fieldset>
 
 
+<Layout
+        component={cameraSettings}
+        submit={updateCamera}
+/>

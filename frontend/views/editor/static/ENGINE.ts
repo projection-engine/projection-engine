@@ -3,7 +3,6 @@ export default {
     cameraInitialized: false,
     executingAnimation: false,
     scripts: [],
-    changeID: undefined,
     focusedCamera: undefined,
     currentLevel: undefined
 }
