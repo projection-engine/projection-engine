@@ -35,6 +35,7 @@ export default class FilesAPI {
 
 
     static async deleteFile(pathName, options) {
+
         const currentPath = FS.resolvePath(pathName)
 
         for (let i = 0; i < FilesAPI.registry.length; i++) {

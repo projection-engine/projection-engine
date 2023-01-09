@@ -19,17 +19,19 @@ export default class ContentBrowserAPI {
 
     static async rename(from, to) {
         const fromResolved = pathRequire.resolve(from)
+        const toResolved = pathRequire.resolve(to)
+        console.trace(toResolved, fromResolved)
         await RegistryAPI.readRegistry()
         try {
             const stat = await FS.stat(fromResolved)
             if (stat !== undefined && stat.isDirectory) {
-                await FS.mkdir(to)
+                await FS.mkdir(toResolved)
                 const res = await FS.readdir(fromResolved)
                 if (!res) return
                 for (let i = 0; i< res.length; i++) {
                     const file = res[i]
                     const oldPath = fromResolved + FS.sep + `${file}`
-                    const newPath = to + FS.sep + `${file}`
+                    const newPath = toResolved + FS.sep + `${file}`
                     if ((await FS.stat(oldPath)).isDirectory)
                         await FS.rename(oldPath, newPath)
                     else {
@@ -38,9 +40,13 @@ export default class ContentBrowserAPI {
                     }
                 }
                 await FS.rm(fromResolved, {recursive: true, force: true})
-            } else if (stat !== undefined) {
-                await FS.rename(fromResolved, to)
-                await RegistryAPI.updateRegistry(from, to)
+                return
+            }
+
+            if (stat !== undefined) {
+                await FS.rename(fromResolved, toResolved)
+                await RegistryAPI.updateRegistry(fromResolved, toResolved)
+                return
             }
 
         } catch (error) {

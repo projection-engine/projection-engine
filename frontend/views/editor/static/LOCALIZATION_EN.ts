@@ -25,6 +25,7 @@ enum LOCALIZATION_EN {
     NEW_NAME = "New name",
     EDIT_NODE = "Edit node",
     SHOW_IN_EXPLORER = "Show in explorer",
+    ERROR_OPENING_FILE = "Error opening file",
     NEVER = "Never",
     PROJECT = "Project",
     TOGGLE_DOWNLOADS = "Toggle downloads",

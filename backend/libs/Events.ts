@@ -10,6 +10,7 @@ import createRegistryEntry from "../utils/create-registry-entry";
 import directoryStructure from "../utils/directory-structure";
 import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import parseContentBrowserData from "../utils/parse-content-browser-data";
+import RegistryFile from "../../static/objects/RegistryFile";
 
 const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, screen} = require("electron")
 
@@ -105,6 +106,8 @@ export default class Events {
     }
 
     static async refreshContentBrowser(event, {pathName, listenID}) {
+        ProjectController.registry = <{ [key: string]: RegistryFile }>(await readTypedFile(ProjectController.pathToRegistry, "json") || {})
+
         const result = []
         const registryData = Object.values(ProjectController.registry)
         const assetsToParse = await directoryStructure(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)

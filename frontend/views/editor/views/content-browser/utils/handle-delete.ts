@@ -35,6 +35,6 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
             setCurrentDirectory({id: FS.sep})
     }
 
-    await FilesStore.refreshFiles()
+    await FilesStore.refreshFiles().catch()
     AlertController.success(LOCALIZATION_EN.SUCCESSFUL_DELETE)
 }

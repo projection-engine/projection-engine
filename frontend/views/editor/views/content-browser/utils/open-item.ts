@@ -21,8 +21,13 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case FILE_TYPES.COMPONENT:
             case ".js":
             case ".json":
-                shell.openPath(FS.ASSETS_PATH + FS.sep + data.id).catch()
-                AlertController.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
+                shell.openPath(FS.resolvePath(FS.ASSETS_PATH + FS.sep + data.id))
+                    .catch(err => {
+                        AlertController.error(LOCALIZATION_EN.ERROR_OPENING_FILE)
+                    console.error(err)
+                })
+                console.trace(FS.ASSETS_PATH + FS.sep + data.id)
+                AlertController.warn(LOCALIZATION_EN.OPENING_FILE + " (" + data.name + ")")
                 break
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:
