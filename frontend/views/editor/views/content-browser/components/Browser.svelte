@@ -164,7 +164,10 @@
                             items={items}
                             setSelected={e => handleSelection(e, child)}
                             onRename={currentItem}
-                            submitRename={name => handleRename(child, name, currentDirectory, setCurrentDirectory, () =>currentItem = undefined )}
+                            submitRename={async name => {
+                                await handleRename(child, name, currentDirectory, setCurrentDirectory )
+                                currentItem = undefined
+                            }}
                     />
                 {/each}
             </div>

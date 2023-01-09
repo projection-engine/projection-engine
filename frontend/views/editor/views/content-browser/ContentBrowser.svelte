@@ -18,15 +18,16 @@
     export let viewIndex
     export let groupIndex
 
-    const internalID =crypto.randomUUID()
-    let store = {}
-    let viewType = ITEM_TYPES.ROW
-    const unsubscribeStore = FilesStore.getStore(v => {
-        store = v
-    })
-
     let currentDirectory = {id: FS.sep}
     let wasInitialized = false
+    let fileType = undefined
+    let inputValue = ""
+    let navigationHistory = new NavigationHistory(v => currentDirectory = v)
+    let store = {}
+    let viewType = ITEM_TYPES.ROW
+
+    const internalID =crypto.randomUUID()
+    const unsubscribeStore = FilesStore.getStore(v => store = v)
 
     $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
     $: {
@@ -43,10 +44,6 @@
             wasInitialized = true
         }
     }
-
-    let fileType = undefined
-    let inputValue = ""
-    let navigationHistory = new NavigationHistory(v => currentDirectory = v)
 
     onMount(() => {
         GlobalContentBrowserController.subscribe(internalID, newDir => {

@@ -29,7 +29,6 @@
 
 
     $: fileTypes = getFileTypes()
-    let loading = false
 
     let engine = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -64,12 +63,10 @@
             <ToolTip content={LOCALIZATION_EN.PARENT_DIR}/>
         </button>
         <button
-
-                disabled={loading}
                 data-view-header-button="-"
                 on:click={() => {
                     AlertController.warn(LOCALIZATION_EN.REFRESHING)
-                    FilesStore.refreshFiles().then(() => loading = false).catch()
+                    FilesStore.refreshFiles().catch()
                 }}
         >
             <Icon styles="font-size: .9rem">sync</Icon>

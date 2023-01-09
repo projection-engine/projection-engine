@@ -8,6 +8,7 @@ import FilesHierarchyStore from "./FilesHierarchyStore";
 import FS from "../../../lib/FS/FS";
 import {getCall} from "../../../lib/FS/get-call";
 import MutableObject from "../../../../engine-core/MutableObject";
+import RegistryAPI from "../lib/fs/RegistryAPI";
 
 const contentBrowserStore = writable({
     isLoading: true,
@@ -47,10 +48,11 @@ export default class FilesStore {
     }
 
     static async refreshFiles() {
+        console.trace("REFRESHING")
         try {
             const data = <MutableObject[]>(await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
             const fileTypes = await ContentBrowserAPI.refresh()
-
+            await RegistryAPI.readRegistry()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
         } catch (err) {
             console.error(err)
