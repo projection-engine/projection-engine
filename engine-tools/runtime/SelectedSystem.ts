@@ -32,14 +32,18 @@ export default class SelectedSystem {
                 metadata[0] = sprite && !mesh ? 1 : 0
 
                 context.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
-                if (mesh)
+
+                if (mesh) {
+                    context.uniformMatrix3fv(uniforms.metadata, false, metadata)
                     mesh.draw()
+                }
                  else if (sprite) {
                     metadata[1] = sprite.attributes[0]
                     metadata[2] = sprite.attributes[1]
                     metadata[3] = current.scaling[0]
                     metadata[4] = current.scaling[1]
                     metadata[5] = current.scaling[2]
+                    context.uniformMatrix3fv(uniforms.metadata, false, metadata)
                     StaticMeshes.drawQuad()
                 }
             }

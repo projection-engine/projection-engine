@@ -4,7 +4,9 @@ layout (location = 0) in vec3 position;
 uniform mat4 transformMatrix;
 uniform mat3 metadata;
 
+out vec3 id;
 void main(){
+    id = vec3(metadata[2]);
     bool isSprite = metadata[0][0] == 1.;
     if (isSprite) {
         bool alwaysFaceCamera = metadata[0][1] == 1.;
