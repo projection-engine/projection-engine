@@ -3,7 +3,7 @@
     import getLabel from "../utils/get-label";
     import getDropdownHeaderStyles from "../../../../../components/dropdown/utils/get-dropdown-header-styles";
     import Options from "./ShadingModelOptions.svelte";
-    import SceneRenderer from "../../../../../../engine-core/runtime/SceneRenderer";
+    import SceneComposition from "../../../../../../engine-core/runtime/SceneComposition";
     import SHADING_MODELS from "../../../../../../engine-core/static/SHADING_MODELS";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
 
@@ -11,7 +11,7 @@
     export let settings
 
     $: shading = getLabel(settings?.shadingModel)
-    $:SceneRenderer.debugShadingModel = settings?.shadingModel || SHADING_MODELS.ALBEDO
+    $:SceneComposition.debugShadingModel = settings?.shadingModel || SHADING_MODELS.ALBEDO
 </script>
 
 

@@ -53,9 +53,6 @@ export default class EntityManager {
         HierarchyController.updateHierarchy()
     }
 
-    function
-
-
     static replaceBlock(toRemove: string[], toAdd: Entity[]) {
         const replacedMap = {}
         for (let i = 0; i < toRemove.length; i++)

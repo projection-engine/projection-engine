@@ -115,7 +115,7 @@ export default class Loader {
                 case FILE_TYPES.TEXTURE: {
                     const res = await EngineStore.loadTextureFromImageID(data)
                     if (res) {
-                        const sprite = new Entity(undefined, LOCALIZATION_EN.SPRITE_RENDERER)
+                        const sprite = new Entity(crypto.randomUUID(), LOCALIZATION_EN.SPRITE_RENDERER)
                         EntityConstructor.translateEntity(sprite)
                         const c = sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE)
                         c.imageID = data

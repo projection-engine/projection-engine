@@ -11,6 +11,7 @@ import * as Buffer from "buffer";
 const sharp = require("sharp")
 const fs = require("fs")
 const pathRequire = require("path")
+const crypto = require('node:crypto')
 export default async function importFiles(filesToLoad, dir, registryEntries) {
     const targetDir = pathRequire.resolve(dir)
     let result = [], meshesToRead = []
@@ -19,15 +20,15 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
             const filePath = filesToLoad[i]
             const name = filePath.split(pathRequire.sep).pop()
             const newRoot = targetDir + pathRequire.sep + name.split(".")[0]
-            const fileID =crypto.randomUUID()
+            const fileID = crypto.randomUUID()
             const type = filePath.split(/\.([a-zA-Z0-9]+)$/)[1]
             switch (type) {
                 case "png":
                 case "jpg":
                 case "jpeg": {
                     if (!fs.existsSync(newRoot + FILE_TYPES.TEXTURE)) {
-                        const bufferData = <Buffer|null>await readTypedFile(filePath, "buffer")
-                        if(bufferData !== null) {
+                        const bufferData = <Buffer | null>await readTypedFile(filePath, "buffer")
+                        if (bufferData !== null) {
                             const base64 = `data:image/${type};base64,` + bufferData.toString("base64")
                             const data = JSON.stringify({...TEXTURE_TEMPLATE, base64})
                             await fs.promises.writeFile(newRoot + FILE_TYPES.TEXTURE, data)

@@ -21,13 +21,14 @@ export default class IconsSystem {
 
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity.active || entity.distanceFromCamera > settings.maxDistanceIcon)
+            if (!entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > settings.maxDistanceIcon)
                 continue
             const hasLight = entity.lightComponent !== undefined
             const hasSkylight = entity.skylightComponent !== undefined
             const hasCamera = entity.cameraComponent !== undefined
             const doesntHaveIcon = !hasLight && !hasSkylight && !hasCamera
             if (
+
                 tracking === entity ||
                 entity.meshRef && !entity.materialRef?.isSky ||
                 doesntHaveIcon && entity.meshRef && !entity.materialRef?.isSky

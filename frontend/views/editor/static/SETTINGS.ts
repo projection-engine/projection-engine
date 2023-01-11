@@ -133,7 +133,7 @@ export default {
         bloomOffset: 0,
         gamma: 2.2,
         exposure: 1,
-        motionBlurEnabled: true,
+        motionBlurEnabled: false,
         cameraMotionBlur: false,
         ortho: false,
         size: 100,
