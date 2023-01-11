@@ -26,7 +26,7 @@
         })
     })
     onDestroy(() => HierarchyController.removeListener(internalID))
-
+    $: CameraTracker.screenSpaceMovement = settings.screenSpaceMovement
 </script>
 
 

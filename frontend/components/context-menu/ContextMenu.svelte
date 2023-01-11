@@ -1,113 +1,80 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import ContextMenuController from "../../lib/context-menu/ContextMenuController";
-
+    import ROUTES from "../../../backend/static/ROUTES";
 
     const {ipcRenderer} = window.require("electron")
-    const RIGHT_BUTTON = 2
-
     let startPosition = undefined
     let contextMenu
     let open = false
-    let interval
-    let wasPointerLocked = false
 
-    function checkMouseOffset(startPosition, event) {
-        return Math.abs(startPosition.x - event.clientX) < 10 && Math.abs(startPosition.y - event.clientY) < 10
-    }
+    function handleContext(event) {
+        event.preventDefault()
 
-
-    const handleContext = (event) => {
-        if (wasPointerLocked)
+        const elements = document.elementsFromPoint(event.clientX, event.clientY)
+        let focused
+        for (let i = 0; i < elements.length; i++) {
+            if ("getAttribute" in elements[i]) {
+                const ID = elements[i].id
+                const dataID = elements[i].getAttribute("data-contextid")
+                const found = ContextMenuController.data.targets[ID] || ContextMenuController.data.targets[dataID]
+                if (!found)
+                    continue
+                focused = found
+            }
+        }
+        if (focused) {
+            startPosition = {x: event.clientX, y: event.clientY}
+            ContextMenuController.data.focused = focused
+        } else
             return
-        if (startPosition && ContextMenuController.data.focused) {
-            event.preventDefault()
-            if (checkMouseOffset(startPosition, event)) {
-                let targetElement
-                const allowAll = !ContextMenuController.data.focused.triggers || ContextMenuController.data.focused.triggers.length === 0
 
-                if (allowAll)
-                    targetElement = event.target
-                else {
-                    const allElements = document.elementsFromPoint(event.clientX, event.clientY)
-                    for (let i = 0; i < allElements.length; i++) {
-                        const currentElement = allElements[i]
-                        let hasAttribute = false
-                        const attributes = Array.from(currentElement.attributes)
+        let targetElement
+        const allowAll = !ContextMenuController.data.focused.triggers || ContextMenuController.data.focused.triggers.length === 0
 
-                        for (let i = 0; i < attributes.length; i++) {
-                            const attr = attributes[i]
-                            if (!attr.nodeName.includes("data-"))
-                                continue
-                            const has = ContextMenuController.data.focused.triggers.find(f => attr.nodeName === f)
+        if (allowAll)
+            targetElement = event.target
+        else {
+            const allElements = document.elementsFromPoint(event.clientX, event.clientY)
+            for (let i = 0; i < allElements.length; i++) {
+                const currentElement = allElements[i]
+                let hasAttribute = false
+                const attributes = Array.from(currentElement.attributes)
 
-                            if (has)
-                                hasAttribute = hasAttribute || has
-                        }
-                        if (hasAttribute) {
-                            targetElement = currentElement
-                            break;
-                        }
-                    }
-                }
-
-                if (targetElement) {
-                    let trigger = allowAll ? targetElement : undefined
-                    if (!trigger)
-                        Array.from(targetElement.attributes).forEach((attr) => {
-                            const has = ContextMenuController.data.focused.triggers.find((f) => attr.nodeName === f)
-                            if (has)
-                                trigger = has
-                        })
-                    open = true
-                    if (ContextMenuController.data.focused.onFocus)
-                        ContextMenuController.data.focused.onFocus(trigger, targetElement, event)
-                    ipcRenderer.send("OPEN_CONTEXT_MENU", ContextMenuController.data.focused.id)
-                }
-            }
-            startPosition = undefined
-        }
-    }
-
-    const handleMouseDown = (event) => {
-
-        clearInterval(interval)
-        wasPointerLocked = !(!document.pointerLockElement && wasPointerLocked)
-        interval = setInterval(() => {
-            wasPointerLocked = !(!document.pointerLockElement && wasPointerLocked)
-        }, 250)
-        if (event.button === RIGHT_BUTTON) {
-            const elements = document.elementsFromPoint(event.clientX, event.clientY)
-            let focused
-            for (let i = 0; i < elements.length; i++) {
-                if ("getAttribute" in elements[i]) {
-                    const ID = elements[i].id
-                    const dataID = elements[i].getAttribute("data-contextid")
-                    const found = ContextMenuController.data.targets[ID] || ContextMenuController.data.targets[dataID]
-                    if (!found)
+                for (let i = 0; i < attributes.length; i++) {
+                    const attr = attributes[i]
+                    if (!attr.nodeName.includes("data-"))
                         continue
-                    focused = found
+                    const has = ContextMenuController.data.focused.triggers.find(f => attr.nodeName === f)
+
+                    if (has)
+                        hasAttribute = hasAttribute || has
+                }
+                if (hasAttribute) {
+                    targetElement = currentElement
+                    break;
                 }
             }
-            if (focused) {
-                startPosition = {x: event.clientX, y: event.clientY}
-                ContextMenuController.data.focused = focused
-            }
-        } else if (!contextMenu.contains(event.target)) {
-            open = false
-            contextMenu.style.zIndex = "-1"
+        }
+        if (targetElement) {
+            let trigger = allowAll ? targetElement : undefined
+            if (!trigger)
+                Array.from(targetElement.attributes).forEach((attr) => {
+                    const has = ContextMenuController.data.focused.triggers.find((f) => attr.nodeName === f)
+                    if (has)
+                        trigger = has
+                })
+            open = true
+            if (ContextMenuController.data.focused.onFocus)
+                ContextMenuController.data.focused.onFocus(trigger, targetElement, event)
+
+            ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU, ContextMenuController.data.focused.id)
         }
     }
-    onMount(() => {
-        document.addEventListener("mousedown", handleMouseDown)
-        contextMenu.parentElement.addEventListener("mouseup", handleContext)
-    })
-    onDestroy(() => {
-        document.onpointerlockchange = undefined
-        document.removeEventListener("mousedown", handleMouseDown)
-        contextMenu.parentElement.removeEventListener("mouseup", handleContext)
-    })
 
+
+    onMount(() => document.addEventListener("contextmenu", handleContext))
+    onDestroy(() => document.removeEventListener("contextmenu", handleContext))
 </script>
 
 <div style="display: none" bind:this={contextMenu}></div>

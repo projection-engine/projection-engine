@@ -81,7 +81,7 @@ export default class EngineTools {
         selected = EngineTools.selected
     }
 
-    static afterDrawing() {
+    static execute() {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
         SelectedSystem.drawToBuffer(selected)

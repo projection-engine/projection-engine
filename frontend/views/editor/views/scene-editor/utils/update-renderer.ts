@@ -29,14 +29,14 @@ export default function updateRenderer(selected, engine, settings) {
             CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
             CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
             if (settings.camera.smoothing != null)
-                CameraAPI.translationSmoothing = settings.camera.smoothing * .001
+                CameraAPI.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
             if (settings.camera.rotationSmoothing != null)
                 CameraAPI.rotationSmoothing = settings.camera.rotationSmoothing * .001
             CameraAPI.updateViewTarget(settings.camera)
         }
     }
     if (Engine.environment === ENVIRONMENT.DEV)
-        Loop.linkToExecutionPipeline(EngineTools.afterDrawing, undefined)
+        Loop.linkToExecutionPipeline(EngineTools.execute)
     else
         Loop.linkToExecutionPipeline()
 
