@@ -14,6 +14,7 @@ export default function viewportContext(settings:MutableObject, forDropdown?:boo
         VIEWPORT_HOTKEYS.SELECT_ALL,
         VIEWPORT_HOTKEYS.INVERT_SELECTION,
         VIEWPORT_HOTKEYS.SELECT_HIERARCHY,
+        VIEWPORT_HOTKEYS.SHOW_SELECTED,
 
         {divider: true, label: "Copy/paste"},
         VIEWPORT_HOTKEYS.COPY,

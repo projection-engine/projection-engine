@@ -363,7 +363,7 @@ enum LOCALIZATION_EN {
     S_GIZMO = "Scale",
     BACKGROUND = "Background",
 
-    SHOW_MAIN_ENTITY = "Show selected",
+    SHOW_SELECTED = "Show selected",
     REMOVE_FILTER = "Remove filter",
     DEACTIVATE = "Activate/Deactivate entity",
     SELECTED_CHILD = "Child entity is selected",

@@ -5,7 +5,6 @@
     import EngineHierarchyView from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../lib/utils/HotKeysController";
-    import getNativeComponents from "../inspector/utils/get-native-components";
     import dragDrop from "../../../../components/drag-drop/drag-drop";
     import HierarchyController from "./lib/HierarchyController";
     import SettingsStore from "../../stores/SettingsStore";
@@ -18,6 +17,7 @@
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
     import Input from "../../../../components/input/Input.svelte";
+    import NATIVE_COMPONENTS from "../inspector/static/NATIVE_COMPONENTS";
 
     let search = ""
     const ID =crypto.randomUUID()
@@ -28,6 +28,8 @@
     let settings
     let openTree = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
+
+
     $: {
         if (ref != null) {
             HotKeysController.bindAction(
@@ -38,12 +40,9 @@
             )
         }
     }
-    onDestroy(() => {
-        HotKeysController.unbindAction(ref)
-        unsubscribeSettings()
-    })
 
-    $: nativeComponents = getNativeComponents()
+
+
 
     const draggable = dragDrop()
     onMount(() => {
@@ -51,26 +50,27 @@
             targetElement: ref,
             onDrop: (entityDragged, event) => {
                 const node = event.composedPath().find(n => n?.getAttribute?.("data-node") != null)?.getAttribute?.("data-node")
-                let dropTarget
-                if (node)
-                    dropTarget = Engine.entitiesMap.get(node)
-                handleDrop(event, entityDragged, dropTarget)
-
+                handleDrop(event, entityDragged, node ? Engine.entitiesMap.get(node) : undefined)
             },
             onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
     })
 
-    onDestroy(() => draggable.onDestroy())
+    onDestroy(() => {
+        HotKeysController.unbindAction(ref)
+        unsubscribeSettings()
+        draggable.onDestroy()
+    })
+
 </script>
 
 
 <ViewHeader>
     <button
-            on:click={() => HierarchyController.updateHierarchy()}
+            on:click={HierarchyController.openTree}
             data-view-header-button="-"
     >
-        <ToolTip content={LOCALIZATION_EN.SHOW_MAIN_ENTITY}/>
+        <ToolTip content={LOCALIZATION_EN.SHOW_SELECTED}/>
         <Icon styles="font-size: .9rem">center_focus_strong</Icon>
     </button>
     <button
@@ -94,7 +94,7 @@
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
         </button>
-        {#each nativeComponents as component}
+        {#each NATIVE_COMPONENTS as component}
             <button
                     on:click={e => {
                         if(filteredComponent=== component[0] )

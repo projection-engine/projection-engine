@@ -45,13 +45,17 @@
     })
 
     onMount(() => {
-        HierarchyController.registerListener(internalID, () => {
+        HierarchyController.registerListener(internalID, (op) => {
+            const openLocal = op || openTree
+            console.trace(op)
+            if(op !== undefined)
+                setOpenTree(op)
             const entities = Engine.entities
             const hierarchy = HierarchyController.hierarchy
             const data = []
             if (!inputValue && !filteredComponent)
                 for (let i = 0; i < hierarchy.length; i++) {
-                    if (!hierarchy[i].node.parent || openTree[hierarchy[i].node.parent.id])
+                    if (!hierarchy[i].node.parent || openLocal[hierarchy[i].node.parent.id])
                         data.push(hierarchy[i])
                 }
              else

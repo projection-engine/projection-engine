@@ -41,6 +41,11 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
             callback: focusOnCamera,
             require: settings.viewportHotkeys.FOCUS_ON_CAMERA,
         },
+        SHOW_SELECTED: {
+            label: LOCALIZATION_EN.SHOW_SELECTED,
+            callback: HierarchyController.openTree,
+            require: settings.viewportHotkeys.SHOW_SELECTED,
+        },
 
         SAVE: {
             label: "Save",

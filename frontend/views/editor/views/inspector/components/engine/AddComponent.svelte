@@ -1,7 +1,6 @@
 <script>
     import FilesStore from "../../../../stores/FilesStore";
     import {onDestroy} from "svelte";
-    import getNativeComponents from "../../utils/get-native-components";
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
@@ -10,8 +9,7 @@
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
-
-    const nativeComponents = getNativeComponents()
+    import NATIVE_COMPONENTS from "../../static/NATIVE_COMPONENTS";
 
     export let entity
 
@@ -32,7 +30,7 @@
         <ToolTip content={LOCALIZATION_EN.ADD_COMPONENT}/>
     </button>
 
-    {#each nativeComponents as [key,  label, icon]}
+    {#each NATIVE_COMPONENTS as [key,  label, icon]}
         <button
                 on:click={(e) =>{
                     UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
