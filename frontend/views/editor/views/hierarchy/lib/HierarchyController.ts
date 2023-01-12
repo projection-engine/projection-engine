@@ -42,8 +42,9 @@ export default class HierarchyController {
             open[target.id] = true
             target = target.parent
         }
-
         open[target.id] = true
-        return open
+
+        console.trace(open)
+        Object.values(HierarchyController.#listening).forEach(v => v({...open}))
     }
 }

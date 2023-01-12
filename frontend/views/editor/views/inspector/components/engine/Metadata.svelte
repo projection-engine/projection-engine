@@ -1,5 +1,4 @@
 <script lang="ts">
-    import getNativeComponents from "../../utils/get-native-components";
     import Engine from "../../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
@@ -13,7 +12,6 @@
     import ColorPicker from "../../../../../../components/color-picker/ColorPicker.svelte";
     import Entity from "../../../../../../../engine-core/instances/Entity";
 
-    const nativeComponents = getNativeComponents()
     export let entity: Entity | undefined
 </script>
 

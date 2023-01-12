@@ -46,6 +46,7 @@ export default {
 
     viewportHotkeys: {
         FORWARD_MOVEMENT_CAMERA: [KEYS.KeyW],
+        SHOW_SELECTED: [KEYS.ControlLeft, KEYS.KeyH],
         BACKWARD_MOVEMENT_CAMERA: [KEYS.KeyS],
         LEFT_MOVEMENT_CAMERA: [KEYS.KeyA],
         RIGHT_MOVEMENT_CAMERA: [KEYS.KeyD],
