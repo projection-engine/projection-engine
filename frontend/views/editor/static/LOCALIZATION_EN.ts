@@ -646,7 +646,7 @@ QUALITY = "Quality",
     JSON_OBJECT = "JSON object",
 
     ASSETS = "Assets",
-
+    FLAT_SHADED = "Flat shaded",
     OPTIONS = "Options",
     BACK_DIR = "Action: Go back",
     FORWARD_DIR = "Action: Go forward",
