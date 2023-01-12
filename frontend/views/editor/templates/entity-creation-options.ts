@@ -83,6 +83,11 @@ export default function entityCreationOptions() {
             icon: "image",
             label: LOCALIZATION_EN.SPRITE,
             onClick: EntityConstructor.createSprite
+        },
+        {
+            icon: "image",
+            label: LOCALIZATION_EN.DECAL,
+            onClick: EntityConstructor.createDecal
         }
     ]
 }

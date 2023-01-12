@@ -29,7 +29,6 @@
     let openTree = {}
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-
     $: {
         if (ref != null) {
             HotKeysController.bindAction(
@@ -40,9 +39,6 @@
             )
         }
     }
-
-
-
 
     const draggable = dragDrop()
     onMount(() => {

@@ -1,9 +1,9 @@
 import FilesAPI from "../../fs/FilesAPI";
 
-import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
+import COMPONENTS from "../../../../../../engine-core/templates/COMPONENTS";
 import Entity from "../../../../../../engine-core/instances/Entity";
 import FS from "../../../../../lib/FS/FS";
-import TerrainComponent from "../../../../../../engine-core/templates/components/TerrainComponent";
+import TerrainComponent from "../../../../../../engine-core/instances/components/TerrainComponent";
 import EntityManager from "../../EntityManager";
 
 export default async function loadTerrain(reg) {

@@ -7,7 +7,6 @@ import GridSystem from "../../../../../../engine-tools/runtime/GridSystem";
 import GizmoSystem from "../../../../../../engine-tools/runtime/GizmoSystem";
 import GPU from "../../../../../../engine-core/GPU";
 import ENVIRONMENT from "../../../../../../engine-core/static/ENVIRONMENT";
-import SHADING_MODELS from "../../../../../../engine-core/static/SHADING_MODELS";
 import Loop from "../../../../../../engine-core/Loop";
 import RotationGizmo from "../../../../../../engine-tools/lib/transformation/RotationGizmo";
 import TranslationGizmo from "../../../../../../engine-tools/lib/transformation/TranslationGizmo";

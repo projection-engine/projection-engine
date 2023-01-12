@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
+import COMPONENTS from "../../../../../../engine-core/templates/COMPONENTS";
 
 export default function getComponentIcon(key) {
     switch (key) {
@@ -13,6 +13,7 @@ export default function getComponentIcon(key) {
         case "TRANSFORMATION":
             return "transform"
         case COMPONENTS.SPRITE:
+        case COMPONENTS.DECAL:
             return "image"
         case COMPONENTS.PHYSICS_COLLIDER:
             return "compare_arrows"
@@ -23,8 +24,8 @@ export default function getComponentIcon(key) {
             return "disabled_visible"
         case COMPONENTS.UI:
             return "widgets"
-        case COMPONENTS.TERRAIN:
-            return "landscape"
+        // case COMPONENTS.TERRAIN:
+        //     return "landscape"
         default:
             return "code"
     }

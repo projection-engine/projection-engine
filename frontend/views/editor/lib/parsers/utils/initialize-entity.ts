@@ -1,7 +1,7 @@
-import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
+import COMPONENTS from "../../../../../../engine-core/templates/COMPONENTS";
 import Entity from "../../../../../../engine-core/instances/Entity";
 import MutableObject from "../../../../../../engine-core/MutableObject";
-import MeshComponent from "../../../../../../engine-core/templates/components/MeshComponent";
+import MeshComponent from "../../../../../../engine-core/instances/components/MeshComponent";
 
 
 export default function initializeEntity(data: MutableObject, meshID: string, parent?: Entity, index?: number) {

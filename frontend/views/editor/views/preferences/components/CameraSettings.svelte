@@ -1,12 +1,9 @@
 <script>
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-    import CameraAPI from "../../../../../../engine-core/lib/utils/CameraAPI";
     import CameraTracker from "../../../../../../engine-tools/lib/CameraTracker";
     import SettingsStore from "../../../stores/SettingsStore";
-    import {onDestroy} from "svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import Layout from "../../inspector/components/engine/dynamic-form/Layout.svelte";
-    import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
     import CAMERA_PROPS from "../../../../../../engine-core/static/component-props/CAMERA_PROPS";
 
     export let settings

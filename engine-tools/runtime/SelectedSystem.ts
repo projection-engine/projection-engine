@@ -5,7 +5,6 @@ import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticFBO from "../../engine-core/lib/StaticFBO";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import Entity from "../../engine-core/instances/Entity";
-import GPUAPI from "../../engine-core/lib/rendering/GPUAPI";
 
 
 const fallbackColor = new Float32Array([.5, .5, .5])

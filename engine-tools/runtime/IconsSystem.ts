@@ -28,10 +28,10 @@ export default class IconsSystem {
             const hasCamera = entity.cameraComponent !== undefined
             const doesntHaveIcon = !hasLight && !hasSkylight && !hasCamera
             if (
-
                 tracking === entity ||
                 entity.meshRef && !entity.materialRef?.isSky ||
-                doesntHaveIcon && entity.meshRef && !entity.materialRef?.isSky
+                doesntHaveIcon && entity.meshRef && !entity.materialRef?.isSky ||
+                doesntHaveIcon && entity.decalComponent?.imageID
             )
                 continue
             cb(
@@ -161,7 +161,6 @@ export default class IconsSystem {
         if (settings.showLines)
             IconsSystem.loop(IconsSystem.#drawVisualizations, settings)
         LineRenderer.finish()
-
     }
 
 

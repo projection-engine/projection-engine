@@ -1,13 +1,13 @@
 import Entity from "../../../../../engine-core/instances/Entity";
-import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
+import COMPONENTS from "../../../../../engine-core/templates/COMPONENTS";
 import {vec3, vec4} from "gl-matrix";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 
 import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
 import SettingsStore from "../../stores/SettingsStore";
 import EntityAPI from "../../../../../engine-core/lib/utils/EntityAPI";
-import MeshComponent from "../../../../../engine-core/templates/components/MeshComponent";
-import LightComponent from "../../../../../engine-core/templates/components/LightComponent";
+import MeshComponent from "../../../../../engine-core/instances/components/MeshComponent";
+import LightComponent from "../../../../../engine-core/instances/components/LightComponent";
 import HierarchyController from "../../views/hierarchy/lib/HierarchyController";
 import EntityManager from "../EntityManager";
 
@@ -67,9 +67,12 @@ export default class EntityConstructor {
         const entity = new Entity(undefined, LOCALIZATION_EN.SPRITE_RENDERER)
         entity.addComponent(COMPONENTS.SPRITE)
         EntityManager.add(entity)
-
     }
-
+    static createDecal() {
+        const entity = new Entity(undefined, LOCALIZATION_EN.DECAL_RENDERER)
+        entity.addComponent(COMPONENTS.DECAL)
+        EntityManager.add(entity)
+    }
     static toggleEntityVisibility(nodeRef, submit = true) {
         EntityAPI.toggleVisibility(nodeRef)
         if (submit)

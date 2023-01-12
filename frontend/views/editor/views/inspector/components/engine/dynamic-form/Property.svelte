@@ -1,6 +1,6 @@
 <script>
     import Checkbox from "../../../../../../../components/checkbox/Checkbox.svelte";
-    import Component from "../../../../../../../../engine-core/templates/components/Component";
+    import Component from "../../../../../../../../engine-core/instances/components/Component";
     import Selector from "../../../../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../../stores/EngineStore";
     import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";

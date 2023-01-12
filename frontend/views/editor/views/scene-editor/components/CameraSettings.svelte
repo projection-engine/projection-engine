@@ -1,5 +1,4 @@
 <script>
-    import CameraAPI from "../../../../../../engine-core/lib/utils/CameraAPI";
     import ViewportActions from "../../../lib/utils/ViewportActions";
     import focusOnCamera from "../../../utils/focus-on-camera";
     import Engine from "../../../../../../engine-core/Engine";

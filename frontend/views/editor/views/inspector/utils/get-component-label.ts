@@ -1,30 +1,30 @@
-import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
+import COMPONENTS from "../../../../../../engine-core/templates/COMPONENTS";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
-export default function getComponentLabel(component){
-    switch (component){
+export default function getComponentLabel(component) {
+    switch (component) {
         case COMPONENTS.MESH:
-            return "Mesh"
+            return  LOCALIZATION_EN.MESH
         case COMPONENTS.CAMERA:
-            return "Camera"
-
-
+            return  LOCALIZATION_EN.CAMERA
         case COMPONENTS.SPRITE:
-            return "Sprite"
+            return  LOCALIZATION_EN.SPRITE
+        case COMPONENTS.DECAL:
+            return LOCALIZATION_EN.DECAL
         case COMPONENTS.LIGHT:
             return LOCALIZATION_EN.LIGHT
         case COMPONENTS.SKYLIGHT:
             return LOCALIZATION_EN.SKYLIGHT
         case COMPONENTS.PHYSICS_COLLIDER:
-            return "Physics collider"
+            return  LOCALIZATION_EN.PHYSICS_COLLIDER
         case COMPONENTS.RIGID_BODY:
-            return "Rigid body"
+            return  LOCALIZATION_EN.RIGID_BODY
         case COMPONENTS.CULLING:
-            return "Culling"
+            return  LOCALIZATION_EN.CULLING
         case COMPONENTS.UI:
-            return "UI wrapper"
-        case COMPONENTS.TERRAIN:
-            return "Terrain"
+            return  LOCALIZATION_EN.UI_WRAPPER
+        // case COMPONENTS.TERRAIN:
+        //     return "Terrain"
 
     }
 }

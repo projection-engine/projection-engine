@@ -4,6 +4,7 @@ import SelectionStore from "../../../stores/SelectionStore";
 import QueryAPI from "../../../../../../engine-core/lib/utils/QueryAPI";
 import GPU from "../../../../../../engine-core/GPU";
 import VisibilityRenderer from "../../../../../../engine-core/runtime/VisibilityRenderer";
+import Engine from "../../../../../../engine-core/Engine";
 
 const MAX_DELTA = 50, LEFT_BUTTON = 0
 
@@ -19,6 +20,7 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
 
     const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY)
     const entity = QueryAPI.getEntityByPickerID(clickedEntity)
+    console.trace(clickedEntity, Engine.entities.map(e => e.pickIndex))
 
     if (!entity) {
         setContext([])

@@ -4,7 +4,7 @@ import RegistryAPI from "../fs/RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
+import COMPONENTS from "../../../../../engine-core/templates/COMPONENTS";
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 import UndoRedoAPI from "../utils/UndoRedoAPI";
@@ -17,8 +17,8 @@ import FileSystemAPI from "../../../../../engine-core/lib/utils/FileSystemAPI";
 import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 import FS from "../../../../lib/FS/FS";
-import MeshComponent from "../../../../../engine-core/templates/components/MeshComponent";
-import SpriteComponent from "../../../../../engine-core/templates/components/SpriteComponent";
+import MeshComponent from "../../../../../engine-core/instances/components/MeshComponent";
+import SpriteComponent from "../../../../../engine-core/instances/components/SpriteComponent";
 import AlertController from "../../../../components/alert/AlertController";
 import EntityManager from "../EntityManager";
 

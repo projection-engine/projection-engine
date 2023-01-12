@@ -4,7 +4,7 @@ import GizmoSystem from "./runtime/GizmoSystem"
 import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../engine-core/Engine";
 import CameraTracker from "./lib/CameraTracker";
-import CollisionVisualizationSystem from "./runtime/CollisionVisualizationSystem";
+import WireframeRenderer from "./runtime/WireframeRenderer";
 import SettingsStore from "../frontend/views/editor/stores/SettingsStore";
 import UIAPI from "../engine-core/lib/rendering/UIAPI";
 
@@ -91,7 +91,7 @@ export default class EngineTools {
         GPU.context.disable(GPU.context.DEPTH_TEST)
         if (settings.showGrid)
             GridSystem.execute()
-        CollisionVisualizationSystem.execute(selected)
+        WireframeRenderer.execute()
         SelectedSystem.drawSilhouette(selected, settings)
         IconsSystem.drawIcons(settings)
         GPU.context.enable(GPU.context.DEPTH_TEST)

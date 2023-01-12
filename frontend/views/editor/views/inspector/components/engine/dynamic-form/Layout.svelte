@@ -2,7 +2,7 @@
     import Property from "./Property.svelte";
     import removeComponent from "../../../utils/remove-component";
     import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
-    import Component from "../../../../../../../../engine-core/templates/components/Component";
+    import Component from "../../../../../../../../engine-core/instances/components/Component";
     import Icon from "../../../../../../../components/icon/Icon.svelte";
     import getComponentLabel from "../../../utils/get-component-label";
 
