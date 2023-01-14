@@ -91,6 +91,7 @@ export default class EngineTools {
         GPU.context.disable(GPU.context.DEPTH_TEST)
         if (settings.showGrid)
             GridSystem.execute()
+        if (settings.showOutline)
         WireframeRenderer.execute()
         SelectedSystem.drawSilhouette(selected, settings)
         IconsSystem.drawIcons(settings)

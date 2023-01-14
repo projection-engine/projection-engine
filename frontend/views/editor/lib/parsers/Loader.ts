@@ -117,8 +117,7 @@ export default class Loader {
                     if (res) {
                         const sprite = new Entity(crypto.randomUUID(), LOCALIZATION_EN.SPRITE_RENDERER)
                         EntityConstructor.translateEntity(sprite)
-                        const c = sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE)
-                        c.imageID = data
+                        sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
                         EntityManager.add(sprite)
                     }
                     break
