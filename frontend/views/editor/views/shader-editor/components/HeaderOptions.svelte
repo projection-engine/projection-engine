@@ -28,7 +28,7 @@
             <Icon styles="font-size: .9rem">save</Icon>
             {LOCALIZATION_EN.SAVE}
         </button>
-        <div data-vertdivider="-"></div>
+<!--        <div data-vertdivider="-"></div>-->
 <!--        <button-->
 <!--                disabled={!openFile}-->
 <!--                data-view-header-button="-"-->

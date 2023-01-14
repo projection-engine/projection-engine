@@ -11,6 +11,7 @@ import type ShaderNode from "../templates/ShaderNode";
 import GPU from "../../../../../../engine-core/GPU";
 import UberShader from "../../../../../../engine-core/utils/UberShader";
 import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
+import Material from "../templates/nodes/Material";
 
 export default class ShaderEditorTools {
 
@@ -27,18 +28,24 @@ export default class ShaderEditorTools {
         if (nodeInstance === null)
             return;
         Object.keys(node).forEach(o => {
-            if (o !== "inputs" && o !== "output") {
-                if (o === "texture" && nodeInstance instanceof TextureSample) nodeInstance[o] = FilesStore.data.textures.find(i => i.registryID === node[o].registryID)
-                else {
-                    const input = nodeInstance.inputs.find(i => i.key === o)
-                    if (input && input.onChange) {
-                        nodeInstance[o] = node[o]
-                        input.onChange(node[o])
-                    } else
-                        nodeInstance[o] = node[o]
-                }
+            if (o === "texture" && nodeInstance instanceof TextureSample) nodeInstance[o] = FilesStore.data.textures.find(i => i.registryID === node[o].registryID)
+            else {
+                const input = nodeInstance.inputs.find(i => i.key === o)
+                if (!input && !nodeInstance.output.find(i => i.key === o))
+                    return
+                if (input && input.onChange) {
+                    nodeInstance[o] = node[o]
+                    input.onChange(node[o])
+                } else
+                    nodeInstance[o] = node[o]
             }
         })
+
+        nodeInstance.x = node.x
+        nodeInstance.id = node.id
+        nodeInstance.y = node.y
+        nodeInstance.width =  Math.max(node.width, nodeInstance.minWidth)
+        nodeInstance.height = Math.max(node.height, nodeInstance.minHeight)
         return nodeInstance
     }
 
@@ -105,6 +112,10 @@ export default class ShaderEditorTools {
                 } else {
                     AlertController.warn(LOCALIZATION_EN.UPDATING_UNIFORMS)
                     await oldMaterial.updateUniformGroup(compiled[0].uniformValues)
+
+                    oldMaterial.doubleSided = compiled[0].settings.doubleSided
+                    oldMaterial.ssrEnabled = compiled[0].settings.ssrEnabled
+                    oldMaterial.renderingMode = compiled[0].settings.renderingMode
                 }
             }
 

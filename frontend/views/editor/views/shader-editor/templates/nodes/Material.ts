@@ -21,9 +21,8 @@ export default class Material extends ShaderNode {
     opacity = 1
     emission = [0, 0, 0]
     al = [0, 0, 0]
-    flatShading = false
 
-    renderingType = MATERIAL_RENDERING_TYPES.ISOTROPIC
+    renderingMode = MATERIAL_RENDERING_TYPES.ISOTROPIC
     anisotropicRotation = 0
     anisotropy = 0
     clearCoat = 0
@@ -52,11 +51,21 @@ export default class Material extends ShaderNode {
                 max: 1,
                 min: 0
             },
+            {label: "Refraction index", key: "refraction", accept: allTypes, type: DATA_TYPES.FLOAT, disabled: true},
+
+            {label: "Anisotropic rotation", key: "anisotropicRotation", accept: allTypes, type: DATA_TYPES.FLOAT},
+            {label: "Anisotropy", key: "anisotropy", accept: allTypes, type: DATA_TYPES.FLOAT},
+
+            {label: "Clear coat", key: "clearCoat", accept: allTypes, type: DATA_TYPES.FLOAT},
+
+            {label: "Sheen", key: "sheen", accept: allTypes, type: DATA_TYPES.FLOAT},
+            {label: "Sheen tint", key: "sheenTint", accept: allTypes, type: DATA_TYPES.FLOAT},
+
             {label: "Screen-space reflections", key: "ssrEnabled", type: DATA_TYPES.CHECKBOX},
             {label: "Double sided", key: "doubleSided", type: DATA_TYPES.CHECKBOX},
             {
                 label: "Rendering type",
-                key: "renderingType",
+                key: "renderingMode",
                 type: DATA_TYPES.OPTIONS,
                 options: [
                     {label: "Isotropic", data: MATERIAL_RENDERING_TYPES.ISOTROPIC},
@@ -69,18 +78,10 @@ export default class Material extends ShaderNode {
                 ]
             },
 
-            {label: "Refraction index", key: "refraction", accept: allTypes, type: DATA_TYPES.FLOAT, disabled: true},
 
-            {label: "Anisotropic rotation", key: "anisotropicRotation", type: DATA_TYPES.FLOAT},
-            {label: "Anisotropy", key: "anisotropy", type: DATA_TYPES.FLOAT},
-
-            {label: "Clear coat", key: "clearCoat", type: DATA_TYPES.FLOAT},
-
-            {label: "Sheen", key: "sheen", type: DATA_TYPES.FLOAT},
-            {label: "Sheen tint", key: "sheenTint", type: DATA_TYPES.FLOAT},
         ], [])
 
-        const rT = this.inputs.find(i => i.key === "renderingType")
+        const rT = this.inputs.find(i => i.key === "renderingMode")
         rT.onChange = (newValue: number) => {
             switch (newValue) {
                 case MATERIAL_RENDERING_TYPES.ISOTROPIC:
@@ -308,7 +309,7 @@ export default class Material extends ShaderNode {
             sheen               = ${this.getDataBehaviour(sheen)};
             sheenTint           = ${this.getDataBehaviour(sheenTint)};
             
-            alpha = ${this.renderingType === MATERIAL_RENDERING_TYPES.TRANSPARENCY ? this.getDataBehaviour(opacity) : "1."};
+            alpha = ${this.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY ? this.getDataBehaviour(opacity) : "1."};
             albedo = ${this.getData(al)};
             ${normal ? "computeTBN();" : ""}
             N = ${normal ? `normalize(TBN * ((${this.getData(normal)} * 2.0)- 1.0))` : "normalVec"};

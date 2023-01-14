@@ -3,7 +3,7 @@ import Canvas from "../libs/Canvas";
 import SCALE_BUTTON_SIZE from "../static/SCALE_BUTTON_SIZE";
 
 export default class Draggable {
-    readonly id = crypto.randomUUID()
+    id = crypto.randomUUID()
     isOnDrag = false
     width = 200
     height = HEADER_HEIGHT

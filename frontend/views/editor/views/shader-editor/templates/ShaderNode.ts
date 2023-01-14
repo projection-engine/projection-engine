@@ -29,6 +29,7 @@ export default class ShaderNode extends Draggable {
     output: Output[]
     inputs: Input[]
 
+
     constructor(inputs: Input[], output?: Output[], dynamicInputs?: boolean) {
         super()
         this.x = 10
@@ -36,7 +37,15 @@ export default class ShaderNode extends Draggable {
         this.uniformName = "DYNAMIC_" + this.id.replaceAll("-", "_")
         this.output = output
         this.inputs = inputs ? inputs : []
-        this.minHeight = this.height = HEADER_HEIGHT + (Math.max(this.output.length, this.inputs.filter(e => e.accept !== undefined).length) + .5) * (HEADER_HEIGHT - 5)
+        const colorWithSelection = this.inputs.filter(e => e.type === DATA_TYPES.COLOR && !e.accept).length * .5
+
+        const q = Math.max(
+            this.output.length,
+            this.inputs.filter(e => {
+                return e.accept !== undefined || e.type == DATA_TYPES.OPTIONS || e.type === DATA_TYPES.COLOR || e.type == DATA_TYPES.CHECKBOX
+            }).length + colorWithSelection
+        )
+        this.minHeight = this.height = HEADER_HEIGHT + q * (HEADER_HEIGHT - 5)
         this.dynamicInputs = dynamicInputs
     }
 
@@ -92,7 +101,7 @@ export default class ShaderNode extends Draggable {
         let validIndex = 0
         for (let j = 0; j < this.inputs.length; j++) {
             const C = this.inputs[j]
-            if (C.accept || C.type === DATA_TYPES.COLOR || C.type === DATA_TYPES.TEXTURE) {
+            if (C.accept || C.type === DATA_TYPES.OPTIONS || C.type === DATA_TYPES.CHECKBOX || C.type === DATA_TYPES.COLOR || C.type === DATA_TYPES.TEXTURE) {
                 CanvasRenderer.drawIO(ctx, false, this, validIndex, C)
                 validIndex++
             }
