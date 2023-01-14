@@ -115,20 +115,16 @@
 </script>
 
 <HeaderOptions
-        save={async () => {
-                await buildShader(canvas, openFile)
-                await ShaderEditorTools.save(canvas)
-            }}
+
         openFile={openFile}
-        compile={() => buildShader(canvas, openFile).catch()}
         initializeFromFile={initializeFromFile}
         canvasAPI={canvas}
         openSourceCode={async () => {
-                const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
-                const newFile = FS.TEMP + FS.sep + openFile.registryID + ".log"
-                await FilesAPI.writeFile(newFile, shader, true)
-                shell.openPath(newFile).catch()
-            }}
+            const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
+            const newFile = FS.TEMP + FS.sep + openFile.registryID + ".log"
+            await FilesAPI.writeFile(newFile, shader, true)
+            shell.openPath(newFile).catch()
+        }}
 />
 <div class="wrapper" bind:this={ref}>
     <canvas on:drop={getOnDropEvent(canvas)} on:dragover={e => e.preventDefault()} class="canvas"

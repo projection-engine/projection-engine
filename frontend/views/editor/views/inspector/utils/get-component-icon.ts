@@ -12,8 +12,9 @@ export default function getComponentIcon(key) {
             return "lens_blur"
         case "TRANSFORMATION":
             return "transform"
-        case COMPONENTS.SPRITE:
         case COMPONENTS.DECAL:
+            return "layers"
+        case COMPONENTS.SPRITE:
             return "image"
         case COMPONENTS.PHYSICS_COLLIDER:
             return "compare_arrows"

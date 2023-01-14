@@ -8,6 +8,9 @@ import FilesStore from "../../../stores/FilesStore";
 import AlertController from "../../../../../components/alert/AlertController";
 import Canvas from "./Canvas";
 import type ShaderNode from "../templates/ShaderNode";
+import GPU from "../../../../../../engine-core/GPU";
+import UberShader from "../../../../../../engine-core/utils/UberShader";
+import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
 
 export default class ShaderEditorTools {
 
@@ -63,7 +66,7 @@ export default class ShaderEditorTools {
 
     static async compile(canvasAPI: Canvas) {
         const serializedNodes = canvasAPI.nodes.map(ShaderEditorTools.#serializeNode)
-        const [compiled] = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
+        const compiled = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
         return {compiled, serializedNodes}
     }
 
@@ -79,13 +82,32 @@ export default class ShaderEditorTools {
                     sourceRef: l.sourceRef.key,
                     targetRef: l.targetRef.key,
                 })),
-                response: compiled,
+                response: compiled[0],
                 comments: canvasAPI.comments
             }
             await AssetAPI.updateAsset(
                 openFile.registryID,
                 JSON.stringify(materialData)
             )
+
+            const oldMaterial = GPU.materials.get(openFile.registryID)
+
+            if (oldMaterial) {
+                if (!UberShader.uberSignature[compiled[1]]) {
+                    GPUAPI.asyncDestroyMaterial(openFile.registryID)
+                    await GPUAPI.allocateMaterial({
+                        functionDeclaration: compiled[0].functionDeclaration,
+                        uniformsDeclaration: compiled[0].uniformsDeclaration,
+                        uniformValues: compiled[0].uniformValues,
+                        settings: compiled[0].settings,
+                        executionSignature: compiled[1]
+                    }, openFile.registryID)
+                } else {
+                    AlertController.warn(LOCALIZATION_EN.UPDATING_UNIFORMS)
+                    await oldMaterial.updateUniformGroup(compiled[0].uniformValues)
+                }
+            }
+
             AlertController.success(LOCALIZATION_EN.SAVED)
         } catch (err) {
             console.error(err)

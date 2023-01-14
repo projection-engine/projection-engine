@@ -7,9 +7,9 @@
     import ViewHeader from "../../../../../components/view/components/ViewHeader.svelte";
     import addComment from "../utils/add-comment";
 
-    export let save
+
     export let openFile
-    export let compile
+    // export let compile
     export let initializeFromFile
     export let nodes
     export let openSourceCode
@@ -24,20 +24,20 @@
                 disabled={!openFile}
                 data-view-header-button="-"
                 style="max-width: unset"
-                on:click={save}>
+                on:click={() => ShaderEditorTools.save(canvasAPI).catch()}>
             <Icon styles="font-size: .9rem">save</Icon>
             {LOCALIZATION_EN.SAVE}
         </button>
         <div data-vertdivider="-"></div>
-        <button
-                disabled={!openFile}
-                data-view-header-button="-"
-                style="max-width: unset"
-                on:click={compile}
-        >
-            <Icon styles="font-size: .9rem">code</Icon>
-            {LOCALIZATION_EN.COMPILE}
-        </button>
+<!--        <button-->
+<!--                disabled={!openFile}-->
+<!--                data-view-header-button="-"-->
+<!--                style="max-width: unset"-->
+<!--                on:click={compile}-->
+<!--        >-->
+<!--            <Icon styles="font-size: .9rem">code</Icon>-->
+<!--            {LOCALIZATION_EN.COMPILE}-->
+<!--        </button>-->
         <div data-vertdivider="-"></div>
         <Selector
                 styles={`max-width: ${openFile ? "10vw" : "15vw"};`}

@@ -55,13 +55,9 @@
         }
         AssetAPI.updateAsset(item.registryID, JSON.stringify(temp)).catch()
 
-        if (GPU.textures.get(item.registryID) != null) {
-            GPUAPI.destroyTexture(item.registryID)
-            GPUAPI.allocateTexture({
-                ...temp,
-                img: temp.base64
-            }, item.registryID)
-        }
+        const existing = GPU.textures.get(item.registryID)
+        if (existing != null)
+            existing.update({...temp, img: temp.base64})
         data = temp
     }
 </script>
