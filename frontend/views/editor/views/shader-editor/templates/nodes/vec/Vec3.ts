@@ -45,7 +45,7 @@ export default class Vec3 extends ShaderNode {
                 key: this.uniformName,
                 type: DATA_TYPES.VEC3
             })
-            return `uniform float ${this.uniformName};`
+            return `uniform vec3 ${this.uniformName};`
         }
         return `const vec3 ${this.uniformName} = vec3(${checkGlslFloat(this.v[0])}, ${checkGlslFloat(this.v[1])}, ${checkGlslFloat(this.v[2])});`
 
