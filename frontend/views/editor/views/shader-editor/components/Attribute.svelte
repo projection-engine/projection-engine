@@ -7,36 +7,23 @@
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Dropdown from "../../../../../components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
+    import getNewVector from "../utils/get-new-vector";
 
     export let attribute
     export let node
-    export let handleChange
+    export let onChange
     export let returnDefault
-    const getNewVec = (value, v, index, type) => {
-        switch (type) {
-            case  DATA_TYPES.VEC2:
-                return [index === 0 ? v : value[0], index === 1 ? v : value[1]]
-            case  DATA_TYPES.VEC3:
-                return [
-                    index === 0 ? v : value[0],
-                    index === 1 ? v : value[1],
-                    index === 2 ? v : value[2]
-                ]
-            case  DATA_TYPES.VEC4:
-                return [
-                    index === 0 ? v : value[0],
-                    index === 1 ? v : value[1],
-                    index === 2 ? v : value[2],
-                    index === 3 ? v : value[3]
-                ]
-            default:
-                return value
-        }
+
+    let value = node[attribute.key]
+    function handleChange(newValue){
+        value = newValue
+        onChange(newValue, attribute)
     }
 
-    $: value = node[attribute.key]
+
     const label = attribute.label, type = attribute.type
     $: possibleSelection= attribute.options ? attribute.options.find(v => v.data === value) : undefined
+
 </script>
 
 {#if type === DATA_TYPES.INT || type === DATA_TYPES.FLOAT}
@@ -53,15 +40,14 @@
             disabled={attribute.disabled}
     />
 {:else if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 || type === DATA_TYPES.VEC2}
-
-    <div class="vecWrapper">
+    <div data-inline="-">
         <Range
                 disabled={attribute.disabled}
                 maxValue={attribute.max}
                 minValue={attribute.min}
                 value={value[0]}
                 label={label}
-                onFinish={v => handleChange(getNewVec(value, v, 0, type), attribute)}
+                onFinish={v => handleChange(getNewVector(value, v, 0, type))}
         />
         <Range
                 disabled={attribute.disabled}
@@ -69,7 +55,7 @@
                 minValue={attribute.min}
                 value={value[1]}
                 label={label}
-                onFinish={v => handleChange(getNewVec(value, v, 1, type), attribute)}
+                onFinish={v => handleChange(getNewVector(value, v, 1, type))}
         />
         {#if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 }
             <Range
@@ -78,7 +64,7 @@
                     minValue={attribute.min}
                     value={value[2]}
                     label={label}
-                    onFinish={v => handleChange(getNewVec(value, v, 2, type), attribute)}
+                    onFinish={v => handleChange(getNewVector(value, v, 2, type))}
             />
         {/if}
         {#if type === DATA_TYPES.VEC4}
@@ -86,18 +72,17 @@
                     disabled={attribute.disabled}
                     maxValue={attribute.max}
                     minValue={attribute.min}
-                    onFinish={v => handleChange([value[0], value[1], value[2], v], attribute)}
+                    onFinish={v => handleChange([value[0], value[1], value[2], v])}
                     value={value ? value[3] : undefined}
                     label={label}
             />
         {/if}
     </div>
-    )
 {:else if type === DATA_TYPES.COLOR}
     <ColorPicker
             disabled={attribute.disabled}
             label={label}
-            submit={({r, g, b}) => handleChange([r/255,g/255,b/255], attribute)}
+            submit={({r, g, b}) => handleChange([r/255,g/255,b/255])}
             value={Array.isArray(value) ? value.map(v => v * 255) : value}
             height="25px"
     />
@@ -107,7 +92,7 @@
     <Selector
             disabled={attribute.disabled}
             type={"image"}
-            handleChange={(src) => handleChange(src, attribute)}
+            handleChange={handleChange}
             selected={value}
     />
 
@@ -118,7 +103,7 @@
             {possibleSelection ? possibleSelection.label : label}
         </button>
         {#each attribute.options as o, i}
-            <button on:click={() => handleChange(o.data, attribute)} data-inline="-">
+            <button on:click={() => handleChange(o.data)} data-inline="-">
                 {#if o.data === value}
                     <Icon>check</Icon>
                     {:else}
@@ -131,9 +116,7 @@
 {:else if type === DATA_TYPES.CHECKBOX}
     <Checkbox
             checked={value}
-            handleCheck={() => {
-                    handleChange(!value, attribute)
-                }}
+            handleCheck={() => handleChange(!value)}
             disabled={attribute.disabled}
             label={label}
     />
@@ -143,11 +126,3 @@
     {/if}
 {/if}
 
-<style>
-    .vecWrapper {
-        display: flex;
-        gap: 4px;
-    }
-
-
-</style>

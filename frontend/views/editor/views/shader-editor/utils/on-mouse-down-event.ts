@@ -26,6 +26,8 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
             const onBody = node.checkBodyClick(X, Y)
             const onHeader = node.checkHeaderClick(X, Y)
             if (onHeader || onBody) {
+                canvasAPI.selectionMap.set(node.id, node)
+                canvasAPI.lastSelection = node
                 if (onHeader) {
                     nodesOnDrag.push(Draggable.drag(event, node, parentBBox,true))
                     node.isOnDrag = true
@@ -62,8 +64,7 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
                         }
                     }
                 }
-                canvasAPI.selectionMap.set(node.id, node)
-                canvasAPI.lastSelection = node
+
                 wasBroken = true
                 break
             }

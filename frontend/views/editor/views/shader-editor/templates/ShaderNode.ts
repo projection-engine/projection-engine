@@ -43,8 +43,8 @@ export default class ShaderNode extends Draggable {
             this.output.length,
             this.inputs.filter(e => {
                 return e.accept !== undefined || e.type == DATA_TYPES.OPTIONS || e.type === DATA_TYPES.COLOR || e.type == DATA_TYPES.CHECKBOX
-            }).length + colorWithSelection + .5
-        )
+            }).length + colorWithSelection
+        ) + .5
         this.minHeight = this.height = HEADER_HEIGHT + q * (HEADER_HEIGHT - 5)
         this.dynamicInputs = dynamicInputs
     }
@@ -78,7 +78,7 @@ export default class ShaderNode extends Draggable {
 
         for (let i = 0; i < data.length; i++) {
             if (asInput && !data[i].accept || data[i].disabled) {
-                if(data[i].type !== undefined)
+                if (data[i].type !== undefined)
                     validIndex++
                 continue
             }

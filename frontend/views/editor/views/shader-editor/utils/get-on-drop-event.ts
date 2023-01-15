@@ -11,8 +11,8 @@ export default function getOnDropEvent(canvasAPI: Canvas): (this: HTMLCanvasElem
         if (!node) return;
         const parent = canvasAPI.ctx.canvas.parentElement
         const BC = parent.getBoundingClientRect()
-        node.x = Math.round(((event.clientX - parent.scrollLeft - BC.left) / Canvas.scale) / Canvas.grid) * Canvas.grid
-        node.y = Math.round(((event.clientY - parent.scrollTop - BC.top) / Canvas.scale) / Canvas.grid) * Canvas.grid
+        node.x = Math.round(((event.clientX + parent.scrollLeft - BC.left) / Canvas.scale) / Canvas.grid) * Canvas.grid
+        node.y = Math.round(((event.clientY + parent.scrollTop - BC.top) / Canvas.scale) / Canvas.grid) * Canvas.grid
 
         canvasAPI.nodes.push(node)
         canvasAPI.clear()

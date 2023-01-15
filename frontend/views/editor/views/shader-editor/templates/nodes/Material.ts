@@ -205,6 +205,7 @@ export default class Material extends ShaderNode {
                     break
             }
         }
+        rT.onChange(this.renderingMode)
         this.name = "Material"
     }
 
@@ -228,7 +229,6 @@ export default class Material extends ShaderNode {
     }
 
     getDataBehaviour(field) {
-
         switch (field.type) {
             case DATA_TYPES.VEC2:
             case DATA_TYPES.VEC4:
@@ -236,6 +236,7 @@ export default class Material extends ShaderNode {
                 return `${field.name}.x`
             case DATA_TYPES.INT:
                 return `float(${field.name})`
+
             default:
                 return field.name
         }
@@ -298,9 +299,9 @@ export default class Material extends ShaderNode {
                     }) {
 
         return ` 
-            naturalAO = ${this.getDataBehaviour(ao)};
-            roughness = ${this.getDataBehaviour(roughness)};
-            metallic = ${this.getDataBehaviour(metallic)};
+            naturalAO = clamp(${this.getDataBehaviour(ao)}, 0., 1.);
+            roughness = clamp(${this.getDataBehaviour(roughness)}, 0., 1.);
+            metallic = clamp(${this.getDataBehaviour(metallic)}, 0., 1.);
             refractionIndex = ${this.getDataBehaviour(refraction)};
             
             anisotropicRotation = ${this.getDataBehaviour(anisotropicRotation)};
@@ -309,11 +310,11 @@ export default class Material extends ShaderNode {
             sheen               = ${this.getDataBehaviour(sheen)};
             sheenTint           = ${this.getDataBehaviour(sheenTint)};
             
-            alpha = ${this.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY ? this.getDataBehaviour(opacity) : "1."};
-            albedo = ${this.getData(al)};
+            alpha = clamp(${this.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY ? this.getDataBehaviour(opacity) : "1."}, 0., 1.);
+            albedo = abs(${this.getData(al)});
             ${normal ? "computeTBN();" : ""}
             N = ${normal ? `normalize(TBN * ((${this.getData(normal)} * 2.0)- 1.0))` : "normalVec"};
-            emission = ${this.getData(emission)}; 
+            emission = abs(${this.getData(emission)}); 
         `
     }
 }

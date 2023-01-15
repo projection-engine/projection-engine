@@ -48,19 +48,21 @@
             </fieldset>
         {:else}
             {#each node.inputs as attr, i}
-                {#key attr}
-                    {#if attr.type}
-                        <fieldset>
-                            <legend>{attr.label}</legend>
-                            <Attribute
-                                    attribute={attr}
-                                    node={node}
-                                    handleChange={handleNodeChange}
-                                    returnDefault={false}
-                            />
-                        </fieldset>
-                    {/if}
-                {/key}
+
+                {#if attr.type}
+                        {#key attr.key}
+                            <fieldset>
+                                <legend>{attr.label}</legend>
+                                <Attribute
+                                        attribute={attr}
+                                        node={node}
+                                        onChange={handleNodeChange}
+                                        returnDefault={false}
+                                />
+                            </fieldset>
+                        {/key}
+                {/if}
+
             {/each}
         {/if}
 

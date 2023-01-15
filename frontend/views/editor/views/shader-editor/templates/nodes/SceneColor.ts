@@ -18,7 +18,8 @@ export default class SceneColor extends ShaderNode {
     }
 
     get type() {
-        return NODE_TYPES.STATIC
+
+            return NODE_TYPES.STATIC
     }
 
     getFunctionCall({uv}, index, outputs) {

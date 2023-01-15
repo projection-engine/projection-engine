@@ -41,10 +41,12 @@ export default class ShaderEditorTools {
             }
         })
 
+
         nodeInstance.x = node.x
+        nodeInstance.name = node.name
         nodeInstance.id = node.id
         nodeInstance.y = node.y
-        nodeInstance.width =  Math.max(node.width, nodeInstance.minWidth)
+        nodeInstance.width = Math.max(node.width, nodeInstance.minWidth)
         nodeInstance.height = Math.max(node.height, nodeInstance.minHeight)
         return nodeInstance
     }
