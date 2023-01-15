@@ -8,6 +8,9 @@ import type Comment from "../templates/Comment";
 import NODE_TYPES from "../static/NODE_TYPES";
 import {Input} from "../templates/Input";
 import {Output} from "../templates/Output";
+import MATERIAL_RENDERING_TYPES, {
+    INVERSE_MATERIAL_RENDERING_TYPES
+} from "../../../../../../engine-core/static/MATERIAL_RENDERING_TYPES";
 
 export default class CanvasRenderer {
     static drawBezierCurve(ctx: CanvasRenderingContext2D, x1, x2, y1, y2) {
@@ -29,8 +32,7 @@ export default class CanvasRenderer {
         const isTexture = attribute.type === DATA_TYPES.TEXTURE
 
         const isDisabled = attribute.disabled
-        const label = attribute.label
-
+        let label = attribute.label
 
         const linePosition = ShaderNode.getIOPosition(index, node, asOutput)
 
@@ -54,8 +56,7 @@ export default class CanvasRenderer {
             ctx.fill()
             return
         }
-        if (!asOutput && !attribute.accept && !isTexture)
-            return;
+
         if (isTexture && !asOutput) {
             ctx.fillStyle = Canvas.backgroundColor
             ctx.roundRect(X + IO_RADIUS, Y - H / 2, W / 2, H, 3)
@@ -69,26 +70,39 @@ export default class CanvasRenderer {
             return
         }
 
-        ctx.fillStyle = ShaderNode.getIOColor(attribute, isDisabled)
+        if (attribute.accept || asOutput) {
+            ctx.fillStyle = ShaderNode.getIOColor(attribute, isDisabled)
 
-        ctx.lineWidth = .5
+            ctx.lineWidth = .5
 
-        ctx.arc(X, YA, IO_RADIUS, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.stroke()
+            ctx.arc(X, YA, IO_RADIUS, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.stroke()
+        }
 
         if (asOutput) {
             X -= T_SIZE * 2
         } else
             X -= T_SIZE
 
-        if (asOutput)
-            console.log(node, isDisabled)
-        ctx.fillStyle = !isDisabled ? "#d7d7d7" : "#999"
+        const isOption = !attribute.accept && (attribute.type === DATA_TYPES.CHECKBOX || attribute.type === DATA_TYPES.OPTIONS)
+        ctx.fillStyle = !isDisabled && !isOption ? "#d7d7d7" : "#999"
+
+
         if (asOutput)
             ctx.fillText(label, X - labelSize + LABEL_OFFSET, Y - T_SIZE / 2);
-        else
-            ctx.fillText(label, X + LABEL_OFFSET, Y - T_SIZE / 2);
+        else {
+            let X_P =X + LABEL_OFFSET
+            if (isOption) {
+                let value = node[attribute.key]
+                if(attribute.key === "renderingMode")
+                    value = INVERSE_MATERIAL_RENDERING_TYPES[value]
+
+                label = label + ` (${value})`
+                X_P -= 5
+            }
+            ctx.fillText(label, X_P, Y - T_SIZE / 2);
+        }
 
         ctx.closePath()
     }

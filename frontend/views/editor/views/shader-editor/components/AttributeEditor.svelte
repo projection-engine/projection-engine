@@ -8,7 +8,7 @@
     import MutableObject from "../../../../../../engine-core/MutableObject";
 
     export let node: ShaderNode | Comment
-    export let updateCanvas:Function
+    export let updateCanvas: Function
 
 
     function handleNodeChange(value: any, attr: MutableObject) {
@@ -48,17 +48,21 @@
             </fieldset>
         {:else}
             {#each node.inputs as attr, i}
-                {#if !attr.accept}
-                    <fieldset>
-                        <legend>{attr.label}</legend>
-                        <Attribute
-                                attribute={attr}
-                                node={node}
-                                handleChange={handleNodeChange}
-                                returnDefault={false}
-                        />
-                    </fieldset>
+
+                {#if attr.type}
+                        {#key attr.key}
+                            <fieldset>
+                                <legend>{attr.label}</legend>
+                                <Attribute
+                                        attribute={attr}
+                                        node={node}
+                                        onChange={handleNodeChange}
+                                        returnDefault={false}
+                                />
+                            </fieldset>
+                        {/key}
                 {/if}
+
             {/each}
         {/if}
 

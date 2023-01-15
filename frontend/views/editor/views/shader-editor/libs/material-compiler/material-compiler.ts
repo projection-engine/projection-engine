@@ -4,11 +4,11 @@ import compileFragmentShader from "./utils/compile-fragment-shader";
 import MATERIAL_OUTPUT_FORMAT from "../../../../../../../engine-core/static/MATERIAL_OUTPUT_FORMAT"
 import type ShaderLink from "../../templates/ShaderLink";
 import type ShaderNode from "../../templates/ShaderNode";
-import MaterialAsset from "../../static/MaterialAsset";
 import MaterialUniform from "../../../../../../../engine-core/templates/MaterialUniform";
 import Material from "../../templates/nodes/Material";
+import MaterialInformation from "../../../../../../../engine-core/templates/MaterialInformation";
 
-export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<[MaterialAsset, string] | undefined> {
+export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<[MaterialInformation, string] | undefined> {
     const nodes = n.map(nn => cloneClass<ShaderNode>(nn))
     const startPoint = <Material>nodes.find(n => n.type === NODE_TYPES.OUTPUT)
 
@@ -26,11 +26,10 @@ export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[
     template.functionDeclaration = functionDeclaration
     template.uniformsDeclaration = uniformsDeclaration
 
-    template.settings.isSky = startPoint.isSky
+    template.settings.renderingMode = startPoint.renderingMode
+    console.trace(startPoint.renderingMode)
     template.settings.doubleSided = startPoint.doubleSided
-    template.settings.isAlphaTested = startPoint.alphaTested
     template.settings.ssrEnabled = startPoint.ssrEnabled
-    template.settings.flatShading = startPoint.flatShading
 
     template.uniforms = uniforms
     template.executionSignature = executionSignature.signature

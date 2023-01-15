@@ -75,7 +75,10 @@
 
     function initializeFromFile(v) {
         UndoRedoAPI.clearShaderEditorStates()
+        canvas.clearState()
         openFile = v
+        canvas.openFile = v
+
         if (!v)
             return
         initializeStructure()
@@ -97,7 +100,7 @@
 
             initializeFromFile(newFile)
             ShaderEditorTools.toOpenFile = undefined
-            if (state != null) {
+            if (state != null && newFile) {
                 canvas.nodes.push(...state.nodes)
                 canvas.links.push(...state.links)
                 canvas.comments.push(...state.comments)

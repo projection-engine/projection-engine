@@ -50,9 +50,12 @@ export default class ShaderLink {
             const onBody = node.checkBodyClick(X, Y)
             if (onBody) {
                 const targetIO = node.checkAgainstIO<Input>(X, Y, true)
+                console.trace(targetIO, sourceIO)
                 if (targetIO && targetIO.accept.includes(sourceIO.type)) {
                     const foundExisting = canvasAPI.links.findIndex(l => l.targetRef === targetIO)
+
                     const newLink = new ShaderLink(node, sourceNode, targetIO, sourceIO)
+
                     if (foundExisting > -1)
                         canvasAPI.links[foundExisting] = newLink
                     else

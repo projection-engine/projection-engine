@@ -5,7 +5,7 @@
     import Input from "../../../../../components/input/Input.svelte";
 
     let inputValue = ""
-    $: nodes = !inputValue ? ALL_NODES : ALL_NODES.filter(i => i.label.includes(inputValue))
+    $: nodes = !inputValue ? ALL_NODES : ALL_NODES.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
 </script>
 
 <div class="modal-available-nodes selector" style="height: 100%">

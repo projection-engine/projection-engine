@@ -85,7 +85,7 @@ export default function entityCreationOptions() {
             onClick: EntityConstructor.createSprite
         },
         {
-            icon: "image",
+            icon: "layers",
             label: LOCALIZATION_EN.DECAL,
             onClick: EntityConstructor.createDecal
         }

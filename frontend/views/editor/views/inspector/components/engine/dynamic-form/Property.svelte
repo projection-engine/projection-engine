@@ -19,10 +19,13 @@
     $: isDisabled = typeof attribute.disabledIf === "function" ? attribute.disabledIf(component) : component[attribute.disabledIf]
 
     let firstSubmit = false
-    const setImage = async ({registryID}) => {
-        const res = await EngineStore.loadTextureFromImageID(registryID)
-        if (res)
-            submit(attribute.key, registryID, true)
+    const setImage = async (data) => {
+        if(data) {
+            const res = await EngineStore.loadTextureFromImageID(data.registryID)
+            if (res)
+                submit(attribute.key, registryID, true)
+        }else
+            submit(attribute.key, undefined, true)
     }
     let originalValue
 

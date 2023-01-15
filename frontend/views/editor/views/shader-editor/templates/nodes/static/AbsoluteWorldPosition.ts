@@ -15,7 +15,8 @@ export default class AbsoluteWorldPosition extends ShaderNode {
     }
 
     get type() {
-        return NODE_TYPES.STATIC
+
+            return NODE_TYPES.STATIC
     }
     getFunctionCall( ) {
         this.worldSpacePosition = "worldSpacePosition"
