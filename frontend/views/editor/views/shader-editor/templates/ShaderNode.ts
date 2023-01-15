@@ -37,13 +37,13 @@ export default class ShaderNode extends Draggable {
         this.uniformName = "DYNAMIC_" + this.id.replaceAll("-", "_")
         this.output = output
         this.inputs = inputs ? inputs : []
-        const colorWithSelection = this.inputs.filter(e => e.type === DATA_TYPES.COLOR && !e.accept).length * .5
+        const colorWithSelection = this.inputs.filter(e => e.type === DATA_TYPES.COLOR && !e.accept).length * .3
 
         const q = Math.max(
             this.output.length,
             this.inputs.filter(e => {
                 return e.accept !== undefined || e.type == DATA_TYPES.OPTIONS || e.type === DATA_TYPES.COLOR || e.type == DATA_TYPES.CHECKBOX
-            }).length + colorWithSelection
+            }).length + colorWithSelection + .5
         )
         this.minHeight = this.height = HEADER_HEIGHT + q * (HEADER_HEIGHT - 5)
         this.dynamicInputs = dynamicInputs
@@ -77,9 +77,11 @@ export default class ShaderNode extends Draggable {
         let validIndex = 0
 
         for (let i = 0; i < data.length; i++) {
-            if (asInput && !data[i].accept || data[i].disabled)
+            if (asInput && !data[i].accept || data[i].disabled) {
+                if(data[i].type !== undefined)
+                    validIndex++
                 continue
-
+            }
             const linePosition = ShaderNode.getIOPosition(validIndex, this, !asInput)
             const xIO = linePosition.x
             const yIO = linePosition.y
