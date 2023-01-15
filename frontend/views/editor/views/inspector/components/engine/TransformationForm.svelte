@@ -29,7 +29,7 @@
     const unsubscribe = SelectionStore.getStore(() => {
         const cache = []
         SelectionStore.engineSelected.forEach(e => {
-            const c = Engine.entitiesMap.get(e)
+            const c = Engine.entities.map.get(e)
             if (c) {
                 cache.push(c)
                 c.__originalTranslation = undefined
@@ -39,7 +39,7 @@
             }
         })
         if (cache.length === 0) {
-            const fallback = Engine.entitiesMap.get(SelectionStore.mainEntity)
+            const fallback = Engine.entities.map.get(SelectionStore.mainEntity)
             if (fallback)
                 fallback.__originalQuat = undefined
             fallback && cache.push(fallback)

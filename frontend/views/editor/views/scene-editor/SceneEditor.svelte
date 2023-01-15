@@ -72,7 +72,7 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribeSelection = SelectionStore.getStore(_ => {
         selectedSize = SelectionStore.engineSelected.length
-        mainEntity = Engine.entitiesMap.get(SelectionStore.engineSelected[0])
+        mainEntity = Engine.entities.map.get(SelectionStore.engineSelected[0])
     })
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
@@ -117,7 +117,7 @@
         unsubscribeSelection()
         ViewportInteractionHandler.destroy()
     })
-    $: focusedCamera = engine.focusedCamera ? Engine.entitiesMap.get(engine.focusedCamera) : null
+    $: focusedCamera = engine.focusedCamera ? Engine.entities.map.get(engine.focusedCamera) : null
 </script>
 
 {#if !engine.executingAnimation}

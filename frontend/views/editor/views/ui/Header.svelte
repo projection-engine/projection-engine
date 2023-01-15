@@ -20,9 +20,9 @@
     export let engine
 
     function selectAll() {
-        const m = [], size = Engine.entities.length
+        const m = [], size = Engine.entities.array.length
         for (let i = 0; i < size; i++) {
-            const e = Engine.entities[i]
+            const e = Engine.entities.array[i]
             if (e.uiComponent)
                 m.push(e.id)
         }

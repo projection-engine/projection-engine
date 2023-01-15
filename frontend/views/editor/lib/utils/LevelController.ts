@@ -150,7 +150,7 @@ export default class LevelController {
         await ErrorLoggerAPI.save()
         AlertController.warn(LOCALIZATION_EN.SAVING)
         try {
-            const entities = Engine.entities
+            const entities = Engine.entities.array
             const metadata = EngineStore.engine.meta
             const settings =  {...SettingsStore.data}
             const tabIndexViewport = TabsStore.getValue("viewport")

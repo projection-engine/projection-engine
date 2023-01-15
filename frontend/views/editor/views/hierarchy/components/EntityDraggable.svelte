@@ -29,7 +29,7 @@
     $: draggable.disabled = isOnEdit
 
     function getDragTarget(){
-        return SelectionStore.engineSelected.length > 0 ? SelectionStore.engineSelected.map(e => Engine.entitiesMap.get(e)) : node
+        return SelectionStore.engineSelected.length > 0 ? SelectionStore.engineSelected.map(e => Engine.entities.map.get(e)) : node
     }
 
     onMount(() => {

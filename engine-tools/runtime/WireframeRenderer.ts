@@ -9,7 +9,7 @@ const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
 export default class WireframeRenderer {
     static execute() {
-        const entities = Engine.entities
+        const entities = Engine.entities.array
         const size = entities.length
         const uniforms = StaticEditorShaders.wireframeUniforms
         const context = GPU.context
@@ -53,7 +53,9 @@ export default class WireframeRenderer {
                         break
                 }
             }else if(decal){
+
                 context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.matrix)
+                context.uniform1i(uniforms.isSelected, entity.__isSelected ? 1 : 0)
                 StaticMeshes.cube.drawLineLoop()
             }
         }

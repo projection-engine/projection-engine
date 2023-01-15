@@ -8,7 +8,7 @@
 
     export let settings
     const updateCamera = (key, value, full) => {
-        console.trace(key, value, full)
+
         if (full)
             SettingsStore.updateStore({...settings, camera: {...settings.camera, [key]: value}})
         if(CameraTracker[key] !== undefined)

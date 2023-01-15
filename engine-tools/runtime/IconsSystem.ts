@@ -7,6 +7,7 @@ import LineRenderer from "./LineRenderer";
 import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import {mat4} from "gl-matrix";
+import MATERIAL_RENDERING_TYPES from "../../engine-core/static/MATERIAL_RENDERING_TYPES";
 
 const DEFAULT_COLOR = [255, 255, 255]
 
@@ -16,7 +17,7 @@ export default class IconsSystem {
 
     static loop(cb, settings, uniforms?: Object) {
         const tracking = CameraAPI.trackingEntity
-        const entities = Engine.entities
+        const entities = Engine.entities.array
         const size = entities.length
 
         for (let i = 0; i < size; i++) {
@@ -29,9 +30,8 @@ export default class IconsSystem {
             const doesntHaveIcon = !hasLight && !hasSkylight && !hasCamera
             if (
                 tracking === entity ||
-                entity.meshRef && !entity.materialRef?.isSky ||
-                doesntHaveIcon && entity.meshRef && !entity.materialRef?.isSky ||
-                doesntHaveIcon && entity.decalComponent?.imageID
+                entity.meshRef && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
+                doesntHaveIcon && entity.meshRef && entity.materialRef?.renderingMode!== MATERIAL_RENDERING_TYPES.SKY
             )
                 continue
             cb(

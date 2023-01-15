@@ -63,7 +63,7 @@ export default class EngineTools {
 
         EngineTools.selected.length = 0
         data.forEach(d => {
-            const entity = Engine.entitiesMap.get(d)
+            const entity = Engine.entities.map.get(d)
             if (entity !== undefined) {
                 EngineTools.selected.push(entity)
                 entity.__isSelected = true

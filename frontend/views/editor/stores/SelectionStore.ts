@@ -49,7 +49,7 @@ export default class SelectionStore {
         if (SelectionStore.TARGET === TYPES.ENGINE) {
             const selected = SelectionStore.engineSelected
             if (!value.lockedEntity)
-                value.lockedEntity = selected[0] ? selected[0] : Engine.entities.find(e => !e.parent)?.id
+                value.lockedEntity = selected[0] ? selected[0] : Engine.entities.array.find(e => !e.parent)?.id
         }
 
         SelectionStore.data = value

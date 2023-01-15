@@ -5,12 +5,13 @@ import ToRenderElement from "../template/ToRenderElement";
 
 
 export default class HierarchyController {
-    static hierarchy:ToRenderElement[] = []
-    static #listening:{[key:string]:Function} = {}
+    static hierarchy: ToRenderElement[] = []
+    static #listening: { [key: string]: Function } = {}
 
     static updateHierarchy() {
-        const data:ToRenderElement[] = [], entitiesArray = Array.from(Engine.entitiesMap.values())
-        const callback = (node:Entity, depth:number) => {
+        const data: ToRenderElement[] = [], entitiesArray = Engine.entities.array
+        console.trace(entitiesArray)
+        const callback = (node: Entity, depth: number) => {
             data.push({node, depth})
             for (let i = 0; i < node.children.length; i++)
                 callback(node.children[i], depth + 1)
@@ -24,15 +25,17 @@ export default class HierarchyController {
         Object.values(HierarchyController.#listening).forEach(v => v())
     }
 
-    static removeListener(internalID:string){
+    static removeListener(internalID: string) {
         delete HierarchyController.#listening[internalID]
     }
-    static registerListener(internalID:string, callback:Function){
+
+    static registerListener(internalID: string, callback: Function) {
         HierarchyController.#listening[internalID] = callback
         callback()
     }
+
     static openTree() {
-        const node = Engine.entitiesMap.get(SelectionStore.mainEntity)
+        const node = Engine.entities.map.get(SelectionStore.mainEntity)
         if (!node)
             return {}
         const open = {}
@@ -44,7 +47,6 @@ export default class HierarchyController {
         }
         open[target.id] = true
 
-        console.trace(open)
         Object.values(HierarchyController.#listening).forEach(v => v({...open}))
     }
 }

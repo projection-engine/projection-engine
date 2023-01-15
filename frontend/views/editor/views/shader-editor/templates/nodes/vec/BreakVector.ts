@@ -31,7 +31,6 @@ export default class BreakVector extends ShaderNode {
     getFunctionCall({v}, index, outputs) {
         let response = []
 
-        console.trace(outputs)
         outputs.forEach(o => {
             if (!this[o]) {
                 this[o] = o + `${index}`
@@ -44,7 +43,6 @@ export default class BreakVector extends ShaderNode {
                     response.push(`float ${this[o]} = ${v.name}.${o.charAt(0)};`)
             }
         })
-        console.trace(response)
         return response.join("\n")
     }
 
