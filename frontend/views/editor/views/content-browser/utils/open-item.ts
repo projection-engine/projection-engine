@@ -26,7 +26,6 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
                         AlertController.error(LOCALIZATION_EN.ERROR_OPENING_FILE)
                     console.error(err)
                 })
-                console.trace(FS.ASSETS_PATH + FS.sep + data.id)
                 AlertController.warn(LOCALIZATION_EN.OPENING_FILE + " (" + data.name + ")")
                 break
             case FILE_TYPES.PRIMITIVE:

@@ -27,7 +27,7 @@ export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[
     template.uniformsDeclaration = uniformsDeclaration
 
     template.settings.renderingMode = startPoint.renderingMode
-    console.trace(startPoint.renderingMode)
+
     template.settings.doubleSided = startPoint.doubleSided
     template.settings.ssrEnabled = startPoint.ssrEnabled
 

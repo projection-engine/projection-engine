@@ -48,7 +48,6 @@ export default class FilesStore {
     }
 
     static async refreshFiles() {
-        console.trace("REFRESHING")
         try {
             const data = <MutableObject[]>(await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
             const fileTypes = await ContentBrowserAPI.refresh()

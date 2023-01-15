@@ -22,7 +22,7 @@ export default function getType(store, type, mergeMaterials, terrainMaterials) {
         case "code":
             return [...store.uiLayouts, ...store.components]
         case "parent":
-            return Engine.entities
+            return Engine.entities.array
         default:
             return []
     }

@@ -50,7 +50,7 @@ export default class ViewportActions {
         const oldSelected = <string[]>SelectionStore.engineSelected
         for (let i = 0; i < oldSelected.length; i++)
             notValid[oldSelected[i]] = true
-        const entities = Engine.entities
+        const entities = Engine.entities.array
         for (let i = 0; i < entities.length; i++) {
             if (!notValid[entities[i].id])
                 newArr.push(entities[i].id)
@@ -91,7 +91,7 @@ export default class ViewportActions {
     }
 
     static selectAll() {
-        SelectionStore.engineSelected = Array.from(Engine.entitiesMap.keys())
+        SelectionStore.engineSelected = Array.from(Engine.entities.map.keys())
     }
 
     static fixateActive() {

@@ -92,7 +92,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
             callback: () => {
                 const selected = SelectionStore.engineSelected
                 for (let i = 0; i < selected.length; i++)
-                    EntityConstructor.toggleEntityVisibility(Engine.entitiesMap.get(selected[i]), false)
+                    EntityConstructor.toggleEntityVisibility(Engine.entities.map.get(selected[i]), false)
                 HierarchyController.updateHierarchy()
             },
             require: settings.viewportHotkeys.HIDE_ACTIVE,

@@ -20,7 +20,6 @@ export default class ContentBrowserAPI {
     static async rename(from, to) {
         const fromResolved = pathRequire.resolve(from)
         const toResolved = pathRequire.resolve(to)
-        console.trace(toResolved, fromResolved)
         await RegistryAPI.readRegistry()
         try {
             const stat = await FS.stat(fromResolved)

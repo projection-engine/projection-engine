@@ -46,7 +46,7 @@
             targetElement: ref,
             onDrop: (entityDragged, event) => {
                 const node = event.composedPath().find(n => n?.getAttribute?.("data-node") != null)?.getAttribute?.("data-node")
-                handleDrop(event, entityDragged, node ? Engine.entitiesMap.get(node) : undefined)
+                handleDrop(event, entityDragged, node ? Engine.entities.map.get(node) : undefined)
             },
             onDragOver: () => `CTRL to parent | SHIFT to clone`
         })

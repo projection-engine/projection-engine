@@ -47,10 +47,10 @@
     onMount(() => {
         HierarchyController.registerListener(internalID, (op) => {
             const openLocal = op || openTree
-            console.trace(op)
+
             if(op !== undefined)
                 setOpenTree(op)
-            const entities = Engine.entities
+            const entities = Engine.entities.array
             const hierarchy = HierarchyController.hierarchy
             const data = []
             if (!inputValue && !filteredComponent)

@@ -20,7 +20,7 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
 
     const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY)
     const entity = QueryAPI.getEntityByPickerID(clickedEntity)
-    console.trace(clickedEntity, Engine.entities.map(e => e.pickIndex))
+    console.trace(clickedEntity, Engine.entities.array.map(e => e.pickIndex))
 
     if (!entity) {
         setContext([])

@@ -15,6 +15,7 @@ export default function handleDrop(event, entityDragged, node) {
             newSelection.push(currentEntity.id)
         } else if (event.shiftKey) {
             const clone = currentEntity.clone()
+
             clone.parent = undefined
             clone.parentCache = node?.id
             toAdd.push(clone)

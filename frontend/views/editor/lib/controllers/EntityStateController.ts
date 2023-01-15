@@ -28,7 +28,7 @@ export default class EntityStateController {
         EntityStateController.#isPlaying = true
         CameraTracker.stopTracking()
 
-        EntityStateController.#state = Engine.entities.map(e => serializeStructure(e.serializable()))
+        EntityStateController.#state = Engine.entities.array.map(e => serializeStructure(e.serializable()))
         await Engine.startSimulation()
         EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined, executingAnimation: true})
     }
@@ -42,7 +42,7 @@ export default class EntityStateController {
         Engine.environment = ENVIRONMENT.DEV
 
         const mapped = []
-        const entities = Engine.entities
+        const entities = Engine.entities.array
         try {
             UIAPI.destroyUI()
             if (UIAPI.uiMountingPoint?.parentNode) {

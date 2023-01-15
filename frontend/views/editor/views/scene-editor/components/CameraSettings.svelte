@@ -21,7 +21,7 @@
 
     onMount(() => {
         HierarchyController.registerListener(internalID, () => {
-            cameras = Engine.entities.filter(entity => entity.cameraComponent != null)
+            cameras = Engine.entities.array.filter(entity => entity.cameraComponent != null)
         })
     })
     onDestroy(() => HierarchyController.removeListener(internalID))
