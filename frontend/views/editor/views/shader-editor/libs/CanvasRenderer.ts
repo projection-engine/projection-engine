@@ -85,20 +85,24 @@ export default class CanvasRenderer {
         } else
             X -= T_SIZE
 
-        const isOption = !attribute.accept && (attribute.type === DATA_TYPES.CHECKBOX || attribute.type === DATA_TYPES.OPTIONS)
+        const isOption = !attribute.accept && !asOutput
         ctx.fillStyle = !isDisabled && !isOption ? "#d7d7d7" : "#999"
 
 
         if (asOutput)
             ctx.fillText(label, X - labelSize + LABEL_OFFSET, Y - T_SIZE / 2);
         else {
-            let X_P =X + LABEL_OFFSET
+            let X_P = X + LABEL_OFFSET
             if (isOption) {
                 let value = node[attribute.key]
-                if(attribute.key === "renderingMode")
-                    value = INVERSE_MATERIAL_RENDERING_TYPES[value]
-
-                label = label + ` (${value})`
+                if (typeof value === "object") {
+                    label = label + ` -Dynamic Property-`
+                }
+                else {
+                    if (attribute.key === "renderingMode")
+                        value = INVERSE_MATERIAL_RENDERING_TYPES[value]
+                    label = label + ` (${value})`
+                }
                 X_P -= 5
             }
             ctx.fillText(label, X_P, Y - T_SIZE / 2);

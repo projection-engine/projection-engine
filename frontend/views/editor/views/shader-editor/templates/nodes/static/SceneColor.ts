@@ -3,15 +3,14 @@ import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 
 
-export default class NormalVector extends ShaderNode {
-
+export default class TextureCoords extends ShaderNode {
     constructor() {
-        super([], [
-            {label: "Normal", key: "normalVec", type: DATA_TYPES.VEC3}
-        ])
+        super(
+            [],
+            [{label: "Sampler", key: "previousFrame", type: DATA_TYPES.TEXTURE}]
+        )
 
-        this.name = "NormalVector"
-        
+        this.name = "TextureCoords"
     }
 
     get type() {
@@ -19,7 +18,7 @@ export default class NormalVector extends ShaderNode {
     }
 
     getFunctionCall() {
-        this.normalVec = "normalVec"
+        this.previousFrame = "previousFrame"
         return ""
     }
 }

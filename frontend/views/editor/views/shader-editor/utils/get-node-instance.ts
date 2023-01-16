@@ -7,7 +7,7 @@ import DDY from "../templates/nodes/math/DDY";
 import Normalize from "../templates/nodes/math/Normalize";
 import Reflect from "../templates/nodes/math/Reflect";
 import Refract from "../templates/nodes/math/Refract";
-import SceneColor from "../templates/nodes/SceneColor";
+import SceneColor from "../templates/nodes/static/SceneColor";
 import Pow from "../templates/nodes/math/Pow";
 import Saturation from "../templates/nodes/math/Saturation";
 import Saturate from "../templates/nodes/math/Saturate";
@@ -37,6 +37,9 @@ import Divide from "../templates/nodes/math/Divide";
 import Min from "../templates/nodes/math/Min";
 import Max from "../templates/nodes/math/Max";
 import RGB from "../templates/nodes/RGB";
+import FragCoord from "../templates/nodes/static/FragCoord";
+import QuadUV from "../templates/nodes/static/QuadUV";
+import SampleColor from "../templates/nodes/SampleColor";
 
 export default function getNodeInstance(key: string) {
     switch (key) {
@@ -46,7 +49,12 @@ export default function getNodeInstance(key: string) {
             return new Cosine()
         case "CosineH":
             return new CosineH()
-
+        case "SampleColor":
+            return new SampleColor()
+        case "QuadUV":
+            return new QuadUV()
+        case "FragCoord":
+            return new FragCoord()
         case "SineH":
             return new SineH()
 

@@ -8,6 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/static/build" />
       <excludeFolder url="file://$MODULE_DIR$/assets-to-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/engine-core/assets-to-copy" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

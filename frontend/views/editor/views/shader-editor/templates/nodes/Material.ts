@@ -11,7 +11,6 @@ function arrayToGlsl(a) {
 }
 
 export default class Material extends ShaderNode {
-    canBeDeleted = false
     doubleSided = false
     ssrEnabled = false
 

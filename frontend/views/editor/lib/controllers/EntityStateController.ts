@@ -13,6 +13,7 @@ import MaterialAPI from "../../../../../engine-core/lib/rendering/MaterialAPI";
 import AlertController from "../../../../components/alert/AlertController";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import EntityManager from "../EntityManager";
+import ResourceEntityMapper from "../../../../../engine-core/lib/ResourceEntityMapper";
 
 export default class EntityStateController {
     static #state = []
@@ -36,7 +37,7 @@ export default class EntityStateController {
     static async stopPlayState() {
         if (!EntityStateController.#isPlaying)
             return
-        MaterialAPI.entityMaterial.clear()
+        ResourceEntityMapper.entityMaterial.clear()
         AlertController.log(LOCALIZATION_EN.RESTORING_STATE)
         EntityStateController.#isPlaying = false
         Engine.environment = ENVIRONMENT.DEV

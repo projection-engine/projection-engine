@@ -23,7 +23,6 @@ export default class ShaderNode extends Draggable {
     minWidth = 150
     uniform = false
     targetCommentID: string | undefined
-    canBeDeleted = true
     dynamicInputs = false
     uniformName: string
     output: Output[]
@@ -37,13 +36,11 @@ export default class ShaderNode extends Draggable {
         this.uniformName = "DYNAMIC_" + this.id.replaceAll("-", "_")
         this.output = output
         this.inputs = inputs ? inputs : []
-        const colorWithSelection = this.inputs.filter(e => e.type === DATA_TYPES.COLOR && !e.accept).length * .3
+
 
         const q = Math.max(
             this.output.length,
-            this.inputs.filter(e => {
-                return e.accept !== undefined || e.type == DATA_TYPES.OPTIONS || e.type === DATA_TYPES.COLOR || e.type == DATA_TYPES.CHECKBOX
-            }).length + colorWithSelection
+            this.inputs.length
         ) + .5
         this.minHeight = this.height = HEADER_HEIGHT + q * (HEADER_HEIGHT - 5)
         this.dynamicInputs = dynamicInputs
@@ -74,18 +71,14 @@ export default class ShaderNode extends Draggable {
     checkAgainstIO<T>(x: number, y: number, asInput?: boolean): T {
         const R2 = IO_RADIUS ** 2
         const data = asInput ? this.inputs : this.output
-        let validIndex = 0
+
 
         for (let i = 0; i < data.length; i++) {
-            if (asInput && !data[i].accept || data[i].disabled) {
-                if (data[i].type !== undefined)
-                    validIndex++
+            if (data[i].disabled)
                 continue
-            }
-            const linePosition = ShaderNode.getIOPosition(validIndex, this, !asInput)
+            const linePosition = ShaderNode.getIOPosition(i, this, !asInput)
             const xIO = linePosition.x
             const yIO = linePosition.y
-            validIndex++
 
             if ((x - xIO) ** 2 + (y - yIO) ** 2 < R2)
                 return <T>data[i]
@@ -100,13 +93,10 @@ export default class ShaderNode extends Draggable {
             const C = this.output[j]
             CanvasRenderer.drawIO(ctx, true, this, j, C)
         }
-        let validIndex = 0
+
         for (let j = 0; j < this.inputs.length; j++) {
             const C = this.inputs[j]
-            if (C.accept || C.type === DATA_TYPES.OPTIONS || C.type === DATA_TYPES.CHECKBOX || C.type === DATA_TYPES.COLOR || C.type === DATA_TYPES.TEXTURE) {
-                CanvasRenderer.drawIO(ctx, false, this, validIndex, C)
-                validIndex++
-            }
+            CanvasRenderer.drawIO(ctx, false, this, j, C)
         }
         this.drawScale(ctx)
     }
