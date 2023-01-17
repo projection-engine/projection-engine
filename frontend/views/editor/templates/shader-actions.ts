@@ -5,6 +5,7 @@ import SettingsStore from "../stores/SettingsStore";
 import Canvas from "../views/shader-editor/libs/Canvas";
 import type ShaderNode from "../views/shader-editor/templates/ShaderNode";
 import Comment from "../views/shader-editor/templates/Comment";
+import Material from "../views/shader-editor/templates/nodes/Material";
 
 export function selectAllNodes(canvasAPI:Canvas){
     let last: ShaderNode | Comment
@@ -57,6 +58,8 @@ export default function shaderActions( canvasAPI: Canvas) {
                     if (s instanceof Comment)
                         canvasAPI.comments.splice(canvasAPI.comments.indexOf(s), 1)
                     else {
+                        if(s instanceof Material)
+                            return
                         canvasAPI.nodes.splice(canvasAPI.nodes.indexOf(s), 1);
                         const copy = [...canvasAPI.links]
                         copy.forEach(l => {

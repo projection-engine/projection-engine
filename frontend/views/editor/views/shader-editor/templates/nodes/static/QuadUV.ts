@@ -3,23 +3,20 @@ import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 
 
-export default class NormalVector extends ShaderNode {
-
+export default class QuadUV extends ShaderNode {
     constructor() {
         super([], [
-            {label: "Normal", key: "normalVec", type: DATA_TYPES.VEC3}
+            {label: "Coordinates", key: "quadUV", type: DATA_TYPES.VEC2}
         ])
 
-        this.name = "NormalVector"
-        
+        this.name = "QuadUV"
     }
 
     get type() {
         return NODE_TYPES.STATIC
     }
-
     getFunctionCall() {
-        this.normalVec = "normalVec"
+        this.quadUV = "quadUV"
         return ""
     }
 }
