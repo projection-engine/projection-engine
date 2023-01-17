@@ -1,5 +1,30 @@
 export default [
     {
+        label: "Gaussian blur",
+        dataTransfer: "GaussianBlur",
+        tooltip: "Gaussian."
+    },
+    {
+        label: "Sample Color",
+        dataTransfer: "SampleColor",
+        tooltip: "SampleColor."
+    },
+    {
+        label: "Fresnel",
+        dataTransfer: "Fresnel",
+        tooltip: "Fresnel."
+    },
+    {
+        label: "FragCoord",
+        dataTransfer: "FragCoord",
+        tooltip: "FragCoord."
+    },
+    {
+        label: "QuadUV",
+        dataTransfer: "QuadUV",
+        tooltip: "QuadUV."
+    },
+    {
         label: "MakeVector",
         dataTransfer: "MakeVector",
         tooltip: "MakeVector."

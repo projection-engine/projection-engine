@@ -44,12 +44,18 @@ import ShaderNode from "../templates/ShaderNode";
 import FragCoord from "../templates/nodes/static/FragCoord";
 import QuadUV from "../templates/nodes/static/QuadUV";
 import SampleColor from "../templates/nodes/SampleColor";
+import Fresnel from "../templates/Fresnel";
+import GaussianBlur from "../templates/GaussianBlur";
 
 export default function getNewInstance(name: string): ShaderNode | Comment | null {
 
     switch (name) {
         case Cosine.name:
             return new Cosine()
+        case Fresnel.name:
+            return new Fresnel()
+        case GaussianBlur.name:
+            return new GaussianBlur()
         case FragCoord.name:
             return new FragCoord()
         case SampleColor.name:

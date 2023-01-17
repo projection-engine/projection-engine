@@ -3,14 +3,14 @@ import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 
 
-export default class TextureCoords extends ShaderNode {
+export default class SceneColor extends ShaderNode {
     constructor() {
         super(
             [],
             [{label: "Sampler", key: "previousFrame", type: DATA_TYPES.TEXTURE}]
         )
 
-        this.name = "TextureCoords"
+        this.name = "SceneColor"
     }
 
     get type() {

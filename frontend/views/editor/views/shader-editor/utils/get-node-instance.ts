@@ -40,11 +40,18 @@ import RGB from "../templates/nodes/RGB";
 import FragCoord from "../templates/nodes/static/FragCoord";
 import QuadUV from "../templates/nodes/static/QuadUV";
 import SampleColor from "../templates/nodes/SampleColor";
+import Fresnel from "../templates/Fresnel";
+import GaussianBlur from "../templates/GaussianBlur";
 
 export default function getNodeInstance(key: string) {
     switch (key) {
         case "MakeVector":
             return new MakeVector()
+        case "Fresnel":
+            return new Fresnel()
+        case "GaussianBlur":
+            return new GaussianBlur()
+
         case "Cosine":
             return new Cosine()
         case "CosineH":
