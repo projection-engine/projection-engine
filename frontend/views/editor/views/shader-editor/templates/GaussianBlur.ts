@@ -1,9 +1,11 @@
 import ShaderNode from "./ShaderNode";
 import DATA_TYPES from "../static/DATA_TYPES";
 import NODE_TYPES from "../static/NODE_TYPES";
+import checkGlslFloat from "../utils/check-glsl-float";
 
 export default class GaussianBlur extends ShaderNode {
     useDefaultTexel = true
+
     constructor() {
         super([
             {
@@ -22,8 +24,8 @@ export default class GaussianBlur extends ShaderNode {
                 accept: [DATA_TYPES.FLOAT]
             },
             {
-                label: "Sigma multiplier",
-                key: "sigmaMultiplier",
+                label: "Samples",
+                key: "samples",
                 accept: [DATA_TYPES.FLOAT]
             },
             {
@@ -41,10 +43,10 @@ export default class GaussianBlur extends ShaderNode {
         return NODE_TYPES.FUNCTION
     }
 
-    getFunctionCall({sampler, texCoords,useDefaultTexel,blurRadius,sigmaMultiplier}, index) {
+    getFunctionCall({sampler, texCoords, useDefaultTexel, blurRadius, samples}, index) {
         this.blurredResult = "blurredResult" + index
         if (sampler?.name !== undefined && texCoords?.name !== undefined)
-            return `vec3 ${this.blurredResult} = gaussian( ${sampler.name}, ${texCoords.name}, int(${blurRadius ?  blurRadius?.name : "2."}), ${sigmaMultiplier? sigmaMultiplier.name : ".25"}, ${this.useDefaultTexel});`
+            return `vec3 ${this.blurredResult} = gaussian( ${sampler.name}, ${texCoords.name}, ${blurRadius ? blurRadius?.name : "0."}, ${samples ? `int(${samples.name})` : "16"}, ${this.useDefaultTexel});`
         return `vec3 ${this.blurredResult} = vec3(0.);`
     }
 }

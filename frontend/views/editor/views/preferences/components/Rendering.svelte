@@ -110,11 +110,18 @@
                 onFinish={v => updateSubObject("SSGI","maxSteps",v)}
         />
         <Range
-                label={LOCALIZATION_EN.BLUR_SAMPLES}
+                label={LOCALIZATION_EN.SAMPLES}
                 minValue={1}
                 integer={true}
                 value={visualSettings.SSGI.blurSamples}
                 onFinish={v => updateSubObject("SSGI","blurSamples",v)}
+        />
+        <Range
+                label={LOCALIZATION_EN.RADIUS}
+                minValue={1}
+                integer={true}
+                value={visualSettings.SSGI.blurRadius}
+                onFinish={v => updateSubObject("SSGI","blurRadius",v)}
         />
 
 
