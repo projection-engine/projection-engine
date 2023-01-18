@@ -20,11 +20,11 @@
 
     let firstSubmit = false
     const setImage = async (data) => {
-        if(data) {
+        if (data) {
             const res = await EngineStore.loadTextureFromImageID(data.registryID)
             if (res)
-                submit(attribute.key, registryID, true)
-        }else
+                submit(attribute.key, data.registryID, true)
+        } else
             submit(attribute.key, undefined, true)
     }
     let originalValue
@@ -38,7 +38,7 @@
             originalValue = temp
         }
     }
-    $: dropdownLabel  = attribute.type === Component.propTypes.OPTIONS ? attribute.options.find(o => o.value === value) : undefined
+    $: dropdownLabel = attribute.type === Component.propTypes.OPTIONS ? attribute.options.find(o => o.value === value) : undefined
 
 </script>
 
@@ -111,12 +111,17 @@
                 disabled={isDisabled}
         />
     {:else if attribute.type === Component.propTypes.OPTIONS}
-        <Dropdown disabled={isDisabled} width="100%">
+        <Dropdown disabled={isDisabled} width="100%" buttonStyles="border-radius: 3px; border: var(--pj-border-primary) 1px solid">
             <button slot="button" disabled={isDisabled} class="dropdown">
                 {LOCALIZATION_EN[dropdownLabel?.label] || dropdownLabel?.label}
             </button>
             {#each attribute.options as option}
                 <button on:click={() =>  submit(attribute.key, option.value, true)}>
+                    {#if dropdownLabel?.value === option.value}
+                        <Icon>check</Icon>
+                    {:else}
+                        <div style="width: 1.1rem"></div>
+                    {/if}
                     {LOCALIZATION_EN[option.label] || option.label}
                 </button>
             {/each}
@@ -173,8 +178,10 @@
 <style>
 
     .dropdown {
-        height: 25px;
+        text-align: left;
+        height: 22px;
         width: 100%;
+        border: none;
     }
 
     .reset-button {
