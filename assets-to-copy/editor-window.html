@@ -18,6 +18,9 @@
 
     <script defer src="editor-window.js"></script>
     <script defer>
+      addEventListener('unhandledrejection', (event) => {
+        console.error("UNHANDLED ERROR: ", event.message)
+      });
       document.addEventListener('pointerlockerror', _ => document.exitPointerLock(), false);
     </script>
   </head>
