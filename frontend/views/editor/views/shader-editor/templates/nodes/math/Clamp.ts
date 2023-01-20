@@ -1,9 +1,14 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import Signature from "../../Signature";
 
 
-export default class Clamp extends ShaderNode {
+export default class Clamp  extends ShaderNode implements Signature{
+    static signature = "Clamp"
+    getSignature():string{
+        return Clamp.signature
+    }
     a = 0
     b = 0
     c = 0

@@ -1,9 +1,10 @@
 import type ShaderNode from "./ShaderNode";
-import Canvas from "../libs/Canvas";
+import type Canvas from "../libs/Canvas";
 import AlertController from "../../../../../components/alert/AlertController";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-import {Input} from "./Input";
-import {Output} from "./Output";
+import {Input} from "../static/Input";
+import {Output} from "../static/Output";
+import CanvasResources from "../libs/CanvasResources";
 
 export default class ShaderLink {
     targetRef: Input
@@ -42,8 +43,8 @@ export default class ShaderLink {
         if (!sourceIO || !sourceNode)
             return
         const N = canvasAPI.nodes
-        const X = (event.clientX - x) / Canvas.scale
-        const Y = (event.clientY - y) / Canvas.scale
+        const X = (event.clientX - x) / CanvasResources.scale
+        const Y = (event.clientY - y) / CanvasResources.scale
 
         for (let i = N.length - 1; i >= 0; i--) {
             const node = N[i]

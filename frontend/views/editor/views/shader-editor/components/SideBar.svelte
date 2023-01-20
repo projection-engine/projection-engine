@@ -6,21 +6,21 @@
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import type Canvas from "../libs/Canvas";
-    import ShaderNode from "../templates/ShaderNode";
-    import Comment from "../templates/Comment";
+    import type ShaderNode from "../templates/ShaderNode";
+    import ShaderComment from "../templates/ShaderComment";
     import {onDestroy, onMount} from "svelte";
-    import Material from "../templates/nodes/Material";
+    import NODE_MAP from "../static/NODE_MAP";
 
     export let canvasAPI: Canvas
     let tab = 0
-    let mainNode: ShaderNode | Comment | undefined = undefined
+    let mainNode: ShaderNode | ShaderComment | undefined = undefined
 
     $: {
         if (!mainNode)
-            mainNode = canvasAPI.nodes.find(n => n instanceof Material)
+            mainNode = canvasAPI.nodes.find(n => n instanceof NODE_MAP.Material)
     }
     onMount(() => {
-        mainNode = canvasAPI.nodes.find(n => n instanceof Material)
+        mainNode = canvasAPI.nodes.find(n => n instanceof NODE_MAP.Material)
         canvasAPI.lastSelectionListener = () => mainNode = canvasAPI.lastSelection
     })
     onDestroy(() => {

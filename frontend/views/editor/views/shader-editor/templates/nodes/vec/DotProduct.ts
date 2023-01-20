@@ -1,9 +1,15 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import DraggableNodeUtils from "../../../libs/DraggableNodeUtils";
+import Signature from "../../Signature";
 
 
-export default class DotProduct extends ShaderNode {
+export default class DotProduct extends ShaderNode implements Signature{
+    static signature = "DotProduct"
+    getSignature():string{
+        return DotProduct.signature
+    }
 
     constructor() {
         super([
@@ -23,7 +29,7 @@ export default class DotProduct extends ShaderNode {
 
     getFunctionCall({a, b}, index) {
         this.DOT_PRODUCT = "DOT_PRODUCT" + index
-        const minType = ShaderNode.getMinimalType(a, b)
+        const minType = DraggableNodeUtils.getMinimalType(a, b)
         if (b && a)
             return `float ${this.DOT_PRODUCT} = dot(${minType}(${a.name}), ${minType}(${b.name}));`
         return `float ${this.DOT_PRODUCT} = 0.;`

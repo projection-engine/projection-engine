@@ -1,6 +1,7 @@
 import Canvas from "../libs/Canvas";
+import CanvasResources from "../libs/CanvasResources";
 
-export default function getCanvasZoomEvent(canvasAPI: Canvas, canvas: HTMLCanvasElement): (this: HTMLCanvasElement, ev: WheelEvent) => void {
+export default function getCanvasZoomEvent(canvasAPI: Canvas ): (this: HTMLCanvasElement, ev: WheelEvent) => void {
     let localScale = 1
     return e => {
         e.preventDefault()
@@ -11,8 +12,8 @@ export default function getCanvasZoomEvent(canvasAPI: Canvas, canvas: HTMLCanvas
         else if (e.wheelDelta < 0 && localScale >= .5)
             localScale -= localScale * .1
 
-        Canvas.scale = localScale
-        canvas.style.backgroundSize = `${20 * localScale}px ${20 * localScale}px`
+        CanvasResources.scale = localScale
+        canvasAPI.canvas.style.backgroundSize = `${20 * localScale}px ${20 * localScale}px`
         canvasAPI.clear()
     }
 }

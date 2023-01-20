@@ -1,17 +1,14 @@
 import materialCompiler from "./material-compiler/material-compiler";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-import getNewInstance from "../utils/get-new-instance";
-import TextureSample from "../templates/nodes/TextureSample";
 import FilesStore from "../../../stores/FilesStore";
-
 import AlertController from "../../../../../components/alert/AlertController";
 import Canvas from "./Canvas";
 import type ShaderNode from "../templates/ShaderNode";
 import GPU from "../../../../../../engine-core/GPU";
 import UberShader from "../../../../../../engine-core/utils/UberShader";
 import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
-import Material from "../templates/nodes/Material";
+import NodesIndex from "../static/NODE_MAP";
 
 export default class ShaderEditorTools {
 
@@ -21,14 +18,14 @@ export default class ShaderEditorTools {
     static copied = new Map()
     static toOpenFile
 
-    static parseNode(node): ShaderNode | undefined {
+    static parseNode(node) {
         if (!node)
             return
-        const nodeInstance = <ShaderNode | null>getNewInstance(node.instance)
-        if (nodeInstance === null)
+        const nodeInstance = NodesIndex[node.instance] ? new NodesIndex[node.instance]() : undefined
+        if (!nodeInstance)
             return;
         Object.keys(node).forEach(o => {
-            if (o === "texture" && nodeInstance instanceof TextureSample) nodeInstance[o] = FilesStore.data.textures.find(i => i.registryID === node[o].registryID)
+            if (o === "texture" && nodeInstance instanceof NodesIndex.TextureSample) nodeInstance[o] = FilesStore.data.textures.find(i => i.registryID === node[o].registryID)
             else {
                 const input = nodeInstance.inputs.find(i => i.key === o)
                 if (!input && !nodeInstance.output.find(i => i.key === o))
@@ -40,7 +37,6 @@ export default class ShaderEditorTools {
                     nodeInstance[o] = node[o]
             }
         })
-
 
         nodeInstance.x = node.x
         nodeInstance.name = node.name
@@ -68,7 +64,7 @@ export default class ShaderEditorTools {
     static #serializeNode(n: ShaderNode) {
         return {
             ...n,
-            instance: n.constructor.name,
+            instance: n.prototype.name,
             texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
         }
     }

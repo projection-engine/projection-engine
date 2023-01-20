@@ -1,8 +1,8 @@
 import resolveRelationship from "./resolve-relationship";
-import TextureSample from "../../../templates/nodes/TextureSample";
 import type ShaderNode from "../../../templates/ShaderNode";
 import type ShaderLink from "../../../templates/ShaderLink";
 import MaterialUniform from "../../../../../../../../engine-core/templates/MaterialUniform";
+import NODE_MAP from "../../../static/NODE_MAP";
 
 type response = { functionDeclaration: string, uniformsDeclaration: string, uniforms: Object[] , uniformValues: MaterialUniform[] }
 export default async function compileFragmentShader(startPoint: ShaderNode, nodes: ShaderNode[], links: ShaderLink[], executionSignature: {signature:string}):Promise<response> {
@@ -17,7 +17,7 @@ export default async function compileFragmentShader(startPoint: ShaderNode, node
         const n = nodes[i]
         if (typeof n.getInputInstance === "function" && !typesInstantiated[n.id]) {
             const res = await n.getInputInstance(i, uniforms, uniformValues, textureOffset)
-            if (n instanceof TextureSample)
+            if (n instanceof NODE_MAP.TextureSample)
                 textureOffset++
             if (res.includes("const "))
                 constants.push(res)

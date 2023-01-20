@@ -1,9 +1,14 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import Signature from "../../Signature";
 
 
-export default class Refract extends ShaderNode {
+export default class Refract extends ShaderNode implements Signature{
+    static signature = "Refract"
+    getSignature():string{
+        return Refract.signature
+    }
     r = 0
     constructor() {
         super([

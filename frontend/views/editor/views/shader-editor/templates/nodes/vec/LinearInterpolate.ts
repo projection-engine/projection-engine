@@ -1,9 +1,15 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import DraggableNodeUtils from "../../../libs/DraggableNodeUtils";
+import Signature from "../../Signature";
 
 
-export default class LinearInterpolate extends ShaderNode {
+export default class LinearInterpolate extends ShaderNode implements Signature{
+    static signature = "LinearInterpolate"
+    getSignature():string{
+        return LinearInterpolate.signature
+    }
     c = 0.
     constructor() {
         super([
@@ -27,7 +33,7 @@ export default class LinearInterpolate extends ShaderNode {
 
     getFunctionCall({a,b, c={name: this.c}}, index) {
         this.LINEAR_INTERPOLATION = "LINEAR_INTERPOLATION" + index
-        const minType = ShaderNode.getMinimalType(a, b)
+        const minType = DraggableNodeUtils.getMinimalType(a, b)
         if(b && a && c)
             return `${minType} ${this.LINEAR_INTERPOLATION} = mix(${minType}(${a.name}), ${minType}(${b.name}), ${c.name});`
         return `${minType} ${this.LINEAR_INTERPOLATION} = ${minType}(0.);`

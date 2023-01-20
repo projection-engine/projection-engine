@@ -3,6 +3,7 @@ import DATA_TYPES from "../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float";
 import MATERIAL_RENDERING_TYPES from "../../../../../../../engine-core/static/MATERIAL_RENDERING_TYPES";
+import Signature from "../Signature";
 
 
 function arrayToGlsl(a) {
@@ -10,7 +11,11 @@ function arrayToGlsl(a) {
     return "vec3(" + arr.map(a => checkGlslFloat(parseFloat(a.toFixed(4)))) + ")"
 }
 
-export default class Material extends ShaderNode {
+export default class Material extends ShaderNode implements Signature{
+    static signature = "Material"
+    getSignature():string{
+        return Material.signature
+    }
     doubleSided = false
     ssrEnabled = false
 

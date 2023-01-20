@@ -4,7 +4,7 @@ import CanvasRenderer from "../libs/CanvasRenderer";
 import Draggable from "./Draggable";
 
 
-export default class Comment extends Draggable {
+export default class ShaderComment extends Draggable {
     name = "New Comment"
     color = [150, 150, 150]
     nodeIDs = []

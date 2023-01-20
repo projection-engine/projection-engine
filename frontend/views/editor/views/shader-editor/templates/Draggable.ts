@@ -1,6 +1,8 @@
 import HEADER_HEIGHT from "../static/HEADER_HEIGHT";
 import Canvas from "../libs/Canvas";
 import SCALE_BUTTON_SIZE from "../static/SCALE_BUTTON_SIZE";
+import CanvasRenderer from "../libs/CanvasRenderer";
+import CanvasResources from "../libs/CanvasResources";
 
 export default class Draggable {
     id = crypto.randomUUID()
@@ -38,51 +40,7 @@ export default class Draggable {
 
         ctx.beginPath()
         ctx.roundRect(XI, YI, SCALE_BUTTON_SIZE, SCALE_BUTTON_SIZE, [0, 0, 3, 0])
-        ctx.fillStyle = Canvas.borderColor
+        ctx.fillStyle = CanvasResources.borderColor
         ctx.fill()
-    }
-
-    static drag(event: MouseEvent, node: Draggable, parentBbox, asPositionChange: boolean): { onMouseUp: Function, onMouseMove: Function, node: Draggable } {
-        const bounding = {
-            x: !asPositionChange ? 0 : node.x * Canvas.scale - event.clientX,
-            y: !asPositionChange ? 0 : node.y * Canvas.scale - event.clientY
-        }
-        if(!asPositionChange) {
-            bounding.x -= parentBbox.left
-            bounding.y -= parentBbox.top
-        }
-
-        return {
-            node: node,
-            onMouseUp: () => {
-                if (!asPositionChange)
-                    return
-                if (node.y < 0)
-                    node.y = 0
-                if (node.x < 0)
-                    node.x = 0
-                if (node.y > Canvas.height)
-                    node.y = Canvas.height - node.height
-                if (node.x > Canvas.width)
-                    node.x = Canvas.width - node.width
-            },
-            onMouseMove: ev => {
-                let X = Math.round(((ev.clientX + bounding.x) / Canvas.scale) / Canvas.grid) * Canvas.grid
-                let Y = Math.round(((ev.clientY + bounding.y) / Canvas.scale) / Canvas.grid) * Canvas.grid
-                if (asPositionChange) {
-                    node.x = X
-                    node.y = Y
-                } else {
-                    X -= node.x
-                    Y -= node.y
-                    if (X > node.minWidth)
-                        node.width = X
-                    if (Y > node.minHeight)
-                        node.height = Y
-
-                }
-
-            }
-        }
     }
 }

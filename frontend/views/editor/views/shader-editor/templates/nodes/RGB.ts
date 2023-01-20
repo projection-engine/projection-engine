@@ -2,9 +2,14 @@ import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float"
+import Signature from "../Signature";
 
 
-export default class RGB extends ShaderNode {
+export default class RGB extends ShaderNode implements Signature{
+    static signature = "RGB"
+    getSignature():string{
+        return RGB.signature
+    }
     rgb = [0, 0, 0]
     uniform = false
 

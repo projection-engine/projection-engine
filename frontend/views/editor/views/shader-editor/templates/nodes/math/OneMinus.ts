@@ -1,9 +1,14 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import Signature from "../../Signature";
 
 
-export default class OneMinus extends ShaderNode {
+export default class OneMinus extends ShaderNode implements Signature{
+    static signature = "OneMinus"
+    getSignature():string{
+        return OneMinus.signature
+    }
     a = 0
     constructor() {
         super([
