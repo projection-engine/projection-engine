@@ -16,9 +16,7 @@
     export let item
     let data
     let type
-
     $: fileType = "." + item.type
-
     $: {
         data = undefined
         if (fileType !== FILE_TYPES.PRIMITIVE && fileType !== FILE_TYPES.LEVEL) {
@@ -34,7 +32,7 @@
 
     <ItemMetadata item={item}/>
     <div data-divider="-" style="margin:0;"></div>
-    {#if fileType === FILE_TYPES.TEXTURE}
+    {#if fileType === FILE_TYPES.TEXTURE && data != null}
         <TextureItem data={data} item={item}/>
 
     {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.UI_LAYOUT}

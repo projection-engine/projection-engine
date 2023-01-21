@@ -22,6 +22,8 @@ enum LOCALIZATION_EN {
     SET_AS_DEFAULT = "Default",
     PROJECT_CREATED = "Project created",
     IS_DEFAULT_VERSION = "Default version",
+    TEXTURE_QUALITY = "Texture quality",
+    COMPRESSION_RATIO = "Compression ratio",
     NO_RELEASES = "No releases found",
     SAVING_STATE = "Saving state",
     ERROR_LOADING_PROJECT = "Error loading project",

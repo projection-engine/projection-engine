@@ -1,7 +1,5 @@
 import HEADER_HEIGHT from "../static/HEADER_HEIGHT";
-import Canvas from "../libs/Canvas";
 import SCALE_BUTTON_SIZE from "../static/SCALE_BUTTON_SIZE";
-import CanvasRenderer from "../libs/CanvasRenderer";
 import CanvasResources from "../libs/CanvasResources";
 
 export default class Draggable {
