@@ -13,6 +13,10 @@ enum LOCALIZATION_EN {
     RENAME_ERROR = "Error renaming editor",
     LOADING = "Loading projects",
     TITLE = "Projection Engine",
+    MAX_MEMORY = "Memory allocation",
+    VSYNC = "Vsync",
+    GRAPHICS_BACKEND = "Graphics backend",
+
     LABEL_PROJECTS = "Projects",
     PROJECTS = "Your projects",
     SET_AS_DEFAULT = "Default",

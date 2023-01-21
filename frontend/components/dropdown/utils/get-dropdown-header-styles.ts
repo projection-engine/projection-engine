@@ -1,4 +1,4 @@
-export default function getDropdownHeaderStyles(highlight) {
+export default function getDropdownHeaderStyles(highlight?: boolean): string {
     return `
           max-height: 22px;
           min-height: 22px;

@@ -2,23 +2,18 @@ import createEnv from "./utils/create-env";
 import ProjectController from "./libs/ProjectController";
 import {AngleBackends} from "./static/ANGLE_BACKENDS";
 import SETTINGS_PATH from "./static/SETTINGS_PATH";
+import DEFAULT_GLOBAL_SETTINGS from "./static/DEFAULT_GLOBAL_SETTINGS";
 
 const {BrowserWindow, app} = require("electron")
 const fs = require("fs")
 const os = require("os")
 const path = require("path")
 
-const DEFAULT = {
-    graphicsBackend: AngleBackends.VULKAN,
-    vsync: true,
-    maxMemory: 16384
-}
-
 function main() {
-    let settingsFile = DEFAULT
+    let settingsFile = DEFAULT_GLOBAL_SETTINGS
     if (fs.existsSync(os.homedir() + path.sep + SETTINGS_PATH)) {
         try {
-            settingsFile = {...DEFAULT, ...JSON.parse(fs.readFileSync(os.homedir() + path.sep + SETTINGS_PATH).toString())}
+            settingsFile = {...settingsFile, ...JSON.parse(fs.readFileSync(os.homedir() + path.sep + SETTINGS_PATH).toString())}
         } catch (err) {
             console.error(err)
         }
