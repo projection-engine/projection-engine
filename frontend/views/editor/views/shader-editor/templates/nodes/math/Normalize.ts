@@ -1,9 +1,14 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import Signature from "../../Signature";
 
 
-export default class Normalize extends ShaderNode {
+export default class Normalize extends ShaderNode implements Signature{
+    static signature = "Normalize"
+    getSignature():string{
+        return Normalize.signature
+    }
     constructor() {
         super([
             {label: "Vector", key: "a", accept: [DATA_TYPES.VEC2,DATA_TYPES.VEC3,DATA_TYPES.VEC4]}

@@ -3,7 +3,7 @@ import type ShaderNode from "../../../templates/ShaderNode";
 
 export default function resolveRelationship(currentNode: ShaderNode, outputs: string[], links: ShaderLink[], nodes: ShaderNode[], body: string[], executionSignature: { signature: string }) {
     const inputs = {}
-    executionSignature.signature += currentNode.constructor.name + currentNode.uniform ? "-dynamic-" : "-static-"
+    executionSignature.signature += currentNode.getSignature() + currentNode.uniform ? "-dynamic-" : "-static-"
 
     const linksToResolve = links.filter(l => l.targetNode.id === currentNode.id)
     linksToResolve.forEach(link => {

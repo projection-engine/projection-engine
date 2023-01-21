@@ -1,5 +1,5 @@
 import Canvas from "../libs/Canvas";
-import Comment from "../templates/Comment";
+import ShaderComment from "../templates/ShaderComment";
 
 export default function addComment(canvasAPI: Canvas) {
     let smallestX: number | undefined,
@@ -12,7 +12,7 @@ export default function addComment(canvasAPI: Canvas) {
 
     canvasAPI.selectionMap
         .forEach(n => {
-            if (n instanceof Comment)
+            if (n instanceof ShaderComment)
                 return
             if (!smallestX || n.x < smallestX)
                 smallestX = n.x
@@ -32,7 +32,7 @@ export default function addComment(canvasAPI: Canvas) {
     smallestX -= 4
     smallestY -= 36
 
-    const comment = new Comment(smallestX, smallestY)
+    const comment = new ShaderComment(smallestX, smallestY)
     comment.width = width
     comment.height = height
     canvasAPI.comments.push(comment)

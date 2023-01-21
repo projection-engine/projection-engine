@@ -1,23 +1,23 @@
 import Canvas from "../libs/Canvas";
-import Draggable from "../templates/Draggable";
-import ShaderNode from "../templates/ShaderNode";
 import CanvasRenderer from "../libs/CanvasRenderer";
-import {Input} from "../templates/Input";
-import {Output} from "../templates/Output";
+import {Input} from "../static/Input";
+import {Output} from "../static/Output";
+import DraggableNodeUtils from "../libs/DraggableNodeUtils";
+import CanvasResources from "../libs/CanvasResources";
 
-export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvasAPI:Canvas, parentBBox, parentElement:HTMLElement, isOnScroll:boolean, event:MouseEvent){
-    if (!isOnScroll) {
+export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvasAPI:Canvas, parentBBox, parentElement:HTMLElement, event:MouseEvent){
+
         const N = canvasAPI.nodes
         const C = canvasAPI.comments
-        const X = (event.clientX - BBox.x) / Canvas.scale
-        const Y = (event.clientY - BBox.y) / Canvas.scale
+        const X = (event.clientX - BBox.x) / CanvasResources.scale
+        const Y = (event.clientY - BBox.y) / CanvasResources.scale
 
         if (!event.ctrlKey) {
             canvasAPI.lastSelection = undefined
             canvasAPI.selectionMap.clear()
         } else
             canvasAPI.selectionMap.forEach(node => {
-                nodesOnDrag.push(Draggable.drag(event, node, parentBBox,true))
+                nodesOnDrag.push(DraggableNodeUtils.drag(event, node, parentBBox,true))
             })
 
         let wasBroken = false
@@ -29,19 +29,19 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
                 canvasAPI.selectionMap.set(node.id, node)
                 canvasAPI.lastSelection = node
                 if (onHeader) {
-                    nodesOnDrag.push(Draggable.drag(event, node, parentBBox,true))
+                    nodesOnDrag.push(DraggableNodeUtils.drag(event, node, parentBBox,true))
                     node.isOnDrag = true
                 } else if (!event.ctrlKey) {
                     const isOnScale = node.checkAgainstScale(X, Y)
                     if (isOnScale) {
-                        nodesOnDrag.push(Draggable.drag(event, node, parentBBox,false))
+                        nodesOnDrag.push(DraggableNodeUtils.drag(event, node, parentBBox,false))
                         node.isOnDrag = true
                     } else {
                         const output = node.checkAgainstIO<Output>(X, Y)
                         if (output) {
                             IO.node = node
                             IO.output = output
-                            const position = ShaderNode.getIOPosition(node.output.indexOf(output), node, true)
+                            const position = DraggableNodeUtils.getIOPosition(node.output.indexOf(output), node, true)
                             tempLink.x = position.x
                             tempLink.y = position.y
                         } else {
@@ -52,7 +52,7 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
                             if (F === -1)
                                 break
                             const found = canvasAPI.links[F]
-                            const originalPosition = ShaderNode.getIOPosition(found.sourceNode.output.indexOf(found.sourceRef), found.sourceNode, true)
+                            const originalPosition = DraggableNodeUtils.getIOPosition(found.sourceNode.output.indexOf(found.sourceRef), found.sourceNode, true)
                             IO.node = found.sourceNode
                             IO.output = found.sourceRef
 
@@ -77,12 +77,12 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
                 const onHeader = comment.checkHeaderClick(X, Y)
                 if (onHeader || onBody) {
                     if (onHeader) {
-                        nodesOnDrag.push(Draggable.drag(event, comment, parentBBox,true))
+                        nodesOnDrag.push(DraggableNodeUtils.drag(event, comment, parentBBox,true))
                         comment.isOnDrag = true
                     } else if (!event.ctrlKey) {
                         const isOnScale = comment.checkAgainstScale(X, Y)
                         if (isOnScale) {
-                            nodesOnDrag.push(Draggable.drag(event, comment, parentBBox,false))
+                            nodesOnDrag.push(DraggableNodeUtils.drag(event, comment, parentBBox,false))
                             comment.isOnDrag = true
                         }
                     }
@@ -95,5 +95,5 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
         if (nodesOnDrag.length > 0 || IO.node !== undefined)
             canvasAPI.ctx.canvas.style.cursor = "grabbing"
         canvasAPI.clear()
-    }
+
 }

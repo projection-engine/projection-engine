@@ -1,5 +1,4 @@
 <script>
-    import buildShader from "./libs/material-compiler/build-shader"
     import FilesAPI from "../../lib/fs/FilesAPI"
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import EngineStore from "../../stores/EngineStore";
@@ -13,12 +12,11 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import FS from "../../../../lib/FS/FS";
     import Canvas from "./libs/Canvas";
-    import Material from "./templates/nodes/Material";
-    import getOnDropEvent from "./utils/get-on-drop-event";
     import shaderActions from "../../templates/shader-actions";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
     import SideBar from "./components/SideBar.svelte";
+    import NODE_MAP from "./static/NODE_MAP";
 
     const {shell} = window.require("electron")
 
@@ -68,8 +66,8 @@
         canvas.clearState()
 
         await parseFile(openFile, canvas)
-        if (!canvas.nodes.find(n => n instanceof Material))
-            canvas.nodes.push(new Material())
+        if (!canvas.nodes.find(n => n instanceof NODE_MAP.Material))
+            canvas.nodes.push(new NODE_MAP.Material())
         canvas.clear()
     }
 
@@ -129,8 +127,8 @@
             shell.openPath(newFile).catch()
         }}
 />
-<div class="wrapper" bind:this={ref}>
-    <canvas on:drop={getOnDropEvent(canvas)} on:dragover={e => e.preventDefault()} class="canvas"
+<div class="wrapper" bind:this={ref} id={internalID}>
+    <canvas  on:dragover={e => e.preventDefault()} class="canvas"
             bind:this={canvasElement}></canvas>
 </div>
 {#if !openFile?.registryID}

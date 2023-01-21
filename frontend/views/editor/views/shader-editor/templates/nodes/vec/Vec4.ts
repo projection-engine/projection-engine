@@ -2,9 +2,14 @@ import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../../utils/check-glsl-float"
+import Signature from "../../Signature";
 
 
-export default class Vec4 extends ShaderNode {
+export default class Vec4 extends ShaderNode implements Signature{
+    static signature = "Vec4"
+    getSignature():string{
+        return Vec4.signature
+    }
     v = [0, 0, 0, 0]
     uniform = false
 

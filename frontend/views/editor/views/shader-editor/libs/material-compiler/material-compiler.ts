@@ -5,7 +5,7 @@ import MATERIAL_OUTPUT_FORMAT from "../../../../../../../engine-core/static/MATE
 import type ShaderLink from "../../templates/ShaderLink";
 import type ShaderNode from "../../templates/ShaderNode";
 import MaterialUniform from "../../../../../../../engine-core/templates/MaterialUniform";
-import Material from "../../templates/nodes/Material";
+import type Material from "../../templates/nodes/Material";
 import MaterialInformation from "../../../../../../../engine-core/templates/MaterialInformation";
 
 export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<[MaterialInformation, string] | undefined> {

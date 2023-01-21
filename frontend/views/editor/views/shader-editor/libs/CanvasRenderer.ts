@@ -1,18 +1,19 @@
-import ShaderNode from "../templates/ShaderNode";
+import type ShaderNode from "../templates/ShaderNode";
 import DATA_TYPES from "../static/DATA_TYPES";
 import IO_RADIUS from "../static/IO_RADIUS";
-import Canvas from "./Canvas";
 import type ShaderLink from "../templates/ShaderLink";
 import HEADER_HEIGHT from "../static/HEADER_HEIGHT";
-import type Comment from "../templates/Comment";
+import type ShaderComment from "../templates/ShaderComment";
 import NODE_TYPES from "../static/NODE_TYPES";
-import {Input} from "../templates/Input";
-import {Output} from "../templates/Output";
-import MATERIAL_RENDERING_TYPES, {
-    INVERSE_MATERIAL_RENDERING_TYPES
-} from "../../../../../../engine-core/static/MATERIAL_RENDERING_TYPES";
+import {Input} from "../static/Input";
+import {Output} from "../static/Output";
+import {INVERSE_MATERIAL_RENDERING_TYPES} from "../../../../../../engine-core/static/MATERIAL_RENDERING_TYPES";
+import DraggableNodeUtils from "./DraggableNodeUtils";
+import CanvasResources from "./CanvasResources";
 
 export default class CanvasRenderer {
+
+
     static drawBezierCurve(ctx: CanvasRenderingContext2D, x1, x2, y1, y2) {
         const diff = Math.abs((x1 - x2) / 2)
         const pivot = Math.min(x1, x2) + diff
@@ -26,7 +27,7 @@ export default class CanvasRenderer {
 
     static drawIO(ctx: CanvasRenderingContext2D, asOutput: boolean, node: ShaderNode, index: number, attribute: Input | Output) {
         ctx.font = "8px Roboto";
-        ctx.strokeStyle = Canvas.borderColor
+        ctx.strokeStyle = CanvasResources.borderColor
 
         const isColor = attribute.type === DATA_TYPES.COLOR
         const isTexture = attribute.type === DATA_TYPES.TEXTURE
@@ -34,7 +35,7 @@ export default class CanvasRenderer {
         const isDisabled = attribute.disabled
         let label = attribute.label
 
-        const linePosition = ShaderNode.getIOPosition(index, node, asOutput)
+        const linePosition = DraggableNodeUtils.getIOPosition(index, node, asOutput)
 
         let X = linePosition.x
         const LABEL_OFFSET = 13
@@ -58,7 +59,7 @@ export default class CanvasRenderer {
         }
 
         if (isTexture && !asOutput) {
-            ctx.fillStyle = Canvas.backgroundColor
+            ctx.fillStyle = CanvasResources.backgroundColor
             ctx.roundRect(X + IO_RADIUS, Y - H / 2, W / 2, H, 3)
             ctx.fill()
             ctx.stroke()
@@ -71,7 +72,7 @@ export default class CanvasRenderer {
         }
 
         if (attribute.accept || asOutput) {
-            ctx.fillStyle = ShaderNode.getIOColor(attribute, isDisabled)
+            ctx.fillStyle = DraggableNodeUtils.getIOColor(attribute, isDisabled)
 
             ctx.lineWidth = .5
 
@@ -111,7 +112,7 @@ export default class CanvasRenderer {
         ctx.closePath()
     }
 
-    static drawNodePosition(ctx: CanvasRenderingContext2D, node: Comment | ShaderNode) {
+    static drawNodePosition(ctx: CanvasRenderingContext2D, node: ShaderComment | ShaderNode) {
         ctx.font = "10px Roboto"
 
         const TEXT = `X ${node.x} Y ${node.y} W ${node.width} H ${node.height}`
@@ -131,21 +132,21 @@ export default class CanvasRenderer {
             y2 = T.y + HEADER_HEIGHT + IO_RADIUS * 3 + T.inputs.indexOf(link.targetRef) * 20
 
         const isSomeoneDisabled = link.sourceRef.disabled || link.targetRef.disabled
-        ctx.strokeStyle = ShaderNode.getIOColor(link.sourceRef, isSomeoneDisabled)
+        ctx.strokeStyle = DraggableNodeUtils.getIOColor(link.sourceRef, isSomeoneDisabled)
 
         CanvasRenderer.drawBezierCurve(ctx, x1, x2, y1, y2)
     }
 
     static drawTempLink(event: MouseEvent, parentElement, parentBBox, tempLink, canvasAPI) {
-        tempLink.x1 = (event.clientX - parentBBox.x + parentElement.scrollLeft) / Canvas.scale
-        tempLink.y1 = (event.clientY - parentBBox.y + parentElement.scrollTop) / Canvas.scale
+        tempLink.x1 = (event.clientX - parentBBox.x + parentElement.scrollLeft) / CanvasResources.scale
+        tempLink.y1 = (event.clientY - parentBBox.y + parentElement.scrollTop) / CanvasResources.scale
 
         canvasAPI.clear()
         canvasAPI.ctx.strokeStyle = "#0095ff"
         CanvasRenderer.drawBezierCurve(canvasAPI.ctx, tempLink.x, tempLink.x1, tempLink.y, tempLink.y1)
     }
 
-    static drawNodeHeader(ctx: CanvasRenderingContext2D, node: ShaderNode | Comment, type?: number) {
+    static drawNodeHeader(ctx: CanvasRenderingContext2D, node: ShaderNode | ShaderComment, type?: number) {
         const name = node.name
         ctx.beginPath();
 
@@ -165,9 +166,9 @@ export default class CanvasRenderer {
                 ctx.fillStyle = "red"
                 break
             default:
-                ctx.fillStyle = `rgb(${(node as Comment).color})`
+                ctx.fillStyle = `rgb(${(node as ShaderComment).color})`
         }
-        ctx.strokeStyle = Canvas.borderColor
+        ctx.strokeStyle = CanvasResources.borderColor
         ctx.lineWidth = .5
         ctx.roundRect(node.x, node.y, node.width, 23, [3, 3, 0, 0])
         ctx.stroke()
@@ -187,11 +188,11 @@ export default class CanvasRenderer {
 
     }
 
-    static drawRoundedRect(ctx: CanvasRenderingContext2D, node: ShaderNode | Comment, r: number, isSelected: boolean, isFirstSelected: boolean, color: string) {
+    static drawRoundedRect(ctx: CanvasRenderingContext2D, node: ShaderNode | ShaderComment, r: number, isSelected: boolean, isFirstSelected: boolean, color: string) {
         const w = node.width, h = node.height, x = node.x, y = node.y
         if (w < 2 * r) r = w / 2;
         if (h < 2 * r) r = h / 2;
-        let outlineColor = Canvas.borderColor
+        let outlineColor = CanvasResources.borderColor
         if (isSelected)
             outlineColor = isFirstSelected ? "white" : "darkorange"
 

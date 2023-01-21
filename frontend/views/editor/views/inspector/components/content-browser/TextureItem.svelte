@@ -6,8 +6,6 @@
     import GPU from "../../../../../../../engine-core/GPU";
     import TEXTURE_FILTERING from "../../../../../../../engine-core/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../../../engine-core/static/texture/TEXTURE_WRAPPING";
-
-    import GPUAPI from "../../../../../../../engine-core/lib/rendering/GPUAPI";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";
 

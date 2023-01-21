@@ -1,11 +1,14 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import Signature from "../../Signature";
 
 
-export default class MakeVector extends ShaderNode {
-
-
+export default class MakeVector extends ShaderNode implements Signature{
+    static signature = "MakeVector"
+    getSignature():string{
+        return MakeVector.signature
+    }
     constructor() {
         super([
             {label: "X", key: "x", accept: [DATA_TYPES.FLOAT], color: "red"},
@@ -18,7 +21,6 @@ export default class MakeVector extends ShaderNode {
             {label: "Vec4", key: "vec4MakerRes", type: DATA_TYPES.VEC4, color: "blue"}
         ])
         this.name = "MakeVector"
-        
     }
 
     get type() {

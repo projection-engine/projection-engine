@@ -1,9 +1,13 @@
-import ShaderNode from "./ShaderNode";
-import DATA_TYPES from "../static/DATA_TYPES";
-import NODE_TYPES from "../static/NODE_TYPES";
-import checkGlslFloat from "../utils/check-glsl-float";
+import ShaderNode from "../ShaderNode";
+import DATA_TYPES from "../../static/DATA_TYPES";
+import NODE_TYPES from "../../static/NODE_TYPES";
+import Signature from "../Signature";
 
-export default class GaussianBlur extends ShaderNode {
+export default class GaussianBlur extends ShaderNode implements Signature{
+    static signature = "GaussianBlur"
+    getSignature():string{
+        return GaussianBlur.signature
+    }
     useDefaultTexel = true
 
     constructor() {

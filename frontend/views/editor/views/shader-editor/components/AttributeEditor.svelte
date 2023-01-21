@@ -3,11 +3,11 @@
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../components/input/Input.svelte";
-    import ShaderNode from "../templates/ShaderNode";
-    import Comment from "../templates/Comment";
+    import type ShaderNode from "../templates/ShaderNode";
+    import ShaderComment from "../templates/ShaderComment";
     import MutableObject from "../../../../../../engine-core/MutableObject";
 
-    export let node: ShaderNode | Comment
+    export let node: ShaderNode | ShaderComment
     export let updateCanvas: Function
 
 
@@ -35,7 +35,7 @@
                     placeholder={LOCALIZATION_EN.NAME}
             />
         </fieldset>
-        {#if node instanceof Comment}
+        {#if node instanceof ShaderComment}
             <fieldset>
                 <legend>{LOCALIZATION_EN.COLOR}</legend>
                 <ColorPicker

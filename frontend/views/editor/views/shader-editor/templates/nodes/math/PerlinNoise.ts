@@ -2,9 +2,14 @@ import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../../utils/check-glsl-float"
+import Signature from "../../Signature";
 
 
-export default class PerlinNoise extends ShaderNode {
+export default class PerlinNoise extends ShaderNode implements Signature{
+    static signature = "PerlinNoise"
+    getSignature():string{
+        return PerlinNoise.signature
+    }
     amplitude = 1
     frequency = 4
     unitValue = 1920

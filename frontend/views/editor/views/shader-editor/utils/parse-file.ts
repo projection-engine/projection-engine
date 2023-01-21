@@ -1,11 +1,12 @@
 import FilesAPI from "../../../lib/fs/FilesAPI";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ShaderEditorTools from "../libs/ShaderEditorTools";
-import ShaderLink from "../templates/ShaderLink";
+
 import FS from "../../../../../lib/FS/FS";
 import Canvas from "../libs/Canvas";
 import OpenFile from "../static/OPEN_FILE";
-import Comment from "../templates/Comment";
+import ShaderComment from "../templates/ShaderComment";
+import ShaderLink from "../templates/ShaderLink";
 
 export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
     const res = RegistryAPI.getRegistryEntry(openFile.registryID)
@@ -28,7 +29,7 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
             for (let i = 0; i < dataToParse.comments.length; i++) {
                 const node = dataToParse.comments[i]
 
-                const parsed = new Comment(node.x, node.y)
+                const parsed = new ShaderComment(node.x, node.y)
                 parsed.color = node.color
                 parsed.name = node.name
                 parsed.width = node.width

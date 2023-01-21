@@ -1,7 +1,6 @@
 import Engine from "../../../../engine-core/Engine";
 import getPickerId from "../../../../engine-core/utils/get-picker-id";
 import AXIS from "../../../../engine-tools/static/AXIS";
-import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import HierarchyController from "../views/hierarchy/lib/HierarchyController";
 
@@ -38,7 +37,6 @@ function deleteEntity(entity: Entity, single?: boolean) {
 export default class EntityManager {
     static #updateStructure(replacedMap?: { [key: string]: boolean }) {
         const arr = Engine.entities.array
-        console.trace(arr.length)
         for (let i = 0; i < arr.length; i++) {
             const entity = arr[i]
             entity.pickID = getPickerId(i + AXIS.ZY + 1)
@@ -70,7 +68,6 @@ export default class EntityManager {
     }
 
     static appendBlock(block: Entity[], cleanPush?: boolean) {
-        console.trace(Engine.entities.array.length)
         if (cleanPush) {
             Engine.entities.map.forEach(e => EntityAPI.removeEntity(e.id))
             EntityNameController.byName.clear()

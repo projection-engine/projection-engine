@@ -1,8 +1,13 @@
-import ShaderNode from "./ShaderNode";
-import DATA_TYPES from "../static/DATA_TYPES";
-import NODE_TYPES from "../static/NODE_TYPES";
+import ShaderNode from "../../ShaderNode";
+import DATA_TYPES from "../../../static/DATA_TYPES";
+import NODE_TYPES from "../../../static/NODE_TYPES";
+import Signature from "../../Signature";
 
-export default class Fresnel extends ShaderNode {
+export default class Fresnel extends ShaderNode implements Signature{
+    static signature = "Fresnel"
+    getSignature():string{
+        return Fresnel.signature
+    }
     constructor() {
         super([
             {

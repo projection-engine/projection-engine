@@ -1,16 +1,17 @@
-<script>
-    import {onDestroy, onMount} from "svelte";
-    import ContextMenuController from "../../lib/context-menu/ContextMenuController";
-    import ROUTES from "../../../backend/static/ROUTES";
+import ContextMenuController from "../ContextMenuController";
+import ROUTES from "../../../../backend/static/ROUTES";
+import MutableObject from "../../../../engine-core/MutableObject";
 
-    const {ipcRenderer} = window.require("electron")
+const {ipcRenderer} = window.require("electron")
+export default function getContextAction() {
     let startPosition = undefined
-    let contextMenu
     let open = false
-
-    function handleContext(event) {
+    return (event) => {
         event.preventDefault()
-
+        if (ContextMenuController.blockContext)
+            return;
+        ContextMenuController.currentX = event.clientX
+        ContextMenuController.currentY = event.clientY
         const elements = document.elementsFromPoint(event.clientX, event.clientY)
         let focused
         for (let i = 0; i < elements.length; i++) {
@@ -46,9 +47,7 @@
                     if (!attr.nodeName.includes("data-"))
                         continue
                     const has = ContextMenuController.data.focused.triggers.find(f => attr.nodeName === f)
-
-                    if (has)
-                        hasAttribute = hasAttribute || has
+                    hasAttribute = hasAttribute || has !== undefined
                 }
                 if (hasAttribute) {
                     targetElement = currentElement
@@ -59,7 +58,7 @@
         if (targetElement) {
             let trigger = allowAll ? targetElement : undefined
             if (!trigger)
-                Array.from(targetElement.attributes).forEach((attr) => {
+                Array.from(targetElement.attributes).forEach((attr: MutableObject ) => {
                     const has = ContextMenuController.data.focused.triggers.find((f) => attr.nodeName === f)
                     if (has)
                         trigger = has
@@ -71,10 +70,5 @@
             ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU, ContextMenuController.data.focused.id)
         }
     }
+}
 
-
-    onMount(() => document.addEventListener("contextmenu", handleContext))
-    onDestroy(() => document.removeEventListener("contextmenu", handleContext))
-</script>
-
-<div style="display: none" bind:this={contextMenu}></div>

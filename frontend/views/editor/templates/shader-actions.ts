@@ -4,11 +4,13 @@ import addComment from "../views/shader-editor/utils/add-comment";
 import SettingsStore from "../stores/SettingsStore";
 import Canvas from "../views/shader-editor/libs/Canvas";
 import type ShaderNode from "../views/shader-editor/templates/ShaderNode";
-import Comment from "../views/shader-editor/templates/Comment";
-import Material from "../views/shader-editor/templates/nodes/Material";
+import ShaderComment from "../views/shader-editor/templates/ShaderComment";
+import ALL_NODES from "../views/shader-editor/static/ALL_NODES";
+import ContextMenuController from "../../../lib/context-menu/ContextMenuController";
+import NODE_MAP from "../views/shader-editor/static/NODE_MAP";
 
 export function selectAllNodes(canvasAPI:Canvas){
-    let last: ShaderNode | Comment
+    let last: ShaderNode | ShaderComment
     canvasAPI.nodes.forEach(n => {
         canvasAPI.selectionMap.set(n.id, n)
         last = n
@@ -55,10 +57,10 @@ export default function shaderActions( canvasAPI: Canvas) {
                 const toRemoveFromSelection = []
                 canvasAPI.selectionMap.forEach(s => {
                     toRemoveFromSelection.push(s.id)
-                    if (s instanceof Comment)
+                    if (s instanceof ShaderComment)
                         canvasAPI.comments.splice(canvasAPI.comments.indexOf(s), 1)
                     else {
-                        if(s instanceof Material)
+                        if(s instanceof NODE_MAP.Material)
                             return
                         canvasAPI.nodes.splice(canvasAPI.nodes.indexOf(s), 1);
                         const copy = [...canvasAPI.links]
@@ -82,7 +84,14 @@ export default function shaderActions( canvasAPI: Canvas) {
         hotkeys: Object.values(options),
         contextMenu: [
             options.SELECT_ALL,
-            options.DELETE
+            options.DELETE,
+            {
+                label: "New node",
+                children: ALL_NODES.map(data => ({
+                    ...data,
+                    callback: () => canvasAPI.onDrop(data.dataTransfer, ContextMenuController.currentX, ContextMenuController.currentY)
+                }))
+            }
         ]
     }
 }

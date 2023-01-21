@@ -10,7 +10,7 @@ export default class HierarchyController {
 
     static updateHierarchy() {
         const data: ToRenderElement[] = [], entitiesArray = Engine.entities.array
-        console.trace(entitiesArray)
+
         const callback = (node: Entity, depth: number) => {
             data.push({node, depth})
             for (let i = 0; i < node.children.length; i++)

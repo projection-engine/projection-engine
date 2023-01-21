@@ -17,9 +17,10 @@
     import Canvas from "./views/scene-editor/Canvas.svelte";
     import ROUTES from "../../../backend/static/ROUTES";
     import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
-    import ContextMenu from "../../components/context-menu/ContextMenu.svelte";
+
     import Alert from "../../components/alert/Alert.svelte";
     import FilesStore from "./stores/FilesStore";
+    import ContextMenuController from "../../lib/context-menu/ContextMenuController";
 
     const {ipcRenderer} = window.require("electron")
     const FALLBACK = {...FALLBACK_VIEW}
@@ -37,6 +38,7 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onMount(() => {
+        ContextMenuController.initialize()
         ipcRenderer.on(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
             sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
             WindowUtils.openAbout = () => aboutModalIsOpen = true
@@ -54,7 +56,7 @@
         unsubscribeEngine()
     })
 </script>
-<ContextMenu/>
+
 <Alert/>
 {#if isMetadataReady}
     <Canvas initializeEditor={() => isContextInitialized = true}/>

@@ -1,9 +1,14 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
+import Signature from "../../Signature";
 
 
-export default class CameraCoords extends ShaderNode {
+export default class CameraCoords extends ShaderNode implements Signature{
+    static signature = "CameraCoords"
+    getSignature():string{
+        return CameraCoords.signature
+    }
 
     constructor() {
         super([], [
