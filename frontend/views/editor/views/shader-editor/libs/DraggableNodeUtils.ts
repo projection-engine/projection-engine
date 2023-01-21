@@ -5,7 +5,6 @@ import type Draggable from "../templates/Draggable";
 import {Input} from "../static/Input";
 import {Output} from "../static/Output";
 import type ShaderNode from "../templates/ShaderNode";
-import Canvas from "./Canvas";
 import CanvasResources from "./CanvasResources";
 
 const types = {

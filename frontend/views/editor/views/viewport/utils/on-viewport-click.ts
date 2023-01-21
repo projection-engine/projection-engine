@@ -4,7 +4,6 @@ import SelectionStore from "../../../stores/SelectionStore";
 import QueryAPI from "../../../../../../engine-core/lib/utils/QueryAPI";
 import GPU from "../../../../../../engine-core/GPU";
 import VisibilityRenderer from "../../../../../../engine-core/runtime/VisibilityRenderer";
-import Engine from "../../../../../../engine-core/Engine";
 
 const MAX_DELTA = 50, LEFT_BUTTON = 0
 

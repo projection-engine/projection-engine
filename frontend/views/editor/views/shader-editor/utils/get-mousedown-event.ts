@@ -6,7 +6,6 @@ import {Output} from "../static/Output";
 import ContextMenuController from "../../../../../lib/context-menu/ContextMenuController";
 import type ShaderNode from "../templates/ShaderNode";
 import type Draggable from "../templates/Draggable";
-import NodesIndex from "../static/NODE_MAP";
 import ShaderLink from "../templates/ShaderLink";
 
 function checkOffset(ev1: MouseEvent, ev2: { x: number, y: number }): boolean {

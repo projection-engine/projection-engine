@@ -1,5 +1,5 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import Rendering from "./components/Rendering.svelte";
     import ViewportSettings from "./components/ViewportSettings.svelte";
@@ -10,7 +10,6 @@
     import TABS from "./TABS";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
-    import ROUTES from "../../../../../backend/static/ROUTES";
 
     const {ipcRenderer} = window.require("electron")
 
