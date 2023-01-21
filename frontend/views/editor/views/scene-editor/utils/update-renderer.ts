@@ -50,8 +50,6 @@ export default function updateRenderer(selected, engine, settings) {
     GridSystem.buffer[2] = settings.gridThreshold || 100.
     GridSystem.buffer[3] = settings.gridOpacity || 1.
 
-
-    GPU.internalResolution = {w: settings.resolution[0], h: settings.resolution[1]}
     Engine.updateParams(
         settings,
         settings.SSGI || {},

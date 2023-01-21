@@ -23,13 +23,14 @@
             <Range
                     value={uniform.data}
                     onFinish={v => update(i, v)}
+                    handleChange={v => update(i, v)}
             />
         {/if}
         {#if uniform.type === DATA_TYPES.VEC3 && uniform.isColor }
             <ColorPicker
                     value={uniform.data.map(e => e * 255)}
                     label={uniform.label}
-                    submit={({r,g,b}) => update(i, [r/255,g/255,b/255], 750)}
+                    submit={({r,g,b}) => update(i, [r/255,g/255,b/255] )}
             />
         {/if}
         {#if uniform.type === DATA_TYPES.VEC4 || uniform.type === DATA_TYPES.VEC3 || uniform.type === DATA_TYPES.VEC2}
@@ -38,18 +39,21 @@
                         value={uniform.data[0]}
                         label={"X"}
                         onFinish={v => update(i, getNewVector(uniform.data, v, 0, uniform.type))}
+                        handleChange={v => update(i, getNewVector(uniform.data, v, 0, uniform.type))}
                 />
                 <Range
 
                         value={uniform.data[1]}
                         label={"Y"}
                         onFinish={v => update(i, getNewVector(uniform.data, v, 1, uniform.type))}
+                        handleChange={v => update(i, getNewVector(uniform.data, v, 1, uniform.type))}
                 />
                 {#if uniform.type === DATA_TYPES.VEC4 || uniform.type === DATA_TYPES.VEC3 }
                     <Range
 
                             value={uniform.data[2]}
                             label={"Z"}
+                            handleChange= {v => update(i, getNewVector(uniform.data, v, 2, uniform.type))}
                             onFinish={v => update(i, getNewVector(uniform.data, v, 2, uniform.type))}
                     />
                 {/if}
@@ -57,6 +61,7 @@
                     <Range
 
                             onFinish={v => update(i, getNewVector(uniform.data, v, 3, uniform.type))}
+                            handleChange={v => update(i, getNewVector(uniform.data, v, 3, uniform.type))}
                             value={uniform.data[3]}
                             label={"W"}
                     />

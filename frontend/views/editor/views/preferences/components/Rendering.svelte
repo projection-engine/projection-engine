@@ -4,8 +4,23 @@
     import VisualsStore from "../../../stores/VisualsStore";
     import AA_METHODS from "../../../../../../engine-core/static/AA_METHODS";
     import Range from "../../../../../components/range/Range.svelte";
+    import Accordion from "../../../../../components/accordion/Accordion.svelte";
+    import ROUTES from "../../../../../../backend/static/ROUTES";
+    import OptionDropdown from "../../../../../components/dropdown/OptionDropdown.svelte";
+    import {onMount} from "svelte";
+    import DEFAULT_GLOBAL_SETTINGS from "../../../../../../backend/static/DEFAULT_GLOBAL_SETTINGS";
+    import {AngleBackends} from "../../../../../../backend/static/ANGLE_BACKENDS";
+
+    const {ipcRenderer} = window.require("electron")
 
     export let visualSettings
+
+    let globalSettings = {...DEFAULT_GLOBAL_SETTINGS}
+
+    onMount(() => {
+        ipcRenderer.once(ROUTES.GET_GLOBAL_SETTINGS, (_, data) => globalSettings = data)
+        ipcRenderer.send(ROUTES.GET_GLOBAL_SETTINGS)
+    })
 
     function update(key, value) {
         VisualsStore.updateStore({...visualSettings, [key]: value})
@@ -18,9 +33,64 @@
     }
 </script>
 
-
 <fieldset>
-    <legend>{LOCALIZATION_EN.ANTI_ALIASING}</legend>
+    <legend>{LOCALIZATION_EN.GLOBAL}</legend>
+    <OptionDropdown
+            noPadding={true}
+            label={LOCALIZATION_EN.GRAPHICS_BACKEND}
+            options={[
+                    {icon:                  globalSettings.graphicsBackend === AngleBackends.OPEN_GL    ? "check":undefined,label: "OpenGL", onClick: () => globalSettings.graphicsBackend= AngleBackends.OPEN_GL},
+                    {icon:                  globalSettings.graphicsBackend === AngleBackends.VULKAN     ? "check":undefined,label: "Vulkan (Default)", onClick: () => globalSettings.graphicsBackend= AngleBackends.VULKAN },
+                    {icon:                  globalSettings.graphicsBackend === AngleBackends.D3D11      ? "check":undefined,label: "D3D11 (Slow shader compilation)", onClick: () => globalSettings.graphicsBackend= AngleBackends.D3D11  },
+                    {disabled: true,icon:   globalSettings.graphicsBackend === AngleBackends.D3D9       ? "check":undefined,label: "D3D9", onClick: () => globalSettings.graphicsBackend= AngleBackends.D3D9   },
+                    {disabled: true,icon:   globalSettings.graphicsBackend === AngleBackends.D3D12      ? "check":undefined,label: "D3D12", onClick: () => globalSettings.graphicsBackend= AngleBackends.D3D12  }
+                ]}
+    />
+
+    <OptionDropdown
+            noPadding={true}
+            label={LOCALIZATION_EN.MAX_MEMORY}
+            options={[
+                    {icon: globalSettings.maxMemory === 1024 ? "check":undefined,label: "1024mb", onClick: () => globalSettings.maxMemory = 1024},
+                    {icon: globalSettings.maxMemory === 2048 ? "check":undefined,label: "2048mb", onClick: () => globalSettings.maxMemory = 2048},
+                    {icon: globalSettings.maxMemory === 4096 ? "check":undefined,label: "4096mb", onClick: () => globalSettings.maxMemory = 4096},
+                    {icon: globalSettings.maxMemory === 8192 ? "check":undefined,label: "8192mb", onClick: () => globalSettings.maxMemory = 8192},
+                    {icon: globalSettings.maxMemory === 16384 ? "check":undefined,label: "16384mb", onClick: () => globalSettings.maxMemory = 16384}
+                ]}
+    />
+    <Checkbox
+            checked={visualSettings.AAMethod === AA_METHODS.DISABLED}
+            handleCheck={() => globalSettings.vsync =  !globalSettings.vsync}
+            label={LOCALIZATION_EN.VSYNC}
+    />
+    <button style="width: 100%"
+            on:click={() => ipcRenderer.send(ROUTES.UPDATE_GLOBAL_SETTINGS, globalSettings)}>{LOCALIZATION_EN.APPLY}</button>
+</fieldset>
+
+<Accordion title={LOCALIZATION_EN.RESOLUTION}>
+    <div data-form="-">
+        <Range
+                label={"X"}
+                onFinish={v => {
+                    update("resolution", [v, visualSettings.resolution[1]])
+                }}
+                integer={true}
+                value={visualSettings.resolution[0]}
+                minValue={1}
+        />
+        <Range
+                label={"Y"}
+                onFinish={v => {
+                    update("resolution", [visualSettings.resolution[0], v])
+                }}
+                integer={true}
+                value={visualSettings.resolution[1]}
+                minValue={1}
+        />
+    </div>
+</Accordion>
+
+<Accordion title={LOCALIZATION_EN.ANTI_ALIASING}>
     <div data-form="-">
         <Checkbox
                 checked={visualSettings.AAMethod === AA_METHODS.DISABLED}
@@ -39,10 +109,9 @@
                 label={LOCALIZATION_EN.TAA}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.PHYSICS}</legend>
+<Accordion title={LOCALIZATION_EN.PHYSICS}>
     <div data-form="-">
         <Range
                 label={LOCALIZATION_EN.PHYSICS_SIMULATION_STEP}
@@ -58,13 +127,10 @@
                 onFinish={v => update("physicsSubSteps", v)}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.SSR}</legend>
-
+<Accordion title={LOCALIZATION_EN.SSR}>
     <div data-form="-">
-
         <Range
                 label={LOCALIZATION_EN.STEPS}
                 minValue={1}
@@ -89,11 +155,10 @@
         />
 
     </div>
-</fieldset>
+</Accordion>
 
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.SSGI}</legend>
+<Accordion title={LOCALIZATION_EN.SSGI}>
     <div data-form="-">
         <Checkbox
                 checked={visualSettings.SSGI.enabled}
@@ -123,7 +188,6 @@
                 value={visualSettings.SSGI.blurRadius}
                 onFinish={v => updateSubObject("SSGI","blurRadius",v)}
         />
-
 
         <Range
 
@@ -163,10 +227,9 @@
                 value={visualSettings.SSGI.exposure}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.SSS}</legend>
+<Accordion title={LOCALIZATION_EN.SSS}>
     <div data-form="-">
         <Range
                 label={LOCALIZATION_EN.STEPS}
@@ -207,17 +270,16 @@
                 onFinish={v => updateSubObject("SSS","depthDelta",v)}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.DIRECTIONAL_SHADOWS}</legend>
+<Accordion title={LOCALIZATION_EN.DIRECTIONAL_SHADOWS}>
     <div data-form="-">
         <Range
                 label={LOCALIZATION_EN.RESOLUTION}
                 accentColor={"red"}
                 onFinish={v => {
-                update("shadowMapResolution", v)
-            }}
+                    update("shadowMapResolution", v)
+                }}
                 incrementPercentage={1}
                 precision={0}
                 minValue={1}
@@ -241,10 +303,9 @@
 
         </div>
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.AO}</legend>
+<Accordion title={LOCALIZATION_EN.AO}>
     <div data-form="-">
         <Checkbox
                 checked={visualSettings.SSAO.enabled}
@@ -294,5 +355,5 @@
 
     </div>
 
-</fieldset>
+</Accordion>
 

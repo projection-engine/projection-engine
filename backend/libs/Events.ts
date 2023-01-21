@@ -12,9 +12,13 @@ import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCT
 import parseContentBrowserData from "../utils/parse-content-browser-data";
 import RegistryFile from "../../static/objects/RegistryFile";
 
+import SETTINGS_PATH from "../static/SETTINGS_PATH";
+import DEFAULT_GLOBAL_SETTINGS from "../static/DEFAULT_GLOBAL_SETTINGS";
+
 const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, screen} = require("electron")
 
 const fs = require("fs")
+const os = require("os")
 const pathRequire = require("path")
 
 export default class Events {
@@ -32,8 +36,38 @@ export default class Events {
         ipcMain.on(ROUTES.RESOLVE_NAME, Events.resolveName)
         ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)
 
-        ipcMain.on(ROUTES.CLOSE_EDITOR, () => {
-            ProjectController.openProjectWindow()
+        ipcMain.on(ROUTES.CLOSE_EDITOR, () => ProjectController.openProjectWindow())
+        ipcMain.on(ROUTES.GET_GLOBAL_SETTINGS,async (ev) =>  {
+            try{
+                const file = await fs.promises.readFile(os.homedir() + pathRequire.sep + SETTINGS_PATH)
+                if(file)
+                    ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, JSON.parse(file.toString()))
+                else
+                    ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
+            }catch (err) {
+                ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
+            }
+        })
+        ipcMain.on(ROUTES.UPDATE_GLOBAL_SETTINGS,async (_, data) => {
+           try{
+               const result = await dialog.showMessageBox(ProjectController.window, {
+                   'type': 'question',
+                   'title': 'Reload necessary to apply changes',
+                   'message': "Are you sure?",
+                   'buttons': [
+                       'Yes',
+                       'No'
+                   ]
+               })
+               if (result.response !== 0)
+                   return;
+               await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch()
+               app.relaunch()
+               app.quit()
+           }catch (err){
+               app.relaunch()
+               app.quit()
+           }
         })
 
         ipcMain.on(ROUTES.CREATE_REG, Events.createRegistry)

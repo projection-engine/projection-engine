@@ -27,7 +27,7 @@
     onMount(() => {
         Engine.initializeContext(
             canvasRef,
-            {w: settings.resolution[0], h: settings.resolution[1]},
+            {w: visuals.resolution[0], h: visuals.resolution[1]},
             AssetAPI.readAsset,
             AssetAPI.readMetadata,
             true

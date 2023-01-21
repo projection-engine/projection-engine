@@ -14,9 +14,8 @@ export default {
     showLines: true,
     showIcons: true,
     showGrid: true,
-
+    outlineWidth: .5,
     outlineColor: [.5, .5, .5],
-    resolution: [window.screen.width, window.screen.height],
     hideFooter: false,
     projectCreationDate: (new Date()).toDateString(),
     loggingEnabled: true,

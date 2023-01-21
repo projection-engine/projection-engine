@@ -1,15 +1,16 @@
-<script>
+<script lang="ts">
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Dropdown from "./Dropdown.svelte";
     import getDropdownHeaderStyles from "./utils/get-dropdown-header-styles";
     import Icon from "../icon/Icon.svelte";
 
-    export let label//: string
-    export let labelAsIcon//: boolean
-    export let autoClose//:boolean
-    export let options//:{label:string, icon?:string, divider?:boolean,onClick:Function}[]
-    export let cleanLayout
-    export let tooltip
+    export let label: string
+    export let labelAsIcon: boolean
+    export let autoClose: boolean
+    export let options: { label: string, icon?: string, divider?: boolean, onClick: Function }[]
+    export let cleanLayout: boolean
+    export let tooltip: string
+    export let noPadding: boolean
 
     $: styles = cleanLayout ? undefined : getDropdownHeaderStyles()
 </script>
@@ -46,7 +47,7 @@
                         if(autoClose)
                             e.currentTarget.closeDropdown?.()
                     }}
-                    style="padding-left: 25px;"
+                    style={noPadding ? undefined : "padding-left: 25px;"}
             >
                 {#if option.icon}
                     <Icon>{option.icon}</Icon>
