@@ -12,9 +12,12 @@ import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCT
 import parseContentBrowserData from "../utils/parse-content-browser-data";
 import RegistryFile from "../../static/objects/RegistryFile";
 
+import SETTINGS_PATH from "../static/SETTINGS_PATH";
+
 const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, screen} = require("electron")
 
 const fs = require("fs")
+const os = require("os")
 const pathRequire = require("path")
 
 export default class Events {
@@ -32,8 +35,11 @@ export default class Events {
         ipcMain.on(ROUTES.RESOLVE_NAME, Events.resolveName)
         ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)
 
-        ipcMain.on(ROUTES.CLOSE_EDITOR, () => {
-            ProjectController.openProjectWindow()
+        ipcMain.on(ROUTES.CLOSE_EDITOR, () => ProjectController.openProjectWindow())
+        ipcMain.on(ROUTES.UPDATE_GLOBAL_SETTINGS, (_, data) => {
+            fs.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data))
+            app.relaunch()
+            app.quit()
         })
 
         ipcMain.on(ROUTES.CREATE_REG, Events.createRegistry)

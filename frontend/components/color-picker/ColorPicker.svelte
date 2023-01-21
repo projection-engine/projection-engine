@@ -40,12 +40,16 @@
     <HsvPicker
             startColor={startColor}
             submit={({r,g,b}) => {
-                clearTimeout(submitTimeout)
-                submitTimeout = setTimeout(() => {
+                if(timeout === 0){
                     startColor = [r,g,b]
                     submit({r,g,b}, startColor)
-                }, timeout)
-
+                }else{
+                    clearTimeout(submitTimeout)
+                    submitTimeout = setTimeout(() => {
+                        startColor = [r,g,b]
+                        submit({r,g,b}, startColor)
+                    }, timeout)
+                }
             }}
     />
 </Dropdown>

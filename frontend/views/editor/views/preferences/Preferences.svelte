@@ -7,7 +7,6 @@
     import SettingsStore from "../../stores/SettingsStore";
     import VisualsStore from "../../stores/VisualsStore";
     import CameraSettings from "./components/CameraSettings.svelte";
-    import GridSettings from "./components/GridSettings.svelte";
     import TABS from "./TABS";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
@@ -38,35 +37,30 @@
             </button>
         {/each}
     </div>
-  <div class="content">
-      {#if tab === 0}
-          <strong>{LOCALIZATION_EN.VIEWPORT}</strong>
-          <ViewportSettings settings={settings}/>
-      {:else if tab === 1}
+    <div class="content">
+        {#if tab === 0}
+            <strong>{LOCALIZATION_EN.VIEWPORT}</strong>
+            <ViewportSettings settings={settings}/>
+        {:else if tab === 1}
 
-          <strong>{LOCALIZATION_EN.RENDERING}</strong>
-          <Rendering visualSettings={visuals}/>
+            <strong>{LOCALIZATION_EN.RENDERING}</strong>
+            <Rendering visualSettings={visuals}/>
 
-      {:else if tab === 2}
+        {:else if tab === 2}
 
-          <strong>{LOCALIZATION_EN.SHORTCUTS}</strong>
-          <Shortcuts settings={settings}/>
+            <strong>{LOCALIZATION_EN.SHORTCUTS}</strong>
+            <Shortcuts settings={settings}/>
 
-      {:else if tab === 3}
+        {:else if tab === 3}
 
-          <strong>{LOCALIZATION_EN.CAMERA}</strong>
-          <CameraSettings settings={settings}/>
-
-      {:else if tab === 4}
-
-          <strong>{LOCALIZATION_EN.GRID}</strong>
-          <GridSettings settings={settings}/>
-      {/if}
-  </div>
+            <strong>{LOCALIZATION_EN.CAMERA}</strong>
+            <CameraSettings settings={settings}/>
+        {/if}
+    </div>
 </div>
 
 <style>
-    .content{
+    .content {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -77,6 +71,7 @@
         overflow-x: hidden;
         padding-bottom: 50%;
     }
+
     strong {
         font-weight: 500;
         padding: 4px 8px;

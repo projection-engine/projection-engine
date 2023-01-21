@@ -17,8 +17,5 @@ export default [
         icon: "photo_camera",
         label: LOCALIZATION_EN.CAMERA
     },
-    {
-        icon: "grid_4x4",
-        label: LOCALIZATION_EN.GRID
-    },
+
 ]

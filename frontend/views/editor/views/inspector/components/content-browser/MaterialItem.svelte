@@ -62,7 +62,7 @@
 
                 GPUAPI.cleanUpTextures()
             }
-        }, t ? t : 0)
+        }, 150)
     }
 </script>
 

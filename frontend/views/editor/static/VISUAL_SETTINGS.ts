@@ -5,7 +5,7 @@ export default {
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,
     FXAAReduceMul: 1 / 8,
-
+    resolution: [window.screen.width, window.screen.height],
     physicsSubSteps: 10,
     physicsSimulationStep: 0.01666666,
 

@@ -4,6 +4,7 @@
     import VisualsStore from "../../../stores/VisualsStore";
     import AA_METHODS from "../../../../../../engine-core/static/AA_METHODS";
     import Range from "../../../../../components/range/Range.svelte";
+    import Accordion from "../../../../../components/accordion/Accordion.svelte";
 
     export let visualSettings
 
@@ -20,7 +21,30 @@
 
 
 <fieldset>
-    <legend>{LOCALIZATION_EN.ANTI_ALIASING}</legend>
+    <legend>{LOCALIZATION_EN.RESOLUTION}</legend>
+    <div data-form="-">
+        <Range
+                label={"X"}
+                onFinish={v => {
+                    update("resolution", [v, visualSettings.resolution[1]])
+                }}
+                integer={true}
+                value={visualSettings.resolution[0]}
+                minValue={1}
+        />
+        <Range
+                label={"Y"}
+                onFinish={v => {
+                    update("resolution", [visualSettings.resolution[0], v])
+                }}
+                integer={true}
+                value={visualSettings.resolution[1]}
+                minValue={1}
+        />
+    </div>
+</fieldset>
+
+<Accordion startOpen={true} title={LOCALIZATION_EN.ANTI_ALIASING}>
     <div data-form="-">
         <Checkbox
                 checked={visualSettings.AAMethod === AA_METHODS.DISABLED}
@@ -39,10 +63,9 @@
                 label={LOCALIZATION_EN.TAA}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.PHYSICS}</legend>
+<Accordion title={LOCALIZATION_EN.PHYSICS}>
     <div data-form="-">
         <Range
                 label={LOCALIZATION_EN.PHYSICS_SIMULATION_STEP}
@@ -58,13 +81,10 @@
                 onFinish={v => update("physicsSubSteps", v)}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.SSR}</legend>
-
+<Accordion title={LOCALIZATION_EN.SSR}>
     <div data-form="-">
-
         <Range
                 label={LOCALIZATION_EN.STEPS}
                 minValue={1}
@@ -89,11 +109,10 @@
         />
 
     </div>
-</fieldset>
+</Accordion>
 
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.SSGI}</legend>
+<Accordion title={LOCALIZATION_EN.SSGI}>
     <div data-form="-">
         <Checkbox
                 checked={visualSettings.SSGI.enabled}
@@ -123,7 +142,6 @@
                 value={visualSettings.SSGI.blurRadius}
                 onFinish={v => updateSubObject("SSGI","blurRadius",v)}
         />
-
 
         <Range
 
@@ -163,10 +181,9 @@
                 value={visualSettings.SSGI.exposure}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.SSS}</legend>
+<Accordion title={LOCALIZATION_EN.SSS}>
     <div data-form="-">
         <Range
                 label={LOCALIZATION_EN.STEPS}
@@ -207,17 +224,16 @@
                 onFinish={v => updateSubObject("SSS","depthDelta",v)}
         />
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.DIRECTIONAL_SHADOWS}</legend>
+<Accordion title={LOCALIZATION_EN.DIRECTIONAL_SHADOWS}>
     <div data-form="-">
         <Range
                 label={LOCALIZATION_EN.RESOLUTION}
                 accentColor={"red"}
                 onFinish={v => {
-                update("shadowMapResolution", v)
-            }}
+                    update("shadowMapResolution", v)
+                }}
                 incrementPercentage={1}
                 precision={0}
                 minValue={1}
@@ -241,10 +257,9 @@
 
         </div>
     </div>
-</fieldset>
+</Accordion>
 
-<fieldset>
-    <legend>{LOCALIZATION_EN.AO}</legend>
+<Accordion title={LOCALIZATION_EN.AO}>
     <div data-form="-">
         <Checkbox
                 checked={visualSettings.SSAO.enabled}
@@ -294,5 +309,5 @@
 
     </div>
 
-</fieldset>
+</Accordion>
 
