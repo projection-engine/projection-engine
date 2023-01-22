@@ -20,6 +20,7 @@ enum LOCALIZATION_EN {
     RAY_MARCHING = "Ray marching",
     LABEL_PROJECTS = "Projects",
     PROJECTS = "Your projects",
+    STOP_RECORDING = "Stop recording",
     SET_AS_DEFAULT = "Default",
     DEFAULT = "Default",
     PROJECT_CREATED = "Project created",

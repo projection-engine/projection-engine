@@ -2,123 +2,42 @@
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
     import {onDestroy, onMount} from "svelte";
-    import BenchmarkAPI from "../../../../../engine-core/lib/utils/BenchmarkAPI";
-    import Engine from "../../../../../engine-core/Engine";
-
-    import BENCHMARK_KEYS from "../../../../../engine-core/static/BENCHMARK_KEYS";
-    import ViewStateController from "../../../../components/view/libs/ViewStateController";
-    import SettingsStore from "../../stores/SettingsStore";
+    import MetricsController from "../../../../../engine-core/lib/utils/MetricsController";
     import Icon from "../../../../components/icon/Icon.svelte";
     import Range from "../../../../components/range/Range.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
 
-    export let viewID
-    export let viewIndex
-    export let groupIndex
-
     let isRecording = false
-    let samples = 0
     let isSampling = false
-    let interval
     let toShow = []
-    const loadingBarID = crypto.randomUUID()
-    let wasInitialized
 
-    onMount(() => {
-        samples = BenchmarkAPI.maxSamples
-    })
-    onDestroy(() => {
-        clearInterval(interval)
-    })
-
-    function update() {
-        const cache = []
-        const sampleCountInterval = BenchmarkAPI.contexts.get(BENCHMARK_KEYS.ALL)[1].reduce((partialSum, a) => partialSum + a, 0)
-        Array.from(BenchmarkAPI.contexts.entries()).forEach(context => {
-            if (context[0] === BENCHMARK_KEYS.ALL)
-                return
-            const elapsed = context[1][1].reduce((partialSum, a) => partialSum + a, 0)
-            cache.push({
-                label: context[0],
-                elapsed: elapsed.toFixed(3),
-                percentage: (elapsed > 0 ? (elapsed / sampleCountInterval) * 100 : 0)
-            })
-        })
-        toShow = cache.sort((a, b) => b.percentage - a.percentage)
-    }
-
-    function toggleSampling(isFirst) {
-        if(isFirst)
-        BenchmarkAPI.contexts.forEach(c => {
-            c[0] = 0
-            c[1].forEach((_, i) => c[1][i] = 0)
-        })
-
-        clearInterval(interval)
-        isRecording = Engine.benchmarkMode = isSampling = !isRecording
+    function toggle() {
         if (isRecording) {
+            toShow = MetricsController.getRecord().sort((a, b) => b.percentage - a.percentage)
+            isRecording = isSampling = false
 
-            let el = document.getElementById(loadingBarID)
-            interval = setInterval(() => {
-                if (!el) {
-                    el = document.getElementById(loadingBarID)
-                } else
-                    el.style.width = (BenchmarkAPI.currentSamples / samples) * 100 + "%"
-            }, 150)
-            BenchmarkAPI.onSampleCount = () => {
-                update()
-                toggleSampling()
-            }
-        }
-    }
-
-    $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
-    $: {
-        if (wasInitialized) {
-            ViewStateController.updateState(viewID, viewIndex, groupIndex, toShow)
         } else {
-            const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
-            if (state != null)
-                toShow = state
-            wasInitialized = true
+            MetricsController.start()
+            isRecording = isSampling = true
         }
     }
+
+
 </script>
+
 <ViewHeader>
     <div data-inline="-" style=" width: 100%">
         <button
-                on:click={() => toggleSampling(true)}
+                on:click={toggle}
                 data-view-header-button="-"
         >
-            <Icon styles={isRecording ? "color: #ff5555" : "color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
-            <ToolTip content={LOCALIZATION_EN.TOGGLE_RECORD}/>
+            {#if isRecording}
+                <Icon styles="color: #ff5555">pause</Icon>
+            {:else}
+                <Icon styles="color: #ff5555">fiber_manual_record</Icon>
+            {/if}
+            <ToolTip content={isRecording ? LOCALIZATION_EN.STOP_RECORDING:LOCALIZATION_EN.TOGGLE_RECORD}/>
         </button>
-        <button
-                on:click={() => {
-                    BenchmarkAPI.contexts.forEach(c => {
-                        c[0] = 0
-                        c[1].forEach((_, i) => c[1][i] = 0)
-                    })
-                    toShow = []
-                    isRecording = Engine.benchmarkMode = isSampling = false
-                }}
-                data-view-header-button="-"
-        >
-            <Icon styles="color: var(--pj-color-quaternary)">refresh</Icon>
-            <ToolTip content={LOCALIZATION_EN.RESET}/>
-        </button>
-    </div>
-    <div data-inline="-" style="justify-content: flex-end; width: clamp(100px, 30%, 250px)">
-        <Range
-                integer="true"
-                label={LOCALIZATION_EN.SAMPLES}
-                value={samples}
-                minValue={100}
-                onFinish={v => {
-                      BenchmarkAPI.maxSamples = v
-                      samples = v
-                }}
-        />
     </div>
 </ViewHeader>
 
@@ -127,18 +46,16 @@
     {#if isSampling}
         <div class="loading-wrapper">
             <small>{LOCALIZATION_EN.RECORDING_SAMPLES}</small>
-            <div class="loading-bar">
-                <div id={loadingBarID} class="bar"></div>
-            </div>
         </div>
     {:else if toShow.length > 0}
         {#each toShow as sample}
             <div class="sample-wrapper">
-                <div style={"width: " + sample.percentage + "%"} class="bar"></div>
+                <div style={"width: " + (sample.percentage) + "%"} class="bar"></div>
                 <div data-inline="-" class="sample">
-                    <strong>{sample.label}</strong>
-                    <small>{sample.elapsed}ms</small>
+                    <strong>{sample.flag}</strong>
+                    <small>{sample.percentage.toFixed(2)}% ({sample.elapsed + "ms"})</small>
                 </div>
+                <ToolTip content={sample.elapsed + "ms"}/>
             </div>
         {/each}
     {:else}
@@ -146,7 +63,6 @@
             <div data-inline="-">
                 <small>{LOCALIZATION_EN.CLICK_THE_RECORD_BUTTON_TO_RECORD}</small>
                 <Icon styles={"color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
-                .
             </div>
         </div>
     {/if}
@@ -186,28 +102,6 @@
         justify-content: center;
         align-content: center;
         gap: 8px;
-    }
-
-    .button {
-        height: 23px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        border: none;
-        white-space: nowrap;
-    }
-
-    .button[data-metadata="-"] {
-        background: var(--pj-border-primary);
-    }
-
-    .loading-bar {
-        width: 100%;
-        border-radius: 25px;
-        height: 25px;
-        overflow: hidden;
-        position: relative;
     }
 
     .bar {

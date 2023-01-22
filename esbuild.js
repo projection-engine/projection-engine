@@ -104,7 +104,7 @@ workers.forEach((worker, i) => {
         .then(() => console.log("SUCCESS - WORKER - " + i))
         .catch((err) => console.error(err))
 })
-esbuild.build({t})
+esbuild.build(electron)
     .then(() => console.log("SUCCESS - BACKEND"))
     .catch((err) => console.error(err))
 
