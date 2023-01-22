@@ -64,7 +64,7 @@ export default class ShaderEditorTools {
     static #serializeNode(n: ShaderNode) {
         return {
             ...n,
-            instance: n.prototype.name,
+            instance: n.getSignature(),
             texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
         }
     }

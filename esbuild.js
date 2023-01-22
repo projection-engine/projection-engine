@@ -8,7 +8,7 @@ let watch = false
 if (process.argv[2] === 'watch')
     watch = {
         onRebuild(error) {
-            if (error) console.error((new Date()).toDateString() + ' FAILED: ', error.getMessage())
+            if (error) console.error((new Date()).toDateString() + ' FAILED: ', error)
             else console.log((new Date()).toLocaleTimeString() + ' SUCCEEDED')
         }
     }
