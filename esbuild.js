@@ -19,10 +19,11 @@ function worker(fileName, output) {
         treeShaking: true,
         platform: "browser",
         entryPoints: [fileName],
+        ignoreAnnotations: true,
         bundle: true,
         watch,
         format: 'iife',
-        target: 'es6',
+        target: ['es2022'],
         minify: production,
         sourcemap: false,
         outfile: output,
@@ -39,11 +40,11 @@ function frontend(fileName, outputName) {
         bundle: true,
         watch,
         format: 'iife',
-        target: 'es6',
+        target: ['es2022'],
         minify: production,
         sourcemap: false,
         outfile: './build/' + outputName + ".js",
-
+        ignoreAnnotations: true,
         plugins: [
             sveltePlugin({
                 preprocess: sveltePreprocess({typescript: {tsconfigFile: "tsconfig.json"}}),
@@ -55,11 +56,13 @@ function frontend(fileName, outputName) {
 }
 
 const electron = {
+    ignoreAnnotations: true,
     tsconfig: "tsconfig.json",
     treeShaking: true,
     platform: "node",
     entryPoints: ['./backend/index.ts'],
     bundle: true,
+    target: ['es2022'],
     watch,
     format: 'cjs',
     minify: production,
@@ -92,20 +95,20 @@ const workers = [
     worker("engine-core/workers/terrain-worker.ts", "build/terrain-worker.js"),
     worker("engine-core/workers/image-worker.ts", "build/image-worker.js"),
 ]
+esbuild.build(frontend("editor/editor-window.ts", "editor-window"))
+    .then(() => console.log("SUCCESS - EDITOR"))
+    .catch((err) => console.error(err))
 
 workers.forEach((worker, i) => {
     esbuild.build(worker)
         .then(() => console.log("SUCCESS - WORKER - " + i))
         .catch((err) => console.error(err))
 })
-esbuild.build(electron)
+esbuild.build({t})
     .then(() => console.log("SUCCESS - BACKEND"))
     .catch((err) => console.error(err))
 
 esbuild.build(frontend("projects/project-window.ts", "project-window"))
     .then(() => console.log("SUCCESS - PROJECTS"))
-    .catch((err) => console.error(err))
-esbuild.build(frontend("editor/editor-window.ts", "editor-window"))
-    .then(() => console.log("SUCCESS - EDITOR"))
     .catch((err) => console.error(err))
 

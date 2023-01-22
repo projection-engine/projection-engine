@@ -6,14 +6,15 @@ import MutableObject from "../../../../../../../engine-core/MutableObject";
 import Signature from "../Signature";
 
 
-export default class TextureSample extends ShaderNode implements Signature{
+export default class TextureSample extends ShaderNode implements Signature {
     static signature = "TextureSample"
-    getSignature():string{
+
+    getSignature(): string {
         return TextureSample.signature
     }
 
     uniform = true
-    _texture:MutableObject = {}
+    _texture: MutableObject = {}
 
     get texture() {
         return this._texture
@@ -89,20 +90,20 @@ export default class TextureSample extends ShaderNode implements Signature{
         return ``
     }
 
-    getFunctionCall({uv}, index:number, outputs) {
+    getFunctionCall({uv}, index: number, outputs) {
         const samplerName = this.name + "_" + index + "_S"
-        let response = [
-            `vec4 ${samplerName} = texture(${this.uniformName}, ${uv !== undefined ? uv.name : "texCoords"});`
-        ]
+        let response = []
         outputs.forEach(o => {
             if (o !== "sampler") {
                 if (!this[o]) {
                     this[o] = o + `${index}`
+                    if (response.length === 0)
+                        response.push(`vec4 ${samplerName} = texture(${this.uniformName}, ${uv !== undefined ? uv.name : "texCoords"});`)
                     const outputKey = this.output.find(oo => oo.key === o)
                     response.push(`${outputKey.type} ${this[o]} = ${samplerName}.${o};`)
                 }
             } else
-                this[o] = o + `${index}`
+                this[o] = this.uniformName
         })
 
         return response.join("\n")

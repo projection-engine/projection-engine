@@ -232,7 +232,7 @@ export default class Material extends ShaderNode implements Signature{
         }
     }
 
-    getDataBehaviour(field) {
+    static getDataBehaviour(field) {
         switch (field.type) {
             case DATA_TYPES.VEC2:
             case DATA_TYPES.VEC4:
@@ -303,18 +303,18 @@ export default class Material extends ShaderNode implements Signature{
                     }) {
 
         return ` 
-            naturalAO = clamp(${this.getDataBehaviour(ao)}, 0., 1.);
-            roughness = clamp(${this.getDataBehaviour(roughness)}, 0., 1.);
-            metallic = clamp(${this.getDataBehaviour(metallic)}, 0., 1.);
-            refractionIndex = ${this.getDataBehaviour(refraction)};
+            naturalAO = clamp(${Material.getDataBehaviour(ao)}, 0., 1.);
+            roughness = clamp(${Material.getDataBehaviour(roughness)}, 0., 1.);
+            metallic = clamp(${Material.getDataBehaviour(metallic)}, 0., 1.);
+            refractionIndex = ${Material.getDataBehaviour(refraction)};
             
-            anisotropicRotation = ${this.getDataBehaviour(anisotropicRotation)};
-            anisotropy          = ${this.getDataBehaviour(anisotropy)};
-            clearCoat           = ${this.getDataBehaviour(clearCoat)};
-            sheen               = ${this.getDataBehaviour(sheen)};
-            sheenTint           = ${this.getDataBehaviour(sheenTint)};
+            anisotropicRotation = ${Material.getDataBehaviour(anisotropicRotation)};
+            anisotropy          = ${Material.getDataBehaviour(anisotropy)};
+            clearCoat           = ${Material.getDataBehaviour(clearCoat)};
+            sheen               = ${Material.getDataBehaviour(sheen)};
+            sheenTint           = ${Material.getDataBehaviour(sheenTint)};
             
-            alpha = clamp(${this.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY ? this.getDataBehaviour(opacity) : "1."}, 0., 1.);
+            alpha = clamp(${this.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY ? Material.getDataBehaviour(opacity) : "1."}, 0., 1.);
             albedo = abs(${this.getData(al)});
             ${normal ? "computeTBN();" : ""}
             N = ${normal ? `normalize(TBN * ((${this.getData(normal)} * 2.0)- 1.0))` : "normalVec"};

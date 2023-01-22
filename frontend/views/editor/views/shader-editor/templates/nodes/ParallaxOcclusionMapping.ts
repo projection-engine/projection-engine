@@ -3,6 +3,7 @@ import DATA_TYPES from "../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import checkGlslFloat from "../../utils/check-glsl-float"
 import Signature from "../Signature";
+import Material from "./Material";
 
 
 export default class ParallaxOcclusionMapping extends ShaderNode implements Signature{
@@ -12,35 +13,24 @@ export default class ParallaxOcclusionMapping extends ShaderNode implements Sign
     }
     heightScale = 1.
     layers = 32
-    discard = false
 
     constructor() {
         super([
             {
-                label: "Discard off-pixels",
-                key: "discard",
-                type: DATA_TYPES.CHECKBOX
-            },
-            {
                 label: "Height scale",
                 key: "heightScale",
-                type: DATA_TYPES.FLOAT
+                type: DATA_TYPES.FLOAT,
+                min: 0,
+                max: 10,
+                accept: [DATA_TYPES.FLOAT]
             },
             {
                 label: "Layers",
                 key: "layers",
-                type: DATA_TYPES.INT
-            },
-
-            {
-                label: "Texture Coords",
-                key: "texCoords",
-                accept: [DATA_TYPES.VEC2]
-            },
-            {
-                label: "View direction",
-                key: "viewDirection",
-                accept: [DATA_TYPES.VEC3]
+                type: DATA_TYPES.INT,
+                min: 1,
+                max: 64,
+                accept: [DATA_TYPES.FLOAT]
             },
             {
                 label: "Height Map",
@@ -58,8 +48,18 @@ export default class ParallaxOcclusionMapping extends ShaderNode implements Sign
         return NODE_TYPES.FUNCTION
     }
 
-    getFunctionCall({heightMap, viewDirection, texCoords}, index) {
+    getFunctionCall({
+                        heightMap,
+                        layers = {
+                            name: checkGlslFloat(this.layers),
+                            type: DATA_TYPES.FLOAT
+                        },
+                        heightScale = {
+                            name: checkGlslFloat(this.heightScale),
+                            type: DATA_TYPES.FLOAT
+                        },
+                    }, index) {
         this.UVs = "UVs" + index
-        return `vec2 ${this.UVs} = parallaxOcclusionMapping(${texCoords.name},  ${viewDirection.name},  ${this.discard ? "true" : "false"}, ${heightMap.name},  ${checkGlslFloat(this.heightScale)},  ${checkGlslFloat(this.layers)} );`
+        return `vec2 ${this.UVs} = parallaxOcclusionMapping(${heightMap.name},  ${Material.getDataBehaviour(heightScale) },  int(${Material.getDataBehaviour(layers)}) );`
     }
 }

@@ -23,7 +23,7 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
                 const parsed = ShaderEditorTools.parseNode(node)
                 if (!parsed)
                     continue
-                canvasAPI.nodes.push(parsed)
+                canvasAPI.addNode(parsed)
             }
         if (dataToParse.comments)
             for (let i = 0; i < dataToParse.comments.length; i++) {

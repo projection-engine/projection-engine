@@ -8,11 +8,19 @@ import CanvasResources from "./CanvasResources";
 import type ShaderLink from "../templates/ShaderLink";
 import type ShaderComment from "../templates/ShaderComment";
 import NodesIndex from "../static/NODE_MAP";
+import DynamicMap from "../../../../../../engine-core/lib/utils/DynamicMap";
+import NODE_MAP from "../static/NODE_MAP";
 
 export default class Canvas {
     #initialized = false
     openFile?: OpenFile
-    nodes: ShaderNode[] = []
+    #nodes = new DynamicMap<ShaderNode>()
+    #hasMaterial = false
+
+    get nodes(): ShaderNode[] {
+        return this.#nodes.array
+    }
+
     links: ShaderLink[] = []
     comments: ShaderComment[] = []
 
@@ -32,10 +40,25 @@ export default class Canvas {
         this.lastSelectionListener?.()
     }
 
+    addNode(node: ShaderNode) {
+        const isMaterial = node.getSignature() === NODE_MAP.Material.signature
+        console.trace(this)
+        if (isMaterial && this.#hasMaterial)
+            return
+        if (isMaterial)
+            this.#hasMaterial = true
+        this.#nodes.add(node.id, node)
+    }
+
+    removeNode(id: string) {
+        this.#nodes.delete(id)
+    }
+
     clearState() {
+        this.#hasMaterial = false
         this.links.length = 0
         this.comments.length = 0
-        this.nodes.length = 0
+        this.#nodes.clear()
         this.selectionMap.clear()
         this.lastSelection = undefined
         this.clear()
@@ -57,7 +80,7 @@ export default class Canvas {
         const BC = parent.getBoundingClientRect()
         node.x = Math.round(((x + parent.scrollLeft - BC.left) / CanvasResources.scale) / CanvasResources.grid) * CanvasResources.grid
         node.y = Math.round(((y + parent.scrollTop - BC.top) / CanvasResources.scale) / CanvasResources.grid) * CanvasResources.grid
-        this.nodes.push(node)
+        this.addNode(node)
         this.clear()
     }
 

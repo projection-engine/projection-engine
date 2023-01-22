@@ -8,11 +8,22 @@ import MaterialUniform from "../../../../../../../engine-core/templates/Material
 import type Material from "../../templates/nodes/Material";
 import MaterialInformation from "../../../../../../../engine-core/templates/MaterialInformation";
 
+function hash(str:string):number {
+    let hash = 0, i, chr;
+    if (str.length === 0) return hash;
+    for (i = 0; i < str.length; i++) {
+        chr = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0;
+    }
+    return hash
+}
+
 export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[]):Promise<[MaterialInformation, string] | undefined> {
     const nodes = n.map(nn => cloneClass<ShaderNode>(nn))
     const startPoint = <Material>nodes.find(n => n.type === NODE_TYPES.OUTPUT)
 
-    const executionSignature = {signature: ""}
+
     if (!startPoint) return
 
     const {
@@ -20,7 +31,7 @@ export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[
         uniformsDeclaration,
         uniforms,
         uniformValues
-    } = await compileFragmentShader(startPoint, nodes, links, executionSignature)
+    } = await compileFragmentShader(startPoint, nodes, links)
 
     const template = {...MATERIAL_OUTPUT_FORMAT}
     template.functionDeclaration = functionDeclaration
@@ -32,8 +43,8 @@ export default async function materialCompiler(n:ShaderNode[], links:ShaderLink[
     template.settings.ssrEnabled = startPoint.ssrEnabled
 
     template.uniforms = uniforms
-    template.executionSignature = executionSignature.signature
+    template.executionSignature = `${hash(functionDeclaration)}`
     template.uniformValues = <MaterialUniform[]>uniformValues
-    return [template, executionSignature.signature]
+    return [template, template.executionSignature]
 
 }

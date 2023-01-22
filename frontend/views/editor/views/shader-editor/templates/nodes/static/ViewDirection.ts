@@ -28,10 +28,9 @@ export default class ViewDirection extends ShaderNode implements Signature{
 
     getFunctionCall(_, index, outputs) {
         let response = [`
-            if(!hasTBNComputed)
+            if(!hasViewDirectionComputed){
                 computeTBN();
-            if(!hasViewDirectionComputed){            
-                viewDirection = normalize(transpose(TBN) * cameraPosition  - transpose(TBN) * worldSpacePosition.xyz);
+                viewDirection = normalize(transpose(TBN) * (cameraPosition  - worldSpacePosition.xyz));
                 hasViewDirectionComputed = true;
             }
         `]
