@@ -13,14 +13,9 @@
 
     export let canvasAPI: Canvas
     let tab = 0
-    let mainNode: ShaderNode | ShaderComment | undefined = undefined
+    let mainNode: ShaderNode | ShaderComment | undefined
 
-    $: {
-        if (!mainNode)
-            mainNode = canvasAPI.nodes.find(n => n instanceof NODE_MAP.Material)
-    }
     onMount(() => {
-        mainNode = canvasAPI.nodes.find(n => n instanceof NODE_MAP.Material)
         canvasAPI.lastSelectionListener = () => mainNode = canvasAPI.lastSelection
     })
     onDestroy(() => {

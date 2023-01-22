@@ -9,10 +9,14 @@ import MutableObject from "../../../../../../engine-core/MutableObject";
 import MaterialUniform from "../../../../../../engine-core/templates/MaterialUniform";
 import DraggableNodeUtils from "../libs/DraggableNodeUtils";
 import CanvasResources from "../libs/CanvasResources";
+import Signature from "./Signature";
 
-export default class ShaderNode extends Draggable{
+export default class ShaderNode extends Draggable implements Signature{
     [key: string]: any
-
+    static signature = "ShaderNode"
+    getSignature():string{
+        return ShaderNode.signature
+    }
     name:string
     minWidth = 150
     uniform = false

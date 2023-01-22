@@ -87,7 +87,7 @@
     </Dropdown>
     <ShadingOption engine={engine} settings={settings}/>
     <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
-        <div style="padding: 8px 4px">
+        <div style="padding: 8px 4px; display: grid; gap: 4px">
             <ViewportSettings settings={settings}/>
         </div>
     </Dropdown>

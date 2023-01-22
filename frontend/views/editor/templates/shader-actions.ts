@@ -62,7 +62,7 @@ export default function shaderActions( canvasAPI: Canvas) {
                     else {
                         if(s instanceof NODE_MAP.Material)
                             return
-                        canvasAPI.nodes.splice(canvasAPI.nodes.indexOf(s), 1);
+                        canvasAPI.removeNode(s.id)
                         const copy = [...canvasAPI.links]
                         copy.forEach(l => {
                             if (l.sourceNode === s || l.targetNode === s)

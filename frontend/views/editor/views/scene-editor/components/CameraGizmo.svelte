@@ -86,8 +86,7 @@
         overflow: hidden;
         border-radius: 50%;
         padding: 4px;
-        transition: 150ms linear;
-        backdrop-filter: blur(2px);
+        background: rgba(0, 0, 0, .15);
         opacity: .85;
         border: var(--pj-transparent-border) 1px solid;
         --gizmo-wrapper-size: calc(var(--cube-size) * 2 + 10px);

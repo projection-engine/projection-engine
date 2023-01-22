@@ -51,6 +51,7 @@
                         firstSubmit = true
                         submit(attribute.key, v)
                     }
+                    component[attribute.key] = v
                 }}
                 onFinish={v => submit(attribute.key, v, true)}
                 minValue={attribute.min}

@@ -31,8 +31,10 @@
 
 <div class="wrapper">
     <Dropdown
+            disabled={cameras.length === 0}
             buttonStyles={"border-radius: 25px; height: 25px;" + (engine.focusedCamera ? "background: var(--pj-accent-color);" : "background: var(--pj-background-tertiary);")}>
         <button
+                disabled={cameras.length === 0}
                 slot="button"
                 style="background: transparent; box-shadow: none"
                 class="button viewport"

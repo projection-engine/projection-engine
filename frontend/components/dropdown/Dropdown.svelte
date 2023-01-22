@@ -52,7 +52,7 @@
 >
 
     <slot name="button"/>
-    {#if !hideArrow}
+    {#if !hideArrow && !disabled}
         <Icon styles={`${!open ? "transform: rotate(-90deg)" : ""}`}>arrow_drop_down</Icon>
     {/if}
 

@@ -66,8 +66,7 @@
         canvas.clearState()
 
         await parseFile(openFile, canvas)
-        if (!canvas.nodes.find(n => n instanceof NODE_MAP.Material))
-            canvas.nodes.push(new NODE_MAP.Material())
+        canvas.addNode(new NODE_MAP.Material())
         canvas.clear()
     }
 
@@ -99,7 +98,7 @@
             initializeFromFile(newFile)
             ShaderEditorTools.toOpenFile = undefined
             if (state != null && newFile) {
-                canvas.nodes.push(...state.nodes)
+                state.nodes.forEach(n => canvas.addNode(n))
                 canvas.links.push(...state.links)
                 canvas.comments.push(...state.comments)
                 state.selection.forEach(k => {

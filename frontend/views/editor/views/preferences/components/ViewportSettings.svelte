@@ -83,7 +83,6 @@
 
         </div>
     </fieldset>
-
 </Accordion>
 
 
@@ -153,16 +152,17 @@
                 value={settings.cameraGizmoSize}
                 minValue={10}
         />
-
     </div>
 </Accordion>
 
 
 <Accordion title={LOCALIZATION_EN.GIZMOS}>
-    <Range
-            label={LOCALIZATION_EN.SENSITIVITY}
-            onFinish={v => update("gizmoGrid", {...settings.gizmoGrid, sensitivity: v / 100})}
-            value={settings.gizmoGrid.sensitivity  * 100}
-            minValue={1}
-    />
+    <div data-form="-">
+        <Range
+                label={LOCALIZATION_EN.SENSITIVITY}
+                onFinish={v => update("gizmoGrid", {...settings.gizmoGrid, sensitivity: v / 100})}
+                value={settings.gizmoGrid.sensitivity  * 100}
+                minValue={1}
+        />
+    </div>
 </Accordion>

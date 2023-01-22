@@ -16,7 +16,7 @@
             <Selector
                     type="image"
                     selected={uniform.data}
-                    handleChange={v => update(i, v.registryID)}
+                    handleChange={v => update(i, v?.registryID)}
             />
         {/if}
         {#if uniform.type === DATA_TYPES.FLOAT}

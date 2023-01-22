@@ -5,7 +5,7 @@ import MaterialUniform from "../../../../../../../../engine-core/templates/Mater
 import NODE_MAP from "../../../static/NODE_MAP";
 
 type response = { functionDeclaration: string, uniformsDeclaration: string, uniforms: Object[] , uniformValues: MaterialUniform[] }
-export default async function compileFragmentShader(startPoint: ShaderNode, nodes: ShaderNode[], links: ShaderLink[], executionSignature: {signature:string}):Promise<response> {
+export default async function compileFragmentShader(startPoint: ShaderNode, nodes: ShaderNode[], links: ShaderLink[]):Promise<response> {
     const uniforms = [],
         uniformValues = [],
         uniformDeclarations = [],
@@ -28,7 +28,7 @@ export default async function compileFragmentShader(startPoint: ShaderNode, node
     }
 
     const body: string[] = []
-    resolveRelationship(startPoint, [], links.filter(l => l.targetNode.id !== startPoint.id || l.targetNode.id === startPoint.id), nodes, body, executionSignature)
+    resolveRelationship(startPoint, [], links.filter(l => l.targetNode.id !== startPoint.id || l.targetNode.id === startPoint.id), nodes, body)
     return {
         functionDeclaration: constants.join("\n") + "\n" + body.join("\n"),
         uniformsDeclaration: uniformDeclarations.join("\n"),

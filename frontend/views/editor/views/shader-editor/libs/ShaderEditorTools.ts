@@ -56,7 +56,7 @@ export default class ShaderEditorTools {
 
     static paste(canvasAPI: Canvas) {
         ShaderEditorTools.copied.forEach(d => {
-            canvasAPI.nodes.push(ShaderEditorTools.parseNode({...d, id: crypto.randomUUID()}))
+            canvasAPI.addNode(ShaderEditorTools.parseNode({...d, id: crypto.randomUUID()}))
         })
         canvasAPI.clear()
     }
@@ -64,7 +64,7 @@ export default class ShaderEditorTools {
     static #serializeNode(n: ShaderNode) {
         return {
             ...n,
-            instance: n.prototype.name,
+            instance: n.getSignature(),
             texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
         }
     }
