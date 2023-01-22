@@ -25,16 +25,16 @@
     export let disabled: boolean
     export let focused: boolean
 
-    const internalID=  crypto.randomUUID()
+    const internalID = crypto.randomUUID()
 
     $: sortedTabs = tabs.map((v, i) => {
         v.originalIndex = i
         return v
-    }).sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    }).sort((a, b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
 
     let sortable: Sortable
     let ref: HTMLElement
-    let contextID:string
+    let contextID: string
 
     const handler = (e: KeyboardEvent | MouseEvent | WheelEvent, v?: TabData, i?: number) => {
         const T = <HTMLInputElement>e.currentTarget
@@ -73,6 +73,20 @@
         }
     }
     onMount(() => {
+
+        ref.addEventListener(
+            "wheel",
+            ev => {
+                ev.preventDefault()
+                // @ts-ignore
+                if (ev.wheelDelta > 0)
+                    ref.scrollLeft += ref.scrollWidth * .1
+                else
+                    ref.scrollLeft -= ref.scrollWidth * .1
+
+            },
+            {passive: false}
+        )
         TabContextController.initialize()
         contextID = TabContextController.contextID
         ref.addEventListener("wheel", handler);
@@ -81,12 +95,12 @@
             animation: 0,
             onEnd: () => {
                 const elements = ref.children
-                const ids:{[key:string]: number} = {}
+                const ids: { [key: string]: number } = {}
                 for (let i = 0; i < elements.length; i++) {
                     const element = elements[i]
                     ids[element.getAttribute("data-type")] = i
                 }
-                for(let i =0; i < tabs.length; i++) {
+                for (let i = 0; i < tabs.length; i++) {
                     const item = tabs[i]
                     item.index = ids[item.type]
                 }
@@ -94,7 +108,7 @@
             direction: "horizontal"
         });
         TabContextController.registerContext(internalID, id => {
-            if(id === "CREATE")
+            if (id === "CREATE")
                 addNewTab()
             else
                 removeMultipleTabs()
@@ -109,23 +123,25 @@
 
 </script>
 
-<div class="container" bind:this={ref}
-     id={internalID}
-     data-contextid={contextID}>
+<div
+        class="container" bind:this={ref}
+        id={internalID}
+        data-contextid={contextID}
+>
     {#each sortedTabs as v, i}
-       <Tab
-               handler={handler}
-               removeTab={removeTab}
-               tabs={tabs}
-               currentTab={currentTab}
-               allowDeletion={allowDeletion}
-               allowRenaming={allowRenaming}
-               templates={templates}
-               updateView={updateView}
-               disabled={disabled}
-               focused={focused}
-               value={v}
-       />
+        <Tab
+                handler={handler}
+                removeTab={removeTab}
+                tabs={tabs}
+                currentTab={currentTab}
+                allowDeletion={allowDeletion}
+                allowRenaming={allowRenaming}
+                templates={templates}
+                updateView={updateView}
+                disabled={disabled}
+                focused={focused}
+                value={v}
+        />
     {/each}
 
     {#if allowRenaming}

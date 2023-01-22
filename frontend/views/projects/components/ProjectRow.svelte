@@ -56,13 +56,13 @@
         <ToolTip content={LOCALIZATION_EN.DOUBLE_CLICK_TO_RENAME}/>
         {#if openForChange}
             <Input
-                    placeholder={data.meta.name}
-                    inputValue={data.meta.name}
+                    placeholder={data?.meta?.name}
+                    inputValue={data?.meta?.name}
                     width="200%"
                     onChange={v => {
-                    data.meta.name = v
-                    onRename(v)
-                }}
+                        data.meta.name = v
+                        onRename(v)
+                    }}
                     onBlur={(changed, v) => {
                     if(changed){
                        onRename(v)

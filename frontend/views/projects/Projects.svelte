@@ -9,7 +9,7 @@
     import refreshProjects from "./utils/refresh-projects";
     import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
     import ROUTES from "../../../backend/static/ROUTES";
-    import Alert from "../../components/alert/Alert.svelte";
+    import AlertController from "../../components/alert/AlertController";
 
 
     const pathLib = window.require("path")
@@ -25,6 +25,7 @@
     const internalID = crypto.randomUUID()
 
     onMount(() => {
+        AlertController.initialize()
         ContextMenuController.initialize()
         ContextMenuController.mount([
                 {
@@ -60,10 +61,8 @@
 
 </script>
 
-<Alert/>
 <div class="wrapper">
         <Header
-
                 defaultVersion={defaultVersion}
                 basePath={basePath}
                 setBasePath={v => basePath = v}
@@ -72,15 +71,14 @@
                 projectsToShow={projectsToShow}
                 setProjectsToShow={v => projectsToShow = v}
         />
-
         <div
                 class="content"
                 id={internalID}
                 on:mousedown={e => {
-            const found = document.elementsFromPoint(e.clientX, e.clientY).map(e => e.getAttribute("data-card")).filter(e => e != null)
-            if(found != null)
-                selected = found[0]
-        }}
+                    const found = document.elementsFromPoint(e.clientX, e.clientY).map(e => e.getAttribute("data-card")).filter(e => e != null)
+                    if(found != null)
+                        selected = found[0]
+                }}
         >
             <List
                     let:item

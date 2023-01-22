@@ -113,6 +113,7 @@
     }
 
     .view-static {
+        flex-shrink: 0;
         --tab-color: white;
         color: var(--pj-color-quaternary);
         display: flex;
@@ -137,6 +138,7 @@
     }
 
     .view-dynamic {
+        flex-shrink: 0;
         color: var(--pj-color-quaternary);
         display: flex;
         align-items: center;

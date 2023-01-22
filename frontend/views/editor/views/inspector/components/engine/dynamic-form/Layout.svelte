@@ -12,7 +12,7 @@
     export let entity
     export let submit
 
-    $: title = getComponentLabel(key) || component.name
+    $: title = getComponentLabel(key) || component?.name
 
     function checkIsDisabled(propAttr) {
         return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]

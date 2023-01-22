@@ -25,6 +25,6 @@
         on:click={onClick}
 >
     <DataIcon state={data} type={type}/>
-    <div data-overflow="-">{data.name}</div>
+    <div data-overflow="-">{data?.name}</div>
     <ToolTip content={data.name}/>
 </button>

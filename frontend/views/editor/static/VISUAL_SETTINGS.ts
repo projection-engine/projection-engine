@@ -15,12 +15,10 @@ export default {
     mbSamples: 50,
 
     SSGI: {
-        blurRadius: 5,
-        blurSamples: 16,
+        blurRadius: 20,
+        blurSamples: 15,
         enabled: true,
-        maxSteps: 8,
-        gamma: 2.2,
-        exposure: 1,
+        maxSteps: 10,
         strength: 1,
         stepSize: .25
     },
