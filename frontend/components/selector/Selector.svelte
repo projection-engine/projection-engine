@@ -65,8 +65,8 @@
                 <Icon styles="font-size: 1rem">arrow_drop_down</Icon>
             </div>
             <div data-vertdivider="-" style="margin: 0"></div>
-            <ToolTip content={state.name}/>
-            <small data-overflow="-" style="text-align: left">{state.name}</small>
+            <ToolTip content={state?.name}/>
+            <small data-overflow="-" style="text-align: left">{state?.name}</small>
         </button>
         <Options
                 terrainMaterials={terrainMaterials}

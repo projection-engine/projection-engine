@@ -10,6 +10,7 @@
     import {onMount} from "svelte";
     import DEFAULT_GLOBAL_SETTINGS from "../../../../../../backend/static/DEFAULT_GLOBAL_SETTINGS";
     import {AngleBackends} from "../../../../../../backend/static/ANGLE_BACKENDS";
+    import VISUAL_SETTINGS from "../../../static/VISUAL_SETTINGS";
 
     const {ipcRenderer} = window.require("electron")
 
@@ -147,8 +148,6 @@
 
         <Range
                 label={LOCALIZATION_EN.FALLOFF}
-
-
                 minValue={0}
                 value={visualSettings.SSR.falloff}
                 onFinish={v => updateSubObject("SSR","falloff",v)}
@@ -159,74 +158,70 @@
 
 
 <Accordion title={LOCALIZATION_EN.SSGI}>
-    <div data-form="-">
-        <Checkbox
-                checked={visualSettings.SSGI.enabled}
-                handleCheck={() => updateSubObject("SSGI","enabled",!visualSettings.SSGI.enabled)}
-                label={LOCALIZATION_EN.ENABLED}
-        />
-        <Range
+    <fieldset>
+        <legend>{LOCALIZATION_EN.GENERAL}</legend>
+        <div data-form="-">
+            <button on:click={() => VisualsStore.updateStore({...visualSettings, SSGI: {...VISUAL_SETTINGS.SSGI}})}>{LOCALIZATION_EN.DEFAULT}</button>
+            <Checkbox
+                    checked={visualSettings.SSGI.enabled}
+                    handleCheck={() => updateSubObject("SSGI","enabled",!visualSettings.SSGI.enabled)}
+                    label={LOCALIZATION_EN.ENABLED}
+            />
+            <Range
 
-                label={LOCALIZATION_EN.STEPS}
-                maxValue={100}
-                minValue={1}
-                integer={true}
-                value={visualSettings.SSGI.maxSteps}
-                onFinish={v => updateSubObject("SSGI","maxSteps",v)}
-        />
-        <Range
-                label={LOCALIZATION_EN.SAMPLES}
-                minValue={1}
-                integer={true}
-                value={visualSettings.SSGI.blurSamples}
-                onFinish={v => updateSubObject("SSGI","blurSamples",v)}
-        />
-        <Range
-                label={LOCALIZATION_EN.RADIUS}
-                minValue={1}
-                integer={true}
-                value={visualSettings.SSGI.blurRadius}
-                onFinish={v => updateSubObject("SSGI","blurRadius",v)}
-        />
+                    label={LOCALIZATION_EN.STRENGTH}
 
-        <Range
+                    incrementPercentage={.01}
+                    precision={3}
+                    minValue={0}
 
-                label={LOCALIZATION_EN.STRENGTH}
+                    value={visualSettings.SSGI.strength}
+                    onFinish={v => updateSubObject("SSGI","strength",v)}
+            />
 
-                incrementPercentage={.01}
-                precision={3}
-                minValue={0}
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{LOCALIZATION_EN.SMOOTHING}</legend>
+        <div data-form="-">
+            <Range
+                    label={LOCALIZATION_EN.SAMPLES}
+                    minValue={1}
+                    integer={true}
+                    value={visualSettings.SSGI.blurSamples}
+                    onFinish={v => updateSubObject("SSGI","blurSamples",v)}
+            />
+            <Range
+                    label={LOCALIZATION_EN.RADIUS}
+                    minValue={1}
+                    integer={true}
+                    value={visualSettings.SSGI.blurRadius}
+                    onFinish={v => updateSubObject("SSGI","blurRadius",v)}
+            />
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{LOCALIZATION_EN.RAY_MARCHING}</legend>
+        <div data-form="-">
+            <Range
 
-                value={visualSettings.SSGI.strength}
-                onFinish={v => updateSubObject("SSGI","strength",v)}
-        />
+                    label={LOCALIZATION_EN.STEPS}
+                    maxValue={100}
+                    minValue={1}
+                    integer={true}
+                    value={visualSettings.SSGI.maxSteps}
+                    onFinish={v => updateSubObject("SSGI","maxSteps",v)}
+            />
+            <Range
+                    label={LOCALIZATION_EN.STEP_SIZE}
 
-        <Range
-                label={LOCALIZATION_EN.STEP_SIZE}
 
-
-                minValue={.1}
-                value={visualSettings.SSGI.stepSize}
-                onFinish={v => updateSubObject("SSGI","stepSize",v)}
-        />
-    </div>
-    <div data-form="-">
-        <Range
-                label={LOCALIZATION_EN.GAMMA}
-                minValue={.1}
-                maxValue={10}
-                onFinish={v => updateSubObject("SSGI","gamma",  v)}
-                value={visualSettings.SSGI.gamma}
-        />
-
-        <Range
-                label={LOCALIZATION_EN.EXPOSURE}
-                minValue={.1}
-                maxValue={10}
-                onFinish={v => updateSubObject("SSGI","exposure",  v)}
-                value={visualSettings.SSGI.exposure}
-        />
-    </div>
+                    minValue={.1}
+                    value={visualSettings.SSGI.stepSize}
+                    onFinish={v => updateSubObject("SSGI","stepSize",v)}
+            />
+        </div>
+    </fieldset>
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.SSS}>
