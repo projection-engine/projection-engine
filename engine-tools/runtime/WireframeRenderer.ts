@@ -34,7 +34,7 @@ export default class WireframeRenderer {
                 StaticEditorShaders.wireframe.bind()
 
                 context.activeTexture(context.TEXTURE0)
-                context.bindTexture(context.TEXTURE_2D, StaticFBO.visibilityDepthSampler)
+                context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
                 context.uniform1i(uniforms.depth, 0)
                 context.uniform2fv(uniforms.bufferResolution, StaticFBO.visibility.resolution)
                 isFirstDrawing = false

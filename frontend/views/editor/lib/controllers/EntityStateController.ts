@@ -45,10 +45,6 @@ export default class EntityStateController {
         const entities = Engine.entities.array
         try {
             UIAPI.destroyUI()
-            if (UIAPI.uiMountingPoint?.parentNode) {
-                UIAPI.uiMountingPoint.parentNode.removeChild(UIAPI.uiMountingPoint)
-                UIAPI.uiMountingPoint = undefined
-            }
             for (let i = 0; i < entities.length; i++) {
                 const current = entities[i]
                 PhysicsAPI.removeRigidBody(current)

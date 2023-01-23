@@ -1,5 +1,4 @@
 import Engine from "../../../../engine-core/Engine";
-import getPickerId from "../../../../engine-core/utils/get-picker-id";
 import AXIS from "../../../../engine-tools/static/AXIS";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import HierarchyController from "../views/hierarchy/lib/HierarchyController";
@@ -10,6 +9,7 @@ import EntityNameController from "./controllers/EntityNameController";
 import getPivotPointMatrix from "../../../../engine-tools/utils/get-pivot-point-matrix";
 import SelectionStore from "../stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
+import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 
 function removeHierarchy(state, entity) {
     if (!entity)
@@ -39,7 +39,7 @@ export default class EntityManager {
         const arr = Engine.entities.array
         for (let i = 0; i < arr.length; i++) {
             const entity = arr[i]
-            entity.pickID = getPickerId(i + AXIS.ZY + 1)
+            entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
             if (!entity.parentCache && !replacedMap?.[entity.parent?.id])
                 continue
             if (entity.parent && !replacedMap?.[entity.parent?.id])

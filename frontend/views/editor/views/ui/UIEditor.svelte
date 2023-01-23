@@ -69,20 +69,18 @@
     }
 
     onMount(() => {
-        if (UIAPI.iframeParent)
-            return
+        UIAPI.showUI()
         HierarchyController.registerListener(INTERNAL_ID, () => {
-            if (UIAPI.uiMountingPoint != null)
+            if (UIAPI.document != null)
                 update()
         })
-        UIAPI.buildUI(ref)
         update()
     })
 
     onDestroy(() => {
         HierarchyController.removeListener(INTERNAL_ID)
-        if (UIAPI.iframeParent === ref)
-            UIAPI.destroyUI()
+        UIAPI.hideUI()
+
         unsubscribeSettings()
         unsubscribeEngine()
     })

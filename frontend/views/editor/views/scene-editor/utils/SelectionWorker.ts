@@ -9,11 +9,11 @@ export default class SelectionWorker {
                 const map = {}
                 for(let i= 0; i < entities.length; i++){
                     const {id, pick} = entities[i]
-                    map[pick[0] * 255 + pick[1] * 255 + pick[2] * 255] = id
+                    map[pick] = id
                 }
                 const selected = [], ids = []
                 for (let i = 0; i < data.length; i += 4) {
-                    const ID =  Math.round((data[i] + data[i + 1] + data[i + 2]) * 255)
+                    const ID =  Math.round(data[i] + data[i + 1] + data[i + 2] )
                     const found = map[ID]
                     if(!found || selected.includes(ID)) 
                         continue
@@ -23,9 +23,8 @@ export default class SelectionWorker {
                 self.postMessage(ids)
             }
         `
-        const workerBlob = new Blob([src], {type: "application/javascript"});
-        const workerUrl = URL.createObjectURL(workerBlob);
-        SelectionWorker.#worker = new Worker(workerUrl);
+
+        SelectionWorker.#worker = new Worker(src);
         return SelectionWorker.#worker
     }
 

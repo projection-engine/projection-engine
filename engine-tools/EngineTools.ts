@@ -40,9 +40,6 @@ export default class EngineTools {
         window.createInstance = (vertex, fragment) => new Shader(vertex, fragment);
         // @ts-ignore
         window.prodMapper = StaticShaders;
-
-
-        UIAPI.useIframe = true
         StaticEditorShaders.initialize()
         await StaticEditorMeshes.initialize()
 
