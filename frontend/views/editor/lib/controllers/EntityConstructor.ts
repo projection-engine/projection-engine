@@ -1,5 +1,5 @@
 import Entity from "../../../../../engine-core/instances/Entity";
-import COMPONENTS from "../../../../../engine-core/templates/COMPONENTS";
+import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import {vec3, vec4} from "gl-matrix";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 

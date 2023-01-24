@@ -1,5 +1,5 @@
 import readFile from "../utils/read-file";
-import COMPONENTS from "../../engine-core/templates/COMPONENTS";
+import COMPONENTS from "../../engine-core/static/COMPONENTS";
 import ROUTES from "../static/ROUTES";
 
 const fs = require("fs");

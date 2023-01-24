@@ -8,7 +8,7 @@ import CanvasResources from "./CanvasResources";
 import type ShaderLink from "../templates/ShaderLink";
 import type ShaderComment from "../templates/ShaderComment";
 import NodesIndex from "../static/NODE_MAP";
-import DynamicMap from "../../../../../../engine-core/lib/utils/DynamicMap";
+import DynamicMap from "../../../../../../engine-core/resource-libs/DynamicMap";
 import NODE_MAP from "../static/NODE_MAP";
 
 export default class Canvas {
@@ -42,7 +42,6 @@ export default class Canvas {
 
     addNode(node: ShaderNode) {
         const isMaterial = node.getSignature() === NODE_MAP.Material.signature
-        console.trace(this)
         if (isMaterial && this.#hasMaterial)
             return
         if (isMaterial)

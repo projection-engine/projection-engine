@@ -6,7 +6,7 @@ import CanvasRenderer from "../libs/CanvasRenderer";
 import {Input} from "../static/Input";
 import {Output} from "../static/Output";
 import MutableObject from "../../../../../../engine-core/MutableObject";
-import MaterialUniform from "../../../../../../engine-core/templates/MaterialUniform";
+import MaterialUniform from "../../../../../../engine-core/static/MaterialUniform";
 import DraggableNodeUtils from "../libs/DraggableNodeUtils";
 import CanvasResources from "../libs/CanvasResources";
 import Signature from "./Signature";

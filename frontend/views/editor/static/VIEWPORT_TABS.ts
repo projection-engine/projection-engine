@@ -1,6 +1,4 @@
-enum ViewportTabs{
-    EDITOR = "EDITOR",
-    TERRAIN = "TERRAIN"
+export default {
+    EDITOR: "EDITOR",
+    UI : "UI"
 }
-
-export default ViewportTabs

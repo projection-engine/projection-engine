@@ -9,13 +9,11 @@ export default function updateViewport(engine, currentView:ViewTabItem) {
     if (!engine.isReady || engine.focusedCamera)
         return
     if (currentView.type === VIEWPORT_TABS.EDITOR) {
+
+        CameraTracker.startTracking()
         Engine.start()
-        if (Engine.isDev)
-            CameraTracker.startTracking()
-        GPU.canvas.style.opacity = "1"
     } else {
         CameraTracker.stopTracking()
         Engine.stop()
-        GPU.canvas.style.opacity = "0"
     }
 }

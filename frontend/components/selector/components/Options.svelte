@@ -1,7 +1,7 @@
 <script>
     import getType from "../utils/get-type";
     import Option from "./Option.svelte";
-    import EmbeddedMeshes from "../../../../engine-core/templates/EmbeddedMeshes";
+    import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import LOCALIZATION_EN from "../../../views/editor/static/LOCALIZATION_EN";
     import Icon from "../../icon/Icon.svelte";

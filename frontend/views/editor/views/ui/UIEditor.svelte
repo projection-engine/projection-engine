@@ -61,7 +61,7 @@
     }
 
     function update() {
-        const targets = UIAPI.document.querySelectorAll("[data-enginewrapper='-']")
+        const targets = document.querySelectorAll("[data-enginewrapper='-']")
         targets.forEach(t => {
             t.removeEventListener("mouseenter", handler)
             t.addEventListener("mouseenter", handler)
@@ -86,11 +86,9 @@
     })
 </script>
 
-<Header engine={engine} settings={settings} isAlreadyOpen={isAlreadyOpen}/>
-<div class="wrapper ui" bind:this={ref} style={`opacity: ${isAlreadyOpen ? ".5" : "1"}`}>
-    {#if isAlreadyOpen}
-        <ToolTip content={LOCALIZATION_EN.UI_ALREADY_OPEN}/>
-    {/if}
+<Header engine={engine} settings={settings}/>
+<div class="wrapper ui" bind:this={ref} >
+    <ToolTip content={LOCALIZATION_EN.UI_ALREADY_OPEN}/>
     <div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
 </div>
 

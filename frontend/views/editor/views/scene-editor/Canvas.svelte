@@ -27,6 +27,7 @@
 
     onMount(() => {
         UIAPI.createUIEntity(document.getElementById(RENDER_TARGET))
+        UIAPI.hideUI()
         Engine.initializeContext(
             canvasRef,
             {w: visuals.resolution[0], h: visuals.resolution[1]},

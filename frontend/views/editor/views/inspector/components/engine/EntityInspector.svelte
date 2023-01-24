@@ -2,7 +2,7 @@
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
-    import COMPONENTS from "../../../../../../../engine-core/templates/COMPONENTS";
+    import COMPONENTS from "../../../../../../../engine-core/static/COMPONENTS";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import dragDrop from "../../../../../../components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";

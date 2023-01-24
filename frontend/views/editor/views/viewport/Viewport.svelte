@@ -58,7 +58,8 @@
         v.icon = getViewIcon(v.type)
         return v
     })
-    $: viewTemplates = [...Object.values(VIEWS), VIEWPORT_TABS.EDITOR].map(value => ({
+
+    $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
         name: LOCALIZATION_EN[value],
         id: value
     }))
@@ -121,14 +122,12 @@
                     id={"VIEWPORT"}
                     index={currentTab}
                     groupIndex={0}
-                    styles={
-                    !isCanvasHidden ?
-                    `
+                    styles={`
                         position: absolute;
                         top: 0;
                         display: flex;
                         align-items: center;
-                    ` : undefined}
+                    `}
                     switchView={setViewportTab}
             />
         {/if}

@@ -3,7 +3,7 @@
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../views/editor/static/LOCALIZATION_EN";
     import Options from "./components/Options.svelte";
-    import EmbeddedMeshes from "../../../engine-core/templates/EmbeddedMeshes";
+    import EmbeddedMeshes from "../../../engine-core/static/EmbeddedMeshes";
     import getType from "./utils/get-type";
     import getIcon from "./utils/get-icon";
     import Icon from "../icon/Icon.svelte";

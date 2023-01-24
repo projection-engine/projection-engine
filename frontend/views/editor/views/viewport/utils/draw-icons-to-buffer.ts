@@ -3,7 +3,7 @@ import StaticFBO from "../../../../../../engine-core/lib/StaticFBO";
 import StaticEditorShaders from "../../../../../../engine-tools/lib/StaticEditorShaders";
 import IconsSystem from "../../../../../../engine-tools/runtime/IconsSystem";
 import SettingsStore from "../../../stores/SettingsStore";
-import ResourceEntityMapper from "../../../../../../engine-core/lib/ResourceEntityMapper";
+import ResourceEntityMapper from "../../../../../../engine-core/resource-libs/ResourceEntityMapper";
 import StaticMeshes from "../../../../../../engine-core/lib/StaticMeshes";
 import StaticShaders from "../../../../../../engine-core/lib/StaticShaders";
 import CameraAPI from "../../../../../../engine-core/lib/utils/CameraAPI";

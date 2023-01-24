@@ -18,9 +18,8 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
     drawIconsToBuffer()
 
     const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY)
-
     const entity = QueryAPI.getEntityByPickerID(clickedEntity)
-    console.trace(clickedEntity)
+
     if (!entity) {
         setContext([])
         return;

@@ -1,6 +1,6 @@
 import FilesStore from "../../../stores/FilesStore";
 import componentConstructor from "../../../utils/component-constructor";
-import COMPONENTS from "../../../../../../engine-core/templates/COMPONENTS";
+import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
 import Loader from "../../../lib/parsers/Loader";
 import EngineStore from "../../../stores/EngineStore";
 

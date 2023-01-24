@@ -12,7 +12,7 @@ import ScriptsAPI from "../../../../../engine-core/lib/utils/ScriptsAPI";
 import AlertController from "../../../../components/alert/AlertController";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import EntityManager from "../EntityManager";
-import ResourceEntityMapper from "../../../../../engine-core/lib/ResourceEntityMapper";
+import ResourceEntityMapper from "../../../../../engine-core/resource-libs/ResourceEntityMapper";
 
 export default class EntityStateController {
     static #state = []
