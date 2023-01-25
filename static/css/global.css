@@ -297,7 +297,7 @@ pre[data-pre="-"] {
 }
 
 
-.tooltip {
+[data-tooltip="-"] {
     user-select: none;
     height: auto;
     min-height: 15px;
@@ -319,7 +319,7 @@ pre[data-pre="-"] {
     font-size: .8rem;
 }
 
-.tooltip-animation {
+[data-tooltipanimation="-"] {
     animation: show 250ms ease forwards;
     animation-delay: 350ms;
 }

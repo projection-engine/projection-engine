@@ -71,7 +71,7 @@
     }
 
     .label {
-        backdrop-filter: blur(10px) brightness(65%);
+        background: rgba(0,0,0,.65);
 
         font-size: .7rem;
         position: absolute;

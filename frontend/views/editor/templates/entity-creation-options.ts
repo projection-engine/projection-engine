@@ -88,6 +88,11 @@ export default function entityCreationOptions() {
             icon: "layers",
             label: LOCALIZATION_EN.DECAL,
             onClick: EntityConstructor.createDecal
+        },
+        {
+            icon: "widgets",
+            label: LOCALIZATION_EN.UI_RENDERER,
+            onClick: EntityConstructor.createUI
         }
     ]
 }

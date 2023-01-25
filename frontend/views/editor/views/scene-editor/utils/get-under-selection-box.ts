@@ -11,22 +11,19 @@ import VisibilityRenderer from "../../../../../../engine-core/runtime/Visibility
 export default function getUnderSelectionBox(_, startCoords, endCoords) {
     const worker = SelectionWorker.worker
     if (startCoords && endCoords) {
-
         drawIconsToBuffer()
-
         const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
         const nEnd = ConversionAPI.toQuadCoord(endCoords, GPU.internalResolution)
-
         try {
 
             const data = PickingAPI.readBlock(nStart, nEnd)
-
             worker.postMessage({entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})), data}, [data.buffer])
-
             worker.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
-            VisibilityRenderer.needsUpdate = true
+
         } catch (err) {
             console.error(err, startCoords, nStart)
         }
+
+        VisibilityRenderer.needsUpdate = true
     }
 }

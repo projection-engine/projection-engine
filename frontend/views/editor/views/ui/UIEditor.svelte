@@ -11,6 +11,9 @@
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import HierarchyController from "../hierarchy/lib/HierarchyController";
+    import GPU from "../../../../../engine-core/GPU";
+    import ConversionAPI from "../../../../../engine-core/lib/math/ConversionAPI";
+    import AlertController from "../../../../components/alert/AlertController";
 
     const INTERNAL_ID = crypto.randomUUID()
 
@@ -18,84 +21,100 @@
     let settings = {}
     let ref
     let tooltip
-    let isAlreadyOpen = false
+    let isOnSelection = false
+    let updateEnabled = true
+    let selectedEntity
+
 
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-
+    const obs = new ResizeObserver(() => {
+        UIAPI.document.style.height = ref.offsetHeight + "px"
+    })
     const handler = e => {
-        if (settings.gizmo === GIZMOS.NONE)
-            return
-        switch (e.type) {
-            case "click":
-                if (tooltip.hovered)
-                    if (e.ctrl)
-                        SelectionStore.engineSelected = [...SelectionStore.engineSelected, tooltip.hovered.id]
-                    else
-                        SelectionStore.engineSelected = [tooltip.hovered.id]
-                tooltip.style.zIndex = "-1"
-                SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
-                break
-            case "mouseleave":
-                tooltip.style.zIndex = "-1"
-                break
-            case "mouseenter":
-                const bBox = e.target.getBoundingClientRect()
-                const iframeBBox = ref.firstChild.getBoundingClientRect()
+        if (!isOnSelection)
+            return;
 
-                tooltip.style.width = bBox.width + "px"
-                tooltip.style.height = bBox.height + "px"
-                tooltip.style.top = (bBox.top + iframeBBox.top) + "px"
-                tooltip.style.left = (bBox.left + iframeBBox.left) + "px"
-                tooltip.style.zIndex = "500"
-                tooltip.style.opacity = "1"
-                tooltip.addEventListener("mouseleave", handler, {once: true})
-                tooltip.addEventListener("click", handler, {once: true})
-                const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-engineentityid"))
-                tooltip.innerHTML = `<div style="backdrop-filter: blur(10px) brightness(70%); padding: 8px; border-radius: 3px;">${entity.name}</div>`
-                tooltip.hovered = entity
-                break
-            default:
-                break
-        }
+        const bBox = e.target.getBoundingClientRect()
+        const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-engineentityid"))
+
+        console.trace(e.target, bBox.width)
+        tooltip.style.width = bBox.width + "px"
+        tooltip.style.height = bBox.height + "px"
+        tooltip.style.top = bBox.top + "px"
+        tooltip.style.left = bBox.left + "px"
+        tooltip.style.zIndex = "500"
+        tooltip.style.opacity = "1"
+
+        if (e.ctrl)
+            SelectionStore.engineSelected = [...SelectionStore.engineSelected, tooltip.hovered.id]
+        else
+            SelectionStore.engineSelected = [entity.id]
+        selectedEntity = entity
+
+    }
+    $: {
+        if (!isOnSelection && tooltip)
+            tooltip.style.zIndex = "-1"
     }
 
     function update() {
         const targets = document.querySelectorAll("[data-enginewrapper='-']")
         targets.forEach(t => {
-            t.removeEventListener("mouseenter", handler)
-            t.addEventListener("mouseenter", handler)
+            t.removeEventListener("click", handler)
+            t.addEventListener("click", handler)
         })
     }
 
+    let interval
+    $: {
+        clearInterval(interval)
+        if (updateEnabled)
+            interval = setInterval(() => {
+                UIAPI.updateAllElements().then(() => {
+                    AlertController.success(LOCALIZATION_EN.UPDATING_UI)
+                })
+            }, 15000)
+    }
     onMount(() => {
+        obs.observe(ref)
         UIAPI.showUI()
-        HierarchyController.registerListener(INTERNAL_ID, () => {
-            if (UIAPI.document != null)
-                update()
-        })
+
+        UIAPI.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
+        UIAPI.document.style.top = "28px"
+        HierarchyController.registerListener(INTERNAL_ID, update)
         update()
     })
 
     onDestroy(() => {
+        clearInterval(interval)
+        obs.disconnect()
         HierarchyController.removeListener(INTERNAL_ID)
         UIAPI.hideUI()
-
+        UIAPI.document.style.height = "100%"
+        UIAPI.document.style.top = "0"
         unsubscribeSettings()
         unsubscribeEngine()
     })
 </script>
 
-<Header engine={engine} settings={settings}/>
-<div class="wrapper ui" bind:this={ref} >
-    <ToolTip content={LOCALIZATION_EN.UI_ALREADY_OPEN}/>
+<Header
+        selected={selectedEntity}
+        isOnSelection={isOnSelection}
+        toggleOnSelection={() => isOnSelection = !isOnSelection}
+        updateEnabled={updateEnabled}
+        toggleAutoUpdate={() => updateEnabled = !updateEnabled}
+        engine={engine}
+        settings={settings}
+/>
+<div class="wrapper ui" bind:this={ref}>
     <div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
 </div>
 
 <style>
     .tooltip {
         position: fixed;
-        background: rgba(0, 149, 255, .5);
+        border: var(--pj-accent-color) 2px solid;
 
         font-size: .8rem;
         font-weight: 500;

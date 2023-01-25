@@ -35,7 +35,7 @@
             case VIEWS.PREFERENCES:
                 component = Preferences
                 break
-            case VIEWS.UI:
+            case VIEWPORT_TABS.UI:
                 component = UILayout
                 break
             case VIEWPORT_TABS.EDITOR:

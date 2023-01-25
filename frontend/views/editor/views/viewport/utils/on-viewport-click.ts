@@ -19,6 +19,7 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
 
     const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY)
     const entity = QueryAPI.getEntityByPickerID(clickedEntity)
+    VisibilityRenderer.needsUpdate = true
 
     if (!entity) {
         setContext([])
@@ -33,5 +34,5 @@ export default function onViewportClick(event, mouseDelta, settings, setContext)
     } else
         setContext([entity.id])
 
-    VisibilityRenderer.needsUpdate = true
+
 }

@@ -11,6 +11,7 @@
     import EngineTools from "../../../../../engine-tools/EngineTools";
     import LevelController from "../../lib/utils/LevelController";
     import UIAPI from "../../../../../engine-core/lib/rendering/UIAPI";
+    import GPU from "../../../../../engine-core/GPU";
 
     export let initializeEditor
 
@@ -26,8 +27,7 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        UIAPI.createUIEntity(document.getElementById(RENDER_TARGET))
-        UIAPI.hideUI()
+
         Engine.initializeContext(
             canvasRef,
             {w: visuals.resolution[0], h: visuals.resolution[1]},
@@ -38,7 +38,11 @@
             await EngineTools.initialize().catch()
             await LevelController.loadLevel().catch()
             initializeEditor()
+            UIAPI.buildUI(GPU.canvas.parentElement)
+            UIAPI.hideUI()
+
             done = true
+
         })
     })
 
@@ -49,7 +53,10 @@
         unsubscribeEngine()
         unsubscribeSettings()
     })
-
+    $: {
+        if(engine.executingAnimation)
+            UIAPI.showUI()
+    }
     $: if (done) updateRenderer(selected, engine, {...settings, ...visuals})
 </script>
 
@@ -69,6 +76,8 @@
     .stretch {
         width: 100%;
         height: 100%;
-        background: transparent
+        background: transparent;
+        position: relative;
+        overflow: hidden;
     }
 </style>

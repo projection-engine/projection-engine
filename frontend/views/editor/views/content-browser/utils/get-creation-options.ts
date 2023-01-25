@@ -48,14 +48,8 @@ export default function getCreationOptions(currentDirectory) {
         },
         {
             label: LOCALIZATION_EN.UI_LAYOUT,
-
             onClick: async () => createFile(LOCALIZATION_EN.UI_LAYOUT, FILE_TYPES.UI_LAYOUT, UI_TEMPLATE)
         },
-        {divider: true},
 
-        {
-            label: LOCALIZATION_EN.TERRAIN,
-            onClick: async () => createFile(LOCALIZATION_EN.TERRAIN, FILE_TYPES.TERRAIN, TERRAIN_TEMPLATE)
-        },
     ]
 }

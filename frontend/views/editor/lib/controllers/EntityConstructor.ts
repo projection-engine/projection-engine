@@ -62,7 +62,12 @@ export default class EntityConstructor {
         EntityConstructor.translateEntity(entity)
         EntityManager.add(entity)
     }
-
+static createUI(){
+    const entity = new Entity(undefined, LOCALIZATION_EN.UI_RENDERER)
+    entity.addComponent(COMPONENTS.UI)
+    EntityConstructor.translateEntity(entity)
+    EntityManager.add(entity)
+}
     static createSprite() {
         const entity = new Entity(undefined, LOCALIZATION_EN.SPRITE_RENDERER)
         entity.addComponent(COMPONENTS.SPRITE)

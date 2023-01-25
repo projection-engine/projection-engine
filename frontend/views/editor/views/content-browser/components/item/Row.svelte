@@ -97,17 +97,4 @@
         justify-content: center;
         align-items: center;
     }
-
-    .file-type {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        opacity: .85;
-        border-radius: 3px;
-        backdrop-filter: blur(1px) brightness(95%);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 </style>

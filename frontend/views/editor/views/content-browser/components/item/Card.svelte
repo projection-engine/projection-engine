@@ -72,7 +72,7 @@
         left: 3px;
         opacity: .85;
         border-radius: 3px;
-        backdrop-filter: blur(5px) brightness(85%);
+        background: rgba(0,0,0,.85);
 
         display: flex;
         justify-content: center;

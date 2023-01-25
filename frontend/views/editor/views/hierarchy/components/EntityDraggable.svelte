@@ -100,20 +100,20 @@
 <style>
     input {
         padding: 0 2px;
-        border-radius: 3px;
+        border-radius: 0px;
         background: none;
         border: none;
         outline: none;
         font-size: .7rem;
         color: var(--pj-color-primary);
-        backdrop-filter: brightness(50%);
+        background: rgba(0,0,0,.65);
         height: 23px;
         width: 100%;
 
     }
 
     input:disabled {
-        backdrop-filter: none;
+        background: none;
         color: var(--pj-color-quaternary);
     }
 
@@ -131,16 +131,4 @@
         white-space: nowrap;
     }
 
-    .dot {
-        width: 5px;
-        height: 5px;
-        background: var(--pj-accent-color);
-        border-radius: 50%;
-    }
-
-    .children {
-        display: flex;
-        gap: 3px;
-        align-items: center;
-    }
 </style>

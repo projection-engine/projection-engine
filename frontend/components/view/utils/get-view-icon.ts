@@ -18,7 +18,7 @@ export default function getViewIcon(view) {
         //     return "terrain"
         case VIEWS.PREFERENCES:
             return "settings"
-        case VIEWS.UI:
+        case VIEWPORT_TABS.UI:
             return "widgets"
         case VIEWS.METRICS:
             return "bar_chart"

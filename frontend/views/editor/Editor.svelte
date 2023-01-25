@@ -61,7 +61,6 @@
     <Canvas initializeEditor={() => isContextInitialized = true}/>
 {/if}
 {#if isMetadataReady && isContextInitialized}
-
     <WindowFrame/>
     <div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
         <div class="middle">

@@ -96,7 +96,7 @@
     color: rgb(203 110 53);
 }
 .buttonIcon.hierarchy-branch:hover {
-    backdrop-filter: brightness(150%);
+    color: rgb(243, 99, 13);
 }
 
 .label.hierarchy-branch {
