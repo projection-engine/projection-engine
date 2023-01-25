@@ -128,14 +128,14 @@
 </script>
 
 
-<div class="wrapper" style={disabled ? "background: transparent; color: #999" : ""} data-israngeinput="-">
+<div class="wrapper" style={disabled ? "background: transparent; color: #999" : ""} data-svelteisrangeinput="-">
     {#if percentageFilled != null}
         <div class="percentage" style="width: {percentageFilled}%"></div>
     {/if}
     {#if label}
         <div
                 class="title"
-                data-overflow="-"
+                data-svelteoverflow="-"
         >
             {label}
             {#if !disabled}

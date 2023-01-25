@@ -17,7 +17,7 @@ export default function getContextAction() {
         for (let i = 0; i < elements.length; i++) {
             if ("getAttribute" in elements[i]) {
                 const ID = elements[i].id
-                const dataID = elements[i].getAttribute("data-contextid")
+                const dataID = elements[i].getAttribute("data-sveltecontextid")
                 const found = ContextMenuController.data.targets[ID] || ContextMenuController.data.targets[dataID]
                 if (!found)
                     continue
@@ -44,7 +44,7 @@ export default function getContextAction() {
 
                 for (let i = 0; i < attributes.length; i++) {
                     const attr = attributes[i]
-                    if (!attr.nodeName.includes("data-"))
+                    if (!attr.nodeName.includes("data-svelte"))
                         continue
                     const has = ContextMenuController.data.focused.triggers.find(f => attr.nodeName === f)
                     hasAttribute = hasAttribute || has !== undefined

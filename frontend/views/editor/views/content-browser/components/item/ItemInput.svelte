@@ -9,7 +9,7 @@
 
 
 <input
-        data-overflow="-"
+        data-svelteoverflow="-"
         disabled={!isOnRename}
         on:blur={ev => {
             submitRename(ev.currentTarget.value)

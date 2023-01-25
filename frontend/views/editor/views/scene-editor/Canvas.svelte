@@ -64,7 +64,7 @@
 <div id={RENDER_TARGET} class="stretch">
     <canvas
             class="stretch"
-            data-viewport="-"
+            data-svelteviewport="-"
             bind:this={canvasRef}
             width={settings.resolution[0]}
             height={settings.resolution[1]}

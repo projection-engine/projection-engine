@@ -36,16 +36,16 @@
 
 
 <small>Entities {entities}</small>
-<div data-vertdivider="-"></div>
+<div data-sveltevertdivider="-"></div>
 <small>Meshes {meshes}<ToolTip content={LOCALIZATION_EN.NATIVE_MESHES}/></small>
 
-<div data-vertdivider="-"></div>
+<div data-sveltevertdivider="-"></div>
 <small>Triangles {triangles}<ToolTip content={LOCALIZATION_EN.NATIVE_MESHES}/></small>
 
-<div data-vertdivider="-"></div>
+<div data-sveltevertdivider="-"></div>
 <small>Materials {materials}<ToolTip content={LOCALIZATION_EN.NATIVE_MATERIALS}/></small>
 
-<div data-vertdivider="-"></div>
+<div data-sveltevertdivider="-"></div>
 <small>Textures {textures}<ToolTip content={LOCALIZATION_EN.NATIVE_TEXTURES}/></small>
 
 

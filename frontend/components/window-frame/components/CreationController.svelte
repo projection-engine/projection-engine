@@ -20,19 +20,19 @@
 
 </script>
 
-<button on:click={_ => setTabs([...tabs.left, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "left")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.left, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "left")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_LEFT}/>
 </button>
-<button on:click={_ => setTabs([...tabs.bottom, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "bottom")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.bottom, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "bottom")}>
     <Icon styles="font-size: 1.2rem;">horizontal_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_BOTTOM}/>
 </button>
-<button on:click={_ => setTabs([...tabs.top, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "top")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.top, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "top")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">horizontal_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_TOP}/>
 </button>
-<button on:click={_ => setTabs([...tabs.right, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "right")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.right, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "right")}>
     <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_RIGHT}/>
 </button>

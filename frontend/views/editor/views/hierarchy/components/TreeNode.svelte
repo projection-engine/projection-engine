@@ -41,15 +41,15 @@
 </script>
 
 <div
-        data-selected={isSelected ? "-" : ""}
-        data-node={nodeRef.id}
+        data-svelteselected={isSelected ? "-" : ""}
+        data-sveltenode={nodeRef.id}
 
         class="wrapper hierarchy-branch"
         style={"padding-left:" +  (depth * 18 + "px;") + (nodeRef.active ? "" : "opacity: .5") }
 >
     {#if nodeRef.children.length > 0}
-        <button
-                data-open={isOpen ? "-" : ""}
+        <button data-sveltebuttondefault="-"
+                data-svelteopen={isOpen ? "-" : ""}
                 class="button-small hierarchy-branch"
                 on:click={onExpand}
         >
@@ -64,7 +64,7 @@
             lockedEntity={lockedEntity}
             setLockedEntity={setLockedEntity}
     />
-    <button
+    <button data-sveltebuttondefault="-"
             style="margin-left: 4px"
             class="button-small hierarchy-branch"
             on:click={() => EntityConstructor.toggleEntityVisibility(nodeRef)}

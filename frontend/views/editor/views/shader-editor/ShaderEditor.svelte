@@ -131,7 +131,7 @@
             bind:this={canvasElement}></canvas>
 </div>
 {#if !openFile?.registryID}
-    <div data-empty="-">
+    <div data-svelteempty="-">
         <Icon styles="font-size: 75px">texture</Icon>
         {LOCALIZATION_EN.NO_MATERIAL_SELECTED}
     </div>

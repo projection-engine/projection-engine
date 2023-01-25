@@ -72,7 +72,7 @@
 </script>
 
 <Dropdown hideArrow={true} styles="width: clamp(250px, 20vw, 1000px" onOpen={_ => newMessages = false}>
-    <button slot="button" class="button frame">
+    <button data-sveltebuttondefault="-"  slot="button" class="button frame">
         <Icon styles="font-size: 1rem">terminal</Icon>
         <ToolTip content={LOCALIZATION_EN.CONSOLE}/>
         {#if newMessages}
@@ -82,7 +82,7 @@
     <div class="dropdown-container frame">
         <div class="dropdown-header frame">
             <strong>{LOCALIZATION_EN.CONSOLE}</strong>
-            <button
+            <button data-sveltebuttondefault="-"
                     class="button frame button-small frame"
                     style="max-width: 22px;gap: 4px"
                     on:click={() => ConsoleAPI.clear()}>
@@ -93,7 +93,7 @@
         </div>
         {#if toRender.length === 0}
             <div style="height: 100%; width: 100%; position: relative">
-                <div data-empty="-">
+                <div data-svelteempty="-">
                     <Icon styles="font-size: 75px">terminal</Icon>
                     {LOCALIZATION_EN.CONSOLE}
                 </div>
@@ -125,7 +125,7 @@
                     {#if item.object}
                         <ToolTip content={LOCALIZATION_EN.CLICK_TO_SHOW_OBJECT}/>
                     {/if}
-                    <small data-overflow="-">{item.message}</small>
+                    <small data-svelteoverflow="-">{item.message}</small>
                     <ToolTip content={item.src.includes("file://") ? LOCALIZATION_EN.INTERNAL_ERROR : item.str}/>
                 </div>
             </VirtualList>
@@ -134,7 +134,7 @@
 </Dropdown>
 
 <div bind:this={modal} class="container-modal">
-    <pre data-pre="-" style="overflow: visible; height: fit-content; line-height: .9rem">{objectOpen}</pre>
+    <pre data-sveltepre="-" style="overflow: visible; height: fit-content; line-height: .9rem">{objectOpen}</pre>
 </div>
 
 <style>
@@ -200,7 +200,7 @@
         white-space: nowrap;
     }
 
-    .button[data-metadata="-"] {
+    .button[data-sveltemetadata="-"] {
         background: var(--pj-border-primary);
     }
 

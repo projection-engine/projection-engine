@@ -19,7 +19,7 @@
 <Accordion startOpen={true} title={LOCALIZATION_EN.VIEWPORT}>
     <fieldset>
         <legend>{LOCALIZATION_EN.ICONS}</legend>
-        <div data-form="-">
+        <div data-svelteform="-">
             <Range
                     label={LOCALIZATION_EN.SIZE}
                     onFinish={v => update("iconScale", v)}
@@ -41,7 +41,7 @@
     </fieldset>
     <fieldset>
         <legend>{LOCALIZATION_EN.OVERLAY}</legend>
-        <div data-form="-">
+        <div data-svelteform="-">
             <Checkbox
                     checked={settings.showGrid}
                     handleCheck={() => update("showGrid", !settings.showGrid)}
@@ -89,7 +89,7 @@
 <Accordion title={LOCALIZATION_EN.GRID}>
     <fieldset>
         <legend>{LOCALIZATION_EN.COLOR}</legend>
-        <div data-form="-">
+        <div data-svelteform="-">
 
             <Range
                     minValue={0}
@@ -115,7 +115,7 @@
     </fieldset>
     <fieldset>
         <legend>{LOCALIZATION_EN.DIMENSIONS}</legend>
-        <div data-form="-">
+        <div data-svelteform="-">
             <Range
                     increment={.01}
                     minValue={.001}
@@ -144,7 +144,7 @@
 
 
 <Accordion title={LOCALIZATION_EN.CAMERA_GIZMO}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={LOCALIZATION_EN.SIZE}
                 onFinish={v => update("cameraGizmoSize", v)}
@@ -157,7 +157,7 @@
 
 
 <Accordion title={LOCALIZATION_EN.GIZMOS}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={LOCALIZATION_EN.SENSITIVITY}
                 onFinish={v => update("gizmoGrid", {...settings.gizmoGrid, sensitivity: v / 100})}

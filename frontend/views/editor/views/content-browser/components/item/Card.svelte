@@ -24,12 +24,12 @@
 
 </script>
 <div
-        data-isitem="-"
-        data-id={data.id}
-        data-material={isMaterial ? data.id : undefined}
-        data-file={type === 0 ? undefined : data.id}
-        data-name={data.name}
-        data-folder={type !== 0 ? undefined : data.id}
+        data-svelteisitem="-"
+        data-svelteid={data.id}
+        data-sveltematerial={isMaterial ? data.id : undefined}
+        data-sveltefile={type === 0 ? undefined : data.id}
+        data-sveltename={data.name}
+        data-sveltefolder={type !== 0 ? undefined : data.id}
         on:dblclick={() => openItem(data, setCurrentDirectory, setSelected, reset, type)}
         on:click={setSelected}
         style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
@@ -39,7 +39,7 @@
         {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
         {:else if  metadata.type === FILE_TYPES.MATERIAL}
-            <div data-shaded-material="-" style="width: 60px; height: 60px"></div>
+            <div data-svelteshaded-material="-" style="width: 60px; height: 60px"></div>
         {:else if metadata.type === FILE_TYPES.PRIMITIVE || metadata.type === FILE_TYPES.TEXTURE}
             <Preview path={metadata.path}>
                 <img class="image" slot="image" alt="logo" let:src src={src}>

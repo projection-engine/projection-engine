@@ -18,7 +18,7 @@ export default class ToolTipController {
         ToolTipController.#initialized = true
         const el = document.createElement("div")
         el.classList.add("tooltip")
-        el.setAttribute("data-tooltip", "-")
+        el.setAttribute("data-sveltetooltip", "-")
         ToolTipController.portal.create(el)
 
         ToolTipController.element = el

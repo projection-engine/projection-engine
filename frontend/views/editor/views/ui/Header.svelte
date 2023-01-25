@@ -46,26 +46,26 @@
 
 <ViewHeader>
     <div class="left-content">
-        <button on:click={addUiElement} data-view-header-button="-" style="max-width: unset">
+        <button data-sveltebuttondefault="-"  on:click={addUiElement} data-svelteview-header-button="-" style="max-width: unset">
             <Icon styles="font-size: .9rem">add</Icon>
             {LOCALIZATION_EN.ADD_ELEMENT}
         </button>
-        <button on:click={selectAll} data-view-header-button="-" style="max-width: unset">
+        <button data-sveltebuttondefault="-"  on:click={selectAll} data-svelteview-header-button="-" style="max-width: unset">
             {LOCALIZATION_EN.SELECT_ALL}
         </button>
-        <div data-vertdivider="-"></div>
-        <button
+        <div data-sveltevertdivider="-"></div>
+        <button data-sveltebuttondefault="-"
                 on:click={() => {
                     UIAPI.updateAllElements().then(() => {
                         AlertController.success(LOCALIZATION_EN.UPDATING_UI)
                     })
                 }}
-                data-view-header-button="-"
+                data-svelteview-header-button="-"
                 style="max-width: unset">
             <Icon styles="font-size: .9rem">refresh</Icon>
             <ToolTip content={LOCALIZATION_EN.FORCE_UPDATE}/>
         </button>
-        <button on:click={toggleAutoUpdate} data-view-header-button="-" style="max-width: unset">
+        <button data-sveltebuttondefault="-"  on:click={toggleAutoUpdate} data-svelteview-header-button="-" style="max-width: unset">
             <Icon styles="font-size: .9rem">
                 {#if updateEnabled}
                     update
@@ -76,7 +76,7 @@
             {LOCALIZATION_EN.AUTO_UPDATE}
         </button>
         {#if selected}
-            <div data-vertdivider="-"></div>
+            <div data-sveltevertdivider="-"></div>
             <small class="entity-selected">
                 {selected.name}
             </small>
@@ -84,7 +84,7 @@
     </div>
 
     <div class="right-content">
-        <button data-highlight={isOnSelection ? "-" : ""} on:click={toggleOnSelection} data-view-header-button="-">
+        <button data-sveltebuttondefault="-"  data-sveltehighlight={isOnSelection ? "-" : ""} on:click={toggleOnSelection} data-svelteview-header-button="-">
             <Icon>
                 highlight_alt
             </Icon>

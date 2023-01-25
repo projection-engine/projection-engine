@@ -40,7 +40,7 @@
             disabled={attribute.disabled}
     />
 {:else if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 || type === DATA_TYPES.VEC2}
-    <div data-inline="-">
+    <div data-svelteinline="-">
         <Range
                 disabled={attribute.disabled}
                 maxValue={attribute.max}
@@ -99,11 +99,11 @@
 {:else if type === DATA_TYPES.OPTIONS && Array.isArray(attribute.options)}
 
     <Dropdown buttonStyles={getDropdownHeaderStyles() + "width: 100%;"}>
-        <button slot="button" data-view-header-dropdown="-">
+        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
             {possibleSelection ? possibleSelection.label : label}
         </button>
         {#each attribute.options as o, i}
-            <button on:click={() => handleChange(o.data)} data-inline="-">
+            <button data-sveltebuttondefault="-"  on:click={() => handleChange(o.data)} data-svelteinline="-">
                 {#if o.data === value}
                     <Icon>check</Icon>
                     {:else}

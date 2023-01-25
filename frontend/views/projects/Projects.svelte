@@ -46,7 +46,7 @@
                 },
             ],
             internalID,
-            ["data-card"]
+            ["data-sveltecard"]
         )
         if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
             localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FS.rootDir)
@@ -75,7 +75,7 @@
                 class="content"
                 id={internalID}
                 on:mousedown={e => {
-                    const found = document.elementsFromPoint(e.clientX, e.clientY).map(e => e.getAttribute("data-card")).filter(e => e != null)
+                    const found = document.elementsFromPoint(e.clientX, e.clientY).map(e => e.getAttribute("data-sveltecard")).filter(e => e != null)
                     if(found != null)
                         selected = found[0]
                 }}

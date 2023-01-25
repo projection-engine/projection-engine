@@ -16,9 +16,9 @@
 </script>
 
 <Dropdown buttonStyles={styles} hideArrow={cleanLayout}>
-    <button
+    <button data-sveltebuttondefault="-"
             slot="button"
-            data-view-header-dropdown={cleanLayout? "" : "-"}
+            data-svelteview-header-dropdown={cleanLayout? "" : "-"}
             style={cleanLayout ? "border: none; display: flex; align-items: center" : undefined}
     >
         {#if labelAsIcon}
@@ -37,10 +37,10 @@
         {#if option.divider}
             <div class="group dropdown-list">
                 <strong style="white-space: nowrap; padding-left: 4px">{option.label}</strong>
-                <div data-divider="-"></div>
+                <div data-sveltedivider="-"></div>
             </div>
         {:else}
-            <button
+            <button data-sveltebuttondefault="-"
                     disabled={option.disabled}
                     on:click={e => {
                         option.onClick()

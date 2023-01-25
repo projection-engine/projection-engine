@@ -10,12 +10,12 @@
 
 </script>
 
-<div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
+<div data-sveltevertdivider="-" style="height: 15px; margin: 0;"></div>
 <div class="level-selector">
     <ActionHistory engine={engine}/>
-    <div data-vertdivider="-" style="height: 15px; margin: 0;"></div>
+    <div data-sveltevertdivider="-" style="height: 15px; margin: 0;"></div>
     <Console engine={engine}/>
-    <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
+    <div data-sveltevertdivider="-" style="height: 15px; margin: 0"></div>
     <LevelSelector store={store} engine={engine}/>
 </div>
 

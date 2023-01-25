@@ -41,7 +41,7 @@
 <fieldset>
     <legend class="legend">
         {LOCALIZATION_EN.UI_COMPONENT}
-        <button class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
+        <button data-sveltebuttondefault="-"  class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
             <Icon>delete_forever</Icon>
         </button>
     </legend>
@@ -76,7 +76,7 @@
                 }}
         />
         {#if hasStyles}
-            <div data-divider="-"></div>
+            <div data-sveltedivider="-"></div>
         {/if}
         {#each styles as style, i}
             <StyleField

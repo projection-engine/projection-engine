@@ -256,7 +256,7 @@
     }
 </script>
 
-<div class="main-container" data-iscolorpicker="-">
+<div class="main-container" data-svelteiscolorpicker="-">
     <div class="colorsquare size">
         <div class="saturation-gradient">
             <div class="value-gradient">

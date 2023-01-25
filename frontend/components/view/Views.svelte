@@ -55,7 +55,7 @@
 <div
         bind:this={ref}
         class="wrapper"
-        data-orientation={orientation}
+        data-svelteorientation={orientation}
         style={`
             flex-direction: ${orientation === "horizontal" ? "row" : "column"};
             opacity: ${reducedOpacity ? ".75" : "1"};

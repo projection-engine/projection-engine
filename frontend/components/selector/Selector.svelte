@@ -46,7 +46,7 @@
     }
 </script>
 
-<div data-inline="-" class="wrapper" style={styles}>
+<div data-svelteinline="-" class="wrapper" style={styles}>
 
     <Dropdown
             disabled={disabled}
@@ -54,19 +54,19 @@
             styles="max-width: clamp(250px, 20vw, 500px); width: clamp(250px, 20vw, 500px);"
             buttonStyles="width: 100%; overflow: hidden"
     >
-        <button
+        <button data-sveltebuttondefault="-"
                 disabled={disabled}
                 slot="button"
-                data-inline="-"
+                data-svelteinline="-"
                 style="height: 22px; border: none; padding: 0 2px; width: 100%"
         >
-            <div class="icon" data-inline="-">
+            <div class="icon" data-svelteinline="-">
                 <Icon styles="font-size: 1rem">{getIcon(type)}</Icon>
                 <Icon styles="font-size: 1rem">arrow_drop_down</Icon>
             </div>
-            <div data-vertdivider="-" style="margin: 0"></div>
+            <div data-sveltevertdivider="-" style="margin: 0"></div>
             <ToolTip content={state?.name}/>
-            <small data-overflow="-" style="text-align: left">{state?.name}</small>
+            <small data-svelteoverflow="-" style="text-align: left">{state?.name}</small>
         </button>
         <Options
                 terrainMaterials={terrainMaterials}
@@ -81,8 +81,8 @@
                 store={store}
         />
     </Dropdown>
-    <div data-vertdivider="-" style="margin: 0"></div>
-    <button class="remove-button" on:click={_ => handleChange(null)}>
+    <div data-sveltevertdivider="-" style="margin: 0"></div>
+    <button data-sveltebuttondefault="-"  class="remove-button" on:click={_ => handleChange(null)}>
         <Icon styles="font-size: 1rem">clear</Icon>
         <ToolTip content={LOCALIZATION_EN.CLEAR}/>
     </button>

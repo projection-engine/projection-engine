@@ -36,7 +36,7 @@
             return;
 
         const bBox = e.target.getBoundingClientRect()
-        const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-engineentityid"))
+        const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-entityid"))
 
         console.trace(e.target, bBox.width)
         tooltip.style.width = bBox.width + "px"

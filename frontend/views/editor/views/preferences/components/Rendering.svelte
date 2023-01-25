@@ -64,12 +64,12 @@
             handleCheck={() => globalSettings.vsync =  !globalSettings.vsync}
             label={LOCALIZATION_EN.VSYNC}
     />
-    <button style="width: 100%"
+    <button data-sveltebuttondefault="-"  style="width: 100%"
             on:click={() => ipcRenderer.send(ROUTES.UPDATE_GLOBAL_SETTINGS, globalSettings)}>{LOCALIZATION_EN.APPLY}</button>
 </fieldset>
 
 <Accordion title={LOCALIZATION_EN.RESOLUTION}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={"X"}
                 onFinish={v => {
@@ -92,7 +92,7 @@
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.ANTI_ALIASING}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Checkbox
                 checked={visualSettings.AAMethod === AA_METHODS.DISABLED}
                 handleCheck={() => update("AAMethod", AA_METHODS.DISABLED)}
@@ -113,7 +113,7 @@
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.PHYSICS}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={LOCALIZATION_EN.PHYSICS_SIMULATION_STEP}
                 minValue={.0001}
@@ -131,7 +131,7 @@
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.SSR}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={LOCALIZATION_EN.STEPS}
                 minValue={1}
@@ -160,8 +160,8 @@
 <Accordion title={LOCALIZATION_EN.SSGI}>
     <fieldset>
         <legend>{LOCALIZATION_EN.GENERAL}</legend>
-        <div data-form="-">
-            <button on:click={() => VisualsStore.updateStore({...visualSettings, SSGI: {...VISUAL_SETTINGS.SSGI}})}>{LOCALIZATION_EN.DEFAULT}</button>
+        <div data-svelteform="-">
+            <button data-sveltebuttondefault="-"  on:click={() => VisualsStore.updateStore({...visualSettings, SSGI: {...VISUAL_SETTINGS.SSGI}})}>{LOCALIZATION_EN.DEFAULT}</button>
             <Checkbox
                     checked={visualSettings.SSGI.enabled}
                     handleCheck={() => updateSubObject("SSGI","enabled",!visualSettings.SSGI.enabled)}
@@ -183,7 +183,7 @@
     </fieldset>
     <fieldset>
         <legend>{LOCALIZATION_EN.SMOOTHING}</legend>
-        <div data-form="-">
+        <div data-svelteform="-">
             <Range
                     label={LOCALIZATION_EN.SAMPLES}
                     minValue={1}
@@ -202,7 +202,7 @@
     </fieldset>
     <fieldset>
         <legend>{LOCALIZATION_EN.RAY_MARCHING}</legend>
-        <div data-form="-">
+        <div data-svelteform="-">
             <Range
 
                     label={LOCALIZATION_EN.STEPS}
@@ -225,7 +225,7 @@
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.SSS}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={LOCALIZATION_EN.STEPS}
                 maxValue={100}
@@ -268,7 +268,7 @@
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.DIRECTIONAL_SHADOWS}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={LOCALIZATION_EN.RESOLUTION}
                 accentColor={"red"}
@@ -281,7 +281,7 @@
 
                 value={visualSettings.shadowMapResolution}
         />
-        <div data-inline="-">
+        <div data-svelteinline="-">
             <Range
                     label={LOCALIZATION_EN.LIGHTS}
                     accentColor={"red"}
@@ -301,7 +301,7 @@
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.AO}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Checkbox
                 checked={visualSettings.SSAO.enabled}
                 handleCheck={() => updateSubObject("SSAO", "enabled", !visualSettings.SSAO.enabled)}

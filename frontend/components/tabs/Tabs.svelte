@@ -98,7 +98,7 @@
                 const ids: { [key: string]: number } = {}
                 for (let i = 0; i < elements.length; i++) {
                     const element = elements[i]
-                    ids[element.getAttribute("data-type")] = i
+                    ids[element.getAttribute("data-sveltetype")] = i
                 }
                 for (let i = 0; i < tabs.length; i++) {
                     const item = tabs[i]
@@ -126,7 +126,7 @@
 <div
         class="container" bind:this={ref}
         id={internalID}
-        data-contextid={contextID}
+        data-sveltecontextid={contextID}
 >
     {#each sortedTabs as v, i}
         <Tab
@@ -145,16 +145,16 @@
     {/each}
 
     {#if allowRenaming}
-        <button on:click={addNewTab} class="add-button">
+        <button data-sveltebuttondefault="-"  on:click={addNewTab} class="add-button">
             <Icon styles="font-size: .9rem">add</Icon>
         </button>
     {:else}
         <Dropdown hideArrow="true" buttonStyles="margin-left: auto">
-            <button class="add-button" slot="button">
+            <button data-sveltebuttondefault="-"  class="add-button" slot="button">
                 <Icon styles="font-size: .9rem">add</Icon>
             </button>
             {#each templates as item}
-                <button
+                <button data-sveltebuttondefault="-"
                         style="padding-left: 2rem"
                         on:click={e => {
                             if(e.target.closeDropdown)

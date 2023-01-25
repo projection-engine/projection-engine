@@ -55,7 +55,7 @@
                 />
             </VirtualList>
         {:else}
-            <div data-empty="-">
+            <div data-svelteempty="-">
                 <Icon styles="font-size: 2rem">folder</Icon>
                 {LOCALIZATION_EN.NOTHING}
             </div>

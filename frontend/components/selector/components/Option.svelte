@@ -17,14 +17,14 @@
     $: isSelected = state.registryID !== undefined ? state.registryID === data.registryID : state.id !== undefined && state.id === data.id
 </script>
 
-<button
+<button data-sveltebuttondefault="-"
 
         class="option-available-nodes selector"
         style="margin-bottom: 4px;"
-        data-highlight={isSelected ? `-` : undefined}
+        data-sveltehighlight={isSelected ? `-` : undefined}
         on:click={onClick}
 >
     <DataIcon state={data} type={type}/>
-    <div data-overflow="-">{data?.name}</div>
+    <div data-svelteoverflow="-">{data?.name}</div>
     <ToolTip content={data.name}/>
 </button>

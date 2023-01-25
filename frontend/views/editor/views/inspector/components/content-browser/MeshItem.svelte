@@ -29,7 +29,7 @@
     }
 </script>
 
-<button on:click={() => updateAsset()} disabled={wasUpdated}>
+<button data-sveltebuttondefault="-"  on:click={() => updateAsset()} disabled={wasUpdated}>
     {LOCALIZATION_EN.REGENERATE_NORMALS_AND_TANGENTS}
 </button>
 

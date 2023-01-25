@@ -30,32 +30,32 @@
        {#if !item.isFolder && data}
            <div class="section">
                <ToolTip content="{data.size.toFixed(4)} MB"/>
-               <b>{LOCALIZATION_EN.FILE_SIZE}: </b><small data-overflow="-">{data.size.toFixed(4)} MB</small>
+               <b>{LOCALIZATION_EN.FILE_SIZE}: </b><small data-svelteoverflow="-">{data.size.toFixed(4)} MB</small>
            </div>
 
            <div class="section">
                <ToolTip content={item.type}/>
-               <b>{LOCALIZATION_EN.FILE_EXTENSION}: </b><small data-overflow="-">{getTypeName(item.type)}</small>
+               <b>{LOCALIZATION_EN.FILE_EXTENSION}: </b><small data-svelteoverflow="-">{getTypeName(item.type)}</small>
            </div>
            <div class="section">
                <ToolTip content={item.registryID}/>
-               <b>{LOCALIZATION_EN.REGISTRY_ID}: </b><small data-overflow="-">{item.registryID}</small>
+               <b>{LOCALIZATION_EN.REGISTRY_ID}: </b><small data-svelteoverflow="-">{item.registryID}</small>
            </div>
        {:else}
            <div class="section">
                <ToolTip content={item.children}/>
-               <b>{LOCALIZATION_EN.CHILDREN}: </b><small data-overflow="-">{item.children}</small>
+               <b>{LOCALIZATION_EN.CHILDREN}: </b><small data-svelteoverflow="-">{item.children}</small>
            </div>
        {/if}
        <div class="section">
            <ToolTip content={item.creationDate}/>
-           <b>{LOCALIZATION_EN.CREATION_DATE}: </b><small data-overflow="-">{item.creationDate}</small>
+           <b>{LOCALIZATION_EN.CREATION_DATE}: </b><small data-svelteoverflow="-">{item.creationDate}</small>
        </div>
        <div class="section">
            <ToolTip content={item.id}/>
            <b>{LOCALIZATION_EN.ASSETS_PATH}: </b>
            <small
-                   data-overflow="-"
+                   data-svelteoverflow="-"
                    class="link"
                    on:click={showInFolder}
            >

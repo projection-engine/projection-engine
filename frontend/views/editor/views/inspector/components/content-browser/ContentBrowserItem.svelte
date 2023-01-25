@@ -31,7 +31,7 @@
 <div class="wrapper">
 
     <ItemMetadata item={item}/>
-    <div data-divider="-" style="margin:0;"></div>
+    <div data-sveltedivider="-" style="margin:0;"></div>
     {#if fileType === FILE_TYPES.TEXTURE && data != null}
         <TextureItem data={data} item={item}/>
 
@@ -45,7 +45,7 @@
         <MeshItem item={item}/>
     {:else}
         <div class="empty-wrapper">
-            <div data-empty="-" style="position: relative">
+            <div data-svelteempty="-" style="position: relative">
                 <Icon styles="font-size: 75px">category</Icon>
                 {LOCALIZATION_EN.CONTENT_BROWSER}
             </div>

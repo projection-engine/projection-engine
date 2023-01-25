@@ -23,7 +23,7 @@
         <Icon slot="icon">image</Icon>
     </Preview>
 {:else if type === "material"}
-    <div data-shaded-material="-"></div>
+    <div data-svelteshaded-material="-"></div>
 {:else if type === "ui"}
     <Icon slot="icon">widgets</Icon>
 {:else if type === "code"}

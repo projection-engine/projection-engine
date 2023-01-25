@@ -60,7 +60,7 @@
             targetDialogElement = undefined
 
         if (tab.type === VIEWS.BLUEPRINT || tab.type === VIEWS.UI)
-            targetDialogElement = ref.querySelector(`[data-closebuttontab="${i}"]`)
+            targetDialogElement = ref.querySelector(`[data-svelteclosebuttontab="${i}"]`)
         else
             closeTarget(i)
     }
@@ -94,17 +94,17 @@
                 styles="padding: 4px"
         >
             <strong style="font-size: .8rem">{LOCALIZATION_EN.YOU_MAY_LOSE_DATA}</strong>
-            <div data-inline="-">
-                <button
+            <div data-svelteinline="-">
+                <button data-sveltebuttondefault="-"
                         on:click={() => {
-                            closeTarget(parseInt(targetDialogElement.getAttribute("data-closebuttontab")))
+                            closeTarget(parseInt(targetDialogElement.getAttribute("data-svelteclosebuttontab")))
                             targetDialogElement = undefined
                         }}
                         class="option"
                 >
                     {LOCALIZATION_EN.OK}
                 </button>
-                <button class="option" on:click={() => targetDialogElement = undefined}>
+                <button data-sveltebuttondefault="-"  class="option" on:click={() => targetDialogElement = undefined}>
                     {LOCALIZATION_EN.CANCEL}
                 </button>
             </div>

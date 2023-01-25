@@ -78,12 +78,12 @@
         <small class:editing={onEdit}>{text}</small>
         <div class="row" style="justify-content: unset;">
             {#if !onEdit}
-                <button on:click={initialize}>
+                <button data-sveltebuttondefault="-"  on:click={initialize}>
                     <Icon styles="font-size: .9rem">keyboard</Icon>
                 </button>
                 {#if isChanged}
-                    <div data-vertdivider="-" style="margin: 0"></div>
-                    <button on:click={() => currentShortcut = [...original]}>
+                    <div data-sveltevertdivider="-" style="margin: 0"></div>
+                    <button data-sveltebuttondefault="-"  on:click={() => currentShortcut = [...original]}>
                         <Icon styles="font-size: .9rem">close</Icon>
                         <ToolTip content={LOCALIZATION_EN.ORIGINAL}/>
                     </button>

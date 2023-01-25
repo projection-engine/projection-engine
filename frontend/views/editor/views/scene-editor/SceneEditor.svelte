@@ -81,7 +81,7 @@
             ContextMenuController.mount(
                 viewportContext(settings),
                 RENDER_TARGET,
-                ["data-viewport"]
+                ["data-svelteviewport"]
             )
     }
 
@@ -100,7 +100,7 @@
                 Loader.load(data, false, event.clientX, event.clientY).catch()
             },
             onDragOver: () => `
-                <span data-icon="-" style="font-size: 70px">add</span>
+                <span data-svelteicon="-" style="font-size: 70px">add</span>
                 ${LOCALIZATION_EN.DRAG_DROP}
             `
         })
@@ -142,7 +142,7 @@
         <CameraSettings engine={engine} settings={settings}/>
     </div>
     {#if focusedCamera}
-        <div class="focused-camera" data-inline="-">
+        <div class="focused-camera" data-svelteinline="-">
             <Icon styles="font-size: .85rem">videocam</Icon>
             {focusedCamera.name}
         </div>
@@ -159,7 +159,7 @@
         </div>
     {/if}
 {:else}
-    <button class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
+    <button data-sveltebuttondefault="-"  class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
         <Icon styles="font-size: .85rem">pause</Icon>
         <ToolTip content={LOCALIZATION_EN.STOP}/>
     </button>

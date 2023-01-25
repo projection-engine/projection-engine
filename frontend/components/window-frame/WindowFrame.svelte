@@ -55,7 +55,7 @@
 </script>
 
 <div class="container">
-    <button disabled={engine.executingAnimation || !hasChanges}
+    <button data-sveltebuttondefault="-"  disabled={engine.executingAnimation || !hasChanges}
             on:click={_ => LevelController.save()}>
         <Icon>save</Icon>
         <ToolTip content={LOCALIZATION_EN.SAVE}/>
@@ -69,10 +69,10 @@
             tooltip={LOCALIZATION_EN.OPTIONS}
     />
 
-        <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
+        <div data-sveltevertdivider="-" style="height: 15px; margin: 0"></div>
         <CreationController/>
 
-        <div data-vertdivider="-" style="height: 15px;"></div>
+        <div data-sveltevertdivider="-" style="height: 15px;"></div>
         <Tabs
                 removeMultipleTabs={() => {
                 const currentView = settings.views[settings.currentView]

@@ -29,9 +29,9 @@
 
 </script>
 <div
-        data-type={value.type}
-        data-highlight={value.originalIndex === currentTab ? "-" : undefined}
-        data-focused={value.originalIndex === currentTab && focused ? "-" : undefined}
+        data-sveltetype={value.type}
+        data-sveltehighlight={value.originalIndex === currentTab ? "-" : undefined}
+        data-sveltefocused={value.originalIndex === currentTab && focused ? "-" : undefined}
         style={colorValue}
         class:view-static={value.icon != null}
         class:view-dynamic={value.icon == null}
@@ -39,7 +39,7 @@
     {#if !allowRenaming}
         <Dropdown hideArrow={true}
                   styles="width: 350px; overflow: hidden; padding: 4px; display: flex; flex-direction: column">
-            <button slot="button" class="dropdown-button">
+            <button data-sveltebuttondefault="-"  slot="button" class="dropdown-button">
                 <Icon styles={"font-size: .85rem;" + (value.originalIndex === currentTab ? "color: var(--tab-color);" : "")}>{value.icon}</Icon>
             </button>
             <fieldset>
@@ -58,8 +58,8 @@
                 {#each spplitedTemplates as items}
                     <div class="row">
                         {#each items as item}
-                            <button
-                                    data-highlight={value.type === item.id ? "-" : ""}
+                            <button data-sveltebuttondefault="-"
+                                    data-sveltehighlight={value.type === item.id ? "-" : ""}
                                     class="button"
                                     on:click={e => {
                                         e.target.closeDropdown?.()
@@ -83,13 +83,13 @@
             on:click={e => handler(e, value, value.originalIndex)}
             class="view-input"
             style={value.originalIndex === currentTab ? "color: var(--pj-color-primary);" : undefined}
-            data-view={value.originalIndex}
+            data-svelteview={value.originalIndex}
             type="button"
             value={value.name}
     >
 
-    <button
-            data-closebuttontab='{value.originalIndex}'
+    <button data-sveltebuttondefault="-"
+            data-svelteclosebuttontab='{value.originalIndex}'
             disabled={tabs.length === 1 && !allowDeletion}
             on:click={() => removeTab(value.originalIndex)}
             class="remove-button"
@@ -129,11 +129,11 @@
         color: var(--pj-accent-color);
     }
 
-    .view-static[data-highlight="-"] {
+    .view-static[data-sveltehighlight="-"] {
         background: var(--pj-background-quaternary);
     }
 
-    .view-static[data-focused="-"] {
+    .view-static[data-sveltefocused="-"] {
         border-top: var(--tab-color) 2px solid !important;
     }
 
@@ -153,7 +153,7 @@
         color: var(--pj-accent-color);
     }
 
-    .view-dynamic[data-highlight="-"] {
+    .view-dynamic[data-sveltehighlight="-"] {
         background: var(--pj-accent-color);
         color: white;
     }

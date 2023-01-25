@@ -59,9 +59,9 @@
     />
 </div>
 <div class="footer">
-    <button
+    <button data-sveltebuttondefault="-"
 
-            data-focusbutton="-"
+            data-sveltefocusbutton="-"
             on:click={() => create(input)}
     >
         <Icon>check</Icon>

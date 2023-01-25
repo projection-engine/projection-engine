@@ -89,8 +89,8 @@
                         y2: bBox.y + bBox.height
                     }
                     let toSelect = [],
-                        elements = Array.from(ref.parentElement.querySelectorAll("[data-id]")).map(e => ({
-                            id: e.getAttribute("data-id"),
+                        elements = Array.from(ref.parentElement.querySelectorAll("[data-svelteid]")).map(e => ({
+                            id: e.getAttribute("data-svelteid"),
                             element: e
                         }))
 

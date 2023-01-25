@@ -57,7 +57,7 @@
         {/each}
     </div>
 </Accordion>
-<button
+<button data-sveltebuttondefault="-"
         on:click={() => {
             update("viewportHotkeys", SETTINGS.viewportHotkeys)
             update("contentBrowserHotkeys", SETTINGS.contentBrowserHotkeys)

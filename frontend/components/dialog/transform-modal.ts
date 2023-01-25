@@ -34,5 +34,5 @@ export default function transformModal(modal: HTMLElement, button: HTMLElement) 
     modal.style.zIndex = "999"
     modal.style.display = "grid"
     if (button.firstElementChild)
-        button.firstElementChild.setAttribute("data-highlight", "true")
+        button.firstElementChild.setAttribute("data-sveltehighlight", "true")
 }

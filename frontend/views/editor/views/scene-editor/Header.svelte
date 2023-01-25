@@ -21,20 +21,20 @@
 
 
 <div class="left-content">
-    <button
+    <button data-sveltebuttondefault="-"
             on:click={() => EntityStateController.startPlayState()}
-            data-view-header-button="-"
+            data-svelteview-header-button="-"
     >
         <Icon styles="font-size: 1rem">play_arrow</Icon>
         <ToolTip content={LOCALIZATION_EN.PLAY}/>
     </button>
-    <div data-vertdivider="-" style="height: 15px; margin: 0"></div>
+    <div data-sveltevertdivider="-" style="height: 15px; margin: 0"></div>
     <AddOptions/>
     <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
-        <button slot="button" data-view-header-dropdown="-">
+        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
             {LOCALIZATION_EN.CAMERA}
         </button>
-        <div style="padding: 8px 4px; max-height: 40vh; overflow-y: auto; overflow-x: hidden">
+        <div style="display: flex; flex-direction: column; gap: 4px; padding: 8px 4px; max-height: 40vh; overflow-y: auto; overflow-x: hidden">
             <CameraSettings settings={settings}/>
         </div>
     </Dropdown>
@@ -45,12 +45,12 @@
 
 <div class="right-content">
     <Dropdown styles="width: 250px" buttonStyles={getDropdownHeaderStyles()}>
-        <button slot="button" data-view-header-dropdown="-">
+        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
             <Icon styles="font-size: 1rem">layers</Icon>
             <ToolTip content={LOCALIZATION_EN.OVERLAY}/>
         </button>
 
-        <button on:click={() => SettingsStore.updateStore({...settings, showGrid: !settings.showGrid})}>
+        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showGrid: !settings.showGrid})}>
             {#if settings.showGrid}
                 <Icon styles="font-size: 1rem">check</Icon>
             {:else}
@@ -58,7 +58,7 @@
             {/if}
             {LOCALIZATION_EN.GRID}
         </button>
-        <button on:click={() => SettingsStore.updateStore({...settings, showIcons: !settings.showIcons})}>
+        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showIcons: !settings.showIcons})}>
             {#if settings.showIcons}
                 <Icon styles="font-size: 1rem">check</Icon>
             {:else}
@@ -66,7 +66,7 @@
             {/if}
             {LOCALIZATION_EN.ICONS}
         </button>
-        <button on:click={() => SettingsStore.updateStore({...settings, showLines: !settings.showLines})}>
+        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showLines: !settings.showLines})}>
             {#if settings.showLines}
                 <Icon styles="font-size: 1rem">check</Icon>
             {:else}
@@ -75,7 +75,7 @@
             {LOCALIZATION_EN.LINES}
         </button>
 
-        <button on:click={() => SettingsStore.updateStore({...settings, showOutline: !settings.showOutline})}>
+        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showOutline: !settings.showOutline})}>
             {#if settings.showOutline}
                 <Icon styles="font-size: 1rem">check</Icon>
             {:else}

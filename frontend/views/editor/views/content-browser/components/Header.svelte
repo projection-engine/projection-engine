@@ -36,23 +36,23 @@
 </script>
 
 <ViewHeader>
-    <div data-inline="-" style="width: 100%">
-        <button
-                data-view-header-button="-"
+    <div data-svelteinline="-" style="width: 100%">
+        <button data-sveltebuttondefault="-"
+                data-svelteview-header-button="-"
                 on:click={() => navigationHistory.undo()}
         >
             <Icon styles="font-size: .9rem">arrow_back</Icon>
             <ToolTip content={LOCALIZATION_EN.BACK_DIR}/>
         </button>
-        <button
-                data-view-header-button="-"
+        <button data-sveltebuttondefault="-"
+                data-svelteview-header-button="-"
                 on:click={() => navigationHistory.redo()}
         >
             <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
             <ToolTip content={LOCALIZATION_EN.FORWARD_DIR}/>
         </button>
-        <button
-                data-view-header-button="-"
+        <button data-sveltebuttondefault="-"
+                data-svelteview-header-button="-"
                 on:click={() => {
                     if(currentDirectory.id === FS.sep)
                         return
@@ -62,8 +62,8 @@
             <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
             <ToolTip content={LOCALIZATION_EN.PARENT_DIR}/>
         </button>
-        <button
-                data-view-header-button="-"
+        <button data-sveltebuttondefault="-"
+                data-svelteview-header-button="-"
                 on:click={() => {
                     AlertController.warn(LOCALIZATION_EN.REFRESHING)
                     FilesStore.refreshFiles().catch()
@@ -72,14 +72,14 @@
             <Icon styles="font-size: .9rem">sync</Icon>
             <ToolTip content={LOCALIZATION_EN.REFRESH}/>
         </button>
-        <button
-                data-view-header-button="-"
+        <button data-sveltebuttondefault="-"
+                data-svelteview-header-button="-"
                 on:click={() => FilesStore.createFolder(currentDirectory).catch()}
         >
             <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
             <ToolTip content={LOCALIZATION_EN.CREATE_FOLDER}/>
         </button>
-        <div data-vertdivider="-"></div>
+        <div data-sveltevertdivider="-"></div>
 
         <Input
                 width="50%"
@@ -90,12 +90,12 @@
                 onChange={onChange}
         />
         <Dropdown buttonStyles={getDropdownHeaderStyles(fileType != null)}>
-            <button slot="button" data-view-header-dropdown="-">
+            <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
                 <ToolTip content={LOCALIZATION_EN.FILTER_TYPE}/>
                 <Icon styles="font-size: .9rem">filter_alt</Icon>
             </button>
             {#each fileTypes as k, i}
-                <button
+                <button data-sveltebuttondefault="-"
                         on:click={() => setFileType(fileType === FILE_TYPES[k[0]] ? undefined : FILE_TYPES[k[0]])}
                         style="text-transform: capitalize"
                 >
@@ -109,27 +109,27 @@
             {/each}
         </Dropdown>
     </div>
-    <div data-inline="-" style="width: 100%; justify-content: flex-end">
-        <button
-                data-highlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
+    <div data-svelteinline="-" style="width: 100%; justify-content: flex-end">
+        <button data-sveltebuttondefault="-"
+                data-sveltehighlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
                 on:click={() => setViewType(ITEM_TYPES.ROW)}
-                data-view-header-button="-"
+                data-svelteview-header-button="-"
         >
             <Icon styles="font-size: .9rem">view_stream</Icon>
             <ToolTip content={LOCALIZATION_EN.ROW_VIEW}/>
         </button>
-        <button
-                data-highlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
+        <button data-sveltebuttondefault="-"
+                data-sveltehighlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
                 on:click={() => setViewType(ITEM_TYPES.CARD)}
-                data-view-header-button="-"
+                data-svelteview-header-button="-"
         >
             <Icon styles="transform: rotate(180deg)">grid_view</Icon>
             <ToolTip content={LOCALIZATION_EN.CARD_VIEW}/>
         </button>
-        <div data-vertdivider="-"></div>
-        <button
+        <div data-sveltevertdivider="-"></div>
+        <button data-sveltebuttondefault="-"
                 on:click={() => importFile(currentDirectory)}
-                data-focusbutton="-"
+                data-sveltefocusbutton="-"
                 style="max-height: 22px"
         >
             {LOCALIZATION_EN.IMPORT}

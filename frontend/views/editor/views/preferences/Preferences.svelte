@@ -30,8 +30,8 @@
 <div class="wrapper">
     <div class="tabs shared">
         {#each TABS as button, index}
-            <button
-                    data-highlight={tab === index ? "-" : undefined}
+            <button data-sveltebuttondefault="-"
+                    data-sveltehighlight={tab === index ? "-" : undefined}
                     class="tab-button shared"
                     on:click={_ => tab = index}
             >
@@ -55,7 +55,6 @@
             <Shortcuts settings={settings}/>
 
         {:else if tab === 3}
-
             <strong>{LOCALIZATION_EN.CAMERA}</strong>
             <CameraSettings settings={settings}/>
         {/if}

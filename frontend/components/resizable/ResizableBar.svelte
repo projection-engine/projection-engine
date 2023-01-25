@@ -136,7 +136,7 @@
             max-width: ${type === "width" ? "2px" : "100%"};
             cursor: ${type === "width" ? "ew-resize" : "ns-resize"};
         `}
-        data-disabled={`${disabled}`}
+        data-sveltedisabled={`${disabled}`}
         class="wrapper"
         bind:this={ref}
 ></div>
@@ -156,7 +156,7 @@
         background: var(--pj-border-secondary) !important;
     }
 
-    .wrapper[data-disabled="true"] {
+    .wrapper[data-sveltedisabled="true"] {
         background: inherit !important;
         cursor: default !important;
     }

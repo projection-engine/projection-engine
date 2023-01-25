@@ -26,10 +26,10 @@
 </script>
 
 <ViewHeader>
-    <div data-inline="-" style=" width: 100%">
-        <button
+    <div data-svelteinline="-" style=" width: 100%">
+        <button data-sveltebuttondefault="-"
                 on:click={toggle}
-                data-view-header-button="-"
+                data-svelteview-header-button="-"
         >
             {#if isRecording}
                 <Icon styles="color: #ff5555">pause</Icon>
@@ -51,7 +51,7 @@
         {#each toShow as sample}
             <div class="sample-wrapper">
                 <div style={"width: " + (sample.percentage) + "%"} class="bar"></div>
-                <div data-inline="-" class="sample">
+                <div data-svelteinline="-" class="sample">
                     <strong>{sample.flag}</strong>
                     <small>{sample.percentage.toFixed(2)}% ({sample.elapsed + "ms"})</small>
                 </div>
@@ -60,7 +60,7 @@
         {/each}
     {:else}
         <div class="loading-wrapper">
-            <div data-inline="-">
+            <div data-svelteinline="-">
                 <small>{LOCALIZATION_EN.CLICK_THE_RECORD_BUTTON_TO_RECORD}</small>
                 <Icon styles={"color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
             </div>

@@ -45,7 +45,7 @@
         draggable.onMount({
             targetElement: ref,
             onDrop: (entityDragged, event) => {
-                const node = event.composedPath().find(n => n?.getAttribute?.("data-node") != null)?.getAttribute?.("data-node")
+                const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
                 handleDrop(event, entityDragged, node ? Engine.entities.map.get(node) : undefined)
             },
             onDragOver: () => `CTRL to parent | SHIFT to clone`
@@ -62,16 +62,16 @@
 
 
 <ViewHeader>
-    <button
-            on:click={HierarchyController.openTree}
-            data-view-header-button="-"
+    <button data-sveltebuttondefault="-"
+            on:click={() => HierarchyController.openTree()}
+            data-svelteview-header-button="-"
     >
         <ToolTip content={LOCALIZATION_EN.SHOW_SELECTED}/>
         <Icon styles="font-size: .9rem">center_focus_strong</Icon>
     </button>
-    <button
+    <button data-sveltebuttondefault="-"
             on:click={() => EntityConstructor.createEmpty()}
-            data-view-header-button="-"
+            data-svelteview-header-button="-"
     >
         <ToolTip content={LOCALIZATION_EN.CREATE_ENTITY}/>
         <Icon styles="font-size: .9rem">add</Icon>
@@ -86,12 +86,12 @@
     />
 
     <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined) + "margin-left: auto"}>
-        <button slot="button" data-view-header-dropdown="-">
+        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
             <Icon styles="font-size: .9rem">filter_alt</Icon>
             <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
         </button>
         {#each NATIVE_COMPONENTS as component}
-            <button
+            <button data-sveltebuttondefault="-"
                     on:click={e => {
                         if(filteredComponent=== component[0] )
                             filteredComponent = undefined
@@ -112,7 +112,7 @@
 </ViewHeader>
 
 <div
-        data-self={"-"}
+        data-svelteself={"-"}
         class="wrapper"
         style={isEmpty ? "background: transparent" : undefined}
         id={ID}

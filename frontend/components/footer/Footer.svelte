@@ -37,7 +37,7 @@
 <div class="wrapper" style={settings.hideFooter ? "display: none" : undefined}>
     <FrameMetadata settings={settings}/>
     <div class="meta-data">
-        <button
+        <button data-sveltebuttondefault="-"
                 class="button frame"
                 style="max-width: unset; font-size: .7rem; padding: 0 4px; max-height: 25px; min-height: unset"
                 on:click={updateStructure}
@@ -47,29 +47,29 @@
             {LOCALIZATION_EN.REFRESH_STRUCTURE}
             <ToolTip content={LOCALIZATION_EN.REFRESH_SCRIPTS_AND_PROBES}/>
         </button>
-        <div data-vertdivider="-"></div>
+        <div data-sveltevertdivider="-"></div>
         <SceneStats/>
-        <div data-vertdivider="-"></div>
+        <div data-sveltevertdivider="-"></div>
         <Dropdown hideArrow={true}>
-            <button slot="button" class="error-logging">
+            <button data-sveltebuttondefault="-"  slot="button" class="error-logging">
                 <Icon>bug_report</Icon>
             </button>
-            <button on:click={() => settings.loggingEnabled = !settings.loggingEnabled}>
+            <button data-sveltebuttondefault="-"  on:click={() => settings.loggingEnabled = !settings.loggingEnabled}>
                 {#if settings.loggingEnabled}
                     <Icon>check</Icon>
                 {/if}
                 {LOCALIZATION_EN.LOGGING_ENABLED}
             </button>
-            <button on:click={openLogs}>
+            <button data-sveltebuttondefault="-"  on:click={openLogs}>
                 <Icon>open_in_new</Icon>
                 {LOCALIZATION_EN.SHOW_ERROR_LOGS}
             </button>
-            <button on:click={() => FilesAPI.deleteFile(ErrorLoggerAPI.path)}>
+            <button data-sveltebuttondefault="-"  on:click={() => FilesAPI.deleteFile(ErrorLoggerAPI.path)}>
                 <Icon>delete_forever</Icon>
                 {LOCALIZATION_EN.CLEAR_CACHE}
             </button>
         </Dropdown>
-        <div data-vertdivider="-"></div>
+        <div data-sveltevertdivider="-"></div>
         <div class="version" on:click={() => shell.openExternal("https://github.com/projection-engine")}>
             {LOCALIZATION_EN.VERSION}
         </div>

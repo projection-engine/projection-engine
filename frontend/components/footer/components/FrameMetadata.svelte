@@ -31,9 +31,9 @@
 
 <div class="section">
     <small bind:this={fr}></small>
-    <div data-vertdivider="-"></div>
+    <div data-sveltevertdivider="-"></div>
     <small bind:this={ft}></small>
-    <div data-vertdivider="-"></div>
+    <div data-sveltevertdivider="-"></div>
     <small bind:this={mem}></small>
 </div>
 

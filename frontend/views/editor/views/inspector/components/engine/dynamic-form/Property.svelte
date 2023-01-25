@@ -43,7 +43,7 @@
 </script>
 
 
-<div data-form="-">
+<div data-svelteform="-">
     {#if attribute.type === Component.propTypes.NUMBER}
         <Range
                 handleChange={v => {
@@ -93,7 +93,7 @@
             />
         {/each}
         {#if attribute.defaultValue}
-            <button
+            <button data-sveltebuttondefault="-"
                     class="reset-button"
                     on:click={() => {
                          for(let i =0; i < attribute.defaultValue.length; i++)
@@ -113,11 +113,11 @@
         />
     {:else if attribute.type === Component.propTypes.OPTIONS}
         <Dropdown disabled={isDisabled} width="100%" buttonStyles="border-radius: 3px; border: var(--pj-border-primary) 1px solid">
-            <button slot="button" disabled={isDisabled} class="dropdown">
+            <button data-sveltebuttondefault="-"  slot="button" disabled={isDisabled} class="dropdown">
                 {LOCALIZATION_EN[dropdownLabel?.label] || dropdownLabel?.label}
             </button>
             {#each attribute.options as option}
-                <button on:click={() =>  submit(attribute.key, option.value, true)}>
+                <button data-sveltebuttondefault="-"  on:click={() =>  submit(attribute.key, option.value, true)}>
                     {#if dropdownLabel?.value === option.value}
                         <Icon>check</Icon>
                     {:else}

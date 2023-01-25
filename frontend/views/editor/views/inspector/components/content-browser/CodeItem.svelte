@@ -6,5 +6,5 @@
 
 <fieldset>
     <legend>{LOCALIZATION_EN.CODE_PREVIEW}</legend>
-    <pre data-pre="-">{data}</pre>
+    <pre data-sveltepre="-">{data}</pre>
 </fieldset>

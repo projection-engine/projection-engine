@@ -34,7 +34,7 @@
             />
         {/if}
         {#if uniform.type === DATA_TYPES.VEC4 || uniform.type === DATA_TYPES.VEC3 || uniform.type === DATA_TYPES.VEC2}
-            <div data-inline="-">
+            <div data-svelteinline="-">
                 <Range
                         value={uniform.data[0]}
                         label={"X"}
