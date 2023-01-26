@@ -1,6 +1,6 @@
 import LOCALIZATION_EN from "./LOCALIZATION_EN";
 import SettingsStore from "../stores/SettingsStore";
-import VIEWS from "../../../components/view/static/VIEWS";
+import VIEWS from "../components/view/static/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
 
 export default {

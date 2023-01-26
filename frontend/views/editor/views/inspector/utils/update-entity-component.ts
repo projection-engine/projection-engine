@@ -3,7 +3,7 @@ import SelectionStore from "../../../stores/SelectionStore";
 import LightsAPI from "../../../../../../engine-core/lib/utils/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
 import CameraAPI from "../../../../../../engine-core/lib/utils/CameraAPI";
-import COMPONENTS from "../../../../../../engine-core/templates/COMPONENTS";
+import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
 import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS";
 import LightComponent from "../../../../../../engine-core/instances/components/LightComponent";
 

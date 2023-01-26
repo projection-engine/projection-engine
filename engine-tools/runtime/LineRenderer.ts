@@ -36,7 +36,7 @@ export default class LineRenderer {
             GPU.context.uniform1i(lineUniforms.atOrigin, atOrigin)
 
             GPU.context.activeTexture(GPU.context.TEXTURE0)
-            GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.visibilityDepthSampler)
+            GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.sceneDepth)
             GPU.context.uniform1i(lineUniforms.depthSampler, 0)
             GPU.context.uniform2fv(lineUniforms.bufferResolution, GPU.bufferResolution)
 

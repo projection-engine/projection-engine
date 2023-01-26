@@ -92,7 +92,7 @@
         />
     </VirtualList>
 {:else}
-    <div data-empty="-">
+    <div data-svelteempty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>
         {LOCALIZATION_EN.HIERARCHY}
     </div>

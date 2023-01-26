@@ -1,7 +1,7 @@
 import Entity from "../../engine-core/instances/Entity"
 import TransformationAPI from "../../engine-core/lib/math/TransformationAPI"
-import getPickerId from "../../engine-core/utils/get-picker-id";
 import {mat4, quat, vec3, vec4} from "gl-matrix";
+import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
 
 const toDeg = 57.29
 const cacheVec4 = vec4.create()
@@ -87,7 +87,7 @@ export default function mapGizmoMesh(axis: string, type: string): Entity {
     }
 
     TransformationAPI.quat.fromEuler(<quat>entity._rotationQuat, toDeg * r[0], toDeg * r[1], toDeg * r[2])
-    const pickID = getPickerId(index)
+    const pickID = PickingAPI.getPickerId(index)
     entity.pickID[0] = pickID[0]
     entity.pickID[1] = pickID[1]
     entity.pickID[2] = pickID[2]

@@ -1,5 +1,5 @@
 import Entity from "../../../../../engine-core/instances/Entity";
-import COMPONENTS from "../../../../../engine-core/templates/COMPONENTS";
+import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import {vec3, vec4} from "gl-matrix";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 
@@ -62,7 +62,12 @@ export default class EntityConstructor {
         EntityConstructor.translateEntity(entity)
         EntityManager.add(entity)
     }
-
+static createUI(){
+    const entity = new Entity(undefined, LOCALIZATION_EN.UI_RENDERER)
+    entity.addComponent(COMPONENTS.UI)
+    EntityConstructor.translateEntity(entity)
+    EntityManager.add(entity)
+}
     static createSprite() {
         const entity = new Entity(undefined, LOCALIZATION_EN.SPRITE_RENDERER)
         entity.addComponent(COMPONENTS.SPRITE)

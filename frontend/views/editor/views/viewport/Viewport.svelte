@@ -6,12 +6,12 @@
     import SettingsStore from "../../stores/SettingsStore";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import Tabs from "../../../../components/tabs/Tabs.svelte";
+    import Tabs from "../../components/tabs/Tabs.svelte";
     import removeTab from "./utils/remove-tab";
     import updateViewport from "./utils/update-viewport";
-    import VIEWS from "../../../../components/view/static/VIEWS";
-    import View from "../../../../components/view/components/View.svelte";
-    import getViewIcon from "../../../../components/view/utils/get-view-icon";
+    import VIEWS from "../../components/view/static/VIEWS";
+    import View from "../../components/view/components/View.svelte";
+    import getViewIcon from "../../components/view/utils/get-view-icon";
     import TabsStore from "../../stores/TabsStore";
     import GPU from "../../../../../engine-core/GPU";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
@@ -58,7 +58,8 @@
         v.icon = getViewIcon(v.type)
         return v
     })
-    $: viewTemplates = [...Object.values(VIEWS), VIEWPORT_TABS.EDITOR].map(value => ({
+
+    $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
         name: LOCALIZATION_EN[value],
         id: value
     }))
@@ -73,7 +74,10 @@
         }
 
     }
-
+    $: {
+        if (engine.executingAnimation && tabs[currentTab].type !== VIEWPORT_TABS.EDITOR)
+            setViewportTab(VIEWPORT_TABS.EDITOR)
+    }
     onMount(() => {
         const wrapperRef = ref.lastElementChild
         wrapperRef.insertBefore(document.getElementById(RENDER_TARGET), wrapperRef.firstElementChild);
@@ -84,6 +88,8 @@
         unsubscribeEngine()
         unsubscribeSettings()
     })
+
+    $: console.log(viewTemplates, tabs)
 </script>
 
 <div
@@ -121,14 +127,12 @@
                     id={"VIEWPORT"}
                     index={currentTab}
                     groupIndex={0}
-                    styles={
-                    !isCanvasHidden ?
-                    `
+                    styles={`
                         position: absolute;
                         top: 0;
                         display: flex;
                         align-items: center;
-                    ` : undefined}
+                    `}
                     switchView={setViewportTab}
             />
         {/if}

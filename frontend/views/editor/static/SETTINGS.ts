@@ -18,7 +18,7 @@ export default {
     outlineColor: [.5, .5, .5],
     hideFooter: false,
     projectCreationDate: (new Date()).toDateString(),
-    loggingEnabled: true,
+
     screenSpaceMovement: false,
     gridOpacity: 1,
     gridColor: .3,
@@ -150,7 +150,6 @@ export default {
         cameraRotation: [0, 0, 0, 1],
         movementSpeed: 1,
         smoothing: 1,
-        rotationSmoothing: 3,
         turnSpeed: .25,
     },
 

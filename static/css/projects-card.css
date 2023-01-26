@@ -52,7 +52,7 @@
     border: none !important;
 }
 
-.button.card-home:active, .button.card-home[data-highlight = "true"] {
+.button.card-home:active, .button.card-home[data-sveltehighlight = "true"] {
     color: white;
     background: var(--pj-accent-color);
 }

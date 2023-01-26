@@ -19,8 +19,8 @@
         styles="width: clamp(250px, 20vw, 500px); padding: 4px; display: flex; flex-direction: column;"
         buttonStyles={getDropdownHeaderStyles()}
 >
-    <button slot="button" data-view-header-dropdown="-">
-        <span style="--color-to-apply: white" data-shaded-material="-"></span>
+    <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
+        <span style="--color-to-apply: white" data-svelteshaded-material="-"></span>
         <span style="white-space: nowrap">{LOCALIZATION_EN[shading]}</span>
     </button>
     <Options settings={settings}/>

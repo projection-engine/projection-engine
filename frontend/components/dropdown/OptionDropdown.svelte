@@ -11,15 +11,16 @@
     export let cleanLayout: boolean
     export let tooltip: string
     export let noPadding: boolean
+    export let buttonStyles: string
 
     $: styles = cleanLayout ? undefined : getDropdownHeaderStyles()
 </script>
 
 <Dropdown buttonStyles={styles} hideArrow={cleanLayout}>
-    <button
+    <button data-sveltebuttondefault="-"
             slot="button"
-            data-view-header-dropdown={cleanLayout? "" : "-"}
-            style={cleanLayout ? "border: none; display: flex; align-items: center" : undefined}
+            data-svelteview-header-dropdown={cleanLayout? "" : "-"}
+            style={buttonStyles + (cleanLayout ? "border: none; display: flex; align-items: center" : undefined)}
     >
         {#if labelAsIcon}
             <Icon>{label}</Icon>
@@ -37,10 +38,10 @@
         {#if option.divider}
             <div class="group dropdown-list">
                 <strong style="white-space: nowrap; padding-left: 4px">{option.label}</strong>
-                <div data-divider="-"></div>
+                <div data-sveltedivider="-"></div>
             </div>
         {:else}
-            <button
+            <button data-sveltebuttondefault="-"
                     disabled={option.disabled}
                     on:click={e => {
                         option.onClick()

@@ -1,6 +1,6 @@
 <script>
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";
@@ -52,17 +52,17 @@
     onDestroy(() => unsubscribeSelection())
 </script>
 {#if entity == null}
-    <div data-empty="-">
+    <div data-svelteempty="-">
         <Icon styles="font-size: 75px">category</Icon>
         {LOCALIZATION_EN.INSPECTOR}
     </div>
 {:else}
     <ViewHeader>
         {#if entity instanceof Entity}
-            <small data-overflow="-" style="font-size: .7rem">{entity.name}</small>
+            <small data-svelteoverflow="-" style="font-size: .7rem">{entity.name}</small>
             <AddComponent entity={entity}/>
         {:else}
-            <small data-overflow="-" style="font-size: .7rem" id={entity.id+ "-inspector-label-" + internalID}>{entity.name}</small>
+            <small data-svelteoverflow="-" style="font-size: .7rem" id={entity.id+ "-inspector-label-" + internalID}>{entity.name}</small>
         {/if}
     </ViewHeader>
     <div class="content">

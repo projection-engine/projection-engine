@@ -31,7 +31,7 @@ export default class IconsSystem {
             if (
                 tracking === entity ||
                 entity.meshRef && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
-                doesntHaveIcon && entity.meshRef && entity.materialRef?.renderingMode!== MATERIAL_RENDERING_TYPES.SKY
+                doesntHaveIcon && entity.meshRef && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY
             )
                 continue
             cb(
@@ -142,8 +142,12 @@ export default class IconsSystem {
             }
 
         LineRenderer.setState(!entity.__isSelected, true, lineSize)
-        if (hasLight)
-            LineRenderer.drawY(entity.__cacheIconMatrix)
+        if (hasLight) {
+            if (component.type === LIGHT_TYPES.SPOT)
+                LineRenderer.drawZ(entity.__cacheIconMatrix)
+            else
+                LineRenderer.drawY(entity.__cacheIconMatrix)
+        }
         if (hasCamera)
             LineRenderer.drawZ(entity.__cacheIconMatrix)
     }

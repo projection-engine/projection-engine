@@ -12,7 +12,7 @@ import ScriptsAPI from "../../../../../engine-core/lib/utils/ScriptsAPI";
 import AlertController from "../../../../components/alert/AlertController";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import EntityManager from "../EntityManager";
-import ResourceEntityMapper from "../../../../../engine-core/lib/ResourceEntityMapper";
+import ResourceEntityMapper from "../../../../../engine-core/resource-libs/ResourceEntityMapper";
 
 export default class EntityStateController {
     static #state = []
@@ -45,10 +45,6 @@ export default class EntityStateController {
         const entities = Engine.entities.array
         try {
             UIAPI.destroyUI()
-            if (UIAPI.uiMountingPoint?.parentNode) {
-                UIAPI.uiMountingPoint.parentNode.removeChild(UIAPI.uiMountingPoint)
-                UIAPI.uiMountingPoint = undefined
-            }
             for (let i = 0; i < entities.length; i++) {
                 const current = entities[i]
                 PhysicsAPI.removeRigidBody(current)

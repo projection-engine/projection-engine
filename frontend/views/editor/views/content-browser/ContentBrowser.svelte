@@ -7,7 +7,7 @@
     import Header from "./components/Header.svelte";
 
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
-    import ViewStateController from "../../../../components/view/libs/ViewStateController";
+    import ViewStateController from "../../components/view/libs/ViewStateController";
     import ITEM_TYPES from "./templates/ITEM_TYPES";
     import SettingsStore from "../../stores/SettingsStore";
     import ResizableBar from "../../../../components/resizable/ResizableBar.svelte";

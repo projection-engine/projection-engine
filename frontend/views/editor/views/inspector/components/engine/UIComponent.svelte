@@ -1,8 +1,8 @@
 <script>
     import StyleField from "./UIStyles.svelte";
-    import COMPONENTS from "../../../../../../../engine-core/templates/COMPONENTS.ts"
+    import COMPONENTS from "../../../../../../../engine-core/static/COMPONENTS.ts"
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
-    import Selector from "../../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../../components/selector/Selector.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
@@ -41,7 +41,7 @@
 <fieldset>
     <legend class="legend">
         {LOCALIZATION_EN.UI_COMPONENT}
-        <button class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
+        <button data-sveltebuttondefault="-"  class="button" on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
             <Icon>delete_forever</Icon>
         </button>
     </legend>
@@ -76,7 +76,7 @@
                 }}
         />
         {#if hasStyles}
-            <div data-divider="-"></div>
+            <div data-sveltedivider="-"></div>
         {/if}
         {#each styles as style, i}
             <StyleField

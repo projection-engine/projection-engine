@@ -10,6 +10,8 @@
     import Engine from "../../../../../engine-core/Engine";
     import EngineTools from "../../../../../engine-tools/EngineTools";
     import LevelController from "../../lib/utils/LevelController";
+    import UIAPI from "../../../../../engine-core/lib/rendering/UIAPI";
+    import GPU from "../../../../../engine-core/GPU";
 
     export let initializeEditor
 
@@ -25,6 +27,7 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
+
         Engine.initializeContext(
             canvasRef,
             {w: visuals.resolution[0], h: visuals.resolution[1]},
@@ -35,7 +38,11 @@
             await EngineTools.initialize().catch()
             await LevelController.loadLevel().catch()
             initializeEditor()
+            UIAPI.buildUI(GPU.canvas.parentElement)
+            UIAPI.hideUI()
+
             done = true
+
         })
     })
 
@@ -46,16 +53,31 @@
         unsubscribeEngine()
         unsubscribeSettings()
     })
-
+    $: {
+        if(engine.executingAnimation)
+            UIAPI.showUI()
+    }
     $: if (done) updateRenderer(selected, engine, {...settings, ...visuals})
 </script>
 
 
-<canvas
-        data-viewport="-"
-        bind:this={canvasRef}
-        width={settings.resolution[0]}
-        height={settings.resolution[1]}
-        id={RENDER_TARGET}
-        style={`width: 100%; height: 100%; background: transparent`}
-></canvas>
+<div id={RENDER_TARGET} class="stretch">
+    <canvas
+            class="stretch"
+            data-svelteviewport="-"
+            bind:this={canvasRef}
+            width={settings.resolution[0]}
+            height={settings.resolution[1]}
+    ></canvas>
+</div>
+
+<style>
+
+    .stretch {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+    }
+</style>

@@ -52,9 +52,9 @@
 <div class="wrapper">
     <div class="left-content">
         <div class="header">{LOCALIZATION_EN.PROJECTS}</div>
-        <div data-vertdivider="-"></div>
+        <div data-sveltevertdivider="-"></div>
         <small style="font-size: .7rem">{basePath}</small>
-        <button
+        <button data-sveltebuttondefault="-"
                 class="settings-button"
                 on:click={() => ipcRenderer.send(ROUTES.OPEN_SELECTION)}
         >
@@ -64,10 +64,10 @@
 
     </div>
 
-    <button
+    <button data-sveltebuttondefault="-"
             on:click={() => openInput = true}
-            data-overflow="-"
-            data-focusbutton="-"
+            data-svelteoverflow="-"
+            data-sveltefocusbutton="-"
             style="height: 25px"
     >
         <Icon>add</Icon>

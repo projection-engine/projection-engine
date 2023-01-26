@@ -74,14 +74,14 @@
 
 
 <div class="header">
-    <button
+    <button data-sveltebuttondefault="-"
             on:click={() => favoriteFilter = !favoriteFilter}
-            data-highlight={favoriteFilter ? "-" : undefined}
+            data-sveltehighlight={favoriteFilter ? "-" : undefined}
     >
         <Icon>star</Icon>
     </button>
-    <div data-vertdivider="-"></div>
-    <button on:click={switchSorts}>
+    <div data-sveltevertdivider="-"></div>
+    <button data-sveltebuttondefault="-"  on:click={switchSorts}>
         {#if sort === SORTS.ASC}
             <Icon>arrow_downward</Icon>
         {:else}
@@ -109,8 +109,8 @@
     {#if itemsToRender.length > 0}
         {#each itemsToRender as item}
             <div class="item">
-                <button
-                        data-highlight={favorites[getID(item)] ? "-" : undefined}
+                <button data-sveltebuttondefault="-"
+                        data-sveltehighlight={favorites[getID(item)] ? "-" : undefined}
                         class="favorite-button"
                         on:click={() => {
                     const ID = getID(item)
@@ -130,7 +130,7 @@
         {/each}
     {:else}
 
-        <div data-empty="-">
+        <div data-svelteempty="-">
             <Icon styles="font-size: 100px; color: #999;">folder</Icon>
             {LOCALIZATION_EN.EMPTY}
         </div>

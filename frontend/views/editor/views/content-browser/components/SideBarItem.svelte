@@ -31,14 +31,14 @@
 
 
 <div
-        data-selected={isCurrentDir ? "-" : undefined}
+        data-svelteselected={isCurrentDir ? "-" : undefined}
         bind:this={ref}
         class="wrapper hierarchy-branch"
         style={`padding-left: ${depth * 18}px;`}
 >
     {#if childQuantity > 0}
-        <button
-                data-open={isOpen ? "-" : ""}
+        <button data-sveltebuttondefault="-"
+                data-svelteopen={isOpen ? "-" : ""}
                 class="button-small hierarchy-branch"
                 on:click={triggerOpen}
         >
@@ -47,7 +47,7 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <button
+    <button data-sveltebuttondefault="-"
             bind:this={ref}
             class="folder"
             on:click={() => setCurrentDirectory({id})}

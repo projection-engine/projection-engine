@@ -9,7 +9,7 @@
 
 
 <input
-        data-overflow="-"
+        data-svelteoverflow="-"
         disabled={!isOnRename}
         on:blur={ev => {
             submitRename(ev.currentTarget.value)
@@ -32,13 +32,13 @@ text-align: center;
         font-size: .7rem;
         color: var(--pj-color-primary);
         border: var(--pj-border-primary) 1px solid;
-        backdrop-filter: brightness(50%);
+        background: rgba(0,0,0,.5);
         height: 23px;
     }
 
     input:disabled {
         border: none;
-        backdrop-filter: none;
+        background: none;
         color: var(--pj-color-quaternary);
     }
 </style>

@@ -1,5 +1,5 @@
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
-import getPickerId from "../../engine-core/utils/get-picker-id";
+
 import DualAxisGizmo from "../lib/transformation/DualAxisGizmo";
 import GizmoSystem from "../runtime/GizmoSystem";
 import VisibilityRenderer from "../../engine-core/runtime/VisibilityRenderer";
@@ -7,6 +7,7 @@ import GPU from "../../engine-core/GPU";
 import StaticFBO from "../../engine-core/lib/StaticFBO";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import StaticMeshes from "../../engine-core/lib/StaticMeshes";
+import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
 
 export default function drawGizmoToDepth(mesh, transforms){
     const data = {
@@ -20,7 +21,7 @@ export default function drawGizmoToDepth(mesh, transforms){
         StaticEditorShaders.toDepthBuffer.bindForUse({
             ...data,
             transformMatrix: transforms[i],
-            uID: getPickerId(i + 2),
+            uID: PickingAPI.getPickerId(i + 2),
         })
         mesh.draw()
     }
@@ -28,7 +29,7 @@ export default function drawGizmoToDepth(mesh, transforms){
         StaticEditorShaders.toDepthBuffer.bindForUse({
             ...data,
             transformMatrix: GizmoSystem.mainEntity.__cacheCenterMatrix,
-            uID: getPickerId(1)
+            uID: PickingAPI.getPickerId(1)
         })
         StaticMeshes.sphere.draw()
     }

@@ -16,12 +16,12 @@
 
 
 
-.wrapper.hierarchy-branch[data-selected="-"] {
+.wrapper.hierarchy-branch[data-svelteselected="-"] {
     background: var(--pj-accent-color-light);
     color: white;
 }
 
-.wrapper.hierarchy-branch[data-selected="-"]:hover{
+.wrapper.hierarchy-branch[data-svelteselected="-"]:hover{
     background: var(--pj-accent-color-light);
     color: white;
 }
@@ -59,11 +59,11 @@
     color: var(--pj-color-primary);
 }
 
-.button-small.hierarchy-branch[data-open=""] {
+.button-small.hierarchy-branch[data-svelteopen=""] {
     transform: rotate(-90deg);
 }
 
-.button-small.hierarchy-branch[data-open="-"] {
+.button-small.hierarchy-branch[data-svelteopen="-"] {
     transform: none;
 }
 
@@ -88,7 +88,7 @@
     cursor: pointer;
 }
 
-.buttonIcon.hierarchy-branch[data-locked="-"] {
+.buttonIcon.hierarchy-branch[data-sveltelocked="-"] {
     color:   orangered;
 }
 
@@ -96,7 +96,7 @@
     color: rgb(203 110 53);
 }
 .buttonIcon.hierarchy-branch:hover {
-    backdrop-filter: brightness(150%);
+    color: rgb(243, 99, 13);
 }
 
 .label.hierarchy-branch {

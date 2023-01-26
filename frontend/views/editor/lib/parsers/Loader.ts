@@ -4,7 +4,7 @@ import RegistryAPI from "../fs/RegistryAPI";
 
 import EngineStore from "../../stores/EngineStore";
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-import COMPONENTS from "../../../../../engine-core/templates/COMPONENTS";
+import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 import UndoRedoAPI from "../utils/UndoRedoAPI";

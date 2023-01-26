@@ -28,8 +28,6 @@ export default function updateRenderer(selected, engine, settings) {
             CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
             if (settings.camera.smoothing != null)
                 CameraAPI.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
-            if (settings.camera.rotationSmoothing != null)
-                CameraAPI.rotationSmoothing = settings.camera.rotationSmoothing * .001
             CameraAPI.updateViewTarget(settings.camera)
         }
     }

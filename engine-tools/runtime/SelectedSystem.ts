@@ -60,7 +60,7 @@ export default class SelectedSystem {
         context.uniform1f(outlineShaderUniforms.outlineWidth, settings.outlineWidth)
         if (settings.showOutline) {
             context.activeTexture(context.TEXTURE0)
-            context.bindTexture(context.TEXTURE_2D, StaticFBO.visibilityEntitySampler)
+            context.bindTexture(context.TEXTURE_2D, StaticFBO.entityIDSampler)
             context.uniform1i(outlineShaderUniforms.silhouette, 0)
 
             context.uniform1i(outlineShaderUniforms.isOutline, 1)

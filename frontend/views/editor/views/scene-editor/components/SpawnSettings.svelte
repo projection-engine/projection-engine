@@ -11,7 +11,7 @@
 </script>
 
 <Dropdown styles="width: 250px; max-height: 40vh; overflow-y: auto"  buttonStyles={getDropdownHeaderStyles()}>
-    <button slot="button" data-view-header-dropdown="-">
+    <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
         {LOCALIZATION_EN.SPAWNING}
     </button>
     <div class="group">
@@ -21,7 +21,7 @@
                 value={settings.spawnDistanceFromCamera}
                 onFinish={v => SettingsStore.updateStore({...settings, spawnDistanceFromCamera: v})}
         />
-        <div data-divider="-"></div>
+        <div data-sveltedivider="-"></div>
         <Checkbox
                 label={LOCALIZATION_EN.SPAWN_ON_ORIGIN}
                 checked={settings.spawnOnOrigin}

@@ -1,5 +1,5 @@
 import getComponentIcon from "../utils/get-component-icon";
-import COMPONENTS from "../../../../../../engine-core/templates/COMPONENTS";
+import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
 import getComponentLabel from "../utils/get-component-label";
 
 

@@ -5,6 +5,7 @@
     export let title
     export let background
     export let startOpen
+    export let styles
 
     let open = startOpen === true
 </script>
@@ -12,7 +13,7 @@
 
 <div class="accordion" class:closed={!open} style={background ? `background: ${background};` : undefined}>
     <div class="summary">
-        <button class="dropdown-button" on:click={() => open = !open}>
+        <button data-sveltebuttondefault="-"  class="dropdown-button" on:click={() => open = !open}>
             <Icon styles={`transform: ${open ? "none" : "rotate(-90deg)"}; font-size: 1rem`}>
                 expand_more
             </Icon>
@@ -21,15 +22,15 @@
             {title}
             <ToolTip content={title}/>
         {:else}
-            <div data-overflow="-" class="summary-wrapper">
+            <div data-svelteoverflow="-" class="summary-wrapper">
                 <slot name="header"/>
             </div>
         {/if}
     </div>
     {#if open}
-    <div class="content" >
-        <slot/>
-    </div>
+        <div class="content" style={styles}>
+            <slot/>
+        </div>
     {/if}
 </div>
 

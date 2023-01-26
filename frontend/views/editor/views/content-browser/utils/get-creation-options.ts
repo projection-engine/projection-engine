@@ -3,7 +3,6 @@ import resolveFileName from "../../../utils/resolve-file-name";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import COMPONENT_TEMPLATE from "../../../../../../engine-core/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../../../../engine-core/static/templates/UI_TEMPLATE";
-import TERRAIN_TEMPLATE from "../../../../../../engine-core/static/templates/TERRAIN_TEMPLATE";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
 import FS from "../../../../../lib/FS/FS";
@@ -48,14 +47,8 @@ export default function getCreationOptions(currentDirectory) {
         },
         {
             label: LOCALIZATION_EN.UI_LAYOUT,
-
             onClick: async () => createFile(LOCALIZATION_EN.UI_LAYOUT, FILE_TYPES.UI_LAYOUT, UI_TEMPLATE)
         },
-        {divider: true},
 
-        {
-            label: LOCALIZATION_EN.TERRAIN,
-            onClick: async () => createFile(LOCALIZATION_EN.TERRAIN, FILE_TYPES.TERRAIN, TERRAIN_TEMPLATE)
-        },
     ]
 }

@@ -44,12 +44,12 @@ export default function pushAlert(message, type) {
                 <div class="alertContainer alert-modal" style="--background: ${variant.color}">
                     <div class="content alert-modal">
                         <div class="icon alert-modal">
-                            <span data-icon="-">${variant.icon}</span>
+                            <span data-svelteicon="-">${variant.icon}</span>
                         </div>
                         ${message}
                     </div>
-                    <button class="button alert-modal" data-action="-">
-                        <span data-icon="-" style="height: 1.1rem; font-size: 1.1rem">close</span>
+                    <button class="button alert-modal" data-svelteaction="-">
+                        <span data-svelteicon="-" style="height: 1.1rem; font-size: 1.1rem">close</span>
                     </button>
                 </div>
             `

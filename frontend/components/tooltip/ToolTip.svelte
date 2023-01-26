@@ -25,7 +25,7 @@
     function close() {
         document.removeEventListener("mousemove", handleMouseMove)
         open = false
-        ToolTipController.element.classList.remove("tooltip-animation")
+        ToolTipController.element.setAttribute("data-sveltetooltipanimation", "")
     }
 
     const hover = (event) => {
@@ -35,7 +35,7 @@
         bBox = ToolTipController.element.getBoundingClientRect()
         bodyBBox = document.body.getBoundingClientRect()
 
-        ToolTipController.element.classList.add("tooltip-animation")
+        ToolTipController.element.setAttribute("data-sveltetooltipanimation", "-")
         ToolTipController.element.style.left = (event.clientX + 10) + "px"
         ToolTipController.element.style.top = (event.clientY + 10) + "px"
         document.addEventListener("mousemove", handleMouseMove)

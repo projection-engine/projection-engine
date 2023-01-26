@@ -1,6 +1,4 @@
-// THANKS https://stackoverflow.com/questions/53897949/opengl-object-outline
-
-precision mediump float;
+precision lowp float;
 uniform sampler2D silhouette;
 
 uniform bool isOutline;
@@ -18,11 +16,11 @@ void main()
         size = 2./bufferSize;
     else
         size = outlineWidth/bufferSize;
-    vec3 center = texture(silhouette, texCoords).rgb;
-    vec3 left = texture(silhouette, texCoords + vec2(-1., 0.) * size).rgb;
-    vec3 right = texture(silhouette, texCoords + vec2(1., 0.) * size).rgb;
-    vec3 top = texture(silhouette, texCoords + vec2(0., -1.) * size).rgb;
-    vec3 bottom = texture(silhouette, texCoords + vec2(0., 1.) * size).rgb;
+   float center = length(texture(silhouette, texCoords).rg);
+   float left = length(texture(silhouette, texCoords + vec2(-1., 0.) * size).rg);
+   float right = length(texture(silhouette, texCoords + vec2(1., 0.) * size).rg);
+   float top = length(texture(silhouette, texCoords + vec2(0., -1.) * size).rg);
+   float bottom = length(texture(silhouette, texCoords + vec2(0., 1.) * size).rg);
     if(left != center || right != center || top != center || bottom != center ){
         if(!isOutline)
             fragColor = vec4(1., .35, 0., 1.);

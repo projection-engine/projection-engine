@@ -7,8 +7,8 @@
     export let disabled
 </script>
 
-<div class="wrapper" data-disabled={disabled ? `-` : undefined}>
-    <button
+<div class="wrapper" data-sveltedisabled={disabled ? `-` : undefined}>
+    <button data-sveltebuttondefault="-"
             class="container"
             disabled={disabled}
             style={`

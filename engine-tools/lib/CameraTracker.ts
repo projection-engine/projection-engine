@@ -1,5 +1,5 @@
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
-import {quat, vec3, vec4} from "gl-matrix";
+import {quat, vec4} from "gl-matrix";
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS";
 import GPU from "../../engine-core/GPU";
 
@@ -9,17 +9,40 @@ const toDeg = 180 / Math.PI, halfPI = Math.PI / 2
 const MOUSE_RIGHT = 2, MOUSE_LEFT = 0
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 const toApplyTranslation = vec4.create()
+const cacheRotation = quat.create()
 const cachePitch = quat.create()
 const cacheYaw = quat.create()
 
 export default class CameraTracker {
     static #isTracking = false
-    static xRotation = 0
-    static yRotation = 0
+    static #hasInitializedEvents = false
+    static #xRotation = 0
+    static #yRotation = 0
+
+    static set xRotation(data: number) {
+        if (isNaN(data))
+            return
+        CameraTracker.#xRotation = data
+    }
+
+    static set yRotation(data: number) {
+        if (isNaN(data))
+            return
+        CameraTracker.#yRotation = data
+    }
+
+    static get xRotation() {
+        return CameraTracker.#xRotation
+    }
+
+    static get yRotation() {
+        return CameraTracker.#yRotation
+    }
+
     static screenSpaceMovementSpeed = 1
     static movementSpeed = 0.1
     static turnSpeed = .1
-    static gizmoReference
+    static gizmoReference:HTMLElement
     static screenSpaceMovement = false
     static rotationChanged = false
     static forceUpdate = false
@@ -47,6 +70,7 @@ export default class CameraTracker {
     static updateFrame() {
         if (CameraAPI.didChange && CameraTracker.gizmoReference)
             CameraTracker.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${CameraAPI.staticViewMatrix})`
+
         const map = CameraTracker.#keysOnHold
         let changed = CameraTracker.forceUpdate
 
@@ -76,12 +100,13 @@ export default class CameraTracker {
         }
 
         if (CameraTracker.rotationChanged) {
+            CameraTracker.rotationChanged = false
+
             const pitch = quat.fromEuler(cachePitch, CameraTracker.yRotation * toDeg, 0, 0)
             const yaw = quat.fromEuler(cacheYaw, 0, CameraTracker.xRotation * toDeg, 0)
-            const RBuffer = <quat>CameraAPI.rotationBuffer
-            quat.copy(RBuffer, pitch)
-            CameraTracker.rotationChanged = false
-            quat.multiply(RBuffer, yaw, RBuffer)
+            quat.copy(cacheRotation, pitch)
+            quat.multiply(cacheRotation, yaw, cacheRotation)
+            CameraAPI.updateRotation(cacheRotation)
             changed = true
         }
 
@@ -92,7 +117,8 @@ export default class CameraTracker {
     static #transform() {
         CameraTracker.forceUpdate = false
         vec4.transformQuat(toApplyTranslation, toApplyTranslation, CameraAPI.rotationBuffer)
-        vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, <vec3>toApplyTranslation)
+
+        CameraAPI.addTranslation(toApplyTranslation)
         CameraAPI.updateView()
     }
 
@@ -107,20 +133,24 @@ export default class CameraTracker {
 
 
     static #handleInput(event) {
+        if (!CameraTracker.#isTracking)
+            return;
+
         const keys = CameraTracker.movementKeys
         const map = CameraTracker.#keysOnHold
         try {
             switch (event.type) {
                 case "mousemove": {
+                    if (!document.pointerLockElement)
+                        GPU.canvas.requestPointerLock()
                     if (CameraTracker.screenSpaceMovement) {
-                        toApplyTranslation[0] = -event.movementX * CameraTracker.screenSpaceMovementSpeed/2
-                        toApplyTranslation[1] = event.movementY * CameraTracker.screenSpaceMovementSpeed/2
+                        toApplyTranslation[0] = -event.movementX * CameraTracker.screenSpaceMovementSpeed / 2
+                        toApplyTranslation[1] = event.movementY * CameraTracker.screenSpaceMovementSpeed / 2
                         toApplyTranslation[2] = 0
                         toApplyTranslation[3] = 1
                         CameraTracker.forceUpdate = true
                     } else {
-                        if (!document.pointerLockElement)
-                            GPU.canvas.requestPointerLock()
+
                         if (map.mouseLeft && map.mouseRight || event.ctrlKey) {
                             const multiplier = CameraTracker.#keysOnHold.fasterJonny ? 10 * CameraTracker.movementSpeed : CameraTracker.movementSpeed
                             toApplyTranslation[0] = -event.movementX * multiplier
@@ -244,26 +274,19 @@ export default class CameraTracker {
         if (CameraTracker.#isTracking)
             return
         CameraTracker.#isTracking = true
-        document.addEventListener("pointerlockchange", CameraTracker.#handleInput)
-        document.addEventListener("keydown", CameraTracker.#handleInput)
-        document.addEventListener("keyup", CameraTracker.#handleInput)
-        document.addEventListener("mouseup", CameraTracker.#handleInput)
-        GPU.canvas.addEventListener("mousedown", CameraTracker.#handleInput)
-        GPU.canvas.addEventListener("wheel", CameraTracker.#handleInput)
-
+        if (!CameraTracker.#hasInitializedEvents) {
+            document.addEventListener("pointerlockchange", CameraTracker.#handleInput)
+            document.addEventListener("keydown", CameraTracker.#handleInput)
+            document.addEventListener("keyup", CameraTracker.#handleInput)
+            document.addEventListener("mouseup", CameraTracker.#handleInput)
+            GPU.canvas.addEventListener("mousedown", CameraTracker.#handleInput)
+            GPU.canvas.addEventListener("wheel", CameraTracker.#handleInput)
+            CameraTracker.#hasInitializedEvents = true
+        }
     }
 
     static stopTracking() {
-        if (!CameraTracker.#isTracking)
-            return
         CameraTracker.#isTracking = false
-        document.removeEventListener("pointerlockchange", CameraTracker.#handleInput)
-        document.removeEventListener("keydown", CameraTracker.#handleInput)
-        document.removeEventListener("keyup", CameraTracker.#handleInput)
-        document.removeEventListener("mouseup", CameraTracker.#handleInput)
-        document.removeEventListener("mousemove", CameraTracker.#handleInput)
-        GPU.canvas.removeEventListener("mousedown", CameraTracker.#handleInput)
-        GPU.canvas.removeEventListener("wheel", CameraTracker.#handleInput)
     }
 
 

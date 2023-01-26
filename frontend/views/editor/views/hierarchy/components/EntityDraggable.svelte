@@ -37,7 +37,7 @@
             targetElement: ref,
             onDragStart: () => getDragTarget(),
             onDrop: (entityDragged, event) => handleDrop(event, entityDragged, node),
-            dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-icon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : node.name}</div>`,
+            dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-svelteicon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : node.name}</div>`,
             onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
     })
@@ -50,9 +50,9 @@
     $: nodeColor = lockedEntity === node.id ? undefined : node._hierarchyColor ? `color: rgb(${node._hierarchyColor})` : "color: var(--folder-color)";
 </script>
 
-<div class="info hierarchy-branch" data-node={node.id}>
-    <button
-            data-locked={lockedEntity === node.id ? "-" : ""}
+<div class="info hierarchy-branch" data-sveltenode={node.id}>
+    <button data-sveltebuttondefault="-"
+            data-sveltelocked={lockedEntity === node.id ? "-" : ""}
             class="buttonIcon hierarchy-branch"
             style={nodeColor}
             on:click={() => setLockedEntity(node.id)}
@@ -100,20 +100,20 @@
 <style>
     input {
         padding: 0 2px;
-        border-radius: 3px;
+        border-radius: 0px;
         background: none;
         border: none;
         outline: none;
         font-size: .7rem;
         color: var(--pj-color-primary);
-        backdrop-filter: brightness(50%);
+        background: rgba(0,0,0,.65);
         height: 23px;
         width: 100%;
 
     }
 
     input:disabled {
-        backdrop-filter: none;
+        background: none;
         color: var(--pj-color-quaternary);
     }
 
@@ -131,16 +131,4 @@
         white-space: nowrap;
     }
 
-    .dot {
-        width: 5px;
-        height: 5px;
-        background: var(--pj-accent-color);
-        border-radius: 50%;
-    }
-
-    .children {
-        display: flex;
-        gap: 3px;
-        align-items: center;
-    }
 </style>

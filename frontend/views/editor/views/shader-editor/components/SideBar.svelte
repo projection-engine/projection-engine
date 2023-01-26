@@ -9,7 +9,6 @@
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
     import {onDestroy, onMount} from "svelte";
-    import NODE_MAP from "../static/NODE_MAP";
 
     export let canvasAPI: Canvas
     let tab = 0
@@ -32,13 +31,13 @@
         <AttributeEditor node={mainNode} updateCanvas={() => canvasAPI.clear()}/>
     {/if}
     <div class="buttons">
-        <button class="button" data-highlight={tab === 0 ? "-" : ""} on:click={() => tab = 0}>
+        <button data-sveltebuttondefault="-"  class="button" data-sveltehighlight={tab === 0 ? "-" : ""} on:click={() => tab = 0}>
             <label>
                 {LOCALIZATION_EN.ADD}
             </label>
             <Icon style="font-size: .9rem">add</Icon>
         </button>
-        <button disabled={!mainNode} class="button" data-highlight={tab === 1 ? "-" : ""} on:click={() => tab = 1}>
+        <button data-sveltebuttondefault="-"  disabled={!mainNode} class="button" data-sveltehighlight={tab === 1 ? "-" : ""} on:click={() => tab = 1}>
             <label>
             {LOCALIZATION_EN.EDIT_NODE}
             </label>

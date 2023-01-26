@@ -71,7 +71,7 @@
     <MaterialUniforms uniforms={uniforms} update={updateAsset}/>
 {:else}
     <div class="empty-wrapper">
-        <div data-empty="-" style="position: relative">
+        <div data-svelteempty="-" style="position: relative">
             <Icon styles="font-size: 75px">texture</Icon>
             {LOCALIZATION_EN.NO_UNIFORMS}
         </div>

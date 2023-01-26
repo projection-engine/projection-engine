@@ -41,7 +41,7 @@
 </script>
 
 <div class="wrapper">
-    <button
+    <button data-sveltebuttondefault="-"
             on:click={() => SettingsStore.updateStore({...settings, transformationType: settings.transformationType === TRANSFORMATION_TYPE.RELATIVE ? TRANSFORMATION_TYPE.GLOBAL : TRANSFORMATION_TYPE.RELATIVE})}
             class="button viewport"
     >
@@ -56,7 +56,7 @@
     </button>
 
     <Dropdown hideArrow={true} buttonStyles={BUTTON_DROPDOWN}>
-        <button
+        <button data-sveltebuttondefault="-"
                 slot="button"
                 style={BUTTON_DROPDOWN_INT}
                 class="button viewport"
@@ -67,7 +67,7 @@
         </button>
 
         {#each TRANSLATION_GRID as value}
-            <button data-inline="-" on:click={() => updateGizmoGrid("translationGizmo", value)}>
+            <button data-sveltebuttondefault="-"  data-svelteinline="-" on:click={() => updateGizmoGrid("translationGizmo", value)}>
                 {#if settings.gizmoGrid.translationGizmo === value}
                     <Icon>check</Icon>
                 {:else}
@@ -78,7 +78,7 @@
         {/each}
     </Dropdown>
     <Dropdown hideArrow={true} buttonStyles={BUTTON_DROPDOWN}>
-        <button
+        <button data-sveltebuttondefault="-"
                 slot="button"
                 style={BUTTON_DROPDOWN_INT}
                 class="button viewport"
@@ -89,7 +89,7 @@
         </button>
 
         {#each SCALE_GRID as value}
-            <button data-inline="-" on:click={() => updateGizmoGrid("scaleGizmo", value)}>
+            <button data-sveltebuttondefault="-"  data-svelteinline="-" on:click={() => updateGizmoGrid("scaleGizmo", value)}>
                 {#if settings.gizmoGrid.scaleGizmo === value}
                     <Icon>check</Icon>
                 {:else}
@@ -100,7 +100,7 @@
         {/each}
     </Dropdown>
     <Dropdown hideArrow={true} buttonStyles={BUTTON_DROPDOWN }>
-        <button
+        <button data-sveltebuttondefault="-"
                 slot="button"
                 style={BUTTON_DROPDOWN_INT}
                 class="button viewport"
@@ -111,7 +111,7 @@
         </button>
 
         {#each ROTATION_GRID as value}
-            <button data-inline="-" on:click={() => updateGizmoGrid("rotationGizmo", value)}>
+            <button data-sveltebuttondefault="-"  data-svelteinline="-" on:click={() => updateGizmoGrid("rotationGizmo", value)}>
                 {#if settings.gizmoGrid.rotationGizmo === value}
                     <Icon>check</Icon>
                 {:else}
@@ -123,10 +123,10 @@
     </Dropdown>
 
 
-    <button
+    <button data-sveltebuttondefault="-"
             class="button viewport"
             style="margin-left: 8px"
-            data-highlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
+            data-sveltehighlight={settings.gizmo === GIZMOS.NONE ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})}>
         <Icon styles="font-size: 1rem; color: #FFC757">highlight_alt</Icon>
 
@@ -134,9 +134,9 @@
 
         <ToolTip content={LOCALIZATION_EN.SELECTION}/>
     </button>
-    <button
+    <button data-sveltebuttondefault="-"
             class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
+            data-sveltehighlight={settings.gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})}>
         <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_with</Icon>
         {LOCALIZATION_EN.T_GIZMO}
@@ -144,19 +144,19 @@
         <ToolTip content={LOCALIZATION_EN.T_GIZMO}/>
     </button>
 
-    <button
+    <button data-sveltebuttondefault="-"
 
             class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
+            data-sveltehighlight={settings.gizmo === GIZMOS.SCALE ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})}>
         <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
         {LOCALIZATION_EN.S_GIZMO}
         <ToolTip content={LOCALIZATION_EN.S_GIZMO}/>
     </button>
-    <button
+    <button data-sveltebuttondefault="-"
 
             class="button viewport"
-            data-highlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
+            data-sveltehighlight={settings.gizmo === GIZMOS.ROTATION ? "-" : undefined}
             on:click={() => SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})}>
         <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">360</Icon>
         {LOCALIZATION_EN.R_GIZMO}

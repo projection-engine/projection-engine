@@ -1,6 +1,6 @@
 <script>
     import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
-    import Selector from "../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import getNewVector from "../../shader-editor/utils/get-new-vector";
@@ -34,7 +34,7 @@
             />
         {/if}
         {#if uniform.type === DATA_TYPES.VEC4 || uniform.type === DATA_TYPES.VEC3 || uniform.type === DATA_TYPES.VEC2}
-            <div data-inline="-">
+            <div data-svelteinline="-">
                 <Range
                         value={uniform.data[0]}
                         label={"X"}

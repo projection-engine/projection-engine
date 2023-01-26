@@ -1,19 +1,17 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
-    import Footer from "../../components/footer/Footer.svelte";
+    import Footer from "./components/footer/Footer.svelte";
     import EngineStore from "./stores/EngineStore";
-    import ViewsContainer from "../../components/view/Views.svelte";
+    import ViewsContainer from "./components/view/Views.svelte";
     import SettingsStore from "./stores/SettingsStore";
     import FALLBACK_VIEW from "./static/FALLBACK_VIEW";
-    import About from "../../components/About.svelte";
-    import WindowUtils from "./lib/WindowUtils";
     import updateView from "./utils/update-view";
     import FS from "../../lib/FS/FS";
     import FilesAPI from "./lib/fs/FilesAPI";
     import LevelController from "./lib/utils/LevelController";
     import HotKeysController from "./lib/utils/HotKeysController";
-    import WindowFrame from "../../components/window-frame/WindowFrame.svelte";
+    import WindowFrame from "./components/window-frame/WindowFrame.svelte";
     import Canvas from "./views/scene-editor/Canvas.svelte";
     import ROUTES from "../../../backend/static/ROUTES";
     import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
@@ -27,7 +25,6 @@
 
     let engine
     let settings
-    let aboutModalIsOpen = false
     let isMetadataReady = false
     let isContextInitialized = false
 
@@ -41,7 +38,6 @@
         ContextMenuController.initialize()
         ipcRenderer.on(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
             sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
-            WindowUtils.openAbout = () => aboutModalIsOpen = true
             FS.initialize(pathToProject)
             FilesAPI.initializeFolders().catch()
             LevelController.initialize().then(_ => isMetadataReady = true).catch()
@@ -61,7 +57,6 @@
     <Canvas initializeEditor={() => isContextInitialized = true}/>
 {/if}
 {#if isMetadataReady && isContextInitialized}
-
     <WindowFrame/>
     <div class="wrapper" style={`--cube-size: ${settings.cameraGizmoSize}px;`}>
         <div class="middle">
@@ -109,9 +104,6 @@
 
         <Footer engine={engine} settings={settings}/>
     </div>
-    {#if aboutModalIsOpen}
-        <About handleClose={() => aboutModalIsOpen = false}/>
-    {/if}
 {/if}
 
 

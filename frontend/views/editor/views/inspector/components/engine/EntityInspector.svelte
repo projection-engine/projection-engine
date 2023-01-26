@@ -2,13 +2,12 @@
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
-    import COMPONENTS from "../../../../../../../engine-core/templates/COMPONENTS";
+    import COMPONENTS from "../../../../../../../engine-core/static/COMPONENTS";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import dragDrop from "../../../../../../components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";
     import updateEntityComponent from "../../utils/update-entity-component";
-
     import getEntityTabs from "../../utils/get-entity-tabs";
     import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
@@ -53,10 +52,10 @@
         <div class="tabs shared">
             {#each buttons as button}
                 {#if button.divider}
-                    <div data-divider="-"></div>
+                    <div data-sveltedivider="-"></div>
                 {:else}
-                    <button
-                            data-highlight={tabIndex === button.index ? "-" : undefined}
+                    <button data-sveltebuttondefault="-"
+                            data-sveltehighlight={tabIndex === button.index ? "-" : undefined}
                             class="tab-button shared"
                             on:click={_ => tabIndex = button.index}
                     >
@@ -70,17 +69,16 @@
             {#if tabIndex === -3}
                 {#if scripts.length > 0}
                     {#each scripts as script, scriptIndex}
-                        <fieldset>
-                            <Layout
-                                    entity={entity}
-                                    index={scriptIndex}
-                                    component={scripts[scriptIndex]}
-                                    submit={(k, v) => scripts[scriptIndex][k] = v}
-                            />
-                        </fieldset>
+
+                        <Layout
+                                entity={entity}
+                                index={scriptIndex}
+                                component={scripts[scriptIndex]}
+                                submit={(k, v) => scripts[scriptIndex][k] = v}
+                        />
                     {/each}
                 {:else}
-                    <div data-empty="-">
+                    <div data-svelteempty="-">
                         <Icon styles="font-size: 75px">code</Icon>
                         {LOCALIZATION_EN.NO_CUSTOM_COMPONENTS_LINKED}
                     </div>
@@ -125,7 +123,7 @@
                     {:else if components[tabIndex][0] === COMPONENTS.SKYLIGHT}
                         <fieldset>
                             <legend>{LOCALIZATION_EN.PROBE}</legend>
-                            <button
+                            <button data-sveltebuttondefault="-"
                                     class="recompute-button"
                                     on:click={() => {
                                     GPU.activeSkylightEntity = entity

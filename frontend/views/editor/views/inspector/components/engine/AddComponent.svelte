@@ -20,10 +20,10 @@
 
 
 <Dropdown hideArrow={true} buttonStyles="border-radius: 3px; background: var(--pj-background-secondary); margin-left: auto">
-    <button
+    <button data-sveltebuttondefault="-"
             slot="button"
             class="add-button"
-            data-overflow="-"
+            data-svelteoverflow="-"
     >
         <Icon>add</Icon>
         {LOCALIZATION_EN.ADD_COMPONENT}
@@ -31,7 +31,7 @@
     </button>
 
     {#each NATIVE_COMPONENTS as [key,  label, icon]}
-        <button
+        <button data-sveltebuttondefault="-"
                 on:click={(e) =>{
                     UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
                     entity.addComponent(key)
@@ -46,9 +46,9 @@
             {label}
         </button>
     {/each}
-    <div data-divider="-"></div>
+    <div data-sveltedivider="-"></div>
     {#each store.components as script}
-        <button on:click={(e) => {
+        <button data-sveltebuttondefault="-"  on:click={(e) => {
             componentConstructor(entity, script.registryID).catch()
             e.target.closeDropdown()
         }}>

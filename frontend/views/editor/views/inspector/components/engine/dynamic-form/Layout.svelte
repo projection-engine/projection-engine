@@ -5,6 +5,7 @@
     import Component from "../../../../../../../../engine-core/instances/components/Component";
     import Icon from "../../../../../../../components/icon/Icon.svelte";
     import getComponentLabel from "../../../utils/get-component-label";
+    import Accordion from "../../../../../../../components/accordion/Accordion.svelte";
 
     export let key
     export let index
@@ -20,20 +21,19 @@
 </script>
 
 {#if title}
-    <div data-inline="-" class="title-wrapper">
+    <div data-svelteinline="-" class="title-wrapper">
         <strong>{title}</strong>
         {#if entity}
-            <button class="button" on:click={() => removeComponent(entity, index, key)}>
+            <button data-sveltebuttondefault="-"  class="button" on:click={() => removeComponent(entity, index, key)}>
                 <Icon>delete_forever</Icon>
             </button>
         {/if}
     </div>
 {/if}
 {#if Array.isArray(component.props)}
-    {#each component.props as propAttr}
+    {#each component.props as propAttr, index}
         {#if propAttr.type === Component.propTypes.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
-            <fieldset>
-                <legend>{LOCALIZATION_EN[propAttr.label] || propAttr.label}</legend>
+            <Accordion startOpen={index === 0} title={LOCALIZATION_EN[propAttr.label] || propAttr.label} styles={"display: flex; flex-direction: column; gap: 4px;"}>
                 {#each propAttr.children as attribute}
                     {#if !checkIsDisabled(attribute)}
                         <Property
@@ -43,8 +43,7 @@
                         />
                     {/if}
                 {/each}
-            </fieldset>
-
+            </Accordion>
         {:else if propAttr.type !== Component.propTypes.GROUP && !checkIsDisabled(propAttr)}
             <Property
                     component={component}

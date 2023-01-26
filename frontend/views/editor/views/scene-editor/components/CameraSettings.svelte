@@ -33,18 +33,18 @@
     <Dropdown
             disabled={cameras.length === 0}
             buttonStyles={"border-radius: 25px; height: 25px;" + (engine.focusedCamera ? "background: var(--pj-accent-color);" : "background: var(--pj-background-tertiary);")}>
-        <button
+        <button data-sveltebuttondefault="-"
                 disabled={cameras.length === 0}
                 slot="button"
                 style="background: transparent; box-shadow: none"
                 class="button viewport"
-                data-highlight={engine.focusedCamera ? "-" : undefined}
+                data-sveltehighlight={engine.focusedCamera ? "-" : undefined}
         >
             <ToolTip content={LOCALIZATION_EN.FOCUS_ON_CAMERA}/>
             <Icon styles="font-size: 1rem">videocam</Icon>
         </button>
         {#each cameras as camera}
-            <button
+            <button data-sveltebuttondefault="-"
                     style="border: none"
                     class="button viewport"
                     on:click={_ => focusOnCamera(camera)}
@@ -58,7 +58,7 @@
             </button>
         {/each}
     </Dropdown>
-    <button disabled={engine.focusedCamera} class="button viewport" on:click={toggleProjection}>
+    <button data-sveltebuttondefault="-"  disabled={engine.focusedCamera} class="button viewport" on:click={toggleProjection}>
         <ToolTip content={LOCALIZATION_EN.SWITCH_PROJECTION}/>
         {#if !settings.camera.ortho}
             <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
@@ -69,13 +69,13 @@
         {/if}
     </button>
 
-    <button disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
+    <button data-sveltebuttondefault="-"  disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
             on:click={() => ViewportActions.focus()}>
         <ToolTip content={LOCALIZATION_EN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>
 
-    <button disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
+    <button data-sveltebuttondefault="-"  disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
             on:click={() => SettingsStore.updateStore({...settings, screenSpaceMovement: !settings.screenSpaceMovement})}>
         <ToolTip content={LOCALIZATION_EN.TOGGLE_CAMERA_MOVEMENT}/>
         {#if settings.screenSpaceMovement}

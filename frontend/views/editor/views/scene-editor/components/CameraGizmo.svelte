@@ -9,7 +9,7 @@
     onMount(() => CameraTracker.gizmoReference = cameraRef)
 
     function onGizmoClick(e) {
-        const face = parseInt(e.target.getAttribute("data-face"))
+        const face = parseInt(e.target.getAttribute("data-svelteface"))
         if(!isNaN(face))
             CameraTracker.rotate(face)
     }
@@ -30,14 +30,14 @@
             <div
                     class="face front"
                     style="background: hsl(205, 100%, var(--brightness))"
-                    data-face={CAMERA_ROTATIONS.FRONT}
+                    data-svelteface={CAMERA_ROTATIONS.FRONT}
 
             >
                 Z+
             </div>
             <div
                     class="face back darker"
-                    data-face={CAMERA_ROTATIONS.BACK}
+                    data-svelteface={CAMERA_ROTATIONS.BACK}
                     style="background: hsl(205, 100%, var(--brightness))"
 
             >
@@ -46,7 +46,7 @@
             <div
                     class="face right"
                     style="background: hsl(0, 100%, var(--brightness))"
-                    data-face={CAMERA_ROTATIONS.RIGHT}
+                    data-svelteface={CAMERA_ROTATIONS.RIGHT}
 
             >
                 X+
@@ -54,7 +54,7 @@
             <div
                     class="face left darker"
                     style="background: hsl(0, 100%, var(--brightness))"
-                    data-face={CAMERA_ROTATIONS.LEFT}
+                    data-svelteface={CAMERA_ROTATIONS.LEFT}
 
             >
                 X-
@@ -62,7 +62,7 @@
             <div
                     class="face top darker"
                     style="background: hsl(120, 88%, var(--brightness))"
-                    data-face={CAMERA_ROTATIONS.TOP}
+                    data-svelteface={CAMERA_ROTATIONS.TOP}
 
 
             >
@@ -71,7 +71,7 @@
             <div
                     class="face bottom"
                     style="background: hsl(120, 88%, var(--brightness))"
-                    data-face={CAMERA_ROTATIONS.BOTTOM}
+                    data-svelteface={CAMERA_ROTATIONS.BOTTOM}
             >
                 Y+
             </div>

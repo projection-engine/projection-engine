@@ -46,7 +46,7 @@
 </script>
 
 
-<div style={isSelected ? "border-color: var(--pj-accent-color)" : ""} class="wrapper card-home" data-card={data.id}
+<div style={isSelected ? "border-color: var(--pj-accent-color)" : ""} class="wrapper card-home" data-sveltecard={data.id}
      on:mouseenter={() => hovered = true} on:mouseleave={() => hovered = false}>
     <div
             class="info card-home"
@@ -87,12 +87,12 @@
 
     <div class="content">
 
-        <div class={"info card-home"} style="text-align: right" data-overflow="-">
+        <div class={"info card-home"} style="text-align: right" data-svelteoverflow="-">
             <strong>{changeDate}</strong>
             <small>{LOCALIZATION_EN.LAST_MODIFIED}</small>
         </div>
-        <div data-vertdivider="-"></div>
-        <button on:click={() => open(data.path)} data-focusbutton="-">{LOCALIZATION_EN.OPEN}</button>
+        <div data-sveltevertdivider="-"></div>
+        <button data-sveltebuttondefault="-"  on:click={() => open(data.path)} data-sveltefocusbutton="-">{LOCALIZATION_EN.OPEN}</button>
     </div>
 </div>
 

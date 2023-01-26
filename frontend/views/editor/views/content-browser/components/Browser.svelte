@@ -39,7 +39,7 @@
     let timeout
     let toRender = []
 
-    const TRIGGERS = ["data-wrapper", "data-file", "data-folder"]
+    const TRIGGERS = ["data-sveltewrapper", "data-sveltefile", "data-sveltefolder"]
 
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribe = SelectionStore.getStore(() => {
@@ -78,7 +78,7 @@
                 internalID,
                 TRIGGERS,
                 (trigger, element) => {
-                    const id = element.getAttribute("data-id")
+                    const id = element.getAttribute("data-svelteid")
                     if (id != null)
                         SelectionStore.contentBrowserSelected = [id]
                 }
@@ -126,9 +126,9 @@
 <div
         bind:this={ref}
         id={internalID}
-        data-wrapper={internalID}
+        data-sveltewrapper={internalID}
         on:mousedown={e => {
-            const key = "data-isitem"
+            const key = "data-svelteisitem"
             if(e.composedPath().find(element => element.getAttribute?.(key) != null) == null)
                 SelectionStore.contentBrowserSelected = []
         }}
@@ -173,7 +173,7 @@
             </div>
         </VirtualList>
     {:else}
-        <div data-empty="-">
+        <div data-svelteempty="-">
             <Icon styles="font-size: 100px">folder</Icon>
             <div style="font-size: .8rem">
                 {LOCALIZATION_EN.EMPTY}

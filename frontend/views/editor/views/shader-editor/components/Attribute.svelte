@@ -1,7 +1,7 @@
 <script>
     import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
-    import Selector from "../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
     import getDropdownHeaderStyles from "../../../../../components/dropdown/utils/get-dropdown-header-styles";
     import Range from "../../../../../components/range/Range.svelte";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
@@ -40,7 +40,7 @@
             disabled={attribute.disabled}
     />
 {:else if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 || type === DATA_TYPES.VEC2}
-    <div data-inline="-">
+    <div data-svelteinline="-">
         <Range
                 disabled={attribute.disabled}
                 maxValue={attribute.max}
@@ -99,11 +99,11 @@
 {:else if type === DATA_TYPES.OPTIONS && Array.isArray(attribute.options)}
 
     <Dropdown buttonStyles={getDropdownHeaderStyles() + "width: 100%;"}>
-        <button slot="button" data-view-header-dropdown="-">
+        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
             {possibleSelection ? possibleSelection.label : label}
         </button>
         {#each attribute.options as o, i}
-            <button on:click={() => handleChange(o.data)} data-inline="-">
+            <button data-sveltebuttondefault="-"  on:click={() => handleChange(o.data)} data-svelteinline="-">
                 {#if o.data === value}
                     <Icon>check</Icon>
                     {:else}

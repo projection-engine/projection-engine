@@ -54,17 +54,17 @@
 
 
 <div class="left-content">
-    <div data-inline="-" style={settings.gizmo !== GIZMOS.TRANSLATION ? "display: none" : undefined }>
+    <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.TRANSLATION ? "display: none" : undefined }>
         <strong>{LOCALIZATION_EN.TRANSLATION}</strong>
         <small bind:this={translationRef}></small>
     </div>
 
-    <div data-inline="-" style={settings.gizmo !== GIZMOS.SCALE ? "display: none" : undefined }>
+    <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.SCALE ? "display: none" : undefined }>
         <strong>{LOCALIZATION_EN.SCALE}</strong>
         <small bind:this={scaleRef}></small>
     </div>
 
-    <div data-inline="-" style={settings.gizmo !== GIZMOS.ROTATION ? "display: none" : undefined }>
+    <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.ROTATION ? "display: none" : undefined }>
         <strong>{LOCALIZATION_EN.ROTATION}</strong>
         <small bind:this={rotationRef}></small>
     </div>

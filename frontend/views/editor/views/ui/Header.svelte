@@ -2,22 +2,25 @@
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../static/GIZMOS.ts";
-    import SettingsStore from "../../stores/SettingsStore";
 
     import Entity from "../../../../../engine-core/instances/Entity";
     import Engine from "../../../../../engine-core/Engine";
-    import COMPONENTS from "../../../../../engine-core/templates/COMPONENTS";
+    import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
     import UIAPI from "../../../../../engine-core/lib/rendering/UIAPI";
-    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import EntityManager from "../../lib/EntityManager";
+    import AlertController from "../../../../components/alert/AlertController";
 
 
-    export let isAlreadyOpen
     export let settings
     export let engine
+    export let isOnSelection
+    export let toggleOnSelection
+    export let selected
+    export let updateEnabled
+    export let toggleAutoUpdate
 
     function selectAll() {
         const m = [], size = Engine.entities.array.length
@@ -29,14 +32,6 @@
         SelectionStore.engineSelected = m
     }
 
-    $: isOnSelection = settings.gizmo === GIZMOS.NONE
-
-    function toggleSelection() {
-        if (isOnSelection)
-            SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
-        else
-            SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})
-    }
 
     function addUiElement() {
         const e = new Entity(undefined, "UI-ShaderNode")
@@ -44,41 +39,68 @@
         EntityManager.add(e)
     }
 
-    function focusOnView() {
-        UIAPI.buildUI(ref)
-        update()
-        isAlreadyOpen = false
-    }
+
 </script>
 
 <ViewHeader>
-    {#if isAlreadyOpen && !engine.executingAnimation}
-        <button on:click={focusOnView} data-view-header-button="-" style="max-width: unset">
-            <Icon styles="font-size: .9rem">place</Icon>
-            {LOCALIZATION_EN.FOCUS_ON_THIS_VIEW}
+    <div class="left-content">
+        <button data-sveltebuttondefault="-"  on:click={addUiElement} data-svelteview-header-button="-" style="max-width: unset">
+            <Icon styles="font-size: .9rem">add</Icon>
+            {LOCALIZATION_EN.ADD_ELEMENT}
         </button>
-    {:else if !isAlreadyOpen}
-        <div class="left-content">
-            <button on:click={addUiElement} data-view-header-button="-" style="max-width: unset">
-                <Icon styles="font-size: .9rem">add</Icon>
-                {LOCALIZATION_EN.ADD_ELEMENT}
-            </button>
-            <button on:click={selectAll} data-view-header-button="-" style="max-width: unset">
-                {LOCALIZATION_EN.SELECT_ALL}
-            </button>
-        </div>
+        <button data-sveltebuttondefault="-"  on:click={selectAll} data-svelteview-header-button="-" style="max-width: unset">
+            {LOCALIZATION_EN.SELECT_ALL}
+        </button>
+        <div data-sveltevertdivider="-"></div>
+        <button data-sveltebuttondefault="-"
+                on:click={() => {
+                    UIAPI.updateAllElements().then(() => {
+                        AlertController.success(LOCALIZATION_EN.UPDATING_UI)
+                    })
+                }}
+                data-svelteview-header-button="-"
+                style="max-width: unset">
+            <Icon styles="font-size: .9rem">refresh</Icon>
+            <ToolTip content={LOCALIZATION_EN.FORCE_UPDATE}/>
+        </button>
+        <button data-sveltebuttondefault="-"  on:click={toggleAutoUpdate} data-svelteview-header-button="-" style="max-width: unset">
+            <Icon styles="font-size: .9rem">
+                {#if updateEnabled}
+                    update
+                {:else}
+                    update_disabled
+                {/if}
+            </Icon>
+            {LOCALIZATION_EN.AUTO_UPDATE}
+        </button>
+        {#if selected}
+            <div data-sveltevertdivider="-"></div>
+            <small class="entity-selected">
+                {selected.name}
+            </small>
+        {/if}
+    </div>
 
-        <div class="right-content">
-            <button data-highlight={isOnSelection ? "-" : ""} on:click={toggleSelection} data-view-header-button="-">
-                <Icon>
-                    highlight_alt
-                </Icon>
-                <ToolTip content={LOCALIZATION_EN.PICKER}/>
-            </button>
-        </div>
-    {/if}
+    <div class="right-content">
+        <button data-sveltebuttondefault="-"  data-sveltehighlight={isOnSelection ? "-" : ""} on:click={toggleOnSelection} data-svelteview-header-button="-">
+            <Icon>
+                highlight_alt
+            </Icon>
+            <ToolTip content={LOCALIZATION_EN.PICKER}/>
+        </button>
+    </div>
+
 </ViewHeader>
+
 <style>
+    .entity-selected {
+        padding: 4px;
+        height: 20px;
+        font-size: .7rem;
+        color: var(--pj-color-primary);
+        border-radius: 3px;
+        background: var(--pj-accent-color);
+    }
 
     .left-content {
         display: flex;

@@ -1,7 +1,7 @@
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
 import LIGHT_TYPES from "../../../../engine-core/static/LIGHT_TYPES";
-import EmbeddedMeshes from "../../../../engine-core/templates/EmbeddedMeshes";
+import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes";
 
 export default function entityCreationOptions() {
     return [
@@ -88,6 +88,11 @@ export default function entityCreationOptions() {
             icon: "layers",
             label: LOCALIZATION_EN.DECAL,
             onClick: EntityConstructor.createDecal
+        },
+        {
+            icon: "widgets",
+            label: LOCALIZATION_EN.UI_RENDERER,
+            onClick: EntityConstructor.createUI
         }
     ]
 }

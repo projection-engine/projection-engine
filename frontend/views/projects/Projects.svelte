@@ -10,6 +10,7 @@
     import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
     import ROUTES from "../../../backend/static/ROUTES";
     import AlertController from "../../components/alert/AlertController";
+    import FrameWrapper from "../../components/frame/FrameWrapper.svelte";
 
 
     const pathLib = window.require("path")
@@ -46,7 +47,7 @@
                 },
             ],
             internalID,
-            ["data-card"]
+            ["data-sveltecard"]
         )
         if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
             localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FS.rootDir)
@@ -61,6 +62,7 @@
 
 </script>
 
+<FrameWrapper/>
 <div class="wrapper">
         <Header
                 defaultVersion={defaultVersion}
@@ -75,7 +77,7 @@
                 class="content"
                 id={internalID}
                 on:mousedown={e => {
-                    const found = document.elementsFromPoint(e.clientX, e.clientY).map(e => e.getAttribute("data-card")).filter(e => e != null)
+                    const found = document.elementsFromPoint(e.clientX, e.clientY).map(e => e.getAttribute("data-sveltecard")).filter(e => e != null)
                     if(found != null)
                         selected = found[0]
                 }}

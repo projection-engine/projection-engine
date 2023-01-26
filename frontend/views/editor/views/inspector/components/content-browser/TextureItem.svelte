@@ -67,9 +67,9 @@
     }
 </script>
 
-<button disabled={!changed} data-focusbutton="-" style="height: 22px" on:click={apply}>{LOCALIZATION_EN.APPLY}</button>
+<button data-sveltebuttondefault="-"  disabled={!changed} data-sveltefocusbutton="-" style="height: 22px" on:click={apply}>{LOCALIZATION_EN.APPLY}</button>
 <Accordion startOpen={true} title={LOCALIZATION_EN.TEXTURE_QUALITY}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Range
                 label={LOCALIZATION_EN.COMPRESSION_RATIO}
                 onFinish={v => updateAsset("compressionRatio", v)}
@@ -90,7 +90,7 @@
 
 <fieldset>
     <legend>{LOCALIZATION_EN.FLIP_TEXTURE}</legend>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Checkbox label={LOCALIZATION_EN.FLIP_Y} checked={data?.flipY}
                   handleCheck={ async () => await updateAsset("flipY", !data.flipY)}/>
         <Checkbox label={LOCALIZATION_EN.FLIP_X} checked={data?.flipX}
@@ -99,64 +99,64 @@
 </fieldset>
 <fieldset>
     <legend>{LOCALIZATION_EN.TEXTURE_FORMAT}</legend>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Dropdown buttonStyles={B}>
-            <button slot="button" class="dropdown">
+            <button data-sveltebuttondefault="-"  slot="button" class="dropdown">
                 {data?.internalFormat}
             </button>
-            <button on:click={() => updateAsset("format", TEXTURE_FORMATS.RGB)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("format", TEXTURE_FORMATS.RGB)}>
                 RGB
             </button>
-            <button on:click={() => updateAsset("format", TEXTURE_FORMATS.RGBA)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("format", TEXTURE_FORMATS.RGBA)}>
                 RGBA
             </button>
-            <button on:click={() => updateAsset("format", TEXTURE_FORMATS.SRGBA)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("format", TEXTURE_FORMATS.SRGBA)}>
                 SRGB8_ALPHA8
             </button>
         </Dropdown>
     </div>
 </fieldset>
 <Accordion title={LOCALIZATION_EN.TEXTURE_FILTERING}>
-    <div data-form="-">
+    <div data-svelteform="-">
         <Dropdown buttonStyles={B}>
-            <button slot="button" class="dropdown">
+            <button data-sveltebuttondefault="-"  slot="button" class="dropdown">
                 {LOCALIZATION_EN[data?.minFilter]}
                 <small>
                     {LOCALIZATION_EN.TEXTURE_MIN_FILTER}
                 </small>
             </button>
-            <button on:click={() => updateAsset("minFilter",  TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_LINEAR)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("minFilter",  TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_LINEAR)}>
                 {LOCALIZATION_EN.NEAREST_MIPMAP_LINEAR}
             </button>
-            <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_NEAREST)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_NEAREST)}>
                 {LOCALIZATION_EN.LINEAR_MIPMAP_NEAREST}
             </button>
-            <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_LINEAR)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR_MIPMAP_LINEAR)}>
                 {LOCALIZATION_EN.LINEAR_MIPMAP_LINEAR}
             </button>
-            <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_NEAREST)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST_MIPMAP_NEAREST)}>
                 {LOCALIZATION_EN.NEAREST_MIPMAP_NEAREST}
             </button>
-            <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.LINEAR)}>
                 {LOCALIZATION_EN.LINEAR}
             </button>
-            <button on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("minFilter", TEXTURE_FILTERING.MIN.NEAREST)}>
                 {LOCALIZATION_EN.NEAREST}
             </button>
         </Dropdown>
 
         <Dropdown buttonStyles={B}>
-            <button slot="button" class="dropdown">
+            <button data-sveltebuttondefault="-"  slot="button" class="dropdown">
 
                 {LOCALIZATION_EN[data?.magFilter]}
                 <small>
                     {LOCALIZATION_EN.TEXTURE_MAG_FILTER}
                 </small>
             </button>
-            <button on:click={() => updateAsset("magFilter",  TEXTURE_FILTERING.MAG.NEAREST)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("magFilter",  TEXTURE_FILTERING.MAG.NEAREST)}>
                 {LOCALIZATION_EN.NEAREST}
             </button>
-            <button on:click={() => updateAsset("magFilter", TEXTURE_FILTERING.MAG.LINEAR)}>
+            <button data-sveltebuttondefault="-"  on:click={() => updateAsset("magFilter", TEXTURE_FILTERING.MAG.LINEAR)}>
                 {LOCALIZATION_EN.LINEAR}
             </button>
         </Dropdown>
@@ -164,10 +164,10 @@
 </Accordion>
 
 <Accordion title={LOCALIZATION_EN.TEXTURE_WRAPPING}>
-    <div data-form="-">
+    <div data-svelteform="-">
         {#each ["wrapS", "wrapT"] as key}
             <Dropdown buttonStyles={B}>
-                <button slot="button" class="dropdown">
+                <button data-sveltebuttondefault="-"  slot="button" class="dropdown">
                     {#if data}
                         {LOCALIZATION_EN[data[key]]}
                     {/if}
@@ -175,16 +175,16 @@
                         {LOCALIZATION_EN[key]}
                     </small>
                 </button>
-                <button on:click={() => updateAsset(key,  TEXTURE_WRAPPING.MIRRORED_REPEAT)}>
+                <button data-sveltebuttondefault="-"  on:click={() => updateAsset(key,  TEXTURE_WRAPPING.MIRRORED_REPEAT)}>
                     {LOCALIZATION_EN.MIRRORED_REPEAT}
                 </button>
-                <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.REPEAT)}>
+                <button data-sveltebuttondefault="-"  on:click={() => updateAsset(key, TEXTURE_WRAPPING.REPEAT)}>
                     {LOCALIZATION_EN.REPEAT}
                 </button>
-                <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_EDGE)}>
+                <button data-sveltebuttondefault="-"  on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_EDGE)}>
                     {LOCALIZATION_EN.CLAMP_TO_EDGE}
                 </button>
-                <button on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_BORDER)}>
+                <button data-sveltebuttondefault="-"  on:click={() => updateAsset(key, TEXTURE_WRAPPING.CLAMP_TO_BORDER)}>
                     {LOCALIZATION_EN.CLAMP_TO_BORDER}
                 </button>
             </Dropdown>

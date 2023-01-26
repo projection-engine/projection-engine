@@ -1,12 +1,12 @@
 import GizmoSystem from "../../runtime/GizmoSystem";
 import AXIS from "../../static/AXIS";
 import mapGizmoMesh from "../../utils/map-gizmo-mesh";
-import getPickerId from "../../../engine-core/utils/get-picker-id";
 import GizmoAPI from "../GizmoAPI";
 import StaticEditorShaders from "../StaticEditorShaders";
 import StaticEditorMeshes from "../StaticEditorMeshes";
+import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 
-export const XZ_ID = getPickerId(AXIS.XZ), XY_ID = getPickerId(AXIS.XY), ZY_ID = getPickerId(AXIS.ZY)
+export const XZ_ID = PickingAPI.getPickerId(AXIS.XZ), XY_ID = PickingAPI.getPickerId(AXIS.XY), ZY_ID = PickingAPI.getPickerId(AXIS.ZY)
 export default class DualAxisGizmo {
     static gizmos = {
         XY: mapGizmoMesh("XY", "DUAL"),

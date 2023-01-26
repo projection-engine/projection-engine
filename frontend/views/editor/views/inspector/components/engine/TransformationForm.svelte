@@ -148,13 +148,13 @@
 </script>
 
 {#if !isSingle}
-    <div class="alert" data-inline="-">
+    <div class="alert" data-svelteinline="-">
         {LOCALIZATION_EN.TRANSFORMING_GROUP}
     </div>
 {:else}
     <fieldset>
         <legend>{LOCALIZATION_EN.PIVOT_POINT}</legend>
-        <div data-inline="-">
+        <div data-svelteinline="-">
             <Range
                     onFinish={onFinish}
                     label="X"
@@ -189,7 +189,7 @@
                 }}
         />
     {/if}
-    <div data-inline="-">
+    <div data-svelteinline="-">
         <Range
                 onFinish={onFinish}
                 disabled={lockedTranslation}
@@ -226,7 +226,7 @@
                 }}
         />
     {/if}
-    <div data-inline="-">
+    <div data-svelteinline="-">
         <Range
                 onFinish={onFinish}
                 disabled={lockedScaling}
@@ -255,10 +255,10 @@
     <legend>{LOCALIZATION_EN.ROTATION}</legend>
     {#if isSingle}
         <Dropdown buttonStyles="background: var(--background-input); border-radius: 3px">
-            <button slot="button" class="button">
+            <button data-sveltebuttondefault="-"  slot="button" class="button">
                 {LOCALIZATION_EN[rotationType]}
             </button>
-            <button on:click={() => rotationType = TYPES[0]}>
+            <button data-sveltebuttondefault="-"  on:click={() => rotationType = TYPES[0]}>
                 {#if rotationType === TYPES[0]}
                     <Icon>check</Icon>
                 {:else}
@@ -266,7 +266,7 @@
                 {/if}
                 {LOCALIZATION_EN.QUATERNION}
             </button>
-            <button on:click={() => rotationType = TYPES[1]}>
+            <button data-sveltebuttondefault="-"  on:click={() => rotationType = TYPES[1]}>
                 {#if rotationType === TYPES[1]}
                     <Icon>check</Icon>
                 {:else}
@@ -314,7 +314,7 @@
                 handleChange={v => rotate(3, v)}
         />
     {:else}
-        <div data-inline="-">
+        <div data-svelteinline="-">
             <Range
                     onFinish={onFinish}
                     value={totalEuler[0]}

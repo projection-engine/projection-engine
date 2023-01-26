@@ -5,7 +5,6 @@ import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import Engine from "../../engine-core/Engine";
 import StaticFBO from "../../engine-core/lib/StaticFBO";
-import StaticShaders from "../../engine-core/lib/StaticShaders";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
@@ -34,7 +33,7 @@ export default class WireframeRenderer {
                 StaticEditorShaders.wireframe.bind()
 
                 context.activeTexture(context.TEXTURE0)
-                context.bindTexture(context.TEXTURE_2D, StaticFBO.visibilityDepthSampler)
+                context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
                 context.uniform1i(uniforms.depth, 0)
                 context.uniform2fv(uniforms.bufferResolution, StaticFBO.visibility.resolution)
                 isFirstDrawing = false

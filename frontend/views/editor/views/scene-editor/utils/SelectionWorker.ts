@@ -9,12 +9,12 @@ export default class SelectionWorker {
                 const map = {}
                 for(let i= 0; i < entities.length; i++){
                     const {id, pick} = entities[i]
-                    map[pick[0] * 255 + pick[1] * 255 + pick[2] * 255] = id
+                    map[Math.round(pick).toString()] = id
                 }
                 const selected = [], ids = []
                 for (let i = 0; i < data.length; i += 4) {
-                    const ID =  Math.round((data[i] + data[i + 1] + data[i + 2]) * 255)
-                    const found = map[ID]
+                    const ID =  Math.round(data[i] + data[i + 1] + data[i + 1])
+                    const found = map[ID.toString()]
                     if(!found || selected.includes(ID)) 
                         continue
                     selected.push(ID)
