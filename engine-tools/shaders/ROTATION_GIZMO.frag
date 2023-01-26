@@ -58,7 +58,8 @@ void main(){
     int selectedAxis = int(metadata.y);
     float rotated = metadata.z;
     float increment = metadata.w;
-
+    if(axis ==2 )
+            rotated = -rotated;
     float d  = 0.;
     float minimumAngle = radians(1.);
     float totalRotated = 0.;
