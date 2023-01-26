@@ -6,7 +6,6 @@ import Engine from "../engine-core/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import WireframeRenderer from "./runtime/WireframeRenderer";
 import SettingsStore from "../frontend/views/editor/stores/SettingsStore";
-import UIAPI from "../engine-core/lib/rendering/UIAPI";
 
 import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";
 import LineRenderer from "./runtime/LineRenderer";

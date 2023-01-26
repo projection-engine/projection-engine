@@ -1,5 +1,5 @@
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
-import {quat, vec3, vec4} from "gl-matrix";
+import {quat, vec4} from "gl-matrix";
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS";
 import GPU from "../../engine-core/GPU";
 
@@ -42,7 +42,7 @@ export default class CameraTracker {
     static screenSpaceMovementSpeed = 1
     static movementSpeed = 0.1
     static turnSpeed = .1
-    static gizmoReference
+    static gizmoReference:HTMLElement
     static screenSpaceMovement = false
     static rotationChanged = false
     static forceUpdate = false
@@ -70,6 +70,7 @@ export default class CameraTracker {
     static updateFrame() {
         if (CameraAPI.didChange && CameraTracker.gizmoReference)
             CameraTracker.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${CameraAPI.staticViewMatrix})`
+
         const map = CameraTracker.#keysOnHold
         let changed = CameraTracker.forceUpdate
 

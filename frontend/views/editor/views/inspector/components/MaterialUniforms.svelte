@@ -1,6 +1,6 @@
 <script>
     import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
-    import Selector from "../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
     import Range from "../../../../../components/range/Range.svelte";
     import getNewVector from "../../shader-editor/utils/get-new-vector";

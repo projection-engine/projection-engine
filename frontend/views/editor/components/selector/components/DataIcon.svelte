@@ -1,0 +1,40 @@
+<script>
+    import Preview from "../../../../../components/preview/Preview.svelte";
+    import FS from "../../../../../lib/FS/FS";
+    import Icon from "../../../../../components/icon/Icon.svelte";
+    import PROJECT_FOLDER_STRUCTURE from "../../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
+
+    export let state
+    export let type
+    let previewPath
+    $: {
+        if (state) previewPath = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + state.registryID + ".preview"
+    }
+</script>
+
+{#if type === "mesh"}
+    <Preview path={previewPath}>
+        <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
+        <Icon slot="icon">category</Icon>
+    </Preview>
+{:else if type === "image"}
+    <Preview path={previewPath}>
+        <img draggable="false" class="img" slot="image" alt="logo" let:src src={src}>
+        <Icon slot="icon">image</Icon>
+    </Preview>
+{:else if type === "material"}
+    <div data-svelteshaded-material="-"></div>
+{:else if type === "ui"}
+    <Icon slot="icon">widgets</Icon>
+{:else if type === "code"}
+    <Icon slot="icon">code</Icon>
+{:else if type === "terrain"}
+    <Icon slot="icon">landscape</Icon>
+{/if}
+<style>
+    .img {
+        object-fit: fill;
+        max-height: 30px;
+        border-radius: 3px;
+    }
+</style>

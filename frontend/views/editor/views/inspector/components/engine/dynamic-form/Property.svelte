@@ -1,7 +1,7 @@
 <script>
     import Checkbox from "../../../../../../../components/checkbox/Checkbox.svelte";
     import Component from "../../../../../../../../engine-core/instances/components/Component";
-    import Selector from "../../../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../../../components/selector/Selector.svelte";
     import EngineStore from "../../../../../stores/EngineStore";
     import LOCALIZATION_EN from "../../../../../static/LOCALIZATION_EN";
     import ColorPicker from "../../../../../../../components/color-picker/ColorPicker.svelte";

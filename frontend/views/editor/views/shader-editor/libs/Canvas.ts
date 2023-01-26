@@ -8,8 +8,8 @@ import CanvasResources from "./CanvasResources";
 import type ShaderLink from "../templates/ShaderLink";
 import type ShaderComment from "../templates/ShaderComment";
 import NodesIndex from "../static/NODE_MAP";
-import DynamicMap from "../../../../../../engine-core/resource-libs/DynamicMap";
 import NODE_MAP from "../static/NODE_MAP";
+import DynamicMap from "../../../../../../engine-core/resource-libs/DynamicMap";
 
 export default class Canvas {
     #initialized = false

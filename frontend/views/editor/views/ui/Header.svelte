@@ -2,14 +2,12 @@
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../static/GIZMOS.ts";
-    import SettingsStore from "../../stores/SettingsStore";
 
     import Entity from "../../../../../engine-core/instances/Entity";
     import Engine from "../../../../../engine-core/Engine";
     import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
     import UIAPI from "../../../../../engine-core/lib/rendering/UIAPI";
-    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import EntityManager from "../../lib/EntityManager";

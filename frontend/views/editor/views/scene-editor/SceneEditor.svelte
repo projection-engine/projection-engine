@@ -13,16 +13,14 @@
     import Header from "./Header.svelte";
     import EngineStore from "../../stores/EngineStore";
     import SettingsStore from "../../stores/SettingsStore";
-    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import EntityInformation from "./components/EntityInformation.svelte";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
     import Engine from "../../../../../engine-core/Engine";
-    import EntityStateController from "../../lib/controllers/EntityStateController";
     import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
     import getUnderSelectionBox from "./utils/get-under-selection-box";
     import GizmoSettings from "./components/GizmoSettings.svelte";
     import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS";
-    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../components/icon/Icon.svelte";
     import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
     import GPU from "../../../../../engine-core/GPU";
@@ -44,12 +42,11 @@
             if (!viewMetadata.cameraMetadata) {
                 const pitch = quat.fromEuler([], -45, 0, 0)
                 const yaw = quat.fromEuler([], 0, 45, 0)
-                const toRad = Math.PI/180
+                const toRad = Math.PI / 180
                 CameraAPI.update([5, 10, 5], quat.multiply([], yaw, pitch))
                 CameraTracker.xRotation = 45 * toRad
-                CameraTracker.yRotation = -45* toRad
-            }
-            else {
+                CameraTracker.yRotation = -45 * toRad
+            } else {
                 CameraAPI.restoreState(viewMetadata.cameraMetadata)
                 CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
                 CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
@@ -158,11 +155,6 @@
             <small>{LOCALIZATION_EN.MAXIMUM_NUMBER_OF_LIGHTS}</small>
         </div>
     {/if}
-{:else}
-    <button data-sveltebuttondefault="-"  class="stop-button" on:click={() => EntityStateController.stopPlayState()}>
-        <Icon styles="font-size: .85rem">pause</Icon>
-        <ToolTip content={LOCALIZATION_EN.STOP}/>
-    </button>
 {/if}
 
 <style>

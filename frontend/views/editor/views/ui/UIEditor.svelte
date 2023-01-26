@@ -1,7 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
-    import GIZMOS from "../../static/GIZMOS.ts";
     import UIAPI from "../../../../../engine-core/lib/rendering/UIAPI";
     import SettingsStore from "../../stores/SettingsStore";
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
@@ -9,10 +8,8 @@
     import EngineStore from "../../stores/EngineStore";
 
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import HierarchyController from "../hierarchy/lib/HierarchyController";
     import GPU from "../../../../../engine-core/GPU";
-    import ConversionAPI from "../../../../../engine-core/lib/math/ConversionAPI";
     import AlertController from "../../../../components/alert/AlertController";
 
     const INTERNAL_ID = crypto.randomUUID()
@@ -38,7 +35,6 @@
         const bBox = e.target.getBoundingClientRect()
         const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-entityid"))
 
-        console.trace(e.target, bBox.width)
         tooltip.style.width = bBox.width + "px"
         tooltip.style.height = bBox.height + "px"
         tooltip.style.top = bBox.top + "px"

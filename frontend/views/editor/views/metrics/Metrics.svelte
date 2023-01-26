@@ -1,10 +1,8 @@
 <script>
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
-    import {onDestroy, onMount} from "svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import MetricsController from "../../../../../engine-core/lib/utils/MetricsController";
     import Icon from "../../../../components/icon/Icon.svelte";
-    import Range from "../../../../components/range/Range.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
 
     let isRecording = false

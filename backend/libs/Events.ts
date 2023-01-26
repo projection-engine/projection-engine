@@ -32,6 +32,16 @@ export default class Events {
             ProjectController.prepareForUse(pathToProject).catch()
         })
         ipcMain.on(ROUTES.FILE_DIALOG, Events.fileDialog)
+
+        ipcMain.on("minimize",  () => ProjectController.window.minimize())
+        ipcMain.on("maximize", () => {
+            if(!ProjectController.window.isMaximized())
+                ProjectController.window.maximize()
+            else
+                ProjectController.window.unmaximize()
+        })
+        ipcMain.on("close", () => app.quit())
+
         ipcMain.on(ROUTES.OPEN_SELECTION, Events.openSelection)
         ipcMain.on(ROUTES.RESOLVE_NAME, Events.resolveName)
         ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)

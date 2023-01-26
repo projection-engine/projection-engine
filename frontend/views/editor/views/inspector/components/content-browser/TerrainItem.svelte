@@ -1,6 +1,6 @@
 <script>
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
-    import Selector from "../../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../../components/selector/Selector.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";

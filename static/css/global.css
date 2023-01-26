@@ -152,7 +152,21 @@ a {
     color: inherit;
     text-decoration: none;
 }
-
+.wrapper.footer-header{
+    background: var(--pj-background-primary);
+    border-radius: 3px;
+    height: 18px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 0 2px;
+}
+.wrapper.footer-header > small {
+    font-size: .675rem;
+}
+.wrapper.footer-header > [data-sveltevertdivider="-"] {
+    height: 10px;
+}
 * {
     text-shadow: 1px 1px rgba(0, 0, 0, .2);
     font-family: 'Roboto';

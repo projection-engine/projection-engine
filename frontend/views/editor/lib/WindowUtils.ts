@@ -6,7 +6,6 @@ import GPU from "../../../../engine-core/GPU";
 
 const {ipcRenderer, shell} = window.require("electron")
 export default class WindowUtils {
-    static openAbout?:Function
     static callMethod(id:string) {
         switch (id) {
             case "save":
@@ -30,9 +29,7 @@ export default class WindowUtils {
             case "learn-more":
                 shell.openExternal("https://github.com/projection-engine").catch()
                 break
-            case "about":
-                WindowUtils.openAbout?.()
-                break
+
             case "fullscreen":
                GPU.canvas.requestFullscreen().catch()
                 break

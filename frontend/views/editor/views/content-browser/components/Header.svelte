@@ -7,7 +7,7 @@
     import ITEM_TYPES from "../templates/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import importFile from "../../../utils/import-file";
-    import ViewHeader from "../../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import getDropdownHeaderStyles from "../../../../../components/dropdown/utils/get-dropdown-header-styles";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";

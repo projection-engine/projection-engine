@@ -9,7 +9,6 @@
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
     import {onDestroy, onMount} from "svelte";
-    import NODE_MAP from "../static/NODE_MAP";
 
     export let canvasAPI: Canvas
     let tab = 0

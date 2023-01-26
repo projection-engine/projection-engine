@@ -3,7 +3,6 @@
 
     import AddOptions from "./components/AddOptions.svelte";
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import EntityStateController from "../../lib/controllers/EntityStateController";
     import CameraSettings from "../preferences/components/CameraSettings.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
@@ -21,14 +20,7 @@
 
 
 <div class="left-content">
-    <button data-sveltebuttondefault="-"
-            on:click={() => EntityStateController.startPlayState()}
-            data-svelteview-header-button="-"
-    >
-        <Icon styles="font-size: 1rem">play_arrow</Icon>
-        <ToolTip content={LOCALIZATION_EN.PLAY}/>
-    </button>
-    <div data-sveltevertdivider="-" style="height: 15px; margin: 0"></div>
+ 
     <AddOptions/>
     <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
         <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">

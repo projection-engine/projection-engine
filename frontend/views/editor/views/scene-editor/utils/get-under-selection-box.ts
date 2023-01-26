@@ -5,7 +5,6 @@ import PickingAPI from "../../../../../../engine-core/lib/utils/PickingAPI";
 import Engine from "../../../../../../engine-core/Engine";
 import SelectionStore from "../../../stores/SelectionStore";
 import SelectionWorker from "./SelectionWorker";
-import StaticFBO from "../../../../../../engine-core/lib/StaticFBO";
 import VisibilityRenderer from "../../../../../../engine-core/runtime/VisibilityRenderer";
 
 export default function getUnderSelectionBox(_, startCoords, endCoords) {

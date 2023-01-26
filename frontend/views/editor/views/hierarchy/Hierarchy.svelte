@@ -1,6 +1,6 @@
 <script>
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
 
     import EngineHierarchyView from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";

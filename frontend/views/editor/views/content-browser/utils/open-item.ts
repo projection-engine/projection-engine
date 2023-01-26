@@ -2,7 +2,7 @@ import LevelController from "../../../lib/utils/LevelController";
 import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
-import VIEWS from "../../../../../components/view/static/VIEWS";
+import VIEWS from "../../../components/view/static/VIEWS";
 import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools";
 import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
 import FS from "../../../../../lib/FS/FS";

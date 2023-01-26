@@ -89,6 +89,7 @@ export default class ProjectController {
             height: height / 2,
             darkTheme: true,
             autoHideMenuBar: true,
+            titleBarStyle: 'hidden',
             webPreferences: {
                 enableBlinkFeatures: "PreciseMemoryInfo",
                 webSecurity: false,

@@ -2,7 +2,7 @@
     import StyleField from "./UIStyles.svelte";
     import COMPONENTS from "../../../../../../../engine-core/static/COMPONENTS.ts"
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
-    import Selector from "../../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../../components/selector/Selector.svelte";
     import removeComponent from "../../utils/remove-component";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import FilesAPI from "../../../../lib/fs/FilesAPI";

@@ -10,6 +10,7 @@
     import {STORAGE_KEYS} from "../../static/STORAGE_KEYS";
     import ROUTES from "../../../backend/static/ROUTES";
     import AlertController from "../../components/alert/AlertController";
+    import FrameWrapper from "../../components/frame/FrameWrapper.svelte";
 
 
     const pathLib = window.require("path")
@@ -61,6 +62,7 @@
 
 </script>
 
+<FrameWrapper/>
 <div class="wrapper">
         <Header
                 defaultVersion={defaultVersion}

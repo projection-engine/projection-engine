@@ -5,7 +5,7 @@
     import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
-    import ViewStateController from "../../../../components/view/libs/ViewStateController";
+    import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";

@@ -1,10 +1,10 @@
 <script>
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import ShaderEditorTools from "../libs/ShaderEditorTools";
-    import Selector from "../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
     import ToolTip from "../../../../../components/tooltip/ToolTip.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
-    import ViewHeader from "../../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import addComment from "../utils/add-comment";
 
 

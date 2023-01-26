@@ -1,6 +1,5 @@
 import createEnv from "./utils/create-env";
 import ProjectController from "./libs/ProjectController";
-import {AngleBackends} from "./static/ANGLE_BACKENDS";
 import SETTINGS_PATH from "./static/SETTINGS_PATH";
 import DEFAULT_GLOBAL_SETTINGS from "./static/DEFAULT_GLOBAL_SETTINGS";
 

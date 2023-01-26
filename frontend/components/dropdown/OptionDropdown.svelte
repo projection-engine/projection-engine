@@ -11,6 +11,7 @@
     export let cleanLayout: boolean
     export let tooltip: string
     export let noPadding: boolean
+    export let buttonStyles: string
 
     $: styles = cleanLayout ? undefined : getDropdownHeaderStyles()
 </script>
@@ -19,7 +20,7 @@
     <button data-sveltebuttondefault="-"
             slot="button"
             data-svelteview-header-dropdown={cleanLayout? "" : "-"}
-            style={cleanLayout ? "border: none; display: flex; align-items: center" : undefined}
+            style={buttonStyles + (cleanLayout ? "border: none; display: flex; align-items: center" : undefined)}
     >
         {#if labelAsIcon}
             <Icon>{label}</Icon>

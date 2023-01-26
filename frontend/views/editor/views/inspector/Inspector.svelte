@@ -1,6 +1,6 @@
 <script>
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import ViewHeader from "../../../../components/view/components/ViewHeader.svelte";
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import SelectionStore from "../../stores/SelectionStore";
     import FilesStore from "../../stores/FilesStore";

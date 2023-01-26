@@ -1,4 +1,4 @@
-import VIEWS from "../../../components/view/static/VIEWS";
+import VIEWS from "../components/view/static/VIEWS";
 import VIEWPORT_TABS from "./VIEWPORT_TABS";
 
 export default [

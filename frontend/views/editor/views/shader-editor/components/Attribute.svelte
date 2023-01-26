@@ -1,7 +1,7 @@
 <script>
     import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES";
     import Checkbox from "../../../../../components/checkbox/Checkbox.svelte";
-    import Selector from "../../../../../components/selector/Selector.svelte";
+    import Selector from "../../../components/selector/Selector.svelte";
     import getDropdownHeaderStyles from "../../../../../components/dropdown/utils/get-dropdown-header-styles";
     import Range from "../../../../../components/range/Range.svelte";
     import ColorPicker from "../../../../../components/color-picker/ColorPicker.svelte";
