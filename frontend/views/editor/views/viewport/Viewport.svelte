@@ -89,7 +89,6 @@
         unsubscribeSettings()
     })
 
-    $: console.log(viewTemplates, tabs)
 </script>
 
 <div

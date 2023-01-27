@@ -53,14 +53,8 @@ export default class ShaderLink {
                 const targetIO = node.checkAgainstIO<Input>(X, Y, true)
 
                 if (targetIO && targetIO.accept.includes(sourceIO.type)) {
-                    const foundExisting = canvasAPI.links.findIndex(l => l.targetRef === targetIO)
-
                     const newLink = new ShaderLink(node, sourceNode, targetIO, sourceIO)
-
-                    if (foundExisting > -1)
-                        canvasAPI.links[foundExisting] = newLink
-                    else
-                        canvasAPI.links.push(newLink)
+                    canvasAPI.addLink(newLink)
                 } else if (targetIO)
                     AlertController.error(LOCALIZATION_EN.INVALID_TYPE)
                 break

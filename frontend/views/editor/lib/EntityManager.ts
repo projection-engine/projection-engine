@@ -2,36 +2,13 @@ import Engine from "../../../../engine-core/Engine";
 import AXIS from "../../../../engine-tools/static/AXIS";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import HierarchyController from "../views/hierarchy/lib/HierarchyController";
-
-import UndoRedoAPI from "./utils/UndoRedoAPI";
+import EditorActionHistory from "./utils/EditorActionHistory";
 import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS";
 import EntityNameController from "./controllers/EntityNameController";
 import getPivotPointMatrix from "../../../../engine-tools/utils/get-pivot-point-matrix";
 import SelectionStore from "../stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
-
-function removeHierarchy(state, entity) {
-    if (!entity)
-        return
-    for (let c = 0; c < entity.children.length; c++)
-        removeHierarchy(state, entity.children[c])
-    EntityAPI.removeEntity(entity.id)
-}
-
-function deleteEntity(entity: Entity, single?: boolean) {
-    if (!single)
-        SelectionStore.updateStore({
-            ...SelectionStore.data,
-            TARGET: SelectionStore.TYPES.ENGINE,
-            array: [],
-            lockedEntity: undefined
-        })
-    if (entity.parent)
-        entity.parent.children = entity.parent.children.filter(e => e !== entity)
-    removeHierarchy(Engine.entities.map, entity)
-}
-
 
 
 export default class EntityManager {
@@ -57,12 +34,12 @@ export default class EntityManager {
     static replaceBlock(toRemove: string[], toAdd: Entity[]) {
         const replacedMap = {}
         for (let i = 0; i < toRemove.length; i++)
-            deleteEntity(Engine.entities.map.get(toRemove[i]), true)
+            EntityAPI.removeEntity(toRemove[i])
         for (let i = 0; i < toAdd.length; i++) {
-            const e = toAdd[i]
-            EntityAPI.addEntity(e)
-            replacedMap[e.id] = true
-            EntityNameController.renameEntity(e.name, e)
+            const entity = toAdd[i]
+            EntityAPI.addEntity(entity)
+            replacedMap[entity.id] = true
+            EntityNameController.renameEntity(entity.name, entity)
         }
         EntityManager.#updateStructure(replacedMap)
     }
@@ -72,7 +49,7 @@ export default class EntityManager {
             Engine.entities.map.forEach(e => EntityAPI.removeEntity(e.id))
             EntityNameController.byName.clear()
         } else
-            UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
+            EditorActionHistory.save(block, true)
         const selected = []
         for (let i = 0; i < block.length; i++) {
             const e = block[i]
@@ -87,28 +64,32 @@ export default class EntityManager {
                 TARGET: SelectionStore.TYPES.ENGINE,
                 array: selected
             })
-            UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
+            EditorActionHistory.save(block)
         } else
             SelectionStore.lockedEntity = block[0]?.id
         EntityManager.#updateStructure()
     }
 
-    static removeBlock(payload:string[]) {
-        UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
+    static removeBlock(payload: string[]) {
+        const mapped = payload.map(e => Engine.entities.map.get(e))
+        EditorActionHistory.save(mapped)
+        EditorActionHistory.save(mapped, true)
+
         for (let i = 0; i < payload.length; i++)
-            deleteEntity(Engine.entities.map.get(payload[i]), true)
+            EntityAPI.removeEntity(payload[i])
         SelectionStore.updateStore({
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,
             array: [],
             lockedEntity: Engine.entities.array[0].id
         })
-        UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
+
         EntityManager.#updateStructure()
     }
 
-    static add(entity:Entity) {
-        UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
+    static add(entity: Entity) {
+        EditorActionHistory.save(entity, true)
+        EditorActionHistory.save(entity)
         EntityNameController.renameEntity(entity.name, entity)
         SelectionStore.updateStore({
             ...SelectionStore.data,
@@ -118,11 +99,10 @@ export default class EntityManager {
         })
         getPivotPointMatrix(entity)
         EntityAPI.addEntity(entity)
-        UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
         EntityManager.#updateStructure()
     }
 
-    static linkMultiple(payload:string[]) {
+    static linkMultiple(payload: string[]) {
         const values = Engine.entities.array
         for (let i = 0; i < values.length; i++) {
             const s = values[i]
@@ -131,13 +111,6 @@ export default class EntityManager {
                 EntityAPI.linkEntities(s, found)
             }
         }
-        EntityManager.#updateStructure()
-    }
-
-    static removeEntity(id:string) {
-        UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
-        deleteEntity(Engine.entities.map.get(id))
-        UndoRedoAPI.save(Engine.entities.array, ACTION_HISTORY_TARGETS.ENGINE)
         EntityManager.#updateStructure()
     }
 }

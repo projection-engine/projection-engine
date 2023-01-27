@@ -7,9 +7,7 @@
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
     import addComment from "../utils/add-comment";
 
-
     export let openFile
-    // export let compile
     export let initializeFromFile
     export let nodes
     export let openSourceCode
@@ -28,16 +26,7 @@
             <Icon styles="font-size: .9rem">save</Icon>
             {LOCALIZATION_EN.SAVE}
         </button>
-<!--        <div data-sveltevertdivider="-"></div>-->
-<!--        <button data-sveltebuttondefault="-" -->
-<!--                disabled={!openFile}-->
-<!--                data-svelteview-header-button="-"-->
-<!--                style="max-width: unset"-->
-<!--                on:click={compile}-->
-<!--        >-->
-<!--            <Icon styles="font-size: .9rem">code</Icon>-->
-<!--            {LOCALIZATION_EN.COMPILE}-->
-<!--        </button>-->
+
         <div data-sveltevertdivider="-"></div>
         <Selector
                 styles={`max-width: ${openFile ? "10vw" : "15vw"};`}
@@ -48,15 +37,33 @@
                 handleChange={initializeFromFile}
                 selected={openFile}
         />
+
     </div>
     {#if openFile}
         <div data-svelteinline="-" style="width: 100%; justify-content: flex-end">
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"
+                    style="max-width: unset"
+                    on:click={() =>  canvasAPI.history.undo()}>
+                <Icon styles="font-size: .9rem">undo</Icon>
+                {LOCALIZATION_EN.UNDO}
+            </button>
+
+            <button data-sveltebuttondefault="-"
+                    data-svelteview-header-button="-"
+                    style="max-width: unset"
+                    on:click={() => canvasAPI.history.redo()}>
+                {LOCALIZATION_EN.REDO}
+                <Icon styles="font-size: .9rem">redo</Icon>
+            </button>
+            <div data-sveltevertdivider="-"></div>
+            <button data-sveltebuttondefault="-"
+                    data-svelteview-header-button="-"
+                    style="max-width: unset"
                     on:click={() => addComment(canvasAPI)}
             >
                 <Icon styles="font-size: .9rem">chat_bubble_outline</Icon>
-                <ToolTip content={LOCALIZATION_EN.ADD_COMMENT}/>
+                {LOCALIZATION_EN.ADD_COMMENT}
             </button>
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"

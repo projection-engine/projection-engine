@@ -1,5 +1,5 @@
 import FilesAPI from "../fs/FilesAPI"
-import UndoRedoAPI from "./UndoRedoAPI";
+import EditorActionHistory from "./EditorActionHistory";
 import Engine from "../../../../../engine-core/Engine";
 import RegistryAPI from "../fs/RegistryAPI";
 import GPU from "../../../../../engine-core/GPU";
@@ -107,7 +107,7 @@ export default class LevelController {
             array: [],
             lockedEntity: undefined
         })
-        UndoRedoAPI.clear()
+        EditorActionHistory.clear()
         ipcRenderer.on(
             ROUTES.ENTITIES,
             async (_, data) => {

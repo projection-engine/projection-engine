@@ -4,7 +4,7 @@
     import componentConstructor from "../../../../utils/component-constructor";
     import SelectionStore from "../../../../stores/SelectionStore";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
-    import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
+    import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";
     import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
@@ -33,9 +33,9 @@
     {#each NATIVE_COMPONENTS as [key,  label, icon]}
         <button data-sveltebuttondefault="-"
                 on:click={(e) =>{
-                    UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+                    EditorActionHistory.save(entity)
                     entity.addComponent(key)
-                    UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+                    EditorActionHistory.save(entity)
 
                     SelectionStore.updateStore()
                     e.target.closeDropdown()

@@ -1,12 +1,12 @@
 const MAX_DEPTH = 50
-export default class UndoRedo {
+export default class UndoRedo <T>{
 
     #onDirtyState = false
     index = 0
-    history = [null]
+    history:T[] = [null]
     dirtyState
 
-    save(state) {
+    save(state:T) {
         if (this.index < this.history.length - 1)
             this.history = this.history.slice(0, this.index);
         if (!this.#onDirtyState) {
@@ -25,7 +25,7 @@ export default class UndoRedo {
         this.index = Math.max(Math.min(this.history.length - 1, this.index), 1)
     }
 
-    undo() {
+    undo():T {
         const previousIndex = this.index
         if (this.dirtyState) {
             this.history.push(this.dirtyState)
@@ -45,7 +45,7 @@ export default class UndoRedo {
     }
 
 
-    redo() {
+    redo():T {
         const previousIndex = this.index
         if (this.index < this.history.length - 1) {
             this.index++

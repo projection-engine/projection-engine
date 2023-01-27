@@ -8,7 +8,7 @@
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
     import HeaderOptions from "./components/HeaderOptions.svelte";
-    import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
+    import EditorActionHistory from "../../lib/utils/EditorActionHistory";
     import Icon from "../../../../components/icon/Icon.svelte";
     import FS from "../../../../lib/FS/FS";
     import Canvas from "./libs/Canvas";
@@ -17,6 +17,7 @@
     import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
     import SideBar from "./components/SideBar.svelte";
     import NODE_MAP from "./static/NODE_MAP";
+    import ShaderEditorActionHistory from "./libs/ShaderEditorActionHistory";
 
     const {shell} = window.require("electron")
 
@@ -26,7 +27,7 @@
 
     let engine
 
-    const canvas = new Canvas()
+    const canvas = new Canvas( )
     const internalID = crypto.randomUUID()
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
 
@@ -55,7 +56,6 @@
 
     onDestroy(() => {
         unsubscribeEngine()
-        UndoRedoAPI.clearShaderEditorStates()
         ContextMenuController.destroy(internalID)
         if (canvas.ctx?.canvas)
             HotKeysController.unbindAction(canvas.ctx.canvas)
@@ -66,12 +66,10 @@
         canvas.clearState()
 
         await parseFile(openFile, canvas)
-        canvas.addNode(new NODE_MAP.Material())
-        canvas.clear()
+        canvas.addNode(new NODE_MAP.Material(), true)
     }
 
     function initializeFromFile(v) {
-        UndoRedoAPI.clearShaderEditorStates()
         canvas.clearState()
         openFile = v
         canvas.openFile = v
@@ -98,9 +96,11 @@
             initializeFromFile(newFile)
             ShaderEditorTools.toOpenFile = undefined
             if (state != null && newFile) {
-                state.nodes.forEach(n => canvas.addNode(n))
-                canvas.links.push(...state.links)
-                canvas.comments.push(...state.comments)
+                canvas.clearState()
+                state.nodes.forEach(n => canvas.addNode(n, true, true))
+                state.links.forEach(n => canvas.addLink(n, true))
+                state.comments.forEach(n => canvas.addComment(n, true, true))
+
                 state.selection.forEach(k => {
                     const found = canvas.nodes.find(n => n.id === k) || canvas.comments.find(n => n.id === k)
                     canvas.selectionMap.set(k, found)

@@ -2,7 +2,7 @@ import ViewportActions from "../lib/utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import GIZMOS from "../static/GIZMOS";
 import SelectionStore from "../stores/SelectionStore";
-import UndoRedoAPI from "../lib/utils/UndoRedoAPI";
+import EditorActionHistory from "../lib/utils/EditorActionHistory";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 
 import selectEntityHierarchy from "../utils/select-entity-hierarchy";
@@ -170,11 +170,11 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
         },
         UNDO: {
             require: settings.viewportHotkeys.UNDO,
-            callback: () => UndoRedoAPI.undo()
+            callback: () => EditorActionHistory.undo()
         },
         REDO: {
             require: settings.viewportHotkeys.REDO,
-            callback: () => UndoRedoAPI.redo()
+            callback: () => EditorActionHistory.redo()
         },
         GROUP: {
             label: "Group selected",

@@ -10,12 +10,16 @@ import type ShaderComment from "../templates/ShaderComment";
 import NodesIndex from "../static/NODE_MAP";
 import NODE_MAP from "../static/NODE_MAP";
 import DynamicMap from "../../../../../../engine-core/resource-libs/DynamicMap";
+import ShaderEditorActionHistory from "./ShaderEditorActionHistory";
+import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
+import Engine from "../../../../../../engine-core/Engine";
 
 export default class Canvas {
     #initialized = false
     openFile?: OpenFile
     #nodes = new DynamicMap<ShaderNode>()
     #hasMaterial = false
+    history = new ShaderEditorActionHistory()
 
     get nodes(): ShaderNode[] {
         return this.#nodes.array
@@ -31,6 +35,49 @@ export default class Canvas {
     selectionMap = new Map<string, ShaderNode | ShaderComment>()
     #lastSelection: ShaderNode | ShaderComment | undefined
 
+    constructor() {
+        this.history.canvas = this
+    }
+
+    addComment(comment: ShaderComment, noSerialization?: boolean, noUpdate?: boolean) {
+        if (!noSerialization) {
+            this.history.save([comment], true)
+            this.history.save([comment])
+        }
+        this.comments.push(comment)
+        if (!noUpdate)
+            this.clear()
+    }
+
+    removeComments(toRemove: string[], noSerialization?: boolean) {
+        if (!noSerialization) {
+            const mapped = this.comments.filter(e => toRemove.includes(e.id))
+            this.history.save(mapped)
+            this.history.save(mapped, true)
+        }
+        toRemove.forEach(id => {
+            const index = this.comments.findIndex(c => c.id == id)
+            if (index > -1)
+                this.comments.splice(index, 1)
+        })
+        this.clear()
+    }
+
+    addLink(link: ShaderLink, noUpdate?: boolean) {
+        const foundExisting = this.links.findIndex(l => l.targetRef === link.targetRef)
+        if (foundExisting > -1)
+            this.links[foundExisting] = link
+        else
+            this.links.push(link)
+        if (!noUpdate)
+            this.clear()
+    }
+
+    removeLink(index: number) {
+        this.links.splice(index, 1)
+        this.clear()
+    }
+
     get lastSelection() {
         return this.#lastSelection
     }
@@ -40,20 +87,41 @@ export default class Canvas {
         this.lastSelectionListener?.()
     }
 
-    addNode(node: ShaderNode) {
+    addNode(node: ShaderNode, noSerialization?: boolean, noUpdate?: boolean) {
+        if (!noSerialization) {
+            this.history.save([node], true)
+            this.history.save([node])
+        }
         const isMaterial = node.getSignature() === NODE_MAP.Material.signature
         if (isMaterial && this.#hasMaterial)
             return
         if (isMaterial)
             this.#hasMaterial = true
         this.#nodes.add(node.id, node)
+        if (!noUpdate)
+            this.clear()
     }
 
-    removeNode(id: string) {
-        this.#nodes.delete(id)
+    removeNodes(toRemove: string[], noSerialization?: boolean) {
+        if (!noSerialization) {
+            const mapped = this.nodes.filter(e => toRemove.includes(e.id))
+            this.history.save(mapped)
+            this.history.save(mapped, true)
+        }
+        toRemove.forEach(id => {
+            if (!this.#nodes.has(id))
+                return
+            this.#nodes.delete(id)
+            const toRemove = this.links.filter(l => l.sourceNode?.id === id || l.targetNode?.id === id)
+            toRemove.forEach(l => {
+                this.removeLink(this.links.indexOf(l))
+            })
+        })
+        this.clear()
     }
 
     clearState() {
+        this.history.clear()
         this.#hasMaterial = false
         this.links.length = 0
         this.comments.length = 0
