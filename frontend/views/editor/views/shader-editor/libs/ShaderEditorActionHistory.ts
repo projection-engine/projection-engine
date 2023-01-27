@@ -4,6 +4,8 @@ import ShaderNode from "../templates/ShaderNode";
 import ShaderComment from "../templates/ShaderComment";
 import MutableObject from "../../../../../../engine-core/MutableObject";
 import ShaderEditorTools from "./ShaderEditorTools";
+import AlertController from "../../../../../components/alert/AlertController";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
 interface Action {
     toRemove: string[]
@@ -20,6 +22,9 @@ export default class ShaderEditorActionHistory {
     }
 
     save(value: (ShaderNode | ShaderComment)[], isRemoval?: boolean) {
+        if(value.length === 0)
+            return
+        console.trace(value)
         const data = value.map(v => {
             if (v instanceof ShaderNode)
                 return ShaderEditorTools.serializeNode(v)
@@ -34,15 +39,18 @@ export default class ShaderEditorActionHistory {
 
     undo() {
         const action = this.#cache.undo()
-        if (action)
+        if (action) {
+            AlertController.log(LOCALIZATION_EN.UNDOING_CHANGES)
             this.#apply(action)
+        }
     }
 
     redo() {
         const action = this.#cache.redo()
-        console.trace(action)
-        if (action)
+        if (action) {
+            AlertController.log(LOCALIZATION_EN.REDOING_CHANGES)
             this.#apply(action)
+        }
     }
 
     #apply(action: Action) {

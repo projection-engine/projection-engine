@@ -10,8 +10,6 @@ import ShaderLink from "../templates/ShaderLink";
 
 export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
     const res = RegistryAPI.getRegistryEntry(openFile.registryID)
-    canvasAPI.nodes.length = 0
-
     if (!res)
         return
     let dataToParse = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + res.path, "json")
@@ -23,7 +21,7 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
                 const parsed = ShaderEditorTools.parseNode(node)
                 if (!parsed)
                     continue
-                canvasAPI.addNode(parsed)
+                canvasAPI.addNode(parsed, true, true)
             }
         if (dataToParse.comments)
             for (let i = 0; i < dataToParse.comments.length; i++) {
@@ -33,7 +31,7 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
                 parsed.name = node.name
                 parsed.width = node.width
                 parsed.height = node.height
-                canvasAPI.comments.push(parsed)
+                canvasAPI.addComment(parsed, true, true)
             }
         if (dataToParse.links)
             for (let i = 0; i < dataToParse.links.length; i++) {
@@ -55,10 +53,12 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
                     const sourceRef = sourceNode.output.find(i => i.key === current.sourceRef)
                     const link = new ShaderLink(targetNode, sourceNode, targetRef, sourceRef)
 
-                    canvasAPI.links.push(link)
+                    canvasAPI.addLink(link, true)
                 } catch (err) {
                     console.warn(err)
                 }
             }
     }
+
+    canvasAPI.clear()
 }

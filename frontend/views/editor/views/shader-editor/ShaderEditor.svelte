@@ -66,8 +66,7 @@
         canvas.clearState()
 
         await parseFile(openFile, canvas)
-        canvas.addNode(new NODE_MAP.Material())
-        canvas.clear()
+        canvas.addNode(new NODE_MAP.Material(), true)
     }
 
     function initializeFromFile(v) {
@@ -98,9 +97,10 @@
             ShaderEditorTools.toOpenFile = undefined
             if (state != null && newFile) {
                 canvas.clearState()
-                state.nodes.forEach(n => canvas.addNode(n))
-                canvas.links.push(...state.links)
-                canvas.comments.push(...state.comments)
+                state.nodes.forEach(n => canvas.addNode(n, true, true))
+                state.links.forEach(n => canvas.addLink(n, true))
+                state.comments.forEach(n => canvas.addComment(n, true, true))
+
                 state.selection.forEach(k => {
                     const found = canvas.nodes.find(n => n.id === k) || canvas.comments.find(n => n.id === k)
                     canvas.selectionMap.set(k, found)

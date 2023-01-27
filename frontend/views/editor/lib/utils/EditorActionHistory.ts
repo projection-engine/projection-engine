@@ -51,7 +51,6 @@ export default class EditorActionHistory {
             AlertController.log(LOCALIZATION_EN.REDOING_CHANGES)
             EditorActionHistory.#apply(action)
         }
-
     }
 
     static #apply(currentAction: Action) {

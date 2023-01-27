@@ -58,7 +58,7 @@ export default class ShaderEditorTools {
 
     static paste(canvasAPI: Canvas) {
         ShaderEditorTools.copied.forEach(d => {
-            canvasAPI.addNode(ShaderEditorTools.parseNode({...d, id: crypto.randomUUID()}))
+            canvasAPI.addNode(ShaderEditorTools.parseNode({...d, id: crypto.randomUUID()}), true, true)
         })
         canvasAPI.clear()
     }

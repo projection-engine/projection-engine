@@ -49,7 +49,7 @@ export default class EntityManager {
             Engine.entities.map.forEach(e => EntityAPI.removeEntity(e.id))
             EntityNameController.byName.clear()
         } else
-            EditorActionHistory.save(Engine.entities.array)
+            EditorActionHistory.save(block, true)
         const selected = []
         for (let i = 0; i < block.length; i++) {
             const e = block[i]
@@ -64,7 +64,7 @@ export default class EntityManager {
                 TARGET: SelectionStore.TYPES.ENGINE,
                 array: selected
             })
-            EditorActionHistory.save(Engine.entities.array)
+            EditorActionHistory.save(block)
         } else
             SelectionStore.lockedEntity = block[0]?.id
         EntityManager.#updateStructure()
@@ -88,7 +88,8 @@ export default class EntityManager {
     }
 
     static add(entity: Entity) {
-        EditorActionHistory.save(Engine.entities.array)
+        EditorActionHistory.save(entity, true)
+        EditorActionHistory.save(entity)
         EntityNameController.renameEntity(entity.name, entity)
         SelectionStore.updateStore({
             ...SelectionStore.data,
@@ -98,7 +99,6 @@ export default class EntityManager {
         })
         getPivotPointMatrix(entity)
         EntityAPI.addEntity(entity)
-        EditorActionHistory.save(Engine.entities.array)
         EntityManager.#updateStructure()
     }
 

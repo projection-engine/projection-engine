@@ -69,7 +69,6 @@ export default function shaderActions( canvasAPI: Canvas) {
                 })
                 canvasAPI.removeNodes(toRemoveNodes)
                 canvasAPI.removeComments(toRemoveComments)
-                canvasAPI.clear()
             }
         },
         PASTE: {

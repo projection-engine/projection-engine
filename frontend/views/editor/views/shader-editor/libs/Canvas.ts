@@ -39,38 +39,43 @@ export default class Canvas {
         this.history.canvas = this
     }
 
-    addComment(comment: ShaderComment, noSerialization?: boolean) {
-        if (!noSerialization)
-            this.history.save(this.comments)
+    addComment(comment: ShaderComment, noSerialization?: boolean, noUpdate?: boolean) {
+        if (!noSerialization) {
+            this.history.save([comment], true)
+            this.history.save([comment])
+        }
         this.comments.push(comment)
-        if (!noSerialization)
-            this.history.save(this.comments)
-        this.clear()
+        if (!noUpdate)
+            this.clear()
     }
 
     removeComments(toRemove: string[], noSerialization?: boolean) {
         if (!noSerialization) {
-            this.history.save(this.comments)
-            this.history.save(this.comments, true)
+            const mapped = this.comments.filter(e => toRemove.includes(e.id))
+            this.history.save(mapped)
+            this.history.save(mapped, true)
         }
         toRemove.forEach(id => {
             const index = this.comments.findIndex(c => c.id == id)
             if (index > -1)
                 this.comments.splice(index, 1)
         })
+        this.clear()
     }
 
-    addLink(link: ShaderLink) {
+    addLink(link: ShaderLink, noUpdate?: boolean) {
         const foundExisting = this.links.findIndex(l => l.targetRef === link.targetRef)
         if (foundExisting > -1)
             this.links[foundExisting] = link
         else
             this.links.push(link)
-        this.clear()
+        if (!noUpdate)
+            this.clear()
     }
 
     removeLink(index: number) {
         this.links.splice(index, 1)
+        this.clear()
     }
 
     get lastSelection() {
@@ -82,25 +87,28 @@ export default class Canvas {
         this.lastSelectionListener?.()
     }
 
-    addNode(node: ShaderNode, noSerialization?: boolean) {
-        if (!noSerialization)
-            this.history.save(this.nodes)
+    addNode(node: ShaderNode, noSerialization?: boolean, noUpdate?: boolean) {
+        if (!noSerialization) {
+            this.history.save([node], true)
+            this.history.save([node])
+        }
         const isMaterial = node.getSignature() === NODE_MAP.Material.signature
         if (isMaterial && this.#hasMaterial)
             return
         if (isMaterial)
             this.#hasMaterial = true
         this.#nodes.add(node.id, node)
-        if (!noSerialization)
-            this.history.save(this.nodes)
+        if (!noUpdate)
+            this.clear()
     }
 
-    removeNodes(nodes: string[], noSerialization?: boolean) {
+    removeNodes(toRemove: string[], noSerialization?: boolean) {
         if (!noSerialization) {
-            this.history.save(this.nodes)
-            this.history.save(this.nodes, true)
+            const mapped = this.nodes.filter(e => toRemove.includes(e.id))
+            this.history.save(mapped)
+            this.history.save(mapped, true)
         }
-        nodes.forEach(id => {
+        toRemove.forEach(id => {
             if (!this.#nodes.has(id))
                 return
             this.#nodes.delete(id)
@@ -109,6 +117,7 @@ export default class Canvas {
                 this.removeLink(this.links.indexOf(l))
             })
         })
+        this.clear()
     }
 
     clearState() {
