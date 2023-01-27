@@ -7,7 +7,7 @@ import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
-import UndoRedoAPI from "../utils/UndoRedoAPI";
+import EditorActionHistory from "../utils/EditorActionHistory";
 import EntityConstructor from "../controllers/EntityConstructor";
 import GPU from "../../../../../engine-core/GPU";
 import Entity from "../../../../../engine-core/instances/Entity";
@@ -114,10 +114,10 @@ export default class Loader {
                     if (!entity || !entity.meshComponent) return;
                     const result = await FileSystemAPI.loadMaterial(data)
                     if (result) {
-                        UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+                        EditorActionHistory.save(entity)
                         const component = entity.meshComponent
                         component.materialID = data
-                        UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+                        EditorActionHistory.save(entity)
                     } else
                         console.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break

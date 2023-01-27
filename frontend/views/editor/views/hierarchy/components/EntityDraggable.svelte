@@ -6,7 +6,7 @@
     import EntityNameController from "../../../lib/controllers/EntityNameController";
     import KEYS from "../../../static/KEYS.ts";
     import handleDrop from "../utils/handle-drop";
-    import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
+    import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
     import ACTION_HISTORY_TARGETS from "../../../static/ACTION_HISTORY_TARGETS.ts";
     import SelectionStore from "../../../stores/SelectionStore";
     import Engine from "../../../../../../engine-core/Engine";
@@ -43,9 +43,9 @@
     })
     onDestroy(() => draggable.onDestroy())
     function rename(){
-        UndoRedoAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
+        EditorActionHistory.save(node)
         EntityNameController.renameEntity(cacheName, node)
-        UndoRedoAPI.save(node, ACTION_HISTORY_TARGETS.ENGINE)
+        EditorActionHistory.save(node)
     }
     $: nodeColor = lockedEntity === node.id ? undefined : node._hierarchyColor ? `color: rgb(${node._hierarchyColor})` : "color: var(--folder-color)";
 </script>

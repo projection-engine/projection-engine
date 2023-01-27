@@ -8,7 +8,7 @@
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
     import HeaderOptions from "./components/HeaderOptions.svelte";
-    import UndoRedoAPI from "../../lib/utils/UndoRedoAPI";
+    import EditorActionHistory from "../../lib/utils/EditorActionHistory";
     import Icon from "../../../../components/icon/Icon.svelte";
     import FS from "../../../../lib/FS/FS";
     import Canvas from "./libs/Canvas";
@@ -55,7 +55,7 @@
 
     onDestroy(() => {
         unsubscribeEngine()
-        UndoRedoAPI.clearShaderEditorStates()
+        EditorActionHistory.clearShaderEditorStates()
         ContextMenuController.destroy(internalID)
         if (canvas.ctx?.canvas)
             HotKeysController.unbindAction(canvas.ctx.canvas)
@@ -71,7 +71,7 @@
     }
 
     function initializeFromFile(v) {
-        UndoRedoAPI.clearShaderEditorStates()
+        EditorActionHistory.clearShaderEditorStates()
         canvas.clearState()
         openFile = v
         canvas.openFile = v

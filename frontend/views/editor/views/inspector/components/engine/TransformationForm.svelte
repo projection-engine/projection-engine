@@ -5,7 +5,7 @@
     import {onDestroy} from "svelte";
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
     import {quat} from "gl-matrix";
-    import UndoRedoAPI from "../../../../lib/utils/UndoRedoAPI";
+    import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";
     import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
     import Range from "../../../../../../components/range/Range.svelte";
     import Icon from "../../../../../../components/icon/Icon.svelte";
@@ -72,7 +72,7 @@
     function rotate(axis, value) {
         if (!hasStarted) {
             hasStarted = true
-            UndoRedoAPI.save(targets, ACTION_HISTORY_TARGETS.ENGINE)
+            EditorActionHistory.save(targets)
         }
 
         const isQuat = rotationType === TYPES[0]
@@ -102,7 +102,7 @@
     function transformScaleTranslation(axis, value, isTranslation) {
         if (!hasStarted) {
             hasStarted = true
-            UndoRedoAPI.save(targets, ACTION_HISTORY_TARGETS.ENGINE)
+            EditorActionHistory.save(targets)
         } 
         for (let i = 0; i < targets.length; i++) {
             const entity = targets[i]
@@ -128,7 +128,7 @@
     function transformPivot(axis, value) {
         if (!hasStarted) {
             hasStarted = true
-            UndoRedoAPI.save(targets, ACTION_HISTORY_TARGETS.ENGINE)
+            EditorActionHistory.save(targets)
         }
 
         for (let i = 0; i < targets.length; i++) {
@@ -142,7 +142,7 @@
     }
 
     function onFinish() {
-        UndoRedoAPI.save(targets, ACTION_HISTORY_TARGETS.ENGINE)
+        EditorActionHistory.save(targets)
         hasStarted = false
     }
 </script>

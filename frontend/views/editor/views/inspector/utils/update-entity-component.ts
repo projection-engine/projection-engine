@@ -1,4 +1,4 @@
-import UndoRedoAPI from "../../../lib/utils/UndoRedoAPI";
+import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
 import SelectionStore from "../../../stores/SelectionStore";
 import LightsAPI from "../../../../../../engine-core/lib/utils/LightsAPI";
 import EngineStore from "../../../stores/EngineStore";
@@ -13,7 +13,7 @@ export default function updateEntityComponent(savedState, setSaved, entity, key,
         LightsAPI.packageLights(true)
     }
     if (!savedState) {
-        UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+        EditorActionHistory.save(entity)
         setSaved(true)
     }
 
@@ -22,6 +22,6 @@ export default function updateEntityComponent(savedState, setSaved, entity, key,
         CameraAPI.updateViewTarget(entity)
     if (save) {
         SelectionStore.updateStore()
-        UndoRedoAPI.save(entity, ACTION_HISTORY_TARGETS.ENGINE)
+        EditorActionHistory.save(entity)
     }
 }

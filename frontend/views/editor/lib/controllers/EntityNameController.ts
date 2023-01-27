@@ -5,16 +5,23 @@ import Entity from "../../../../../engine-core/instances/Entity";
 import HierarchyController from "../../views/hierarchy/lib/HierarchyController";
 
 export default class EntityNameController {
-    static byName = new Map<string, string>()
+    static #byName = new Map<string, string>()
+    static get byName(){
+        return EntityNameController.#byName
+    }
 
+    static set byName(data:Map<string, string>){
+        if(data instanceof Map)
+            EntityNameController.#byName = data
+    }
     static renameEntity(newName:string, entity:Entity) {
-        const found = EntityNameController.byName.get(newName)
+        const found = EntityNameController.#byName.get(newName)
         let validName = true
         if (found !== entity.id)
             validName = !QueryAPI.getEntityByID(found)
         if (validName) {
             entity.name = newName
-            EntityNameController.byName.set(newName, entity.id)
+            EntityNameController.#byName.set(newName, entity.id)
             HierarchyController.updateHierarchy()
             SelectionStore.updateStore()
         } else{

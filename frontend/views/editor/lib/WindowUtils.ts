@@ -1,5 +1,5 @@
 import LevelController from "./utils/LevelController";
-import UndoRedoAPI from "./utils/UndoRedoAPI";
+import EditorActionHistory from "./utils/EditorActionHistory";
 import ViewportActions from "./utils/ViewportActions";
 import SettingsStore from "../stores/SettingsStore";
 import GPU from "../../../../engine-core/GPU";
@@ -12,10 +12,10 @@ export default class WindowUtils {
                 LevelController.save().catch()
                 break
             case "undo":
-                UndoRedoAPI.undo()
+                EditorActionHistory.undo()
                 break
             case "redo":
-                UndoRedoAPI.redo()
+                EditorActionHistory.redo()
                 break
             case "copy":
                 ViewportActions.copy()
