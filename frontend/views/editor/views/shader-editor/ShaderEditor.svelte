@@ -17,6 +17,7 @@
     import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
     import SideBar from "./components/SideBar.svelte";
     import NODE_MAP from "./static/NODE_MAP";
+    import ShaderEditorActionHistory from "./libs/ShaderEditorActionHistory";
 
     const {shell} = window.require("electron")
 
@@ -26,7 +27,7 @@
 
     let engine
 
-    const canvas = new Canvas()
+    const canvas = new Canvas( )
     const internalID = crypto.randomUUID()
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
 
@@ -55,7 +56,6 @@
 
     onDestroy(() => {
         unsubscribeEngine()
-        EditorActionHistory.clearShaderEditorStates()
         ContextMenuController.destroy(internalID)
         if (canvas.ctx?.canvas)
             HotKeysController.unbindAction(canvas.ctx.canvas)
@@ -71,7 +71,6 @@
     }
 
     function initializeFromFile(v) {
-        EditorActionHistory.clearShaderEditorStates()
         canvas.clearState()
         openFile = v
         canvas.openFile = v
@@ -98,6 +97,7 @@
             initializeFromFile(newFile)
             ShaderEditorTools.toOpenFile = undefined
             if (state != null && newFile) {
+                canvas.clearState()
                 state.nodes.forEach(n => canvas.addNode(n))
                 canvas.links.push(...state.links)
                 canvas.comments.push(...state.comments)

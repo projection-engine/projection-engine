@@ -4,12 +4,11 @@ import type Canvas from "./Canvas";
 
 export default class ShaderEditorActionHistory {
     #cache = new UndoRedo<string>()
-    #canvasAPI?:Canvas
 
-    constructor(canvasAPI:Canvas) {
-        this.#canvasAPI = canvasAPI
+    clear(){
+        this.#cache.index = 0
+        this.#cache.history = [null]
     }
-
     undo() {
         const action = this.#cache.undo()
         if (action)

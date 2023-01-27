@@ -71,8 +71,9 @@ export default class EntityManager {
     }
 
     static removeBlock(payload: string[]) {
-        EditorActionHistory.save(payload.map(e => Engine.entities.map.get(e)))
-        EditorActionHistory.save(payload.map(e => Engine.entities.map.get(e)), true)
+        const mapped = payload.map(e => Engine.entities.map.get(e))
+        EditorActionHistory.save(mapped)
+        EditorActionHistory.save(mapped, true)
 
         for (let i = 0; i < payload.length; i++)
             EntityAPI.removeEntity(payload[i])

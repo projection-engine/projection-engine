@@ -104,6 +104,8 @@ export default {
     shaderEditorHotkeys: {
         SELECT_ALL: [KEYS.KeyA],
         CREATE_COMMENT: [KEYS.KeyG],
+        UNDO: [KEYS.ControlLeft, KEYS.KeyZ],
+        REDO: [KEYS.ControlLeft, KEYS.KeyY],
         SAVE: [KEYS.ControlLeft, KEYS.KeyS],
         COPY: [KEYS.ControlLeft, KEYS.KeyC],
         DELETE: [KEYS.Delete],

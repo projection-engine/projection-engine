@@ -10,12 +10,14 @@ import type ShaderComment from "../templates/ShaderComment";
 import NodesIndex from "../static/NODE_MAP";
 import NODE_MAP from "../static/NODE_MAP";
 import DynamicMap from "../../../../../../engine-core/resource-libs/DynamicMap";
+import ShaderEditorActionHistory from "./ShaderEditorActionHistory";
 
 export default class Canvas {
     #initialized = false
     openFile?: OpenFile
     #nodes = new DynamicMap<ShaderNode>()
     #hasMaterial = false
+    history = new ShaderEditorActionHistory()
 
     get nodes(): ShaderNode[] {
         return this.#nodes.array
@@ -30,6 +32,20 @@ export default class Canvas {
     lastSelectionListener?: Function
     selectionMap = new Map<string, ShaderNode | ShaderComment>()
     #lastSelection: ShaderNode | ShaderComment | undefined
+
+    addComment(comment: ShaderComment) {
+        this.comments.push(comment)
+        this.clear()
+    }
+
+    addLink(link: ShaderLink) {
+        const foundExisting = this.links.findIndex(l => l.targetRef === link.targetRef)
+        if (foundExisting > -1)
+            this.links[foundExisting] = link
+        else
+            this.links.push(link)
+        this.clear()
+    }
 
     get lastSelection() {
         return this.#lastSelection
@@ -54,6 +70,7 @@ export default class Canvas {
     }
 
     clearState() {
+        this.history.clear()
         this.#hasMaterial = false
         this.links.length = 0
         this.comments.length = 0

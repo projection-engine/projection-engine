@@ -32,7 +32,7 @@ export default function shaderActions( canvasAPI: Canvas) {
             callback: () => selectAllNodes(canvasAPI)
         },
         CREATE_COMMENT: {
-            label: "Create comment",
+            label: "Create comment (under selected node)",
             require: settings.shaderEditorHotkeys.CREATE_COMMENT,
             callback: () => addComment(canvasAPI)
         },
@@ -42,7 +42,7 @@ export default function shaderActions( canvasAPI: Canvas) {
             callback: () => ShaderEditorTools.save( canvasAPI).catch()
         },
         COPY: {
-            label: "Copy",
+            label: "Copy (selected)",
             require: settings.shaderEditorHotkeys.COPY,
             callback: () => {
                 const toCopy = []
@@ -51,7 +51,7 @@ export default function shaderActions( canvasAPI: Canvas) {
             }
         },
         DELETE: {
-            label: "Delete selected",
+            label: "Delete (selected)",
             require: settings.shaderEditorHotkeys.DELETE,
             callback: () => {
                 const toRemoveFromSelection = []
@@ -78,13 +78,34 @@ export default function shaderActions( canvasAPI: Canvas) {
 
             require: settings.shaderEditorHotkeys.PASTE,
             callback: () => ShaderEditorTools.paste(canvasAPI)
+        },
+        UNDO: {
+            label: "Undo",
+            require: settings.shaderEditorHotkeys.UNDO,
+            callback: () => canvasAPI.history.undo()
+        },
+        REDO: {
+            label: "Redo",
+            require: settings.shaderEditorHotkeys.REDO,
+            callback: () => canvasAPI.history.redo()
         }
     }
     return {
         hotkeys: Object.values(options),
         contextMenu: [
-            options.SELECT_ALL,
+            options.SAVE,
+            {divider: true},
+            options.CREATE_COMMENT,
+            {divider: true},
+            options.UNDO,
+            options.REDO,
+            {divider: true},
+            options.COPY,
+            options.PASTE,
             options.DELETE,
+            {divider: true},
+            options.SELECT_ALL,
+
             {
                 label: "New node",
                 children: ALL_NODES.map(data => ({

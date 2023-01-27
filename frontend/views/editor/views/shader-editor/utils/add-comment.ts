@@ -32,9 +32,8 @@ export default function addComment(canvasAPI: Canvas) {
     smallestX -= 4
     smallestY -= 36
 
-    const comment = new ShaderComment(smallestX, smallestY)
+    const comment = new ShaderComment(Math.max(smallestX, 0), Math.max(smallestY, 0))
     comment.width = width
     comment.height = height
-    canvasAPI.comments.push(comment)
-    canvasAPI.clear()
+    canvasAPI.addComment(comment)
 }

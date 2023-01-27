@@ -9,6 +9,8 @@ import GPU from "../../../../../../engine-core/GPU";
 import UberShader from "../../../../../../engine-core/utils/UberShader";
 import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI";
 import NodesIndex from "../static/NODE_MAP";
+import ShaderLink from "../templates/ShaderLink";
+import ShaderComment from "../templates/ShaderComment";
 
 export default class ShaderEditorTools {
 
@@ -51,7 +53,7 @@ export default class ShaderEditorTools {
         ShaderEditorTools.copied.clear()
         for (let i = 0; i < nodes.length; i++)
             if (nodes[i])
-                ShaderEditorTools.copied.set(nodes[i].id, ShaderEditorTools.#serializeNode(nodes[i]))
+                ShaderEditorTools.copied.set(nodes[i].id, ShaderEditorTools.serializeNode(nodes[i]))
     }
 
     static paste(canvasAPI: Canvas) {
@@ -61,7 +63,7 @@ export default class ShaderEditorTools {
         canvasAPI.clear()
     }
 
-    static #serializeNode(n: ShaderNode) {
+    static serializeNode(n: ShaderNode) {
         return {
             ...n,
             instance: n.getSignature(),
@@ -69,34 +71,32 @@ export default class ShaderEditorTools {
         }
     }
 
-    static async compile(canvasAPI: Canvas) {
-        const serializedNodes = canvasAPI.nodes.map(ShaderEditorTools.#serializeNode)
-        const compiled = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
-        return {compiled, serializedNodes}
+    static serializeLink(l: ShaderLink) {
+        return {
+            sourceNode: l.sourceNode.id,
+            targetNode: l.targetNode.id,
+            sourceRef: l.sourceRef.key,
+            targetRef: l.targetRef.key,
+        }
     }
 
+    static serializeComment(c: ShaderComment) {
+        return {...c}
+    }
+    
     static async save(canvasAPI: Canvas) {
         const openFile = canvasAPI.openFile
         try {
-            const {compiled, serializedNodes} = await ShaderEditorTools.compile(canvasAPI)
+            const compiled = await materialCompiler(canvasAPI.nodes, canvasAPI.links)
             const materialData = {
-                nodes: serializedNodes,
-                links: canvasAPI.links.map(l => ({
-                    sourceNode: l.sourceNode.id,
-                    targetNode: l.targetNode.id,
-                    sourceRef: l.sourceRef.key,
-                    targetRef: l.targetRef.key,
-                })),
-                response: compiled[0],
-                comments: canvasAPI.comments
+                nodes: canvasAPI.nodes.map(ShaderEditorTools.serializeNode),
+                links: canvasAPI.links.map(ShaderEditorTools.serializeLink),
+                comments: canvasAPI.comments.map(ShaderEditorTools.serializeComment),
+                response: compiled[0]
             }
-            await AssetAPI.updateAsset(
-                openFile.registryID,
-                JSON.stringify(materialData)
-            )
+            await AssetAPI.updateAsset(openFile.registryID, JSON.stringify(materialData))
 
             const oldMaterial = GPU.materials.get(openFile.registryID)
-
             if (oldMaterial) {
                 if (!UberShader.uberSignature[compiled[1]]) {
                     GPUAPI.asyncDestroyMaterial(openFile.registryID)
