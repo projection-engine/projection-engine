@@ -56,7 +56,7 @@ export default function onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvas
                             IO.node = found.sourceNode
                             IO.output = found.sourceRef
 
-                            canvasAPI.links.splice(F, 1)
+                            canvasAPI.removeLink(F)
 
                             tempLink.x = originalPosition.x
                             tempLink.y = originalPosition.y

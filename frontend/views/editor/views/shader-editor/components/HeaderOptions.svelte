@@ -37,15 +37,33 @@
                 handleChange={initializeFromFile}
                 selected={openFile}
         />
+
     </div>
     {#if openFile}
         <div data-svelteinline="-" style="width: 100%; justify-content: flex-end">
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"
+                    style="max-width: unset"
+                    on:click={() =>  canvasAPI.undo}>
+                <Icon styles="font-size: .9rem">undo</Icon>
+                {LOCALIZATION_EN.UNDO}
+            </button>
+
+            <button data-sveltebuttondefault="-"
+                    data-svelteview-header-button="-"
+                    style="max-width: unset"
+                    on:click={() => canvasAPI.redo}>
+                {LOCALIZATION_EN.REDO}
+                <Icon styles="font-size: .9rem">redo</Icon>
+            </button>
+            <div data-sveltevertdivider="-"></div>
+            <button data-sveltebuttondefault="-"
+                    data-svelteview-header-button="-"
+                    style="max-width: unset"
                     on:click={() => addComment(canvasAPI)}
             >
                 <Icon styles="font-size: .9rem">chat_bubble_outline</Icon>
-                <ToolTip content={LOCALIZATION_EN.ADD_COMMENT}/>
+                {LOCALIZATION_EN.ADD_COMMENT}
             </button>
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"

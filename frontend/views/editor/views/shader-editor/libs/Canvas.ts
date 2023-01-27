@@ -46,6 +46,9 @@ export default class Canvas {
             this.links.push(link)
         this.clear()
     }
+    removeLink(index: number) {
+        this.links.splice(index, 1)
+    }
 
     get lastSelection() {
         return this.#lastSelection

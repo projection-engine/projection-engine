@@ -66,7 +66,7 @@ export default function shaderActions( canvasAPI: Canvas) {
                         const copy = [...canvasAPI.links]
                         copy.forEach(l => {
                             if (l.sourceNode === s || l.targetNode === s)
-                                canvasAPI.links.splice(canvasAPI.links.indexOf(l), 1)
+                                canvasAPI.removeLink(canvasAPI.links.indexOf(l))
                         })
                     }
                 })
