@@ -59,14 +59,13 @@ export default class EditorActionHistory {
         const toRemove = currentAction.toRemove
         const toAdd: Entity[] = []
         const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
-        console.trace(currentAction)
+
         EntityNameController.byName = nameCache
         for (let i = 0; i < parsedToAdd.length; i++) {
             if (!parsedToAdd[i])
                 continue
             toAdd.push(EntityAPI.parseEntityObject(parsedToAdd[i]))
         }
-        console.trace(toAdd, toRemove)
         EntityManager.replaceBlock(toRemove, toAdd)
 
     }

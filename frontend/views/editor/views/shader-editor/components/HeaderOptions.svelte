@@ -44,7 +44,7 @@
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"
                     style="max-width: unset"
-                    on:click={() =>  canvasAPI.undo}>
+                    on:click={() =>  canvasAPI.history.undo()}>
                 <Icon styles="font-size: .9rem">undo</Icon>
                 {LOCALIZATION_EN.UNDO}
             </button>
@@ -52,7 +52,7 @@
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"
                     style="max-width: unset"
-                    on:click={() => canvasAPI.redo}>
+                    on:click={() => canvasAPI.history.redo()}>
                 {LOCALIZATION_EN.REDO}
                 <Icon styles="font-size: .9rem">redo</Icon>
             </button>

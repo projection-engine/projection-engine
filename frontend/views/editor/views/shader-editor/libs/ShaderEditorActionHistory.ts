@@ -1,14 +1,37 @@
 import UndoRedo from "../../../lib/utils/UndoRedo";
-import FS from "../../../../../lib/FS/FS";
 import type Canvas from "./Canvas";
+import ShaderNode from "../templates/ShaderNode";
+import ShaderComment from "../templates/ShaderComment";
+import MutableObject from "../../../../../../engine-core/MutableObject";
+import ShaderEditorTools from "./ShaderEditorTools";
+
+interface Action {
+    toRemove: string[]
+    toAdd: MutableObject[]
+}
 
 export default class ShaderEditorActionHistory {
-    #cache = new UndoRedo<string>()
+    #cache = new UndoRedo<Action>()
+    canvas: Canvas
 
-    clear(){
+    clear() {
         this.#cache.index = 0
         this.#cache.history = [null]
     }
+
+    save(value: (ShaderNode | ShaderComment)[], isRemoval?: boolean) {
+        const data = value.map(v => {
+            if (v instanceof ShaderNode)
+                return ShaderEditorTools.serializeNode(v)
+            return ShaderEditorTools.serializeComment(v)
+        })
+
+        this.#cache.save({
+            toRemove: data.map(d => d.id),
+            toAdd: !isRemoval ? data : undefined
+        })
+    }
+
     undo() {
         const action = this.#cache.undo()
         if (action)
@@ -17,11 +40,34 @@ export default class ShaderEditorActionHistory {
 
     redo() {
         const action = this.#cache.redo()
+        console.trace(action)
         if (action)
             this.#apply(action)
     }
 
-    #apply(action:string) {
+    #apply(action: Action) {
+        const {toAdd, toRemove} = action
 
+        this.canvas.removeNodes(toRemove, true)
+        this.canvas.removeComments(toRemove, true)
+
+        if (toAdd)
+            for (let i = 0; i < toAdd.length; i++) {
+                const current = toAdd[i]
+                if (current.DATA_TYPE === "comment") {
+                    const parsed = new ShaderComment(current.x, current.y)
+                    parsed.color = current.color
+                    parsed.name = current.name
+                    parsed.width = current.width
+                    parsed.height = current.height
+                    this.canvas.addComment(parsed, true)
+                } else {
+                    const parsed = ShaderEditorTools.parseNode(current)
+                    if (!parsed)
+                        continue
+                    this.canvas.addNode(parsed, true)
+                }
+            }
+        this.canvas.clear()
     }
 }

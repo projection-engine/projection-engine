@@ -55,21 +55,20 @@ export default function shaderActions( canvasAPI: Canvas) {
             require: settings.shaderEditorHotkeys.DELETE,
             callback: () => {
                 const toRemoveFromSelection = []
+                const toRemoveComments = []
+                const toRemoveNodes = []
                 canvasAPI.selectionMap.forEach(s => {
                     toRemoveFromSelection.push(s.id)
                     if (s instanceof ShaderComment)
-                        canvasAPI.comments.splice(canvasAPI.comments.indexOf(s), 1)
+                        toRemoveComments.push(s.id)
                     else {
                         if(s instanceof NODE_MAP.Material)
                             return
-                        canvasAPI.removeNode(s.id)
-                        const copy = [...canvasAPI.links]
-                        copy.forEach(l => {
-                            if (l.sourceNode === s || l.targetNode === s)
-                                canvasAPI.removeLink(canvasAPI.links.indexOf(l))
-                        })
+                        toRemoveNodes.push(s.id)
                     }
                 })
+                canvasAPI.removeNodes(toRemoveNodes)
+                canvasAPI.removeComments(toRemoveComments)
                 canvasAPI.clear()
             }
         },

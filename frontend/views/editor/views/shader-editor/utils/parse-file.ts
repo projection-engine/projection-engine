@@ -28,7 +28,6 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
         if (dataToParse.comments)
             for (let i = 0; i < dataToParse.comments.length; i++) {
                 const node = dataToParse.comments[i]
-
                 const parsed = new ShaderComment(node.x, node.y)
                 parsed.color = node.color
                 parsed.name = node.name

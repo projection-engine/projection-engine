@@ -11,6 +11,8 @@ import NodesIndex from "../static/NODE_MAP";
 import NODE_MAP from "../static/NODE_MAP";
 import DynamicMap from "../../../../../../engine-core/resource-libs/DynamicMap";
 import ShaderEditorActionHistory from "./ShaderEditorActionHistory";
+import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
+import Engine from "../../../../../../engine-core/Engine";
 
 export default class Canvas {
     #initialized = false
@@ -33,9 +35,29 @@ export default class Canvas {
     selectionMap = new Map<string, ShaderNode | ShaderComment>()
     #lastSelection: ShaderNode | ShaderComment | undefined
 
-    addComment(comment: ShaderComment) {
+    constructor() {
+        this.history.canvas = this
+    }
+
+    addComment(comment: ShaderComment, noSerialization?: boolean) {
+        if (!noSerialization)
+            this.history.save(this.comments)
         this.comments.push(comment)
+        if (!noSerialization)
+            this.history.save(this.comments)
         this.clear()
+    }
+
+    removeComments(toRemove: string[], noSerialization?: boolean) {
+        if (!noSerialization) {
+            this.history.save(this.comments)
+            this.history.save(this.comments, true)
+        }
+        toRemove.forEach(id => {
+            const index = this.comments.findIndex(c => c.id == id)
+            if (index > -1)
+                this.comments.splice(index, 1)
+        })
     }
 
     addLink(link: ShaderLink) {
@@ -46,6 +68,7 @@ export default class Canvas {
             this.links.push(link)
         this.clear()
     }
+
     removeLink(index: number) {
         this.links.splice(index, 1)
     }
@@ -59,17 +82,33 @@ export default class Canvas {
         this.lastSelectionListener?.()
     }
 
-    addNode(node: ShaderNode) {
+    addNode(node: ShaderNode, noSerialization?: boolean) {
+        if (!noSerialization)
+            this.history.save(this.nodes)
         const isMaterial = node.getSignature() === NODE_MAP.Material.signature
         if (isMaterial && this.#hasMaterial)
             return
         if (isMaterial)
             this.#hasMaterial = true
         this.#nodes.add(node.id, node)
+        if (!noSerialization)
+            this.history.save(this.nodes)
     }
 
-    removeNode(id: string) {
-        this.#nodes.delete(id)
+    removeNodes(nodes: string[], noSerialization?: boolean) {
+        if (!noSerialization) {
+            this.history.save(this.nodes)
+            this.history.save(this.nodes, true)
+        }
+        nodes.forEach(id => {
+            if (!this.#nodes.has(id))
+                return
+            this.#nodes.delete(id)
+            const toRemove = this.links.filter(l => l.sourceNode?.id === id || l.targetNode?.id === id)
+            toRemove.forEach(l => {
+                this.removeLink(this.links.indexOf(l))
+            })
+        })
     }
 
     clearState() {

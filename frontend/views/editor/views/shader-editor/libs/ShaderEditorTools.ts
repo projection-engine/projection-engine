@@ -67,7 +67,8 @@ export default class ShaderEditorTools {
         return {
             ...n,
             instance: n.getSignature(),
-            texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined
+            texture: n.texture && typeof n.texture === "object" ? {registryID: n.texture.registryID} : undefined,
+            DATA_TYPE: "node"
         }
     }
 
@@ -81,7 +82,7 @@ export default class ShaderEditorTools {
     }
 
     static serializeComment(c: ShaderComment) {
-        return {...c}
+        return {...c, DATA_TYPE: "comment"}
     }
     
     static async save(canvasAPI: Canvas) {
