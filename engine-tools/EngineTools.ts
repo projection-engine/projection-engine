@@ -80,21 +80,21 @@ export default class EngineTools {
     static execute() {
         CameraTracker.updateFrame()
         settings = SettingsStore.data
+        const context = GPU.context
         SelectedSystem.drawToBuffer(selected)
 
-        StaticFBO.postProcessing2.startMapping(true)
-        GPU.context.disable(GPU.context.CULL_FACE)
-        GPU.context.disable(GPU.context.DEPTH_TEST)
+        context.clear(context.DEPTH_BUFFER_BIT)
+        context.disable(context.CULL_FACE)
+        context.disable(context.DEPTH_TEST)
         if (settings.showGrid)
             GridSystem.execute()
         if (settings.showOutline)
-        WireframeRenderer.execute()
+            WireframeRenderer.execute()
         SelectedSystem.drawSilhouette(selected, settings)
         IconsSystem.drawIcons(settings)
-        GPU.context.enable(GPU.context.DEPTH_TEST)
-        GPU.context.clear(GPU.context.DEPTH_BUFFER_BIT)
+        context.enable(context.DEPTH_TEST)
+        context.clear(context.DEPTH_BUFFER_BIT)
         GizmoSystem.execute()
-        GPU.context.enable(GPU.context.CULL_FACE)
-        StaticFBO.postProcessing2.stopMapping()
+        context.enable(context.CULL_FACE)
     }
 }

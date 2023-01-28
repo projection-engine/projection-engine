@@ -80,7 +80,7 @@ export default class EntityManager {
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,
             array: [],
-            lockedEntity: Engine.entities.array[0].id
+            lockedEntity: Engine.entities.array[0]?.id
         })
 
         EntityManager.#updateStructure()

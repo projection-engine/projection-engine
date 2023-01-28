@@ -13,8 +13,10 @@ export default function getComponentLabel(component) {
             return LOCALIZATION_EN.DECAL
         case COMPONENTS.LIGHT:
             return LOCALIZATION_EN.LIGHT
-        case COMPONENTS.SKYLIGHT:
-            return LOCALIZATION_EN.SKYLIGHT
+        case COMPONENTS.ATMOSPHERE:
+            return LOCALIZATION_EN.ATMOSPHERE_RENDERER
+        case COMPONENTS.LIGHT_PROBE:
+            return LOCALIZATION_EN.LIGHT_PROBE
         case COMPONENTS.PHYSICS_COLLIDER:
             return  LOCALIZATION_EN.PHYSICS_COLLIDER
         case COMPONENTS.RIGID_BODY:

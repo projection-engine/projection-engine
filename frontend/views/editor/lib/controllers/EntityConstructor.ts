@@ -41,12 +41,17 @@ export default class EntityConstructor {
     }
 
     static createProbe() {
-        const entity = new Entity(undefined, LOCALIZATION_EN.SKYLIGHT)
-        entity.addComponent(COMPONENTS.SKYLIGHT)
+        const entity = new Entity(undefined, LOCALIZATION_EN.LIGHT_PROBE)
+        entity.addComponent(COMPONENTS.LIGHT_PROBE)
         EntityConstructor.translateEntity(entity)
         EntityManager.add(entity)
     }
-
+    static createAtmosphere() {
+        const entity = new Entity(undefined, LOCALIZATION_EN.ATMOSPHERE_RENDERER)
+        entity.addComponent(COMPONENTS.ATMOSPHERE)
+        EntityConstructor.translateEntity(entity)
+        EntityManager.add(entity)
+    }
 
     static createLight(type) {
         const entity = new Entity(undefined, LOCALIZATION_EN.DIRECTIONAL_LIGHT)
