@@ -1,4 +1,16 @@
 enum LOCALIZATION_EN {
+    RAYLEIGH_HEIGHT ="Rayleigh height",
+    MIE_HEIGHT ="Mie height",
+    RAYLEIGH_BETA_VALUES ="Rayleigh beta values",
+    MIE_BETA_VALUES ="Mie beta values",
+    ATMOSPHERE ="Atmosphere",
+    PLANET ="Planet",
+    SCATTERING_FUNCTION ="Scattering function",
+    MIE ="Mie",
+    RAYLEIGH ="Rayleigh",
+    COMBINED ="Combined",
+
+
     NEW_MESSAGE =  "New console message",
 
     LICENSE = "Projection Engine is licensed under the GNU General Public License, Version 3.\n Some files may have other compatible licenses.",
@@ -22,6 +34,9 @@ enum LOCALIZATION_EN {
     LABEL_PROJECTS = "Projects",
     PROJECTS = "Your projects",
     SHOW_RECENT_ERRORS = "Show recent errors",
+ATMOSPHERE_RENDERER = "Atmosphere renderer",
+    LIGHT_PROBE = "Light probe",
+    ELAPSED_TIME = "Elapsed time",
     STOP_RECORDING = "Stop recording",
     SET_AS_DEFAULT = "Default",
     DEFAULT = "Default",

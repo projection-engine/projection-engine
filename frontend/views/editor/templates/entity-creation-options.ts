@@ -64,10 +64,15 @@ export default function entityCreationOptions() {
             label: LOCALIZATION_EN.SPOTLIGHT,
             onClick: () => EntityConstructor.createLight(LIGHT_TYPES.SPOT)
         },
+        {
+            icon: "wb_twilight",
+            label: LOCALIZATION_EN.ATMOSPHERE_RENDERER,
+            onClick: () => EntityConstructor.createAtmosphere()
+        },
 
         {
             icon: "lens_blur",
-            label: LOCALIZATION_EN.SKYLIGHT,
+            label: LOCALIZATION_EN.LIGHT_PROBE,
             onClick: () => EntityConstructor.createProbe()
         },
 

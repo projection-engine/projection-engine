@@ -8,7 +8,9 @@ export default function getComponentIcon(key) {
             return "light_mode"
         case COMPONENTS.CAMERA:
             return "videocam"
-        case COMPONENTS.SKYLIGHT:
+        case COMPONENTS.ATMOSPHERE:
+            return "wb_twilight"
+        case COMPONENTS.LIGHT_PROBE:
             return "lens_blur"
         case "TRANSFORMATION":
             return "transform"

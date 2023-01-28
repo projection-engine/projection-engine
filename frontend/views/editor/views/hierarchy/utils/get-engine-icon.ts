@@ -4,10 +4,15 @@ export default function getEngineIcon(nodeRef): { icon: string, label: string }[
     let icons = []
     if (nodeRef) {
 
-        if (nodeRef.skylightComponent)
+        if (nodeRef.atmosphereComponent)
+            icons.push({
+                icon: "wb_twilight",
+                label: LOCALIZATION_EN.ATMOSPHERE_RENDERER
+            })
+        if (nodeRef.lightProbeComponent)
             icons.push({
                 icon: "lens_blur",
-                label: LOCALIZATION_EN.SKYLIGHT
+                label: LOCALIZATION_EN.LIGHT_PROBE
             })
         if (nodeRef.meshComponent)
 

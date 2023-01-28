@@ -120,17 +120,6 @@
                                 />
                             {/if}
                         </fieldset>
-                    {:else if components[tabIndex][0] === COMPONENTS.SKYLIGHT}
-                        <fieldset>
-                            <legend>{LOCALIZATION_EN.PROBE}</legend>
-                            <button data-sveltebuttondefault="-"
-                                    class="recompute-button"
-                                    on:click={() => {
-                                    GPU.activeSkylightEntity = entity
-                                }}>
-                                {LOCALIZATION_EN.RECOMPUTE_CAPTURE}
-                            </button>
-                        </fieldset>
                     {/if}
                 {/if}
 
@@ -139,11 +128,6 @@
     </div>
 {/if}
 <style>
-    .recompute-button {
-        height: 25px;
-        width: 100%;
-        background: var(--pj-background-primary);
-    }
 
     .wrapper {
         display: flex;
