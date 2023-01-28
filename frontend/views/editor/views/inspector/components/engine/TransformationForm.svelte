@@ -6,7 +6,6 @@
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
     import {quat} from "gl-matrix";
     import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
     import Range from "../../../../../../components/range/Range.svelte";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";

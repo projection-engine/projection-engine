@@ -8,7 +8,6 @@
     import ViewStateController from "../../components/view/libs/ViewStateController";
     import materialCompiler from "./libs/material-compiler/material-compiler";
     import HeaderOptions from "./components/HeaderOptions.svelte";
-    import EditorActionHistory from "../../lib/utils/EditorActionHistory";
     import Icon from "../../../../components/icon/Icon.svelte";
     import FS from "../../../../lib/FS/FS";
     import Canvas from "./libs/Canvas";
@@ -17,7 +16,6 @@
     import ContextMenuController from "../../../../lib/context-menu/ContextMenuController";
     import SideBar from "./components/SideBar.svelte";
     import NODE_MAP from "./static/NODE_MAP";
-    import ShaderEditorActionHistory from "./libs/ShaderEditorActionHistory";
 
     const {shell} = window.require("electron")
 

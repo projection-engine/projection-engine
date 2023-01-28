@@ -1,6 +1,5 @@
 import UndoRedo from "./UndoRedo";
 import EntityAPI from "../../../../../engine-core/lib/utils/EntityAPI";
-import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 
 import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
 import serializeStructure from "../../../../../engine-core/utils/serialize-structure";
@@ -8,7 +7,6 @@ import EntityNameController from "../controllers/EntityNameController";
 import AlertController from "../../../../components/alert/AlertController";
 import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
 import EntityManager from "../EntityManager";
-import MutableObject from "../../../../../engine-core/MutableObject";
 import Entity from "../../../../../engine-core/instances/Entity";
 
 interface Action {

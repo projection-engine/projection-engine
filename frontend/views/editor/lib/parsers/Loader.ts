@@ -14,7 +14,6 @@ import Entity from "../../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI";
 
 import FileSystemAPI from "../../../../../engine-core/lib/utils/FileSystemAPI";
-import ACTION_HISTORY_TARGETS from "../../static/ACTION_HISTORY_TARGETS";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 import FS from "../../../../lib/FS/FS";
 import MeshComponent from "../../../../../engine-core/instances/components/MeshComponent";
