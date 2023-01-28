@@ -5,7 +5,6 @@
     import SelectionStore from "../../../../stores/SelectionStore";
     import LOCALIZATION_EN from "../../../../static/LOCALIZATION_EN";
     import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";
-    import ACTION_HISTORY_TARGETS from "../../../../static/ACTION_HISTORY_TARGETS.ts";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../../components/dropdown/Dropdown.svelte";

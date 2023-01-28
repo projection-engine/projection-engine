@@ -3,7 +3,6 @@ import AXIS from "../../../../engine-tools/static/AXIS";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import HierarchyController from "../views/hierarchy/lib/HierarchyController";
 import EditorActionHistory from "./utils/EditorActionHistory";
-import ACTION_HISTORY_TARGETS from "../static/ACTION_HISTORY_TARGETS";
 import EntityNameController from "./controllers/EntityNameController";
 import getPivotPointMatrix from "../../../../engine-tools/utils/get-pivot-point-matrix";
 import SelectionStore from "../stores/SelectionStore";

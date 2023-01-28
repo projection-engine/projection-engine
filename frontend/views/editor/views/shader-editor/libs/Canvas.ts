@@ -11,8 +11,6 @@ import NodesIndex from "../static/NODE_MAP";
 import NODE_MAP from "../static/NODE_MAP";
 import DynamicMap from "../../../../../../engine-core/resource-libs/DynamicMap";
 import ShaderEditorActionHistory from "./ShaderEditorActionHistory";
-import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
-import Engine from "../../../../../../engine-core/Engine";
 
 export default class Canvas {
     #initialized = false
