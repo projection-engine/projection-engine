@@ -68,7 +68,7 @@ export default class CameraTracker {
     }
 
     static updateFrame() {
-        if (CameraAPI.didChange && CameraTracker.gizmoReference)
+        if (CameraAPI.hasChangedView && CameraTracker.gizmoReference)
             CameraTracker.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${CameraAPI.staticViewMatrix})`
 
         const map = CameraTracker.#keysOnHold
@@ -91,11 +91,17 @@ export default class CameraTracker {
             changed = true
         }
         if (map.backward) {
+            if (CameraAPI.isOrthographic)
+                CameraAPI.orthographicProjectionSize += multiplier
+            else
             toApplyTranslation[2] += multiplier
             changed = true
         }
         if (map.forward) {
-            toApplyTranslation[2] -= multiplier
+            if (CameraAPI.isOrthographic)
+                CameraAPI.orthographicProjectionSize -= multiplier
+            else
+                toApplyTranslation[2] -= multiplier
             changed = true
         }
 
@@ -253,9 +259,9 @@ export default class CameraTracker {
 
                     event.preventDefault();
                     const multiplier = event.ctrlKey ? 10 * 2 : 2
-                    if (CameraAPI.isOrthographic) {
+                    if (CameraAPI.isOrthographic)
                         CameraAPI.orthographicProjectionSize += multiplier * Math.sign(event.deltaY)
-                    } else {
+                    else {
                         toApplyTranslation[0] = toApplyTranslation[1] = 0
                         toApplyTranslation[2] += multiplier * Math.sign(event.deltaY)
                         toApplyTranslation[3] = 1

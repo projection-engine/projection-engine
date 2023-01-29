@@ -4,7 +4,7 @@ layout (location = 0) in vec3 position;
 layout (location = 2) in vec2 uvs;
  
 
-//import(cameraUBO)
+//import(cameraViewInfo)
 
 uniform mat4 transformMatrix; 
 uniform vec3 translation;

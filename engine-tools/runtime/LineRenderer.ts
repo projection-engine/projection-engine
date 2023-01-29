@@ -37,8 +37,7 @@ export default class LineRenderer {
 
             GPU.context.activeTexture(GPU.context.TEXTURE0)
             GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.sceneDepth)
-            GPU.context.uniform1i(lineUniforms.depthSampler, 0)
-            GPU.context.uniform2fv(lineUniforms.bufferResolution, GPU.bufferResolution)
+            GPU.context.uniform1i(lineUniforms.sceneDepth, 0)
 
             finished = false
         } else if (needsStateUpdate) {

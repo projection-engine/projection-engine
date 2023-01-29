@@ -1,9 +1,10 @@
 layout (location = 0) in vec3 position;
 layout (location = 2) in vec2 uvTexture;
-//import(cameraUBO)
+//import(cameraViewInfo)
 
 out vec3 worldPosition;
 out vec3 cameraPosition;
+
 void main(){
 
     cameraPosition = placement.xyz;

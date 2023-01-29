@@ -5,12 +5,12 @@ const mat4  ROTATION_MATRIX = mat4(
 0., -1, 6.123233995736766e-17, 0.,
 0., 0., 0., 1.
 );
-//import(cameraUBO)
+
+//import(cameraViewInfo)
+//import(cameraProjectionInfo)
 
 uniform mat4 transformationMatrix;
-
 uniform mat4 settings;
-
 out vec2 texCoords;
 out mat4 S;
 

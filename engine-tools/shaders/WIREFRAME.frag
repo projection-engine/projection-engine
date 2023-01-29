@@ -1,10 +1,10 @@
 precision lowp float;
 uniform bool isSelected;
-uniform sampler2D depth;
-uniform vec2 bufferResolution;
 out vec4 finalColor;
+
+//import(sceneDepthUtils)
 void main() {
-    float currentDepth = texture(depth, gl_FragCoord.xy / bufferResolution).r;
+    float currentDepth = getLogDepth(gl_FragCoord.xy / bufferResolution);
 
     if (!isSelected) {
         finalColor = vec4(0., 5., .0, .75);
