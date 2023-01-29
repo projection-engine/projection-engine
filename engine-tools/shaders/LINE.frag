@@ -1,10 +1,11 @@
+precision lowp float;
+
 #define FRAG_DEPTH_THRESHOLD .00001
 
-precision lowp float;
 out vec4 fragColor;
 uniform bool darker;
-uniform sampler2D depthSampler;
-uniform vec2 bufferResolution;
+
+//import(sceneDepthUtils)
 
 void main() {
 
@@ -14,7 +15,7 @@ void main() {
         fragColor = vec4(1., 1., .0, 1);
         
     vec2 quadUV = gl_FragCoord.xy/bufferResolution;
-    float currentDepth = texture(depthSampler, quadUV).r;
+    float currentDepth = getLogDepth(quadUV);
     if(currentDepth > 0. && currentDepth < gl_FragCoord.z)
         fragColor.rgb = vec3(1., 0., 0.);
 }

@@ -3,13 +3,15 @@ import componentConstructor from "../../../utils/component-constructor";
 import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
 import Loader from "../../../lib/parsers/Loader";
 import EngineStore from "../../../stores/EngineStore";
+import AlertController from "../../../../../components/alert/AlertController";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
 export default async function handleComponentDrop(entity, data) {
     try {
         const id = JSON.parse(data)[0]
-
         let type = "SCRIPT"
         let itemFound = FilesStore.data.components.find(s => s.registryID === id)
+
         if (!itemFound) {
             itemFound = FilesStore.data.meshes.find(s => s.registryID === id)
             type = "MESH"
@@ -23,12 +25,13 @@ export default async function handleComponentDrop(entity, data) {
             type = "MATERIAL"
         }
 
-        if (!itemFound) {
+        if (!itemFound)
             throw new Error("File not found")
-        }
+
         switch (type) {
             case "SCRIPT":
                 await componentConstructor(entity, id, true)
+
                 break
             case "MESH":
                 if (!entity.meshComponent) {
@@ -55,6 +58,7 @@ export default async function handleComponentDrop(entity, data) {
         }
     } catch (err) {
         console.error(err)
+        AlertController.error(LOCALIZATION_EN.FILE_NOT_FOUND)
     }
 
 }
