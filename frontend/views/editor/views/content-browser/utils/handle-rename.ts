@@ -9,10 +9,9 @@ export default async function handleRename(item, newName, currentDirectory, setC
     if (item.isFolder) {
         const newNamePath = (item.parent ? item.parent + FS.sep + newName : FS.sep + newName)
         await ContentBrowserAPI.rename(FS.ASSETS_PATH + item.id, FS.ASSETS_PATH + newNamePath)
-
+        await FilesStore.refreshFiles().catch()
         if (item.id === currentDirectory.id)
             setCurrentDirectory({id: newNamePath})
-        await FilesStore.refreshFiles().catch()
         return
     }
 

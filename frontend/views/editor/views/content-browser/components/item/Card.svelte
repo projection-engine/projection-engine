@@ -38,11 +38,16 @@
     <div class="icon">
         {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
-        {:else if  metadata.type === FILE_TYPES.MATERIAL}
+        {:else if metadata.type === FILE_TYPES.MATERIAL}
             <div data-svelteshaded-material="-" style="width: 60px; height: 60px"></div>
         {:else if metadata.type === FILE_TYPES.PRIMITIVE || metadata.type === FILE_TYPES.TEXTURE}
             <Preview path={metadata.path}>
-                <img class="image" slot="image" alt="logo" let:src src={src}>
+                <img
+                        class="image-item"
+                        slot="image"
+                        alt="logo"
+                        let:src src={src}
+                >
                 <Icon slot="icon" styles="font-size: 4rem">
                     {#if metadata.type === FILE_TYPES.PRIMITIVE}
                         category
@@ -51,11 +56,7 @@
                     {/if}
                 </Icon>
             </Preview>
-            {#if metadata.type === FILE_TYPES.TEXTURE}
-                <div class="file-type">
-                    <Icon styles="font-size: 1.3rem">image</Icon>
-                </div>
-            {/if}
+
         {/if}
     </div>
     <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename}/>
@@ -72,7 +73,7 @@
         left: 3px;
         opacity: .85;
         border-radius: 3px;
-        background: rgba(0,0,0,.85);
+        background: rgba(0, 0, 0, .85);
 
         display: flex;
         justify-content: center;
@@ -89,11 +90,14 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        border-radius: 5px;
     }
 
-    .image {
+    .image-item {
         max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border: var(--pj-border-primary) 1px solid;
+
     }
 
     .file {

@@ -9,6 +9,7 @@ import FS from "../../../lib/FS/FS";
 import {getCall} from "../../../lib/FS/get-call";
 import MutableObject from "../../../../engine-core/MutableObject";
 import RegistryAPI from "../lib/fs/RegistryAPI";
+import AlertController from "../../../components/alert/AlertController";
 
 const contentBrowserStore = writable({
     isLoading: true,
@@ -49,9 +50,12 @@ export default class FilesStore {
 
     static async refreshFiles() {
         try {
-            const data = <MutableObject[]>(await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
-            const fileTypes = await ContentBrowserAPI.refresh()
+            let data = <MutableObject[]|null>(await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
+            if(!data)
+                data = FilesStore.data.items
+            console.trace(data)
             await RegistryAPI.readRegistry()
+            const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
         } catch (err) {
             console.error(err)

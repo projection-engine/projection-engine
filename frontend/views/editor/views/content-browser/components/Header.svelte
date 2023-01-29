@@ -4,7 +4,7 @@
     import {onDestroy} from "svelte";
 
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-    import ITEM_TYPES from "../templates/ITEM_TYPES";
+    import ITEM_TYPES from "../static/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import importFile from "../../../utils/import-file";
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
@@ -16,6 +16,7 @@
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
     import AlertController from "../../../../../components/alert/AlertController";
     import FS from "../../../../../lib/FS/FS";
+    import SortingOptions from "./SortingOptions.svelte";
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -26,6 +27,12 @@
     export let viewType
     export let setViewType
     export let setFileType
+
+    export let setSortKey
+    export let setSortDirection
+    export let sortDirection
+    export let sortKey
+
 
 
     $: fileTypes = getFileTypes()
@@ -80,7 +87,6 @@
             <ToolTip content={LOCALIZATION_EN.CREATE_FOLDER}/>
         </button>
         <div data-sveltevertdivider="-"></div>
-
         <Input
                 width="50%"
                 hasBorder={true}
@@ -89,6 +95,7 @@
                 inputValue={inputValue}
                 onChange={onChange}
         />
+        <div data-sveltevertdivider="-"></div>
         <Dropdown buttonStyles={getDropdownHeaderStyles(fileType != null)}>
             <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
                 <ToolTip content={LOCALIZATION_EN.FILTER_TYPE}/>
@@ -108,6 +115,12 @@
                 </button>
             {/each}
         </Dropdown>
+        <SortingOptions
+                {setSortKey}
+                {setSortDirection}
+                {sortDirection}
+                {sortKey}
+        />
     </div>
     <div data-svelteinline="-" style="width: 100%; justify-content: flex-end">
         <button data-sveltebuttondefault="-"

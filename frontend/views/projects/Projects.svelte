@@ -46,8 +46,7 @@
                     onClick: async () => shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected)
                 },
             ],
-            internalID,
-            ["data-sveltecard"]
+            internalID
         )
         if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
             localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FS.rootDir)

@@ -1,4 +1,4 @@
-import SELECTION_TYPES from "../templates/SELECTION_TYPES"
+import SELECTION_TYPES from "../static/SELECTION_TYPES"
 import FilesStore from "../../../stores/FilesStore";
 import SelectionStore from "../../../stores/SelectionStore";
 

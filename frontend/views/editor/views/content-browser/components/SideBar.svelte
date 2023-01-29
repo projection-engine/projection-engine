@@ -3,6 +3,7 @@
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import FilesHierarchyStore from "../../../stores/FilesHierarchyStore";
     import {onDestroy} from "svelte";
+    import FS from "../../../../../lib/FS/FS";
 
     export let setCurrentDirectory = undefined
     export let currentDirectory = undefined
@@ -21,7 +22,7 @@
                 triggerOpen={_ => {
                     let open = FilesHierarchyStore.data.open
                     const inv = !open[item.item.id]
-                    if(item.item.id === NodeFS.sep && !inv)
+                    if(item.item.id === FS.sep && !inv)
                         open = {}
                     else if(!inv){
                         for(let i =0; i < item.children.length; i++)

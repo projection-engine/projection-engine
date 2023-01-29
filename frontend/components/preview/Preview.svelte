@@ -1,34 +1,17 @@
 <script>
-    import FS from "../../lib/FS/FS";
-
     export let drawOnError
     export let path
-    let lastPath
     let error = false
-    let timeout
     let src
-    $: {
-        if (lastPath !== path) {
-            clearTimeout(timeout)
-            lastPath = path
+    $:fetch(path).then(res => {
+        res.text()
+            .then(res => src = res)
+            .catch(_ => src = null)
+    }).catch(_ => src = null)
 
-        }
-        src = null
-        timeout = setTimeout(() => {
-            try {
-                FS.read(path).then(res => {
-                    error = !res
-                    if(res)
-                        src= res
-                })
-            } catch (err) {
-                error = true
-            }
-        }, 500)
-    }
 </script>
 
-{#if error || src == null}
+{#if error || !src }
     <slot name="icon"/>
 {:else}
     <slot name="image" draggable="false" src={src}/>
