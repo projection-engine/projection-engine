@@ -9,6 +9,7 @@ enum LOCALIZATION_EN {
     MIE ="Mie",
     RAYLEIGH ="Rayleigh",
     COMBINED ="Combined",
+    ADDED_COMPONENT = "Added component",
 
 
     NEW_MESSAGE =  "New console message",
@@ -42,7 +43,7 @@ ATMOSPHERE_RENDERER = "Atmosphere renderer",
     DEFAULT = "Default",
     PROJECT_CREATED = "Project created",
     IS_DEFAULT_VERSION = "Default version",
-
+    FILE_NOT_FOUND = "File not found",
     MINIMIZE= "Minimize",
     MAXIMIZE= "Maximize",
     TEXTURE_QUALITY = "Texture quality",
