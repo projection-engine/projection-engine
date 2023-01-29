@@ -33,9 +33,9 @@ export default class Events {
         })
         ipcMain.on(ROUTES.FILE_DIALOG, Events.fileDialog)
 
-        ipcMain.on("minimize",  () => ProjectController.window.minimize())
+        ipcMain.on("minimize", () => ProjectController.window.minimize())
         ipcMain.on("maximize", () => {
-            if(!ProjectController.window.isMaximized())
+            if (!ProjectController.window.isMaximized())
                 ProjectController.window.maximize()
             else
                 ProjectController.window.unmaximize()
@@ -47,37 +47,37 @@ export default class Events {
         ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)
 
         ipcMain.on(ROUTES.CLOSE_EDITOR, () => ProjectController.openProjectWindow())
-        ipcMain.on(ROUTES.GET_GLOBAL_SETTINGS,async (ev) =>  {
-            try{
+        ipcMain.on(ROUTES.GET_GLOBAL_SETTINGS, async (ev) => {
+            try {
                 const file = await fs.promises.readFile(os.homedir() + pathRequire.sep + SETTINGS_PATH)
-                if(file)
+                if (file)
                     ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, JSON.parse(file.toString()))
                 else
                     ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
-            }catch (err) {
+            } catch (err) {
                 ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
             }
         })
-        ipcMain.on(ROUTES.UPDATE_GLOBAL_SETTINGS,async (_, data) => {
-           try{
-               const result = await dialog.showMessageBox(ProjectController.window, {
-                   'type': 'question',
-                   'title': 'Reload necessary to apply changes',
-                   'message': "Are you sure?",
-                   'buttons': [
-                       'Yes',
-                       'No'
-                   ]
-               })
-               if (result.response !== 0)
-                   return;
-               await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch()
-               app.relaunch()
-               app.quit()
-           }catch (err){
-               app.relaunch()
-               app.quit()
-           }
+        ipcMain.on(ROUTES.UPDATE_GLOBAL_SETTINGS, async (_, data) => {
+            try {
+                const result = await dialog.showMessageBox(ProjectController.window, {
+                    'type': 'question',
+                    'title': 'Reload necessary to apply changes',
+                    'message': "Are you sure?",
+                    'buttons': [
+                        'Yes',
+                        'No'
+                    ]
+                })
+                if (result.response !== 0)
+                    return;
+                await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch()
+                app.relaunch()
+                app.quit()
+            } catch (err) {
+                app.relaunch()
+                app.quit()
+            }
         })
 
         ipcMain.on(ROUTES.CREATE_REG, Events.createRegistry)
@@ -106,7 +106,6 @@ export default class Events {
         })
         ProjectController.window.webContents.send(ROUTES.OPEN_SELECTION, canceled ? null : filePaths[0])
     }
-
 
     static async readFile(event, {pathName, type, listenID}) {
         event.sender.send(ROUTES.READ_FILE + listenID, await readTypedFile(pathName, type))
@@ -150,11 +149,38 @@ export default class Events {
     }
 
     static async refreshContentBrowser(event, {pathName, listenID}) {
-        ProjectController.registry = <{ [key: string]: RegistryFile }>(await readTypedFile(ProjectController.pathToRegistry, "json") || {})
-
+        let data = <null | { [key: string]: RegistryFile }>await readTypedFile(ProjectController.pathToRegistry, "json").catch()
+        if (!data) {
+            event.sender.send(ROUTES.REFRESH_CONTENT_BROWSER + listenID, null)
+            data = ProjectController.registry
+        }
+        console.error(data)
+        try {
+            ProjectController.registry = data
+        } catch (err) {
+            console.error(err, data)
+        }
         const result = []
-        const registryData = Object.values(ProjectController.registry)
-        const assetsToParse = await directoryStructure(pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS)
+        let registryData = Object.values(ProjectController.registry)
+        const foundIDs = {}
+        const pathToAssets = pathName + pathRequire.sep + PROJECT_FOLDER_STRUCTURE.ASSETS
+        registryData.forEach(d => {
+            if (foundIDs[d.id])
+                delete ProjectController.registry[d.id]
+            foundIDs[d.id] = true
+            if (!fs.existsSync(pathToAssets + d.path))
+                delete ProjectController.registry[d.id]
+        })
+        registryData = Object.values(ProjectController.registry)
+
+        try {
+            await fs.promises.writeFile(ProjectController.pathToRegistry, JSON.stringify(ProjectController.registry))
+        } catch (error) {
+            console.error(error)
+        }
+        const assetsToParse = await directoryStructure(pathToAssets)
+        console.error(registryData.length, pathToAssets, ProjectController.pathToRegistry)
+
         for (let i = 0; i < assetsToParse.length; i++) {
             try {
                 const e = await parseContentBrowserData(assetsToParse[i], registryData, pathName)

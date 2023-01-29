@@ -66,8 +66,8 @@
             class="stretch"
             data-svelteviewport="-"
             bind:this={canvasRef}
-            width={settings.resolution[0]}
-            height={settings.resolution[1]}
+            width={visuals.resolution[0]}
+            height={visuals.resolution[1]}
     ></canvas>
 </div>
 

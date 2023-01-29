@@ -22,6 +22,7 @@ export default async function readTypedFile(pathName, type): Promise<undefined |
         }
         return result
     } catch (e) {
+        console.error(e)
         return null
     }
 }

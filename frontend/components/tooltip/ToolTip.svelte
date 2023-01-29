@@ -29,7 +29,6 @@
     }
 
     const hover = (event) => {
-
         open = true
 
         bBox = ToolTipController.element.getBoundingClientRect()

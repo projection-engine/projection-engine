@@ -8,7 +8,7 @@
     import getItemIcon from "../../utils/get-item-icon";
     import getItemDragData from "../../utils/get-item-drag-data";
     import Card from "./Card.svelte";
-    import ITEM_TYPES from "../../templates/ITEM_TYPES";
+    import ITEM_TYPES from "../../static/ITEM_TYPES";
     import Row from "./Row.svelte";
     import PROJECT_FOLDER_STRUCTURE from "../../../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
     import FILE_TYPES from "../../../../../../../static/objects/FILE_TYPES";

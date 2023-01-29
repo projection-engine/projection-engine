@@ -8,16 +8,20 @@
 
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController";
     import ViewStateController from "../../components/view/libs/ViewStateController";
-    import ITEM_TYPES from "./templates/ITEM_TYPES";
+    import ITEM_TYPES from "./static/ITEM_TYPES";
     import SettingsStore from "../../stores/SettingsStore";
     import ResizableBar from "../../../../components/resizable/ResizableBar.svelte";
     import FS from "../../../../lib/FS/FS";
+    import {SORTS, SORTS_KEYS} from "./static/SORT_INFO";
 
 
     export let viewID
     export let viewIndex
     export let groupIndex
 
+    let settings
+    let sortKey = SORTS_KEYS[0]
+    let sortDirection = SORTS[0]
     let currentDirectory = {id: FS.sep}
     let wasInitialized = false
     let fileType = undefined
@@ -28,6 +32,7 @@
 
     const internalID =crypto.randomUUID()
     const unsubscribeStore = FilesStore.getStore(v => store = v)
+    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
     $: {
@@ -51,6 +56,7 @@
         })
     })
     onDestroy(() => {
+        unsubscribeSettings()
         GlobalContentBrowserController.unsubscribe(internalID)
         unsubscribeStore()
     })
@@ -59,6 +65,10 @@
 
 
 <Header
+        setSortKey={v => sortKey = v}
+        setSortDirection={v => sortDirection = v}
+        sortDirection={sortDirection}
+        sortKey={sortKey}
         fileType={fileType}
         setFileType={v => fileType = v}
         setViewType={v => viewType = v}
@@ -81,6 +91,10 @@
     <ResizableBar type={"width"}/>
     <div class="browser">
         <Browser
+                sortDirection={sortDirection}
+                sortKey={sortKey}
+
+                settings={settings}
                 viewType={viewType}
                 internalID={internalID}
                 store={store}

@@ -19,6 +19,7 @@
     import ContextMenuController from "../../lib/context-menu/ContextMenuController";
     import AlertController from "../../components/alert/AlertController";
 
+
     const {ipcRenderer} = window.require("electron")
     const FALLBACK = {...FALLBACK_VIEW}
 
@@ -36,6 +37,7 @@
     onMount(() => {
         AlertController.initialize()
         ContextMenuController.initialize()
+
         ipcRenderer.on(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
             sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
             FS.initialize(pathToProject)

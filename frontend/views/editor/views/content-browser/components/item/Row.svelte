@@ -20,7 +20,6 @@
     export let icon
     export let draggable
     export let isOnCuttingBoard
-    export let isNotDraggable
 
 </script>
 
@@ -33,7 +32,7 @@
         data-sveltefolder={type !== 0 ? undefined : data.id}
         on:dblclick={() => openItem(data, setCurrentDirectory, setSelected, reset, type)}
         on:click={setSelected}
-        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
+        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard  ? "opacity: .5;" : "")}
         class="file"
 >
     <div class="icon">
@@ -42,16 +41,13 @@
         {:else if metadata.type === FILE_TYPES.MATERIAL}
             <div data-svelteshaded-material="-" style="width: 20px; height: 20px"></div>
         {:else if metadata.type === FILE_TYPES.PRIMITIVE || metadata.type === FILE_TYPES.TEXTURE}
-            <Preview path={metadata.path}>
-                <img class="image" slot="image" alt="logo" let:src src={src}>
-                <Icon slot="icon" styles="font-size: 1rem">
-                    {#if metadata.type === FILE_TYPES.PRIMITIVE}
-                        category
-                    {:else}
-                        image
-                    {/if}
-                </Icon>
-            </Preview>
+            <Icon slot="icon" styles="font-size: 1rem">
+                {#if metadata.type === FILE_TYPES.PRIMITIVE}
+                    category
+                {:else}
+                    image
+                {/if}
+            </Icon>
         {/if}
     </div>
     <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename} isRow={true}/>
@@ -62,13 +58,10 @@
 </div>
 
 <style>
-    small{
+    small {
         font-size: .65rem;
     }
-    .image {
-        max-height: 100%;
-        overflow: hidden;
-    }
+
 
     .file {
         width: 100%;

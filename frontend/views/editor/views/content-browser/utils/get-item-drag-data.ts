@@ -9,6 +9,7 @@ export default function getItemDragData(icon, childQuantity, data, items, setOnD
                 ${data.name}
             `,
         onDragOver: () => type === 0 ? "Link folder" : undefined,
+        onDragEnd: () => setOnDrag(false),
         onDragStart: () => {
             setOnDrag(true)
             const ss = SelectionStore.contentBrowserSelected.map(s => items.find(i => i.id === s))

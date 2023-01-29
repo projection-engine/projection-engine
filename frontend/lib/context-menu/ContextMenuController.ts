@@ -33,7 +33,7 @@ export default class ContextMenuController {
         ContextMenuController.#initialized = true
     }
 
-    static mount(options: ContextMenuOption[], target: string | null, triggers?: string[], onFocus?: Function) {
+    static mount(options: ContextMenuOption[], target: string | null, onFocus?: Function) {
 
 
         const template = buildOptions(options, target)
@@ -45,7 +45,7 @@ export default class ContextMenuController {
         ContextMenuController.data.targets[target] = {
             id: target,
             options,
-            triggers: triggers || [],
+            triggers: [],
             onFocus,
             template
         }

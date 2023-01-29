@@ -127,8 +127,10 @@ export default class LevelController {
                     }
 
                     const uiID = entity.uiComponent?.uiLayoutID
-                    if (uiID) {
+                    check: if (uiID) {
                         const rs = RegistryAPI.getRegistryEntry(uiID)
+                        if(!rs)
+                            break check
                         Engine.UILayouts.set(uiID, await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + rs.path))
                     }
                     mapped.push(entity)

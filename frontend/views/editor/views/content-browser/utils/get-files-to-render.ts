@@ -1,5 +1,6 @@
 import FS from "../../../../../lib/FS/FS";
-
+import sortItems from "./sort-items";
+import {SORTS} from "../static/SORT_INFO";
 function map(check, items, elementsPerRow) {
     let newArr = []
     let offset = 0
@@ -19,12 +20,17 @@ function map(check, items, elementsPerRow) {
     return newArr
 }
 
-export default function getFilesToRender(currentDirectory, fileType, items, inputValue, elementsPerRow) {
+export default function getFilesToRender(currentDirectory, fileType, itemsToMap, inputValue, elementsPerRow, sortKey, sortDirection) {
+    if(!itemsToMap)
+        return []
+
     let type = fileType?.split("")
     if (type) {
         type.shift()
         type = type.join("")
     }
+    const items = sortItems(itemsToMap,  sortDirection === SORTS[1], sortKey)
+
     if (inputValue || fileType)
         return map(
             file => inputValue.trim() && file.name.includes(inputValue) || type && file.type === type && !file.isFolder,

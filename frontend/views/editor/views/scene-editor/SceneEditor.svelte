@@ -77,8 +77,7 @@
         if (settings?.viewportHotkeys != null)
             ContextMenuController.mount(
                 viewportContext(settings),
-                RENDER_TARGET,
-                ["data-svelteviewport"]
+                RENDER_TARGET
             )
     }
 

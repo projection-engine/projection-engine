@@ -1,5 +1,5 @@
 import selection from "../views/content-browser/utils/selection";
-import SELECTION_TYPES from "../views/content-browser/templates/SELECTION_TYPES";
+import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES";
 import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../stores/FilesStore";
 import SelectionStore from "../stores/SelectionStore";

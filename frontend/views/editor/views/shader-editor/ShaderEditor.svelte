@@ -40,8 +40,7 @@
         const data = shaderActions(canvas)
         ContextMenuController.mount(
             data.contextMenu,
-            internalID,
-            []
+            internalID
         )
         if (canvas.ctx?.canvas)
             HotKeysController.bindAction(

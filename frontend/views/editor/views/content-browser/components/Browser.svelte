@@ -10,10 +10,13 @@
     import SelectionStore from "../../../stores/SelectionStore";
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
     import SettingsStore from "../../../stores/SettingsStore";
-    import ITEM_TYPES from "../templates/ITEM_TYPES";
-    import RowsHeader from "./RowsHeader.svelte";
+    import ITEM_TYPES from "../static/ITEM_TYPES";
+    import RowsHeader from "./BrowserHeader.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import ContextMenuController from "../../../../../lib/context-menu/ContextMenuController";
+    import handleSelection from "../utils/handle-selection";
+    import sortItems from "../utils/sort-items";
+    import {SORTS} from "../static/SORT_INFO";
 
     const CARD_SIZE = 115
     export let fileType
@@ -25,38 +28,25 @@
     export let setCurrentDirectory
     export let internalID
     export let store
-
     export let viewType
+    export let settings
+    export let sortKey
+    export let sortDirection
 
-    let onDrag = false
     let ref
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
-    let settings
     let selectionMap
     let selected = []
+    let onDrag = false
     let timeout
-    let toRender = []
 
-    const TRIGGERS = ["data-sveltewrapper", "data-sveltefile", "data-sveltefolder"]
 
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribe = SelectionStore.getStore(() => {
         selected = SelectionStore.contentBrowserSelected
         selectionMap = SelectionStore.map
     })
-    const onDragEnd = () => onDrag = false
-    const handleSelection = (e, child) => {
-        let toSelect = []
-        if (e) {
-            if (e.ctrlKey)
-                toSelect = [...selected, child.id]
-            else
-                toSelect = [child.id]
-        }
-        SelectionStore.contentBrowserSelected = toSelect
-    }
 
     function resetItem() {
         SelectionStore.contentBrowserSelected = []
@@ -65,8 +55,7 @@
     }
 
     $: lineHeight = viewType === ITEM_TYPES.ROW ? 23 : CARD_SIZE
-    $: items = store.items
-    $: toRender = getFilesToRender(currentDirectory, fileType, items, inputValue, elementsPerRow)
+    $: toRender = getFilesToRender(currentDirectory, fileType, store.items, inputValue, elementsPerRow, sortKey, sortDirection)
 
     $: {
         if (ref) {
@@ -76,7 +65,6 @@
             ContextMenuController.mount(
                 actions.contextMenu,
                 internalID,
-                TRIGGERS,
                 (trigger, element) => {
                     const id = element.getAttribute("data-svelteid")
                     if (id != null)
@@ -99,7 +87,6 @@
     }
 
     onMount(() => {
-        document.addEventListener("dragend", onDragEnd)
         resizeOBS = new ResizeObserver(() => {
             if (viewType !== ITEM_TYPES.CARD)
                 return
@@ -112,14 +99,11 @@
     })
 
     onDestroy(() => {
-        unsubscribeSettings()
         HotKeysController.unbindAction(ref)
         ContextMenuController.destroy(internalID)
-        document.removeEventListener("dragend", onDragEnd)
         unsubscribe()
         clearTimeout(timeout)
-        if(resizeOBS)
-            resizeOBS.disconnect()
+        resizeOBS?.disconnect?.()
     })
 </script>
 
@@ -143,7 +127,7 @@
     />
     {#if toRender.length > 0}
         {#if viewType === ITEM_TYPES.ROW}
-            <RowsHeader items={toRender} updateItems={v => toRender = v}/>
+            <RowsHeader sort={sortKey}  />
         {/if}
         <VirtualList items={toRender} let:item>
             <div class="line"
@@ -161,7 +145,7 @@
                             data={child}
                             childQuantity={child.children}
                             setCurrentDirectory={setCurrentDirectory}
-                            items={items}
+                            items={store.items}
                             setSelected={e => handleSelection(e, child)}
                             onRename={currentItem}
                             submitRename={async name => {

@@ -11,23 +11,25 @@ import FS from "../../../lib/FS/FS";
 const engine = writable(<MutableObject>ENGINE);
 
 export default class EngineStore {
-    static engine:MutableObject = ENGINE
+    static engine: MutableObject = ENGINE
 
-    static getStore(onChange:Function):Function {
+    static getStore(onChange: Function): Function {
         return engine.subscribe(newValue => onChange(newValue))
     }
 
-    static updateStore(value?:MutableObject) {
-        let updated = {...(value||EngineStore.engine)}
+    static updateStore(value?: MutableObject) {
+        let updated = {...(value || EngineStore.engine)}
         EngineStore.engine = updated
         engine.set(updated)
     }
 
-    static async loadTextureFromImageID(registryID:string) {
+    static async loadTextureFromImageID(registryID: string) {
         if (GPU.textures.get(registryID) != null)
             return true
         try {
             const rs = RegistryAPI.getRegistryEntry(registryID)
+            if (!rs)
+                return false
             const textureData = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + rs.path, "json")
 
             await GPUAPI.allocateTexture({
