@@ -23,7 +23,7 @@ const pathRequire = require("path")
 
 export default class Events {
     static initializeListeners() {
-        ipcMain.on("reload", Events.reloadWindow)
+        ipcMain.on("reload", () => ProjectController.prepareForUse(ProjectController.pathToProject).catch())
         ipcMain.on(ROUTES.LOAD_LEVEL, Events.loadLevel)
         ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, Events.loadProjectMetadata)
 
@@ -85,20 +85,7 @@ export default class Events {
         ipcMain.on(ROUTES.READ_REGISTRY, Events.readRegistry)
     }
 
-    static async reloadWindow() {
-        const result = await dialog.showMessageBox(ProjectController.window, {
-            'type': 'question',
-            'title': 'Reload project',
-            'message': "Are you sure?",
-            'buttons': [
-                'Yes',
-                'No'
-            ]
-        })
-        if (result.response !== 0)
-            return;
-        await ProjectController.prepareForUse(ProjectController.pathToProject)
-    }
+
 
     static async openSelection() {
         const {canceled, filePaths} = await dialog.showOpenDialog({

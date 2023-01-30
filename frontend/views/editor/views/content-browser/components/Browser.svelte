@@ -9,14 +9,11 @@
     import HotKeysController from "../../../lib/utils/HotKeysController";
     import SelectionStore from "../../../stores/SelectionStore";
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-    import SettingsStore from "../../../stores/SettingsStore";
     import ITEM_TYPES from "../static/ITEM_TYPES";
     import RowsHeader from "./BrowserHeader.svelte";
     import Icon from "../../../../../components/icon/Icon.svelte";
     import ContextMenuController from "../../../../../lib/context-menu/ContextMenuController";
     import handleSelection from "../utils/handle-selection";
-    import sortItems from "../utils/sort-items";
-    import {SORTS} from "../static/SORT_INFO";
 
     const CARD_SIZE = 115
     export let fileType

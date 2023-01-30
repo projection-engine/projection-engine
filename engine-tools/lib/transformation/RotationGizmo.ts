@@ -16,6 +16,7 @@ import StaticEditorShaders from "../StaticEditorShaders";
 import Entity from "../../../engine-core/instances/Entity";
 
 const toRad = Math.PI / 180
+const toDeg = 180 / Math.PI
 const uniformCache = new Float32Array(4)
 const cacheVec3 = vec3.create()
 export default class RotationGizmo extends GizmoInterface {
@@ -85,6 +86,15 @@ export default class RotationGizmo extends GizmoInterface {
                 break
         }
         GizmoSystem.hasStarted = true
+
+        if (GizmoSystem.rotationRef) {
+            const mainEntity = GizmoSystem.mainEntity
+            const Q = mainEntity._rotationQuat
+            const EX = RotationGizmo.currentRotation[0] * 2 * toDeg,
+                EY = RotationGizmo.currentRotation[1] * 2 * toDeg,
+                EZ = RotationGizmo.currentRotation[2] * 2 * toDeg
+            GizmoSystem.rotationRef.textContent = `Quaternion: X ${Q[0].toFixed(2)} | Y ${Q[1].toFixed(2)} | Z ${Q[2].toFixed(2)} | W ${Q[3].toFixed(2)} (Euler: X ${EX.toFixed(2)} | Y ${EY.toFixed(2)} | Z ${EZ.toFixed(2)})`
+        }
     }
 
     #testClick() {

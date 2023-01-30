@@ -10,6 +10,7 @@ enum LOCALIZATION_EN {
     RAYLEIGH ="Rayleigh",
     COMBINED ="Combined",
     ADDED_COMPONENT = "Added component",
+    FULLSCREEN = "Fullscreen",
 
 
     NEW_MESSAGE =  "New console message",
@@ -25,6 +26,9 @@ enum LOCALIZATION_EN {
     PROJECT_RENAMED = "Project renamed",
     RENAME_ERROR = "Error renaming editor",
     LOADING = "Loading projects",
+    YES = "Yes",
+    NO = "No",
+    UNSAVED_CHANGES = "Any unsaved changes will be lost forever. Do you want to continue ?",
     PROJECTION = "Projection",
     TITLE = "Projection Engine",
     MAX_MEMORY = "Memory allocation",

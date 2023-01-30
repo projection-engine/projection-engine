@@ -5,7 +5,6 @@ import EngineStore from "../../../stores/EngineStore";
 import CameraAPI from "../../../../../../engine-core/lib/utils/CameraAPI";
 import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
 import LightComponent from "../../../../../../engine-core/instances/components/LightComponent";
-import AtmosphereComponent from "../../../../../../engine-core/instances/components/AtmosphereComponent";
 
 export default function updateEntityComponent(savedState, setSaved, entity, key, value, save, currentComponentValue) {
     if (currentComponentValue[1] instanceof LightComponent ) {

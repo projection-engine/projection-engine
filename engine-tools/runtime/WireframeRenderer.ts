@@ -10,7 +10,7 @@ const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
 let isFirstDrawing = true
 export default class WireframeRenderer {
-    static execute() {
+    static execute(settings) {
         const entities = Engine.entities.array
         const size = entities.length
         const uniforms = StaticEditorShaders.wireframeUniforms
@@ -21,7 +21,7 @@ export default class WireframeRenderer {
 
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity.active)
+            if (!entity.active || entity.distanceFromCamera > settings.maxDistanceIcon)
                 continue
 
             const collision = entity.physicsColliderComponent

@@ -1,5 +1,7 @@
 import WindowUtils from "../../../lib/WindowUtils";
 import ROUTES from "../../../../../../backend/static/ROUTES";
+import WindowChangeStore from "../../../../../components/frame/WindowChangeStore";
+import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
 
 const {ipcRenderer} = window.require("electron")
 export default function getFrameOptions( disabledSave:boolean) {
@@ -29,11 +31,11 @@ export default function getFrameOptions( disabledSave:boolean) {
         {
             label: 'Reload project',
             icon: "refresh",
-            onClick: () => WindowUtils.callMethod("reload")
+            onClick: () => WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => WindowUtils.callMethod("reload")})
         },
         {
             label: "Close project",
-            onClick: () => ipcRenderer.send(ROUTES.CLOSE_EDITOR)
+            onClick: () => WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => ipcRenderer.send(ROUTES.CLOSE_EDITOR)})
         },
     ]
 }
