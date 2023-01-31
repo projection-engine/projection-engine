@@ -27,7 +27,7 @@
     <ResizableBar type="width"/>
     {#if tab === 0}
         <Nodes/>
-    {:else}
+    {:else if !!mainNode}
         <AttributeEditor node={mainNode} updateCanvas={() => canvasAPI.clear()}/>
     {/if}
     <div class="buttons">

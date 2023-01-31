@@ -1,9 +1,9 @@
 <script>
-  import {onDestroy, onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
 
-  import Portal from "../../lib/Portal";
+    import Portal from "../../lib/Portal";
 
-  export let handleClose
+    export let handleClose
     export let styles
     let content
 

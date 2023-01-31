@@ -11,7 +11,8 @@
     import Icon from "../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../components/dropdown/Dropdown.svelte";
-    import ViewportSettings from "../preferences/components/ViewportSettings.svelte";
+    import PREFERENCES from "../preferences/static/PREFERENCES";
+    import FormPreferences from "../preferences/components/content/ContentGroup.svelte";
 
     export let settings
     export let engine
@@ -80,7 +81,7 @@
     <ShadingOption engine={engine} settings={settings}/>
     <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
         <div style="padding: 8px 4px; display: grid; gap: 4px">
-            <ViewportSettings settings={settings}/>
+            <FormPreferences toRender={PREFERENCES[0]}/>
         </div>
     </Dropdown>
 </div>
