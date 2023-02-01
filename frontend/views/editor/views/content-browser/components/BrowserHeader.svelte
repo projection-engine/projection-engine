@@ -1,9 +1,5 @@
 <script>
     import LOCALIZATION_EN from "../../../static/LOCALIZATION_EN";
-    import {onMount} from "svelte";
-    import Icon from "../../../../../components/icon/Icon.svelte";
-    import sortItems from "../utils/sort-items";
-    import {SORTS, SORTS_KEYS} from "../static/SORT_INFO";
 
     export let sort
 

@@ -15,7 +15,6 @@ import StaticEditorMeshes from "./lib/StaticEditorMeshes";
 import StaticEditorShaders from "./lib/StaticEditorShaders";
 import StaticShaders from "../engine-core/lib/StaticShaders";
 import Shader from "../engine-core/instances/Shader";
-import StaticFBO from "../engine-core/lib/StaticFBO";
 
 
 let settings
@@ -89,7 +88,7 @@ export default class EngineTools {
         if (settings.showGrid)
             GridSystem.execute()
         if (settings.showOutline)
-            WireframeRenderer.execute()
+            WireframeRenderer.execute(settings)
         SelectedSystem.drawSilhouette(selected, settings)
         IconsSystem.drawIcons(settings)
         context.enable(context.DEPTH_TEST)

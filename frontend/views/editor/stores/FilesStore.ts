@@ -9,7 +9,6 @@ import FS from "../../../lib/FS/FS";
 import {getCall} from "../../../lib/FS/get-call";
 import MutableObject from "../../../../engine-core/MutableObject";
 import RegistryAPI from "../lib/fs/RegistryAPI";
-import AlertController from "../../../components/alert/AlertController";
 
 const contentBrowserStore = writable({
     isLoading: true,

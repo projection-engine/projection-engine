@@ -11,3 +11,8 @@ declare module "*.vert" {
     const value: string; // Add better type definitions here if desired.
     export default value;
 }
+
+declare module "*.svg" {
+    const value: string; // Add better type definitions here if desired.
+    export default value;
+}

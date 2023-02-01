@@ -1,4 +1,7 @@
 precision mediump float;
+
+#define IMAGE_QUANTITY 7.
+
 #define BIGGER_RADIUS .5
 #define SMALLER_RADIUS .43
 
@@ -32,7 +35,7 @@ void main() {
         }
     } else {
         vec2 imageSize = vec2(textureSize(image, 0));
-        float color = texture(image, vec2(texCoords.x / 6. + imageIndex * imageSize.y / imageSize.x, 1. - texCoords.y)).a;
+        float color = texture(image, vec2(texCoords.x / IMAGE_QUANTITY + imageIndex * imageSize.y / imageSize.x, 1. - texCoords.y)).a;
         if (color <= .1) discard;
     }
 

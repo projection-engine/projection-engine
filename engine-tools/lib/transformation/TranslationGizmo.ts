@@ -23,6 +23,7 @@ export default class TranslationGizmo extends Inheritance {
         super.onMouseDown(event);
         TranslationGizmo.hasCloned = false
         TranslationGizmo.cache = [0, 0, 0]
+
     }
 
     onMouseMove(event:MouseEvent) {
@@ -35,6 +36,10 @@ export default class TranslationGizmo extends Inheritance {
         }
         TranslationGizmo.hasCloned = event.shiftKey
         gizmoTranslateEntity(event)
+        if(GizmoSystem.translationRef) {
+            const mainEntity = GizmoSystem.mainEntity
+            GizmoSystem.translationRef.textContent = `X ${mainEntity._translation[0].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
+        }
     }
 
 

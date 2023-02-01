@@ -113,15 +113,20 @@ export default class ProjectController {
             ProjectController.window.openDevTools({mode: "detach"})
 
         ProjectController.openProjectWindow()
+        ProjectController.window.webContents.on('unresponsive', async () => {
+            const { response } = await dialog.showMessageBox({
+                message: 'Application is unresponsive',
+                title: 'Do you want to try reloading the app?',
+                buttons: ['OK', 'Cancel'],
+                cancelId: 1
+            })
+            if (response === 0) {
+                ProjectController.window.webContents.forcefullyCrashRenderer()
+                ProjectController.window.webContents.reload()
+            }
+        })
     }
 
-    static closeWindow(preventAppClosing: boolean) {
-        if (!ProjectController.window)
-            return
-        ProjectController.preventAppClosing = preventAppClosing
-        ProjectController.window.close()
-        ProjectController.window = undefined
-    }
 
     static async prepareForUse(pathTo: string) {
 

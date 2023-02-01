@@ -30,7 +30,7 @@
 
         Engine.initializeContext(
             canvasRef,
-            {w: visuals.resolution[0], h: visuals.resolution[1]},
+            {w: visuals.resolutionX, h: visuals.resolutionY},
             AssetAPI.readAsset,
             AssetAPI.readMetadata,
             true
@@ -66,8 +66,8 @@
             class="stretch"
             data-svelteviewport="-"
             bind:this={canvasRef}
-            width={visuals.resolution[0]}
-            height={visuals.resolution[1]}
+            width={visuals.resolutionX}
+            height={visuals.resolutionY}
     ></canvas>
 </div>
 

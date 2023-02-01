@@ -5,7 +5,6 @@
     import Component from "../../../../../../../../engine-core/instances/components/Component";
     import Icon from "../../../../../../../components/icon/Icon.svelte";
     import getComponentLabel from "../../../utils/get-component-label";
-    import Accordion from "../../../../../../../components/accordion/Accordion.svelte";
 
     export let key
     export let index
@@ -33,7 +32,8 @@
 {#if Array.isArray(component.props)}
     {#each component.props as propAttr, index}
         {#if propAttr.type === Component.propTypes.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
-            <Accordion startOpen={index === 0} title={LOCALIZATION_EN[propAttr.label] || propAttr.label} styles={"display: flex; flex-direction: column; gap: 4px;"}>
+            <fieldset  style="display: flex; flex-direction: column; gap: 4px;">
+                <legend>{LOCALIZATION_EN[propAttr.label] || propAttr.label}</legend>
                 {#each propAttr.children as attribute}
                     {#if !checkIsDisabled(attribute)}
                         <Property
@@ -43,7 +43,7 @@
                         />
                     {/if}
                 {/each}
-            </Accordion>
+            </fieldset>
         {:else if propAttr.type !== Component.propTypes.GROUP && !checkIsDisabled(propAttr)}
             <Property
                     component={component}
@@ -56,6 +56,9 @@
 
 
 <style>
+    legend{
+        padding: 0 8px;
+    }
     .title-wrapper {
         background: var(--pj-background-secondary);
         justify-content: space-between;

@@ -1,25 +1,22 @@
 <script>
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
-    import Rendering from "./components/Rendering.svelte";
-    import ViewportSettings from "./components/ViewportSettings.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";
     import SettingsStore from "../../stores/SettingsStore";
     import VisualsStore from "../../stores/VisualsStore";
     import CameraSettings from "./components/CameraSettings.svelte";
-    import TABS from "./TABS";
-    import ToolTip from "../../../../components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../components/icon/Icon.svelte";
+    import GlobalSettings from "./components/GlobalSettings.svelte";
+    import DefaultPreferences from "./components/content/ContentWrapper.svelte";
+    import Accordion from "../../../../components/accordion/Accordion.svelte";
 
     const {ipcRenderer} = window.require("electron")
+    let tab = 0
 
     let settings
     let visuals
 
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
-    let tab = 0
-
 
     onDestroy(() => {
         unsubscribeSettings()
@@ -28,36 +25,20 @@
 </script>
 
 <div class="wrapper">
-    <div class="tabs shared">
-        {#each TABS as button, index}
-            <button data-sveltebuttondefault="-"
-                    data-sveltehighlight={tab === index ? "-" : undefined}
-                    class="tab-button shared"
-                    on:click={_ => tab = index}
-            >
-                <Icon styles="font-size: .9rem">{button.icon}</Icon>
-                <ToolTip content={button.label}/>
-            </button>
-        {/each}
-    </div>
     <div class="content">
-        {#if tab === 0}
-            <strong>{LOCALIZATION_EN.VIEWPORT}</strong>
-            <ViewportSettings settings={settings}/>
-        {:else if tab === 1}
+        <Accordion title={LOCALIZATION_EN.GLOBAL} startOpen={true}>
+            <GlobalSettings/>
+        </Accordion>
 
-            <strong>{LOCALIZATION_EN.RENDERING}</strong>
-            <Rendering visualSettings={visuals}/>
-
-        {:else if tab === 2}
-
-            <strong>{LOCALIZATION_EN.SHORTCUTS}</strong>
+        <Accordion title={LOCALIZATION_EN.SHORTCUTS}>
             <Shortcuts settings={settings}/>
+        </Accordion>
 
-        {:else if tab === 3}
-            <strong>{LOCALIZATION_EN.CAMERA}</strong>
+        <DefaultPreferences {settings} {visuals}/>
+
+        <Accordion title={LOCALIZATION_EN.CAMERA}>
             <CameraSettings settings={settings}/>
-        {/if}
+        </Accordion>
     </div>
 </div>
 

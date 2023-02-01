@@ -19,37 +19,37 @@
     }
 </script>
 
-
-<div class="content-wrapper">
-    <div class="wrapper">
-        <fieldset>
-            <legend>{LOCALIZATION_EN.NAME}</legend>
-            <Input
-                    inputValue={node.name}
-                    width={"100%"}
-                    height="30px"
-                    onChange={ev => {
+{#if !!node}
+    <div class="content-wrapper">
+        <div class="wrapper">
+            <fieldset>
+                <legend>{LOCALIZATION_EN.NAME}</legend>
+                <Input
+                        inputValue={node.name}
+                        width={"100%"}
+                        height="30px"
+                        onChange={ev => {
                         node.name = ev
                         updateCanvas()
                     }}
-                    placeholder={LOCALIZATION_EN.NAME}
-            />
-        </fieldset>
-        {#if node instanceof ShaderComment}
-            <fieldset>
-                <legend>{LOCALIZATION_EN.COLOR}</legend>
-                <ColorPicker
-                        submit={(_, arr) => {
+                        placeholder={LOCALIZATION_EN.NAME}
+                />
+            </fieldset>
+            {#if node instanceof ShaderComment}
+                <fieldset>
+                    <legend>{LOCALIZATION_EN.COLOR}</legend>
+                    <ColorPicker
+                            submit={(_, arr) => {
                             node.color = arr
                             updateCanvas()
                         }}
-                        value={node.color}
-                />
-            </fieldset>
-        {:else}
-            {#each node.inputs as attr, i}
+                            value={node.color}
+                    />
+                </fieldset>
+            {:else}
+                {#each node.inputs as attr, i}
 
-                {#if attr.type}
+                    {#if attr.type}
                         {#key attr.key}
                             <fieldset>
                                 <legend>{attr.label}</legend>
@@ -61,14 +61,15 @@
                                 />
                             </fieldset>
                         {/key}
-                {/if}
+                    {/if}
 
-            {/each}
-        {/if}
+                {/each}
+            {/if}
 
+        </div>
     </div>
-</div>
 
+{/if}
 <style>
     .content-wrapper {
         background: var(--pj-background-tertiary);

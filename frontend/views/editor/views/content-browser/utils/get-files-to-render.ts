@@ -1,6 +1,7 @@
 import FS from "../../../../../lib/FS/FS";
 import sortItems from "./sort-items";
 import {SORTS} from "../static/SORT_INFO";
+
 function map(check, items, elementsPerRow) {
     let newArr = []
     let offset = 0

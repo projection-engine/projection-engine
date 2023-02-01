@@ -1,7 +1,5 @@
 precision lowp float;
 
-#define FRAG_DEPTH_THRESHOLD .00001
-
 out vec4 fragColor;
 uniform bool darker;
 

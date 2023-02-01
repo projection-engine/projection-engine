@@ -38,33 +38,14 @@
 </button>
 
 <style>
-
     button {
+        background: none;
+        border: none;
+
         display: flex;
         align-items: center;
         justify-content: center;
-
-        gap: 4px;
-        color: var(--pj-color-secondary);
-
-        border: none;
-        background: transparent;
-        padding: 0 2px;
-        min-height: 30px;
-        max-height: 30px;
-        min-width: 30px;
-        max-width: 30px;
-        white-space: nowrap;
+        width: 25px;
+        height: 25px;
     }
-
-    button:hover {
-        background: var(--pj-border-primary);
-    }
-
-    button:active {
-        background: transparent;
-        color: var(--pj-accent-color);
-        opacity: .9;
-    }
-
 </style>

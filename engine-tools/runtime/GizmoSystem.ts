@@ -32,6 +32,10 @@ export default class GizmoSystem   {
     static highlightY: boolean = false
     static highlightZ: boolean = false
 
+    static translationRef:HTMLElement
+    static rotationRef:HTMLElement
+    static scaleRef:HTMLElement
+
     static get wasOnGizmo() {
         return GizmoSystem.#wasOnGizmo
     }
@@ -43,7 +47,6 @@ export default class GizmoSystem   {
         else
             GizmoSystem.onStop?.()
     }
-
 
     static tooltip
     static translationGizmo?: TranslationGizmo

@@ -12,7 +12,6 @@
     import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../../../components/checkbox/Checkbox.svelte";
-    import GPU from "../../../../../../../engine-core/GPU";
     import Icon from "../../../../../../components/icon/Icon.svelte";
     import ToolTip from "../../../../../../components/tooltip/ToolTip.svelte";
 

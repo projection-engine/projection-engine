@@ -159,7 +159,7 @@ export default {
         rotationGizmo: 1,
         translationGizmo: 1,
         scaleGizmo: 1,
-        sensitivity: .001
+        sensitivity: 1
     },
 
     background: true,

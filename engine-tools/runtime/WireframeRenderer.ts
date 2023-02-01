@@ -5,23 +5,35 @@ import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import Engine from "../../engine-core/Engine";
 import StaticFBO from "../../engine-core/lib/StaticFBO";
+import StaticEditorMeshes from "../lib/StaticEditorMeshes";
+import ResourceEntityMapper from "../../engine-core/resource-libs/ResourceEntityMapper";
+import CameraIconRenderer from "./CameraIconRenderer";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
-let isFirstDrawing = true
 export default class WireframeRenderer {
-    static execute() {
+    static execute(settings) {
         const entities = Engine.entities.array
         const size = entities.length
         const uniforms = StaticEditorShaders.wireframeUniforms
         const context = GPU.context
 
-        isFirstDrawing = true
+        StaticEditorShaders.wireframe.bind()
+
+        context.activeTexture(context.TEXTURE0)
+        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
+        context.uniform1i(uniforms.depth, 0)
+        context.uniform2fv(uniforms.bufferResolution, StaticFBO.visibility.resolution)
+
+        const cameras = ResourceEntityMapper.cameras.array
+        const camerasSize = cameras.length
+        for (let i = 0; i < camerasSize; i++)
+            CameraIconRenderer.execute(cameras[i])
 
 
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity.active)
+            if (!entity.active || entity.distanceFromCamera > settings.maxDistanceIcon)
                 continue
 
             const collision = entity.physicsColliderComponent
@@ -29,15 +41,7 @@ export default class WireframeRenderer {
 
             if (!decal && !collision)
                 continue
-            if (isFirstDrawing) {
-                StaticEditorShaders.wireframe.bind()
 
-                context.activeTexture(context.TEXTURE0)
-                context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
-                context.uniform1i(uniforms.depth, 0)
-                context.uniform2fv(uniforms.bufferResolution, StaticFBO.visibility.resolution)
-                isFirstDrawing = false
-            }
 
             if (collision) {
                 if (entity.changesApplied || !entity.__collisionTransformationMatrix) {
@@ -62,7 +66,7 @@ export default class WireframeRenderer {
                         StaticMeshes.sphere.draw()
                         break
                     case COLLISION_TYPES.BOX:
-                        StaticMeshes.cube.drawLines()
+                        StaticEditorMeshes.clipSpaceCamera.drawLines()
                         break
                 }
             } else if (decal) {

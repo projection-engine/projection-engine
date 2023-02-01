@@ -36,7 +36,7 @@
     }
     $ : {
         GizmoSystem.transformationType = settings.transformationType
-        GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity || .001
+        GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity / 100 || .001
     }
 </script>
 

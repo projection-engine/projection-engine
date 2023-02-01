@@ -1,13 +1,13 @@
-import AA_METHODS from "../../../../engine-core/static/AA_METHODS";
-
 export default {
-    AAMethod: AA_METHODS.DISABLED,
+    FXAA: false,
+    TAA: false,
     FXAASpanMax: 8,
     FXAAReduceMin: 1 / 128,
     FXAAReduceMul: 1 / 8,
-    resolution: [window.screen.width, window.screen.height],
+    resolutionX: window.screen.width,
+    resolutionY: window.screen.height,
     physicsSubSteps: 10,
-    physicsSimulationStep: 0.01666666,
+    physicsSimulationStep: 16.66666,
 
     preferencesVisibility: false,
     shadowAtlasQuantity: 4,
