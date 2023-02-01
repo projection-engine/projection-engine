@@ -8,6 +8,9 @@ import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import {mat4} from "gl-matrix";
 import MATERIAL_RENDERING_TYPES from "../../engine-core/static/MATERIAL_RENDERING_TYPES";
+import Entity from "../../engine-core/instances/Entity";
+import MutableObject from "../../engine-core/MutableObject";
+import StaticFBO from "../../engine-core/lib/StaticFBO";
 
 const DEFAULT_COLOR = [255, 255, 255]
 
@@ -15,7 +18,7 @@ const iconAttributes = mat4.create()
 export default class IconsSystem {
     static iconsTexture?: WebGLTexture
 
-    static loop(cb, settings, uniforms?: Object) {
+    static loop(cb, settings, uniforms?: MutableObject) {
         const tracking = CameraAPI.trackingEntity
         const entities = Engine.entities.array
         const size = entities.length
@@ -25,34 +28,29 @@ export default class IconsSystem {
             if (!entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > settings.maxDistanceIcon)
                 continue
             const hasLight = entity.lightComponent !== undefined
-            const hasSkylight = entity.skylightComponent !== undefined
+            const hasProbe = entity.lightProbeComponent !== undefined
             const hasCamera = entity.cameraComponent !== undefined
-            const doesntHaveIcon = !hasLight && !hasSkylight && !hasCamera
+            const hasDecal = entity.cameraComponent !== undefined
+            const hasAtmosphere = entity.cameraComponent !== undefined
+            const doesntHaveIcon = !hasLight && !hasProbe && !hasCamera && !hasDecal && !hasAtmosphere
+
             if (
                 tracking === entity ||
+                doesntHaveIcon && entity.uiComponent ||
                 entity.meshRef && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
                 doesntHaveIcon && entity.meshRef && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY
             )
                 continue
-            cb(
-                entity,
-                hasLight,
-                hasSkylight,
-                hasCamera,
-                settings,
-                uniforms
-            )
+            cb(entity, settings, uniforms)
         }
     }
 
     static drawIcon(
-        entity,
-        hasLight,
-        hasSkylight,
-        hasCamera,
+        entity: Entity,
         settings,
-        iconsUniforms
+        U
     ) {
+        const uniforms = U || StaticEditorShaders.iconUniforms
         const context = GPU.context
         const lightComponent = entity.lightComponent
         const lightType = lightComponent?.type
@@ -89,11 +87,17 @@ export default class IconsSystem {
                 break
         }
 
-        if (hasSkylight)
-            imageIndex = imageIndex !== 0 ? 0 : 3
 
-        if (hasCamera)
+        // if (hasCamera)
+        //     imageIndex = imageIndex !== 0 ? 0 : 5
+        if (entity.lightProbeComponent)
+            imageIndex = imageIndex !== 0 ? 0 : 3
+        if (entity.atmosphereComponent)
             imageIndex = imageIndex !== 0 ? 0 : 5
+        if (entity.decalComponent)
+            imageIndex = imageIndex !== 0 ? 0 : 6
+        // if (hasCamera)
+        //     imageIndex = imageIndex !== 0 ? 0 : 5
 
 
         iconAttributes[0] = doNotFaceCamera
@@ -110,21 +114,18 @@ export default class IconsSystem {
 
 
         getPivotPointMatrix(entity)
-        if (iconsUniforms.entityID !== undefined)
-            context.uniform3fv(iconsUniforms.entityID, entity.pickID)
+        if (uniforms.entityID !== undefined)
+            context.uniform3fv(uniforms.entityID, entity.pickID)
 
-        context.uniformMatrix4fv(iconsUniforms.settings, false, iconAttributes)
-        context.uniformMatrix4fv(iconsUniforms.transformationMatrix, false, entity.__cacheIconMatrix)
+        context.uniformMatrix4fv(uniforms.settings, false, iconAttributes)
+        context.uniformMatrix4fv(uniforms.transformationMatrix, false, entity.__cacheIconMatrix)
         StaticMeshes.drawQuad()
     }
 
-    static #drawVisualizations(
-        entity,
-        hasLight,
-        hasSkylight,
-        hasCamera
-    ) {
-        if (!hasLight && !hasCamera)
+    static #drawVisualizations(entity: Entity) {
+        const hasLight = entity.lightComponent
+        const hasCamera = entity.cameraComponent
+        if (!hasCamera && !hasLight)
             return
 
         const component = entity.lightComponent
@@ -156,15 +157,29 @@ export default class IconsSystem {
         if (!IconsSystem.iconsTexture)
             return
 
+
+        const context = GPU.context
+        const uniforms = StaticEditorShaders.iconUniforms
+
         StaticEditorShaders.icon.bind()
-        GPU.context.activeTexture(GPU.context.TEXTURE0)
-        GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
+        context.activeTexture(context.TEXTURE0)
+        context.bindTexture(context.TEXTURE_2D, IconsSystem.iconsTexture)
+        context.uniform1i(uniforms.iconSampler, 0)
+
+        context.activeTexture(context.TEXTURE1)
+        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
+        context.uniform1i(uniforms.sceneDepth, 1)
+
+        context.uniformMatrix4fv(uniforms.projectionM, false, CameraAPI.projectionMatrix)
+        context.uniformMatrix4fv(uniforms.viewM, false,  CameraAPI.viewMatrix)
 
         if (settings.showIcons)
-            IconsSystem.loop(IconsSystem.drawIcon, settings, StaticEditorShaders.iconUniforms)
+            IconsSystem.loop(IconsSystem.drawIcon, settings)
         if (settings.showLines)
             IconsSystem.loop(IconsSystem.#drawVisualizations, settings)
         LineRenderer.finish()
+
+
     }
 
 

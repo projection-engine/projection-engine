@@ -3,6 +3,7 @@ const sveltePreprocess = require('svelte-preprocess')
 const sveltePlugin = require('esbuild-svelte')
 const {copy} = require('esbuild-plugin-copy')
 
+const LOADERS = {".glsl": "text", ".frag": "text", ".vert": "text", ".svg": "text"}
 const production = process.argv[2] === 'prod'
 let watch = false
 if (process.argv[2] === 'watch')
@@ -27,7 +28,8 @@ function worker(fileName, output) {
         minify: production,
         sourcemap: false,
         outfile: output,
-        plugins: []
+        plugins: [],
+        loader: LOADERS
     }
 }
 
@@ -51,7 +53,7 @@ function frontend(fileName, outputName) {
                 filterWarnings: () => false
             })
         ],
-        loader: {".glsl": "text", ".frag": "text", ".vert": "text"}
+        loader: LOADERS
     }
 }
 
@@ -86,7 +88,8 @@ const electron = {
                 }
             ]
         })
-    ]
+    ],
+    loader: LOADERS
 }
 
 const workers = [

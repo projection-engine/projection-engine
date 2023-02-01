@@ -18,11 +18,13 @@
     "atob": "^2.1.2",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
+
     "image-size": "^1.0.2",
     "sharp": "^0.31.1",
     "sortablejs": "^1.15.0"
   },
   "devDependencies": {
+    "html-to-image": "^1.11.11",
     "@electron-forge/cli": "6.0.0-beta.67",
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
