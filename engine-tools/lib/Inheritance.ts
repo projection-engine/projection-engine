@@ -4,7 +4,7 @@ import AXIS from "../static/AXIS";
 import DualAxisGizmo from "./transformation/DualAxisGizmo";
 import GizmoAPI from "./GizmoAPI";
 import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
-import EditorActionHistory from "../../frontend/views/editor/lib/utils/EditorActionHistory";
+import EditorActionHistory from "../../frontend/window-editor/lib/utils/EditorActionHistory";
 import EngineTools from "../EngineTools";
 import drawGizmoToDepth from "../utils/draw-gizmo-to-depth";
 import GizmoInterface from "./GizmoInterface";

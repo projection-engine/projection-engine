@@ -1,5 +1,5 @@
-const path = require("path");
-const fs = require("fs");
+import * as fs from "fs";
+import * as path from "path";
 
 export default async function readFile(p, options?:any):Promise<[string,any]> {
     let result, error

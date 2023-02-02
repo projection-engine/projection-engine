@@ -1,5 +1,5 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import TRANSFORMATION_TYPE from "../../frontend/views/editor/static/TRANSFORMATION_TYPE"
+import TRANSFORMATION_TYPE from "../../frontend/window-editor/static/TRANSFORMATION_TYPE"
 import GizmoSystem from "../runtime/GizmoSystem";
 import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import GPU from "../../engine-core/GPU";

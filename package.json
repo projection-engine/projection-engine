@@ -2,6 +2,7 @@
   "name": "projection-engine",
   "version": "next",
   "main": "build/index.js",
+
   "scripts": {
     "sdev": "electron-forge start",
     "bdev": "node esbuild watch",

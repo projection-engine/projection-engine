@@ -1,5 +1,5 @@
 import GizmoSystem from "../runtime/GizmoSystem";
-import TRANSFORMATION_TYPE from "../../frontend/views/editor/static/TRANSFORMATION_TYPE";
+import TRANSFORMATION_TYPE from "../../frontend/window-editor/static/TRANSFORMATION_TYPE";
 import ScreenSpaceGizmo from "../lib/transformation/ScreenSpaceGizmo";
 import EngineTools from "../EngineTools";
 import {quat, vec3, vec4} from "gl-matrix";

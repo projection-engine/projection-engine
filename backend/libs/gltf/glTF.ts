@@ -2,18 +2,20 @@ import Accessor from "./instances/Accessor";
 import DataBuffer from "./instances/DataBuffer";
 import buildImage from "./utils/build-image";
 import createRegistryEntry from "../../utils/create-registry-entry";
-import ProjectController from "../ProjectController";
+import WindowController from "../WindowController";
 import buildPrimitive from "./utils/build-primitive";
 import buildNode from "./utils/build-node";
 import DataController from "./instances/DataController";
 import linkNodeToStructure from "./utils/link-node-to-structure";
 import FILE_TYPES from "../../../static/objects/FILE_TYPES";
+import * as fs from "fs";
+import * as path from "path";
 
 /**
  * Execution order:
  * Images => Materials => Meshes ( => Primitives ) => Scenes ( => Nodes )
  */
-const fs = require("fs"), path = require("path")
+
 export default async function glTF(targetDirectory, pathToFile, file) {
 
     let resourceRoot = pathToFile.split(path.sep)
@@ -84,7 +86,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
             const pathToAsset = basePath + path.sep + "textures" + path.sep + name + FILE_TYPES.TEXTURE
 
             await fs.promises.writeFile(pathToAsset, JSON.stringify(texture))
-            await createRegistryEntry(ID, pathToAsset.replace(ProjectController.pathToAssets, ""))
+            await createRegistryEntry(ID, pathToAsset.replace(WindowController.pathToAssets, ""))
         }
 
         for (let i = 0; i < file.meshes.length; i++) {
@@ -97,7 +99,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                 const name = "mesh-" + i + "-primitive-" + j
                 const pathToAsset = basePath + path.sep + "primitives" + path.sep + name + FILE_TYPES.PRIMITIVE
                 await fs.promises.writeFile(pathToAsset, JSON.stringify(primitiveData))
-                await createRegistryEntry(ID, pathToAsset.replace(ProjectController.pathToAssets, ""))
+                await createRegistryEntry(ID, pathToAsset.replace(WindowController.pathToAssets, ""))
                 primitives[i][j] = ID
             }
         }
@@ -119,7 +121,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 
         const pathToAsset = basePath + path.sep + scene.name + FILE_TYPES.COLLECTION
         await fs.promises.writeFile(pathToAsset, JSON.stringify(scene))
-        await createRegistryEntry(crypto.randomUUID(), pathToAsset.replace(ProjectController.pathToAssets, ""))
+        await createRegistryEntry(crypto.randomUUID(), pathToAsset.replace(WindowController.pathToAssets, ""))
     } catch (error) {
         console.error(error)
     }
