@@ -13,6 +13,7 @@ import Entity from "../engine-core/instances/Entity";
 import GPU from "../engine-core/GPU";
 import StaticEditorMeshes from "./lib/StaticEditorMeshes";
 import StaticEditorShaders from "./lib/StaticEditorShaders";
+import CameraIconRenderer from "./runtime/CameraIconRenderer";
 
 let settings
 let selected: Entity[]
