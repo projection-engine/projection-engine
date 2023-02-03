@@ -1,6 +1,6 @@
 <script>
-    import FilesStore from "../../../stores/FilesStore";
-    import EngineStore from "../../../stores/EngineStore";
+    import FilesStore from "../../../../shared/stores/FilesStore";
+    import EngineStore from "../../../../shared/stores/EngineStore";
     import {onDestroy} from "svelte";
 
     import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";

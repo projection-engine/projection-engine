@@ -1,11 +1,11 @@
 <script>
     import {onDestroy, onMount} from "svelte";
-    import SelectionStore from "../../stores/SelectionStore";
+    import SelectionStore from "../../../shared/stores/SelectionStore";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
-    import SettingsStore from "../../stores/SettingsStore";
+    import SettingsStore from "../../../shared/stores/SettingsStore";
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
     import Header from "./Header.svelte";
-    import EngineStore from "../../stores/EngineStore";
+    import EngineStore from "../../../shared/stores/EngineStore";
 
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
     import HierarchyController from "../hierarchy/lib/HierarchyController";

@@ -1,13 +1,15 @@
 <script>
     import TrafficLights from "./TrafficLights.svelte";
     import Logo from "./Logo.svelte";
+
+    export let noChangeTracking
 </script>
 
 <div class="container">
     <Logo/>
     <slot/>
     <div class="draggable"></div>
-    <TrafficLights/>
+    <TrafficLights noChangeTracking={noChangeTracking}/>
 </div>
 
 <style>

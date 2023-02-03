@@ -1,6 +1,6 @@
 import {get, writable} from "svelte/store";
 import FilesStore from "./FilesStore";
-import FS from "../../shared/lib/FS/FS";
+import FS from "../lib/FS/FS";
 import MutableObject from "../../../engine-core/MutableObject";
 
 const store = writable({items: [], open: {}});
@@ -17,7 +17,6 @@ export default class FilesHierarchyStore {
             FilesHierarchyStore.update()
             return
         }
-
         FilesHierarchyStore.data = value
         store.set(value)
     }
@@ -53,6 +52,7 @@ export default class FilesHierarchyStore {
             folders.filter(item => !item.parent).forEach(item => {
                 getHierarchy(item, 1, folders)
             })
+
         FilesHierarchyStore.updateStore({...FilesHierarchyStore.data, items: Object.values(cache)})
     }
 }

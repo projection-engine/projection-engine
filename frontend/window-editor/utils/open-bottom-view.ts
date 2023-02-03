@@ -1,5 +1,5 @@
-import SettingsStore from "../stores/SettingsStore";
-import TabsStore from "../stores/TabsStore";
+import SettingsStore from "../../shared/stores/SettingsStore";
+import TabsStore from "../../shared/stores/TabsStore";
 
 export default function openBottomView(view) {
     const views = [...SettingsStore.data.views]

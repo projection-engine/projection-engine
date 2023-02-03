@@ -5,7 +5,7 @@ import HierarchyController from "../views/hierarchy/lib/HierarchyController";
 import EditorActionHistory from "./utils/EditorActionHistory";
 import EntityNameController from "./controllers/EntityNameController";
 import getPivotPointMatrix from "../../../engine-tools/utils/get-pivot-point-matrix";
-import SelectionStore from "../stores/SelectionStore";
+import SelectionStore from "../../shared/stores/SelectionStore";
 import Entity from "../../../engine-core/instances/Entity";
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 

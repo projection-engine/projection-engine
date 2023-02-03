@@ -5,7 +5,7 @@ import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityNameController from "../controllers/EntityNameController";
 import AlertController from "../../../shared/components/alert/AlertController";
-import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
+import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
 import EntityManager from "../EntityManager";
 import Entity from "../../../../engine-core/instances/Entity";
 

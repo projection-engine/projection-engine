@@ -1,4 +1,4 @@
-import FilesStore from "../../../stores/FilesStore";
+import FilesStore from "../../../../shared/stores/FilesStore";
 import resolveFileName from "../../../utils/resolve-file-name";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMPONENT_TEMPLATE";

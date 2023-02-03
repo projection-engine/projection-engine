@@ -2,7 +2,7 @@ import FilesAPI from "../fs/FilesAPI"
 import initializeEntity from "./utils/initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
 
-import EngineStore from "../../stores/EngineStore";
+import EngineStore from "../../../shared/stores/EngineStore";
 import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";

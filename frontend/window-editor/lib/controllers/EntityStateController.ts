@@ -1,6 +1,6 @@
 import ENVIRONMENT from "../../../../engine-core/static/ENVIRONMENT";
 
-import EngineStore from "../../stores/EngineStore";
+import EngineStore from "../../../shared/stores/EngineStore";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
 import PhysicsAPI from "../../../../engine-core/lib/rendering/PhysicsAPI";

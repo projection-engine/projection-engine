@@ -1,8 +1,8 @@
-import FilesStore from "../../../stores/FilesStore";
+import FilesStore from "../../../../shared/stores/FilesStore";
 import componentConstructor from "../../../utils/component-constructor";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import Loader from "../../../lib/parsers/Loader";
-import EngineStore from "../../../stores/EngineStore";
+import EngineStore from "../../../../shared/stores/EngineStore";
 import AlertController from "../../../../shared/components/alert/AlertController";
 import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
 

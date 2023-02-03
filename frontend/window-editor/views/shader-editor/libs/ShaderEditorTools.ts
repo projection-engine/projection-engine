@@ -1,7 +1,7 @@
 import materialCompiler from "./material-compiler/material-compiler";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
-import FilesStore from "../../../stores/FilesStore";
+import FilesStore from "../../../../shared/stores/FilesStore";
 import AlertController from "../../../../shared/components/alert/AlertController";
 import Canvas from "./Canvas";
 import type ShaderNode from "../templates/ShaderNode";

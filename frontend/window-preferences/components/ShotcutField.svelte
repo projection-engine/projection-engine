@@ -3,7 +3,7 @@
     import SETTINGS from "../../window-editor/static/SETTINGS";
     import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
     import KEYS from "../../window-editor/static/KEYS.ts";
-    import SettingsStore from "../../window-editor/stores/SettingsStore";
+    import SettingsStore from "../../shared/stores/SettingsStore";
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../shared/components/icon/Icon.svelte";
     import AlertController from "../../shared/components/alert/AlertController";

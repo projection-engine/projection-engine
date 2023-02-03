@@ -4,7 +4,7 @@ import CameraTracker from "../../../engine-tools/lib/CameraTracker";
 import Component from "../../../engine-core/instances/components/Component";
 
 export default [
-    {label: LOCALIZATION_EN.GLOBAL, type: "global", icon: "world"},
+    {label: LOCALIZATION_EN.GLOBAL, type: "global", icon: "public"},
     {label: LOCALIZATION_EN.SHORTCUTS, type: "shortcuts", icon: "keyboard"},
     {
         label: LOCALIZATION_EN.VIEWPORT,
@@ -118,7 +118,7 @@ export default [
                         target: "settings",
                         increment: .0001,
                         min: .0001,
-                        onChange: v => GridSystem.buffer[1] = v * 20
+                        onChange: v => GridSystem.buffer[1] = v
                     },
                 ]
             },
@@ -159,8 +159,8 @@ export default [
                 label: LOCALIZATION_EN.RESOLUTION,
                 type: Component.propTypes.GROUP,
                 children: [
-                    {type: Component.propTypes.NUMBER, label: "X", key: "resolutionX", min: 1},
-                    {type: Component.propTypes.NUMBER, label: "Y", key: "resolutionY", min: 1}
+                    {type: Component.propTypes.NUMBER, label: "X", key: "resolutionX", min: 1, increment: 1},
+                    {type: Component.propTypes.NUMBER, label: "Y", key: "resolutionY", min: 1, increment: 1}
                 ]
             },
             {

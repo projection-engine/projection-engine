@@ -3,9 +3,9 @@
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../static/VIEWS";
-    import TabsStore from "../../../stores/TabsStore";
+    import TabsStore from "../../../../shared/stores/TabsStore";
     import {onDestroy} from "svelte";
-    import SettingsStore from "../../../stores/SettingsStore";
+    import SettingsStore from "../../../../shared/stores/SettingsStore";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
 
@@ -59,7 +59,7 @@
         if (targetDialogElement)
             targetDialogElement = undefined
 
-        if (tab.type === VIEWS.BLUEPRINT || tab.type === VIEWS.UI)
+        if (tab.type === VIEWS.SHADER_EDITOR)
             targetDialogElement = ref.querySelector(`[data-svelteclosebuttontab="${i}"]`)
         else
             closeTarget(i)

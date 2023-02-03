@@ -2,9 +2,9 @@
     import {onDestroy, onMount} from "svelte";
     import Viewport from "./views/viewport/Viewport.svelte";
     import Footer from "./components/footer/Footer.svelte";
-    import EngineStore from "./stores/EngineStore";
+    import EngineStore from "../shared/stores/EngineStore";
     import ViewsContainer from "./components/view/Views.svelte";
-    import SettingsStore from "./stores/SettingsStore";
+    import SettingsStore from "../shared/stores/SettingsStore";
     import FALLBACK_VIEW from "./static/FALLBACK_VIEW";
     import updateView from "./utils/update-view";
     import FS from "../shared/lib/FS/FS";
@@ -15,10 +15,11 @@
     import Canvas from "./views/scene-editor/Canvas.svelte";
     import ROUTES from "../../backend/static/ROUTES";
     import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS";
-    import FilesStore from "./stores/FilesStore";
+    import FilesStore from "../shared/stores/FilesStore";
     import ContextMenuController from "../shared/lib/context-menu/ContextMenuController";
     import AlertController from "../shared/components/alert/AlertController";
-    import Electron from "../shared/lib/Electron";
+    import ElectronResources from "../shared/lib/ElectronResources";
+    import StoreManager from "../shared/stores/StoreManager";
 
     const FALLBACK = {...FALLBACK_VIEW}
 
@@ -34,10 +35,11 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onMount(() => {
+        StoreManager.initialize(true)
         AlertController.initialize()
         ContextMenuController.initialize()
 
-        Electron.ipcRenderer.on(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
+        ElectronResources.ipcRenderer.on(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
             sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
             FS.initialize(pathToProject)
             FilesAPI.initializeFolders().catch()
@@ -45,7 +47,7 @@
             HotKeysController.initializeListener()
             FilesStore.initializeContentBrowser()
         })
-        Electron.ipcRenderer.on("console", (_, data) => console.error(...data))
+        ElectronResources.ipcRenderer.on("console", (_, data) => console.error(...data))
     })
 
     onDestroy(() => {

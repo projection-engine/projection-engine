@@ -7,7 +7,7 @@
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
     import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import SettingsStore from "../../stores/SettingsStore";
+    import SettingsStore from "../../../shared/stores/SettingsStore";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";

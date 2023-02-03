@@ -8,16 +8,13 @@ export default function getViewIcon(view) {
             return "category"
         case VIEWS.FILES:
             return "folder"
-        case VIEWS.BLUEPRINT:
+        case VIEWS.SHADER_EDITOR:
             return "texture"
         case VIEWS.HIERARCHY:
             return "account_tree"
         case VIEWPORT_TABS.EDITOR:
             return "public"
-        // case VIEWPORT_TABS.TERRAIN:
-        //     return "terrain"
-        case VIEWS.PREFERENCES:
-            return "settings"
+
         case VIEWPORT_TABS.UI:
             return "widgets"
         case VIEWS.METRICS:

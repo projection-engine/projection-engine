@@ -7,7 +7,7 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import SettingsStore from "../../../stores/SettingsStore";
+    import SettingsStore from "../../../../shared/stores/SettingsStore";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
     import {onDestroy, onMount} from "svelte";
     import HierarchyController from "../../hierarchy/lib/HierarchyController";

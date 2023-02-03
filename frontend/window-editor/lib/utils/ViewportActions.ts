@@ -1,6 +1,6 @@
-import EngineStore from "../../stores/EngineStore";
+import EngineStore from "../../../shared/stores/EngineStore";
 
-import SelectionStore from "../../stores/SelectionStore";
+import SelectionStore from "../../../shared/stores/SelectionStore";
 
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import {vec3, vec4} from "gl-matrix";

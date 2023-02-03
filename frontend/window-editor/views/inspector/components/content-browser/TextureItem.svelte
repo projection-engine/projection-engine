@@ -3,7 +3,7 @@
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
-    import Electron from "../../../../../shared/lib/Electron";
+    import ElectronResources from "../../../../../shared/lib/ElectronResources";
     import GPU from "../../../../../../engine-core/GPU";
     import TEXTURE_FILTERING from "../../../../../../engine-core/static/texture/TEXTURE_FILTERING";
     import TEXTURE_WRAPPING from "../../../../../../engine-core/static/texture/TEXTURE_WRAPPING";
@@ -193,7 +193,7 @@
 </Accordion>
 
 <div class="link"
-     on:click={() => Electron.shell.openExternal("https://registry.khronos.org/OpenGL-Refpages/es2.0/xhtml/glTexParameter.xml")}>
+     on:click={() => ElectronResources.shell.openExternal("https://registry.khronos.org/OpenGL-Refpages/es2.0/xhtml/glTexParameter.xml")}>
     <Icon>help</Icon>
     {LOCALIZATION_EN.OPENGL_DOCS}
 </div>

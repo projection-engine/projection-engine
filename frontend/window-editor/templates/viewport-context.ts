@@ -1,4 +1,4 @@
-import SelectionStore from "../stores/SelectionStore";
+import SelectionStore from "../../shared/stores/SelectionStore";
 import viewportHotkeys from "./viewport-hotkeys";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";

@@ -1,4 +1,4 @@
-import SelectionStore from "../../../stores/SelectionStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 
 export default function updateSelection(entityID:string, ctrlKey?:boolean) {
     if (ctrlKey) {

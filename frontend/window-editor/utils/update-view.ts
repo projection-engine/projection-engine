@@ -1,4 +1,4 @@
-import SettingsStore from "../stores/SettingsStore";
+import SettingsStore from "../../shared/stores/SettingsStore";
 
 export default function updateView(key, newView) {
     const s = {...SettingsStore.data}

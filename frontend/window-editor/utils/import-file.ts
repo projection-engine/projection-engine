@@ -1,4 +1,4 @@
-import FilesStore from "../stores/FilesStore";
+import FilesStore from "../../shared/stores/FilesStore";
 import ROUTES from "../../../backend/static/ROUTES";
 import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
 import {getCall} from "../../shared/lib/FS/get-call";

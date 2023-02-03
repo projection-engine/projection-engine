@@ -1,6 +1,6 @@
 import SELECTION_TYPES from "../static/SELECTION_TYPES"
-import FilesStore from "../../../stores/FilesStore";
-import SelectionStore from "../../../stores/SelectionStore";
+import FilesStore from "../../../../shared/stores/FilesStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 
 export default function selection(type, currentDirectory) {
     const items = FilesStore.data.items

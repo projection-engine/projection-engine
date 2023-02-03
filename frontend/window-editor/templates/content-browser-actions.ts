@@ -1,15 +1,15 @@
 import selection from "../views/content-browser/utils/selection";
 import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES";
 import handleDelete from "../views/content-browser/utils/handle-delete";
-import FilesStore from "../stores/FilesStore";
-import SelectionStore from "../stores/SelectionStore";
+import FilesStore from "../../shared/stores/FilesStore";
+import SelectionStore from "../../shared/stores/SelectionStore";
 import importFile from "../utils/import-file";
 import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
 import FS from "../../shared/lib/FS/FS";
 import AlertController from "../../shared/components/alert/AlertController";
-import Electron from "../../shared/lib/Electron";
+import ElectronResources from "../../shared/lib/ElectronResources";
 
 export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
 
@@ -108,7 +108,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
                     const ID = RegistryAPI.getByPath(SelectionStore.contentBrowserSelected[0])
                     if(ID){
                         AlertController.success(LOCALIZATION_EN.COPIED)
-                        Electron.clipboard.writeText(ID)
+                        ElectronResources.clipboard.writeText(ID)
                     }
                 }
             },
@@ -134,7 +134,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
             {
                 label: "Open current directory on explorer",
                 icon: "open_in_new",
-                onClick: () => Electron.shell.showItemInFolder(FS.resolvePath(FS.ASSETS_PATH + FS.sep + currentDirectory.id))
+                onClick: () => ElectronResources.shell.showItemInFolder(FS.resolvePath(FS.ASSETS_PATH + FS.sep + currentDirectory.id))
 
             },
             {divider: true},

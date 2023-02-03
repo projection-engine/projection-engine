@@ -1,10 +1,14 @@
-import SETTINGS from "../static/SETTINGS";
+import SETTINGS from "../../window-editor/static/SETTINGS";
 import {get, writable} from "svelte/store";
 import ChangesTrackerStore from "./ChangesTrackerStore";
+import StoreManager from "./StoreManager";
+import ROUTES from "../../../backend/static/ROUTES";
+import STORES from "../../../backend/static/STORES";
 
 const settingsStore = writable(SETTINGS);
 
 export default class SettingsStore {
+    static noPush = false
     static data = get(settingsStore)
     static wasInitialized = false
 
@@ -21,6 +25,9 @@ export default class SettingsStore {
 
         SettingsStore.wasInitialized =true
         SettingsStore.data = V
+        if(!SettingsStore.noPush)
+            StoreManager.onUpdate(V, STORES.SETTINGS)
+
         settingsStore.set(V)
     }
 

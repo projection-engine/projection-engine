@@ -1,7 +1,7 @@
 <script>
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
 
-    import SelectionStore from "../../stores/SelectionStore";
+    import SelectionStore from "../../../shared/stores/SelectionStore";
 
     import Entity from "../../../../engine-core/instances/Entity";
     import Engine from "../../../../engine-core/Engine";

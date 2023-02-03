@@ -2,15 +2,15 @@
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Icon from "../icon/Icon.svelte";
-    import EngineStore from "../../../window-editor/stores/EngineStore";
+    import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
     import GPU from "../../../../engine-core/GPU";
 
     import Modal from "../modal/Modal.svelte";
     import WindowChangeStore from "./WindowChangeStore";
-    import ChangesTrackerStore from "../../../window-editor/stores/ChangesTrackerStore";
-    import Electron from "../../lib/Electron"
-
+    import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
+    import ElectronResources from "../../lib/ElectronResources"
+    export let noChangeTracking
     let engine
     let hasChanges = false
     let message = undefined
@@ -37,7 +37,7 @@
     }
 </script>
 
-{#if message !== undefined}
+{#if message !== undefined && !noChangeTracking}
     <Modal handleClose={() => WindowChangeStore.updateStore(undefined)} styles="max-width: 30vw; padding: 8px">
         <div data-svelteinline="-" style="width: 100%; gap: 12px">
             <Icon styles="font-size: 50px">help_outline</Icon>
@@ -81,14 +81,14 @@
     <div data-sveltevertdivider="-" style="height: 15px"></div>
     <button
             data-sveltebuttondefault="-"
-            on:click={_ => Electron.ipcRenderer.send("minimize")}
+            on:click={_ => ElectronResources.ipcRenderer.send("minimize")}
     >
         <Icon styles="font-size: 1rem">minimize</Icon>
         <ToolTip content={LOCALIZATION_EN.MINIMIZE}/>
     </button>
     <button
             data-sveltebuttondefault="-"
-            on:click={_ => Electron.ipcRenderer.send("maximize")}
+            on:click={_ => ElectronResources.ipcRenderer.send("maximize")}
     >
         <Icon styles="font-size: 1rem">maximize</Icon>
         <ToolTip content={LOCALIZATION_EN.MAXIMIZE}/>
@@ -97,9 +97,9 @@
             data-sveltebuttondefault="-"
             on:click={_ => {
                 if(hasChanges)
-                    WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => Electron.ipcRenderer.send("close")})
+                    WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => ElectronResources.ipcRenderer.send("close")})
                 else
-                    Electron.ipcRenderer.send("close")
+                    ElectronResources.ipcRenderer.send("close")
             }}
             style="--pj-accent-color: red"
     >

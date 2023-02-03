@@ -1,4 +1,4 @@
-import SettingsStore from "../../../stores/SettingsStore";
+import SettingsStore from "../../../../shared/stores/SettingsStore";
 
 export default function removeTab(i: number) {
     const obj = {...SettingsStore.data}

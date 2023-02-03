@@ -1,4 +1,4 @@
-import SelectionStore from "../../../stores/SelectionStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 import MutableObject from "../../../../../engine-core/MutableObject";
 
 export default function handleSelection(e:MouseEvent, child:MutableObject){

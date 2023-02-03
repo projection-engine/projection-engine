@@ -1,4 +1,4 @@
-import SelectionStore from "../../../stores/SelectionStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 
 import HierarchyController from "../../hierarchy/lib/HierarchyController";
 

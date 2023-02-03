@@ -1,6 +1,6 @@
 <script>
     import handleDropFolder from "../../utils/handle-drop-folder"
-    import FilesStore from "../../../../stores/FilesStore";
+    import FilesStore from "../../../../../shared/stores/FilesStore";
     import {onDestroy, onMount} from "svelte";
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import getTypeName from "../../utils/get-type-name";

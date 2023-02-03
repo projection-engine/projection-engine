@@ -1,7 +1,7 @@
 import RegistryAPI from "./RegistryAPI";
 import FS from "../../../shared/lib/FS/FS";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-import Electron from "../../../shared/lib/Electron";
+import ElectronResources from "../../../shared/lib/ElectronResources";
 
 
 function mapAsset(reg, type) {
@@ -18,8 +18,8 @@ function mapAsset(reg, type) {
 export default class ContentBrowserAPI {
 
     static async rename(from, to) {
-        const fromResolved = Electron.path.resolve(from)
-        const toResolved = Electron.path.resolve(to)
+        const fromResolved = ElectronResources.path.resolve(from)
+        const toResolved = ElectronResources.path.resolve(to)
         await RegistryAPI.readRegistry()
         try {
             const stat = await FS.stat(fromResolved)

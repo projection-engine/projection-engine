@@ -3,10 +3,11 @@
     import ShotcutField from "./ShotcutField.svelte";
     import SETTINGS from "../../window-editor/static/SETTINGS";
     import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
-    import SettingsStore from "../../window-editor/stores/SettingsStore";
+    import SettingsStore from "../../shared/stores/SettingsStore";
 
     export let settings
-    function update(key, value){
+
+    function update(key, value) {
         SettingsStore.updateStore({...settings, [key]: value})
     }
 
@@ -35,28 +36,32 @@
     }
 </script>
 
-
-<Accordion title={LOCALIZATION_EN.VIEWPORT}>
+<h3>{LOCALIZATION_EN.SHORTCUTS}</h3>
+<fieldset >
+    <legend>{LOCALIZATION_EN.VIEWPORT}</legend>
     <div class="shortcuts">
         {#each shortcuts.viewport as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
         {/each}
     </div>
-</Accordion>
-<Accordion title={LOCALIZATION_EN.SHADER_EDITOR}>
+</fieldset>
+<fieldset>
+    <legend>{LOCALIZATION_EN.SHADER_EDITOR}</legend>
     <div class="shortcuts">
         {#each shortcuts.shaderEditor as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
         {/each}
     </div>
-</Accordion>
-<Accordion title={LOCALIZATION_EN.CONTENT_BROWSER}>
+</fieldset>
+<fieldset>
+    <legend>{LOCALIZATION_EN.CONTENT_BROWSER}</legend>
     <div class="shortcuts">
         {#each shortcuts.contentBrowser as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
         {/each}
     </div>
-</Accordion>
+</fieldset>
+
 <button data-sveltebuttondefault="-"
         on:click={() => {
             update("viewportHotkeys", SETTINGS.viewportHotkeys)
@@ -66,6 +71,7 @@
 >
     {LOCALIZATION_EN.RESET}
 </button>
+
 <style>
     legend {
         font-size: .85rem;
@@ -83,5 +89,11 @@
         gap: 8px;
         justify-content: flex-start;
         flex-direction: column;
+    }
+
+    h3 {
+        padding: 0 8px;
+        margin: 8px 0;
+        font-weight: 550;
     }
 </style>

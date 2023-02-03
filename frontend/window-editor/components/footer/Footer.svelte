@@ -6,7 +6,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import FS from "../../../shared/lib/FS/FS";
-    import Electron from "../../../shared/lib/Electron";
+    import ElectronResources from "../../../shared/lib/ElectronResources";
     import Console from "./components/Console.svelte";
 
 
@@ -15,7 +15,7 @@
 
     const openLogs = async () => {
         if (FS.exists(ErrorLoggerAPI.path))
-            Electron.shell.openPath(ErrorLoggerAPI.path).catch()
+            ElectronResources.shell.openPath(ErrorLoggerAPI.path).catch()
         else
             console.error("No logs found")
     }
@@ -37,7 +37,7 @@
     <div class="meta-data" style="justify-content: flex-end">
         <SceneStats/>
         <div data-sveltevertdivider="-"></div>
-        <div class="version" on:click={() => Electron.shell.openExternal("https://github.com/projection-engine")}>
+        <div class="version" on:click={() => ElectronResources.shell.openExternal("https://github.com/projection-engine")}>
             {LOCALIZATION_EN.VERSION}
         </div>
     </div>

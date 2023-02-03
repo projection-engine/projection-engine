@@ -1,7 +1,7 @@
 import ViewportActions from "../lib/utils/ViewportActions";
-import SettingsStore from "../stores/SettingsStore";
+import SettingsStore from "../../shared/stores/SettingsStore";
 import GIZMOS from "../static/GIZMOS";
-import SelectionStore from "../stores/SelectionStore";
+import SelectionStore from "../../shared/stores/SelectionStore";
 import EditorActionHistory from "../lib/utils/EditorActionHistory";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 

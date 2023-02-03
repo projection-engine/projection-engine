@@ -1,9 +1,9 @@
 <script>
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import EngineStore from "../../stores/EngineStore";
+    import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
-    import SettingsStore from "../../stores/SettingsStore";
+    import SettingsStore from "../../../shared/stores/SettingsStore";
     import HotKeysController from "../../lib/utils/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Tabs from "../../components/tabs/Tabs.svelte";
@@ -12,10 +12,10 @@
     import VIEWS from "../../components/view/static/VIEWS";
     import View from "../../components/view/components/View.svelte";
     import getViewIcon from "../../components/view/utils/get-view-icon";
-    import TabsStore from "../../stores/TabsStore";
+    import TabsStore from "../../../shared/stores/TabsStore";
     import GPU from "../../../../engine-core/GPU";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
-    import Electron from "../../../shared/lib/Electron"
+    import ElectronResources from "../../../shared/lib/ElectronResources"
 
     export let updateView
     export let viewTab
@@ -103,7 +103,7 @@
                 templates={viewTemplates}
                 addNewTab={item => {
                         const clone  = [...tabs]
-                        clone.push({color: [255, 255, 255], type: item?.id || VIEWS.PREFERENCES })
+                        clone.push({color: [255, 255, 255], type: item?.id || VIEWS.COMPONENT })
                         updateView(clone)
                 }}
                 removeTab={i => removeTab(i, viewTab,  updateView, currentTab, v => TabsStore.update("viewport", undefined, v))}

@@ -4,7 +4,7 @@ import {vec3, vec4} from "gl-matrix";
 import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
 
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
-import SettingsStore from "../../stores/SettingsStore";
+import SettingsStore from "../../../shared/stores/SettingsStore";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import MeshComponent from "../../../../engine-core/instances/components/MeshComponent";
 import LightComponent from "../../../../engine-core/instances/components/LightComponent";

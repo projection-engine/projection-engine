@@ -1,7 +1,7 @@
 <script>
     import FilesAPI from "../../lib/fs/FilesAPI"
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import EngineStore from "../../stores/EngineStore";
+    import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";
     import ShaderEditorTools from "./libs/ShaderEditorTools";
@@ -10,7 +10,7 @@
     import HeaderOptions from "./components/HeaderOptions.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import FS from "../../../shared/lib/FS/FS";
-    import Electron from "../../../shared/lib/Electron";
+    import ElectronResources from "../../../shared/lib/ElectronResources";
     import Canvas from "./libs/Canvas";
     import shaderActions from "../../templates/shader-actions";
     import HotKeysController from "../../lib/utils/HotKeysController";
@@ -119,7 +119,7 @@
             const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
             const newFile = FS.TEMP + FS.sep + openFile.registryID + ".log"
             await FilesAPI.writeFile(newFile, shader, true)
-            Electron.shell.openPath(newFile).catch()
+            ElectronResources.shell.openPath(newFile).catch()
         }}
 />
 <div class="wrapper" bind:this={ref} id={internalID}>

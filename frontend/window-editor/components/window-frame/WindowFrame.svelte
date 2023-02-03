@@ -1,23 +1,23 @@
 <script>
-    import EngineStore from "../../stores/EngineStore";
+    import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import FilesStore from "../../stores/FilesStore";
+    import FilesStore from "../../../shared/stores/FilesStore";
     import LevelController from "../../lib/utils/LevelController";
     import getFrameOptions from "./utils/get-frame-options";
-    import SettingsStore from "../../stores/SettingsStore";
+    import SettingsStore from "../../../shared/stores/SettingsStore";
     import Tabs from "../tabs/Tabs.svelte";
     import CreationController from "./components/CreationController.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte";
-    import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
+    import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
     import EntityStateController from "../../lib/controllers/EntityStateController";
     import addNewTab from "../../views/viewport/utils/add-new-tab";
     import removeTab from "./utils/remove-tab";
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte";
     import LevelSelector from "./components/LevelSelector.svelte";
-    import Electron from "../../../shared/lib/Electron";
+    import ElectronResources from "../../../shared/lib/ElectronResources";
     import ROUTES from "../../../../backend/static/ROUTES";
     import WindowTypes from "../../../../backend/static/WindowTypes";
 
@@ -72,7 +72,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={engine.executingAnimation || !hasChanges}
-                on:click={_ => Electron.ipcRenderer.send(ROUTES.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
+                on:click={_ => ElectronResources.ipcRenderer.send(ROUTES.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
         >
             <Icon styles="font-size: 1rem">settings</Icon>
             <ToolTip content={LOCALIZATION_EN.OPEN_PREFERENCES}/>

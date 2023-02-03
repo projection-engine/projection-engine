@@ -26,7 +26,9 @@ export default class CameraIconRenderer {
             mat4.invert(entity.__cameraIconMatrix, entity.__cameraIconMatrix)
         }
     }
-    static execute(entity: Entity) {
+    static execute(settings, entity: Entity) {
+        if(entity.distanceFromCamera > settings.maxDistanceIcon)
+            return
         CameraIconRenderer.#createFrustumMatrix(entity)
         const context = GPU.context
         const uniforms = StaticEditorShaders.wireframeUniforms

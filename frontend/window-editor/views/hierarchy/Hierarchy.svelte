@@ -7,7 +7,7 @@
     import HotKeysController from "../../lib/utils/HotKeysController";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
     import HierarchyController from "./lib/HierarchyController";
-    import SettingsStore from "../../stores/SettingsStore";
+    import SettingsStore from "../../../shared/stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";

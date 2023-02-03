@@ -1,6 +1,6 @@
 <script>
     import VIEWS from "../../view/static/VIEWS";
-    import SettingsStore from "../../../stores/SettingsStore";
+    import SettingsStore from "../../../../shared/stores/SettingsStore";
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
@@ -20,19 +20,19 @@
 
 </script>
 
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.left, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "left")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.left, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "left")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_LEFT}/>
 </button>
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.bottom, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "bottom")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.bottom, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "bottom")}>
     <Icon styles="font-size: 1.2rem;">horizontal_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_BOTTOM}/>
 </button>
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.top, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "top")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.top, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "top")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">horizontal_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_TOP}/>
 </button>
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.right, [{color: [255,255,255], type: VIEWS.PREFERENCES}]], "right")}>
+<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.right, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "right")}>
     <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
     <ToolTip content={LOCALIZATION_EN.SPLIT_RIGHT}/>
 </button>

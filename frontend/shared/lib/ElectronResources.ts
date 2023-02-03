@@ -4,7 +4,7 @@ const fs = window.require("fs")
 const os = window.require("os")
 const {shell, clipboard} = window.require("electron")
 
-export default class Electron{
+export default class ElectronResources {
     static path = pathRequire
     static ipcRenderer = ipcRenderer
     static fs = fs

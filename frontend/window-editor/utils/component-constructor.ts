@@ -1,4 +1,4 @@
-import SelectionStore from "../stores/SelectionStore";
+import SelectionStore from "../../shared/stores/SelectionStore";
 import ScriptsAPI from "../../../engine-core/lib/utils/ScriptsAPI";
 import AlertController from "../../shared/components/alert/AlertController";
 import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";

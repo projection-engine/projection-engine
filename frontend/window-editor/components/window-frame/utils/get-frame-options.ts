@@ -2,6 +2,7 @@ import WindowUtils from "../../../lib/WindowUtils";
 import ROUTES from "../../../../../backend/static/ROUTES";
 import WindowChangeStore from "../../../../shared/components/frame/WindowChangeStore";
 import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import ElectronResources from "../../../../shared/lib/ElectronResources"
 
 export default function getFrameOptions( disabledSave:boolean) {
     return [
@@ -34,7 +35,7 @@ export default function getFrameOptions( disabledSave:boolean) {
         },
         {
             label: "Close project",
-            onClick: () => WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => Electron.ipcRenderer.send(ROUTES.CLOSE_EDITOR)})
+            onClick: () => WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => ElectronResources.ipcRenderer.send(ROUTES.CLOSE_EDITOR)})
         },
     ]
 }

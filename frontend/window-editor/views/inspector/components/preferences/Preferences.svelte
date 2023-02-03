@@ -2,13 +2,13 @@
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
     import Shortcuts from "../../../../../window-preferences/components/Shortcuts.svelte";
-    import SettingsStore from "../../../../stores/SettingsStore";
-    import VisualsStore from "../../../../stores/VisualsStore";
+    import SettingsStore from "../../../../../shared/stores/SettingsStore";
+    import VisualsStore from "../../../../../shared/stores/VisualsStore";
     import CameraSettings from "./CameraSettings.svelte";
     import GlobalSettings from "../../../../../window-preferences/components/GlobalSettings.svelte";
     import DefaultPreferences from "../../../../../window-preferences/components/content/ContentWrapper.svelte";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
-    import Electron from "../../../../../shared/lib/Electron";
+    import ElectronResources from "../../../../../shared/lib/ElectronResources";
 
     let tab = 0
 

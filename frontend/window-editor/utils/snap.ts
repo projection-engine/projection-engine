@@ -1,6 +1,6 @@
-import SelectionStore from "../stores/SelectionStore";
+import SelectionStore from "../../shared/stores/SelectionStore";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
-import SettingsStore from "../stores/SettingsStore";
+import SettingsStore from "../../shared/stores/SettingsStore";
 import GIZMOS from "../static/GIZMOS";
 import GizmoSystem from "../../../engine-tools/runtime/GizmoSystem";
 

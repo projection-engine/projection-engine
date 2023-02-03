@@ -1,6 +1,6 @@
 import drawIconsToBuffer from "./draw-icons-to-buffer"
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
-import SelectionStore from "../../../stores/SelectionStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 import GPU from "../../../../../engine-core/GPU";
 import VisibilityRenderer from "../../../../../engine-core/runtime/VisibilityRenderer";

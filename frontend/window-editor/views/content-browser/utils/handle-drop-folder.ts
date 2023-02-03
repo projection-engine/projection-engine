@@ -1,4 +1,4 @@
-import FilesStore from "../../../stores/FilesStore";
+import FilesStore from "../../../../shared/stores/FilesStore";
 import RegistryAPI from "../../../lib/fs/RegistryAPI";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";

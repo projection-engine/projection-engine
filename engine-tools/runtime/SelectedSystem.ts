@@ -1,5 +1,5 @@
 import GPU from "../../engine-core/GPU";
-import SettingsStore from "../../frontend/window-editor/stores/SettingsStore";
+import SettingsStore from "../../frontend/shared/stores/SettingsStore";
 
 import StaticMeshes from "../../engine-core/lib/StaticMeshes";
 import StaticFBO from "../../engine-core/lib/StaticFBO";

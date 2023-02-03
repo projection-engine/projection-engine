@@ -1,8 +1,8 @@
 <script>
-    import FilesStore from "../../../../stores/FilesStore";
+    import FilesStore from "../../../../../shared/stores/FilesStore";
     import {onDestroy} from "svelte";
     import componentConstructor from "../../../../utils/component-constructor";
-    import SelectionStore from "../../../../stores/SelectionStore";
+    import SelectionStore from "../../../../../shared/stores/SelectionStore";
     import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
     import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";

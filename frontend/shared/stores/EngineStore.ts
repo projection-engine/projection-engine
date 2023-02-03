@@ -1,12 +1,12 @@
-import ENGINE from "../static/ENGINE";
+import ENGINE from "../../window-editor/static/ENGINE";
 
-import FilesAPI from "../lib/fs/FilesAPI"
-import RegistryAPI from "../lib/fs/RegistryAPI";
+import FilesAPI from "../../window-editor/lib/fs/FilesAPI"
+import RegistryAPI from "../../window-editor/lib/fs/RegistryAPI";
 import GPU from "../../../engine-core/GPU";
 import {writable} from "svelte/store";
 import GPUAPI from "../../../engine-core/lib/rendering/GPUAPI";
 import MutableObject from "../../../engine-core/MutableObject";
-import FS from "../../shared/lib/FS/FS";
+import FS from "../lib/FS/FS";
 
 const engine = writable(<MutableObject>ENGINE);
 

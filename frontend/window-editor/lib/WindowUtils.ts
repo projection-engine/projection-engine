@@ -1,9 +1,9 @@
 import LevelController from "./utils/LevelController";
 import EditorActionHistory from "./utils/EditorActionHistory";
 import ViewportActions from "./utils/ViewportActions";
-import SettingsStore from "../stores/SettingsStore";
+import SettingsStore from "../../shared/stores/SettingsStore";
 import GPU from "../../../engine-core/GPU";
-import Electron from "../../shared/lib/Electron";
+import ElectronResources from "../../shared/lib/ElectronResources";
 
 
 export default class WindowUtils {
@@ -28,14 +28,14 @@ export default class WindowUtils {
                 SettingsStore.updateStore({...SettingsStore.data, hideFooter: !SettingsStore.data.hideFooter})
                 break
             case "learn-more":
-                Electron.shell.openExternal("https://github.com/projection-engine").catch()
+                ElectronResources.shell.openExternal("https://github.com/projection-engine").catch()
                 break
 
             case "fullscreen":
                GPU.canvas.requestFullscreen().catch()
                 break
             case "reload":
-                Electron.ipcRenderer.send("reload")
+                ElectronResources.ipcRenderer.send("reload")
         }
     }
 

@@ -1,4 +1,4 @@
-import FilesStore from "../../../stores/FilesStore";
+import FilesStore from "../../../../shared/stores/FilesStore";
 import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI";
 import FS from "../../../../shared/lib/FS/FS";
 

@@ -1,4 +1,4 @@
-import SettingsStore from "../../../stores/SettingsStore";
+import SettingsStore from "../../../../shared/stores/SettingsStore";
 
 export default class ViewStateController {
     static states = {}

@@ -1,7 +1,7 @@
 <script>
     import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE.ts"
 
-    import SettingsStore from "../../../stores/SettingsStore";
+    import SettingsStore from "../../../../shared/stores/SettingsStore";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
     import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
     import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";

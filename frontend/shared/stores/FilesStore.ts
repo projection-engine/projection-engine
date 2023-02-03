@@ -1,14 +1,14 @@
 import {get, writable} from "svelte/store";
-import handleDropFolder from "../views/content-browser/utils/handle-drop-folder";
+import handleDropFolder from "../../window-editor/views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../../backend/static/ROUTES";
-import ContentBrowserAPI from "../lib/fs/ContentBrowserAPI";
-import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
-import resolveFileName from "../utils/resolve-file-name";
+import ContentBrowserAPI from "../../window-editor/lib/fs/ContentBrowserAPI";
+import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
+import resolveFileName from "../../window-editor/utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
-import FS from "../../shared/lib/FS/FS";
-import {getCall} from "../../shared/lib/FS/get-call";
+import FS from "../lib/FS/FS";
+import {getCall} from "../lib/FS/get-call";
 import MutableObject from "../../../engine-core/MutableObject";
-import RegistryAPI from "../lib/fs/RegistryAPI";
+import RegistryAPI from "../../window-editor/lib/fs/RegistryAPI";
 
 const contentBrowserStore = writable({
     isLoading: true,

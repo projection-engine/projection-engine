@@ -21,7 +21,7 @@ export default [
     {
         name: "Shading",
         top: [],
-        bottom: [[{color: [255, 255, 255], type: VIEWS.BLUEPRINT}, {color: [255, 255, 255], type: VIEWS.FILES}]],
+        bottom: [[{color: [255, 255, 255], type: VIEWS.SHADER_EDITOR}, {color: [255, 255, 255], type: VIEWS.FILES}]],
         left: [],
         viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
         right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}, {color: [255, 255, 255], typee: VIEWS.COMPONENT}]]
@@ -31,7 +31,7 @@ export default [
         top: [],
         bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
         left: [[{color: [255, 255, 255], type: VIEWS.COMPONENT}]],
-        viewport: [{color: [255, 255, 255], type: VIEWS.UI}],
+        viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.UI}],
         right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]]
     }
 ]

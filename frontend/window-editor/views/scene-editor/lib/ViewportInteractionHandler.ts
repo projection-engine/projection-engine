@@ -1,8 +1,8 @@
 import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
 import Engine from "../../../../../engine-core/Engine";
 import onViewportClick from "../../viewport/utils/on-viewport-click";
-import SelectionStore from "../../../stores/SelectionStore";
-import SettingsStore from "../../../stores/SettingsStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
+import SettingsStore from "../../../../shared/stores/SettingsStore";
 import GPU from "../../../../../engine-core/GPU";
 
 

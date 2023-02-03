@@ -1,12 +1,12 @@
 <script lang="ts">
     import {onDestroy, onMount} from "svelte";
     import Branch from "./TreeNode.svelte";
-    import SelectionStore from "../../../stores/SelectionStore";
+    import SelectionStore from "../../../../shared/stores/SelectionStore";
     import HierarchyController from "../lib/HierarchyController";
     import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
-    import SettingsStore from "../../../stores/SettingsStore";
+    import SettingsStore from "../../../../shared/stores/SettingsStore";
     import Engine from "../../../../../engine-core/Engine";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";

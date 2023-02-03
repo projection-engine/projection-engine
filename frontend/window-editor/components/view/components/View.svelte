@@ -20,7 +20,7 @@
     let component
     $:  {
         switch (instance.type) {
-            case VIEWS.BLUEPRINT:
+            case VIEWS.SHADER_EDITOR:
                 component = ShaderEditor
                 break
             case VIEWS.HIERARCHY:
@@ -32,9 +32,7 @@
             case VIEWS.FILES:
                 component = ContentBrowser
                 break
-            case VIEWS.PREFERENCES:
-                component = Preferences
-                break
+
             case VIEWPORT_TABS.UI:
                 component = UILayout
                 break

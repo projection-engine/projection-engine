@@ -5,15 +5,15 @@ import RegistryAPI from "../fs/RegistryAPI";
 import GPU from "../../../../engine-core/GPU";
 import componentConstructor from "../../utils/component-constructor";
 
-import EngineStore from "../../stores/EngineStore";
-import SelectionStore from "../../stores/SelectionStore";
+import EngineStore from "../../../shared/stores/EngineStore";
+import SelectionStore from "../../../shared/stores/SelectionStore";
 
-import SettingsStore from "../../stores/SettingsStore";
-import VisualsStore from "../../stores/VisualsStore";
+import SettingsStore from "../../../shared/stores/SettingsStore";
+import VisualsStore from "../../../shared/stores/VisualsStore";
 import SETTINGS from "../../static/SETTINGS";
 import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
-import TabsStore from "../../stores/TabsStore";
+import TabsStore from "../../../shared/stores/TabsStore";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
@@ -22,10 +22,10 @@ import FS from "../../../shared/lib/FS/FS";
 import ROUTES from "../../../../backend/static/ROUTES";
 import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
-import Electron from "../../../shared/lib/Electron";
+import ElectronResources from "../../../shared/lib/ElectronResources";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import AlertController from "../../../shared/components/alert/AlertController";
-import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
+import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
 import MutableObject from "../../../../engine-core/MutableObject";
 import EntityManager from "../EntityManager";
 
@@ -42,7 +42,7 @@ export default class LevelController {
             }
             LevelController.#initialized = true
 
-            Electron.ipcRenderer.once(
+            ElectronResources.ipcRenderer.once(
                 ROUTES.LOAD_PROJECT_METADATA,
                 (ev, meta) => {
                     if(!meta) {
@@ -69,7 +69,7 @@ export default class LevelController {
                     })
                     resolve(undefined)
                 })
-            Electron.ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
+            ElectronResources.ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
         })
     }
 
@@ -107,7 +107,7 @@ export default class LevelController {
             lockedEntity: undefined
         })
         EditorActionHistory.clear()
-        Electron.ipcRenderer.on(
+        ElectronResources.ipcRenderer.on(
             ROUTES.ENTITIES,
             async (_, data) => {
                 const {entities} = data
@@ -137,7 +137,7 @@ export default class LevelController {
                 EntityManager.appendBlock(mapped, true)
             })
 
-        Electron.ipcRenderer.send(IPC, pathToLevel)
+        ElectronResources.ipcRenderer.send(IPC, pathToLevel)
     }
 
     static async save() {

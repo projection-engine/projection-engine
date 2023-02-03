@@ -1,5 +1,5 @@
 import Engine from "../../../../../engine-core/Engine";
-import SelectionStore from "../../../stores/SelectionStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 import Entity from "../../../../../engine-core/instances/Entity";
 import ToRenderElement from "../template/ToRenderElement";
 

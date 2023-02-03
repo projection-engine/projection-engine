@@ -5,7 +5,7 @@ import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../engine-core/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import WireframeRenderer from "./runtime/WireframeRenderer";
-import SettingsStore from "../frontend/window-editor/stores/SettingsStore";
+import SettingsStore from "../frontend/shared/stores/SettingsStore";
 
 import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";
 import LineRenderer from "./runtime/LineRenderer";

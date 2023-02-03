@@ -1,4 +1,4 @@
-import SettingsStore from "../../../stores/SettingsStore";
+import SettingsStore from "../../../../shared/stores/SettingsStore";
 import FALLBACK_VIEW from "../../../static/FALLBACK_VIEW";
 
 export default function addTab(){

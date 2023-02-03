@@ -2,11 +2,11 @@
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import {onDestroy, onMount} from "svelte";
     import updateRenderer from "./utils/update-renderer";
-    import EngineStore from "../../stores/EngineStore";
-    import SettingsStore from "../../stores/SettingsStore";
-    import SelectionStore from "../../stores/SelectionStore";
+    import EngineStore from "../../../shared/stores/EngineStore";
+    import SettingsStore from "../../../shared/stores/SettingsStore";
+    import SelectionStore from "../../../shared/stores/SelectionStore";
     import AssetAPI from "../../lib/fs/AssetAPI";
-    import VisualsStore from "../../stores/VisualsStore";
+    import VisualsStore from "../../../shared/stores/VisualsStore";
     import Engine from "../../../../engine-core/Engine";
     import EngineTools from "../../../../engine-tools/EngineTools";
     import LevelController from "../../lib/utils/LevelController";

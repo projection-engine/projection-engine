@@ -37,8 +37,8 @@ export default function createWindow(settings: MutableObject, isChild?:boolean) 
         }
     })
 
-    if (isDev && !isChild) { // @ts-ignore
-        window.openDevTools({mode: "detach"})
+    if (isDev) { // @ts-ignore
+        window.openDevTools(isChild ? undefined : {mode: "detach"})
     }
     return window
 }

@@ -3,7 +3,7 @@ import ConversionAPI from "../../../../../engine-core/lib/math/ConversionAPI";
 import GPU from "../../../../../engine-core/GPU";
 import PickingAPI from "../../../../../engine-core/lib/utils/PickingAPI";
 import Engine from "../../../../../engine-core/Engine";
-import SelectionStore from "../../../stores/SelectionStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 import SelectionWorker from "./SelectionWorker";
 import VisibilityRenderer from "../../../../../engine-core/runtime/VisibilityRenderer";
 

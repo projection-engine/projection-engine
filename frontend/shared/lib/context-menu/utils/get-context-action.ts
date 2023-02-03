@@ -1,7 +1,7 @@
 import ContextMenuController from "../ContextMenuController";
 import ROUTES from "../../../../../backend/static/ROUTES";
 import MutableObject from "../../../../../engine-core/MutableObject";
-import Electron from "../../Electron";
+import ElectronResources from "../../ElectronResources";
 
 export default function getContextAction() {
     let startPosition = undefined
@@ -67,7 +67,7 @@ export default function getContextAction() {
             if (ContextMenuController.data.focused.onFocus)
                 ContextMenuController.data.focused.onFocus(trigger, targetElement, event)
 
-            Electron.ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU, ContextMenuController.data.focused.id)
+            ElectronResources.ipcRenderer.send(ROUTES.OPEN_CONTEXT_MENU, ContextMenuController.data.focused.id)
         }
     }
 }

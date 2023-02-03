@@ -14,6 +14,7 @@ import * as path from "path";
 import createWindow from "../utils/create-window";
 import ContextMenuController from "./ContextMenuController";
 import WindowTypes from "../static/WindowTypes";
+import initializeListeners from "../utils/initialize-listeners";
 
 
 enum CurrentWindow {
@@ -35,6 +36,36 @@ export default class WindowController {
     static preventAppClosing: boolean = false
     static #currentWindow = CurrentWindow.NONE
 
+    static findWindow(id) {
+        try {
+            if (WindowController.window.webContents.id === id)
+                return WindowController.window
+
+            for (let i = 0; i < WindowController.windows.length; i++) {
+                try {
+                    const window = WindowController.windows[i]
+                    if (window.webContents.id === id)
+                        return window
+                } catch (err) {
+                    WindowController.windows.splice(i, 1)
+                    console.log(err)
+                }
+            }
+        } catch (err) {
+            return
+        }
+    }
+
+    static closeSubWindows() {
+        WindowController.windows.forEach(w => {
+            try {
+                w?.destroy?.()
+            } catch (err) {
+                console.log(err)
+            }
+        })
+        WindowController.windows = []
+    }
 
     static async initialize() {
         if (WindowController.window)
@@ -47,7 +78,7 @@ export default class WindowController {
         }
         fileSystem()
         await AssimpLoader.initialize()
-        Events.initializeListeners()
+        initializeListeners()
 
         WindowController.pathToRegistry = undefined
         WindowController.metadata = undefined
@@ -69,7 +100,7 @@ export default class WindowController {
         if (WindowController.#currentWindow === CurrentWindow.EDITOR)
             return
 
-        WindowController.windows.forEach(w => w.destroy())
+        WindowController.closeSubWindows()
         WindowController.#currentWindow = CurrentWindow.EDITOR
         WindowController.window.loadFile(path.join(__dirname, './editor-window.html'))
             .then(() => {
@@ -86,10 +117,17 @@ export default class WindowController {
                 const primaryDisplay = screen.getPrimaryDisplay()
                 const {width, height} = primaryDisplay.workAreaSize
                 const newWindow = createWindow({
-                    width: width * (settings.widthScale||1),
-                    height: height  * (settings.heightScale||1)
+                    width: width * (settings.widthScale || 1),
+                    height: height * (settings.heightScale || 1)
                 }, true)
                 newWindow.loadFile(path.join(__dirname, './preferences-window.html')).catch()
+                newWindow.on("close", () => {
+                    try {
+                        WindowController.windows = WindowController.windows.filter(w => w !== newWindow)
+                    } catch (err) {
+                        console.log(err)
+                    }
+                })
                 WindowController.windows.push(newWindow)
                 break
             }
@@ -100,8 +138,7 @@ export default class WindowController {
         if (WindowController.#currentWindow === CurrentWindow.PROJECTS)
             return
 
-        WindowController.windows.forEach(w => w.destroy())
-        WindowController.windows = []
+        WindowController.closeSubWindows()
         WindowController.window.unmaximize()
         const primaryDisplay = screen.getPrimaryDisplay()
         const {width, height} = primaryDisplay.workAreaSize

@@ -1,5 +1,5 @@
 <script>
-    import FilesStore from "../../stores/FilesStore";
+    import FilesStore from "../../../shared/stores/FilesStore";
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
     import Options from "./components/Options.svelte";

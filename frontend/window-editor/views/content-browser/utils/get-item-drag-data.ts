@@ -1,5 +1,5 @@
 import getIcon from "./get-icon";
-import SelectionStore from "../../../stores/SelectionStore";
+import SelectionStore from "../../../../shared/stores/SelectionStore";
 
 
 export default function getItemDragData(icon, childQuantity, data, items, setOnDrag, type, metadata){

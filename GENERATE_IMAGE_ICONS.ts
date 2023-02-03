@@ -1,5 +1,5 @@
 import {getFontEmbedCSS, toPng} from "html-to-image"
-import Electron from "./frontend/shared/lib/Electron";
+import ElectronResources from "./frontend/shared/lib/ElectronResources";
 
 const W = 7 * 512
 const H = 512
@@ -38,7 +38,7 @@ export default async function doWork() {
         console.log(fontEmbedCss)
         const icons = await toPng(div, {width: W, height: H, fontEmbedCSS: fontEmbedCss})
         console.log(__dirname.replace("build","assets-to-copy/image.base64"))
-        await Electron.fs.promises.writeFile(__dirname.replace("build","assets-to-copy/image.base64"), icons)
+        await ElectronResources.fs.promises.writeFile(__dirname.replace("build","assets-to-copy/image.base64"), icons)
     } catch (err) {
         console.error(err)
     }

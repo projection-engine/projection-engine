@@ -15,105 +15,101 @@ import RegistryFile from "../../static/objects/RegistryFile";
 import SETTINGS_PATH from "../static/SETTINGS_PATH";
 import DEFAULT_GLOBAL_SETTINGS from "../static/DEFAULT_GLOBAL_SETTINGS";
 
-import {app, dialog, ipcMain} from "electron"
+import {app, dialog} from "electron"
 import * as os from "os";
 import * as fs from "fs";
 import * as pathRequire from "path";
 
 
 export default class Events {
-    static initializeListeners() {
-        ipcMain.on("reload", () => WindowController.prepareForUse(WindowController.pathToProject).catch())
-        ipcMain.on(ROUTES.LOAD_LEVEL, Events.loadLevel)
-        ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, Events.loadProjectMetadata)
-
-        ipcMain.on(ROUTES.READ_FILE, Events.readFile)
-        ipcMain.on(ROUTES.SET_PROJECT_CONTEXT, (_, pathToProject) => {
-            WindowController.prepareForUse(pathToProject).catch()
-        })
-        ipcMain.on(ROUTES.FILE_DIALOG, Events.fileDialog)
-        ipcMain.on(ROUTES.OPEN_WINDOW,  (_, {windowSettings, type}) => {
-            WindowController.addWindow(windowSettings||{}, type)
-        })
-
-        ipcMain.on("minimize", ev => {
-            const isMainWindow = WindowController.window.id === ev.sender.id
-            let window = WindowController.window
-            console.log(ev.sender.id, WindowController.windows.map(w => w.id))
-            if(!isMainWindow)
-                window = WindowController.windows.find(w => w.id === ev.sender.id)
-            if(!window)
-                return
-
-            window.minimize()
-        })
-        ipcMain.on("maximize", ev => {
-            const isMainWindow = WindowController.window.id === ev.sender.id
-            let window = WindowController.window
-            if(!isMainWindow)
-                window = WindowController.windows.find(w => w.id === ev.sender.id)
-            if(!window)
-                return
-
-            if (!window.isMaximized())
-                window.maximize()
-            else
-                window.unmaximize()
-        })
-        ipcMain.on("close", ev => {
-            const isMainWindow = WindowController.window.id === ev.sender.id
-            if(isMainWindow) {
-                WindowController.windows.find(w => w.destroy())
-                app.quit()
-            }
-            else
-                WindowController.windows.find(w => w.id === ev.sender.id)?.destroy?.()
-        })
-
-        ipcMain.on(ROUTES.OPEN_SELECTION, Events.openSelection)
-        ipcMain.on(ROUTES.RESOLVE_NAME, Events.resolveName)
-        ipcMain.on(ROUTES.UPDATE_REG, Events.updateRegistry)
-
-        ipcMain.on(ROUTES.CLOSE_EDITOR, () => WindowController.openProjectWindow())
-        ipcMain.on(ROUTES.GET_GLOBAL_SETTINGS, async (ev) => {
-            try {
-                const file = await fs.promises.readFile(os.homedir() + pathRequire.sep + SETTINGS_PATH)
-                if (file)
-                    ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, JSON.parse(file.toString()))
-                else
-                    ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
-            } catch (err) {
-                ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
-            }
-        })
-        ipcMain.on(ROUTES.UPDATE_GLOBAL_SETTINGS, async (_, data) => {
-            try {
-                const result = await dialog.showMessageBox(WindowController.window, {
-                    'type': 'question',
-                    'title': 'Reload necessary to apply changes',
-                    'message': "Are you sure?",
-                    'buttons': [
-                        'Yes',
-                        'No'
-                    ]
+    static storeUpdate(ev, data){
+        try {
+            console.log("SENDING DATA")
+            const window = WindowController.findWindow(ev.sender.id)
+            if(window === WindowController.window)
+                WindowController.windows.forEach(w => {
+                    try{
+                        w.webContents.send(ROUTES.STORE_UPDATE, data)
+                    }catch (err){
+                        console.log(err)
+                    }
                 })
-                if (result.response !== 0)
-                    return;
-                await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch()
-                app.relaunch()
-                app.quit()
-            } catch (err) {
-                app.relaunch()
-                app.quit()
-            }
-        })
+            else
+                WindowController.window.webContents.send(ROUTES.STORE_UPDATE, data)
+        }catch (err){
+            console.log(err)
+        }
+    }
+    static maximize(ev) {
+        const window = WindowController.findWindow(ev.sender.id)
+        if (!window) return;
 
-        ipcMain.on(ROUTES.CREATE_REG, Events.createRegistry)
-        ipcMain.on(ROUTES.REFRESH_CONTENT_BROWSER, Events.refreshContentBrowser)
-        ipcMain.on(ROUTES.READ_REGISTRY, Events.readRegistry)
+        if (!window.isMaximized())
+            window.maximize()
+        else
+            window.unmaximize()
     }
 
+    static close(ev) {
+        const window = WindowController.findWindow(ev.sender.id)
+        if (!window) return;
 
+        if (window === WindowController.window) {
+            WindowController.closeSubWindows()
+            app.quit()
+        } else
+            window.destroy()
+    }
+
+    static minimize(ev) {
+        const window = WindowController.findWindow(ev.sender.id)
+        if (!window) return;
+
+        window.minimize()
+    }
+
+    static openWindow(_, {windowSettings, type}) {
+        WindowController.addWindow(windowSettings || {}, type)
+    }
+
+    static async getGlobalSettings(ev) {
+        try {
+            const file = await fs.promises.readFile(os.homedir() + pathRequire.sep + SETTINGS_PATH)
+            if (file)
+                ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, JSON.parse(file.toString()))
+            else
+                ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
+        } catch (err) {
+            ev.sender.send(ROUTES.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
+        }
+    }
+
+    static setProjectContext(_, pathToProject) {
+        WindowController.prepareForUse(pathToProject).catch()
+    }
+
+    static async updateGlobalSettings(_, data) {
+        try {
+            const result = await dialog.showMessageBox(WindowController.window, {
+                'type': 'question',
+                'title': 'Reload necessary to apply changes',
+                'message': "Are you sure?",
+                'buttons': [
+                    'Yes',
+                    'No'
+                ]
+            })
+            if (result.response !== 0)
+                return;
+            WindowController.closeSubWindows()
+            await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch()
+            app.relaunch()
+            app.quit()
+        } catch (err) {
+            app.relaunch()
+            app.quit()
+        }
+    }
 
     static async openSelection() {
         const {canceled, filePaths} = await dialog.showOpenDialog({

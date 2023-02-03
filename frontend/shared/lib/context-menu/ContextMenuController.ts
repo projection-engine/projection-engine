@@ -4,7 +4,7 @@ import buildOptions from "./utils/build-options";
 import ContextMenuTarget from "./templates/ContextMenuTarget";
 import ROUTES from "../../../../backend/static/ROUTES";
 import getContextAction from "./utils/get-context-action";
-import Electron from "../Electron";
+import ElectronResources from "../ElectronResources";
 
 export default class ContextMenuController {
     static blockContext = false
@@ -21,7 +21,7 @@ export default class ContextMenuController {
     static initialize() {
         if (ContextMenuController.#initialized)
             return
-        Electron.ipcRenderer.on(ROUTES.CONTEXT_MENU_CALLBACK, (ev, {id, group}) => {
+        ElectronResources.ipcRenderer.on(ROUTES.CONTEXT_MENU_CALLBACK, (ev, {id, group}) => {
             const groupData = ContextMenuController.data.targets[group]
             if (!groupData)
                 return
@@ -36,7 +36,7 @@ export default class ContextMenuController {
 
 
         const template = buildOptions(options, target)
-        Electron.ipcRenderer.send(ROUTES.REGISTER_CONTEXT_MENU, {
+        ElectronResources.ipcRenderer.send(ROUTES.REGISTER_CONTEXT_MENU, {
             id: target,
             template
         })
@@ -51,7 +51,7 @@ export default class ContextMenuController {
     }
 
     static destroy(target: string | null) {
-        Electron.ipcRenderer.send(ROUTES.DESTROY_CONTEXT_MENU, target)
+        ElectronResources.ipcRenderer.send(ROUTES.DESTROY_CONTEXT_MENU, target)
         const old = ContextMenuController.data.targets[target]
         if (!old)
             return

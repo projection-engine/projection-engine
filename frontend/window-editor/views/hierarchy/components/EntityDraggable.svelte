@@ -7,7 +7,7 @@
     import KEYS from "../../../static/KEYS.ts";
     import handleDrop from "../utils/handle-drop";
     import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
-    import SelectionStore from "../../../stores/SelectionStore";
+    import SelectionStore from "../../../../shared/stores/SelectionStore";
     import Engine from "../../../../../engine-core/Engine";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";

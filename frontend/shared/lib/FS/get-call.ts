@@ -1,4 +1,4 @@
-import Electron from "../Electron"
+import ElectronResources from "../ElectronResources"
 
 
 export function getCall<T>(channel, data, addMiddle = true):Promise<T> {
@@ -6,10 +6,10 @@ export function getCall<T>(channel, data, addMiddle = true):Promise<T> {
         let listenID = crypto.randomUUID()
         if (data.listenID)
             listenID = data.listenID
-        Electron.ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data:T) => {
+        ElectronResources.ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data:T) => {
             resolve(data)
         })
 
-        Electron.ipcRenderer.send(channel, {...data, listenID})
+        ElectronResources.ipcRenderer.send(channel, {...data, listenID})
     })
 }

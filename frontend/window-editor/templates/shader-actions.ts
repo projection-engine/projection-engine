@@ -1,7 +1,7 @@
 import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools";
 import addComment from "../views/shader-editor/utils/add-comment";
 
-import SettingsStore from "../stores/SettingsStore";
+import SettingsStore from "../../shared/stores/SettingsStore";
 import Canvas from "../views/shader-editor/libs/Canvas";
 import type ShaderNode from "../views/shader-editor/templates/ShaderNode";
 import ShaderComment from "../views/shader-editor/templates/ShaderComment";

@@ -2,11 +2,11 @@ import RegistryAPI from "./RegistryAPI";
 import ROUTES from "../../../../backend/static/ROUTES";
 import FS from "../../../shared/lib/FS/FS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
-import Electron from "../../../shared/lib/Electron";
+import ElectronResources from "../../../shared/lib/ElectronResources";
 
 
 export default class FilesAPI {
-    static sep = Electron.path.sep
+    static sep = ElectronResources.path.sep
     static registry = []
 
     static async initializeFolders(): Promise<void> {
@@ -27,8 +27,8 @@ export default class FilesAPI {
     static readFile(pathName: string, type?: string): Promise<any> {
         return new Promise(resolve => {
             const listenID =crypto.randomUUID()
-            Electron.ipcRenderer.once(ROUTES.READ_FILE + listenID, (ev, data) => resolve(data))
-            Electron.ipcRenderer.send(ROUTES.READ_FILE, {pathName, type, listenID})
+            ElectronResources.ipcRenderer.once(ROUTES.READ_FILE + listenID, (ev, data) => resolve(data))
+            ElectronResources.ipcRenderer.send(ROUTES.READ_FILE, {pathName, type, listenID})
         })
     }
 

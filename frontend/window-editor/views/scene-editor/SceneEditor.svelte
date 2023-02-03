@@ -6,13 +6,13 @@
     import Loader from "../../lib/parsers/Loader";
     import GizmoSystem from "../../../../engine-tools/runtime/GizmoSystem";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
-    import SelectionStore from "../../stores/SelectionStore";
+    import SelectionStore from "../../../shared/stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
     import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
-    import EngineStore from "../../stores/EngineStore";
-    import SettingsStore from "../../stores/SettingsStore";
+    import EngineStore from "../../../shared/stores/EngineStore";
+    import SettingsStore from "../../../shared/stores/SettingsStore";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import EntityInformation from "./components/EntityInformation.svelte";
     import CameraTracker from "../../../../engine-tools/lib/CameraTracker";

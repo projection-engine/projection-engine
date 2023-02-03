@@ -11,7 +11,7 @@
     import ROUTES from "../../backend/static/ROUTES";
     import AlertController from "../shared/components/alert/AlertController";
     import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte";
-    import Electron from "../shared/lib/Electron";
+    import ElectronResources from "../shared/lib/ElectronResources";
 
 
     let basePath
@@ -40,7 +40,7 @@
                 {
                     icon: "folder",
                     label: "Open in explorer",
-                    onClick: async () => Electron.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected)
+                    onClick: async () => ElectronResources.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected)
                 },
             ],
             internalID
@@ -57,7 +57,7 @@
     onDestroy(() => ContextMenuController.destroy(internalID))
 
     async function onRename(newName) {
-        const pathName = Electron.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + item.id + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION)
+        const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + item.id + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION)
         const res = await FS.read(pathName)
         if (!res)
             return
@@ -101,7 +101,7 @@
             <ProjectRow
 
                     selected={selected}
-                    open={pathToProject => Electron.ipcRenderer.send(ROUTES.SET_PROJECT_CONTEXT, pathToProject)}
+                    open={pathToProject => ElectronResources.ipcRenderer.send(ROUTES.SET_PROJECT_CONTEXT, pathToProject)}
                     data={item}
                     onRename={onRename}
             />

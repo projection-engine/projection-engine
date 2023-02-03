@@ -1,7 +1,7 @@
 <script>
     import SideBarItem from "./SideBarItem.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
-    import FilesHierarchyStore from "../../../stores/FilesHierarchyStore";
+    import FilesHierarchyStore from "../../../../shared/stores/FilesHierarchyStore";
     import {onDestroy} from "svelte";
     import FS from "../../../../shared/lib/FS/FS";
 

@@ -2,7 +2,7 @@ import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
 import FS from "../../../shared/lib/FS/FS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
-import Electron from "../../../shared/lib/Electron";
+import ElectronResources from "../../../shared/lib/ElectronResources";
 
 export default class AssetAPI {
     static async readAsset(id) {
@@ -30,7 +30,7 @@ export default class AssetAPI {
                 ...reg,
                 path,
                 type: reg.path.split(".").pop(),
-                stat: Electron.fs.statSync(path)
+                stat: ElectronResources.fs.statSync(path)
             }
         } catch (err) {
             return null

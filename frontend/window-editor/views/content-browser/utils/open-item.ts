@@ -7,7 +7,7 @@ import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 import FS from "../../../../shared/lib/FS/FS";
 import AlertController from "../../../../shared/components/alert/AlertController";
-import Electron from "../../../../shared/lib/Electron";
+import ElectronResources from "../../../../shared/lib/ElectronResources";
 
 export default function openItem(data, setCurrentDirectory, setSelected, reset, type) {
     if(!data)
@@ -19,7 +19,7 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case FILE_TYPES.COMPONENT:
             case ".js":
             case ".json":
-                Electron.shell.openPath(FS.resolvePath(FS.ASSETS_PATH + FS.sep + data.id))
+                ElectronResources.shell.openPath(FS.resolvePath(FS.ASSETS_PATH + FS.sep + data.id))
                     .catch(err => {
                         AlertController.error(LOCALIZATION_EN.ERROR_OPENING_FILE)
                     console.error(err)
@@ -39,7 +39,7 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
                 break
             case FILE_TYPES.MATERIAL:
                 ShaderEditorTools.toOpenFile = data
-                openBottomView(VIEWS.BLUEPRINT)
+                openBottomView(VIEWS.SHADER_EDITOR)
                 break
             default:
                 setSelected(data.id)
