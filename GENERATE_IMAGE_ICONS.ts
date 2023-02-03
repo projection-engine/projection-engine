@@ -1,4 +1,5 @@
 import {getFontEmbedCSS, toPng} from "html-to-image"
+import ElectronResources from "./frontend/shared/lib/ElectronResources";
 
 const W = 7 * 512
 const H = 512
@@ -18,7 +19,6 @@ const STYLE = `
     font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 `
-const fs = window.require("fs")
 export default async function doWork() {
     try {
         const div = document.createElement("div")
@@ -38,7 +38,7 @@ export default async function doWork() {
         console.log(fontEmbedCss)
         const icons = await toPng(div, {width: W, height: H, fontEmbedCSS: fontEmbedCss})
         console.log(__dirname.replace("build","assets-to-copy/image.base64"))
-        await fs.promises.writeFile(__dirname.replace("build","assets-to-copy/image.base64"), icons)
+        await ElectronResources.fs.promises.writeFile(__dirname.replace("build","assets-to-copy/image.base64"), icons)
     } catch (err) {
         console.error(err)
     }

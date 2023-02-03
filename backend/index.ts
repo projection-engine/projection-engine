@@ -1,12 +1,11 @@
-import createEnv from "./utils/create-env";
-import ProjectController from "./libs/ProjectController";
+import WindowController from "./libs/WindowController";
 import SETTINGS_PATH from "./static/SETTINGS_PATH";
 import DEFAULT_GLOBAL_SETTINGS from "./static/DEFAULT_GLOBAL_SETTINGS";
 
-const {BrowserWindow, app} = require("electron")
-const fs = require("fs")
-const os = require("os")
-const path = require("path")
+import {app, BrowserWindow} from "electron"
+import * as os from "os";
+import * as fs from "fs";
+import * as path from "path";
 
 function main() {
     let settingsFile = DEFAULT_GLOBAL_SETTINGS
@@ -27,15 +26,15 @@ function main() {
 
     app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer');
 
-    app.on('ready', createEnv);
+    app.on('ready', _ => WindowController.initialize().catch());
     app.on('window-all-closed', async () => {
-        if (process.platform !== 'darwin' && !ProjectController.preventAppClosing)
+        if (process.platform !== 'darwin' && !WindowController.preventAppClosing)
             app.quit();
-        ProjectController.preventAppClosing = false
+        WindowController.preventAppClosing = false
     });
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0)
-            createEnv().catch()
+            WindowController.initialize().catch()
     });
 }
 

@@ -1,8 +1,10 @@
 import readTypedFile from "../../../utils/read-typed-file";
+import * as path from "path";
 
-const fs = require("fs")
-const path = require("path")
-const atob = require("atob")
+
+function atob(str) {
+    return Buffer.from(str, 'base64').toString('binary');
+}
 
 export default class DataBuffer {
     basePath

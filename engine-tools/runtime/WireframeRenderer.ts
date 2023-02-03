@@ -28,7 +28,7 @@ export default class WireframeRenderer {
         const cameras = ResourceEntityMapper.cameras.array
         const camerasSize = cameras.length
         for (let i = 0; i < camerasSize; i++)
-            CameraIconRenderer.execute(cameras[i])
+            CameraIconRenderer.execute(settings, cameras[i])
 
 
         for (let i = 0; i < size; i++) {

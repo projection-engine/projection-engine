@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+import * as path from "path";
+import * as fs from "fs";
 
 
 export default async function  directoryStructure(d){

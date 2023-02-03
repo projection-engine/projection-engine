@@ -1,8 +1,8 @@
 import readFile from "../utils/read-file";
 import COMPONENTS from "../../engine-core/static/COMPONENTS";
 import ROUTES from "../static/ROUTES";
+import * as fs from "fs";
 
-const fs = require("fs");
 const DEFAULT = {entities: []}
 
 export default async function levelLoader(sender, levelPath) {

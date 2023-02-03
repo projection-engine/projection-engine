@@ -1,13 +1,13 @@
-import ProjectController from "../libs/ProjectController";
+import WindowController from "../libs/WindowController";
 
-const pathRequire = require("path")
-const fs = require("fs")
+import * as pathRequire from "path";
+import * as fs from "fs";
 
 export default async function createRegistryEntry(fID:string, pathToFile:string) {
     const path = pathToFile.replaceAll(pathRequire.sep + pathRequire.sep, pathRequire.sep)
     try {
-        ProjectController.registry[fID] = {id: fID, path}
-        await fs.promises.writeFile(ProjectController.pathToRegistry, JSON.stringify(ProjectController.registry))
+        WindowController.registry[fID] = {id: fID, path}
+        await fs.promises.writeFile(WindowController.pathToRegistry, JSON.stringify(WindowController.registry))
     } catch (err) {
         console.error(err)
     }

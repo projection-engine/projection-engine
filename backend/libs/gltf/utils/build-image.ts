@@ -1,9 +1,10 @@
 import TEXTURE_TEMPLATE from "../../../../engine-core/static/TEXTURE_TEMPLATE";
 import readTypedFile from "../../../utils/read-typed-file";
-import ProjectController from "../../ProjectController";
+import WindowController from "../../WindowController";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-
-const path = require("path"), fs = require("fs"), sharp = require("sharp")
+import * as path from "path";
+import * as fs from "fs";
+import sharp from "sharp";
 
 export default async function buildImage(resourceRoot, image, fileID) {
     let base64
@@ -12,7 +13,7 @@ export default async function buildImage(resourceRoot, image, fileID) {
     else
         base64 = `data:image/${image.uri.split(".").pop()};base64,` + await readTypedFile(resourceRoot + path.sep + image.uri, "base64")
 
-    const pathToPreview = path.resolve(ProjectController.pathToPreviews + path.sep + fileID + FILE_TYPES.PREVIEW)
+    const pathToPreview = path.resolve(WindowController.pathToPreviews + path.sep + fileID + FILE_TYPES.PREVIEW)
     const bufferPreview = await sharp(Buffer.from(base64.split(";base64,").pop(), "base64")).resize(256, 256).png().toBuffer()
     await fs.promises.writeFile(pathToPreview, `data:image/png;base64,` + bufferPreview.toString("base64"))
 

@@ -5,7 +5,7 @@ import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../engine-core/Engine";
 import CameraTracker from "./lib/CameraTracker";
 import WireframeRenderer from "./runtime/WireframeRenderer";
-import SettingsStore from "../frontend/views/editor/stores/SettingsStore";
+import SettingsStore from "../frontend/shared/stores/SettingsStore";
 
 import ENVIRONMENT from "../engine-core/static/ENVIRONMENT";
 import LineRenderer from "./runtime/LineRenderer";
@@ -13,9 +13,7 @@ import Entity from "../engine-core/instances/Entity";
 import GPU from "../engine-core/GPU";
 import StaticEditorMeshes from "./lib/StaticEditorMeshes";
 import StaticEditorShaders from "./lib/StaticEditorShaders";
-import StaticShaders from "../engine-core/lib/StaticShaders";
-import Shader from "../engine-core/instances/Shader";
-
+import CameraIconRenderer from "./runtime/CameraIconRenderer";
 
 let settings
 let selected: Entity[]
@@ -30,14 +28,6 @@ export default class EngineTools {
 
         EngineTools.#initialized = true;
 
-
-        // TODO - ONLY DEV
-        // @ts-ignore
-        window.devMapper = StaticEditorShaders;
-        // @ts-ignore
-        window.createInstance = (vertex, fragment) => new Shader(vertex, fragment);
-        // @ts-ignore
-        window.prodMapper = StaticShaders;
         StaticEditorShaders.initialize()
         await StaticEditorMeshes.initialize()
 

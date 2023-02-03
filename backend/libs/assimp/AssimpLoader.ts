@@ -2,13 +2,13 @@ import AssimpJS from "./Assimp.js";
 import PrimitiveProcessor from "../../../engine-core/lib/math/PrimitiveProcessor";
 import FILE_TYPES from "../../../static/objects/FILE_TYPES";
 import createRegistryEntry from "../../utils/create-registry-entry";
-import ProjectController from "../ProjectController";
+import WindowController from "../WindowController";
 
 import {mat4} from "gl-matrix";
 import MutableObject from "../../../engine-core/MutableObject";
+import * as fs from "fs";
+import * as path from "path";
 
-const path = require("path")
-const fs = require("fs")
 const CACHE_MATRIX = new Float32Array(16);
 
 interface NodeType {
@@ -85,7 +85,7 @@ export default class AssimpLoader {
                 collectionPath,
                 JSON.stringify(collection)
             )
-            await createRegistryEntry(crypto.randomUUID(), collectionPath.replace(ProjectController.pathToAssets, ''))
+            await createRegistryEntry(crypto.randomUUID(), collectionPath.replace(WindowController.pathToAssets, ''))
         } catch (err) {
             console.error(err)
         }
@@ -117,7 +117,7 @@ export default class AssimpLoader {
                 path.resolve(localName),
                 jsonText
             );
-            await createRegistryEntry(meshID, localName.replace(ProjectController.pathToAssets, ''))
+            await createRegistryEntry(meshID, localName.replace(WindowController.pathToAssets, ''))
         } catch (err) {
             console.error(err)
         }

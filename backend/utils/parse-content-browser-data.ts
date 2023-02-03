@@ -1,7 +1,6 @@
 import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
-
-const fs = require("fs")
-const pathRequire = require("path")
+import * as fs from "fs";
+import * as pathRequire from "path";
 
 export default async function parseContentBrowserData(p, registryData, projectPath) {
     if (typeof p !== "string")

@@ -4,10 +4,10 @@ import rm from "../../backend/utils/rm";
 import readFile from "../../backend/utils/read-file";
 import FILE_TYPES from "../../static/objects/FILE_TYPES";
 
-const {BrowserWindow, app, ipcMain, webContents, dialog, Menu, } = require("electron")
+import {ipcMain,} from "electron"
 
-const fs = require("fs")
-const pathRequire = require("path")
+import * as pathRequire from "path";
+import * as fs from "fs";
 
 let watchSignals = []
 let filesToWatch = []

@@ -1,7 +1,7 @@
 import MutableObject from "../../engine-core/MutableObject";
+import * as fs from "fs";
+import * as pathRequire from "path";
 
-const fs = require("fs")
-const pathRequire = require("path")
 export default async function readTypedFile(pathName, type): Promise<undefined | { [key: string|number|symbol]: any } | Buffer | string | null> {
     try {
         const res:Buffer = await fs.promises.readFile(pathRequire.resolve(pathName))
