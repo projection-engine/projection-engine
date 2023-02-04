@@ -9,6 +9,7 @@ import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import GizmoAPI from "../lib/GizmoAPI";
 import LineRenderer from "./LineRenderer";
 import Entity from "../../engine-core/instances/Entity";
+import EngineTools from "../EngineTools";
 
 
 const lineMatrix = <Float32Array>mat4.create()
@@ -40,6 +41,7 @@ export default class GizmoSystem   {
         return GizmoSystem.#wasOnGizmo
     }
 
+
     static set wasOnGizmo(data) {
         GizmoSystem.#wasOnGizmo = data
         if (data)
@@ -61,7 +63,7 @@ export default class GizmoSystem   {
         main.__pivotChanged = true
         GizmoSystem.mainEntity = main
         GizmoSystem.targetGizmo.transformGizmo()
-        GizmoSystem.targetRotation = main._rotationQuat
+        GizmoSystem.targetRotation = main.rotationQuaternionFinal
         RotationGizmo.currentRotation.fill(0)
     }
 

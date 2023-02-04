@@ -86,7 +86,7 @@ export default function mapGizmoMesh(axis: string, type: string): Entity {
         }
     }
 
-    TransformationAPI.quat.fromEuler(<quat>entity._rotationQuat, toDeg * r[0], toDeg * r[1], toDeg * r[2])
+    TransformationAPI.quat.fromEuler(<quat>entity._rotationQuaternion, toDeg * r[0], toDeg * r[1], toDeg * r[2])
     const pickID = PickingAPI.getPickerId(index)
     entity.pickID[0] = pickID[0]
     entity.pickID[1] = pickID[1]
@@ -94,7 +94,7 @@ export default function mapGizmoMesh(axis: string, type: string): Entity {
     TransformationAPI.vec3.copy(<vec3>entity._translation, <vec3>t)
     TransformationAPI.vec3.copy(<vec3>entity._scaling, <vec3>s)
     const translation = entity._translation
-    const rotate = entity._rotationQuat
+    const rotate = entity._rotationQuaternion
     const scale = entity._scaling
     const matrix = entity.matrix
     quat.normalize(cacheVec4, <quat>rotate)

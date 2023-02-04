@@ -3,7 +3,7 @@ import viewportHotkeys from "./viewport-hotkeys";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import entityCreationOptions from "./entity-creation-options";
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions";
 
 export default function viewportContext(settings:MutableObject, forDropdown?:boolean):ContextMenuOption[] {
@@ -60,18 +60,22 @@ export default function viewportContext(settings:MutableObject, forDropdown?:boo
                         const comp = SelectionStore.selectedEntity
                         comp.baseTransformationMatrix = comp.matrix
 
-                        comp._translation[0] = 0
-                        comp._translation[1] = 0
-                        comp._translation[2] = 0
+                        comp.translation[0] = 0
+                        comp.translation[1] = 0
+                        comp.translation[2] = 0
 
-                        comp._scaling[0] = 1
-                        comp._scaling[1] = 1
-                        comp._scaling[2] = 1
+                        comp.scaling[0] = 1
+                        comp.scaling[1] = 1
+                        comp.scaling[2] = 1
 
-                        comp._rotationQuat[0] = 0
-                        comp._rotationQuat[1] = 0
-                        comp._rotationQuat[2] = 0
-                        comp._rotationQuat[3] = 1
+                        comp.rotationQuaternion[0] = 0
+                        comp.rotationQuaternion[1] = 0
+                        comp.rotationQuaternion[2] = 0
+                        comp.rotationQuaternion[3] = 1
+
+                        comp.rotationEuler[0] = 0
+                        comp.rotationEuler[1] = 0
+                        comp.rotationEuler[2] = 0
 
                         comp.__pivotChanged = true
                     }

@@ -4,8 +4,8 @@ import SettingsStore from "../../shared/stores/SettingsStore";
 import GIZMOS from "../static/GIZMOS";
 import GizmoSystem from "../../../engine-tools/runtime/GizmoSystem";
 
-const toRad = Math.PI/180
-export default function snap(grid?:number) {
+const toRad = Math.PI / 180
+export default function snap(grid?: number) {
     const selected = SelectionStore.engineSelected
     for (let i = 0; i < selected.length; i++) {
         const entity = QueryAPI.getEntityByID(selected[i])
@@ -28,13 +28,13 @@ export default function snap(grid?:number) {
             }
             case GIZMOS.ROTATION: {
                 const g = grid ? grid : GizmoSystem.rotationGizmo.gridSize * toRad
-                entity._rotationQuat[0] = Math.round(entity._rotationQuat[0] / g) * g
-                entity._rotationQuat[1] = Math.round(entity._rotationQuat[1] / g) * g
-                entity._rotationQuat[2] = Math.round(entity._rotationQuat[2] / g) * g
-                entity._rotationQuat[3] = Math.round(entity._rotationQuat[2] / g) * g
+                entity._rotationQuaternion[0] = Math.round(entity._rotationQuaternion[0] / g) * g
+                entity._rotationQuaternion[1] = Math.round(entity._rotationQuaternion[1] / g) * g
+                entity._rotationQuaternion[2] = Math.round(entity._rotationQuaternion[2] / g) * g
+                entity._rotationQuaternion[3] = Math.round(entity._rotationQuaternion[2] / g) * g
                 break
             }
         }
-        entity.__changedBuffer[0] = 1
+        entity.changed = true
     }
 }

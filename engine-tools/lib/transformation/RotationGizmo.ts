@@ -14,6 +14,8 @@ import GizmoInterface from "../GizmoInterface";
 import StaticEditorMeshes from "../StaticEditorMeshes";
 import StaticEditorShaders from "../StaticEditorShaders";
 import Entity from "../../../engine-core/instances/Entity";
+import GizmoAPI from "../GizmoAPI";
+import DualAxisGizmo from "./DualAxisGizmo";
 
 const toRad = Math.PI / 180
 const toDeg = 180 / Math.PI
@@ -88,12 +90,10 @@ export default class RotationGizmo extends GizmoInterface {
         GizmoSystem.hasStarted = true
 
         if (GizmoSystem.rotationRef) {
-            const mainEntity = GizmoSystem.mainEntity
-            const Q = mainEntity._rotationQuat
             const EX = RotationGizmo.currentRotation[0] * 2 * toDeg,
                 EY = RotationGizmo.currentRotation[1] * 2 * toDeg,
                 EZ = RotationGizmo.currentRotation[2] * 2 * toDeg
-            GizmoSystem.rotationRef.textContent = `Quaternion: X ${Q[0].toFixed(2)} | Y ${Q[1].toFixed(2)} | Z ${Q[2].toFixed(2)} | W ${Q[3].toFixed(2)} (Euler: X ${EX.toFixed(2)} | Y ${EY.toFixed(2)} | Z ${EZ.toFixed(2)})`
+            GizmoSystem.rotationRef.textContent = `X ${EX.toFixed(2)} | Y ${EY.toFixed(2)} | Z ${EZ.toFixed(2)}`
         }
     }
 
@@ -117,24 +117,18 @@ export default class RotationGizmo extends GizmoInterface {
         }
     }
 
-    #rotateGizmo(entity: Entity) {
-        const m = GizmoSystem.mainEntity
-        if (!m)
-            return
-        const matrix = entity.matrix
-        mat4.copy(matrix, entity.__cacheMatrix)
 
-        matrix[12] += m.__pivotOffset[0]
-        matrix[13] += m.__pivotOffset[1]
-        matrix[14] += m.__pivotOffset[2]
-    }
 
     transformGizmo() {
         if (!GizmoSystem.mainEntity)
             return
-        this.#rotateGizmo(this.xGizmo)
-        this.#rotateGizmo(this.yGizmo)
-        this.#rotateGizmo(this.zGizmo)
+        mat4.copy(this.xGizmo.matrix, this.xGizmo.__cacheMatrix)
+        mat4.copy(this.yGizmo.matrix, this.yGizmo.__cacheMatrix)
+        mat4.copy(this.zGizmo.matrix, this.zGizmo.__cacheMatrix)
+
+        GizmoAPI.translateMatrix(this.xGizmo)
+        GizmoAPI.translateMatrix(this.yGizmo)
+        GizmoAPI.translateMatrix(this.zGizmo)
     }
 
     drawGizmo() {

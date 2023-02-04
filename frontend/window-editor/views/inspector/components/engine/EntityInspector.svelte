@@ -9,7 +9,6 @@
     import UIComponent from "./UIComponent.svelte";
     import updateEntityComponent from "../../utils/update-entity-component";
     import getEntityTabs from "../../utils/get-entity-tabs";
-    import TransformationForm from "./TransformationForm.svelte";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";

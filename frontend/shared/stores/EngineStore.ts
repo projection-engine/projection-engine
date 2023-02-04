@@ -5,7 +5,7 @@ import RegistryAPI from "../../window-editor/lib/fs/RegistryAPI";
 import GPU from "../../../engine-core/GPU";
 import {writable} from "svelte/store";
 import GPUAPI from "../../../engine-core/lib/rendering/GPUAPI";
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 import FS from "../lib/FS/FS";
 
 const engine = writable(<MutableObject>ENGINE);

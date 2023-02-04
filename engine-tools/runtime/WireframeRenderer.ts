@@ -49,7 +49,7 @@ export default class WireframeRenderer {
                     const m = entity.__collisionTransformationMatrix || mat4.clone(EMPTY_MATRIX)
                     vec3.add(translationCache, <vec3>collision.center, entity.absoluteTranslation)
                     let scale
-                    const rotation = entity._rotationQuat
+                    const rotation = entity._rotationQuaternion
                     if (collision.collisionType === COLLISION_TYPES.BOX)
                         scale = collision.size
                     else {

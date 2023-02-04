@@ -3,9 +3,10 @@ import GizmoSystem from "../runtime/GizmoSystem";
 import {quat, vec3} from "gl-matrix";
 import TRANSFORMATION_TYPE from "../../frontend/window-editor/static/TRANSFORMATION_TYPE";
 import RotationGizmo from "../lib/transformation/RotationGizmo";
+import Movable from "../../engine-core/instances/components/Movable";
 
 
-export default function gizmoRotateEntity(vec:[number, number, number]|Float32Array, screenSpace?:boolean) {
+export default function gizmoRotateEntity(vec: [number, number, number] | Float32Array, screenSpace?: boolean) {
     let firstEntity = GizmoSystem.mainEntity
     if (!firstEntity)
         return;
@@ -24,20 +25,25 @@ export default function gizmoRotateEntity(vec:[number, number, number]|Float32Ar
     if (vec[2] !== 0)
         quat.rotateZ(quatA, quatA, vec[2])
 
-
+    const isGlobalRotation = GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL && SIZE === 1
     for (let i = 0; i < SIZE; i++) {
         const target = targets[i]
         if (target.lockedRotation)
             continue
         if (screenSpace) {
-            quat.copy(target._rotationQuat, quatA)
+            quat.copy(target.rotationQuaternion, quatA)
             continue
         }
 
-        if (GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || SIZE > 1)
-            quat.multiply(target._rotationQuat, quatA, target._rotationQuat)
+        const isQuaternionRotation = target.rotationType[0] === Movable.ROTATION_QUATERNION
+        if (isQuaternionRotation) {
+            if (isGlobalRotation)
+                quat.multiply(target.rotationQuaternion, quatA, target.rotationQuaternion)
+            else
+                quat.multiply(target.rotationQuaternion, target.rotationQuaternion, quatA)
+        }
         else
-            quat.multiply(target._rotationQuat, target._rotationQuat, quatA)
+            vec3.add(target.rotationEuler, target.rotationEuler, vec)
         target.__changedBuffer[0] = 1
     }
 }

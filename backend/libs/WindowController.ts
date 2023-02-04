@@ -2,7 +2,7 @@ import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCT
 import readTypedFile from "../utils/read-typed-file";
 import FILE_TYPES from "../../static/objects/FILE_TYPES";
 import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
-import MutableObject from "../../engine-core/MutableObject";
+import MutableObject from "../../engine-core/static/MutableObject";
 import RegistryFile from "../../static/objects/RegistryFile";
 import AssimpLoader from "./assimp/AssimpLoader";
 import Events from "./Events";

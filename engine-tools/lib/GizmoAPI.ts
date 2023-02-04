@@ -5,25 +5,28 @@ import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
 import GPU from "../../engine-core/GPU";
 import Entity from "../../engine-core/instances/Entity";
 import StaticEditorShaders from "./StaticEditorShaders";
+import AXIS from "../static/AXIS";
+import EngineTools from "../EngineTools";
 
 const cacheVec3 = vec3.create()
 const cacheQuat = quat.create()
-export default class GizmoAPI  {
-    static translateMatrix(entity:Entity, keepMatrix:Boolean): Float32Array {
-        if (!GizmoSystem.mainEntity)
-            return
-        const matrix = keepMatrix ? entity.matrix : <Float32Array>mat4.copy(mat4.create(), entity.matrix)
-        GizmoAPI.applyTransformation(matrix, entity._rotationQuat, entity._translation, entity._scaling)
-        return matrix
+
+export default class GizmoAPI {
+    static get isGlobal() {
+        return AXIS.SCREEN_SPACE === GizmoSystem.clickedAxis || GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL || EngineTools.selected.length > 1
+    }
+
+    static translateMatrix(entity: Entity) {
+        GizmoAPI.applyTransformation(entity.matrix, entity.rotationQuaternion, entity.translation, entity.scaling)
     }
 
     static applyTransformation(matrix: Float32Array, quaternion: Float32Array, translation: Float32Array, scale: Float32Array): void {
         const m = GizmoSystem.mainEntity
         if (!m)
             return
-        const isRelative = GizmoSystem.transformationType === TRANSFORMATION_TYPE.RELATIVE
+        const isRelative = !GizmoAPI.isGlobal
         if (isRelative || m.parent) {
-            const quatToMultiply = isRelative ? GizmoSystem.targetRotation : m.parent._rotationQuat
+            const quatToMultiply = isRelative ? GizmoSystem.targetRotation : m.parent.rotationQuaternionFinal
             if (!quatToMultiply)
                 return;
             vec3.add(cacheVec3, m.__pivotOffset, translation)

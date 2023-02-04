@@ -1,5 +1,5 @@
 import SelectionStore from "../../../../shared/stores/SelectionStore";
-import MutableObject from "../../../../../engine-core/MutableObject";
+import MutableObject from "../../../../../engine-core/static/MutableObject";
 
 export default function handleSelection(e:MouseEvent, child:MutableObject){
     let toSelect = []

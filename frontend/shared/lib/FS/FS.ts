@@ -2,7 +2,7 @@ import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_
 import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 
 import {getCall} from "./get-call";
-import MutableObject from "../../../../engine-core/MutableObject";
+import MutableObject from "../../../../engine-core/static/MutableObject";
 import ElectronResources from "../ElectronResources";
 
 
