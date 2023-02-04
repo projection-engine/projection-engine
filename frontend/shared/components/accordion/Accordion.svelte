@@ -83,6 +83,7 @@
         padding: 4px;
         max-width: 100%;
         overflow: hidden;
+        background: var(--pj-background-tertiary);
     }
 
     .summary {

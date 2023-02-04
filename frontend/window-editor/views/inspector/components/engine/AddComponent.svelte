@@ -25,7 +25,6 @@
             data-svelteoverflow="-"
     >
         <Icon>add</Icon>
-        {LOCALIZATION_EN.ADD_COMPONENT}
         <ToolTip content={LOCALIZATION_EN.ADD_COMPONENT}/>
     </button>
 

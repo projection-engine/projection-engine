@@ -10,10 +10,13 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
     import FS from "../../../../../shared/lib/FS/FS";
+    import {onMount} from "svelte";
 
-    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION,  FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
+    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION, FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
 
     export let item
+    export let setTabs
+    export let tabIndex
     let data
     let type
     $: fileType = "." + item.type
@@ -21,23 +24,46 @@
         data = undefined
         if (fileType !== FILE_TYPES.PRIMITIVE && fileType !== FILE_TYPES.LEVEL) {
             const fType = VALID.includes(fileType) ? "json" : undefined
-            FilesAPI.readFile(FS.ASSETS_PATH  + item.id, fType).then(res => data = res)
+            FilesAPI.readFile(FS.ASSETS_PATH + item.id, fType).then(res => data = res)
         } else
             data = undefined
+    }
+    $: {
+        const VALID_TYPES = [FILE_TYPES.COMPONENT, FILE_TYPES.UI_LAYOUT, FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN, FILE_TYPES.PRIMITIVE]
+        if (VALID_TYPES.includes(fileType)) {
+            setTabs([
+                {
+                    label: LOCALIZATION_EN.METADATA,
+                    icon: "info",
+                    index: -2
+                },
+                {
+                    label: LOCALIZATION_EN.ASSET_PROPERTIES,
+                    icon: "file",
+                    index: -1
+                }
+            ])
+        } else
+            setTabs([
+                {
+                    label: LOCALIZATION_EN.METADATA,
+                    icon: "info",
+                    index: -2
+                }
+            ])
     }
 
 </script>
 
-<div class="wrapper">
 
+{#if tabIndex === -2}
     <ItemMetadata item={item}/>
-    <div data-sveltedivider="-" style="margin:0;"></div>
+{:else}
     {#if fileType === FILE_TYPES.TEXTURE && data != null}
         <TextureItem data={data} item={item}/>
-
     {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.UI_LAYOUT}
         <CodeItem data={data} item={item}/>
-    {:else if data != null && (fileType === FILE_TYPES.MATERIAL)}
+    {:else if data != null && fileType === FILE_TYPES.MATERIAL}
         <MaterialItem data={data} item={item}/>
     {:else if data != null && fileType === FILE_TYPES.TERRAIN}
         <TerrainItem data={data} item={item}/>
@@ -51,19 +77,9 @@
             </div>
         </div>
     {/if}
-</div>
+{/if}
 
 <style>
-    .wrapper {
-        display: grid;
-        align-content: flex-start;
-        gap: 4px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 4px 2px;
-        min-height: 100%;
-    }
-
     .empty-wrapper {
         position: relative;
         height: 100%;

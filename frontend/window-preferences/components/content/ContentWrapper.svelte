@@ -1,13 +1,14 @@
 <script>
     import PREFERENCES from "../../static/PREFERENCES";
     import Accordion from "../../../shared/components/accordion/Accordion.svelte";
-    import FormPreferences from "./ContentGroup.svelte";
+    import ContentGroup from "./ContentGroup.svelte";
+    import PropertyHeader from "../../../shared/components/PropertyHeader.svelte";
     export let tab
     $: currentTab = PREFERENCES[tab]
 </script>
 
-<h3>{currentTab.label}</h3>
-<FormPreferences toRender={currentTab}/>
+<PropertyHeader title={currentTab.label}/>
+<ContentGroup toRender={currentTab}/>
 
 <style>
     h3{

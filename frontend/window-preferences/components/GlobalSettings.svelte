@@ -7,6 +7,7 @@
     import {onMount} from "svelte";
     import DEFAULT_GLOBAL_SETTINGS from "../../../backend/static/DEFAULT_GLOBAL_SETTINGS";
     import {AngleBackends} from "../../../backend/static/ANGLE_BACKENDS";
+    import PropertyHeader from "../../shared/components/PropertyHeader.svelte";
 
 
     let globalSettings = {...DEFAULT_GLOBAL_SETTINGS}
@@ -17,7 +18,7 @@
     })
 </script>
 
-<h3>{LOCALIZATION_EN.GLOBAL}</h3>
+<PropertyHeader title={LOCALIZATION_EN.GLOBAL}/>
 <fieldset>
     <OptionDropdown
             noPadding={true}
@@ -56,11 +57,3 @@
         {LOCALIZATION_EN.APPLY}
     </button>
 </fieldset>
-
-<style>
-    h3 {
-        padding: 0 8px;
-        margin: 8px 0;
-        font-weight: 550;
-    }
-</style>
