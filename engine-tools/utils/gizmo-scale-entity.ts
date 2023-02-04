@@ -5,54 +5,54 @@ import EngineTools from "../EngineTools";
 import {quat, vec3, vec4} from "gl-matrix";
 import ScalingGizmo from "../lib/transformation/ScalingGizmo";
 import AXIS from "../static/AXIS";
+import GizmoAPI from "../lib/GizmoAPI";
 
 function getAxisMovement(event) {
     return Math.abs(event.movementX) > Math.abs(event.movementY) ? event.movementX : event.movementY
 }
 
-const cacheVec3 = vec3.create()
-const vecCache = quat.create()
-const cacheVec4 = quat.create()
+const INVERSE_CACHE = vec3.create()
+const SCALE_CACHE = quat.create()
 export default function gizmoScaleEntity(event) {
     const CACHE = <vec3>ScalingGizmo.cache
     let firstEntity = GizmoSystem.mainEntity
     if (!firstEntity)
         return;
     const axis = GizmoSystem.clickedAxis
-    const isGlobal = GizmoSystem.transformationType === TRANSFORMATION_TYPE.GLOBAL
+    const isGlobal = GizmoAPI.isGlobal
     const g = event.ctrlKey ? 1 : ScalingGizmo.gridSize
 
     switch (axis) {
         case AXIS.SCREEN_SPACE:
-            vecCache[0] = vecCache[1] = vecCache[2] = getAxisMovement(event) / 50
+            SCALE_CACHE[0] = SCALE_CACHE[1] = SCALE_CACHE[2] = getAxisMovement(event) / 50
             break
         case AXIS.XY:
-            vecCache[0] = vecCache[1] = getAxisMovement(event) / 50
+            SCALE_CACHE[0] = SCALE_CACHE[1] = getAxisMovement(event) / 50
             break
         case AXIS.XZ:
-            vecCache[0] = vecCache[2] = getAxisMovement(event) / 50
+            SCALE_CACHE[0] = SCALE_CACHE[2] = getAxisMovement(event) / 50
             break
         case AXIS.ZY:
-            vecCache[1] = vecCache[2] = getAxisMovement(event) / 50
+            SCALE_CACHE[1] = SCALE_CACHE[2] = getAxisMovement(event) / 50
             break
         default:
             const c = ScreenSpaceGizmo.onMouseMove(event)
-            vecCache[0] = c[0]
-            vecCache[1] = c[1]
-            vecCache[2] = c[2]
+            SCALE_CACHE[0] = c[0]
+            SCALE_CACHE[1] = c[1]
+            SCALE_CACHE[2] = c[2]
             break
     }
 
 
-    if (isGlobal || EngineTools.selected.length > 1) {
-        vec4.transformQuat(cacheVec4, <vec4>vecCache, firstEntity._rotationQuat)
-        vec3.add(CACHE, CACHE, <vec3>cacheVec4)
+    if (isGlobal) {
+        vec4.transformQuat(SCALE_CACHE, <vec4>SCALE_CACHE, GizmoSystem.targetRotation)
+        vec3.add(CACHE, CACHE, <vec3>SCALE_CACHE)
     } else
-        vec3.add(CACHE, CACHE, <vec3>vecCache)
+        vec3.add(CACHE, CACHE, <vec3>SCALE_CACHE)
 
 
     if (isGlobal)
-        vec3.scale(cacheVec3, CACHE, -1)
+        vec3.scale(INVERSE_CACHE, CACHE, -1)
 
     if (Math.abs(CACHE[0]) >= g || Math.abs(CACHE[1]) >= g || Math.abs(CACHE[2]) >= g) {
         const entities = EngineTools.selected
@@ -66,7 +66,7 @@ export default function gizmoScaleEntity(event) {
 
             vec3.add(target._scaling, target._scaling, CACHE)
             if (isGlobal && event.altKey)
-                vec3.add(target._translation, target._translation, cacheVec3)
+                vec3.add(target._translation, target._translation, INVERSE_CACHE)
             for (let j = 0; j < 3; j++)
                 target._scaling[j] = Math.round(target._scaling[j] / g) * g
             target.__changedBuffer[0] = 1

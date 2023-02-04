@@ -1,7 +1,7 @@
 import {get, writable} from "svelte/store";
 import FilesStore from "./FilesStore";
 import FS from "../lib/FS/FS";
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 
 const store = writable({items: [], open: {}});
 

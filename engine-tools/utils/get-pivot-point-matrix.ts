@@ -8,7 +8,7 @@ export default function getPivotPointMatrix(entity) {
         const m = !entity.__cacheCenterMatrix ? mat4.clone(EMPTY_MATRIX) : entity.__cacheCenterMatrix
         getPivotPointTranslation(entity)
 
-        mat4.fromRotationTranslationScale(m, entity._rotationQuat, entity.__pivotOffset, [.25, .25, .25])
+        mat4.fromRotationTranslationScale(m, entity.rotationQuaternionFinal, entity.__pivotOffset, [.25, .25, .25])
         entity.__cacheCenterMatrix = m
         if(!entity.__cacheIconMatrix)
             entity.__cacheIconMatrix = mat4.create()

@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import Entity from "../../../../../engine-core/instances/Entity";
-import MutableObject from "../../../../../engine-core/MutableObject";
+import MutableObject from "../../../../../engine-core/static/MutableObject";
 import MeshComponent from "../../../../../engine-core/instances/components/MeshComponent";
 
 

@@ -1,4 +1,4 @@
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 import ElectronResources from "../lib/ElectronResources";
 import ROUTES from "../../../backend/static/ROUTES";
 import STORES from "../../../backend/static/STORES";

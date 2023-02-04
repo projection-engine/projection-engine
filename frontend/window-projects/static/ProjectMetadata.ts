@@ -1,4 +1,4 @@
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 
 type Metadata  = {
     [key: string]: string | number,

@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte";
     import Portal from "../../lib/Portal";
     import transformModal from "./transform-modal";
-    import MutableObject from "../../../../engine-core/MutableObject";
+    import MutableObject from "../../../../engine-core/static/MutableObject";
 
     export let isOpen = false
     export let targetBinding:HTMLElement

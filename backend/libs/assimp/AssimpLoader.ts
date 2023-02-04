@@ -5,7 +5,7 @@ import createRegistryEntry from "../../utils/create-registry-entry";
 import WindowController from "../WindowController";
 
 import {mat4} from "gl-matrix";
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 import * as fs from "fs";
 import * as path from "path";
 

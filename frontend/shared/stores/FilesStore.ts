@@ -7,7 +7,7 @@ import resolveFileName from "../../window-editor/utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
 import FS from "../lib/FS/FS";
 import {getCall} from "../lib/FS/get-call";
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 import RegistryAPI from "../../window-editor/lib/fs/RegistryAPI";
 
 const contentBrowserStore = writable({

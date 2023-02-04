@@ -28,7 +28,6 @@ export default class Inheritance extends GizmoInterface  {
 
     }
 
-
     onMouseUp() {
         if (GizmoSystem.hasStarted) {
             GizmoSystem.hasStarted = false
@@ -39,7 +38,6 @@ export default class Inheritance extends GizmoInterface  {
         GizmoSystem.clickedAxis = -1
         GizmoSystem.targetGizmo.transformGizmo()
     }
-
 
     #testClick() {
         if (!GizmoSystem.mainEntity)
@@ -73,12 +71,12 @@ export default class Inheritance extends GizmoInterface  {
         mat4.copy(DualAxisGizmo.gizmos.XZ.matrix, DualAxisGizmo.gizmos.XZ.__cacheMatrix)
 
 
-        GizmoAPI.translateMatrix(this.xGizmo, true)
-        GizmoAPI.translateMatrix(this.yGizmo, true)
-        GizmoAPI.translateMatrix(this.zGizmo, true)
-        GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.XY, true)
-        GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.ZY, true)
-        GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.XZ, true)
+        GizmoAPI.translateMatrix(this.xGizmo)
+        GizmoAPI.translateMatrix(this.yGizmo)
+        GizmoAPI.translateMatrix(this.zGizmo)
+        GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.XY)
+        GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.ZY)
+        GizmoAPI.translateMatrix(DualAxisGizmo.gizmos.XZ)
     }
 
     drawGizmo() {

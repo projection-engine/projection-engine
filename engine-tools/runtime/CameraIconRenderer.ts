@@ -14,7 +14,7 @@ export default class CameraIconRenderer {
         if (entity.changesApplied || !entity.__cameraIconMatrix || entity.__cameraNeedsUpdate) {
             entity.__cameraNeedsUpdate = false
             const t = entity._translation
-            const q = entity._rotationQuat
+            const q = entity._rotationQuaternion
 
 
             mat4.perspective(projection, Math.PI/4, 1.3, .5, 3)

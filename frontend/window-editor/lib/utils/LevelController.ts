@@ -26,7 +26,7 @@ import ElectronResources from "../../../shared/lib/ElectronResources";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import AlertController from "../../../shared/components/alert/AlertController";
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-import MutableObject from "../../../../engine-core/MutableObject";
+import MutableObject from "../../../../engine-core/static/MutableObject";
 import EntityManager from "../EntityManager";
 
 

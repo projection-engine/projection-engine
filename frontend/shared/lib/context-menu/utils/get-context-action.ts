@@ -1,6 +1,6 @@
 import ContextMenuController from "../ContextMenuController";
 import ROUTES from "../../../../../backend/static/ROUTES";
-import MutableObject from "../../../../../engine-core/MutableObject";
+import MutableObject from "../../../../../engine-core/static/MutableObject";
 import ElectronResources from "../../ElectronResources";
 
 export default function getContextAction() {

@@ -1,6 +1,6 @@
 import {get, writable} from "svelte/store";
 import SettingsStore from "./SettingsStore";
-import MutableObject from "../../../engine-core/MutableObject";
+import MutableObject from "../../../engine-core/static/MutableObject";
 import ChangesTrackerStore from "./ChangesTrackerStore";
 
 

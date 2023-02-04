@@ -5,7 +5,7 @@
     import Input from "../../../../shared/components/input/Input.svelte";
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
-    import MutableObject from "../../../../../engine-core/MutableObject";
+    import MutableObject from "../../../../../engine-core/static/MutableObject";
 
     export let node: ShaderNode | ShaderComment
     export let updateCanvas: Function

@@ -5,7 +5,7 @@ import Draggable from "./Draggable";
 import CanvasRenderer from "../libs/CanvasRenderer";
 import {Input} from "../static/Input";
 import {Output} from "../static/Output";
-import MutableObject from "../../../../../engine-core/MutableObject";
+import MutableObject from "../../../../../engine-core/static/MutableObject";
 import MaterialUniform from "../../../../../engine-core/static/MaterialUniform";
 import DraggableNodeUtils from "../libs/DraggableNodeUtils";
 import CanvasResources from "../libs/CanvasResources";

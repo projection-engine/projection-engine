@@ -10,18 +10,14 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
-
-    const tempQuat = quat.create()
-    const toRad = Math.PI / 180
-    const TYPES = ["QUATERNION", "EULER"]
+    import ROTATION_TYPES from "../../static/ROTATION_TYPES";
+    import Movable from "../../../../../../engine-core/instances/components/Movable";
 
     let targets = []
-    let rotationType = TYPES[1]
+    let rotationType = Movable.ROTATION_QUATERNION
 
     let totalTranslated = [0, 0, 0]
     let totalScaled = [0, 0, 0]
-    let totalQuat = [0, 0, 0, 1]
-    let totalEuler = [0, 0, 0]
     let totalPivot = [0, 0, 0]
 
     let hasStarted = false
@@ -46,21 +42,20 @@
         }
 
         targets = cache
-        totalEuler = [0, 0, 0]
+
         if (cache.length === 1) {
             totalTranslated = Array.from(cache[0]._translation)
             totalScaled = Array.from(cache[0]._scaling)
-            totalQuat = Array.from(cache[0]._rotationQuat)
-            totalPivot =  Array.from(cache[0].pivotPoint)
+            totalPivot = Array.from(cache[0].pivotPoint)
         } else {
             totalTranslated = [0, 0, 0]
             totalScaled = [0, 0, 0]
-            totalQuat = [0, 0, 0, 1]
             totalPivot = [0, 0, 0]
         }
     })
 
     $: mainEntity = targets[0]
+    $: rotationType = mainEntity.rotationType[0]
     $: isSingle = targets.length === 1
     $: lockedRotation = isSingle && mainEntity.lockedRotation
     $: lockedTranslation = isSingle && mainEntity.lockedTranslation
@@ -75,47 +70,30 @@
             EditorActionHistory.save(targets)
         }
 
-        const isQuat = rotationType === TYPES[0]
-
-        if (!isQuat)
-            totalEuler[axis] = value
-
-        for (let i = 0; i < targets.length; i++) {
-            const entity = targets[i]
-            const q = entity._rotationQuat
-            if (isQuat)
-                q[axis] = isSingle ? value : q[axis] + value
-            else {
-                if (!entity.__originalQuat)
-                    entity.__originalQuat = quat.clone(q)
-                quat.copy(tempQuat, entity.__originalQuat)
-                totalEuler[0] !== 0 && quat.rotateX(tempQuat, tempQuat, totalEuler[0])
-                totalEuler[1] !== 0 && quat.rotateY(tempQuat, tempQuat, totalEuler[1])
-                totalEuler[2] !== 0 && quat.rotateZ(tempQuat, tempQuat, totalEuler[2])
-                quat.copy(q, tempQuat)
-            }
-            entity.__changedBuffer[0] = 1
-        }
-
+        if (rotationType === Movable.ROTATION_QUATERNION)
+            mainEntity.rotationQuaternion[axis] = value
+        else
+            mainEntity.rotationEuler[axis] = value
+        mainEntity.changed = true
     }
 
     function transformScaleTranslation(axis, value, isTranslation) {
         if (!hasStarted) {
             hasStarted = true
             EditorActionHistory.save(targets)
-        } 
+        }
         for (let i = 0; i < targets.length; i++) {
             const entity = targets[i]
             if (!isTranslation) {
                 if (!entity.__originalScaling)
-                    entity.__originalScaling =isSingle ? [0,0,0] : Array.from(entity._scaling)
+                    entity.__originalScaling = isSingle ? [0, 0, 0] : Array.from(entity._scaling)
                 entity._scaling[axis] = entity.__originalScaling[axis] + value
             } else {
                 if (!entity.__originalTranslation)
-                    entity.__originalTranslation = isSingle ? [0,0,0] : Array.from(entity._translation)
+                    entity.__originalTranslation = isSingle ? [0, 0, 0] : Array.from(entity._translation)
                 entity._translation[axis] = entity.__originalTranslation[axis] + value
             }
-            entity.__changedBuffer[0] = 1
+            entity.changed = true
         }
 
         if (isTranslation)
@@ -134,7 +112,7 @@
         for (let i = 0; i < targets.length; i++) {
             const entity = targets[i]
             if (!entity.__originalPivot)
-                entity.__originalPivot = isSingle ? [0,0,0] :Array.from(entity.pivotPoint)
+                entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(entity.pivotPoint)
             entity.pivotPoint[axis] = entity.__originalPivot[axis] + value
             entity.__pivotChanged = true
         }
@@ -252,94 +230,94 @@
         </div>
     </fieldset>
 
-    <fieldset>
-        <legend>{LOCALIZATION_EN.ROTATION}</legend>
-        {#if isSingle}
+    {#if isSingle}
+        <fieldset>
+            <legend>{LOCALIZATION_EN.ROTATION}</legend>
+            <div data-svelteform="-">
             <Dropdown buttonStyles="background: var(--background-input); border-radius: 3px">
-                <button data-sveltebuttondefault="-"  slot="button" class="button">
-                    {LOCALIZATION_EN[rotationType]}
+                <button data-sveltebuttondefault="-" slot="button" class="button">
+                    {ROTATION_TYPES.find(e => e.type === rotationType).label}
                 </button>
-                <button data-sveltebuttondefault="-"  on:click={() => rotationType = TYPES[0]}>
-                    {#if rotationType === TYPES[0]}
-                        <Icon>check</Icon>
-                    {:else}
-                        <div style="width: 1.1rem"></div>
-                    {/if}
-                    {LOCALIZATION_EN.QUATERNION}
-                </button>
-                <button data-sveltebuttondefault="-"  on:click={() => rotationType = TYPES[1]}>
-                    {#if rotationType === TYPES[1]}
-                        <Icon>check</Icon>
-                    {:else}
-                        <div style="width: 1.1rem"></div>
-                    {/if}
-                    {LOCALIZATION_EN.EULER}
-                </button>
+                {#each ROTATION_TYPES as rt}
+                    <button data-sveltebuttondefault="-" on:click={() => {
+                        rotationType = rt.type
+                        mainEntity.rotationType[0] = rt.type
+                        mainEntity.changed = true
+                    }}>
+                        {#if rotationType === rt.type}
+                            <Icon>check</Icon>
+                        {:else}
+                            <div style="width: 1.1rem"></div>
+                        {/if}
+                        {rt.label}
+                    </button>
+                {/each}
             </Dropdown>
             <Checkbox
                     label={LOCALIZATION_EN.LOCKED}
                     checked={lockedCache[2]}
                     handleCheck={_ => {
-                      mainEntity.lockedRotation = !mainEntity.lockedRotation
-                      lockedCache[2] = !lockedCache[2]
-                }}
+                          mainEntity.lockedRotation = !mainEntity.lockedRotation
+                          lockedCache[2] = !lockedCache[2]
+                    }}
             />
-        {/if}
-        {#if rotationType === TYPES[0] && isSingle}
-            <Range
-                    onFinish={onFinish}
-                    disabled={lockedRotation}
-                    label="X"
-                    value={isSingle ? mainEntity._rotationQuat[0] : 0}
-                    handleChange={v => rotate(0, v)}
-            />
-            <Range
-                    onFinish={onFinish}
-                    disabled={lockedRotation}
-                    label="Y"
-                    value={isSingle ? mainEntity._rotationQuat[1] : 0}
-                    handleChange={v => rotate(1, v)}
-            />
-            <Range
-                    onFinish={onFinish}
-                    disabled={lockedRotation}
-                    label="Z"
-                    value={isSingle ? mainEntity._rotationQuat[2] : 0}
-                    handleChange={v => rotate(2, v)}
-            />
-            <Range
-                    onFinish={onFinish}
-                    disabled={lockedRotation}
-                    label="W"
-                    value={isSingle ? mainEntity._rotationQuat[3] : 0}
-                    handleChange={v => rotate(3, v)}
-            />
-        {:else}
-            <div data-svelteinline="-">
+            {#if rotationType === Movable.ROTATION_QUATERNION}
                 <Range
                         onFinish={onFinish}
-                        value={totalEuler[0]}
                         disabled={lockedRotation}
                         label="X"
+                        value={mainEntity.rotationQuaternion[0]}
                         handleChange={v => rotate(0, v)}
                 />
                 <Range
                         onFinish={onFinish}
-                        value={totalEuler[1]}
                         disabled={lockedRotation}
                         label="Y"
+                        value={mainEntity.rotationQuaternion[1]}
                         handleChange={v => rotate(1, v)}
                 />
                 <Range
                         onFinish={onFinish}
-                        value={totalEuler[2]}
                         disabled={lockedRotation}
                         label="Z"
+                        value={mainEntity.rotationQuaternion[2]}
                         handleChange={v => rotate(2, v)}
                 />
+                <Range
+                        onFinish={onFinish}
+                        disabled={lockedRotation}
+                        label="W"
+                        value={mainEntity.rotationQuaternion[3]}
+                        handleChange={v => rotate(3, v)}
+                />
+            {:else}
+
+                    <Range
+                            onFinish={onFinish}
+                            value={mainEntity.rotationEuler[0]}
+                            disabled={lockedRotation}
+                            label="X"
+                            handleChange={v => rotate(0, v)}
+                    />
+                    <Range
+                            onFinish={onFinish}
+                            value={mainEntity.rotationEuler[1]}
+                            disabled={lockedRotation}
+                            label="Y"
+                            handleChange={v => rotate(1, v)}
+                    />
+                    <Range
+                            onFinish={onFinish}
+                            value={mainEntity.rotationEuler[2]}
+                            disabled={lockedRotation}
+                            label="Z"
+                            handleChange={v => rotate(2, v)}
+                    />
+
+            {/if}
             </div>
-        {/if}
-    </fieldset>
+        </fieldset>
+    {/if}
 </Accordion>
 
 <style>

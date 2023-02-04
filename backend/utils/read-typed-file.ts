@@ -1,4 +1,4 @@
-import MutableObject from "../../engine-core/MutableObject";
+import MutableObject from "../../engine-core/static/MutableObject";
 import * as fs from "fs";
 import * as pathRequire from "path";
 
