@@ -4,6 +4,7 @@
     import SETTINGS from "../../window-editor/static/SETTINGS";
     import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
     import SettingsStore from "../../shared/stores/SettingsStore";
+    import PropertyHeader from "../../shared/components/PropertyHeader.svelte";
 
     export let settings
 
@@ -36,7 +37,7 @@
     }
 </script>
 
-<h3>{LOCALIZATION_EN.SHORTCUTS}</h3>
+<PropertyHeader title={LOCALIZATION_EN.SHORTCUTS}/>
 <fieldset >
     <legend>{LOCALIZATION_EN.VIEWPORT}</legend>
     <div class="shortcuts">
@@ -89,11 +90,5 @@
         gap: 8px;
         justify-content: flex-start;
         flex-direction: column;
-    }
-
-    h3 {
-        padding: 0 8px;
-        margin: 8px 0;
-        font-weight: 550;
     }
 </style>

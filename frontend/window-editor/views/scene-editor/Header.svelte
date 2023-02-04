@@ -3,7 +3,7 @@
 
     import AddOptions from "./components/AddOptions.svelte";
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import CameraSettings from "../inspector/components/preferences/CameraSettings.svelte";
+    import CameraSettings from "../inspector/components/engine/CameraPreferences.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
     import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
@@ -21,17 +21,7 @@
 
 
 <div class="left-content">
- 
     <AddOptions/>
-    <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
-        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
-            {LOCALIZATION_EN.CAMERA}
-        </button>
-        <div style="display: flex; flex-direction: column; gap: 4px; padding: 8px 4px; max-height: 40vh; overflow-y: auto; overflow-x: hidden">
-            <CameraSettings settings={settings}/>
-        </div>
-    </Dropdown>
-
     <ObjectOptions settings={settings}/>
     <SpawnSettings settings={settings}/>
 </div>
@@ -76,14 +66,8 @@
             {/if}
             {LOCALIZATION_EN.OUTLINE}
         </button>
-
     </Dropdown>
     <ShadingOption engine={engine} settings={settings}/>
-    <Dropdown styles="width: clamp(250px, 25vw, 500px)" buttonStyles={getDropdownHeaderStyles()}>
-        <div style="padding: 8px 4px; display: grid; gap: 4px">
-            <FormPreferences toRender={PREFERENCES[0]}/>
-        </div>
-    </Dropdown>
 </div>
 
 

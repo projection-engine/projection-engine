@@ -55,7 +55,7 @@
         <button data-sveltebuttondefault="-"
                 on:click={() => {
                     UIAPI.updateAllElements().then(() => {
-                        AlertController.success(LOCALIZATION_EN.UPDATING_UI)
+                        AlertController.log(LOCALIZATION_EN.UPDATING_UI)
                     })
                 }}
                 data-svelteview-header-button="-"

@@ -35,8 +35,8 @@
 
     .wrapper {
         height: 23px;
-        background: var(--pj-background-secondary);
 
+        border-bottom: var(--pj-border-primary) 1px solid;
         display: grid;
         align-items: center;
         grid-auto-flow: column;

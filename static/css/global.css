@@ -383,18 +383,3 @@ pre[data-sveltepre="-"] {
     color: var(--pj-accent-color) !important;
 }
 
-.tabs.shared {
-    height: 100%;
-
-    display: grid;
-    align-content: flex-start;
-    justify-content: center;
-    gap: 2px;
-
-    overflow-x: hidden;
-    min-width: 25px;
-    width: 25px;
-    overflow-y: auto;
-
-
-}

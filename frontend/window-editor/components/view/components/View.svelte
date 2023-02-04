@@ -4,7 +4,6 @@
     import ComponentEditor from "../../../views/inspector/Inspector.svelte";
     import VIEWS from "../static/VIEWS";
     import ShaderEditor from "../../../views/shader-editor/ShaderEditor.svelte";
-    import Preferences from "../../../views/inspector/components/preferences/Preferences.svelte";
     import UILayout from "../../../views/ui/UIEditor.svelte";
     import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts";
     import EditorLayout from "../../../views/scene-editor/SceneEditor.svelte";
