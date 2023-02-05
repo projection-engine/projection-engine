@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Metadata from "./Metadata.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
@@ -13,16 +13,20 @@
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
+    import MeshComponent from "../../../../../../engine-core/instances/components/MeshComponent";
+    import Entity from "../../../../../../engine-core/instances/Entity";
+    import Component from "../../../../../../engine-core/instances/components/Component";
 
-    export let entity
-    export let setTabs
-    export let tabIndex
-    export let setTabIndex
+    export let entity: Entity
+    export let setTabs: Function
+    export let tabIndex: number
+    export let setTabIndex: Function
 
-    let ref
-    let savedState
-    let components
+    let ref: HTMLElement
+    let savedState = false
+    let components: [string, Component][] = []
     $: components = entity.allComponents
+    $: component = components[tabIndex]?.[1]
     $: setTabs(getEntityTabs(components))
     $: scripts = entity.scripts
 
@@ -41,6 +45,11 @@
             setTabIndex(-1)
     }
 
+    function updateMaterialUniform(index: number, value: any) {
+        const ref = <MeshComponent>component
+        const uniforms = ref.materialUniforms
+        ref.updateMaterialUniformValue(uniforms[index].key, value)
+    }
 </script>
 
 
@@ -69,33 +78,26 @@
                 entity={entity}
                 submit={(k, v) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, true, components[tabIndex])}
         />
-    {:else if components[tabIndex][1] != null}
+    {:else if component}
         <Layout
                 entity={entity}
                 key={components[tabIndex][0]}
-                component={components[tabIndex][1]}
-                updateTabs={() => {
-                    components = entity.allComponents
-                }}
+                component={component}
+                updateTabs={() => components = entity.allComponents}
                 submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, components[tabIndex])}
         />
-        {#if components[tabIndex][0] === COMPONENTS.MESH && components[tabIndex][1].materialUniforms}
+        {#if component instanceof MeshComponent && component.hasMaterial}
             <fieldset>
                 <legend>{LOCALIZATION_EN.MATERIAL_VALUES}</legend>
                 <Checkbox
                         label={LOCALIZATION_EN.OVERRIDE_PROPERTIES}
                         handleCheck={() => updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !components[tabIndex][1].overrideMaterialUniforms, true, components[tabIndex])}
-                        checked={components[tabIndex][1].overrideMaterialUniforms}
+                        checked={component.overrideMaterialUniforms}
                 />
-                {#if components[tabIndex][1].overrideMaterialUniforms}
+                {#if component.overrideMaterialUniforms}
                     <MaterialUniforms
-                            uniforms={components[tabIndex][1].materialUniforms}
-                            update={(index, value) => {
-                                        const uniforms = components[tabIndex][1].materialUniforms
-                                        uniforms[index].data = value
-                                        components[tabIndex][1].materialUniforms = uniforms
-
-                                    }}
+                            uniforms={component.materialUniforms}
+                            update={updateMaterialUniform}
                     />
                 {/if}
             </fieldset>

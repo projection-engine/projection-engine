@@ -100,7 +100,7 @@ export default class ShaderEditorTools {
             const oldMaterial = GPU.materials.get(openFile.registryID)
             if (oldMaterial) {
                 if (!UberShader.uberSignature[compiled[1]]) {
-                    GPUAPI.asyncDestroyMaterial(openFile.registryID)
+                    GPUAPI.destroyMaterial(openFile.registryID)
                     await GPUAPI.allocateMaterial({
                         functionDeclaration: compiled[0].functionDeclaration,
                         uniformsDeclaration: compiled[0].uniformsDeclaration,
