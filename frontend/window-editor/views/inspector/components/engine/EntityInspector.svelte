@@ -26,7 +26,7 @@
     let components: [string, Component][] = []
     $: components = entity.allComponents
     $: component = components[tabIndex]?.[1]
-    $: setTabs(getEntityTabs(components))
+    $: setTabs(entity.isCollection ? [getEntityTabs(components)[0]] : getEntityTabs(components))
     $: scripts = entity.scripts
 
     const draggable = dragDrop(false)

@@ -69,7 +69,8 @@
         })
         tabs = [...TABS, ...data]
     }
-$: isEntity = selectedItem instanceof Entity
+
+    $: isEntity = selectedItem instanceof Entity
     $: isOnDynamicTab = tabIndex >= -2
 </script>
 {#if selectedItem == null}
@@ -79,14 +80,13 @@ $: isEntity = selectedItem instanceof Entity
     </div>
 {:else}
     <ViewHeader>
-        {#if selectedItem instanceof Entity}
+        {#if isEntity}
             <div data-svelteinline="-" style="gap: 4px">
                 <Icon styles="font-size: .9rem">view_in_ar</Icon>
                 <ToolTip content={selectedItem.name}/>
                 <small data-svelteoverflow="-" style="font-size: .7rem">{selectedItem.name}</small>
             </div>
             <AddComponent entity={selectedItem}/>
-
         {:else}
             <small data-svelteoverflow="-" style="font-size: .7rem"
                    id={selectedItem.id+ "-inspector-label-" + internalID}>{selectedItem.name}</small>
@@ -112,8 +112,12 @@ $: isEntity = selectedItem instanceof Entity
         <div class="content" style={!isEntity && isOnDynamicTab ? "padding: 4px" : ""}>
             {#if isOnDynamicTab}
                 {#if isEntity}
-                    <EntityInspector setTabIndex={i => tabIndex = i} setTabs={setTabs} entity={selectedItem} tabIndex={tabIndex}/>
-                {:else}
+                    <EntityInspector
+                            setTabIndex={i => tabIndex = i}
+                            setTabs={setTabs}
+                            entity={selectedItem}
+                            tabIndex={tabIndex}/>
+                {:else if !isEntity}
                     <ContentBrowserItem setTabs={setTabs} item={selectedItem} tabIndex={tabIndex}/>
                 {/if}
             {:else}

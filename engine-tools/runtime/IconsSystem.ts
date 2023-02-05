@@ -25,7 +25,7 @@ export default class IconsSystem {
 
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > settings.maxDistanceIcon)
+            if (entity.isCollection || !entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > settings.maxDistanceIcon )
                 continue
             const hasLight = entity.lightComponent !== undefined
             const hasProbe = entity.lightProbeComponent !== undefined

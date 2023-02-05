@@ -11,6 +11,6 @@ export default function drawIconsToBuffer() {
     GPU.context.activeTexture(GPU.context.TEXTURE0)
     GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
     IconsSystem.loop(IconsSystem.drawIcon, SettingsStore.data, StaticEditorShaders.iconToDepthUniforms)
-    StaticFBO.visibility.stop()
+    StaticFBO.visibility.stopMapping()
     GPU.context.enable(GPU.context.DEPTH_TEST)
 }

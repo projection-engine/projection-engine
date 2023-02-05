@@ -73,7 +73,7 @@ export default function dragDrop(draggable) {
                 if (!DragDropController.dropTarget)
                     return;
 
-                draggableElement.dragDropListeners.onDrop(DragDropController.dragData, event)
+                draggableElement.dragDropListeners?.onDrop?.(DragDropController.dragData, event)
                 DragDropController.onLeave()
 
                 break

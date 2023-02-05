@@ -11,17 +11,16 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
 
-    export let node:Entity
-    export let lockedEntity:string
-
-    export let setLockedEntity:Function
+    export let entity: Entity
+    export let lockedEntity: string
+    export let setLockedEntity: Function
 
     let isOnEdit = false
-    let ref:HTMLElement
-    let cacheName:string
-    $: cacheName = node.name
+    let ref: HTMLElement
+    let cacheName: string
+    $: cacheName = entity.name
 
-    $: icons = getEngineIcon(node)
+    $: icons = getEngineIcon(entity)
     const draggable = dragDrop(true)
     $: draggable.disabled = isOnEdit
 
@@ -29,33 +28,39 @@
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
-            onDragStart: () => node,
-            dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-svelteicon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : node.name}</div>`,
+            onDragStart: () => entity,
+            dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-svelteicon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : entity.name}</div>`,
         })
     })
     onDestroy(() => draggable.onDestroy())
-    function rename(){
-        EditorActionHistory.save(node)
-        EntityNameController.renameEntity(cacheName, node)
-        EditorActionHistory.save(node)
+
+    function rename() {
+        EditorActionHistory.save(entity)
+        EntityNameController.renameEntity(cacheName, entity)
+        EditorActionHistory.save(entity)
     }
-    $: nodeColor = lockedEntity === node.id ? undefined : node._hierarchyColor ? `color: rgb(${node._hierarchyColor})` : "color: var(--folder-color)";
+
+    $: entityColor = lockedEntity === entity.id ? undefined : entity._hierarchyColor ? `color: rgb(${entity._hierarchyColor})` : "color: var(--folder-color)";
 </script>
 
-<div class="info hierarchy-branch" data-sveltenode={node.id}>
+<div class="info hierarchy-branch" data-svelteentity={entity.id}>
     <button data-sveltebuttondefault="-"
-            data-sveltelocked={lockedEntity === node.id ? "-" : ""}
+            data-sveltelocked={lockedEntity === entity.id ? "-" : ""}
             class="buttonIcon hierarchy-branch"
-            style={nodeColor}
-            on:click={() => setLockedEntity(node.id)}
+            style={entityColor}
+            on:click={() => setLockedEntity(entity.id)}
     >
-        <Icon>view_in_ar</Icon>
+        {#if entity.isCollection}
+            <Icon>inventory_2</Icon>
+        {:else}
+            <Icon>view_in_ar</Icon>
+        {/if}
     </button>
     <div
             bind:this={ref}
-            class="node"
+            class="entity"
             on:dblclick={() => isOnEdit = true}
-            on:click={(e) => updateSelection(node.id, e.ctrlKey)}
+            on:click={(e) => updateSelection(entity.id, e.ctrlKey)}
     >
         <input
                 disabled={!isOnEdit}
@@ -78,12 +83,12 @@
                 value={cacheName}
         />
         <ToolTip content={cacheName}/>
-        {#each icons as icon}
-            <Icon styles="font-size: .9rem; width: .9rem">
-                <ToolTip content={icon.label}/>
-                {icon.icon}
-            </Icon>
-        {/each}
+        <!--{#each icons as icon}-->
+        <!--    <Icon styles="font-size: .9rem; width: .9rem">-->
+        <!--        <ToolTip content={icon.label}/>-->
+        <!--        {icon.icon}-->
+        <!--    </Icon>-->
+        <!--{/each}-->
     </div>
 
 </div>
@@ -97,7 +102,7 @@
         outline: none;
         font-size: .7rem;
         color: var(--pj-color-primary);
-        background: rgba(0,0,0,.65);
+        background: rgba(0, 0, 0, .65);
         height: 23px;
         width: 100%;
 
@@ -108,7 +113,7 @@
         color: var(--pj-color-quaternary);
     }
 
-    .node {
+    .entity {
         cursor: pointer;
         width: 100%;
         height: 23px;

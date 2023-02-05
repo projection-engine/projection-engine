@@ -1,5 +1,5 @@
 <script lang="ts">
-    import DraggableEntity from "./EntityDraggable.svelte";
+    import TreeBranchContent from "./TreeBranchContent.svelte";
     import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
     import EntityConstructor from "../../../lib/controllers/EntityConstructor";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
@@ -8,7 +8,7 @@
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 
     export let depth: number
-    export let nodeRef: Entity
+    export let entity: Entity
     export let open: { [key: string]: boolean }
     export let updateOpen: Function
     export let selected: Map<string, boolean>
@@ -16,31 +16,31 @@
     export let setLockedEntity: Function
 
     const onExpand = () => {
-        if (!open[nodeRef.id]) {
-            open[nodeRef.id] = true
+        if (!open[entity.id]) {
+            open[entity.id] = true
             updateOpen()
         } else {
 
-            delete open[nodeRef.id]
-            QueryAPI.loopHierarchy(nodeRef, (child) => {
+            delete open[entity.id]
+            QueryAPI.loopHierarchy(entity, (child) => {
                 delete open[child.id]
             })
             updateOpen()
         }
     }
 
-    $: isOpen = open[nodeRef.id]
-    $: isSelected = selected.has(nodeRef.id)
+    $: isOpen = open[entity.id]
+    $: hasChildren = entity.children.length > 0
+    $: isSelected = selected.has(entity.id)
 </script>
 
 <div
         data-svelteselected={isSelected ? "-" : ""}
-        data-sveltenode={nodeRef.id}
-
+        data-sveltenode={entity.id}
         class="wrapper hierarchy-branch"
-        style={"padding-left:" +  (depth * 18 + "px;") + (nodeRef.active ? "" : "opacity: .5") }
+        style={"padding-left:" +  (depth * 18 + "px;") + (entity.active ? "" : "opacity: .5") }
 >
-    {#if nodeRef.children.length > 0}
+    {#if hasChildren}
         <button data-sveltebuttondefault="-"
                 data-svelteopen={isOpen ? "-" : ""}
                 class="button-small hierarchy-branch"
@@ -51,20 +51,15 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <DraggableEntity
-            updateOpen={updateOpen}
-            open={open} node={nodeRef}
-            lockedEntity={lockedEntity}
-            setLockedEntity={setLockedEntity}
-    />
+    <TreeBranchContent {open} {entity} {lockedEntity} {setLockedEntity}/>
     <button data-sveltebuttondefault="-"
             style="margin-left: 4px"
             class="button-small hierarchy-branch"
-            on:click={() => EntityConstructor.toggleEntityVisibility(nodeRef)}
+            on:click={() => EntityConstructor.toggleEntityVisibility(entity)}
     >
         <ToolTip content={LOCALIZATION_EN.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">
-            {#if nodeRef.active}
+            {#if entity.active}
                 visibility
             {:else}
                 visibility_off

@@ -1,8 +1,6 @@
 <script>
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-
-    import EngineHierarchyView from "./components/Tree.svelte";
+    import Tree from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../../shared/lib/HotKeysController";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
@@ -11,22 +9,17 @@
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";
-    import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import EntityConstructor from "../../lib/controllers/EntityConstructor";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-    import Input from "../../../shared/components/input/Input.svelte";
-    import NATIVE_COMPONENTS from "../inspector/static/NATIVE_COMPONENTS";
+    import Header from "./components/Header.svelte";
+    import testSearch from "./utils/test-search";
 
     let search = ""
     const ID = crypto.randomUUID()
 
     let filteredComponent = undefined
-    let isEmpty = true
     let ref
     let settings
     let openTree = {}
+    let toRender = []
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     $: {
@@ -41,6 +34,31 @@
     }
 
     const draggable = dragDrop()
+
+    function updateHierarchy(op) {
+        const openLocal = op ?? openTree
+        if (op !== undefined) {
+            openTree = openLocal
+            HierarchyController.updateHierarchy()
+        }
+        const entities = Engine.entities.array
+        const hierarchy = HierarchyController.hierarchy
+        const data = []
+
+        if (!search && !filteredComponent)
+            for (let i = 0; i < hierarchy.length; i++) {
+                const current = hierarchy[i]
+                if (!current.node.parent || openLocal[current.node.parent.id])
+                    data.push(current)
+            }
+        else
+            for (let i = 0; i < entities.length; i++) {
+                if (testSearch(entities[i], filteredComponent, search))
+                    data.push({node: entities[i], depth: 0})
+            }
+        toRender = data
+    }
+
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
@@ -56,6 +74,8 @@
                 return `CTRL to parent | SHIFT to clone`
             }
         })
+
+        HierarchyController.registerListener(ID, updateHierarchy)
     })
 
     onDestroy(() => {
@@ -66,80 +86,25 @@
 
 </script>
 
-
-<ViewHeader>
-    <div data-svelteinline="-" style="justify-content: flex-start; width: 100%">
-        <button data-sveltebuttondefault="-"
-                on:click={() => HierarchyController.openTree()}
-                data-svelteview-header-button="-"
-        >
-            <ToolTip content={LOCALIZATION_EN.SHOW_SELECTED}/>
-            <Icon styles="font-size: .9rem">center_focus_strong</Icon>
-        </button>
-
-        <Input
-                hasBorder={true}
-                width="100%"
-                height="22px"
-                placeholder={LOCALIZATION_EN.SEARCH}
-                inputValue={search}
-                onChange={v => search = v}
-        />
-    </div>
-
-    <div data-svelteinline="-" style="justify-content: flex-end; padding: 0; gap: 6px; width: 100%">
-        <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined)}>
-            <button data-sveltebuttondefault="-" slot="button" data-svelteview-header-dropdown="-">
-                <Icon styles="font-size: .9rem">filter_alt</Icon>
-                <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
-            </button>
-            {#each NATIVE_COMPONENTS as component}
-                <button data-sveltebuttondefault="-"
-                        on:click={e => {
-                        if(filteredComponent=== component[0] )
-                            filteredComponent = undefined
-                        else filteredComponent = component[0]
-                    }}
-                >
-                    {#if component[0] === filteredComponent}
-                        <Icon>check</Icon>
-                    {:else}
-                        <div style="width: 1.1rem"></div>
-                    {/if}
-
-                    {component[1]}
-                </button>
-            {/each}
-        </Dropdown>
-        <button data-sveltebuttondefault="-"
-                on:click={() => EntityConstructor.createEmpty(true)}
-                data-svelteview-header-button="-"
-                style="position: relative"
-        >
-            <ToolTip content={LOCALIZATION_EN.CREATE_COLLECTION}/>
-            <Icon styles="font-size: .9rem">inventory_2</Icon>
-        </button>
-    </div>
-</ViewHeader>
+<Header
+        setFilteredComponent={v => filteredComponent =v}
+        setSearch={v => search = v}
+        {filteredComponent}
+        {search}
+/>
 
 <div
         data-svelteself={"-"}
         class="wrapper"
-        style={isEmpty ? "background: transparent" : undefined}
         id={ID}
         bind:this={ref}
 >
-    <EngineHierarchyView
-            openTree={openTree}
-            setOpenTree={v => {
-                openTree = v
-                HierarchyController.updateHierarchy()
-            }}
-            setIsEmpty={v => isEmpty = v}
-            inputValue={search}
-            filteredComponent={filteredComponent}
-
-            ID={ID}
+    <Tree
+            updateOpen={_ => updateHierarchy(openTree)}
+            {openTree}
+            {toRender}
+            {filteredComponent}
+            {ID}
     />
 </div>
 
@@ -149,9 +114,7 @@
         position: relative;
         width: 100%;
         overflow: hidden;
-
         height: 100%;
         max-height: 100%;
-
     }
 </style>

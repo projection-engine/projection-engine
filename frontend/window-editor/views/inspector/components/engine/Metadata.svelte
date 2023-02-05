@@ -19,10 +19,10 @@
 
 
 <PropertyHeader title={LOCALIZATION_EN.ENTITY_PROPERTIES}/>
-
-
-<TransformationForm/>
-<Accordion title={LOCALIZATION_EN.NAME_AND_KEY}>
+{#if !entity.isCollection}
+    <TransformationForm/>
+{/if}
+<Accordion title={LOCALIZATION_EN.NAME_AND_KEY} startOpen={entity.isCollection}>
     <fieldset>
         <legend>{LOCALIZATION_EN.NAME}</legend>
         <Input

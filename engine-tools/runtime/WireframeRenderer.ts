@@ -23,7 +23,6 @@ export default class WireframeRenderer {
         context.activeTexture(context.TEXTURE0)
         context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
         context.uniform1i(uniforms.depth, 0)
-        context.uniform2fv(uniforms.bufferResolution, StaticFBO.visibility.resolution)
 
         const cameras = ResourceEntityMapper.cameras.array
         const camerasSize = cameras.length
