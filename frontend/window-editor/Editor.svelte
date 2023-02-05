@@ -10,7 +10,7 @@
     import FS from "../shared/lib/FS/FS";
     import FilesAPI from "./lib/fs/FilesAPI";
     import LevelController from "./lib/utils/LevelController";
-    import HotKeysController from "./lib/utils/HotKeysController";
+    import HotKeysController from "../shared/lib/HotKeysController";
     import WindowFrame from "./components/window-frame/WindowFrame.svelte";
     import Canvas from "./views/scene-editor/Canvas.svelte";
     import ROUTES from "../../backend/static/ROUTES";

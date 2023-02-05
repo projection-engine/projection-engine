@@ -2,7 +2,6 @@
   "name": "projection-engine",
   "version": "next",
   "main": "build/index.js",
-
   "scripts": {
     "sdev": "electron-forge start",
     "bdev": "node esbuild watch",
@@ -19,13 +18,12 @@
     "atob": "^2.1.2",
     "gl-matrix": "^3.4.3",
     "hdrpng": "https://github.com/enkimute/hdrpng.js.git",
-
+    "hotkeys-js": "^3.10.1",
     "image-size": "^1.0.2",
     "sharp": "^0.31.1",
     "sortablejs": "^1.15.0"
   },
   "devDependencies": {
-    "html-to-image": "^1.11.11",
     "@electron-forge/cli": "6.0.0-beta.67",
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
@@ -44,6 +42,7 @@
     "esbuild-svelte": "^0.6.3",
     "eslint": "^8.30.0",
     "eslint-plugin-svelte3": "^4.0.0",
+    "html-to-image": "^1.11.11",
     "svelte": "^3.55.0",
     "svelte-preprocess": "^5.0.0",
     "typescript": "^4.9.4"

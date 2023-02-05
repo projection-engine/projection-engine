@@ -106,6 +106,8 @@ export default function dragDrop(draggable) {
             draggableElement.dragDropListeners = {
                 onDrop,
                 dragOver: (event) => {
+                    if(!onDragOverEvent)
+                        return;
                     const target = DragDropController.alertModal
                     const html = onDragOverEvent(DragDropController.dragData, event)
 

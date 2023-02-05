@@ -4,7 +4,7 @@
 
     import EngineHierarchyView from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";
-    import HotKeysController from "../../lib/utils/HotKeysController";
+    import HotKeysController from "../../../shared/lib/HotKeysController";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
     import HierarchyController from "./lib/HierarchyController";
     import SettingsStore from "../../../shared/stores/SettingsStore";
@@ -48,7 +48,13 @@
                 const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
                 handleDrop(event, entityDragged, node ? Engine.entities.map.get(node) : undefined)
             },
-            onDragOver: () => `CTRL to parent | SHIFT to clone`
+            onDragOver: (_, ev) => {
+                if(ev.ctrlKey)
+                    return `Drop to make child`;
+                if(ev.shiftKey)
+                    return `Drop to clone into...`;
+                return `CTRL to parent | SHIFT to clone`
+            }
         })
     })
 

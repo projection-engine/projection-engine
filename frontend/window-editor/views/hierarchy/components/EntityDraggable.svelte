@@ -27,17 +27,12 @@
     const draggable = dragDrop(true)
     $: draggable.disabled = isOnEdit
 
-    function getDragTarget(){
-        return SelectionStore.engineSelected.length > 0 ? SelectionStore.engineSelected.map(e => Engine.entities.map.get(e)) : node
-    }
 
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
-            onDragStart: () => getDragTarget(),
-            onDrop: (entityDragged, event) => handleDrop(event, entityDragged, node),
+            onDragStart: () => node,
             dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-svelteicon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : node.name}</div>`,
-            onDragOver: () => `CTRL to parent | SHIFT to clone`
         })
     })
     onDestroy(() => draggable.onDestroy())
@@ -84,7 +79,6 @@
                 }}
                 value={cacheName}
         />
-
         <ToolTip content={cacheName}/>
         {#each icons as icon}
             <Icon styles="font-size: .9rem; width: .9rem">

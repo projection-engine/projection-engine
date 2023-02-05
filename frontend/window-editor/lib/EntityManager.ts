@@ -13,17 +13,18 @@ import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
 export default class EntityManager {
     static #updateStructure(replacedMap?: { [key: string]: boolean }) {
         const arr = Engine.entities.array
+        const map = Engine.entities.map
         for (let i = 0; i < arr.length; i++) {
             const entity = arr[i]
             entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
-            if (!entity.parentCache && !replacedMap?.[entity.parent?.id])
+            if (!entity.parentID && !replacedMap?.[entity.parent?.id])
                 continue
             if (entity.parent && !replacedMap?.[entity.parent?.id])
-                entity.parentCache = entity.parent.id
-            const parent = Engine.entities.map.get(entity.parentCache)
+                entity.parentID = entity.parent.id
+            const parent = map.get(entity.parentID)
             if (parent) {
-                entity.parentCache = undefined
-                EntityAPI.linkEntities(entity, parent)
+                entity.parentID = undefined
+                entity.addParent(parent)
             }
         }
 
@@ -107,7 +108,7 @@ export default class EntityManager {
             const s = values[i]
             if (payload.indexOf(s.id) > 0) {
                 const found = Engine.entities.map.get(payload[0])
-                EntityAPI.linkEntities(s, found)
+                s.addParent(found)
             }
         }
         EntityManager.#updateStructure()

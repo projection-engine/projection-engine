@@ -7,10 +7,7 @@ import MeshComponent from "../../../../../engine-core/instances/components/MeshC
 export default function initializeEntity(data: MutableObject, meshID: string, parent?: Entity, index?: number) {
     const entity = new Entity(data?.id, data.name ? data.name : "primitive-" + (index || 0))
     try {
-        if (parent != null) {
-            entity.parent = parent
-            parent.children.push(entity)
-        }
+        entity.addParent(parent)
         entity.changed = true
 
         for (let i = 0; i < 16; i++)

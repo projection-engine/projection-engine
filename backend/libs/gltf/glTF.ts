@@ -10,6 +10,7 @@ import linkNodeToStructure from "./utils/link-node-to-structure";
 import FILE_TYPES from "../../../static/objects/FILE_TYPES";
 import * as fs from "fs";
 import * as path from "path";
+import * as crypto from "node:crypto";
 
 /**
  * Execution order:
@@ -112,6 +113,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
                 console.error(err)
             }
         }
+        console.error(scene)
         scene.entities.forEach(e => {
             linkNodeToStructure(e)
             delete e.index

@@ -2,6 +2,7 @@ import Engine from "../../../../../engine-core/Engine";
 import SelectionStore from "../../../../shared/stores/SelectionStore";
 import Entity from "../../../../../engine-core/instances/Entity";
 import ToRenderElement from "../template/ToRenderElement";
+import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 
 
 export default class HierarchyController {
@@ -9,17 +10,19 @@ export default class HierarchyController {
     static #listening: { [key: string]: Function } = {}
 
     static updateHierarchy() {
-        const data: ToRenderElement[] = [], entitiesArray = Engine.entities.array
-
+        const data = [], entitiesArray = Engine.entities.array
+        const size = entitiesArray.length
         const callback = (node: Entity, depth: number) => {
             data.push({node, depth})
-            for (let i = 0; i < node.children.length; i++)
-                callback(node.children[i], depth + 1)
+            const children = node.children
+            for (let i = 0; i < children.length; i++)
+                callback(children[i], depth + 1)
         }
-        for (let i = 0; i < entitiesArray.length; i++) {
-            if (entitiesArray[i].parent !== undefined)
+        for (let i = 0; i < size; i++) {
+            const current = entitiesArray[i]
+            if (current.parent)
                 continue
-            callback(entitiesArray[i], 0)
+            callback(current, 0)
         }
         HierarchyController.hierarchy = data
         Object.values(HierarchyController.#listening).forEach(v => v())
@@ -41,12 +44,12 @@ export default class HierarchyController {
         const open = {}
 
         let target = node
-        while (target.parent != null) {
+        while (target?.parent != null) {
+            if (open[target.id])
+                break
             open[target.id] = true
             target = target.parent
         }
-        open[target.id] = true
-
         Object.values(HierarchyController.#listening).forEach(v => v({...open}))
     }
 }

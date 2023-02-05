@@ -1,9 +1,9 @@
-import KEYS from "../../static/KEYS";
-import Engine from "../../../../engine-core/Engine";
-import ENVIRONMENT from "../../../../engine-core/static/ENVIRONMENT";
+import KEYS from "../../window-editor/static/KEYS";
+import Engine from "../../../engine-core/Engine";
+import ENVIRONMENT from "../../../engine-core/static/ENVIRONMENT";
+import hotkeys from "hotkeys-js";
 
 export default class HotKeysController {
-
     static activeView
     static views = new Map()
     static holding = new Map()
@@ -11,6 +11,7 @@ export default class HotKeysController {
 
     static initializeListener() {
         function handler(event) {
+            // console.log(Object.keys(hotkeys.keyMap))
             const h = HotKeysController.holding
             if (event.repeat || Engine.environment !== ENVIRONMENT.DEV || document.pointerLockElement != null)
                 return
@@ -33,7 +34,6 @@ export default class HotKeysController {
                     h.set(KEYS.ShiftLeft, true)
                     h.set(KEYS.ShiftRight, true)
                 }
-
                 h.set(event.code, true)
                 for (let i = 0; i < keysToTest; i++) {
                     const currentAction = activeView.actions[i]

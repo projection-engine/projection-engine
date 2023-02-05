@@ -4,7 +4,7 @@
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
     import SettingsStore from "../../../shared/stores/SettingsStore";
-    import HotKeysController from "../../lib/utils/HotKeysController";
+    import HotKeysController from "../../../shared/lib/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Tabs from "../../components/tabs/Tabs.svelte";
     import removeTab from "./utils/remove-tab";

@@ -6,7 +6,7 @@
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import {onDestroy, onMount} from "svelte";
     import getFilesToRender from "../utils/get-files-to-render";
-    import HotKeysController from "../../../lib/utils/HotKeysController";
+    import HotKeysController from "../../../../shared/lib/HotKeysController";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
     import ITEM_TYPES from "../static/ITEM_TYPES";

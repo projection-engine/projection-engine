@@ -51,7 +51,7 @@ export default class Loader {
                 for (let i = 0; i < file.entities.length; i++) {
                     const currentEntity = file.entities[i]
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
-                    entity.parentCache = currentEntity.parent || root.id
+                    entity.parentID = currentEntity.parent || root.id
                     entities.push(entity)
                 }
                 EntityManager.appendBlock(entities)

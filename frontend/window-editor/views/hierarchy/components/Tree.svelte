@@ -46,17 +46,18 @@
 
     onMount(() => {
         HierarchyController.registerListener(internalID, (op) => {
-            const openLocal = op || openTree
-
+            const openLocal = op ?? openTree
             if(op !== undefined)
-                setOpenTree(op)
+                setOpenTree(openLocal)
             const entities = Engine.entities.array
             const hierarchy = HierarchyController.hierarchy
             const data = []
+
             if (!inputValue && !filteredComponent)
                 for (let i = 0; i < hierarchy.length; i++) {
-                    if (!hierarchy[i].node.parent || openLocal[hierarchy[i].node.parent.id])
-                        data.push(hierarchy[i])
+                    const current = hierarchy[i]
+                    if (!current.node.parent || openLocal[current.node.parent.id])
+                        data.push(current)
                 }
              else
                 for (let i = 0; i < entities.length; i++) {
@@ -83,7 +84,6 @@
                 nodeRef={item.node}
                 depth={item.depth}
                 selected={selected}
-
                 lockedEntity={lockedEntity}
                 setLockedEntity={v => SelectionStore.lockedEntity = v}
                 internalID={ID}

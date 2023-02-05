@@ -7,7 +7,7 @@ export default function getEngineIcon(nodeRef): { icon: string, label: string }[
         if (nodeRef.atmosphereComponent)
             icons.push({
                 icon: "wb_twilight",
-                label: LOCALIZATION_EN.ATMOSPHERE_RENDERER
+                label: LOCALIZATION_EN.ATMOSPHERE
             })
         if (nodeRef.lightProbeComponent)
             icons.push({
@@ -18,7 +18,7 @@ export default function getEngineIcon(nodeRef): { icon: string, label: string }[
 
             icons.push({
                 icon: "category",
-                label: LOCALIZATION_EN.MESH_RENDERER
+                label: LOCALIZATION_EN.MESH
             })
         if (nodeRef.cameraComponent)
 
@@ -29,7 +29,7 @@ export default function getEngineIcon(nodeRef): { icon: string, label: string }[
         if (nodeRef.spriteComponent)
             icons.push({
                 icon: "image",
-                label: LOCALIZATION_EN.SPRITE_RENDERER
+                label: LOCALIZATION_EN.SPRITE
             })
         if (nodeRef.uiComponent)
             icons.push({

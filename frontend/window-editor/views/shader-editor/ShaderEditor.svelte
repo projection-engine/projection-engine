@@ -13,7 +13,7 @@
     import ElectronResources from "../../../shared/lib/ElectronResources";
     import Canvas from "./libs/Canvas";
     import shaderActions from "../../templates/shader-actions";
-    import HotKeysController from "../../lib/utils/HotKeysController";
+    import HotKeysController from "../../../shared/lib/HotKeysController";
     import ContextMenuController from "../../../shared/lib/context-menu/ContextMenuController";
     import SideBar from "./components/SideBar.svelte";
     import NODE_MAP from "./static/NODE_MAP";

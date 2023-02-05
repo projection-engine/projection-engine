@@ -5,6 +5,8 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
+    import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
+    import Engine from "../../../../../engine-core/Engine";
 
     export let depth: number
     export let nodeRef: Entity
@@ -14,30 +16,22 @@
     export let lockedEntity: string
     export let setLockedEntity: Function
 
-    $: isSelected = selected.has(nodeRef.id)
-
     const onExpand = () => {
         if (!open[nodeRef.id]) {
             open[nodeRef.id] = true
             updateOpen()
         } else {
+
             delete open[nodeRef.id]
-            const callback = (node) => {
-                node.children.forEach(c => {
-                    if (open[c.id]) {
-                        delete open[c.id]
-                        callback(c)
-                    }
-                })
-            }
-            callback(nodeRef)
+            QueryAPI.loopHierarchy(nodeRef, (child) => {
+                delete open[child.id]
+            })
             updateOpen()
         }
     }
 
     $: isOpen = open[nodeRef.id]
-
-
+    $: isSelected = selected.has(nodeRef.id)
 </script>
 
 <div

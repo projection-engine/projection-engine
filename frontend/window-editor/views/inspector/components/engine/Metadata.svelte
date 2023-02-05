@@ -76,7 +76,7 @@
             type="parent"
             selected={entity.parent}
             handleChange={v => {
-                EntityAPI.linkEntities(entity, v)
+                entity.addParent(v)
                 HierarchyController.updateHierarchy()
             }}
     />
