@@ -20,7 +20,7 @@
     import NATIVE_COMPONENTS from "../inspector/static/NATIVE_COMPONENTS";
 
     let search = ""
-    const ID =crypto.randomUUID()
+    const ID = crypto.randomUUID()
 
     let filteredComponent = undefined
     let isEmpty = true
@@ -49,9 +49,9 @@
                 handleDrop(event, entityDragged, node ? Engine.entities.map.get(node) : undefined)
             },
             onDragOver: (_, ev) => {
-                if(ev.ctrlKey)
+                if (ev.ctrlKey)
                     return `Drop to make child`;
-                if(ev.shiftKey)
+                if (ev.shiftKey)
                     return `Drop to clone into...`;
                 return `CTRL to parent | SHIFT to clone`
             }
@@ -68,53 +68,58 @@
 
 
 <ViewHeader>
-    <button data-sveltebuttondefault="-"
-            on:click={() => HierarchyController.openTree()}
-            data-svelteview-header-button="-"
-    >
-        <ToolTip content={LOCALIZATION_EN.SHOW_SELECTED}/>
-        <Icon styles="font-size: .9rem">center_focus_strong</Icon>
-    </button>
-    <button data-sveltebuttondefault="-"
-            on:click={() => EntityConstructor.createEmpty()}
-            data-svelteview-header-button="-"
-    >
-        <ToolTip content={LOCALIZATION_EN.CREATE_ENTITY}/>
-        <Icon styles="font-size: .9rem">add</Icon>
-    </button>
-    <Input
-            hasBorder={true}
-            width="50%"
-            height="22px"
-            placeholder={LOCALIZATION_EN.SEARCH}
-            inputValue={search}
-            onChange={v => search = v}
-    />
-
-    <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined) + "margin-left: auto"}>
-        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
-            <Icon styles="font-size: .9rem">filter_alt</Icon>
-            <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
+    <div data-svelteinline="-" style="justify-content: flex-start; width: 100%">
+        <button data-sveltebuttondefault="-"
+                on:click={() => HierarchyController.openTree()}
+                data-svelteview-header-button="-"
+        >
+            <ToolTip content={LOCALIZATION_EN.SHOW_SELECTED}/>
+            <Icon styles="font-size: .9rem">center_focus_strong</Icon>
         </button>
-        {#each NATIVE_COMPONENTS as component}
-            <button data-sveltebuttondefault="-"
-                    on:click={e => {
+
+        <Input
+                hasBorder={true}
+                width="100%"
+                height="22px"
+                placeholder={LOCALIZATION_EN.SEARCH}
+                inputValue={search}
+                onChange={v => search = v}
+        />
+    </div>
+
+    <div data-svelteinline="-" style="justify-content: flex-end; padding: 0; gap: 6px; width: 100%">
+        <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined)}>
+            <button data-sveltebuttondefault="-" slot="button" data-svelteview-header-dropdown="-">
+                <Icon styles="font-size: .9rem">filter_alt</Icon>
+                <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
+            </button>
+            {#each NATIVE_COMPONENTS as component}
+                <button data-sveltebuttondefault="-"
+                        on:click={e => {
                         if(filteredComponent=== component[0] )
                             filteredComponent = undefined
                         else filteredComponent = component[0]
                     }}
-            >
-                {#if component[0] === filteredComponent}
-                    <Icon>check</Icon>
-                {:else}
-                    <div style="width: 1.1rem"></div>
-                {/if}
+                >
+                    {#if component[0] === filteredComponent}
+                        <Icon>check</Icon>
+                    {:else}
+                        <div style="width: 1.1rem"></div>
+                    {/if}
 
-                {component[1]}
-            </button>
-        {/each}
-    </Dropdown>
-
+                    {component[1]}
+                </button>
+            {/each}
+        </Dropdown>
+        <button data-sveltebuttondefault="-"
+                on:click={() => EntityConstructor.createEmpty(true)}
+                data-svelteview-header-button="-"
+                style="position: relative"
+        >
+            <ToolTip content={LOCALIZATION_EN.CREATE_COLLECTION}/>
+            <Icon styles="font-size: .9rem">inventory_2</Icon>
+        </button>
+    </div>
 </ViewHeader>
 
 <div

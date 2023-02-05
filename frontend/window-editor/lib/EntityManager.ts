@@ -90,6 +90,7 @@ export default class EntityManager {
     static add(entity: Entity) {
         EditorActionHistory.save(entity, true)
         EditorActionHistory.save(entity)
+        console.log(entity)
         EntityNameController.renameEntity(entity.name, entity)
         SelectionStore.updateStore({
             ...SelectionStore.data,

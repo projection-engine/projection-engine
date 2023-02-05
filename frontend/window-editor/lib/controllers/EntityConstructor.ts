@@ -1,4 +1,3 @@
-import Entity from "../../../../engine-core/instances/Entity";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
 import {vec3, vec4} from "gl-matrix";
 import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
@@ -26,12 +25,15 @@ export default class EntityConstructor {
         entity.__changedBuffer[0] = 1
     }
 
-    static createEmpty() {
-        EntityManager.add(new Entity())
+    static createEmpty(collection?:boolean) {
+        const entity = EntityAPI.getNewEntityInstance(undefined, collection)
+        entity.name = collection ? LOCALIZATION_EN.NEW_COLLECTION : LOCALIZATION_EN.NEW_ENTITY
+        EntityManager.add(entity)
     }
 
     static createMesh(id) {
-        const entity = new Entity(undefined, LOCALIZATION_EN.MESH_RENDERER)
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.MESH_RENDERER
         const m = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
         entity.addComponent(COMPONENTS.CULLING)
         m.meshID = id
@@ -41,20 +43,24 @@ export default class EntityConstructor {
     }
 
     static createProbe() {
-        const entity = new Entity(undefined, LOCALIZATION_EN.LIGHT_PROBE)
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.LIGHT_PROBE
         entity.addComponent(COMPONENTS.LIGHT_PROBE)
         EntityConstructor.translateEntity(entity)
         EntityManager.add(entity)
     }
+
     static createAtmosphere() {
-        const entity = new Entity(undefined, LOCALIZATION_EN.ATMOSPHERE_RENDERER)
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.ATMOSPHERE_RENDERER
         entity.addComponent(COMPONENTS.ATMOSPHERE)
         EntityConstructor.translateEntity(entity)
         EntityManager.add(entity)
     }
 
     static createLight(type) {
-        const entity = new Entity(undefined, LOCALIZATION_EN.DIRECTIONAL_LIGHT)
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.DIRECTIONAL_LIGHT
         EntityConstructor.translateEntity(entity)
         const comp = entity.addComponent<LightComponent>(COMPONENTS.LIGHT)
         comp.type = type
@@ -62,27 +68,35 @@ export default class EntityConstructor {
     }
 
     static createCamera() {
-        const entity = new Entity(undefined, LOCALIZATION_EN.CAMERA)
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.CAMERA
         entity.addComponent(COMPONENTS.CAMERA)
         EntityConstructor.translateEntity(entity)
         EntityManager.add(entity)
     }
-static createUI(){
-    const entity = new Entity(undefined, LOCALIZATION_EN.UI_RENDERER)
-    entity.addComponent(COMPONENTS.UI)
-    EntityConstructor.translateEntity(entity)
-    EntityManager.add(entity)
-}
+
+    static createUI() {
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.UI_RENDERER
+        entity.addComponent(COMPONENTS.UI)
+        EntityConstructor.translateEntity(entity)
+        EntityManager.add(entity)
+    }
+
     static createSprite() {
-        const entity = new Entity(undefined, LOCALIZATION_EN.SPRITE_RENDERER)
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.SPRITE_RENDERER
         entity.addComponent(COMPONENTS.SPRITE)
         EntityManager.add(entity)
     }
+
     static createDecal() {
-        const entity = new Entity(undefined, LOCALIZATION_EN.DECAL_RENDERER)
+        const entity = EntityAPI.getNewEntityInstance()
+        entity.name = LOCALIZATION_EN.DECAL_RENDERER
         entity.addComponent(COMPONENTS.DECAL)
         EntityManager.add(entity)
     }
+
     static toggleEntityVisibility(nodeRef, submit = true) {
         EntityAPI.toggleVisibility(nodeRef)
         if (submit)

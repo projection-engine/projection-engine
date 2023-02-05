@@ -1,7 +1,6 @@
 import KEYS from "../../window-editor/static/KEYS";
 import Engine from "../../../engine-core/Engine";
 import ENVIRONMENT from "../../../engine-core/static/ENVIRONMENT";
-import hotkeys from "hotkeys-js";
 
 export default class HotKeysController {
     static activeView

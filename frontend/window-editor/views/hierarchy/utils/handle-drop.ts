@@ -1,4 +1,3 @@
-import EntityAPI from "../../../../../engine-core/lib/utils/EntityAPI";
 import SelectionStore from "../../../../shared/stores/SelectionStore";
 
 import HierarchyController from "../lib/HierarchyController";

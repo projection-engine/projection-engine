@@ -10,7 +10,6 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
     import FS from "../../../../../shared/lib/FS/FS";
-    import {onMount} from "svelte";
 
     const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION, FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
 

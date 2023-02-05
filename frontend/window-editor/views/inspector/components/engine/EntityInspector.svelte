@@ -12,7 +12,6 @@
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import MeshComponent from "../../../../../../engine-core/instances/components/MeshComponent";
     import Entity from "../../../../../../engine-core/instances/Entity";
     import Component from "../../../../../../engine-core/instances/components/Component";

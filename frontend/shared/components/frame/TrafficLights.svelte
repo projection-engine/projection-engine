@@ -10,6 +10,7 @@
     import WindowChangeStore from "./WindowChangeStore";
     import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
     import ElectronResources from "../../lib/ElectronResources"
+
     export let noChangeTracking
     let engine
     let hasChanges = false

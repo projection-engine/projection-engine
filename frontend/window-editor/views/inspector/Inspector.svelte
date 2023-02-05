@@ -13,7 +13,6 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import PREFERENCES from "../../../window-preferences/static/PREFERENCES";
-    import CameraSettings from "../scene-editor/components/CameraSettings.svelte";
     import CameraPreferences from "./components/engine/CameraPreferences.svelte";
     import ContentWrapper from "../../../window-preferences/components/content/ContentWrapper.svelte";
 

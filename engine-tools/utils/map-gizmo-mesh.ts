@@ -2,11 +2,12 @@ import Entity from "../../engine-core/instances/Entity"
 import TransformationAPI from "../../engine-core/lib/math/TransformationAPI"
 import {mat4, quat, vec3, vec4} from "gl-matrix";
 import PickingAPI from "../../engine-core/lib/utils/PickingAPI";
+import EntityAPI from "../../engine-core/lib/utils/EntityAPI";
 
 const toDeg = 57.29
 const cacheVec4 = vec4.create()
 export default function mapGizmoMesh(axis: string, type: string): Entity {
-    const entity = new Entity()
+    const entity = EntityAPI.getNewEntityInstance()
     let s, t = [0, 0, 0], r, index
     switch (axis) {
         case "x":

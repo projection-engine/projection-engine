@@ -5,10 +5,8 @@
     import updateSelection from "../utils/update-selection";
     import EntityNameController from "../../../lib/controllers/EntityNameController";
     import KEYS from "../../../static/KEYS.ts";
-    import handleDrop from "../utils/handle-drop";
     import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
-    import Engine from "../../../../../engine-core/Engine";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";

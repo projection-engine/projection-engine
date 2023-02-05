@@ -1,6 +1,5 @@
 import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
 import GridSystem from "../../../engine-tools/runtime/GridSystem";
-import CameraTracker from "../../../engine-tools/lib/CameraTracker";
 import Component from "../../../engine-core/instances/components/Component";
 
 export default [

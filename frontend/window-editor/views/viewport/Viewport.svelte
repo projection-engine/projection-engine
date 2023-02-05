@@ -15,7 +15,6 @@
     import TabsStore from "../../../shared/stores/TabsStore";
     import GPU from "../../../../engine-core/GPU";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
-    import ElectronResources from "../../../shared/lib/ElectronResources"
 
     export let updateView
     export let viewTab

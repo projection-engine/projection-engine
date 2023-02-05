@@ -2,7 +2,6 @@ import SETTINGS from "../../window-editor/static/SETTINGS";
 import {get, writable} from "svelte/store";
 import ChangesTrackerStore from "./ChangesTrackerStore";
 import StoreManager from "./StoreManager";
-import ROUTES from "../../../backend/static/ROUTES";
 import STORES from "../../../backend/static/STORES";
 
 const settingsStore = writable(SETTINGS);

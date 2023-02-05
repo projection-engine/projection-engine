@@ -1,8 +1,8 @@
 <script>
     import PREFERENCES from "../../static/PREFERENCES";
-    import Accordion from "../../../shared/components/accordion/Accordion.svelte";
     import ContentGroup from "./ContentGroup.svelte";
     import PropertyHeader from "../../../shared/components/PropertyHeader.svelte";
+
     export let tab
     $: currentTab = PREFERENCES[tab]
 </script>

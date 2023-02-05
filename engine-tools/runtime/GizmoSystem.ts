@@ -9,7 +9,6 @@ import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import GizmoAPI from "../lib/GizmoAPI";
 import LineRenderer from "./LineRenderer";
 import Entity from "../../engine-core/instances/Entity";
-import EngineTools from "../EngineTools";
 
 
 const lineMatrix = <Float32Array>mat4.create()

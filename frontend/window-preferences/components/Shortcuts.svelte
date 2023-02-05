@@ -1,5 +1,4 @@
 <script>
-    import Accordion from "../../shared/components/accordion/Accordion.svelte";
     import ShotcutField from "./ShotcutField.svelte";
     import SETTINGS from "../../window-editor/static/SETTINGS";
     import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";

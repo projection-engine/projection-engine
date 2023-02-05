@@ -27,6 +27,7 @@
 }
 
 [data-svelteicon="-"] {
+    text-shadow: 1px 1px rgba(0, 0, 0, .2);
     font-family: "Material Icons Round" !important;
     font-weight: normal;
     font-style: normal;

@@ -11,7 +11,6 @@
     import ROUTES from "../../../backend/static/ROUTES";
 
 
-
     export let setProjectsToShow
     export let projectsToShow
     export let onChange

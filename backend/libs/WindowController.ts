@@ -5,7 +5,6 @@ import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
 import MutableObject from "../../engine-core/static/MutableObject";
 import RegistryFile from "../../static/objects/RegistryFile";
 import AssimpLoader from "./assimp/AssimpLoader";
-import Events from "./Events";
 import fileSystem from "../utils/file-system";
 import ROUTES from "../static/ROUTES";
 import {BrowserWindow, screen} from "electron"

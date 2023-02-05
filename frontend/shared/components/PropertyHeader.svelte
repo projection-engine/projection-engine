@@ -1,5 +1,6 @@
 <script>
     import Icon from "./icon/Icon.svelte";
+
     export let title
     export let allowDeletion
     export let onDelete

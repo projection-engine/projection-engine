@@ -2,7 +2,6 @@ import {get, writable} from "svelte/store";
 import VISUAL_SETTINGS from "../../window-editor/static/VISUAL_SETTINGS";
 import ChangesTrackerStore from "./ChangesTrackerStore";
 import StoreManager from "./StoreManager";
-import ROUTES from "../../../backend/static/ROUTES";
 import STORES from "../../../backend/static/STORES";
 
 

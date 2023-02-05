@@ -6,7 +6,6 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
-    import Engine from "../../../../../engine-core/Engine";
 
     export let depth: number
     export let nodeRef: Entity

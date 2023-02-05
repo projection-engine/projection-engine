@@ -3,7 +3,6 @@
 
     import AddOptions from "./components/AddOptions.svelte";
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import CameraSettings from "../inspector/components/engine/CameraPreferences.svelte";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
     import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
@@ -11,8 +10,6 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-    import PREFERENCES from "../../../window-preferences/static/PREFERENCES";
-    import FormPreferences from "../../../window-preferences/components/content/ContentGroup.svelte";
 
     export let settings
     export let engine

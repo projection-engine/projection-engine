@@ -1,5 +1,5 @@
 import FilesAPI from "../fs/FilesAPI"
-import initializeEntity from "./utils/initialize-entity";
+import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
 
 import EngineStore from "../../../shared/stores/EngineStore";
@@ -10,7 +10,6 @@ import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import EditorActionHistory from "../utils/EditorActionHistory";
 import EntityConstructor from "../controllers/EntityConstructor";
 import GPU from "../../../../engine-core/GPU";
-import Entity from "../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
@@ -20,6 +19,7 @@ import MeshComponent from "../../../../engine-core/instances/components/MeshComp
 import SpriteComponent from "../../../../engine-core/instances/components/SpriteComponent";
 import AlertController from "../../../shared/components/alert/AlertController";
 import EntityManager from "../EntityManager";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 
 export default class Loader {
@@ -43,7 +43,8 @@ export default class Loader {
     static async scene(path) {
         const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + path, "json")
         const entities = []
-        const root = new Entity(crypto.randomUUID(), path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop())
+        const root = EntityAPI.getNewEntityInstance()
+        root.name =  path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop()
         entities.push(root)
         EntityConstructor.translateEntity(root)
         try {
@@ -84,7 +85,8 @@ export default class Loader {
                 case FILE_TYPES.PRIMITIVE: {
                     const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + res.path, "json")
                     const materialID = await Loader.mesh(file, data)
-                    const entity = new Entity(undefined, "New primitive")
+                    const entity = EntityAPI.getNewEntityInstance()
+                    entity.name = "New primitive"
                     const instance = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
                     entity.addComponent(COMPONENTS.CULLING)
                     instance.materialID = materialID
@@ -100,7 +102,8 @@ export default class Loader {
                 case FILE_TYPES.TEXTURE: {
                     const res = await EngineStore.loadTextureFromImageID(data)
                     if (res) {
-                        const sprite = new Entity(crypto.randomUUID(), LOCALIZATION_EN.SPRITE_RENDERER)
+                        const sprite = EntityAPI.getNewEntityInstance()
+                        sprite.name = LOCALIZATION_EN.SPRITE_RENDERER
                         EntityConstructor.translateEntity(sprite)
                         sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
                         EntityManager.add(sprite)

@@ -13,9 +13,7 @@ import drawGizmoToDepth from "../../utils/draw-gizmo-to-depth";
 import GizmoInterface from "../GizmoInterface";
 import StaticEditorMeshes from "../StaticEditorMeshes";
 import StaticEditorShaders from "../StaticEditorShaders";
-import Entity from "../../../engine-core/instances/Entity";
 import GizmoAPI from "../GizmoAPI";
-import DualAxisGizmo from "./DualAxisGizmo";
 
 const toRad = Math.PI / 180
 const toDeg = 180 / Math.PI

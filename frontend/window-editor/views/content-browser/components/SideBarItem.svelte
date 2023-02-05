@@ -51,6 +51,7 @@
             bind:this={ref}
             class="folder"
             on:click={() => setCurrentDirectory({id})}
+            data-svelteoverflow="-"
     >
         <Icon styles={"color: var(--folder-color)"}>folder</Icon>
         {name}
