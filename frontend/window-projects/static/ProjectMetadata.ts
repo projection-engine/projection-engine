@@ -1,4 +1,3 @@
-import MutableObject from "../../../engine-core/static/MutableObject";
 
 type Metadata  = {
     [key: string]: string | number,
@@ -8,7 +7,7 @@ type Metadata  = {
 }
 
 interface ProjectMetadata {
-    [key: string]: string | number | MutableObject
+    [key: string]: any
     id: string
     meta: Metadata
     path: string

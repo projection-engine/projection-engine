@@ -36,7 +36,11 @@ export default class EntityStateController {
     static async stopPlayState() {
         if (!EntityStateController.#isPlaying)
             return
-        ResourceEntityMapper.entityMaterial.clear()
+        ResourceEntityMapper.clear()
+
+        Engine.entities.clear()
+        Engine.queryMap.clear()
+
         AlertController.log(LOCALIZATION_EN.RESTORING_STATE)
         EntityStateController.#isPlaying = false
         Engine.environment = ENVIRONMENT.DEV

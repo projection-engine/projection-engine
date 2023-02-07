@@ -3,7 +3,6 @@ import viewportHotkeys from "./viewport-hotkeys";
 import EntityConstructor from "../lib/controllers/EntityConstructor";
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import entityCreationOptions from "./entity-creation-options";
-import MutableObject from "../../../engine-core/static/MutableObject";
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions";
 
 export default function viewportContext(settings:MutableObject, forDropdown?:boolean):ContextMenuOption[] {

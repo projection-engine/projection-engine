@@ -1,8 +1,6 @@
 import FilesAPI from "../fs/FilesAPI"
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
-
-import EngineStore from "../../../shared/stores/EngineStore";
 import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
@@ -44,7 +42,7 @@ export default class Loader {
         const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + path, "json")
         const entities = []
         const root = EntityAPI.getNewEntityInstance()
-        root.name =  path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop()
+        root.name = path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop()
         entities.push(root)
         EntityConstructor.translateEntity(root)
         try {
@@ -100,14 +98,12 @@ export default class Loader {
                     await Loader.scene(res.path)
                     break
                 case FILE_TYPES.TEXTURE: {
-                    const res = await EngineStore.loadTextureFromImageID(data)
-                    if (res) {
-                        const sprite = EntityAPI.getNewEntityInstance()
-                        sprite.name = LOCALIZATION_EN.SPRITE_RENDERER
-                        EntityConstructor.translateEntity(sprite)
-                        sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
-                        EntityManager.add(sprite)
-                    }
+                    await FileSystemAPI.loadTexture(data)
+                    const sprite = EntityAPI.getNewEntityInstance()
+                    sprite.name = LOCALIZATION_EN.SPRITE_RENDERER
+                    EntityConstructor.translateEntity(sprite)
+                    sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
+                    EntityManager.add(sprite)
                     break
                 }
 

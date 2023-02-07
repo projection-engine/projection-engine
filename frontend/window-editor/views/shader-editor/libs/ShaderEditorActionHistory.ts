@@ -2,7 +2,6 @@ import UndoRedo from "../../../lib/utils/UndoRedo";
 import type Canvas from "./Canvas";
 import ShaderNode from "../templates/ShaderNode";
 import ShaderComment from "../templates/ShaderComment";
-import MutableObject from "../../../../../engine-core/static/MutableObject";
 import ShaderEditorTools from "./ShaderEditorTools";
 import AlertController from "../../../../shared/components/alert/AlertController";
 import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";

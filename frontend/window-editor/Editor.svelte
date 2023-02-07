@@ -35,7 +35,7 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onMount(() => {
-        StoreManager.initialize(true)
+        StoreManager.initialize()
         AlertController.initialize()
         ContextMenuController.initialize()
 
@@ -50,6 +50,7 @@
         ElectronResources.ipcRenderer.on("console", (_, data) => console.error(...data))
     })
 
+    $: HotKeysController.blockActions = engine.executingAnimation
     onDestroy(() => {
         unsubscribeSettings()
         unsubscribeEngine()

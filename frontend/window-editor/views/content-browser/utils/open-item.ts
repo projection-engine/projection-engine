@@ -34,8 +34,7 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
                 AlertController.warn(LOCALIZATION_EN.CREATING_ENTITY)
                 break
             case FILE_TYPES.LEVEL:
-                AlertController.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
-                LevelController.loadLevel(data).catch()
+                LevelController.loadLevel(data.registryID).catch()
                 break
             case FILE_TYPES.MATERIAL:
                 ShaderEditorTools.toOpenFile = data

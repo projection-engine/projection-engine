@@ -41,7 +41,8 @@
         style={"padding-left:" +  (depth * 18 + "px;") + (entity.active ? "" : "opacity: .5") }
 >
     {#if hasChildren}
-        <button data-sveltebuttondefault="-"
+        <button
+                data-sveltebuttondefault="-"
                 data-svelteopen={isOpen ? "-" : ""}
                 class="button-small hierarchy-branch"
                 on:click={onExpand}

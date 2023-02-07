@@ -9,7 +9,6 @@ import StaticEditorShaders from "../lib/StaticEditorShaders";
 import {mat4} from "gl-matrix";
 import MATERIAL_RENDERING_TYPES from "../../engine-core/static/MATERIAL_RENDERING_TYPES";
 import Entity from "../../engine-core/instances/Entity";
-import MutableObject from "../../engine-core/static/MutableObject";
 import StaticFBO from "../../engine-core/lib/StaticFBO";
 
 const DEFAULT_COLOR = [255, 255, 255]

@@ -27,12 +27,10 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-
         Engine.initializeContext(
             canvasRef,
             {w: visuals.resolutionX, h: visuals.resolutionY},
             AssetAPI.readAsset,
-            AssetAPI.readMetadata,
             true
         ).then(async () => {
             await EngineTools.initialize().catch()

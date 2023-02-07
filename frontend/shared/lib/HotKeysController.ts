@@ -1,18 +1,16 @@
 import KEYS from "../../window-editor/static/KEYS";
-import Engine from "../../../engine-core/Engine";
-import ENVIRONMENT from "../../../engine-core/static/ENVIRONMENT";
 
 export default class HotKeysController {
     static activeView
     static views = new Map()
     static holding = new Map()
-
+static blockActions = false
 
     static initializeListener() {
         function handler(event) {
             // console.log(Object.keys(hotkeys.keyMap))
             const h = HotKeysController.holding
-            if (event.repeat || Engine.environment !== ENVIRONMENT.DEV || document.pointerLockElement != null)
+            if (event.repeat || HotKeysController.blockActions || document.pointerLockElement != null)
                 return
             const activeView = HotKeysController.views.get(HotKeysController.activeView)
             const tagName = document.activeElement?.tagName

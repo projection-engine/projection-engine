@@ -1,5 +1,3 @@
-import levelLoader from "../utils/level-loader";
-
 import ROUTES from "../static/ROUTES";
 import readTypedFile from "../utils/read-typed-file";
 import importFiles from "../utils/import-files";
@@ -137,9 +135,7 @@ export default class Events {
         event.sender.send(ROUTES.CREATE_REG + data.listenID)
     }
 
-    static loadLevel(_, pathToLevel) {
-        levelLoader(WindowController.window.webContents, pathToLevel).catch()
-    }
+
 
     static loadProjectMetadata(event) {
         event.sender.send(ROUTES.LOAD_PROJECT_METADATA, WindowController.metadata)

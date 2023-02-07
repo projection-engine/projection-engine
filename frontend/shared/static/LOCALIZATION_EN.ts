@@ -24,6 +24,7 @@ enum LOCALIZATION_EN {
     CREATE_COLLECTION = "Create new collection",
     RELEASES = "Releases",
     RADII = "Radii",
+    ERROR_LOADING_LEVEL = "Some error occurred while loading level",
     ASSET_PROPERTIES = "Asset properties",
     DECAL = "Decal",
     EDITOR_CAMERA = "Editor camera",

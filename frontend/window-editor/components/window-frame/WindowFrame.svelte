@@ -16,7 +16,6 @@
     import addNewTab from "../../views/viewport/utils/add-new-tab";
     import removeTab from "./utils/remove-tab";
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte";
-    import LevelSelector from "./components/LevelSelector.svelte";
     import ElectronResources from "../../../shared/lib/ElectronResources";
     import ROUTES from "../../../../backend/static/ROUTES";
     import WindowTypes from "../../../../backend/static/WindowTypes";
@@ -102,10 +101,7 @@
             <ToolTip content={LOCALIZATION_EN.STOP}/>
         </button>
     </div>
-    <div data-sveltevertdivider="-" style="height: 15px;"></div>
-    <div class="wrapper footer-header" style="height: 22px">
-        <LevelSelector store={store} engine={engine}/>
-    </div>
+
     <div data-sveltevertdivider="-" style="height: 15px;"></div>
     <Tabs
             removeMultipleTabs={() => {

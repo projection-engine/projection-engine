@@ -2,36 +2,34 @@
     import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Icon from "../icon/Icon.svelte";
-    import EngineStore from "../../stores/EngineStore";
     import {onDestroy} from "svelte";
-    import GPU from "../../../../engine-core/GPU";
 
     import Modal from "../modal/Modal.svelte";
     import WindowChangeStore from "./WindowChangeStore";
     import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
     import ElectronResources from "../../lib/ElectronResources"
+    import RENDER_TARGET from "../../../window-editor/static/RENDER_TARGET";
+    import HotKeysController from "../../lib/HotKeysController";
 
     export let noChangeTracking
-    let engine
+
     let hasChanges = false
     let message = undefined
 
-    const unsubscribe = EngineStore.getStore(v => engine = v)
     const unsubscribeMessage = WindowChangeStore.getStore(v => message = v)
     const unsubscribeChanges = ChangesTrackerStore.getStore(v => hasChanges = v)
 
     onDestroy(() => {
         unsubscribeChanges()
         unsubscribeMessage()
-        unsubscribe()
     })
 
     function toggleFullscreen() {
         if (document.fullscreenElement != null)
             document.exitFullscreen()
         else {
-            if (engine.executingAnimation)
-                GPU.canvas.requestFullscreen()
+            if (HotKeysController.blockActions)
+                document.getElementById(RENDER_TARGET).querySelector("canvas").requestFullscreen()
             else
                 document.body.requestFullscreen()
         }

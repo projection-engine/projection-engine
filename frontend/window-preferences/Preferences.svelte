@@ -20,7 +20,7 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        StoreManager.initialize(false)
+        StoreManager.initialize()
     })
     onDestroy(() => {
         unsubscribeSettings()

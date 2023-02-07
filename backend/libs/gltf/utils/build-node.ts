@@ -1,6 +1,5 @@
 import {mat4, quat} from "gl-matrix";
 import DataController from "../instances/DataController";
-import MutableObject from "../../../../engine-core/static/MutableObject";
 import * as crypto from "node:crypto";
 
 export default function buildNode(index, node, sceneMap, primitivesMap) {

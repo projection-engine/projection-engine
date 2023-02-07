@@ -16,3 +16,7 @@ declare module "*.svg" {
     const value: string; // Add better type definitions here if desired.
     export default value;
 }
+
+interface MutableObject{
+    [key:string|number|symbol]: any
+}

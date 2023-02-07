@@ -2,13 +2,13 @@
     import Checkbox from "../../../../../../shared/components/checkbox/Checkbox.svelte";
     import Component from "../../../../../../../engine-core/instances/components/Component";
     import Selector from "../../../../../components/selector/Selector.svelte";
-    import EngineStore from "../../../../../../shared/stores/EngineStore";
     import LOCALIZATION_EN from "../../../../../../shared/static/LOCALIZATION_EN";
     import ColorPicker from "../../../../../../shared/components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../../shared/components/input/Input.svelte";
     import Dropdown from "../../../../../../shared/components/dropdown/Dropdown.svelte";
     import Icon from "../../../../../../shared/components/icon/Icon.svelte";
     import Range from "../../../../../../shared/components/range/Range.svelte";
+    import FileSystemAPI from "../../../../../../../engine-core/lib/utils/FileSystemAPI";
 
     export let component = undefined
     export let submit = undefined
@@ -21,7 +21,7 @@
     let firstSubmit = false
     const setImage = async (data) => {
         if (data) {
-            const res = await EngineStore.loadTextureFromImageID(data.registryID)
+            const res = await FileSystemAPI.loadTexture(data.registryID)
             if (res)
                 submit(attribute.key, data.registryID, true)
         } else
