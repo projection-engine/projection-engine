@@ -2,7 +2,7 @@ import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 
 import SelectionStore from "../../../shared/stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
-import HierarchyController from "../../views/hierarchy/lib/HierarchyController";
+import HierarchyController from "../HierarchyController";
 
 export default class EntityNameController {
     static #byName = new Map<string, string>()

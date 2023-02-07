@@ -5,7 +5,7 @@
     import Selector from "../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";
-    import HierarchyController from "../../../hierarchy/lib/HierarchyController";
+    import HierarchyController from "../../../../lib/HierarchyController";
 
     import Input from "../../../../../shared/components/input/Input.svelte";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";

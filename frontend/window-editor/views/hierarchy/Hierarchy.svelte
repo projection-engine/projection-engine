@@ -4,13 +4,12 @@
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../../shared/lib/HotKeysController";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
-    import HierarchyController from "./lib/HierarchyController";
+    import HierarchyController from "../../lib/HierarchyController";
     import SettingsStore from "../../../shared/stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";
     import Header from "./components/Header.svelte";
-    import testSearch from "./utils/test-search";
 
     let search = ""
     const ID = crypto.randomUUID()
@@ -34,13 +33,13 @@
     }
 
     const draggable = dragDrop()
-
     function updateHierarchy(op) {
         const openLocal = op ?? openTree
-        if (op !== undefined) {
-            openTree = openLocal
+        if (op !== openTree && op !== undefined)
             HierarchyController.updateHierarchy()
-        }
+        console.trace(search)
+        openTree = openLocal
+
         const entities = Engine.entities.array
         const hierarchy = HierarchyController.hierarchy
         const data = []
@@ -53,8 +52,9 @@
             }
         else
             for (let i = 0; i < entities.length; i++) {
-                if (testSearch(entities[i], filteredComponent, search))
-                    data.push({node: entities[i], depth: 0})
+                const node = entities[i]
+                if (node.name.includes(search) && node.components.has(filteredComponent))
+                    data.push({node: node, depth: 0})
             }
         toRender = data
     }

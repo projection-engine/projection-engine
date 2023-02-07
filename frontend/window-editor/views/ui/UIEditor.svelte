@@ -8,7 +8,7 @@
     import EngineStore from "../../../shared/stores/EngineStore";
 
     import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import HierarchyController from "../hierarchy/lib/HierarchyController";
+    import HierarchyController from "../../lib/HierarchyController";
     import GPU from "../../../../engine-core/GPU";
     import AlertController from "../../../shared/components/alert/AlertController";
 

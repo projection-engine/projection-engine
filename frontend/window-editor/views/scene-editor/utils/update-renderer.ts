@@ -11,6 +11,8 @@ import RotationGizmo from "../../../../../engine-tools/lib/transformation/Rotati
 import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
 import GIZMOS from "../../../static/GIZMOS";
+import EngineResources from "../../../../../engine-core/lib/EngineResources";
+import VISUAL_SETTINGS from "../../../static/VISUAL_SETTINGS";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -47,12 +49,12 @@ export default function updateRenderer(selected, engine, settings) {
     GridSystem.buffer[2] = settings.gridThreshold || 100.
     GridSystem.buffer[3] = settings.gridOpacity || 1.
 
-    Engine.updateParams(
+    EngineResources.updateParams(
         settings,
-        settings.SSGI || {},
-        settings.SSR || {},
-        settings.SSS || {},
-        settings.SSAO || {},
+        settings.SSGI ?? VISUAL_SETTINGS.SSGI,
+        settings.SSR ?? VISUAL_SETTINGS.SSR,
+        settings.SSS ?? VISUAL_SETTINGS.SSS,
+        settings.SSAO ?? VISUAL_SETTINGS.SSAO,
         settings.physicsSimulationStep,
         settings.physicsSubSteps
     )

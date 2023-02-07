@@ -21,7 +21,7 @@ export default class WireframeRenderer {
         StaticEditorShaders.wireframe.bind()
 
         context.activeTexture(context.TEXTURE0)
-        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
+        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepthVelocity)
         context.uniform1i(uniforms.depth, 0)
 
         const cameras = ResourceEntityMapper.cameras.array

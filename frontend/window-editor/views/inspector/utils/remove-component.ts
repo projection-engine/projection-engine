@@ -1,6 +1,6 @@
 import SelectionStore from "../../../../shared/stores/SelectionStore";
 
-import HierarchyController from "../../hierarchy/lib/HierarchyController";
+import HierarchyController from "../../../lib/HierarchyController";
 
 export default function removeComponent(entity,index, key) {
     if (!entity)

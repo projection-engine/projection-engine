@@ -171,8 +171,7 @@
 
         align-content: flex-start;
         gap: 4px;
-
-        padding-bottom: 25%;
+        padding: 4px 4px 25%;
     }
 
 </style>

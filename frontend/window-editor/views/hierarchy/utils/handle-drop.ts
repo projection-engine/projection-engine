@@ -1,6 +1,6 @@
 import SelectionStore from "../../../../shared/stores/SelectionStore";
 
-import HierarchyController from "../lib/HierarchyController";
+import HierarchyController from "../../../lib/HierarchyController";
 import EntityManager from "../../../lib/EntityManager";
 import Entity from "../../../../../engine-core/instances/Entity";
 

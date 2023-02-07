@@ -7,7 +7,7 @@ import SettingsStore from "../../../shared/stores/SettingsStore";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import MeshComponent from "../../../../engine-core/instances/components/MeshComponent";
 import LightComponent from "../../../../engine-core/instances/components/LightComponent";
-import HierarchyController from "../../views/hierarchy/lib/HierarchyController";
+import HierarchyController from "../HierarchyController";
 import EntityManager from "../EntityManager";
 
 

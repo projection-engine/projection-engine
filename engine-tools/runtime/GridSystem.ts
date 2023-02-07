@@ -19,7 +19,7 @@ export default class GridSystem {
         GPU.context.uniform4fv(uniforms.settings, buffer)
 
         GPU.context.activeTexture(GPU.context.TEXTURE0)
-        GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.sceneDepth)
+        GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.sceneDepthVelocity)
         GPU.context.uniform1i(uniforms.sceneDepth, 0)
 
         GPU.context.uniform2fv(uniforms.resolution, resolution)

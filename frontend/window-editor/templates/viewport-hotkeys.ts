@@ -16,7 +16,7 @@ import Engine from "../../../engine-core/Engine";
 import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
 import focusOnCamera from "../utils/focus-on-camera";
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions";
-import HierarchyController from "../views/hierarchy/lib/HierarchyController";
+import HierarchyController from "../lib/HierarchyController";
 import EntityManager from "../lib/EntityManager";
 
 

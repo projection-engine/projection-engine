@@ -27,7 +27,7 @@
 }
 
 [data-svelteicon="-"] {
-    text-shadow: 1px 1px rgba(0, 0, 0, .2);
+    text-shadow: 1px 1px rgba(0, 0, 0, .35);
     font-family: "Material Icons Round" !important;
     font-weight: normal;
     font-style: normal;
@@ -169,7 +169,7 @@ a {
     height: 10px;
 }
 * {
-    text-shadow: 1px 1px rgba(0, 0, 0, .2);
+    text-shadow: 1px 1px rgba(0, 0, 0, .35);
     font-family: 'Roboto';
     box-sizing: border-box;
     text-rendering: geometricPrecision;

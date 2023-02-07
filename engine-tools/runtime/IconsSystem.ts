@@ -167,7 +167,7 @@ export default class IconsSystem {
         context.uniform1i(uniforms.iconSampler, 0)
 
         context.activeTexture(context.TEXTURE1)
-        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
+        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepthVelocity)
         context.uniform1i(uniforms.sceneDepth, 1)
 
         context.uniformMatrix4fv(uniforms.projectionM, false, CameraAPI.projectionMatrix)

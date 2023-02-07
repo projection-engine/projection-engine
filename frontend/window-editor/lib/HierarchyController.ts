@@ -1,16 +1,25 @@
-import Engine from "../../../../../engine-core/Engine";
-import SelectionStore from "../../../../shared/stores/SelectionStore";
-import Entity from "../../../../../engine-core/instances/Entity";
-import ToRenderElement from "../template/ToRenderElement";
+import Engine from "../../../engine-core/Engine";
+import SelectionStore from "../../shared/stores/SelectionStore";
+import Entity from "../../../engine-core/instances/Entity";
+import ToRenderElement from "../views/hierarchy/template/ToRenderElement";
+import PROJECT_FOLDER_STRUCTURE from "../../../static/objects/PROJECT_FOLDER_STRUCTURE";
+import FS from "../../shared/lib/FS/FS";
 
 
 export default class HierarchyController {
     static hierarchy: ToRenderElement[] = []
     static #listening: { [key: string]: Function } = {}
+    static currentLevel: string
 
     static updateHierarchy() {
         const data = [], entitiesArray = Engine.entities.array
         const size = entitiesArray.length
+
+        let currentLevel = Engine.loadedLevel || PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
+        currentLevel = currentLevel.split(FS.sep).pop().split(".").pop()
+        console.trace(currentLevel)
+        HierarchyController.currentLevel = currentLevel
+
         const callback = (node: Entity, depth: number) => {
             data.push({node, depth})
             const children = node.children
