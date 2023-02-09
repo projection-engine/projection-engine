@@ -72,7 +72,8 @@ export default class WireframeRenderer {
 
                 context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.matrix)
                 context.uniform1i(uniforms.isSelected, entity.__isSelected ? 1 : 0)
-                StaticMeshes.cube.drawLineLoop()
+                StaticEditorMeshes.clipSpaceCamera.drawLines()
+
             }
         }
     }

@@ -1,7 +1,7 @@
 <script>
     import ShotcutField from "./ShotcutField.svelte";
     import SETTINGS from "../../window-editor/static/SETTINGS";
-    import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
     import SettingsStore from "../../shared/stores/SettingsStore";
     import PropertyHeader from "../../shared/components/PropertyHeader.svelte";
 

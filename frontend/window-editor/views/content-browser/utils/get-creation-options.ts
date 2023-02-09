@@ -3,7 +3,7 @@ import resolveFileName from "../../../utils/resolve-file-name";
 import AssetAPI from "../../../lib/fs/AssetAPI";
 import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMPONENT_TEMPLATE";
 import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
 import FS from "../../../../shared/lib/FS/FS";
 

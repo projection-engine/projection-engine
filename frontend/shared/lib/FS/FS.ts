@@ -1,7 +1,7 @@
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
-import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
 import {getCall} from "./get-call";
 import ElectronResources from "../ElectronResources";
+import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
 
 
 export default class FS {
@@ -16,7 +16,7 @@ export default class FS {
         if (FS.#initialized)
             return
         FS.#initialized = true
-        FS.path = ElectronResources.path.resolve(path.replace(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "") + FS.sep)
+        FS.path = ElectronResources.path.resolve(path.replace(FILE_TYPES.PROJECT, "") + FS.sep)
         FS.TEMP = ElectronResources.path.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.TEMP + FS.sep)
         FS.PREVIEW_PATH = ElectronResources.path.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep)
         FS.ASSETS_PATH = ElectronResources.path.resolve(FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.ASSETS + FS.sep)

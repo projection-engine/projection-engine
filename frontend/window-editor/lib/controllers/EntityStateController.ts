@@ -10,25 +10,29 @@ import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI";
 import AlertController from "../../../shared/components/alert/AlertController";
-import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 import EntityManager from "../EntityManager";
 import ResourceEntityMapper from "../../../../engine-core/resource-libs/ResourceEntityMapper";
+import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
+import LevelController from "../utils/LevelController";
 
 export default class EntityStateController {
-    static #state = []
+    static #currentLevelID
     static #isPlaying = false
     static cameraSerialization
 
     static async startPlayState() {
-        if (EntityStateController.#isPlaying)
+        if (EntityStateController.#isPlaying || !Engine.loadedLevel) {
+            AlertController.error(LOCALIZATION_EN.NO_LEVEL_LOADED)
             return
+        }
         AlertController.warn(LOCALIZATION_EN.SAVING_STATE)
 
         EntityStateController.cameraSerialization = CameraAPI.serializeState()
         EntityStateController.#isPlaying = true
         CameraTracker.stopTracking()
-
-        EntityStateController.#state = Engine.entities.array.map(e => serializeStructure(e.serializable()))
+        await LevelController.saveCurrentLevel().catch()
+        EntityStateController.#currentLevelID = Engine.loadedLevel.id
         await Engine.startSimulation()
         EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined, executingAnimation: true})
     }
@@ -45,25 +49,8 @@ export default class EntityStateController {
         EntityStateController.#isPlaying = false
         Engine.environment = ENVIRONMENT.DEV
 
-        const mapped = []
-        const entities = Engine.entities.array
-        try {
-            UIAPI.destroyUI()
-            for (let i = 0; i < entities.length; i++) {
-                const current = entities[i]
-                PhysicsAPI.removeRigidBody(current)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-
-        for (let i = 0; i < EntityStateController.#state.length; i++) {
-            const entity = EntityAPI.parseEntityObject(JSON.parse(EntityStateController.#state[i]))
-            mapped.push(entity)
-        }
-
-        EntityStateController.#state = []
-        EntityManager.appendBlock(mapped, true)
+        UIAPI.destroyUI()
+        await LevelController.loadLevel(EntityStateController.#currentLevelID).catch()
         await ScriptsAPI.updateAllScripts()
 
         CameraAPI.trackingEntity = undefined

@@ -3,7 +3,7 @@
     import TreeBranch from "./TreeBranch.svelte";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import HierarchyController from "../../../lib/HierarchyController";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../../shared/stores/SettingsStore";

@@ -7,7 +7,7 @@
     import Header from "./Header.svelte";
     import EngineStore from "../../../shared/stores/EngineStore";
 
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import HierarchyController from "../../lib/HierarchyController";
     import GPU from "../../../../engine-core/GPU";
     import AlertController from "../../../shared/components/alert/AlertController";

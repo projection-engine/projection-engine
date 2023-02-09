@@ -3,7 +3,7 @@ import componentConstructor from "../../../utils/component-constructor";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import Loader from "../../../lib/parsers/Loader";
 import AlertController from "../../../../shared/components/alert/AlertController";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import FileSystemAPI from "../../../../../engine-core/lib/utils/FileSystemAPI";
 
 export default async function handleComponentDrop(entity, data) {

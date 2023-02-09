@@ -57,7 +57,9 @@ export default class GizmoSystem   {
 
     static updateGizmoToolTip = () => null
 
-    static linkEntityToGizmo(main) {
+    static linkEntityToGizmo(main?:Entity) {
+        if(main?.isCollection)
+            return
         getPivotPointMatrix(main)
         main.__pivotChanged = true
         GizmoSystem.mainEntity = main

@@ -1,6 +1,6 @@
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
 import {vec3, vec4} from "gl-matrix";
-import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import SettingsStore from "../../../shared/stores/SettingsStore";

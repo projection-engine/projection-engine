@@ -1,7 +1,7 @@
 <script>
     import SelectionStore from "../../../../../shared/stores/SelectionStore";
     import Engine from "../../../../../../engine-core/Engine";
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import {onDestroy} from "svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";

@@ -1,6 +1,6 @@
 <script>
 
-    import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
     import Input from "../../shared/components/input/Input.svelte";
 
@@ -61,11 +61,11 @@
                     width="200%"
                     onChange={v => {
                         data.meta.name = v
-                        onRename(v)
+                        onRename(v, data)
                     }}
                     onBlur={(changed, v) => {
                     if(changed){
-                       onRename(v)
+                       onRename(v, data)
                        data.meta.name = v
                     }
                    openForChange = false
@@ -73,7 +73,7 @@
                     onEnter={v => {
                     data.meta.name = v
                     openForChange = false
-                    onRename(v)
+                    onRename(v, data)
                 }}
             />
         {:else}

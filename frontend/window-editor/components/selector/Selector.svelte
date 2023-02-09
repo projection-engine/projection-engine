@@ -1,7 +1,7 @@
 <script>
     import FilesStore from "../../../shared/stores/FilesStore";
     import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import Options from "./components/Options.svelte";
     import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes";
     import getType from "./utils/get-type";

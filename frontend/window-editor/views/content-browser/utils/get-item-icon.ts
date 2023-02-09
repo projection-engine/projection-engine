@@ -18,9 +18,7 @@ export default function getItemIcon(metadata, childQuantity, type) {
             case FILE_TYPES.UI_LAYOUT:
                 icon = "view_quilt"
                 break
-            case FILE_TYPES.TERRAIN:
-                icon = "landscape"
-                break
+
             case ".js":
                 icon = "javascript"
                 break

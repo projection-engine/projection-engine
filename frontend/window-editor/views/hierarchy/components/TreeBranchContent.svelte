@@ -40,14 +40,13 @@
         EditorActionHistory.save(entity)
     }
 
-    $: entityColor = lockedEntity === entity.id ? undefined : entity._hierarchyColor ? `color: rgb(${entity._hierarchyColor})` : "color: var(--folder-color)";
 </script>
 
 <div class="info hierarchy-branch" data-svelteentity={entity.id}>
-    <button data-sveltebuttondefault="-"
+    <button
             data-sveltelocked={lockedEntity === entity.id ? "-" : ""}
-            class="buttonIcon hierarchy-branch"
-            style={entityColor}
+            class="button-icon hierarchy-branch"
+            style={`--button-color: rgb(${entity.isCollection ? entity.colorIdentifier : [203, 158, 53]})`}
             on:click={() => setLockedEntity(entity.id)}
     >
         {#if entity.isCollection}

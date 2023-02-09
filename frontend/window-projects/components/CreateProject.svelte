@@ -2,12 +2,12 @@
 
     import ProjectMetadata from "../static/ProjectMetadata";
     import FS from "../../shared/lib/FS/FS";
-    import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
-    import PROJECT_STATIC_DATA from "../../../static/objects/PROJECT_STATIC_DATA";
+    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
     import Icon from "../../shared/components/icon/Icon.svelte";
     import Input from "../../shared/components/input/Input.svelte";
     import AlertController from "../../shared/components/alert/AlertController";
     import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS";
+    import FILE_TYPES from "../../../static/objects/FILE_TYPES";
 
     export let close: Function
     export let setProjectsToShow: Function
@@ -25,7 +25,7 @@
         const err = await FS.mkdir(projectPath)
         const meta = {name: name, creationDate: (new Date()).toLocaleDateString()}
         if (!err)
-            await FS.write(FS.resolvePath(projectPath + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION), JSON.stringify(meta))
+            await FS.write(FS.resolvePath(projectPath + FS.sep + FILE_TYPES.PROJECT), JSON.stringify(meta))
 
         setProjectsToShow([
             ...projectsToShow,

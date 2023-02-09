@@ -1,5 +1,5 @@
 <script lang="ts">
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../static/VIEWS";

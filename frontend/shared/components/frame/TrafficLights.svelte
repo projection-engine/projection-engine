@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import ToolTip from "../tooltip/ToolTip.svelte";
     import Icon from "../icon/Icon.svelte";
     import {onDestroy} from "svelte";

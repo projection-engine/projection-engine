@@ -4,12 +4,13 @@ import HierarchyController from "../../../lib/HierarchyController";
 import EntityManager from "../../../lib/EntityManager";
 import Entity from "../../../../../engine-core/instances/Entity";
 
-export default function handleDrop(event, entityDragged, node) {
+export default function handleDrop(event, entityDragged:Entity|Entity[], node:Entity|undefined) {
     const toSave = Array.isArray(entityDragged) ? entityDragged : [entityDragged]
     const toAdd = [], newSelection = []
+
     for (let i = 0; i < toSave.length; i++) {
         const currentEntity = <Entity>toSave[i]
-        if (event.ctrlKey) {
+        if (event.ctrlKey || node?.isCollection) {
             if (!node)
                 currentEntity.removeParent()
             else

@@ -3,7 +3,7 @@
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";

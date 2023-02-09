@@ -3,7 +3,7 @@
     import EngineStore from "../../../../shared/stores/EngineStore";
     import {onDestroy} from "svelte";
 
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import ITEM_TYPES from "../static/ITEM_TYPES";
     import getFileTypes from "../utils/get-file-types";
     import importFile from "../../../utils/import-file";

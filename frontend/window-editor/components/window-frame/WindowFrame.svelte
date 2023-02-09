@@ -1,7 +1,7 @@
 <script>
     import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import FilesStore from "../../../shared/stores/FilesStore";
     import LevelController from "../../lib/utils/LevelController";
     import getFrameOptions from "./utils/get-frame-options";
@@ -22,11 +22,9 @@
 
 
     let engine
-    let store
     let settings
     let hasChanges = false
     const unsubscribeTracker = ChangesTrackerStore.getStore(v => hasChanges = v)
-    const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
@@ -34,7 +32,6 @@
     onDestroy(() => {
         unsubscribeTracker()
         unsubscribeEngine()
-        unsubscribe()
         unsubscribeSettings()
     })
 
@@ -70,7 +67,7 @@
     <div class="wrapper footer-header" style="height: 22px">
         <button
                 data-sveltebuttondefault="-"
-                disabled={engine.executingAnimation || !hasChanges}
+                disabled={engine.executingAnimation}
                 on:click={_ => ElectronResources.ipcRenderer.send(ROUTES.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
         >
             <Icon styles="font-size: 1rem">settings</Icon>

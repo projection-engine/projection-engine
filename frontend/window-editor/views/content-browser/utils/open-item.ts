@@ -1,5 +1,5 @@
 import LevelController from "../../../lib/utils/LevelController";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../components/view/static/VIEWS";
@@ -29,7 +29,6 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:
             case FILE_TYPES.TEXTURE:
-            case FILE_TYPES.TERRAIN:
                 Loader.load(data.registryID, true).catch()
                 AlertController.warn(LOCALIZATION_EN.CREATING_ENTITY)
                 break

@@ -1,5 +1,5 @@
 import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 
 
 export default class TabContextController {

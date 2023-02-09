@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";

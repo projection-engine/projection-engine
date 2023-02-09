@@ -3,7 +3,7 @@
 
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
     import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
     import RotationGizmo from "../../../../../engine-tools/lib/transformation/RotationGizmo";

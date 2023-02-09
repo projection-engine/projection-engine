@@ -1,7 +1,7 @@
 import UndoRedo from "./UndoRedo";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
-import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import EntityNameController from "../controllers/EntityNameController";
 import AlertController from "../../../shared/components/alert/AlertController";

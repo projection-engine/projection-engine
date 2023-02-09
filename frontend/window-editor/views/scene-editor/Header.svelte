@@ -2,7 +2,7 @@
     import ShadingOption from "./components/ShadingModels.svelte";
 
     import AddOptions from "./components/AddOptions.svelte";
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
     import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";

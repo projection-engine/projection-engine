@@ -1,7 +1,7 @@
 <script>
     import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS"
     import SettingsStore from "../../../../shared/stores/SettingsStore";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 
     export let settings
     $: shadingModel = settings.shadingModel

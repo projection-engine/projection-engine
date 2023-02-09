@@ -9,8 +9,9 @@ export default class HierarchyController {
     static #listening: { [key: string]: Function } = {}
 
     static updateHierarchy() {
-        const data = [], entitiesArray =  Engine.loadedLevels.array
-        const size = entitiesArray.length
+        const data = [], root = Engine.loadedLevel
+        if(!root)
+            return
 
         const callback = (node: Entity, depth: number) => {
             data.push({node, depth})
@@ -18,12 +19,7 @@ export default class HierarchyController {
             for (let i = 0; i < children.length; i++)
                 callback(children[i], depth + 1)
         }
-        for (let i = 0; i < size; i++) {
-            const current = entitiesArray[i]
-            if (current.parent)
-                continue
-            callback(current, 0)
-        }
+        callback(root, 0)
         HierarchyController.hierarchy = data
         Object.values(HierarchyController.#listening).forEach(v => v())
     }

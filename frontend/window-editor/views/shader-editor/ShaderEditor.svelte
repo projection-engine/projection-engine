@@ -1,6 +1,6 @@
 <script>
     import FilesAPI from "../../lib/fs/FilesAPI"
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";

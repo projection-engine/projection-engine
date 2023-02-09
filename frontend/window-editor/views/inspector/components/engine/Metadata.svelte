@@ -1,7 +1,7 @@
 <script lang="ts">
     import Engine from "../../../../../../engine-core/Engine";
     import EntityNameController from "../../../../lib/controllers/EntityNameController";
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import EntityConstructor from "../../../../lib/controllers/EntityConstructor";
@@ -62,9 +62,9 @@
 
     <ColorPicker
             label={LOCALIZATION_EN.COLOR}
-            value={entity._hierarchyColor||[255,255,255]}
+            value={entity.colorIdentifier||[255,255,255]}
             submit={(_, arr) => {
-                entity._hierarchyColor = arr
+                entity.colorIdentifier = arr
                 HierarchyController.updateHierarchy()
             }}
     />

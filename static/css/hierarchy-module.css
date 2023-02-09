@@ -9,11 +9,9 @@
 }
 
 
-
 .wrapper.hierarchy-branch > .content {
     display: none;
 }
-
 
 
 .wrapper.hierarchy-branch[data-svelteselected="-"] {
@@ -21,12 +19,12 @@
     color: white;
 }
 
-.wrapper.hierarchy-branch[data-svelteselected="-"]:hover{
+.wrapper.hierarchy-branch[data-svelteselected="-"]:hover {
     background: var(--pj-accent-color-light);
     color: white;
 }
 
-.wrapper.hierarchy-branch:hover{
+.wrapper.hierarchy-branch:hover {
     background: var(--pj-border-primary);
 }
 
@@ -75,10 +73,12 @@
     overflow: hidden;
 }
 
-.buttonIcon.hierarchy-branch {
+.button-icon.hierarchy-branch {
+    --button-color: white;
     width: 23px;
     height: 23px;
     border: none;
+    outline: none;
     background: none;
     display: flex;
     align-items: center;
@@ -86,17 +86,18 @@
     border-radius: 3px;
 
     cursor: pointer;
+    opacity: .9;
+    color: var(--button-color) !important;
 }
 
-.buttonIcon.hierarchy-branch[data-sveltelocked="-"] {
-    color:   orangered;
+.button-icon.hierarchy-branch[data-sveltelocked="-"] {
+    opacity: 1;
+    background: var(--pj-background-primary-light);
+    border: var(--pj-border-primary) 1px solid;
 }
 
-.buttonIcon.hierarchy-branch:active {
-    color: rgb(203 110 53);
-}
-.buttonIcon.hierarchy-branch:hover {
-    color: rgb(243, 99, 13);
+.button-icon.hierarchy-branch:active, .button-icon.hierarchy-branch:hover {
+    opacity: 1;
 }
 
 .label.hierarchy-branch {

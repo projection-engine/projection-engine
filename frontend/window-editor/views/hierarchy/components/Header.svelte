@@ -3,7 +3,7 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import HierarchyController from "../../../lib/HierarchyController";
     import Input from "../../../../shared/components/input/Input.svelte";
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";

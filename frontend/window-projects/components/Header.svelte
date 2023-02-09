@@ -2,7 +2,7 @@
 
     import {onDestroy, onMount} from "svelte";
     import CreateProject from "./CreateProject.svelte";
-    import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
     import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS";
     import Portal from "../../shared/lib/Portal";
     import Icon from "../../shared/components/icon/Icon.svelte";

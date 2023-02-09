@@ -63,9 +63,6 @@ export default class ContentBrowserAPI {
             componentsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COMPONENT)),
             levelsReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.LEVEL)),
             uiReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.UI_LAYOUT)),
-
-            terrainReg = reg.filter(r => r.path && r.path.includes(FILE_TYPES.TERRAIN)),
-
             collections = reg.filter(r => r.path && r.path.includes(FILE_TYPES.COLLECTION)),
             promises = []
 
@@ -73,12 +70,8 @@ export default class ContentBrowserAPI {
         promises.push(...mapAsset(meshesReg, FILE_TYPES.PRIMITIVE))
         promises.push(...mapAsset(materialsReg, FILE_TYPES.MATERIAL))
         promises.push(...mapAsset(componentsReg, FILE_TYPES.COMPONENT))
-
         promises.push(...mapAsset(levelsReg, FILE_TYPES.LEVEL))
         promises.push(...mapAsset(uiReg, FILE_TYPES.UI_LAYOUT))
-
-        promises.push(...mapAsset(terrainReg, FILE_TYPES.TERRAIN))
-
         promises.push(...mapAsset(collections, FILE_TYPES.COLLECTION))
 
         const loadedPromises = await Promise.all(promises)
@@ -116,11 +109,6 @@ export default class ContentBrowserAPI {
                 case FILE_TYPES.UI_LAYOUT:
                     result.uiLayouts.push(current)
                     break
-
-                case FILE_TYPES.TERRAIN:
-                    result.terrains.push(current)
-                    break
-
                 case FILE_TYPES.COLLECTION:
                     result.collections.push(current)
                     break

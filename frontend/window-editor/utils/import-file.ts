@@ -1,6 +1,6 @@
 import FilesStore from "../../shared/stores/FilesStore";
 import ROUTES from "../../../backend/static/ROUTES";
-import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
 import {getCall} from "../../shared/lib/FS/get-call";
 import AlertController from "../../shared/components/alert/AlertController";
 

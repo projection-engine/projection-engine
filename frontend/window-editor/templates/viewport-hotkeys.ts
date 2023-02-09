@@ -13,7 +13,7 @@ import CAMERA_ROTATIONS from "../../../engine-tools/static/CAMERA_ROTATIONS";
 import LevelController from "../lib/utils/LevelController";
 import CameraTracker from "../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../engine-core/Engine";
-import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
 import focusOnCamera from "../utils/focus-on-camera";
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions";
 import HierarchyController from "../lib/HierarchyController";

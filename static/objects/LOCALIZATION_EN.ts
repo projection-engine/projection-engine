@@ -22,10 +22,14 @@ enum LOCALIZATION_EN {
     LICENSE = "Projection Engine is licensed under the GNU General Public License, Version 3.\n Some files may have other compatible licenses.",
     RELEASE_NOTES = "Release notes",
     CREATE_COLLECTION = "Create new collection",
+    NO_LEVEL_LOADED = "No level loaded",
     RELEASES = "Releases",
     RADII = "Radii",
     ERROR_LOADING_LEVEL = "Some error occurred while loading level",
     ASSET_PROPERTIES = "Asset properties",
+    NEW_LEVEL = "New Level",
+    LEVELS = "Levels",
+    LOADED_LEVEL = "Loaded level",
     DECAL = "Decal",
     EDITOR_CAMERA = "Editor camera",
     NEW_ENTITY = "New entity",
@@ -268,7 +272,6 @@ enum LOCALIZATION_EN {
 
     UPDATING_STRUCTURE = "Updating structure",
 
-    DEFAULT_LEVEL = "Default",
     NATIVE_MESHES = "Some meshes are embedded with editor/engine",
     NATIVE_MATERIALS = "Some materials are embedded with editor/engine",
     NATIVE_TEXTURES = "Some textures are embedded with editor/engine",

@@ -8,6 +8,20 @@ import getPivotPointMatrix from "../../../engine-tools/utils/get-pivot-point-mat
 import SelectionStore from "../../shared/stores/SelectionStore";
 import Entity from "../../../engine-core/instances/Entity";
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
+import AlertController from "../../shared/components/alert/AlertController";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
+
+
+function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
+    const original = descriptor.value;
+    descriptor.value = function (...args) {
+        if(!Engine.loadedLevel){
+            AlertController.error(LOCALIZATION_EN.NO_LEVEL_LOADED)
+            return
+        }
+        return original.call(this, ...args);
+    }
+}
 
 
 export default class EntityManager {
@@ -30,8 +44,9 @@ export default class EntityManager {
 
         HierarchyController.updateHierarchy()
     }
-
+    @checkLevel
     static replaceBlock(toRemove: string[], toAdd: Entity[]) {
+
         const replacedMap = {}
         for (let i = 0; i < toRemove.length; i++)
             EntityAPI.removeEntity(toRemove[i])
@@ -43,7 +58,7 @@ export default class EntityManager {
         }
         EntityManager.#updateStructure(replacedMap)
     }
-
+    @checkLevel
     static appendBlock(block: Entity[], cleanPush?: boolean) {
         if (cleanPush) {
             Engine.entities.map.forEach(e => EntityAPI.removeEntity(e.id))
@@ -69,7 +84,7 @@ export default class EntityManager {
             SelectionStore.lockedEntity = block[0]?.id
         EntityManager.#updateStructure()
     }
-
+    @checkLevel
     static removeBlock(payload: string[]) {
         const mapped = payload.map(e => Engine.entities.map.get(e))
         EditorActionHistory.save(mapped)
@@ -86,7 +101,7 @@ export default class EntityManager {
 
         EntityManager.#updateStructure()
     }
-
+    @checkLevel
     static add(entity: Entity) {
         EditorActionHistory.save(entity, true)
         EditorActionHistory.save(entity)
@@ -102,7 +117,7 @@ export default class EntityManager {
         EntityAPI.addEntity(entity)
         EntityManager.#updateStructure()
     }
-
+    @checkLevel
     static linkMultiple(payload: string[]) {
         const values = Engine.entities.array
         for (let i = 0; i < values.length; i++) {

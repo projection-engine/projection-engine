@@ -1,6 +1,6 @@
 <script>
     import Checkbox from "../../shared/components/checkbox/Checkbox.svelte";
-    import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
     import ROUTES from "../../../backend/static/ROUTES";
     import OptionDropdown from "../../shared/components/dropdown/OptionDropdown.svelte";
     import ElectronResources from "../../shared/lib/ElectronResources";

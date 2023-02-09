@@ -1,17 +1,16 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import TextureItem from "./TextureItem.svelte";
     import CodeItem from "./CodeItem.svelte";
     import ItemMetadata from "./ItemMetadata.svelte";
     import MaterialItem from "./MaterialItem.svelte";
     import MeshItem from "./MeshItem.svelte";
-    import TerrainItem from "./TerrainItem.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
     import FS from "../../../../../shared/lib/FS/FS";
 
-    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION, FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN]
+    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION, FILE_TYPES.MATERIAL]
 
     export let item
     export let setTabs
@@ -28,7 +27,7 @@
             data = undefined
     }
     $: {
-        const VALID_TYPES = [FILE_TYPES.COMPONENT, FILE_TYPES.UI_LAYOUT, FILE_TYPES.MATERIAL, FILE_TYPES.TERRAIN, FILE_TYPES.PRIMITIVE]
+        const VALID_TYPES = [FILE_TYPES.COMPONENT, FILE_TYPES.UI_LAYOUT, FILE_TYPES.MATERIAL,  FILE_TYPES.PRIMITIVE]
         if (VALID_TYPES.includes(fileType)) {
             setTabs([
                 {
@@ -64,8 +63,6 @@
         <CodeItem data={data} item={item}/>
     {:else if data != null && fileType === FILE_TYPES.MATERIAL}
         <MaterialItem data={data} item={item}/>
-    {:else if data != null && fileType === FILE_TYPES.TERRAIN}
-        <TerrainItem data={data} item={item}/>
     {:else if fileType === FILE_TYPES.PRIMITIVE}
         <MeshItem item={item}/>
     {:else}

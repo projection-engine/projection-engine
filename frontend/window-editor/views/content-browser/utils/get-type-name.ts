@@ -16,8 +16,6 @@ export default function getTypeName(type) {
             return "Texture"
         case FILE_TYPES.COLLECTION:
             return "Scene"
-        case FILE_TYPES.TERRAIN:
-            return "Terrain"
         case ".js":
             return "Javascript package"
         case ".json":

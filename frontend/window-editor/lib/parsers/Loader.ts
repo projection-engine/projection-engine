@@ -1,7 +1,7 @@
 import FilesAPI from "../fs/FilesAPI"
 import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
-import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
@@ -120,10 +120,6 @@ export default class Loader {
                         console.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break
                 }
-                // case FILE_TYPES.TERRAIN: {
-                //     await loadTerrain(res)
-                //     break
-                // }
                 default:
                     console.error(new Error("Not valid file type"))
                     break

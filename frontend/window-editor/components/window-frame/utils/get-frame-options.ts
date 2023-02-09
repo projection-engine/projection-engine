@@ -1,7 +1,7 @@
 import WindowUtils from "../../../lib/WindowUtils";
 import ROUTES from "../../../../../backend/static/ROUTES";
 import WindowChangeStore from "../../../../shared/components/frame/WindowChangeStore";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import ElectronResources from "../../../../shared/lib/ElectronResources"
 
 export default function getFrameOptions( disabledSave:boolean) {

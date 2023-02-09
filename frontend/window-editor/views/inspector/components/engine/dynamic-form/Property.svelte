@@ -2,7 +2,7 @@
     import Checkbox from "../../../../../../shared/components/checkbox/Checkbox.svelte";
     import Component from "../../../../../../../engine-core/instances/components/Component";
     import Selector from "../../../../../components/selector/Selector.svelte";
-    import LOCALIZATION_EN from "../../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../../static/objects/LOCALIZATION_EN";
     import ColorPicker from "../../../../../../shared/components/color-picker/ColorPicker.svelte";
     import Input from "../../../../../../shared/components/input/Input.svelte";
     import Dropdown from "../../../../../../shared/components/dropdown/Dropdown.svelte";

@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import Tree from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../../shared/lib/HotKeysController";
@@ -68,10 +68,10 @@
             },
             onDragOver: (_, ev) => {
                 if (ev.ctrlKey)
-                    return `Drop to make child`;
+                    return `Drop to make as child`;
                 if (ev.shiftKey)
                     return `Drop to clone into...`;
-                return `CTRL to parent | SHIFT to clone`
+                return `CTRL to make as child | SHIFT to clone | Drop on collection to make as child`
             }
         })
 

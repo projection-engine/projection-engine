@@ -11,7 +11,6 @@ import MATERIAL_RENDERING_TYPES from "../../engine-core/static/MATERIAL_RENDERIN
 import Entity from "../../engine-core/instances/Entity";
 import StaticFBO from "../../engine-core/lib/StaticFBO";
 
-const DEFAULT_COLOR = [255, 255, 255]
 
 const iconAttributes = mat4.create()
 export default class IconsSystem {
@@ -59,7 +58,7 @@ export default class IconsSystem {
             scale = settings.iconScale,
             imageIndex = 0,
             isSelected = entity.__isSelected ? 1 : 0,
-            color = entity._hierarchyColor || DEFAULT_COLOR
+            color = entity.colorIdentifier
 
         switch (lightType) {
             case LIGHT_TYPES.DIRECTIONAL:

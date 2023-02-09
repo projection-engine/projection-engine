@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import About from "./About.svelte";
 
     let aboutModalIsOpen = false

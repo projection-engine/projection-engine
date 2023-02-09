@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte";
     import GIZMOS from "../../../static/GIZMOS.ts";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
 
     const TO_DEG = 180 / Math.PI

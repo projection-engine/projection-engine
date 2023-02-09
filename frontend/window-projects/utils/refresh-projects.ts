@@ -1,6 +1,6 @@
 import FS from "../../shared/lib/FS/FS";
-import PROJECT_STATIC_DATA from "../../../static/objects/PROJECT_STATIC_DATA";
-import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
+import FILE_TYPES from "../../../static/objects/FILE_TYPES";
 
 export default async function refreshProjects(path) {
 
@@ -17,7 +17,7 @@ export default async function refreshProjects(path) {
         const children = await FS.readdir(itemPath)
         if(!children)
             continue
-        const metadata = children.find(c => c.includes(PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION))
+        const metadata = children.find(c => c.includes(FILE_TYPES.PROJECT))
 
         if(!metadata)
             continue

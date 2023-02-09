@@ -2,7 +2,7 @@
     import ViewportActions from "../../../lib/utils/ViewportActions";
     import focusOnCamera from "../../../utils/focus-on-camera";
     import Engine from "../../../../../engine-core/Engine";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import CameraGizmo from "./CameraGizmo.svelte";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
