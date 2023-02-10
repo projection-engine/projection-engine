@@ -4,7 +4,7 @@
     import {onDestroy, onMount} from "svelte";
     import HotKeysController from "../../../shared/lib/HotKeysController";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
-    import HierarchyController from "../../lib/HierarchyController";
+    import HierarchyController from "../../lib/controllers/HierarchyController";
     import SettingsStore from "../../../shared/stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";

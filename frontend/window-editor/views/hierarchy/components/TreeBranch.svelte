@@ -1,7 +1,7 @@
 <script lang="ts">
     import TreeBranchContent from "./TreeBranchContent.svelte";
     import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import EntityConstructor from "../../../lib/controllers/EntityConstructor";
+    import EntityFactory from "../../../lib/controllers/EntityFactory";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
@@ -54,9 +54,9 @@
     {/if}
     <TreeBranchContent {open} {entity} {lockedEntity} {setLockedEntity}/>
     <button data-sveltebuttondefault="-"
-            style="margin-left: 4px"
+            style="margin-left: 4px; position: sticky; right: 0"
             class="button-small hierarchy-branch"
-            on:click={() => EntityConstructor.toggleEntityVisibility(entity)}
+            on:click={() => EntityFactory.toggleEntityVisibility(entity)}
     >
         <ToolTip content={LOCALIZATION_EN.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">

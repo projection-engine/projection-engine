@@ -6,7 +6,7 @@ import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import EditorActionHistory from "../utils/EditorActionHistory";
-import EntityConstructor from "../controllers/EntityConstructor";
+import EntityFactory from "../controllers/EntityFactory";
 import GPU from "../../../../engine-core/GPU";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 
@@ -16,7 +16,7 @@ import FS from "../../../shared/lib/FS/FS";
 import MeshComponent from "../../../../engine-core/instances/components/MeshComponent";
 import SpriteComponent from "../../../../engine-core/instances/components/SpriteComponent";
 import AlertController from "../../../shared/components/alert/AlertController";
-import EntityManager from "../EntityManager";
+import EngineStateController from "../controllers/EngineStateController";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 
@@ -44,7 +44,7 @@ export default class Loader {
         const root = EntityAPI.getNewEntityInstance()
         root.name = path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop()
         entities.push(root)
-        EntityConstructor.translateEntity(root)
+        EntityFactory.translateEntity(root)
         try {
             if (file) {
                 for (let i = 0; i < file.entities.length; i++) {
@@ -53,7 +53,7 @@ export default class Loader {
                     entity.parentID = currentEntity.parent || root.id
                     entities.push(entity)
                 }
-                EntityManager.appendBlock(entities)
+                EngineStateController.appendBlock(entities)
             } else
                 console.error("Collection not found")
         } catch (error) {
@@ -89,7 +89,7 @@ export default class Loader {
                     entity.addComponent(COMPONENTS.CULLING)
                     instance.materialID = materialID
                     instance.meshID = data
-                    EntityConstructor.translateEntity(entity)
+                    EntityFactory.translateEntity(entity)
                     entitiesToPush.push(entity)
 
                     break
@@ -101,9 +101,9 @@ export default class Loader {
                     await FileSystemAPI.loadTexture(data)
                     const sprite = EntityAPI.getNewEntityInstance()
                     sprite.name = LOCALIZATION_EN.SPRITE_RENDERER
-                    EntityConstructor.translateEntity(sprite)
+                    EntityFactory.translateEntity(sprite)
                     sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
-                    EntityManager.add(sprite)
+                    EngineStateController.add(sprite)
                     break
                 }
 
@@ -127,7 +127,7 @@ export default class Loader {
         }
 
         if (entitiesToPush.length > 0) {
-            EntityManager.appendBlock(entitiesToPush)
+            EngineStateController.appendBlock(entitiesToPush)
             AlertController.success(LOCALIZATION_EN.ENTITIES_CREATED)
         }
     }

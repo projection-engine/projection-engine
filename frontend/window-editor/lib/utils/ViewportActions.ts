@@ -8,7 +8,7 @@ import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../../engine-core/Engine";
 import AlertController from "../../../shared/components/alert/AlertController";
-import EntityManager from "../EntityManager";
+import EngineStateController from "../controllers/EngineStateController";
 
 
 export default class ViewportActions {
@@ -39,7 +39,7 @@ export default class ViewportActions {
     }
 
     static deleteSelected() {
-        EntityManager.removeBlock(SelectionStore.engineSelected)
+        EngineStateController.removeBlock(SelectionStore.engineSelected)
     }
 
     static invertSelection() {
@@ -75,7 +75,7 @@ export default class ViewportActions {
                 clone.addParent(targetParent)
             }
         }
-        EntityManager.appendBlock(block)
+        EngineStateController.appendBlock(block)
         AlertController.log(`Pasted ${ViewportActions.toCopy.length} entities.`)
 
     }
@@ -84,7 +84,7 @@ export default class ViewportActions {
         const selected = SelectionStore.engineSelected
         ViewportActions.toCopy = selected
         if (selected.length > 1)
-            EntityManager.linkMultiple(selected)
+            EngineStateController.linkMultiple(selected)
     }
 
     static selectAll() {

@@ -10,7 +10,7 @@
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
     import {onDestroy, onMount} from "svelte";
-    import HierarchyController from "../../../lib/HierarchyController";
+    import HierarchyController from "../../../lib/controllers/HierarchyController";
 
     export let engine
     export let settings

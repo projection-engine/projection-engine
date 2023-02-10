@@ -12,7 +12,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte";
     import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-    import EntityStateController from "../../lib/controllers/EntityStateController";
+    import ExecutionController from "../../lib/controllers/ExecutionController";
     import addNewTab from "../../views/viewport/utils/add-new-tab";
     import removeTab from "./utils/remove-tab";
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte";
@@ -80,7 +80,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={engine.executingAnimation}
-                on:click={() => EntityStateController.startPlayState()}
+                on:click={() => ExecutionController.startPlayState()}
                 data-svelteview-header-button="-"
                 style="color: var(--pj-accent-color)"
         >
@@ -90,7 +90,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={!engine.executingAnimation}
-                on:click={() => EntityStateController.stopPlayState()}
+                on:click={() => ExecutionController.stopPlayState()}
                 data-svelteview-header-button="-"
                 style="--pj-accent-color: red; color: var(--pj-accent-color)"
         >

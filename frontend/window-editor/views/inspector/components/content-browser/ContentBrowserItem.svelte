@@ -33,12 +33,14 @@
                 {
                     label: LOCALIZATION_EN.METADATA,
                     icon: "info",
-                    index: -2
+                    index: -2,
+                    color: "var(--pj-accent-color-secondary)"
                 },
                 {
                     label: LOCALIZATION_EN.ASSET_PROPERTIES,
                     icon: "file",
-                    index: -1
+                    index: -1,
+                    color: "var(--pj-accent-color-tertiary)"
                 }
             ])
         } else
@@ -46,7 +48,8 @@
                 {
                     label: LOCALIZATION_EN.METADATA,
                     icon: "info",
-                    index: -2
+                    index: -2,
+                    color: "var(--pj-accent-color-secondary)"
                 }
             ])
     }

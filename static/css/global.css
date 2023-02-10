@@ -64,6 +64,8 @@ body {
     --pj-accent-color-light: rgb(0 149 255 / 50%);
     --pj-accent-color-darker: #006cb9;
     --pj-accent-color: #0095ff;
+    --pj-accent-color-secondary: #ff5555;
+    --pj-accent-color-tertiary: #57FF57;
     --pj-background-primary: #383838;
     --pj-background-primary-light: rgb(56 56 56 / .85);
     --pj-background-secondary: #292929;

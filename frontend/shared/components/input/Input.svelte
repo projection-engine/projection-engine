@@ -23,7 +23,7 @@
     const handler = (input) => {
         clearTimeout(timeout)
         timeout = setTimeout(() => {
-            onChange(input.value)
+            onChange?.(input.value)
             changed = false
         }, DELAY)
     }

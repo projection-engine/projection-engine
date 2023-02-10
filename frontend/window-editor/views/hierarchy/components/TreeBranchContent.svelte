@@ -3,13 +3,16 @@
     import {onDestroy, onMount} from "svelte";
     import getEngineIcon from "../utils/get-engine-icon";
     import updateSelection from "../utils/update-selection";
-    import EntityNameController from "../../../lib/controllers/EntityNameController";
+    import NameController from "../../../lib/controllers/NameController";
     import KEYS from "../../../static/KEYS.ts";
     import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
+    import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
+    import EntityUpdateController from "../../../lib/controllers/EntityUpdateController";
+    import Modal from "../../../../shared/components/modal/Modal.svelte";
 
     export let entity: Entity
     export let lockedEntity: string
@@ -17,14 +20,34 @@
 
     let isOnEdit = false
     let ref: HTMLElement
-    let cacheName: string
-    $: cacheName = entity.name
+
 
     $: icons = getEngineIcon(entity)
     const draggable = dragDrop(true)
+
     $: draggable.disabled = isOnEdit
 
-
+    const ID = crypto.randomUUID()
+    let entityName = entity.name
+    let entityID
+    $: {
+        if (entityID !== entity.id) {
+            if (entityID)
+                EntityUpdateController.removeListener(entityID, ID)
+            EntityUpdateController.addListener(entity.id, ID, () => {
+                entityName = entity.name
+            })
+            entityName = entity.name
+            entityID = entity.id
+        }
+    }
+    $: {
+        if (!isOnEdit && entityName !== entity.name) {
+            ChangesTrackerStore.updateStore(true)
+            NameController.renameEntity(entity.name, entity)
+            entityName = entity.name
+        }
+    }
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
@@ -32,13 +55,10 @@
             dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-svelteicon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : entity.name}</div>`,
         })
     })
-    onDestroy(() => draggable.onDestroy())
-
-    function rename() {
-        EditorActionHistory.save(entity)
-        EntityNameController.renameEntity(cacheName, entity)
-        EditorActionHistory.save(entity)
-    }
+    onDestroy(() => {
+        draggable.onDestroy()
+        EntityUpdateController.removeListener(entityID, ID)
+    })
 
 </script>
 
@@ -55,47 +75,45 @@
             <Icon>view_in_ar</Icon>
         {/if}
     </button>
+
     <div
             bind:this={ref}
-            class="entity"
             on:dblclick={() => isOnEdit = true}
-            on:click={(e) => updateSelection(entity.id, e.ctrlKey)}
+            on:click={(e) => {
+                isOnEdit = false
+                updateSelection(entity.id, e.ctrlKey)
+            }}
     >
-        <input
-                disabled={!isOnEdit}
-                on:change={e => {
-                    cacheName = e.value
-                    rename()
-                }}
-                on:blur={ev => {
-                    cacheName = ev.currentTarget.value
-                    rename()
-                    isOnEdit = false
-                }}
-                on:keydown={e => {
-                    if(e.code === KEYS.Enter){
-                        cacheName = e.target.value
-                        rename()
-                        isOnEdit = false
-                    }
-                }}
-                value={cacheName}
-        />
-        <ToolTip content={cacheName}/>
-        <!--{#each icons as icon}-->
-        <!--    <Icon styles="font-size: .9rem; width: .9rem">-->
-        <!--        <ToolTip content={icon.label}/>-->
-        <!--        {icon.icon}-->
-        <!--    </Icon>-->
-        <!--{/each}-->
+        {entityName}
     </div>
+    {#if isOnEdit}
+        <Modal
+                styles={"height: 35px; width: 10vw;"}
+                handleClose={() => {
+                    console.log("IM HERE")
+                    isOnEdit = false
+                }}>
+            <input
+                    on:change={e => {
+                        entity.name = e.target.value
+                    }}
+
+                    on:keydown={e => {
+                        if(e.code === KEYS.Enter)
+                            isOnEdit = false
+                    }}
+            />
+        </Modal>
+    {/if}
+    <ToolTip content={entityName}/>
 
 </div>
+
 
 <style>
     input {
         padding: 0 2px;
-        border-radius: 0px;
+        border-radius: 0;
         background: none;
         border: none;
         outline: none;
@@ -104,10 +122,12 @@
         background: rgba(0, 0, 0, .65);
         height: 23px;
         width: 100%;
+        overflow: visible;
 
     }
 
     input:disabled {
+        -webkit-user-select: none !important;
         background: none;
         color: var(--pj-color-quaternary);
     }

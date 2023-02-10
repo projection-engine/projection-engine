@@ -7,11 +7,12 @@
     $: currentTab = PREFERENCES[tab]
 </script>
 
-<PropertyHeader title={currentTab.label}/>
-<ContentGroup toRender={currentTab}/>
-
+{#if currentTab}
+    <PropertyHeader title={currentTab.label}/>
+    <ContentGroup toRender={currentTab}/>
+{/if}
 <style>
-    h3{
+    h3 {
         padding: 0 8px;
         margin: 8px 0;
         font-weight: 550;

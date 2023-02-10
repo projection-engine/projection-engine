@@ -28,7 +28,7 @@
 </script>
 
 <div class="content" bind:this={content} style={styles}>
-  <slot/>
+    <slot/>
 </div>
 
 <style>

@@ -8,7 +8,7 @@ import QueryAPI from "../../../engine-core/lib/utils/QueryAPI";
 import selectEntityHierarchy from "../utils/select-entity-hierarchy";
 import snap from "../utils/snap";
 import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE";
-import EntityConstructor from "../lib/controllers/EntityConstructor";
+import EntityFactory from "../lib/controllers/EntityFactory";
 import CAMERA_ROTATIONS from "../../../engine-tools/static/CAMERA_ROTATIONS";
 import LevelController from "../lib/utils/LevelController";
 import CameraTracker from "../../../engine-tools/lib/CameraTracker";
@@ -16,8 +16,8 @@ import Engine from "../../../engine-core/Engine";
 import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
 import focusOnCamera from "../utils/focus-on-camera";
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions";
-import HierarchyController from "../lib/HierarchyController";
-import EntityManager from "../lib/EntityManager";
+import HierarchyController from "../lib/controllers/HierarchyController";
+import EngineStateController from "../lib/controllers/EngineStateController";
 
 
 export default function viewportHotkeys(settings): { [key: string]: ContextMenuOption } {
@@ -31,7 +31,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
                     return
                 const entity = QueryAPI.getEntityByID(t)
                 if (entity)
-                    EntityManager.add(entity.clone())
+                    EngineStateController.add(entity.clone())
             },
             require: settings.viewportHotkeys.DUPLICATE,
         },
@@ -92,7 +92,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
             callback: () => {
                 const selected = SelectionStore.engineSelected
                 for (let i = 0; i < selected.length; i++)
-                    EntityConstructor.toggleEntityVisibility(Engine.entities.map.get(selected[i]), false)
+                    EntityFactory.toggleEntityVisibility(Engine.entities.map.get(selected[i]), false)
                 HierarchyController.updateHierarchy()
             },
             require: settings.viewportHotkeys.HIDE_ACTIVE,

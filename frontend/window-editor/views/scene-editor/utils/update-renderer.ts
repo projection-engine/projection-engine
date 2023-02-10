@@ -44,10 +44,7 @@ export default function updateRenderer(selected, engine, settings) {
     if (settings.gizmoGrid.sensitivity != null)
         GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity
 
-    GridSystem.buffer[0] = settings.gridColor || .3
-    GridSystem.buffer[1] = settings.gridScale * 20. || 20.
-    GridSystem.buffer[2] = settings.gridThreshold || 100.
-    GridSystem.buffer[3] = settings.gridOpacity || 1.
+
 
     EngineResources.updateParams(
         settings,

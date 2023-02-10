@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Metadata from "./Metadata.svelte";
+    import Metadata from "./EntityInformation.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";

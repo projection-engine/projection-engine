@@ -19,11 +19,13 @@ import ElectronResources from "../../../shared/lib/ElectronResources";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import AlertController from "../../../shared/components/alert/AlertController";
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-import EntityManager from "../EntityManager";
+import EngineStateController from "../controllers/EngineStateController";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
-import HierarchyController from "../HierarchyController";
+import HierarchyController from "../controllers/HierarchyController";
 import resolveFileName from "../../utils/resolve-file-name";
+import AssetAPI from "../fs/AssetAPI";
+import NameController from "../controllers/NameController";
 
 
 export default class LevelController {
@@ -78,10 +80,18 @@ export default class LevelController {
     }
 
     static async loadLevel(levelID?: string) {
-        if (levelID && levelID === Engine.loadedLevel?.id)
+        if (!levelID || levelID && levelID === Engine.loadedLevel?.id) {
+            if(levelID && levelID === Engine.loadedLevel?.id)
+                AlertController.error(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
             return
-        await RegistryAPI.readRegistry()
+        }
+        if(ChangesTrackerStore.data) {
+            AlertController.warn(LOCALIZATION_EN.SAVING_PREVIOUS_LEVEL)
+            await LevelController.saveCurrentLevel().catch()
+        }
 
+        await RegistryAPI.readRegistry()
+        NameController.clear()
         SelectionStore.updateStore({
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,
@@ -90,11 +100,19 @@ export default class LevelController {
         })
         EditorActionHistory.clear()
 
+
         const entities = await Engine.loadLevel(levelID, false)
         if (entities.length > 0)
-            EntityManager.appendBlock(entities, true)
+            EngineStateController.appendBlock(entities, true)
         else
             HierarchyController.updateHierarchy()
+
+        SelectionStore.updateStore({
+            ...SelectionStore.data,
+            TARGET: SelectionStore.TYPES.ENGINE,
+            array: [Engine.loadedLevel.id],
+            lockedEntity: Engine.loadedLevel.id
+        })
     }
 
     static async save() {
@@ -145,19 +163,20 @@ export default class LevelController {
             entity: Engine.loadedLevel,
             entities: QueryAPI.getHierarchy(Engine.loadedLevel),
         }
+        console.trace(serialized)
         const assetReg = RegistryAPI.getRegistryEntry(Engine.loadedLevel.id)
         let path = assetReg?.path
-        console.trace(path, assetReg)
+
         if (!assetReg) {
-            path = await resolveFileName(FS.ASSETS_PATH + FS.sep + Engine.loadedLevel.name, FILE_TYPES.LEVEL)
-            console.trace(path)
-            await RegistryAPI.createRegistryEntry(Engine.loadedLevel.id, path)
+            path = FS.resolvePath(await resolveFileName(FS.ASSETS_PATH + FS.sep + Engine.loadedLevel.name, FILE_TYPES.LEVEL))
+            await RegistryAPI.createRegistryEntry(Engine.loadedLevel.id, FS.sep + path.split(FS.sep).pop())
+            RegistryAPI.readRegistry().catch()
         } else
             path = FS.ASSETS_PATH + FS.sep + path
 
         await FS.write(
             path,
-            JSON.stringify(serializeStructure(serialized))
+            serializeStructure(serialized)
         )
         ChangesTrackerStore.updateStore(false)
     }

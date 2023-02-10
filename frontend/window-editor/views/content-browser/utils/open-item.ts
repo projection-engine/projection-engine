@@ -10,10 +10,11 @@ import AlertController from "../../../../shared/components/alert/AlertController
 import ElectronResources from "../../../../shared/lib/ElectronResources";
 
 export default function openItem(data, setCurrentDirectory, setSelected, reset, type) {
-    if(!data)
+    if (!data)
         return
     if (type === 1) {
         const fileType = "." + data.type
+        AlertController.warn(LOCALIZATION_EN.OPENING_ASSET+  " (" + data.name + ")")
         switch (fileType) {
             case FILE_TYPES.UI_LAYOUT:
             case FILE_TYPES.COMPONENT:
@@ -22,9 +23,8 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
                 ElectronResources.shell.openPath(FS.resolvePath(FS.ASSETS_PATH + FS.sep + data.id))
                     .catch(err => {
                         AlertController.error(LOCALIZATION_EN.ERROR_OPENING_FILE)
-                    console.error(err)
-                })
-                AlertController.warn(LOCALIZATION_EN.OPENING_FILE + " (" + data.name + ")")
+                        console.error(err)
+                    })
                 break
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:

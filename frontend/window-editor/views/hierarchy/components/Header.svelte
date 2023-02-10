@@ -4,11 +4,11 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import HierarchyController from "../../../lib/HierarchyController";
+    import HierarchyController from "../../../lib/controllers/HierarchyController";
     import Input from "../../../../shared/components/input/Input.svelte";
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import NATIVE_COMPONENTS from "../../inspector/static/NATIVE_COMPONENTS";
-    import EntityConstructor from "../../../lib/controllers/EntityConstructor";
+    import EntityFactory from "../../../lib/controllers/EntityFactory";
 
     export let filteredComponent, setFilteredComponent;
     export let search, setSearch;
@@ -58,7 +58,7 @@
             {/each}
         </Dropdown>
         <button data-sveltebuttondefault="-"
-                on:click={() => EntityConstructor.createEmpty(true)}
+                on:click={() => EntityFactory.createEmpty(true)}
                 data-svelteview-header-button="-"
                 style="position: relative"
         >

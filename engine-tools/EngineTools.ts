@@ -31,8 +31,6 @@ export default class EngineTools {
         await StaticEditorMeshes.initialize()
 
         Engine.environment = ENVIRONMENT.DEV
-
-        GridSystem.initialize()
         GizmoSystem.initialize()
         LineRenderer.initialize()
     }
@@ -75,7 +73,7 @@ export default class EngineTools {
         context.disable(context.CULL_FACE)
         context.disable(context.DEPTH_TEST)
         if (settings.showGrid)
-            GridSystem.execute()
+            GridSystem.execute(settings)
         if (settings.showOutline)
             WireframeRenderer.execute(settings)
         SelectedSystem.drawSilhouette(selected, settings)

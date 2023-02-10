@@ -1,11 +1,11 @@
 <script lang="ts">
     import Engine from "../../../../../../engine-core/Engine";
-    import EntityNameController from "../../../../lib/controllers/EntityNameController";
+    import NameController from "../../../../lib/controllers/NameController";
     import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import Selector from "../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import EntityConstructor from "../../../../lib/controllers/EntityConstructor";
-    import HierarchyController from "../../../../lib/HierarchyController";
+    import EntityFactory from "../../../../lib/controllers/EntityFactory";
+    import HierarchyController from "../../../../lib/controllers/HierarchyController";
 
     import Input from "../../../../../shared/components/input/Input.svelte";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
@@ -13,12 +13,33 @@
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import TransformationForm from "./TransformationForm.svelte";
+    import EntityUpdateController from "../../../../lib/controllers/EntityUpdateController";
+    import {onDestroy} from "svelte";
 
     export let entity: Entity | undefined
+
+    const ID = crypto.randomUUID()
+    let entityName = entity.name
+    let entityID
+    $: {
+        if (entityID !== entity.id) {
+            if (entityID)
+                EntityUpdateController.removeListener(entityID, ID)
+            EntityUpdateController.addListener(entity.id, ID, () => {
+                entityName = entity.name
+            })
+            entityName = entity.name
+            entityID = entity.id
+        }
+    }
+
+    onDestroy(() => {
+        EntityUpdateController.removeListener(entityID, ID)
+    })
 </script>
 
 
-<PropertyHeader title={LOCALIZATION_EN.ENTITY_PROPERTIES}/>
+<PropertyHeader title={entityName}/>
 {#if !entity.isCollection}
     <TransformationForm/>
 {/if}
@@ -28,9 +49,9 @@
         <Input
                 width="100%"
                 hasBorder={true}
-                onBlur={(_,v) => EntityNameController.renameEntity(v, entity)}
-                onEnter={v => EntityNameController.renameEntity(v, entity)}
-                inputValue={entity.name}
+                onBlur={(_,v) => NameController.renameEntity(v, entity)}
+                onEnter={v => NameController.renameEntity(v, entity)}
+                inputValue={entityName}
                 placeholder={LOCALIZATION_EN.MY_ENTITY}
         />
     </fieldset>
@@ -53,10 +74,10 @@
     <Checkbox
             checked={entity.active}
             handleCheck={_ =>  {
-            const inv = !entity.active
-            EntityConstructor.toggleEntityVisibility(entity)
-            entity.active = inv
-        }}
+                const inv = !entity.active
+                EntityFactory.toggleEntityVisibility(entity)
+                entity.active = inv
+            }}
             label={LOCALIZATION_EN.ACTIVE}
     />
 

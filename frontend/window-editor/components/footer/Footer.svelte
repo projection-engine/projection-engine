@@ -10,6 +10,7 @@
     import Console from "./components/Console.svelte";
     import Engine from "../../../../engine-core/Engine";
     import {onDestroy, onMount} from "svelte";
+    import EntityUpdateController from "../../lib/controllers/EntityUpdateController";
 
 
     export let settings
@@ -21,17 +22,22 @@
         else
             console.error("No logs found")
     }
-    const ID = crypto.randomUUID()
     let loadedLevel
-    let interval
+    const ID = crypto.randomUUID()
+    let entityID
 
     function load() {
         loadedLevel = Engine.loadedLevel?.name
-        clearInterval(interval)
-        interval = setInterval(() => {
-            if (loadedLevel !== Engine.loadedLevel?.name)
-                loadedLevel = Engine.loadedLevel?.name
-        }, 250)
+        entityID = Engine.loadedLevel?.id
+
+        if (entityID)
+            EntityUpdateController.removeListener(entityID, ID)
+
+        if(!loadedLevel)
+            return
+        EntityUpdateController.addListener(entityID, ID, () => {
+            loadedLevel = Engine.loadedLevel.name
+        })
     }
 
     onMount(() => {
@@ -45,9 +51,9 @@
 
     <div class="meta-data" style="justify-content: flex-start">
         {#if loadedLevel}
-            <div class="wrapper footer-header" style="width: fit-content; background: var(--pj-background-primary)">
+            <div class="wrapper footer-header" style="max-width: clamp(100px, 5vw, 100px); background: var(--pj-background-primary)">
                 <Icon styles="font-size: .9rem">forest</Icon>
-                {loadedLevel}
+                <small data-svelteoverflow="-">{loadedLevel}</small>
                 <ToolTip content={LOCALIZATION_EN.LOADED_LEVEL}/>
             </div>
             <div data-sveltevertdivider="-" style="margin: 0 2px"></div>

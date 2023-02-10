@@ -25,8 +25,8 @@ float grid(float space, float gridWidth) {
 void main() {
     quadUV = gl_FragCoord.xy / bufferResolution;
     float color = settings.x;
-    float scale = settings.y;
-    float threshold = min(100., settings.z);
+    float scale = settings.y  ;
+    float threshold = min(100., settings.z  );
     float opacityScale = clamp(settings.w / 2., 0., 1.);
 
     float distanceFromCamera = length(cameraPosition - worldPosition);

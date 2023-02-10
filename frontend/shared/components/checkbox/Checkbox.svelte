@@ -7,36 +7,35 @@
     export let disabled
 </script>
 
-<div class="wrapper" data-sveltedisabled={disabled ? `-` : undefined}>
-    <button data-sveltebuttondefault="-"
-            class="container"
+<div
+        class="wrapper"
+        data-sveltedisabled={disabled ? `-` : undefined}
+        data-svelteoverflow="-"
+>
+    <button
+            data-sveltebuttondefault="-"
+            class="check-button"
+            class:check-button-checked={checked}
             disabled={disabled}
-            style={`
-                background: ${checked ? "var(--pj-accent-color)" : ""};
-                border: ${checked ? "var(--pj-accent-color) 1px solid" : ""};
-                opacity: ${disabled ? ".5" : "1"};
-            `}
-            on:click={() => handleCheck(checked)}>
-        <Icon
-                styles={`
-                color: white;
-                visibility: ${checked ? "visible" : "hidden"};
-                font-size: 13px;
-                `}
-        >
-            done
-        </Icon>
-    </button>
+            on:click={() => handleCheck(checked)}
+    ></button>
     {label}
 </div>
 
 <style>
-    .container {
+    .check-button-checked {
+        background: var(--pj-accent-color) !important;
+    }
+
+    .check-button {
         outline: none;
 
-        border: var(--pj-color-tertiary) 1px solid;
-        width: 13px;
-        height: 13px;
+        border: var(--pj-border-primary) 1px solid;
+
+        max-width: 13px;
+        max-height: 13px;
+        min-width: 13px;
+        min-height: 13px;
 
         border-radius: 50%;
         background: transparent;
@@ -47,21 +46,23 @@
         overflow: hidden;
 
     }
-    .container:hover {
+
+    .check-button:hover {
         border: var(--pj-accent-color) 1px solid;
     }
 
-    .container:active {
+    .check-button:active {
         background: var(--pj-background-quaternary);
         border: var(--pj-accent-color) 1px solid;
     }
 
-    .container:disabled {
+    .check-button:disabled {
         background: transparent;
         border-color: var(--pj-color-quaternary);
         cursor: unset;
     }
-    .wrapper{
+
+    .wrapper {
         height: 23px;
         display: flex;
         align-items: center;

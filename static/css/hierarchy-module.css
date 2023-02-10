@@ -4,10 +4,13 @@
     height: 23px;
     display: flex;
     align-items: center;
-    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
     --pj-selection-color: var(--pj-accent-color-light);
 }
-
+.wrapper.hierarchy-branch > * {
+    white-space: nowrap;
+}
 
 .wrapper.hierarchy-branch > .content {
     display: none;

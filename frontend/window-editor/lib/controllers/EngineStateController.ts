@@ -1,15 +1,15 @@
-import Engine from "../../../engine-core/Engine";
-import AXIS from "../../../engine-tools/static/AXIS";
-import EntityAPI from "../../../engine-core/lib/utils/EntityAPI";
+import Engine from "../../../../engine-core/Engine";
+import AXIS from "../../../../engine-tools/static/AXIS";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import HierarchyController from "./HierarchyController";
-import EditorActionHistory from "./utils/EditorActionHistory";
-import EntityNameController from "./controllers/EntityNameController";
-import getPivotPointMatrix from "../../../engine-tools/utils/get-pivot-point-matrix";
-import SelectionStore from "../../shared/stores/SelectionStore";
-import Entity from "../../../engine-core/instances/Entity";
-import PickingAPI from "../../../engine-core/lib/utils/PickingAPI";
-import AlertController from "../../shared/components/alert/AlertController";
-import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
+import EditorActionHistory from "../utils/EditorActionHistory";
+import NameController from "./NameController";
+import getPivotPointMatrix from "../../../../engine-tools/utils/get-pivot-point-matrix";
+import SelectionStore from "../../../shared/stores/SelectionStore";
+import Entity from "../../../../engine-core/instances/Entity";
+import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
+import AlertController from "../../../shared/components/alert/AlertController";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 
 
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -24,7 +24,7 @@ function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
 }
 
 
-export default class EntityManager {
+export default class EngineStateController {
     static #updateStructure(replacedMap?: { [key: string]: boolean }) {
         const arr = Engine.entities.array
         const map = Engine.entities.map
@@ -54,15 +54,15 @@ export default class EntityManager {
             const entity = toAdd[i]
             EntityAPI.addEntity(entity)
             replacedMap[entity.id] = true
-            EntityNameController.renameEntity(entity.name, entity)
+            NameController.renameEntity(entity.name, entity)
         }
-        EntityManager.#updateStructure(replacedMap)
+        EngineStateController.#updateStructure(replacedMap)
     }
     @checkLevel
     static appendBlock(block: Entity[], cleanPush?: boolean) {
         if (cleanPush) {
             Engine.entities.map.forEach(e => EntityAPI.removeEntity(e.id))
-            EntityNameController.byName.clear()
+            NameController.byName.clear()
         } else
             EditorActionHistory.save(block, true)
         const selected = []
@@ -71,7 +71,7 @@ export default class EntityManager {
             selected.push(e.id)
             EntityAPI.addEntity(e)
             getPivotPointMatrix(e)
-            EntityNameController.renameEntity(e.name, e)
+            NameController.renameEntity(e.name, e)
         }
         if (!cleanPush) {
             SelectionStore.updateStore({
@@ -82,7 +82,7 @@ export default class EntityManager {
             EditorActionHistory.save(block)
         } else
             SelectionStore.lockedEntity = block[0]?.id
-        EntityManager.#updateStructure()
+        EngineStateController.#updateStructure()
     }
     @checkLevel
     static removeBlock(payload: string[]) {
@@ -92,6 +92,7 @@ export default class EntityManager {
 
         for (let i = 0; i < payload.length; i++)
             EntityAPI.removeEntity(payload[i])
+
         SelectionStore.updateStore({
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,
@@ -99,23 +100,23 @@ export default class EntityManager {
             lockedEntity: Engine.entities.array[0]?.id
         })
 
-        EntityManager.#updateStructure()
+        EngineStateController.#updateStructure()
     }
     @checkLevel
     static add(entity: Entity) {
         EditorActionHistory.save(entity, true)
         EditorActionHistory.save(entity)
-        console.log(entity)
-        EntityNameController.renameEntity(entity.name, entity)
+
+        NameController.renameEntity(entity.name, entity)
+        getPivotPointMatrix(entity)
+        EntityAPI.addEntity(entity)
         SelectionStore.updateStore({
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,
             array: [entity.id],
             lockedEntity: entity.id
         })
-        getPivotPointMatrix(entity)
-        EntityAPI.addEntity(entity)
-        EntityManager.#updateStructure()
+        EngineStateController.#updateStructure()
     }
     @checkLevel
     static linkMultiple(payload: string[]) {
@@ -127,6 +128,6 @@ export default class EntityManager {
                 s.addParent(found)
             }
         }
-        EntityManager.#updateStructure()
+        EngineStateController.#updateStructure()
     }
 }
