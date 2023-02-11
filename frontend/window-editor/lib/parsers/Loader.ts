@@ -98,6 +98,7 @@ export default class Loader {
                     await Loader.scene(res.path)
                     break
                 case FILE_TYPES.TEXTURE: {
+                    if(data)
                     await FileSystemAPI.loadTexture(data)
                     const sprite = EntityAPI.getNewEntityInstance()
                     sprite.name = LOCALIZATION_EN.SPRITE_RENDERER

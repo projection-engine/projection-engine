@@ -16,8 +16,10 @@ export default function handleDrop(event, entityDragged:Entity|Entity[], dropTar
         if(currentEntity === Engine.loadedLevel)
             continue
         if (event.ctrlKey || dropTargetEntity?.isCollection) {
-            if (!dropTargetEntity)
+            if (!dropTargetEntity) {
                 currentEntity.removeParent()
+                currentEntity.addParent(Engine.loadedLevel)
+            }
             else
                 currentEntity.addParent(dropTargetEntity)
         } else if (event.shiftKey) {

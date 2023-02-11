@@ -12,6 +12,7 @@
     import EntityUpdateController from "../../../lib/controllers/EntityUpdateController";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import mapComponents from "../utils/map-components";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 
     export let entity: Entity
     export let lockedEntity: string
@@ -26,12 +27,14 @@
     const draggable = dragDrop(true)
     $: draggable.disabled = isOnEdit
 
-    let components = []
+
 
 
     const ID = crypto.randomUUID()
     let entityName = entity.name
     let entityID
+    let components = []
+    let children = 0
     $: {
         if (entityID !== entity.id) {
             if (entityID)
@@ -39,7 +42,9 @@
             EntityUpdateController.addListener(entity.id, ID, () => {
                 entityName = entity.name
                 components = mapComponents(entity)
+                children = entity.children.length
             })
+            children = entity.children.length
             components = mapComponents(entity)
             entityName = entity.name
             entityID = entity.id
@@ -105,14 +110,29 @@
                 <ToolTip content={component.label}/>
             </div>
         {/each}
+        {#if children > 0}
+            <div class="component" style="color: var(--folder-color)">
+                <Icon styles="font-size: .9rem">category</Icon>
+                <ToolTip content={LOCALIZATION_EN.CHILDREN}/>
+                <small class="children-quantity">{children}</small>
+            </div>
+        {/if}
     {/if}
 </div>
 
 <style>
+    .children-quantity{
+        font-size: .5rem;
+        position: absolute;
+        right: -4px;
+        bottom: -4px;
+
+    }
     .component {
         color: var(--pj-accent-color-tertiary);
         display: flex;
         align-items: center;
+        position: relative;
         justify-content: center;
     }
 </style>

@@ -18,7 +18,8 @@
     let ref
     let settings
     let openTree = {}
-    let toRender = []
+    // let toRender = []
+    let rootNode
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     $: {
@@ -35,33 +36,8 @@
     const draggable = dragDrop()
 
     function updateHierarchy(op) {
-        const openLocal = op ?? openTree
-        if (op !== openTree && op !== undefined)
-            HierarchyController.updateHierarchy()
-        console.trace(search)
-        openTree = openLocal
-
-        const hierarchy = HierarchyController.hierarchy
-        const data = []
-
-            for (let i = 0; i < hierarchy.length; i++) {
-                const current = hierarchy[i]
-                let node = current.node
-
-                if (!node ) {
-                    if(search || filteredComponent)
-                        continue
-                    node = current.component.entity
-                    if (openLocal[node.id] && openLocal[node.parent.id])
-                        data.push(current)
-                    continue
-                }
-                const searchMatches =  (!search || search && node.name.includes(search)) && (!filteredComponent || filteredComponent && node.components.has(filteredComponent))
-                if (searchMatches && (!node.parent || openLocal[node.parent?.id]))
-                    data.push(current)
-            }
-
-        toRender = data
+        rootNode = Engine.loadedLevel
+        openTree = op ?? openTree
     }
 
     onMount(() => {
@@ -114,7 +90,7 @@
                 {isOnSearch}
                 updateOpen={_ => updateHierarchy(openTree)}
                 {openTree}
-                {toRender}
+                {rootNode}
                 {filteredComponent}
                 {ID}
         />

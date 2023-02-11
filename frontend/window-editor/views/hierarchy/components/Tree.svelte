@@ -10,15 +10,14 @@
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
-    import HierarchyToRenderElement from "../template/ToRenderElement";
-
+    import Entity from "../../../../../engine-core/instances/Entity";
 
 
     export let ID: string
     export let isOnSearch: boolean
     export let openTree: { [key: string]: boolean }
     export let updateOpen: Function
-    export let toRender: HierarchyToRenderElement[]
+    export let rootNode: Entity
 
     const internalID = crypto.randomUUID()
 
@@ -48,30 +47,17 @@
 </script>
 
 
-{#if toRender.length > 0}
-<!--    <VirtualList items={toRender} let:item>-->
-    {#each toRender as item}
-        {#if item.component}
-            <ComponentTreeBranch
-                    component={item.component}
-                    depth={item.depth + 1}
-                    setLockedEntity={v => SelectionStore.lockedEntity = v}
-            />
-        {:else}
-            <EntityTreeBranch
-                    {isOnSearch}
-                    entity={item.node}
-                    depth={item.depth}
-
-                    {selected }
-                    {lockedEntity}
-                    setLockedEntity={v => SelectionStore.lockedEntity = v}
-                    open={openTree}
-                    {updateOpen}
-            />
-        {/if}
-        {/each}
-<!--    </VirtualList>-->
+{#if rootNode }
+    <EntityTreeBranch
+            {isOnSearch}
+            entity={rootNode}
+            depth={0}
+            {selected}
+            {lockedEntity}
+            setLockedEntity={v => SelectionStore.lockedEntity = v}
+            {openTree}
+            {updateOpen}
+    />
 {:else}
     <div data-svelteempty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>

@@ -148,7 +148,6 @@
         <Selector
                 handleChange={setImage}
                 type="image"
-
                 selected={value}
         />
     {:else if attribute.type === Component.propTypes.MATERIAL}

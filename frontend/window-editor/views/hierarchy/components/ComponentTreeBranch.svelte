@@ -30,7 +30,6 @@
 >
     <div class="info hierarchy-branch"    data-sveltenode={entity.id}
          on:click={e => updateSelection(entity.id, e.ctrlKey)}>
-
         <button
                 class="button-icon hierarchy-branch"
                 style={`--button-color: rgb(${entity.isCollection ? entity.colorIdentifier : [203, 158, 53]})`}
