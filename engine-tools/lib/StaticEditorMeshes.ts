@@ -29,7 +29,7 @@ export default class StaticEditorMeshes {
 
             const image = await fetch("./image.base64").catch()
             if (image !== undefined) {
-                const t = new Texture()
+                const t = new Texture(crypto.randomUUID())
                 await t.initialize({img: await image.text()})
                 IconsSystem.iconsTexture = t.texture
             }

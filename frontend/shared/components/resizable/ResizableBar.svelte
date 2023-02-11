@@ -42,7 +42,7 @@
             }
 
         } catch (err) {
-            console.warn(err)
+            console.error(err)
             document.removeEventListener("mousemove", handleMouseMove)
         }
     }
@@ -54,7 +54,7 @@
             ref.parentNode.style.userSelect = "default"
             document.removeEventListener("mousemove", handleMouseMove)
         } catch (err) {
-            console.warn(err)
+            console.error(err)
             document.removeEventListener("mousemove", handleMouseMove)
         }
     }
@@ -94,7 +94,7 @@
                 ref.nextElementSibling.style.height = initial.initialH2
             }
         } catch (err) {
-            console.warn(err)
+            console.error(err)
         }
     }
 

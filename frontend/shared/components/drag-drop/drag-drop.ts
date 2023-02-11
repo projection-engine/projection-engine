@@ -70,7 +70,6 @@ export default function dragDrop(draggable) {
                 break
             case "drop":
                 event.preventDefault()
-                console.trace("ON DROP ", DragDropController.dropTarget, draggableElement.dragDropListeners)
                 if (!DragDropController.dropTarget || !draggableElement.dragDropListeners?.onDrop)
                     return;
                 draggableElement.dragDropListeners?.onDrop?.(DragDropController.dragData, event)

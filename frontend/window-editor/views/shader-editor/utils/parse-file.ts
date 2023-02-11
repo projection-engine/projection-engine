@@ -55,7 +55,7 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
 
                     canvasAPI.addLink(link, true)
                 } catch (err) {
-                    console.warn(err)
+                    console.error(err)
                 }
             }
     }

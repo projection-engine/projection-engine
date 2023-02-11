@@ -8,7 +8,6 @@ export default class AssetAPI {
         if(!idOrPath)
             return
         const isPath = FS.resolvePath(idOrPath).includes(FS.resolvePath(FS.path))
-        console.trace(idOrPath, isPath,FS.resolvePath(idOrPath) )
         if (!isPath) {
             const reg = RegistryAPI.getRegistryEntry(idOrPath)
             if (reg)

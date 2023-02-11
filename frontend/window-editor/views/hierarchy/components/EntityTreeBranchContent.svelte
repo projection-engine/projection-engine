@@ -41,9 +41,9 @@
             EntityUpdateController.addListener(entity.id, ID, () => {
                 entityName = entity.name
                 components = mapComponents(entity)
-                children = entity.children.length
+                children = entity.children.array.length
             })
-            children = entity.children.length
+            children = entity.children.array.length
             components = mapComponents(entity)
             entityName = entity.name
             entityID = entity.id

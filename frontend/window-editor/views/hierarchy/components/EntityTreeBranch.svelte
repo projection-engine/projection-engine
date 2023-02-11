@@ -32,7 +32,7 @@
 
     $: isOpen = open[entity.id]
     $: isSelected = selected.has(entity.id)
-    $: childQuantity = Math.max(entity.children.length, entity.allComponents.length )
+    $: childQuantity = Math.max(entity.children.array.length, entity.allComponents.length )
     $: hasChildren = childQuantity > 0
 
 </script>

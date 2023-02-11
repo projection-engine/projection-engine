@@ -387,3 +387,31 @@ pre[data-sveltepre="-"] {
     color: var(--pj-accent-color) !important;
 }
 
+[data-sveltebuttongroup="-"]{
+    --group-background: var(--pj-background-primary);
+    --button-height: 20px;
+
+    display: flex;
+    flex-flow: row wrap;
+    overflow: hidden;
+
+    border-radius: 3px;
+    border: var(--pj-border-primary) 1px solid;
+}
+[data-sveltebuttongrouprow="-"]{
+    width: 100%;
+    height: var(--button-height);
+    display: flex;
+
+}
+[data-sveltebuttongrouprow="-"] > button{
+    width: 100%;
+    height: var(--button-height);
+    border: none;
+
+    text-align: center;
+    background: var(--group-background);
+    outline: none;
+    border-radius: 0;
+
+}

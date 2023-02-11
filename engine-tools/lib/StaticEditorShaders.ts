@@ -51,7 +51,6 @@ export default class StaticEditorShaders {
         StaticEditorShaders.#initialized = true
 
         StaticEditorShaders.icon = new Shader(ICONS_SPRITE_VERT, ICONS_SPRITE_FRAG)
-        console.trace(StaticEditorShaders.icon.txt)
         StaticEditorShaders.iconToDepth = new Shader(ICONS_SPRITE_TO_DEPTH_VERT, ICONS_SPRITE_TO_DEPTH_FRAG)
         StaticEditorShaders.line = new Shader(LINE_VERT, LINE_FRAG)
         StaticEditorShaders.toDepthBuffer = new Shader(GIZMO_TO_DEPTH_VERT, GIZMO_TO_DEPTH_FRAG)

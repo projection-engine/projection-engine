@@ -22,7 +22,6 @@ import * as pathRequire from "path";
 export default class Events {
     static storeUpdate(ev, data){
         try {
-            console.log("SENDING DATA")
             const window = WindowController.findWindow(ev.sender.id)
             if(window === WindowController.window)
                 WindowController.windows.forEach(w => {

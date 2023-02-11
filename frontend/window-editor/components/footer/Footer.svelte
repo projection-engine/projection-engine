@@ -19,8 +19,6 @@
     const openLogs = async () => {
         if (FS.exists(ErrorLoggerAPI.path))
             ElectronResources.shell.openPath(ErrorLoggerAPI.path).catch()
-        else
-            console.error("No logs found")
     }
     let loadedLevel
     const ID = crypto.randomUUID()

@@ -51,7 +51,6 @@ export default class FilesStore {
             let data = <MutableObject[]|null>(await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
             if(!data)
                 data = FilesStore.data.items
-            console.trace(data)
             await RegistryAPI.readRegistry()
             const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})

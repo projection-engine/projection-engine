@@ -89,8 +89,7 @@ export default class EngineStateController {
         EditorActionHistory.save(mapped)
         EditorActionHistory.save(mapped, true)
 
-        for (let i = 0; i < payload.length; i++)
-            EntityAPI.removeEntity(payload[i])
+        EntityAPI.removeGroup(payload.map(e => Engine.entities.get(e)))
 
         SelectionStore.updateStore({
             ...SelectionStore.data,

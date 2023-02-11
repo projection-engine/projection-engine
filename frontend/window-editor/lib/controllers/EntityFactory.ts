@@ -99,9 +99,7 @@ export default class EntityFactory {
 
     static toggleEntityVisibility(nodeRef, noSubmit) {
         EntityAPI.toggleVisibility(nodeRef)
-        if (!noSubmit) {
-            console.trace("UPDATING HIERARCHY")
+        if (!noSubmit)
             HierarchyController.updateHierarchy()
-        }
     }
 }

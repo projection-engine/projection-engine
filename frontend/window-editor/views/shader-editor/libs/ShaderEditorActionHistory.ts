@@ -23,7 +23,6 @@ export default class ShaderEditorActionHistory {
     save(value: (ShaderNode | ShaderComment)[], isRemoval?: boolean) {
         if(value.length === 0)
             return
-        console.trace(value)
         const data = value.map(v => {
             if (v instanceof ShaderNode)
                 return ShaderEditorTools.serializeNode(v)

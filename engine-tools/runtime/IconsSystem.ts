@@ -36,7 +36,8 @@ export default class IconsSystem {
                 tracking === entity ||
                 doesntHaveIcon && entity.uiComponent ||
                 entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
-                doesntHaveIcon && entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY
+                doesntHaveIcon && entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
+                doesntHaveIcon && !entity.meshComponent?.hasMesh
             )
                 continue
             cb(entity, settings, uniforms)

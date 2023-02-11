@@ -2,6 +2,8 @@ import Engine from "../../../../engine-core/Engine";
 import SelectionStore from "../../../shared/stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement";
+import ResourceEntityMapper from "../../../../engine-core/resource-libs/ResourceEntityMapper";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 
 
@@ -15,14 +17,29 @@ export default class HierarchyController {
             return
 
         const callback = (node: Entity, depth: number) => {
+            if(!node)
+                return
             data.push({node, depth})
             node.allComponents.forEach(component => data.push({component, depth: depth + 1}))
 
-            const children = node.children
+            const children = node.children.array
             for (let i = 0; i < children.length; i++)
                 callback(children[i], depth + 1)
         }
         callback(root, 0)
+
+        console.trace(data.length)
+        // @ts-ignore
+        window.d = () => Engine.entities
+        // @ts-ignore
+        window.y = () => HierarchyController.updateHierarchy()
+        // @ts-ignore
+        window.u = () => ResourceEntityMapper.meshes.array
+        // @ts-ignore
+        window.D = () => {
+            Engine.entities.map.forEach(e => EntityAPI.removeEntity(e))
+            HierarchyController.updateHierarchy()
+        }
         HierarchyController.hierarchy = data
         Object.values(HierarchyController.#listening).forEach(v => v())
     }

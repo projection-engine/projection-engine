@@ -26,6 +26,8 @@ import HierarchyController from "../controllers/HierarchyController";
 import resolveFileName from "../../utils/resolve-file-name";
 import AssetAPI from "../fs/AssetAPI";
 import NameController from "../controllers/NameController";
+import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
+import AXIS from "../../../../engine-tools/static/AXIS";
 
 
 export default class LevelController {
@@ -101,11 +103,10 @@ export default class LevelController {
         EditorActionHistory.clear()
 
 
-        const entities = await Engine.loadLevel(levelID, false)
-        if (entities.length > 0)
-            EngineStateController.appendBlock(entities, true)
-        else
-            HierarchyController.updateHierarchy()
+        await Engine.loadLevel(levelID, false)
+        Engine.entities.array.forEach((entity, i) => {
+            entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
+        })
         if(Engine.loadedLevel)
         SelectionStore.updateStore({
             ...SelectionStore.data,
@@ -113,6 +114,8 @@ export default class LevelController {
             array: [Engine.loadedLevel.id],
             lockedEntity: Engine.loadedLevel.id
         })
+
+        HierarchyController.updateHierarchy()
     }
 
     static async save() {

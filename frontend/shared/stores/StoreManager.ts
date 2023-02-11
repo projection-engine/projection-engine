@@ -7,7 +7,6 @@ import SettingsStore from "./SettingsStore";
 export default class StoreManager{
     static initialize(){
         ElectronResources.ipcRenderer.on(ROUTES.STORE_UPDATE, (_, {data, key}) => {
-            console.trace(data, key)
             switch (key){
                 case STORES.SETTINGS:
                     SettingsStore.noPush = true
