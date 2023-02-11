@@ -106,7 +106,7 @@ export default class LevelController {
             EngineStateController.appendBlock(entities, true)
         else
             HierarchyController.updateHierarchy()
-
+        if(Engine.loadedLevel)
         SelectionStore.updateStore({
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,

@@ -13,6 +13,7 @@
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
     import EntityUpdateController from "../../../lib/controllers/EntityUpdateController";
     import Modal from "../../../../shared/components/modal/Modal.svelte";
+    import ModalInput from "../../../components/modal-input/ModalInput.svelte";
 
     export let entity: Entity
     export let lockedEntity: string
@@ -60,6 +61,7 @@
         EntityUpdateController.removeListener(entityID, ID)
     })
 
+
 </script>
 
 <div class="info hierarchy-branch" data-svelteentity={entity.id}>
@@ -86,64 +88,18 @@
     >
         {entityName}
     </div>
-    {#if isOnEdit}
-        <Modal
-                styles={"height: 35px; width: 10vw;"}
-                handleClose={() => {
-                    console.log("IM HERE")
-                    isOnEdit = false
-                }}>
-            <input
-                    on:change={e => {
-                        entity.name = e.target.value
-                    }}
 
-                    on:keydown={e => {
-                        if(e.code === KEYS.Enter)
-                            isOnEdit = false
-                    }}
-            />
-        </Modal>
+    {#if isOnEdit}
+        <ModalInput
+            initialValue={entityName}
+            handleClose={value => {
+                entity.name = value
+                isOnEdit = false
+            }}
+        />
     {/if}
     <ToolTip content={entityName}/>
 
+
 </div>
 
-
-<style>
-    input {
-        padding: 0 2px;
-        border-radius: 0;
-        background: none;
-        border: none;
-        outline: none;
-        font-size: .7rem;
-        color: var(--pj-color-primary);
-        background: rgba(0, 0, 0, .65);
-        height: 23px;
-        width: 100%;
-        overflow: visible;
-
-    }
-
-    input:disabled {
-        -webkit-user-select: none !important;
-        background: none;
-        color: var(--pj-color-quaternary);
-    }
-
-    .entity {
-        cursor: pointer;
-        width: 100%;
-        height: 23px;
-        color: var(--pj-color-quaternary);
-
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        overflow: hidden;
-
-        white-space: nowrap;
-    }
-
-</style>

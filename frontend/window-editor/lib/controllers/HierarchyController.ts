@@ -1,11 +1,12 @@
 import Engine from "../../../../engine-core/Engine";
 import SelectionStore from "../../../shared/stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
-import ToRenderElement from "../../views/hierarchy/template/ToRenderElement";
+import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement";
+
 
 
 export default class HierarchyController {
-    static hierarchy: ToRenderElement[] = []
+    static hierarchy: HierarchyToRenderElement[] = []
     static #listening: { [key: string]: Function } = {}
 
     static updateHierarchy() {
@@ -15,6 +16,8 @@ export default class HierarchyController {
 
         const callback = (node: Entity, depth: number) => {
             data.push({node, depth})
+            node.components.forEach((c, key) => data.push({component: c, depth: depth + 1, key}))
+
             const children = node.children
             for (let i = 0; i < children.length; i++)
                 callback(children[i], depth + 1)

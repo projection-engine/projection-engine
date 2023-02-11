@@ -1,5 +1,5 @@
 <script lang="ts">
-    import TreeBranchContent from "./TreeBranchContent.svelte";
+    import TreeBranchContent from "./EntityTreeBranchContent.svelte";
     import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import EntityFactory from "../../../lib/controllers/EntityFactory";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
@@ -30,7 +30,7 @@
     }
 
     $: isOpen = open[entity.id]
-    $: hasChildren = entity.children.length > 0
+    $: hasChildren = entity.children.length > 0 || entity.components.size > 0
     $: isSelected = selected.has(entity.id)
 </script>
 

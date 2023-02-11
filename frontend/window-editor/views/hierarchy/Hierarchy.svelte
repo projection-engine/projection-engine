@@ -47,7 +47,14 @@
         if (!search && !filteredComponent)
             for (let i = 0; i < hierarchy.length; i++) {
                 const current = hierarchy[i]
-                if (!current.node.parent || openLocal[current.node.parent.id])
+                const node = current.node
+                if(!node) {
+                    if(openLocal[current.component.entity.id])
+                        data.push(current)
+                    continue
+                }
+
+                if (!node.parent || openLocal[node.parent.id])
                     data.push(current)
             }
         else

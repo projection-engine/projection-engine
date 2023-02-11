@@ -155,8 +155,9 @@
         position: relative;
         width: 100%;
         height: 100%;
-        display: grid;
-        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        justify-items: flex-start;
         overflow-y: auto;
         overflow-x: hidden;
 

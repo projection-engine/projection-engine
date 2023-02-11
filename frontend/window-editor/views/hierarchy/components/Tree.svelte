@@ -1,6 +1,7 @@
 <script lang="ts">
     import {onDestroy} from "svelte";
-    import TreeBranch from "./TreeBranch.svelte";
+    import EntityTreeBranch from "./EntityTreeBranch.svelte";
+    import ComponentTreeBranch from "./ComponentTreeBranch.svelte";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import HierarchyController from "../../../lib/controllers/HierarchyController";
     import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
@@ -9,13 +10,14 @@
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
-    import ToRenderElement from "../template/ToRenderElement";
+    import HierarchyToRenderElement from "../template/ToRenderElement";
+
 
 
     export let ID: string
     export let openTree: { [key: string]: boolean }
     export let updateOpen: Function
-    export let toRender: ToRenderElement[]
+    export let toRender: HierarchyToRenderElement[]
 
     const internalID = crypto.randomUUID()
 
@@ -47,16 +49,24 @@
 
 {#if toRender.length > 0}
     <VirtualList items={toRender} let:item>
-        <TreeBranch
-                entity={item.node}
-                depth={item.depth}
-                {selected }
-                {lockedEntity}
-                setLockedEntity={v => SelectionStore.lockedEntity = v}
-                internalID={ID}
-                open={openTree}
-                {updateOpen}
-        />
+        {#if item.component}
+            <ComponentTreeBranch
+                    component={item.component}
+                    depth={item.depth}
+                    key={item.key}
+            />
+        {:else}
+            <EntityTreeBranch
+                    entity={item.node}
+                    depth={item.depth}
+                    {selected }
+                    {lockedEntity}
+                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+                    internalID={ID}
+                    open={openTree}
+                    {updateOpen}
+            />
+        {/if}
     </VirtualList>
 {:else}
     <div data-svelteempty="-">

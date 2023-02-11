@@ -36,9 +36,10 @@
                     index: -2,
                     color: "var(--pj-accent-color-secondary)"
                 },
+                {divider: true},
                 {
                     label: LOCALIZATION_EN.ASSET_PROPERTIES,
-                    icon: "file",
+                    icon: "description",
                     index: -1,
                     color: "var(--pj-accent-color-tertiary)"
                 }

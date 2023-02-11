@@ -6,7 +6,7 @@
     export let onDelete
 </script>
 <div data-svelteinline="-" class="title-wrapper">
-    <h4>{title}</h4>
+    <h4 data-svelteoverflow="-">{title}</h4>
     {#if allowDeletion}
         <button data-sveltebuttondefault="-"  class="button" on:click={onDelete}>
             <Icon>delete_forever</Icon>
