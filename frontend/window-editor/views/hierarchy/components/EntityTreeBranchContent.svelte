@@ -29,7 +29,6 @@
 
 
 
-
     const ID = crypto.randomUUID()
     let entityName = entity.name
     let entityID
@@ -85,10 +84,7 @@
         {/if}
     </button>
 
-    <div
-            bind:this={ref}
-            on:dblclick={() => isOnEdit = true}
-    >
+    <div bind:this={ref} on:dblclick={() => isOnEdit = true}>
         {entityName}
         <ToolTip content={entityName}/>
     </div>
@@ -97,9 +93,9 @@
         <ModalInput
                 initialValue={entityName}
                 handleClose={value => {
-                entity.name = value
-                isOnEdit = false
-            }}
+                    entity.name = value
+                    isOnEdit = false
+                }}
         />
     {/if}
 
@@ -124,9 +120,12 @@
     .children-quantity{
         font-size: .5rem;
         position: absolute;
-        right: -4px;
-        bottom: -4px;
-
+        left: 50%;
+        bottom: -3px;
+        background: rgba(0,0,0,.75);
+        padding: 0 2px;
+        height: fit-content;
+        border-radius: 3px;
     }
     .component {
         color: var(--pj-accent-color-tertiary);

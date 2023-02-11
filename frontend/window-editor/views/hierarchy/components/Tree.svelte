@@ -6,21 +6,17 @@
     import HierarchyController from "../../../lib/controllers/HierarchyController";
     import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
-    import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
-    import Entity from "../../../../../engine-core/instances/Entity";
-
+    import HierarchyToRenderElement from "../template/ToRenderElement";
 
     export let ID: string
     export let isOnSearch: boolean
     export let openTree: { [key: string]: boolean }
     export let updateOpen: Function
-    export let rootNode: Entity
-
+    export let toRender: HierarchyToRenderElement[]
     const internalID = crypto.randomUUID()
-
 
     let selected: Map<string, boolean>
     let lockedEntity
@@ -47,17 +43,28 @@
 </script>
 
 
-{#if rootNode }
-    <EntityTreeBranch
-            {isOnSearch}
-            entity={rootNode}
-            depth={0}
-            {selected}
-            {lockedEntity}
-            setLockedEntity={v => SelectionStore.lockedEntity = v}
-            {openTree}
-            {updateOpen}
-    />
+{#if toRender.length > 0}
+    {#each toRender as item}
+        {#if item.component}
+            <ComponentTreeBranch
+                    component={item.component}
+                    depth={item.depth + 1}
+                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+            />
+        {:else}
+            <EntityTreeBranch
+                    {isOnSearch}
+                    entity={item.node}
+                    depth={item.depth}
+
+                    {selected }
+                    {lockedEntity}
+                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+                    open={openTree}
+                    {updateOpen}
+            />
+        {/if}
+    {/each}
 {:else}
     <div data-svelteempty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>

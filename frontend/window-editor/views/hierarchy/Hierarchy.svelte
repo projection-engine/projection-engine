@@ -18,8 +18,7 @@
     let ref
     let settings
     let openTree = {}
-    // let toRender = []
-    let rootNode
+    let toRender = []
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     $: {
@@ -36,8 +35,32 @@
     const draggable = dragDrop()
 
     function updateHierarchy(op) {
-        rootNode = Engine.loadedLevel
-        openTree = op ?? openTree
+        const openLocal = op ?? openTree
+        if (op !== openTree && op !== undefined)
+            HierarchyController.updateHierarchy()
+        openTree = openLocal
+
+        const hierarchy = HierarchyController.hierarchy
+        const data = []
+
+            for (let i = 0; i < hierarchy.length; i++) {
+                const current = hierarchy[i]
+                let node = current.node
+
+                if (!node ) {
+                    if(search || filteredComponent)
+                        continue
+                    node = current.component.entity
+                    if (openLocal[node.id] && openLocal[node.parent.id])
+                        data.push(current)
+                    continue
+                }
+                const searchMatches =  (!search || search && node.name.includes(search)) && (!filteredComponent || filteredComponent && node.components.has(filteredComponent))
+                if (searchMatches && (!node.parent || openLocal[node.parent?.id]))
+                    data.push(current)
+            }
+
+        toRender = data
     }
 
     onMount(() => {
@@ -90,7 +113,7 @@
                 {isOnSearch}
                 updateOpen={_ => updateHierarchy(openTree)}
                 {openTree}
-                {rootNode}
+                {toRender}
                 {filteredComponent}
                 {ID}
         />
@@ -99,11 +122,11 @@
 
 
 <style>
+
     .wrapper {
         position: relative;
         width: 100%;
-        overflow-y: hidden;
-        overflow-x: auto;
+        overflow: auto;
         height: 100%;
         max-height: 100%;
     }
@@ -112,6 +135,12 @@
         min-width: 100%;
         width: fit-content;
         overflow: visible;
-        height: 100%;
+        background: repeating-linear-gradient(
+                to bottom,
+                var(--pj-background-secondary) 0px,
+                var(--pj-background-secondary) 23px,
+                var(--pj-background-tertiary) 23px,
+                var(--pj-background-tertiary) 46px
+        );
     }
 </style>
