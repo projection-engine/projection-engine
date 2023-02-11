@@ -15,6 +15,7 @@
 
 
     export let ID: string
+    export let isOnSearch: boolean
     export let openTree: { [key: string]: boolean }
     export let updateOpen: Function
     export let toRender: HierarchyToRenderElement[]
@@ -48,26 +49,29 @@
 
 
 {#if toRender.length > 0}
-    <VirtualList items={toRender} let:item>
+<!--    <VirtualList items={toRender} let:item>-->
+    {#each toRender as item}
         {#if item.component}
             <ComponentTreeBranch
                     component={item.component}
-                    depth={item.depth}
-                    key={item.key}
+                    depth={item.depth + 1}
+                    setLockedEntity={v => SelectionStore.lockedEntity = v}
             />
         {:else}
             <EntityTreeBranch
+                    {isOnSearch}
                     entity={item.node}
                     depth={item.depth}
+
                     {selected }
                     {lockedEntity}
                     setLockedEntity={v => SelectionStore.lockedEntity = v}
-                    internalID={ID}
                     open={openTree}
                     {updateOpen}
             />
         {/if}
-    </VirtualList>
+        {/each}
+<!--    </VirtualList>-->
 {:else}
     <div data-svelteempty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>

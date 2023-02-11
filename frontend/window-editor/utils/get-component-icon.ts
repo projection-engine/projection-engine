@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
+import COMPONENTS from "../../../engine-core/static/COMPONENTS";
 
 export default function getComponentIcon(key) {
     switch (key) {

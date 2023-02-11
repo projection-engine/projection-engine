@@ -18,6 +18,7 @@
     h4{
         margin: 0;
         font-weight: 550;
+        font-size: initial !important;
     }
     .title-wrapper {
         border-bottom: var(--pj-border-primary) 1px solid;

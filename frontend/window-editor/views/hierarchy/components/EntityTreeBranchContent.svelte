@@ -4,19 +4,18 @@
     import getEngineIcon from "../utils/get-engine-icon";
     import updateSelection from "../utils/update-selection";
     import NameController from "../../../lib/controllers/NameController";
-    import KEYS from "../../../static/KEYS.ts";
-    import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
     import EntityUpdateController from "../../../lib/controllers/EntityUpdateController";
-    import Modal from "../../../../shared/components/modal/Modal.svelte";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
+    import mapComponents from "../utils/map-components";
 
     export let entity: Entity
     export let lockedEntity: string
+    export let isOpen: boolean
     export let setLockedEntity: Function
 
     let isOnEdit = false
@@ -25,8 +24,10 @@
 
     $: icons = getEngineIcon(entity)
     const draggable = dragDrop(true)
-
     $: draggable.disabled = isOnEdit
+
+    let components = []
+
 
     const ID = crypto.randomUUID()
     let entityName = entity.name
@@ -37,7 +38,9 @@
                 EntityUpdateController.removeListener(entityID, ID)
             EntityUpdateController.addListener(entity.id, ID, () => {
                 entityName = entity.name
+                components = mapComponents(entity)
             })
+            components = mapComponents(entity)
             entityName = entity.name
             entityID = entity.id
         }
@@ -61,10 +64,9 @@
         EntityUpdateController.removeListener(entityID, ID)
     })
 
-
 </script>
 
-<div class="info hierarchy-branch" data-svelteentity={entity.id}>
+<div class="info hierarchy-branch"    data-sveltenode={entity.id} on:click={e => updateSelection(entity.id, e.ctrlKey)}>
     <button
             data-sveltelocked={lockedEntity === entity.id ? "-" : ""}
             class="button-icon hierarchy-branch"
@@ -72,34 +74,45 @@
             on:click={() => setLockedEntity(entity.id)}
     >
         {#if entity.isCollection}
-            <Icon>inventory_2</Icon>
+            <Icon styles="font-size: 1rem">inventory_2</Icon>
         {:else}
-            <Icon>view_in_ar</Icon>
+            <Icon styles="font-size: 1rem">view_in_ar</Icon>
         {/if}
     </button>
 
     <div
             bind:this={ref}
             on:dblclick={() => isOnEdit = true}
-            on:click={(e) => {
-                isOnEdit = false
-                updateSelection(entity.id, e.ctrlKey)
-            }}
     >
         {entityName}
+        <ToolTip content={entityName}/>
     </div>
 
     {#if isOnEdit}
         <ModalInput
-            initialValue={entityName}
-            handleClose={value => {
+                initialValue={entityName}
+                handleClose={value => {
                 entity.name = value
                 isOnEdit = false
             }}
         />
     {/if}
-    <ToolTip content={entityName}/>
 
-
+    {#if !isOpen}
+        {#each components as component}
+            <div class="component">
+                <Icon styles="font-size: .9rem">{component.icon}</Icon>
+                <ToolTip content={component.label}/>
+            </div>
+        {/each}
+    {/if}
 </div>
 
+<style>
+    .component {
+        color: var(--pj-accent-color-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

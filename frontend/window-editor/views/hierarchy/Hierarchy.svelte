@@ -33,6 +33,7 @@
     }
 
     const draggable = dragDrop()
+
     function updateHierarchy(op) {
         const openLocal = op ?? openTree
         if (op !== openTree && op !== undefined)
@@ -40,29 +41,26 @@
         console.trace(search)
         openTree = openLocal
 
-        const entities = Engine.entities.array
         const hierarchy = HierarchyController.hierarchy
         const data = []
 
-        if (!search && !filteredComponent)
             for (let i = 0; i < hierarchy.length; i++) {
                 const current = hierarchy[i]
-                const node = current.node
-                if(!node) {
-                    if(openLocal[current.component.entity.id])
+                let node = current.node
+
+                if (!node ) {
+                    if(search || filteredComponent)
+                        continue
+                    node = current.component.entity
+                    if (openLocal[node.id] && openLocal[node.parent.id])
                         data.push(current)
                     continue
                 }
-
-                if (!node.parent || openLocal[node.parent.id])
+                const searchMatches =  (!search || search && node.name.includes(search)) && (!filteredComponent || filteredComponent && node.components.has(filteredComponent))
+                if (searchMatches && (!node.parent || openLocal[node.parent?.id]))
                     data.push(current)
             }
-        else
-            for (let i = 0; i < entities.length; i++) {
-                const node = entities[i]
-                if (node.name.includes(search) && node.components.has(filteredComponent))
-                    data.push({node: node, depth: 0})
-            }
+
         toRender = data
     }
 
@@ -71,26 +69,31 @@
             targetElement: ref,
             onDrop: (entityDragged, event) => {
                 const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
-                handleDrop(event, entityDragged, node ? Engine.entities.map.get(node) : undefined)
+                handleDrop(event, entityDragged, node ? Engine.entities.get(node) : undefined)
             },
             onDragOver: (_, ev) => {
                 if (ev.ctrlKey)
-                    return `Drop to make as child`;
+                    return `Link entities`;
                 if (ev.shiftKey)
-                    return `Drop to clone into...`;
-                return `CTRL to make as child | SHIFT to clone | Drop on collection to make as child`
+                    return `Copy into`;
+                return `Drop on collection (CTRL to link, SHIFT to copy and link)`
             }
         })
 
         HierarchyController.registerListener(ID, updateHierarchy)
     })
 
+    $: {
+        search
+        filteredComponent
+        updateHierarchy()
+    }
     onDestroy(() => {
         HotKeysController.unbindAction(ref)
         unsubscribeSettings()
         draggable.onDestroy()
     })
-
+    $: isOnSearch = search || filteredComponent
 </script>
 
 <Header
@@ -106,13 +109,16 @@
         id={ID}
         bind:this={ref}
 >
-    <Tree
-            updateOpen={_ => updateHierarchy(openTree)}
-            {openTree}
-            {toRender}
-            {filteredComponent}
-            {ID}
-    />
+    <div class="content">
+        <Tree
+                {isOnSearch}
+                updateOpen={_ => updateHierarchy(openTree)}
+                {openTree}
+                {toRender}
+                {filteredComponent}
+                {ID}
+        />
+    </div>
 </div>
 
 
@@ -120,8 +126,16 @@
     .wrapper {
         position: relative;
         width: 100%;
-        overflow: hidden;
+        overflow-y: hidden;
+        overflow-x: auto;
         height: 100%;
         max-height: 100%;
+    }
+
+    .content {
+        min-width: 100%;
+        width: fit-content;
+        overflow: visible;
+        height: 100%;
     }
 </style>

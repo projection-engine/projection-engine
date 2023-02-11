@@ -60,7 +60,7 @@ export default class EntityFactory {
 
     static createLight(type) {
         const entity = EntityAPI.getNewEntityInstance()
-        entity.name = LOCALIZATION_EN.DIRECTIONAL_LIGHT
+        entity.name = LOCALIZATION_EN.NEW_LIGHT
         EntityFactory.translateEntity(entity)
         const comp = entity.addComponent<LightComponent>(COMPONENTS.LIGHT)
         comp.type = type
@@ -97,9 +97,11 @@ export default class EntityFactory {
         EngineStateController.add(entity)
     }
 
-    static toggleEntityVisibility(nodeRef, submit = true) {
+    static toggleEntityVisibility(nodeRef, noSubmit) {
         EntityAPI.toggleVisibility(nodeRef)
-        if (submit)
+        if (!noSubmit) {
+            console.trace("UPDATING HIERARCHY")
             HierarchyController.updateHierarchy()
+        }
     }
 }

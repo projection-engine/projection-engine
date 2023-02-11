@@ -3,7 +3,7 @@
     import removeComponent from "../../../utils/remove-component";
     import LOCALIZATION_EN from "../../../../../../../static/objects/LOCALIZATION_EN";
     import Component from "../../../../../../../engine-core/instances/components/Component";
-    import getComponentLabel from "../../../utils/get-component-label";
+    import getComponentLabel from "../../../../../utils/get-component-label";
     import Accordion from "../../../../../../shared/components/accordion/Accordion.svelte";
     import PropertyHeader from "../../../../../../shared/components/PropertyHeader.svelte";
 

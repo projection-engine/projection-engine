@@ -58,7 +58,7 @@ export default class GizmoSystem   {
     static updateGizmoToolTip = () => null
 
     static linkEntityToGizmo(main?:Entity) {
-        if(main?.isCollection)
+        if(main?.isCollection || !main?.active)
             return
         getPivotPointMatrix(main)
         main.__pivotChanged = true
@@ -83,8 +83,7 @@ export default class GizmoSystem   {
 
     static execute() {
         const m = GizmoSystem.mainEntity
-        if (m != null) {
-
+        if (m != null && m.active) {
             const axis = GizmoSystem.clickedAxis
             GizmoSystem.highlightX = axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
             GizmoSystem.highlightY = axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE

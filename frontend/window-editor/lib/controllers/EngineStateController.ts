@@ -27,7 +27,6 @@ function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
 export default class EngineStateController {
     static #updateStructure(replacedMap?: { [key: string]: boolean }) {
         const arr = Engine.entities.array
-        const map = Engine.entities.map
         for (let i = 0; i < arr.length; i++) {
             const entity = arr[i]
             entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
@@ -35,7 +34,7 @@ export default class EngineStateController {
                 continue
             if (entity.parent && !replacedMap?.[entity.parent?.id])
                 entity.parentID = entity.parent.id
-            const parent = map.get(entity.parentID)
+            const parent = Engine.entities.get(entity.parentID)
             if (parent) {
                 entity.parentID = undefined
                 entity.addParent(parent)

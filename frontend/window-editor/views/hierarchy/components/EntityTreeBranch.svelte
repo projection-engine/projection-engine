@@ -8,6 +8,7 @@
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 
     export let depth: number
+    export let isOnSearch: boolean
     export let entity: Entity
     export let open: { [key: string]: boolean }
     export let updateOpen: Function
@@ -30,21 +31,29 @@
     }
 
     $: isOpen = open[entity.id]
-    $: hasChildren = entity.children.length > 0 || entity.components.size > 0
     $: isSelected = selected.has(entity.id)
+    $: childQuantity = Math.max(entity.children.length, entity.allComponents.length )
+    $: hasChildren = childQuantity > 0
+
 </script>
 
 <div
         data-svelteselected={isSelected ? "-" : ""}
         data-sveltenode={entity.id}
+
         class="wrapper hierarchy-branch"
         style={"padding-left:" +  (depth * 18 + "px;") + (entity.active ? "" : "opacity: .5") }
 >
-    {#if hasChildren}
+
+    {#if hasChildren && !isOnSearch}
+        {#if isOpen}
+            <div data-sveltevertdivider="-" style={`height: ${23 * childQuantity}px`} class="divider"></div>
+        {/if}
         <button
                 data-sveltebuttondefault="-"
                 data-svelteopen={isOpen ? "-" : ""}
                 class="button-small hierarchy-branch"
+                style="position: relative; z-index: 11;"
                 on:click={onExpand}
         >
             <Icon>arrow_drop_down</Icon>
@@ -52,10 +61,10 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <TreeBranchContent {open} {entity} {lockedEntity} {setLockedEntity}/>
-    <button data-sveltebuttondefault="-"
-            style="margin-left: 4px; position: sticky; right: 0"
-            class="button-small hierarchy-branch"
+    <TreeBranchContent  {isOpen} {entity} {lockedEntity} {setLockedEntity}/>
+    <button
+            data-sveltebuttondefault="-"
+            class="button-visibility"
             on:click={() => EntityFactory.toggleEntityVisibility(entity)}
     >
         <ToolTip content={LOCALIZATION_EN.DEACTIVATE}/>
@@ -69,3 +78,28 @@
     </button>
 </div>
 
+<style>
+    .button-visibility {
+        opacity: inherit;
+        position: sticky;
+        right: 0;
+        background: inherit;
+        min-height: 23px;
+        min-width: 23px;
+        max-height: 23px;
+        max-width: 23px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+    }
+    .divider{
+        position: absolute;
+        top: 23px;
+        transform: translateX(.3rem);
+        z-index: 10;
+        background: none;
+        border-left: var(--pj-border-secondary) 1px dashed;
+    }
+</style>

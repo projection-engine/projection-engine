@@ -16,7 +16,7 @@ export default class HierarchyController {
 
         const callback = (node: Entity, depth: number) => {
             data.push({node, depth})
-            node.components.forEach((c, key) => data.push({component: c, depth: depth + 1, key}))
+            node.allComponents.forEach(component => data.push({component, depth: depth + 1}))
 
             const children = node.children
             for (let i = 0; i < children.length; i++)

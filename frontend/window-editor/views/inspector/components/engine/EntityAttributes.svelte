@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Metadata from "./EntityInformation.svelte";
+    import EntityInformation from "./EntityInformation.svelte";
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
@@ -23,9 +23,9 @@
 
     let ref: HTMLElement
     let savedState = false
-    let components: [string, Component][] = []
+    let components
     $: components = entity.allComponents
-    $: component = components[tabIndex]?.[1]
+    $: component = components[tabIndex]
     $: setTabs(entity.isCollection ? [getEntityTabs(components)[0]] : getEntityTabs(components))
     $: scripts = entity.scripts
 
@@ -40,7 +40,7 @@
     onDestroy(() => draggable.onDestroy())
 
     $: {
-        if (components[tabIndex] == null && tabIndex > 0)
+        if (component == null && tabIndex > 0)
             setTabIndex(-1)
     }
 
@@ -54,7 +54,7 @@
 
 <span style="display: none" bind:this={ref}></span>
 {#if tabIndex === -1}
-    <Metadata entity={entity}/>
+    <EntityInformation entity={entity}/>
 {:else if tabIndex === -2}
     {#if scripts.length > 0}
         {#each scripts as script, scriptIndex}
@@ -71,26 +71,26 @@
             {LOCALIZATION_EN.NO_CUSTOM_COMPONENTS_LINKED}
         </div>
     {/if}
-{:else if tabIndex < components.length}
-    {#if components[tabIndex][0] === COMPONENTS.UI}
+{:else if tabIndex < components.length && component}
+    {#if component.componentKey === COMPONENTS.UI}
         <UIComponent
                 entity={entity}
-                submit={(k, v) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, true, components[tabIndex])}
+                submit={(k, v) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, true, component)}
         />
-    {:else if component}
+    {:else}
         <Layout
                 entity={entity}
-                key={components[tabIndex][0]}
+                key={component.componentKey}
                 component={component}
                 updateTabs={() => components = entity.allComponents}
-                submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, components[tabIndex])}
+                submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, component)}
         />
         {#if component instanceof MeshComponent && component.hasMaterial}
             <fieldset>
                 <legend>{LOCALIZATION_EN.MATERIAL_VALUES}</legend>
                 <Checkbox
                         label={LOCALIZATION_EN.OVERRIDE_PROPERTIES}
-                        handleCheck={() => updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !components[tabIndex][1].overrideMaterialUniforms, true, components[tabIndex])}
+                        handleCheck={() => updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !component.overrideMaterialUniforms, true, component)}
                         checked={component.overrideMaterialUniforms}
                 />
                 {#if component.overrideMaterialUniforms}

@@ -5,7 +5,6 @@
     export let width:string
     export let height:string
     export let onBlur:Function
-    export let noPadding:boolean
     export let onChange:Function
     export let inputValue:string
     export let noAutoSubmit = false
@@ -34,14 +33,19 @@
 
 <div
         class="wrapper"
-        style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${minWidth ? `min-width: ${minWidth};` : ""} ${height ? `max-height: ${height};min-height: ${height};` : ""} ${width ? `max-width: ${width};` : ""} ${noPadding ? `noPadding: ${noPadding};` : ""}`}
+        class:with-label={$$slots.label != null}
+        style={`${minWidth ? `min-width: ${minWidth};` : ""} ${width ? `max-width: ${width};` : ""} `}
 >
     {#if $$slots.icon}
         <div class="icon-wrapper">
             <slot name="icon"/>
         </div>
     {/if}
+    {#if $$slots.label}
+        <slot name="label"/>
+    {/if}
     <input
+            style={`${hasBorder ? "border: var(--pj-border-primary) 1px solid;" : ""} ${height ? `max-height: ${height};min-height: ${height};` : ""}`}
             placeholder={placeholder||""}
             disabled={disabled}
             draggable="false"
@@ -63,27 +67,33 @@
 </div>
 
 <style>
+    .with-label{
+        display: grid !important;
+        align-items: unset;
+        height: fit-content !important;
+    }
     .wrapper {
         height: 23px;
         display: flex;
         align-items: center;
-        gap: 4px;
-        padding: 3px;
+        padding: 3px 0;
+        gap: 2px;
         overflow: hidden;
         border-radius: 3px;
         width: 100%;
         max-width: 250px;
 
-        background: var(--pj-background-tertiary);
+
     }
 
     input {
+        background: var(--pj-background-tertiary);
         font-size: .7rem;
         color: var(--pj-color-quaternary);
         border: none;
-        background: transparent;
         outline: none;
         width: 100%;
+        border-radius: 3px;
 
     }
 

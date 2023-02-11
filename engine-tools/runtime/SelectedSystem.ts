@@ -56,7 +56,7 @@ export default class SelectedSystem {
 
         StaticEditorShaders.outline.bind()
         const outlineShaderUniforms = StaticEditorShaders.outlineUniforms
-        context.uniform2fv(outlineShaderUniforms.bufferSize, StaticFBO.postProcessing1.resolution)
+        context.uniform2fv(outlineShaderUniforms.bufferSize, GPU.bufferResolution)
         context.uniform1f(outlineShaderUniforms.outlineWidth, settings.outlineWidth)
         if (settings.showOutline) {
             context.activeTexture(context.TEXTURE0)

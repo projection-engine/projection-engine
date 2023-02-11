@@ -4,6 +4,5 @@ import Component from "../../../../../engine-core/instances/components/Component
 export default interface HierarchyToRenderElement{
     node:Entity
     component?:Component
-    key?:string
     depth:number
 }

@@ -66,16 +66,15 @@ export default function dragDrop(draggable) {
                 DragDropController.dropTarget = draggableElement
                 DragDropController.changedElements.push(draggableElement)
                 draggableElement.style.opacity = ".5"
-                draggableElement.dragDropListeners.dragOver(event)
+                draggableElement.dragDropListeners?.dragOver?.(event)
                 break
             case "drop":
                 event.preventDefault()
-                if (!DragDropController.dropTarget)
+                console.trace("ON DROP ", DragDropController.dropTarget, draggableElement.dragDropListeners)
+                if (!DragDropController.dropTarget || !draggableElement.dragDropListeners?.onDrop)
                     return;
-
                 draggableElement.dragDropListeners?.onDrop?.(DragDropController.dragData, event)
                 DragDropController.onLeave()
-
                 break
         }
     }

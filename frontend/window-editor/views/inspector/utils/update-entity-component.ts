@@ -7,8 +7,8 @@ import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import LightComponent from "../../../../../engine-core/instances/components/LightComponent";
 import CameraComponent from "../../../../../engine-core/instances/components/CameraComponent";
 
-export default function updateEntityComponent(savedState, setSaved, entity, key, value, save, currentComponentValue) {
-    if (currentComponentValue[1] instanceof LightComponent ) {
+export default function updateEntityComponent(savedState, setSaved, entity, key, value, save, component) {
+    if (component instanceof LightComponent ) {
         entity.needsLightUpdate = true
         LightsAPI.packageLights(true)
     }
@@ -16,11 +16,11 @@ export default function updateEntityComponent(savedState, setSaved, entity, key,
         EditorActionHistory.save(entity)
         setSaved(true)
     }
-    if (currentComponentValue[1] instanceof CameraComponent ) {
+    if (component instanceof CameraComponent ) {
         entity.__cameraNeedsUpdate = true
     }
-    currentComponentValue[1][key] = value
-    if (currentComponentValue[0] === COMPONENTS.CAMERA && entity.id === EngineStore.engine.focusedCamera)
+    component[key] = value
+    if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.engine.focusedCamera)
         CameraAPI.updateViewTarget(entity)
     if (save) {
         SelectionStore.updateStore()

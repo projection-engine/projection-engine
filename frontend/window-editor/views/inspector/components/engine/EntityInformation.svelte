@@ -15,8 +15,10 @@
     import TransformationForm from "./TransformationForm.svelte";
     import EntityUpdateController from "../../../../lib/controllers/EntityUpdateController";
     import {onDestroy} from "svelte";
+    import AddComponent from "./AddComponent.svelte";
+    import AlertController from "../../../../../shared/components/alert/AlertController";
 
-    export let entity: Entity | undefined
+    export let entity: Entity
 
     const ID = crypto.randomUUID()
     let entityName = entity.name
@@ -39,68 +41,87 @@
 </script>
 
 
-<PropertyHeader title={entityName}/>
+<div data-svelteinline="-" style="overflow: hidden; min-height: 22px">
+    <AddComponent entity={entity}>
+        <PropertyHeader title={entityName}/>
+    </AddComponent>
+</div>
+
 {#if !entity.isCollection}
     <TransformationForm/>
 {/if}
-<Accordion title={LOCALIZATION_EN.NAME_AND_KEY} startOpen={entity.isCollection}>
-    <fieldset>
-        <legend>{LOCALIZATION_EN.NAME}</legend>
-        <Input
-                width="100%"
-                hasBorder={true}
-                onBlur={(_,v) => NameController.renameEntity(v, entity)}
-                onEnter={v => NameController.renameEntity(v, entity)}
-                inputValue={entityName}
-                placeholder={LOCALIZATION_EN.MY_ENTITY}
-        />
-    </fieldset>
-    <fieldset>
-        <legend>{LOCALIZATION_EN.QUERY_KEY}</legend>
-        <Input
-                width="100%"
-                hasBorder={true}
-                onChange={v => {
+
+<Accordion title={LOCALIZATION_EN.BASIC} startOpen={entity.isCollection}>
+    <div data-svelteform="-">
+            <Input
+                    width="100%"
+                    hasBorder={true}
+                    onBlur={(_,v) => NameController.renameEntity(v, entity)}
+                    onEnter={v => NameController.renameEntity(v, entity)}
+                    inputValue={entityName}
+                    height="23px"
+                    placeholder={LOCALIZATION_EN.MY_ENTITY}
+            >
+                <small slot="label">{LOCALIZATION_EN.NAME}</small>
+            </Input>
+
+            <Input
+                    width="100%"
+                    hasBorder={true}
+                    onChange={v => {
                     Engine.queryMap.delete(entity.queryKey)
                     Engine.queryMap.set(v, entity)
                     entity.queryKey = v
                 }}
-                inputValue={entity.queryKey}
-                placeholder={LOCALIZATION_EN.QUERY_KEY}
-        />
-    </fieldset>
+                    height="23px"
+                    inputValue={entity.queryKey}
+                    placeholder={LOCALIZATION_EN.QUERY_KEY}
+            >
+                <small slot="label">{LOCALIZATION_EN.QUERY_KEY}</small>
+            </Input>
+        {#if entity.parent}
+            <Selector
+                    type="parent"
+                    selected={entity.parent}
+                    handleChange={v => {
+                        if(v === entity){
+                            AlertController.error(LOCALIZATION_EN.COULD_NOT_LINK_ENTITIES)
+                            return
+                        }
+                        entity.addParent(v)
+                         if(entity.parent !== v){
+                            AlertController.error(LOCALIZATION_EN.COULD_NOT_LINK_ENTITIES)
+                            return
+                        }
+                        HierarchyController.updateHierarchy()
+                    }}
+            />
+        {/if}
+    </div>
 </Accordion>
 <Accordion title={LOCALIZATION_EN.VIEWPORT}>
-    <Checkbox
-            checked={entity.active}
-            handleCheck={_ =>  {
+    <div data-svelteform="-">
+        <Checkbox
+                checked={entity.active}
+                handleCheck={_ =>  {
                 const inv = !entity.active
                 EntityFactory.toggleEntityVisibility(entity)
                 entity.active = inv
             }}
-            label={LOCALIZATION_EN.ACTIVE}
-    />
+                label={LOCALIZATION_EN.ACTIVE}
+        />
 
-    <ColorPicker
-            label={LOCALIZATION_EN.COLOR}
-            value={entity.colorIdentifier||[255,255,255]}
-            submit={(_, arr) => {
+        <ColorPicker
+                label={LOCALIZATION_EN.COLOR}
+                value={entity.colorIdentifier||[255,255,255]}
+                submit={(_, arr) => {
                 entity.colorIdentifier = arr
                 HierarchyController.updateHierarchy()
             }}
-    />
+        />
+    </div>
 </Accordion>
 
-<Accordion title={LOCALIZATION_EN.RELATIONS}>
-    <Selector
-            type="parent"
-            selected={entity.parent}
-            handleChange={v => {
-                entity.addParent(v)
-                HierarchyController.updateHierarchy()
-            }}
-    />
-</Accordion>
 
 <style>
     fieldset {

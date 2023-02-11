@@ -1,6 +1,6 @@
-import getComponentIcon from "../utils/get-component-icon";
+import getComponentIcon from "../../../utils/get-component-icon";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
-import getComponentLabel from "../utils/get-component-label";
+import getComponentLabel from "../../../utils/get-component-label";
 
 
 export default [
@@ -15,5 +15,4 @@ export default [
     [COMPONENTS.RIGID_BODY, getComponentLabel(COMPONENTS.RIGID_BODY), getComponentIcon(COMPONENTS.RIGID_BODY)],
     [COMPONENTS.CULLING, getComponentLabel(COMPONENTS.CULLING), getComponentIcon(COMPONENTS.CULLING)],
     [COMPONENTS.UI, getComponentLabel(COMPONENTS.UI), getComponentIcon(COMPONENTS.UI)],
-    // [COMPONENTS.TERRAIN, getComponentLabel(COMPONENTS.TERRAIN), getComponentIcon(COMPONENTS.UI)],
 ]

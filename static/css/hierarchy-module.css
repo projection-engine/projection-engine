@@ -7,6 +7,12 @@
     position: relative;
     white-space: nowrap;
     --pj-selection-color: var(--pj-accent-color-light);
+    --pj-local-background: transparent;
+    background: var(--pj-local-background);
+}
+.wrapper.hierarchy-branch:nth-child(odd){
+    --pj-local-background:  var(--pj-background-secondary);
+
 }
 .wrapper.hierarchy-branch > * {
     white-space: nowrap;
@@ -30,6 +36,7 @@
 .wrapper.hierarchy-branch:hover {
     background: var(--pj-border-primary);
 }
+
 
 
 .button-small.hierarchy-branch {
@@ -73,13 +80,15 @@
     align-items: center;
     gap: 2px;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .button-icon.hierarchy-branch {
     --button-color: white;
-    width: 23px;
-    height: 23px;
+    max-width: 22px;
+    max-height: 22px;
+    min-width: 22px;
+    min-height: 22px;
     border: none;
     outline: none;
     background: none;
@@ -93,9 +102,17 @@
     color: var(--button-color) !important;
 }
 
+.wrapper.hierarchy-branch[data-svelteselected="-"] > .info.hierarchy-branch> .button-icon.hierarchy-branch[data-sveltelocked="-"]{
+    opacity: 1;
+    backdrop-filter: brightness(125%) !important;
+    background: transparent;
+
+    border: transparent 1px solid;
+}
 .button-icon.hierarchy-branch[data-sveltelocked="-"] {
     opacity: 1;
-    background: var(--pj-background-primary-light);
+    background: var(--background-input);
+
     border: var(--pj-border-primary) 1px solid;
 }
 

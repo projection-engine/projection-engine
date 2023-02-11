@@ -18,14 +18,13 @@
 </script>
 
 
-<Dropdown hideArrow={true} buttonStyles="border-radius: 3px; background: var(--pj-background-secondary); margin-left: auto">
+<Dropdown buttonStyles="border-radius: 3px; background: transparent; overflow: hidden;">
     <button data-sveltebuttondefault="-"
             slot="button"
             class="add-button"
             data-svelteoverflow="-"
     >
-        <Icon>add</Icon>
-        <ToolTip content={LOCALIZATION_EN.ADD_COMPONENT}/>
+        <slot/>
     </button>
 
     {#each NATIVE_COMPONENTS as [key,  label, icon]}
@@ -57,12 +56,12 @@
 
 <style>
     .add-button{
-
         border: none;
         display: flex;
         align-items: center;
         gap: 4px;
         max-height: 22px;
         min-height: 22px;
+        padding: 0 !important;
     }
 </style>

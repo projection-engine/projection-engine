@@ -85,7 +85,7 @@ export default class LevelController {
                 AlertController.error(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
             return
         }
-        if(ChangesTrackerStore.data) {
+        if(ChangesTrackerStore.data && Engine.loadedLevel) {
             AlertController.warn(LOCALIZATION_EN.SAVING_PREVIOUS_LEVEL)
             await LevelController.saveCurrentLevel().catch()
         }
@@ -160,10 +160,10 @@ export default class LevelController {
         if (!Engine.loadedLevel)
             return
         const serialized = {
-            entity: Engine.loadedLevel,
-            entities: QueryAPI.getHierarchy(Engine.loadedLevel),
+            entity: Engine.loadedLevel.serializable(),
+            entities: QueryAPI.getHierarchy(Engine.loadedLevel).map(e => e.serializable()),
         }
-        console.trace(serialized)
+
         const assetReg = RegistryAPI.getRegistryEntry(Engine.loadedLevel.id)
         let path = assetReg?.path
 
