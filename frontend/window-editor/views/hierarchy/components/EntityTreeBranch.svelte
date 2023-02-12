@@ -7,6 +7,7 @@
     import Entity from "../../../../../engine-core/instances/Entity";
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
 
+    export let testSearch: Function
     export let depth: number
     export let isOnSearch: boolean
     export let entity: Entity
@@ -34,25 +35,24 @@
     $: isSelected = selected.has(entity.id)
     $: childQuantity = Math.max(entity.children.array.length, entity.allComponents.length)
     $: hasChildren = childQuantity > 0
-
+    $: isMatchToSearch = isOnSearch && testSearch(entity)
 </script>
 
 <div
-        data-svelteselected={isSelected ? "-" : ""}
+        data-svelteselected={isSelected || isMatchToSearch? "-" : ""}
         data-sveltenode={entity.id}
 
         class="wrapper hierarchy-branch"
-        style={"padding-left:" +  (depth * 18 + "px;") + (entity.active ? "" : "opacity: .5") }
+        style={(isMatchToSearch && !isSelected ? "--pj-accent-color-light: var(--pj-accent-color-tertiary);" : "")+ "padding-left:" +  (depth * 18 + "px;") + (entity.active ? "" : "opacity: .5") }
 >
 
-    {#if hasChildren && !isOnSearch}
-        <!--{#if isOpen}-->
+    {#if hasChildren}
+
 
             {#each {length: depth} as _, i}
                 <div data-sveltevertdivider="-" style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
             {/each}
 
-        <!--{/if}-->
         <button
                 data-sveltebuttondefault="-"
                 data-svelteopen={isOpen ? "-" : ""}
@@ -65,7 +65,7 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <TreeBranchContent {isOpen} {entity} {lockedEntity} {setLockedEntity}/>
+    <TreeBranchContent {isOpen} {entity} {lockedEntity} {setLockedEntity} {isOnSearch}/>
     <button
             data-sveltebuttondefault="-"
             class="button-visibility"

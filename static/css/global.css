@@ -61,6 +61,7 @@ body {
     width: 100vw;
     height: 100vh;
     --folder-color: #cb9e35;
+    --folder-color-darker: #b99030;
     --pj-accent-color-light: #0368b0;
     --pj-accent-color-darker: #006cb9;
     --pj-accent-color: #0095ff;

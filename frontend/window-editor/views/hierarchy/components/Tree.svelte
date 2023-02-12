@@ -14,6 +14,7 @@
     import VirtualList from '@sveltejs/svelte-virtual-list';
 
     export let ID: string
+    export let testSearch: Function
     export let isOnSearch: boolean
     export let openTree: { [key: string]: boolean }
     export let updateOpen: Function
@@ -55,6 +56,7 @@
             />
         {:else}
             <EntityTreeBranch
+                    {testSearch}
                     {isOnSearch}
                     entity={item.node}
                     depth={item.depth}

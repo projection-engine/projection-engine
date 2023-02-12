@@ -36,7 +36,6 @@
         <div class="button-small hierarchy-branch"></div>
         <button
                 class="button-icon hierarchy-branch"
-                style={`--button-color: rgb(${entity.isCollection ? entity.colorIdentifier : [203, 158, 53]})`}
                 on:click={() => setLockedEntity(entity.id)}
         >
             <Icon styles="font-size: 1rem; color: var(--pj-accent-color-tertiary)">{icon}</Icon>

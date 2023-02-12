@@ -10,6 +10,8 @@
     import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";
     import Header from "./components/Header.svelte";
+    import buildTree from "./utils/build-tree";
+    import testSearch from "./utils/test-search";
 
     let search = ""
     const ID = crypto.randomUUID()
@@ -34,33 +36,14 @@
 
     const draggable = dragDrop()
 
+
+
     function updateHierarchy(op) {
         const openLocal = op ?? openTree
         if (op !== openTree && op !== undefined)
             HierarchyController.updateHierarchy()
         openTree = openLocal
-
-        const hierarchy = HierarchyController.hierarchy
-        const data = []
-
-            for (let i = 0; i < hierarchy.length; i++) {
-                const current = hierarchy[i]
-                let node = current.node
-
-                if (!node ) {
-                    if(search || filteredComponent)
-                        continue
-                    node = current.component.entity
-                    if (openLocal[node.id] && openLocal[node.parent.id])
-                        data.push(current)
-                    continue
-                }
-                const searchMatches =  (!search || search && node.name.includes(search)) && (!filteredComponent || filteredComponent && node.components.has(filteredComponent))
-                if (searchMatches && (!node.parent || openLocal[node.parent?.id]))
-                    data.push(current)
-            }
-
-        toRender = data
+        toRender = buildTree(openTree, search, filteredComponent)
     }
 
     onMount(() => {
@@ -93,6 +76,8 @@
         draggable.onDestroy()
     })
     $: isOnSearch = search || filteredComponent
+
+
 </script>
 
 <Header
@@ -116,6 +101,7 @@
                 {toRender}
                 {filteredComponent}
                 {ID}
+                testSearch={node => testSearch(filteredComponent, search, node)}
         />
     </div>
 </div>
@@ -137,7 +123,7 @@
         height: 100%;
         width: fit-content;
 
-        overflow:visible;
+        overflow: visible;
 
         background: repeating-linear-gradient(
                 to bottom,

@@ -17,6 +17,7 @@
     export let entity: Entity
     export let lockedEntity: string
     export let isOpen: boolean
+    export let isOnSearch: boolean
     export let setLockedEntity: Function
 
     let isOnEdit = false
@@ -68,13 +69,15 @@
         EntityUpdateController.removeListener(entityID, ID)
     })
 
+    $: isLocked = lockedEntity === entity.id
 </script>
 
 <div class="info hierarchy-branch"    data-sveltenode={entity.id} on:click={e => updateSelection(entity.id, e.ctrlKey)}>
     <button
-            data-sveltelocked={lockedEntity === entity.id ? "-" : ""}
+
+            data-sveltelocked={isLocked ? "-" : ""}
             class="button-icon hierarchy-branch"
-            style={`--button-color: rgb(${entity.isCollection ? entity.colorIdentifier : [203, 158, 53]})`}
+            style={`--button-color: ${entity.isCollection ? "rgb(" + entity.colorIdentifier + ")" : !isLocked ? "var(--folder-color-darker)" : "var(--folder-color)" }`}
             on:click={() => setLockedEntity(entity.id)}
     >
         {#if entity.isCollection}
@@ -99,7 +102,7 @@
         />
     {/if}
 
-    {#if !isOpen}
+    {#if !isOpen && !isOnSearch}
         {#each components as component}
             <div class="component">
                 <Icon styles="font-size: .9rem">{component.icon}</Icon>
