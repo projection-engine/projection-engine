@@ -33,8 +33,8 @@
             AssetAPI.readAsset,
             true
         ).then(async () => {
+            done = true
             await EngineTools.initialize().catch()
-
             const toLoad = LevelController.getLevelToLoad()
             await LevelController.loadLevel(toLoad).catch()
 
@@ -42,7 +42,6 @@
             UIAPI.buildUI(GPU.canvas.parentElement)
             UIAPI.hideUI()
 
-            done = true
 
         })
     })

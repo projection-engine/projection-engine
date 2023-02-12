@@ -126,15 +126,19 @@
     .wrapper {
         position: relative;
         width: 100%;
-        overflow: auto;
+        overflow-x: visible;
+        overflow-y: hidden;
         height: 100%;
         max-height: 100%;
     }
 
     .content {
         min-width: 100%;
+        height: 100%;
         width: fit-content;
-        overflow: visible;
+
+        overflow:visible;
+
         background: repeating-linear-gradient(
                 to bottom,
                 var(--pj-background-secondary) 0px,

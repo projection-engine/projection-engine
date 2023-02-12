@@ -10,6 +10,7 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
     import HierarchyToRenderElement from "../template/ToRenderElement";
+    import Scrollable from "../../../../shared/components/scrollable/Scrollable.svelte";
 
     export let ID: string
     export let isOnSearch: boolean
@@ -44,18 +45,18 @@
 
 
 {#if toRender.length > 0}
-    {#each toRender as item}
-        {#if item.component}
+    <Scrollable {toRender} rowHeight={23} let:element>
+        {#if element.component}
             <ComponentTreeBranch
-                    component={item.component}
-                    depth={item.depth + 1}
+                    component={element.component}
+                    depth={element.depth + 1}
                     setLockedEntity={v => SelectionStore.lockedEntity = v}
             />
         {:else}
             <EntityTreeBranch
                     {isOnSearch}
-                    entity={item.node}
-                    depth={item.depth}
+                    entity={element.node}
+                    depth={element.depth}
 
                     {selected }
                     {lockedEntity}
@@ -64,7 +65,7 @@
                     {updateOpen}
             />
         {/if}
-    {/each}
+    </Scrollable>
 {:else}
     <div data-svelteempty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>

@@ -397,21 +397,36 @@ pre[data-sveltepre="-"] {
 
     border-radius: 3px;
     border: var(--pj-border-primary) 1px solid;
+    border-collapse: collapse;
 }
 [data-sveltebuttongrouprow="-"]{
     width: 100%;
     height: var(--button-height);
     display: flex;
+    border: var(--pj-border-primary) 1px solid;
+    border-collapse: collapse;
 
 }
 [data-sveltebuttongrouprow="-"] > button{
     width: 100%;
     height: var(--button-height);
     border: none;
-
+    border-right: var(--pj-border-primary) 1px solid;
+    cursor: pointer;
     text-align: center;
     background: var(--group-background);
     outline: none;
     border-radius: 0;
+    color: var(--pj-color-secondary);
+font-size: .7rem;
 
+}
+
+[data-sveltebuttongrouprow="-"] > button:hover{
+    color: var(--pj-accent-color);
+}
+[data-sveltebuttongrouprow="-"] > button:active,
+[data-sveltebuttongrouprow="-"] > button[data-sveltehighlight="-"]{
+    background: var(--pj-accent-color);
+    color: white;
 }

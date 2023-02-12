@@ -8,16 +8,25 @@
 </script>
 
 
-<button
-        data-sveltebuttondefault="-"
-
-        data-sveltehighlight={shadingModel === SHADING_MODELS.DETAIL ? "-" : ""}
-        on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DETAIL})}
-        class="button"
->
-    {LOCALIZATION_EN.SHADING_DETAIL}
-</button>
-
+<fieldset>
+    <legend>{LOCALIZATION_EN.MISC}</legend>
+    <div data-sveltebuttongroup="-">
+        <div data-sveltebuttongrouprow="-">
+            <button
+                    data-sveltehighlight={shadingModel === SHADING_MODELS.DETAIL ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DETAIL})}
+                    class="button"
+            >
+                {LOCALIZATION_EN.SHADING_DETAIL}
+            </button>
+            <button
+                    data-sveltehighlight={shadingModel === SHADING_MODELS.LIGHT_QUANTITY ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.LIGHT_QUANTITY})}>
+                {LOCALIZATION_EN.LIGHT_QUANTITY}
+            </button>
+        </div>
+    </div>
+</fieldset>
 <fieldset>
     <legend>{LOCALIZATION_EN.MATERIAL}</legend>
     <div data-sveltebuttongroup="-">
@@ -44,7 +53,7 @@
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.METALLIC})}>
                 {LOCALIZATION_EN.SHADING_METALLIC}
             </button>
-            <button  data-sveltehighlight={shadingModel === SHADING_MODELS.G_AO ? "-" : ""}
+            <button data-sveltehighlight={shadingModel === SHADING_MODELS.G_AO ? "-" : ""}
                     on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.G_AO})}>
                 {LOCALIZATION_EN.SHADING_AO}
             </button>
@@ -61,44 +70,39 @@
 <fieldset>
     <legend>{LOCALIZATION_EN.DEBUG_SHADING}</legend>
 
-    <div class="row">
-        <button  data-sveltehighlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DEPTH})}>
-            {LOCALIZATION_EN.SHADING_DEPTH}
-        </button>
-        <button
-                data-sveltehighlight={shadingModel === SHADING_MODELS.RANDOM ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.RANDOM})}>
-            {LOCALIZATION_EN.SHADING_RANDOM}
-        </button>
-        <button
-                data-sveltehighlight={shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.LIGHT_COMPLEXITY})}>
-            {LOCALIZATION_EN.LIGHT_COMPLEXITY}
-        </button>
+    <div data-sveltebuttongroup="-">
+        <div data-sveltebuttongrouprow="-">
+            <button data-sveltehighlight={shadingModel === SHADING_MODELS.DEPTH ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.DEPTH})}>
+                {LOCALIZATION_EN.SHADING_DEPTH}
+            </button>
+            <button
+                    data-sveltehighlight={shadingModel === SHADING_MODELS.RANDOM ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.RANDOM})}>
+                {LOCALIZATION_EN.SHADING_RANDOM}
+            </button>
+            <button
+                    data-sveltehighlight={shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.LIGHT_COMPLEXITY})}>
+                {LOCALIZATION_EN.LIGHT_COMPLEXITY}
+            </button>
+        </div>
+        <div data-sveltebuttongrouprow="-">
+            <button data-sveltehighlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.POSITION})}>
+                {LOCALIZATION_EN.POSITION}
+            </button>
+            <button data-sveltehighlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.AO})}>
+                {LOCALIZATION_EN.SHADING_DYNAMIC_AO}
+            </button>
+            <button data-sveltehighlight={shadingModel === SHADING_MODELS.OVERDRAW ? "-" : ""}
+                    on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.OVERDRAW})}>
+                {LOCALIZATION_EN.OVERDRAW}
+            </button>
+        </div>
+    </div>
 
-    </div>
-    <div class="row">
-        <button  data-sveltehighlight={shadingModel === SHADING_MODELS.POSITION ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.POSITION})}>
-            {LOCALIZATION_EN.POSITION}
-        </button>
-        <button  data-sveltehighlight={shadingModel === SHADING_MODELS.AO ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.AO})}>
-            {LOCALIZATION_EN.SHADING_DYNAMIC_AO}
-        </button>
-        <button  data-sveltehighlight={shadingModel === SHADING_MODELS.OVERDRAW ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.OVERDRAW})}>
-            {LOCALIZATION_EN.OVERDRAW}
-        </button>
-    </div>
-    <div class="row">
-        <button
-                data-sveltehighlight={shadingModel === SHADING_MODELS.LIGHT_QUANTITY ? "-" : ""}
-                on:click={() => SettingsStore.updateStore({...settings, shadingModel: SHADING_MODELS.LIGHT_QUANTITY})}>
-            {LOCALIZATION_EN.LIGHT_QUANTITY}
-        </button>
-    </div>
 </fieldset>
 
 
@@ -109,14 +113,6 @@
 
     .button {
         background: var(--pj-background-primary);
-    }
-
-
-    .row {
-        width: 100%;
-        gap: 3px;
-        display: flex;
-        height: 25px;
     }
 
     .row > button {
