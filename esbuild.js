@@ -4,7 +4,6 @@ const sveltePlugin  = require(  'esbuild-svelte')
 const {copy}  = require( 'esbuild-plugin-copy')
 
 const production = process.argv[2] === 'prod'
-
 let watch = false
 if (process.argv[2] === 'watch')
     watch = {
