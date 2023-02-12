@@ -15,6 +15,6 @@
     h3 {
         padding: 0 8px;
         margin: 8px 0;
-        font-weight: 550;
+
     }
 </style>

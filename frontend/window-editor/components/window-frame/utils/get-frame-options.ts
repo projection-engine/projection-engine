@@ -7,7 +7,8 @@ import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
 import ViewportActions from "../../../lib/utils/ViewportActions";
 import SettingsStore from "../../../../shared/stores/SettingsStore";
 import GPU from "../../../../../engine-core/GPU";
-function callMethod(id:string) {
+
+function callMethod(id: string) {
     switch (id) {
         case "save":
             LevelController.save().catch()
@@ -39,7 +40,7 @@ function callMethod(id:string) {
     }
 }
 
-export default function getFrameOptions( disabledSave:boolean) {
+export default function getFrameOptions(disabledSave: boolean) {
     return [
         {divider: true, label: "File"},
         {
@@ -66,11 +67,20 @@ export default function getFrameOptions( disabledSave:boolean) {
         {
             label: 'Reload project',
             icon: "refresh",
-            onClick: () => WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => callMethod("reload")})
+            onClick: () => WindowChangeStore.updateStore({
+                message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => {
+                    LevelController.save().then(() => callMethod("reload"))
+                }
+            })
         },
         {
             label: "Close project",
-            onClick: () => WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => ElectronResources.ipcRenderer.send(ROUTES.CLOSE_EDITOR)})
+            onClick: () => WindowChangeStore.updateStore({
+                message: LOCALIZATION_EN.UNSAVED_CHANGES,
+                callback: () => {
+                    LevelController.save().then(() => ElectronResources.ipcRenderer.send(ROUTES.CLOSE_EDITOR))
+                }
+            })
         },
     ]
 }

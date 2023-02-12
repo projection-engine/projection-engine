@@ -1,11 +1,5 @@
 <script lang="ts">
-    import TreeBranchContent from "./EntityTreeBranchContent.svelte";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import EntityFactory from "../../../lib/controllers/EntityFactory";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Entity from "../../../../../engine-core/instances/Entity";
-    import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
     import Component from "../../../../../engine-core/instances/components/Component";
     import getComponentIcon from "../../../utils/get-component-icon";
     import getComponentLabel from "../../../utils/get-component-label";

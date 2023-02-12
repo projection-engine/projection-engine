@@ -2,7 +2,6 @@
     import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy} from "svelte";
     import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import FilesStore from "../../../shared/stores/FilesStore";
     import LevelController from "../../lib/utils/LevelController";
     import getFrameOptions from "./utils/get-frame-options";
     import SettingsStore from "../../../shared/stores/SettingsStore";

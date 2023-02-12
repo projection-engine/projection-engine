@@ -10,6 +10,7 @@
     import ElectronResources from "../../lib/ElectronResources"
     import RENDER_TARGET from "../../../window-editor/static/RENDER_TARGET";
     import HotKeysController from "../../lib/HotKeysController";
+    import LevelController from "../../../window-editor/lib/utils/LevelController";
 
     export let noChangeTracking
 
@@ -37,12 +38,12 @@
 </script>
 
 {#if message !== undefined && !noChangeTracking}
-    <Modal handleClose={() => WindowChangeStore.updateStore(undefined)} styles="max-width: 30vw; padding: 8px">
+    <Modal handleClose={() => WindowChangeStore.updateStore(undefined)} styles="width: 30vw; padding: 8px">
         <div data-svelteinline="-" style="width: 100%; gap: 12px">
             <Icon styles="font-size: 50px">help_outline</Icon>
-            <h4>{message.message}</h4>
+            <h5>{message.message}</h5>
         </div>
-        <div data-svelteinline="-" style="width: 100%; gap: 8px">
+        <div data-svelteinline="-" style="width: 100%; gap: 8px; padding-left: 50%">
             <button
                     data-sveltebuttondefault="-"
                     data-sveltefocusbutton="-"
@@ -50,19 +51,17 @@
                     on:click={() => {
                         message.callback?.()
                     }}
-                    style="--pj-accent-color: red"
             >
                 {LOCALIZATION_EN.YES}
             </button>
             <button
                     data-sveltebuttondefault="-"
-                    data-sveltefocusbutton="-"
                     class="modal-button"
                     on:click={() => {
                        WindowChangeStore.updateStore(undefined)
                     }}
             >
-                {LOCALIZATION_EN.NO}
+                {LOCALIZATION_EN.CANCEL}
             </button>
         </div>
     </Modal>
@@ -96,7 +95,10 @@
             data-sveltebuttondefault="-"
             on:click={_ => {
                 if(hasChanges)
-                    WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: () => ElectronResources.ipcRenderer.send("close")})
+                    WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: async () => {
+                        await LevelController.save()
+                        ElectronResources.ipcRenderer.send("close")
+                    }})
                 else
                     ElectronResources.ipcRenderer.send("close")
             }}
@@ -110,15 +112,15 @@
 <style>
     .modal-button {
         max-width: unset;
-        max-height: 30px;
-        min-height: 30px;
+        max-height: 23px;
+        min-height: 23px;
         width: 100%;
-        font-weight: 550;
-        font-size: .8rem;
+
+        font-size: .75rem;
     }
 
     h4 {
-        font-weight: 550;
+
         margin-top: 0;
     }
 

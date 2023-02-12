@@ -336,7 +336,7 @@
         font-size: .75rem;
         justify-content: center;
         width: 100%;
-        font-weight: 550;
+
 
 
     }

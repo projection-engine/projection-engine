@@ -38,7 +38,7 @@
             changed = true
             newMessages = messages.length > 0
         })
-        portal.create(modal, {backdropFilter: "blur(2px)"})
+        portal.create(modal, {background: "rgba(0,0,0,.2)"})
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {

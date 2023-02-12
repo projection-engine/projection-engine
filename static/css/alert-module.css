@@ -3,7 +3,7 @@
 .alertContainer.alert-modal {
     --background: #f55;
     color: white !important;
-    font-weight: 550;
+
     background: var(--background) !important;
     display: flex;
     justify-content: space-between;

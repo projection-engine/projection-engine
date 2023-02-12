@@ -1,6 +1,5 @@
 <script>
     import Preview from "../../../../../shared/components/preview/Preview.svelte";
-    import ItemInput from "./ItemInput.svelte";
     import openItem from "../../utils/open-item";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";

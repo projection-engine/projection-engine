@@ -93,7 +93,7 @@
         id={ID}
         bind:this={ref}
 >
-    <div class="content">
+    <div class="content" style={toRender.length === 0 ? "background: var(--pj-background-quaternary)" : undefined}>
         <Tree
                 {isOnSearch}
                 updateOpen={_ => updateHierarchy(openTree)}

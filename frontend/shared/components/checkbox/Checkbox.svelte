@@ -1,5 +1,4 @@
 <script>
-    import Icon from "../icon/Icon.svelte";
 
     export let checked
     export let handleCheck

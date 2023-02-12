@@ -1,6 +1,5 @@
 <script>
     import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import {onDestroy} from "svelte";
     import SelectionStore from "../../../shared/stores/SelectionStore";
     import FilesStore from "../../../shared/stores/FilesStore";
@@ -8,14 +7,12 @@
     import Entity from "../../../../engine-core/instances/Entity";
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
     import EntityInspector from "./components/engine/EntityAttributes.svelte";
-    import AddComponent from "./components/engine/AddComponent.svelte";
 
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
     import PREFERENCES from "../../../window-preferences/static/PREFERENCES";
     import CameraPreferences from "./components/engine/CameraPreferences.svelte";
     import ContentWrapper from "../../../window-preferences/components/content/ContentWrapper.svelte";
-    import Engine from "../../../../engine-core/Engine";
 
     const internalID = crypto.randomUUID()
     const PREFERENCES_TABS = [

@@ -52,7 +52,7 @@
 
         gap: 4px;
         width: fit-content;
-        font-weight: 550;
+
 
         font-size: 1.2rem;
     }

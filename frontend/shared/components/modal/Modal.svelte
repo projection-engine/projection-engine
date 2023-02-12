@@ -37,9 +37,8 @@
         position: fixed;
         z-index: 999;
 
-        background: var(--pj-background-secondary);
-        border: var(--pj-border-primary) 1px solid;
-        border-radius: 5px;
+        background: var(--pj-background-tertiary);
+        border-radius: 3px;
 
         box-shadow: var(--pj-boxshadow);
 
@@ -49,7 +48,6 @@
         transform: translate(-50%, -50%);
 
         display: grid;
-        justify-content: center;
         justify-items: center;
         align-items: center;
     }

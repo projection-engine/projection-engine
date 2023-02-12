@@ -14,20 +14,18 @@ import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
 import FS from "../../../shared/lib/FS/FS";
 import ROUTES from "../../../../backend/static/ROUTES";
-import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import ElectronResources from "../../../shared/lib/ElectronResources";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import AlertController from "../../../shared/components/alert/AlertController";
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-import EngineStateController from "../controllers/EngineStateController";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
 import HierarchyController from "../controllers/HierarchyController";
 import resolveFileName from "../../utils/resolve-file-name";
-import AssetAPI from "../fs/AssetAPI";
 import NameController from "../controllers/NameController";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 import AXIS from "../../../../engine-tools/static/AXIS";
+import WindowChangeStore from "../../../shared/components/frame/WindowChangeStore";
 
 
 export default class LevelController {
@@ -87,9 +85,13 @@ export default class LevelController {
                 AlertController.error(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
             return
         }
+
         if(ChangesTrackerStore.data && Engine.loadedLevel) {
-            AlertController.warn(LOCALIZATION_EN.SAVING_PREVIOUS_LEVEL)
-            await LevelController.saveCurrentLevel().catch()
+            WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback:async () => {
+                    await LevelController.save().catch()
+                    LevelController.loadLevel(levelID).catch()
+                }})
+            return
         }
 
         await RegistryAPI.readRegistry()

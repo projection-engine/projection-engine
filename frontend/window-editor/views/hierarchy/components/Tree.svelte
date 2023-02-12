@@ -10,7 +10,6 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
     import HierarchyToRenderElement from "../template/ToRenderElement";
-    import Scrollable from "../../../../shared/components/scrollable/Scrollable.svelte";
     import VirtualList from '@sveltejs/svelte-virtual-list';
 
     export let ID: string

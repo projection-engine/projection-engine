@@ -14,7 +14,6 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import MeshComponent from "../../../../../../engine-core/instances/components/MeshComponent";
     import Entity from "../../../../../../engine-core/instances/Entity";
-    import Component from "../../../../../../engine-core/instances/components/Component";
 
     export let entity: Entity
     export let setTabs: Function
@@ -26,7 +25,7 @@
     let components
     $: components = entity.allComponents
     $: component = components[tabIndex]
-    $: setTabs(entity.isCollection ? [getEntityTabs(components)[0]] : getEntityTabs(components))
+    $: setTabs(entity.isCollection ? [...getEntityTabs(components).slice(0, 2)] : getEntityTabs(components))
     $: scripts = entity.scripts
 
     const draggable = dragDrop(false)

@@ -108,7 +108,7 @@
     }
 
     strong {
-        font-weight: 550;
+
     }
 
     .open-icon > small {

@@ -60,7 +60,7 @@
             handleClose={handler}
             isOpen={open}
             targetBinding={button}
-            styles={styles}
+            styles={styles ? "align-items: center;" + styles : undefined}
     >
         <slot/>
     </Dialog>

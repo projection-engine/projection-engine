@@ -31,7 +31,7 @@
 
     onMount(() => {
 
-        portal.create(modal, {backdropFilter: "blur(2px)"})
+        portal.create(modal, {background: "rgba(0,0,0,.2)"})
         document.addEventListener("mousedown", handler)
         ElectronResources.ipcRenderer.on(ROUTES.OPEN_SELECTION, (event, data) => {
             if (data != null)
@@ -108,7 +108,7 @@
     }
 
     .header {
-        font-weight: 550;
+
         font-size: 1.5rem;
     }
 

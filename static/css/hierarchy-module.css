@@ -100,7 +100,6 @@
 
 .wrapper.hierarchy-branch[data-svelteselected="-"] > .info.hierarchy-branch> .button-icon.hierarchy-branch[data-sveltelocked="-"]{
     opacity: 1;
-    backdrop-filter: brightness(125%) !important;
     background: transparent;
 
     border: transparent 1px solid;

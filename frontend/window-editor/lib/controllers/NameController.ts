@@ -1,8 +1,5 @@
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
-
-import SelectionStore from "../../../shared/stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
-import HierarchyController from "./HierarchyController";
 import EntityUpdateController from "./EntityUpdateController";
 
 export default class NameController {

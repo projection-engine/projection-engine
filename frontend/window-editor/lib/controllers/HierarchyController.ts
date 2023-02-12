@@ -2,9 +2,6 @@ import Engine from "../../../../engine-core/Engine";
 import SelectionStore from "../../../shared/stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement";
-import ResourceEntityMapper from "../../../../engine-core/resource-libs/ResourceEntityMapper";
-import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
-
 
 
 export default class HierarchyController {
