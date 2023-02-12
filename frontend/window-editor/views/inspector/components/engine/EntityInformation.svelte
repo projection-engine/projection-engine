@@ -105,7 +105,7 @@
                 checked={entity.active}
                 handleCheck={_ =>  {
                 const inv = !entity.active
-                EntityFactory.toggleEntityVisibility(entity)
+                EntityFactory.toggleEntityVisibility(entity.id)
                 entity.active = inv
             }}
                 label={LOCALIZATION_EN.ACTIVE}

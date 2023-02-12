@@ -27,19 +27,6 @@ export default class HierarchyController {
                 callback(children[i], depth + 1)
         }
         callback(root, 0)
-
-        console.trace(data.length)
-        // @ts-ignore
-        window.d = () => Engine.entities
-        // @ts-ignore
-        window.y = () => HierarchyController.updateHierarchy()
-        // @ts-ignore
-        window.u = () => ResourceEntityMapper.meshes.array
-        // @ts-ignore
-        window.D = () => {
-            Engine.entities.map.forEach(e => EntityAPI.removeEntity(e))
-            HierarchyController.updateHierarchy()
-        }
         HierarchyController.hierarchy = data
         Object.values(HierarchyController.#listening).forEach(v => v())
     }

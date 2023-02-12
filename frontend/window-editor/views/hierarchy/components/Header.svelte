@@ -42,7 +42,7 @@
                 <button
                         data-sveltebuttondefault="-"
                         on:click={_ => {
-                            if(filteredComponent=== component[0] )
+                            if(filteredComponent=== component[0])
                                 setFilteredComponent(undefined)
                             else setFilteredComponent(component[0])
                         }}

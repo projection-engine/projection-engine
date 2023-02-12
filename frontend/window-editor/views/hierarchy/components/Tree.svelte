@@ -11,6 +11,7 @@
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
     import HierarchyToRenderElement from "../template/ToRenderElement";
     import Scrollable from "../../../../shared/components/scrollable/Scrollable.svelte";
+    import VirtualList from '@sveltejs/svelte-virtual-list';
 
     export let ID: string
     export let isOnSearch: boolean
@@ -45,18 +46,18 @@
 
 
 {#if toRender.length > 0}
-    <Scrollable {toRender} rowHeight={23} let:element>
-        {#if element.component}
+    <VirtualList items={toRender} itemHeight={23} let:item>
+        {#if item.component}
             <ComponentTreeBranch
-                    component={element.component}
-                    depth={element.depth + 1}
+                    component={item.component}
+                    depth={item.depth }
                     setLockedEntity={v => SelectionStore.lockedEntity = v}
             />
         {:else}
             <EntityTreeBranch
                     {isOnSearch}
-                    entity={element.node}
-                    depth={element.depth}
+                    entity={item.node}
+                    depth={item.depth}
 
                     {selected }
                     {lockedEntity}
@@ -65,7 +66,7 @@
                     {updateOpen}
             />
         {/if}
-    </Scrollable>
+    </VirtualList>
 {:else}
     <div data-svelteempty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>

@@ -30,7 +30,10 @@
 >
     <div class="info hierarchy-branch"    data-sveltenode={entity.id}
          on:click={e => updateSelection(entity.id, e.ctrlKey)}>
-
+        {#each {length: depth} as _, i}
+            <div data-sveltevertdivider="-" style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
+        {/each}
+        <div class="button-small hierarchy-branch"></div>
         <button
                 class="button-icon hierarchy-branch"
                 style={`--button-color: rgb(${entity.isCollection ? entity.colorIdentifier : [203, 158, 53]})`}
@@ -45,5 +48,13 @@
 <style>
     small {
         font-size: .7rem;
+    }
+    .divider {
+        position: absolute;
+        height: 23px;
+        transform: translateX(.3rem);
+        z-index: 10;
+        background: none;
+        border-left: var(--pj-border-secondary) 1px dashed;
     }
 </style>

@@ -10,6 +10,7 @@ import Entity from "../../../../engine-core/instances/Entity";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 import AlertController from "../../../shared/components/alert/AlertController";
 import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
+import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 
 
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -47,8 +48,7 @@ export default class EngineStateController {
     static replaceBlock(toRemove: string[], toAdd: Entity[]) {
 
         const replacedMap = {}
-        for (let i = 0; i < toRemove.length; i++)
-            EntityAPI.removeEntity(toRemove[i])
+        EngineStateController.removeBlock(toRemove)
         for (let i = 0; i < toAdd.length; i++) {
             const entity = toAdd[i]
             EntityAPI.addEntity(entity)
@@ -85,11 +85,20 @@ export default class EngineStateController {
     }
     @checkLevel
     static removeBlock(payload: string[]) {
-        const mapped = payload.map(e => Engine.entities.map.get(e))
-        EditorActionHistory.save(mapped)
-        EditorActionHistory.save(mapped, true)
+        const hierarchy:{[key:string]:Entity} = {}
+        for (let i = 0; i < payload.length; i++){
+            const entity = Engine.entities.map.get(payload[i])
+            if(!entity)
+                continue
+            hierarchy[entity.id] = entity
+            QueryAPI.getHierarchyToObject(entity, hierarchy)
+        }
 
-        EntityAPI.removeGroup(payload.map(e => Engine.entities.get(e)))
+        const entities = Object.values(hierarchy)
+        EditorActionHistory.save(entities)
+        EditorActionHistory.save(entities, true)
+
+        EntityAPI.removeGroup(entities, false)
 
         SelectionStore.updateStore({
             ...SelectionStore.data,

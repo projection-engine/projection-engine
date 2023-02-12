@@ -9,6 +9,7 @@ import MeshComponent from "../../../../engine-core/instances/components/MeshComp
 import LightComponent from "../../../../engine-core/instances/components/LightComponent";
 import HierarchyController from "./HierarchyController";
 import EngineStateController from "./EngineStateController";
+import Engine from "../../../../engine-core/Engine";
 
 
 export default class EntityFactory {
@@ -97,8 +98,8 @@ export default class EntityFactory {
         EngineStateController.add(entity)
     }
 
-    static toggleEntityVisibility(nodeRef, noSubmit) {
-        EntityAPI.toggleVisibility(nodeRef)
+    static toggleEntityVisibility(entityID:string, noSubmit?:boolean) {
+        EntityAPI.toggleVisibility(Engine.entities.get(entityID))
         if (!noSubmit)
             HierarchyController.updateHierarchy()
     }

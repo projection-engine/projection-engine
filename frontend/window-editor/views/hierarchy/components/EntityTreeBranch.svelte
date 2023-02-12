@@ -32,7 +32,7 @@
 
     $: isOpen = open[entity.id]
     $: isSelected = selected.has(entity.id)
-    $: childQuantity = Math.max(entity.children.array.length, entity.allComponents.length )
+    $: childQuantity = Math.max(entity.children.array.length, entity.allComponents.length)
     $: hasChildren = childQuantity > 0
 
 </script>
@@ -46,9 +46,13 @@
 >
 
     {#if hasChildren && !isOnSearch}
-        {#if isOpen}
-            <div data-sveltevertdivider="-" style={`height: ${23 * childQuantity}px`} class="divider"></div>
-        {/if}
+        <!--{#if isOpen}-->
+
+            {#each {length: depth} as _, i}
+                <div data-sveltevertdivider="-" style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
+            {/each}
+
+        <!--{/if}-->
         <button
                 data-sveltebuttondefault="-"
                 data-svelteopen={isOpen ? "-" : ""}
@@ -61,11 +65,11 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <TreeBranchContent  {isOpen} {entity} {lockedEntity} {setLockedEntity}/>
+    <TreeBranchContent {isOpen} {entity} {lockedEntity} {setLockedEntity}/>
     <button
             data-sveltebuttondefault="-"
             class="button-visibility"
-            on:click={() => EntityFactory.toggleEntityVisibility(entity)}
+            on:click={() => EntityFactory.toggleEntityVisibility(entity.id)}
     >
         <ToolTip content={LOCALIZATION_EN.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">
@@ -96,9 +100,10 @@
         border-radius: 0;
         background: var(--pj-background-quaternary);
     }
-    .divider{
+
+    .divider {
         position: absolute;
-        top: 23px;
+        height: 23px;
         transform: translateX(.3rem);
         z-index: 10;
         background: none;
