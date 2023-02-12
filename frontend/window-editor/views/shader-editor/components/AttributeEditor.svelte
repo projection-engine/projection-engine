@@ -1,11 +1,10 @@
 <script lang="ts">
     import Attribute from "./Attribute.svelte";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
     import Input from "../../../../shared/components/input/Input.svelte";
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
-    import MutableObject from "../../../../../engine-core/static/MutableObject";
 
     export let node: ShaderNode | ShaderComment
     export let updateCanvas: Function

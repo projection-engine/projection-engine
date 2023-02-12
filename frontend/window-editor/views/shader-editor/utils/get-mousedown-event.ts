@@ -1,6 +1,5 @@
 import Canvas from "../libs/Canvas";
 import CanvasRenderer from "../libs/CanvasRenderer";
-import MutableObject from "../../../../../engine-core/static/MutableObject";
 import onMouseDownEvent from "./on-mouse-down-event";
 import {Output} from "../static/Output";
 import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";

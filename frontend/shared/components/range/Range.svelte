@@ -60,7 +60,7 @@
             if (handleChange)
                 handleChange(currentValue)
         } catch (err) {
-            console.warn(err)
+            console.error(err)
             document.body.removeEventListener("mousemove", handleMouseMove)
         }
     }

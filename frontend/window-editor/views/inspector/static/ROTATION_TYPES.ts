@@ -1,4 +1,4 @@
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import Movable from "../../../../../engine-core/instances/components/Movable";
 
 export default [

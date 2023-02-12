@@ -2,17 +2,23 @@ import RegistryAPI from "./RegistryAPI";
 import FilesAPI from "./FilesAPI";
 import FS from "../../../shared/lib/FS/FS";
 import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
-import ElectronResources from "../../../shared/lib/ElectronResources";
 
 export default class AssetAPI {
-    static async readAsset(id) {
-        const reg = RegistryAPI.getRegistryEntry(id)
-        if (reg)
-            return await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + reg.path)
+    static async readAsset<T>(idOrPath: string): Promise<T> {
+        if(!idOrPath)
+            return
+        const isPath = FS.resolvePath(idOrPath).includes(FS.resolvePath(FS.path))
+        if (!isPath) {
+            const reg = RegistryAPI.getRegistryEntry(idOrPath)
+            if (reg)
+                return <T>(await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + reg.path))
+            return
+        }
+        return <T>(await FilesAPI.readFile(idOrPath))
     }
 
 
-    static async writeAsset(path, fileData, previewImage?:boolean, registryID?:string) {
+    static async writeAsset(path, fileData, previewImage?: boolean, registryID?: string) {
         const fileID = registryID !== undefined ? registryID : crypto.randomUUID()
         await FS.write(FS.resolvePath(FS.ASSETS_PATH + FS.sep + path), fileData)
         if (previewImage)
@@ -20,24 +26,7 @@ export default class AssetAPI {
         await RegistryAPI.createRegistryEntry(fileID, path)
     }
 
-    static readMetadata(fileID) {
-        const reg = RegistryAPI.getRegistryEntry(fileID)
-        if (!reg)
-            return null
-        try {
-            const path = FS.resolvePath(FS.ASSETS_PATH + FS.sep + reg.path)
-            return {
-                ...reg,
-                path,
-                type: reg.path.split(".").pop(),
-                stat: ElectronResources.fs.statSync(path)
-            }
-        } catch (err) {
-            return null
-        }
-    }
-
-    static async updateAsset(registryID, fileData, previewImage?:boolean) {
+    static async updateAsset(registryID, fileData, previewImage?: boolean) {
         const res = RegistryAPI.getRegistryEntry(registryID)
         if (res)
             await AssetAPI.writeAsset(res.path, fileData, previewImage, registryID)

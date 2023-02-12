@@ -27,21 +27,21 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-
         Engine.initializeContext(
             canvasRef,
             {w: visuals.resolutionX, h: visuals.resolutionY},
             AssetAPI.readAsset,
-            AssetAPI.readMetadata,
             true
         ).then(async () => {
+            done = true
             await EngineTools.initialize().catch()
-            await LevelController.loadLevel().catch()
+            const toLoad = LevelController.getLevelToLoad()
+            await LevelController.loadLevel(toLoad).catch()
+
             initializeEditor()
             UIAPI.buildUI(GPU.canvas.parentElement)
             UIAPI.hideUI()
 
-            done = true
 
         })
     })
@@ -54,7 +54,7 @@
         unsubscribeSettings()
     })
     $: {
-        if(engine.executingAnimation)
+        if (engine.executingAnimation)
             UIAPI.showUI()
     }
     $: if (done) updateRenderer(selected, engine, {...settings, ...visuals})

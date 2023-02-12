@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import getLabel from "../utils/get-label";
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import Options from "./ShadingModelOptions.svelte";

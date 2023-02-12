@@ -5,10 +5,8 @@
     import SettingsStore from "../shared/stores/SettingsStore";
     import VisualsStore from "../shared/stores/VisualsStore";
     import GlobalSettings from "./components/GlobalSettings.svelte";
-    import CameraSettings from "../window-editor/views/scene-editor/components/CameraSettings.svelte";
     import ContentWrapper from "./components/content/ContentWrapper.svelte";
     import Shortcuts from "./components/Shortcuts.svelte";
-    import LOCALIZATION_EN from "../shared/static/LOCALIZATION_EN";
     import PREFERENCES from "./static/PREFERENCES";
     import Icon from "../shared/components/icon/Icon.svelte";
     import StoreManager from "../shared/stores/StoreManager";
@@ -22,7 +20,7 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        StoreManager.initialize(false)
+        StoreManager.initialize()
     })
     onDestroy(() => {
         unsubscribeSettings()

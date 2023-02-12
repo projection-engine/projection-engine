@@ -2,39 +2,43 @@ import FilesAPI from "../fs/FilesAPI"
 import EditorActionHistory from "./EditorActionHistory";
 import Engine from "../../../../engine-core/Engine";
 import RegistryAPI from "../fs/RegistryAPI";
-import GPU from "../../../../engine-core/GPU";
-import componentConstructor from "../../utils/component-constructor";
-
 import EngineStore from "../../../shared/stores/EngineStore";
 import SelectionStore from "../../../shared/stores/SelectionStore";
-
 import SettingsStore from "../../../shared/stores/SettingsStore";
 import VisualsStore from "../../../shared/stores/VisualsStore";
 import SETTINGS from "../../static/SETTINGS";
-import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import TabsStore from "../../../shared/stores/TabsStore";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
-import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
-import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 import FS from "../../../shared/lib/FS/FS";
 import ROUTES from "../../../../backend/static/ROUTES";
-import PROJECT_STATIC_DATA from "../../../../static/objects/PROJECT_STATIC_DATA";
-import PROJECT_FOLDER_STRUCTURE from "../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import ElectronResources from "../../../shared/lib/ElectronResources";
 import ErrorLoggerAPI from "../fs/ErrorLoggerAPI";
 import AlertController from "../../../shared/components/alert/AlertController";
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-import MutableObject from "../../../../engine-core/static/MutableObject";
-import EntityManager from "../EntityManager";
+import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
+import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
+import HierarchyController from "../controllers/HierarchyController";
+import resolveFileName from "../../utils/resolve-file-name";
+import NameController from "../controllers/NameController";
+import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
+import AXIS from "../../../../engine-tools/static/AXIS";
+import WindowChangeStore from "../../../shared/components/frame/WindowChangeStore";
 
 
 export default class LevelController {
-    static #loadedLevel = undefined
     static #initialized = false
+    static #levelToLoad
 
-    static initialize():Promise<undefined> {
+    static getLevelToLoad() {
+        const old = LevelController.#levelToLoad
+        LevelController.#levelToLoad = undefined
+        return old
+    }
+
+    static initialize(): Promise<undefined> {
         return new Promise(resolve => {
             if (LevelController.#initialized) {
                 resolve(undefined)
@@ -45,7 +49,7 @@ export default class LevelController {
             ElectronResources.ipcRenderer.once(
                 ROUTES.LOAD_PROJECT_METADATA,
                 (ev, meta) => {
-                    if(!meta) {
+                    if (!meta) {
                         AlertController.error(LOCALIZATION_EN.ERROR_LOADING_PROJECT)
                         return
                     }
@@ -67,39 +71,31 @@ export default class LevelController {
                         meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined},
                         isReady: true
                     })
+
+                    LevelController.#levelToLoad = meta.level
                     resolve(undefined)
                 })
             ElectronResources.ipcRenderer.send(ROUTES.LOAD_PROJECT_METADATA)
         })
     }
 
-    static async loadLevel(level:string|{registryID:string}= PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
-        await RegistryAPI.readRegistry()
-        if (LevelController.#loadedLevel === level) {
-            AlertController.warn(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
+    static async loadLevel(levelID?: string) {
+        if (!levelID || levelID && levelID === Engine.loadedLevel?.id) {
+            if(levelID && levelID === Engine.loadedLevel?.id)
+                AlertController.error(LOCALIZATION_EN.LEVEL_ALREADY_LOADED)
             return
         }
-        LevelController.#loadedLevel = level
-        const IPC = ROUTES.LOAD_LEVEL
-        let pathToLevel
-        if (level === PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL) {
-            pathToLevel = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
-            EngineStore.engine.currentLevel = undefined
-        } else {
-            const {registryID} = <{registryID:string}> level
-            try {
-                const reg = RegistryAPI.getRegistryEntry(registryID)
-                if (!reg)
-                    throw new Error("Error loading level")
-                pathToLevel = FS.ASSETS_PATH + FS.sep + reg.path
-                EngineStore.engine.currentLevel = level
-            } catch (err) {
-                console.error(err)
-            }
+
+        if(ChangesTrackerStore.data && Engine.loadedLevel) {
+            WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback:async () => {
+                    await LevelController.save().catch()
+                    LevelController.loadLevel(levelID).catch()
+                }})
+            return
         }
 
-        GPU.meshes.forEach(m => GPUAPI.destroyMesh(m))
-
+        await RegistryAPI.readRegistry()
+        NameController.clear()
         SelectionStore.updateStore({
             ...SelectionStore.data,
             TARGET: SelectionStore.TYPES.ENGINE,
@@ -107,100 +103,88 @@ export default class LevelController {
             lockedEntity: undefined
         })
         EditorActionHistory.clear()
-        ElectronResources.ipcRenderer.on(
-            ROUTES.ENTITIES,
-            async (_, data) => {
-                const {entities} = data
 
-                const mapped = []
-                for (let i = 0; i < entities.length; i++) {
-                    const entity = EntityAPI.parseEntityObject(entities[i])
-                    for (let i = 0; i < entity.scripts.length; i++)
-                        await componentConstructor(entity, entity.scripts[i].id, false)
-                    const imgID = entity.spriteComponent?.imageID
-                    checkTexture: if (imgID) {
-                        const textures = GPU.textures
-                        if (textures.get(imgID) != null)
-                            break checkTexture
-                        await EngineStore.loadTextureFromImageID(imgID)
-                    }
 
-                    const uiID = entity.uiComponent?.uiLayoutID
-                    check: if (uiID) {
-                        const rs = RegistryAPI.getRegistryEntry(uiID)
-                        if(!rs)
-                            break check
-                        Engine.UILayouts.set(uiID, await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + rs.path))
-                    }
-                    mapped.push(entity)
-                }
-                EntityManager.appendBlock(mapped, true)
-            })
+        await Engine.loadLevel(levelID, false)
+        Engine.entities.array.forEach((entity, i) => {
+            entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
+        })
+        if(Engine.loadedLevel)
+        SelectionStore.updateStore({
+            ...SelectionStore.data,
+            TARGET: SelectionStore.TYPES.ENGINE,
+            array: [Engine.loadedLevel.id],
+            lockedEntity: Engine.loadedLevel.id
+        })
 
-        ElectronResources.ipcRenderer.send(IPC, pathToLevel)
+        HierarchyController.updateHierarchy()
     }
 
     static async save() {
-        if(!ChangesTrackerStore.data)
+        if (!ChangesTrackerStore.data)
             return
-        ChangesTrackerStore.updateStore(false)
-        if(EngineStore.engine.executingAnimation){
+
+        if (EngineStore.engine.executingAnimation) {
             AlertController.warn(LOCALIZATION_EN.EXECUTING_SIMULATION)
             return
         }
+
         await ErrorLoggerAPI.save()
         AlertController.warn(LOCALIZATION_EN.SAVING)
         try {
-            const entities = Engine.entities.array
             const metadata = EngineStore.engine.meta
-            const settings =  {...SettingsStore.data}
+            const settings = {...SettingsStore.data}
             const tabIndexViewport = TabsStore.getValue("viewport")
-            const viewMetadata = <MutableObject|undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
-            if(viewMetadata !== undefined) {
+            const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
+            if (viewMetadata !== undefined) {
                 viewMetadata.cameraMetadata = CameraAPI.serializeState()
                 viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
                 viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
             }
 
             await FilesAPI.writeFile(
-                FS.path + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION,
+                FS.path + FS.sep + FILE_TYPES.PROJECT,
                 JSON.stringify({
                     ...metadata,
                     settings,
                     layout: TabsStore.data,
                     visualSettings: VisualsStore.data,
+                    level: Engine.loadedLevel?.id
                 }), true)
 
-            let pathToWrite
-            pathElse:if (!EngineStore.engine.currentLevel)
-                pathToWrite = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.DEFAULT_LEVEL
-            else {
-                const reg = RegistryAPI.getRegistryEntry(EngineStore.engine.currentLevel.registryID)
-                if (!reg) {
-                    AlertController.warn(LOCALIZATION_EN.LEVEL_NOT_FOUND)
-                    pathToWrite = (new Date()).toDateString() + " (fallback-level).level"
-                    break pathElse
-                }
-                pathToWrite = FS.ASSETS_PATH + FS.sep + reg.path
-            }
-            pathToWrite = FS.resolvePath(pathToWrite)
-
-            await FilesAPI.writeFile(
-                pathToWrite,
-                serializeStructure({
-                    entities: entities.map(e => e.serializable()),
-                }),
-                true
-            )
+            await LevelController.saveCurrentLevel().catch()
         } catch (err) {
             console.error(err)
             return
         }
         AlertController.success(LOCALIZATION_EN.PROJECT_SAVED)
-
-
+        await RegistryAPI.readRegistry()
     }
 
+    static async saveCurrentLevel() {
+        if (!Engine.loadedLevel)
+            return
+        const serialized = {
+            entity: Engine.loadedLevel.serializable(),
+            entities: QueryAPI.getHierarchy(Engine.loadedLevel).map(e => e.serializable()),
+        }
+
+        const assetReg = RegistryAPI.getRegistryEntry(Engine.loadedLevel.id)
+        let path = assetReg?.path
+
+        if (!assetReg) {
+            path = FS.resolvePath(await resolveFileName(FS.ASSETS_PATH + FS.sep + Engine.loadedLevel.name, FILE_TYPES.LEVEL))
+            await RegistryAPI.createRegistryEntry(Engine.loadedLevel.id, FS.sep + path.split(FS.sep).pop())
+            RegistryAPI.readRegistry().catch()
+        } else
+            path = FS.ASSETS_PATH + FS.sep + path
+
+        await FS.write(
+            path,
+            serializeStructure(serialized)
+        )
+        ChangesTrackerStore.updateStore(false)
+    }
 }
 
 

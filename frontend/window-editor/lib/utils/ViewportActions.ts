@@ -8,13 +8,13 @@ import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
 import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
 import Engine from "../../../../engine-core/Engine";
 import AlertController from "../../../shared/components/alert/AlertController";
-import EntityManager from "../EntityManager";
+import EngineStateController from "../controllers/EngineStateController";
 
 
 export default class ViewportActions {
     static toCopy = []
 
-    static copy(single?:boolean, target?:string) {
+    static copy(single?: boolean, target?: string) {
         const selected = SelectionStore.engineSelected
         if (target)
             ViewportActions.toCopy = [target]
@@ -25,15 +25,13 @@ export default class ViewportActions {
     }
 
     static focus() {
-
         const entity = QueryAPI.getEntityByID(SelectionStore.mainEntity)
-
         if (!entity)
             return
 
-        vec3.copy(CameraAPI.translationBuffer, entity._translation)
+        vec3.copy(CameraAPI.translationBuffer, entity.absoluteTranslation)
 
-        const position = <vec4>[0,0, 10,1]
+        const position = <vec4>[0, 0, 5, 1]
         vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
         vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, <vec3>position)
 
@@ -41,7 +39,7 @@ export default class ViewportActions {
     }
 
     static deleteSelected() {
-        EntityManager.removeBlock(SelectionStore.engineSelected)
+        EngineStateController.removeBlock(SelectionStore.engineSelected)
     }
 
     static invertSelection() {
@@ -59,7 +57,7 @@ export default class ViewportActions {
         SelectionStore.engineSelected = newArr
     }
 
-    static paste(parent?:string) {
+    static paste(parent?: string) {
         const block = []
         if (!ViewportActions.toCopy)
             return
@@ -74,11 +72,10 @@ export default class ViewportActions {
                 block.push(clone)
                 if (!targetParent)
                     continue
-                clone.parent = targetParent
-                targetParent.children.push(clone)
+                clone.addParent(targetParent)
             }
         }
-        EntityManager.appendBlock(block)
+        EngineStateController.appendBlock(block)
         AlertController.log(`Pasted ${ViewportActions.toCopy.length} entities.`)
 
     }
@@ -87,7 +84,7 @@ export default class ViewportActions {
         const selected = SelectionStore.engineSelected
         ViewportActions.toCopy = selected
         if (selected.length > 1)
-            EntityManager.linkMultiple(selected)
+            EngineStateController.linkMultiple(selected)
     }
 
     static selectAll() {

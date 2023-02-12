@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import {SORTS, SORTS_KEYS} from "../static/SORT_INFO";
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";

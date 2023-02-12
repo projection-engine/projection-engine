@@ -1,11 +1,12 @@
 <script>
     import Icon from "./icon/Icon.svelte";
+
     export let title
     export let allowDeletion
     export let onDelete
 </script>
 <div data-svelteinline="-" class="title-wrapper">
-    <h4>{title}</h4>
+    <h4 data-svelteoverflow="-">{title}</h4>
     {#if allowDeletion}
         <button data-sveltebuttondefault="-"  class="button" on:click={onDelete}>
             <Icon>delete_forever</Icon>
@@ -16,7 +17,8 @@
 <style>
     h4{
         margin: 0;
-        font-weight: 550;
+
+        font-size: initial !important;
     }
     .title-wrapper {
         border-bottom: var(--pj-border-primary) 1px solid;

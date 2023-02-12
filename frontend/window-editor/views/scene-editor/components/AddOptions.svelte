@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import entityCreationOptions from "../../../templates/entity-creation-options";
     import SingleSelectDropdown from "../../../../shared/components/dropdown/OptionDropdown.svelte";
 

@@ -4,7 +4,6 @@
     import FS from "../shared/lib/FS/FS";
     import List from "./components/List.svelte";
     import Header from "./components/Header.svelte";
-    import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
     import ProjectRow from "./components/ProjectRow.svelte";
     import refreshProjects from "./utils/refresh-projects";
     import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS";
@@ -12,6 +11,7 @@
     import AlertController from "../shared/components/alert/AlertController";
     import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte";
     import ElectronResources from "../shared/lib/ElectronResources";
+    import FILE_TYPES from "../../static/objects/FILE_TYPES";
 
 
     let basePath
@@ -56,8 +56,8 @@
     }
     onDestroy(() => ContextMenuController.destroy(internalID))
 
-    async function onRename(newName) {
-        const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + item.id + FS.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION)
+    async function onRename(newName, item) {
+        const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + item.id + FS.sep + FILE_TYPES.PROJECT)
         const res = await FS.read(pathName)
         if (!res)
             return
@@ -95,7 +95,7 @@
                 let:item
                 getLabel={e => e.meta.name}
                 items={projectsToShow}
-                favoriteKey={PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION}
+                favoriteKey={FILE_TYPES.PROJECT}
                 getID={e => e.id}
         >
             <ProjectRow

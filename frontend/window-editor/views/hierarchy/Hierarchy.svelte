@@ -1,32 +1,26 @@
 <script>
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-
-    import EngineHierarchyView from "./components/Tree.svelte";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
+    import Tree from "./components/Tree.svelte";
     import {onDestroy, onMount} from "svelte";
-    import HotKeysController from "../../lib/utils/HotKeysController";
+    import HotKeysController from "../../../shared/lib/HotKeysController";
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
-    import HierarchyController from "./lib/HierarchyController";
+    import HierarchyController from "../../lib/controllers/HierarchyController";
     import SettingsStore from "../../../shared/stores/SettingsStore";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Engine from "../../../../engine-core/Engine";
     import handleDrop from "./utils/handle-drop";
-    import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import EntityConstructor from "../../lib/controllers/EntityConstructor";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-    import Input from "../../../shared/components/input/Input.svelte";
-    import NATIVE_COMPONENTS from "../inspector/static/NATIVE_COMPONENTS";
+    import Header from "./components/Header.svelte";
+    import buildTree from "./utils/build-tree";
+    import testSearch from "./utils/test-search";
 
     let search = ""
-    const ID =crypto.randomUUID()
+    const ID = crypto.randomUUID()
 
     let filteredComponent = undefined
-    let isEmpty = true
     let ref
     let settings
     let openTree = {}
+    let toRender = []
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     $: {
@@ -41,106 +35,102 @@
     }
 
     const draggable = dragDrop()
+
+
+
+    function updateHierarchy(op) {
+        const openLocal = op ?? openTree
+        if (op !== openTree && op !== undefined)
+            HierarchyController.updateHierarchy()
+        openTree = openLocal
+        toRender = buildTree(openTree, search, filteredComponent)
+    }
+
     onMount(() => {
         draggable.onMount({
             targetElement: ref,
             onDrop: (entityDragged, event) => {
                 const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
-                handleDrop(event, entityDragged, node ? Engine.entities.map.get(node) : undefined)
+                handleDrop(event, entityDragged, node ? Engine.entities.get(node) : undefined)
             },
-            onDragOver: () => `CTRL to parent | SHIFT to clone`
+            onDragOver: (_, ev) => {
+                if (ev.ctrlKey)
+                    return `Link entities`;
+                if (ev.shiftKey)
+                    return `Copy into`;
+                return `Drop on collection (CTRL to link, SHIFT to copy and link)`
+            }
         })
+
+        HierarchyController.registerListener(ID, updateHierarchy)
     })
 
+    $: {
+        search
+        filteredComponent
+        updateHierarchy()
+    }
     onDestroy(() => {
         HotKeysController.unbindAction(ref)
         unsubscribeSettings()
         draggable.onDestroy()
     })
+    $: isOnSearch = search || filteredComponent
+
 
 </script>
 
-
-<ViewHeader>
-    <button data-sveltebuttondefault="-"
-            on:click={() => HierarchyController.openTree()}
-            data-svelteview-header-button="-"
-    >
-        <ToolTip content={LOCALIZATION_EN.SHOW_SELECTED}/>
-        <Icon styles="font-size: .9rem">center_focus_strong</Icon>
-    </button>
-    <button data-sveltebuttondefault="-"
-            on:click={() => EntityConstructor.createEmpty()}
-            data-svelteview-header-button="-"
-    >
-        <ToolTip content={LOCALIZATION_EN.CREATE_ENTITY}/>
-        <Icon styles="font-size: .9rem">add</Icon>
-    </button>
-    <Input
-            hasBorder={true}
-            width="50%"
-            height="22px"
-            placeholder={LOCALIZATION_EN.SEARCH}
-            inputValue={search}
-            onChange={v => search = v}
-    />
-
-    <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined) + "margin-left: auto"}>
-        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
-            <Icon styles="font-size: .9rem">filter_alt</Icon>
-            <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
-        </button>
-        {#each NATIVE_COMPONENTS as component}
-            <button data-sveltebuttondefault="-"
-                    on:click={e => {
-                        if(filteredComponent=== component[0] )
-                            filteredComponent = undefined
-                        else filteredComponent = component[0]
-                    }}
-            >
-                {#if component[0] === filteredComponent}
-                    <Icon>check</Icon>
-                {:else}
-                    <div style="width: 1.1rem"></div>
-                {/if}
-
-                {component[1]}
-            </button>
-        {/each}
-    </Dropdown>
-
-</ViewHeader>
+<Header
+        setFilteredComponent={v => filteredComponent =v}
+        setSearch={v => search = v}
+        {filteredComponent}
+        {search}
+/>
 
 <div
         data-svelteself={"-"}
         class="wrapper"
-        style={isEmpty ? "background: transparent" : undefined}
         id={ID}
         bind:this={ref}
 >
-    <EngineHierarchyView
-            openTree={openTree}
-            setOpenTree={v => {
-                openTree = v
-                HierarchyController.updateHierarchy()
-            }}
-            setIsEmpty={v => isEmpty = v}
-            inputValue={search}
-            filteredComponent={filteredComponent}
-
-            ID={ID}
-    />
+    <div class="content" style={toRender.length === 0 ? "background: var(--pj-background-quaternary)" : undefined}>
+        <Tree
+                {isOnSearch}
+                updateOpen={_ => updateHierarchy(openTree)}
+                {openTree}
+                {toRender}
+                {filteredComponent}
+                {ID}
+                testSearch={node => testSearch(filteredComponent, search, node)}
+        />
+    </div>
 </div>
 
 
 <style>
+
     .wrapper {
         position: relative;
         width: 100%;
-        overflow: hidden;
-
+        overflow-x: visible;
+        overflow-y: hidden;
         height: 100%;
         max-height: 100%;
+    }
 
+    .content {
+        min-width: 100%;
+        height: 100%;
+        width: fit-content;
+
+        overflow: visible;
+
+        background: repeating-linear-gradient(
+                to bottom,
+                var(--pj-background-secondary) 0px,
+                var(--pj-background-secondary) 23px,
+                var(--pj-background-tertiary) 23px,
+                var(--pj-background-tertiary) 46px
+        );
     }
 </style>

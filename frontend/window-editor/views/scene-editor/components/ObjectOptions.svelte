@@ -1,6 +1,6 @@
 <script>
     import viewportContext from "../../../templates/viewport-context";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import OptionDropdown from "../../../../shared/components/dropdown/OptionDropdown.svelte";
 
     export let settings

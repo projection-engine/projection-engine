@@ -1,7 +1,7 @@
 import SelectionStore from "../../shared/stores/SelectionStore";
 import ScriptsAPI from "../../../engine-core/lib/utils/ScriptsAPI";
 import AlertController from "../../shared/components/alert/AlertController";
-import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
 
 export default async function componentConstructor(entity, scriptID, autoUpdate = true) {
     await ScriptsAPI.linkScript(entity, scriptID)

@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import {onDestroy, onMount} from "svelte";
     import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
 
@@ -38,7 +38,7 @@
             changed = true
             newMessages = messages.length > 0
         })
-        portal.create(modal, {backdropFilter: "blur(2px)"})
+        portal.create(modal, {background: "rgba(0,0,0,.2)"})
         document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {

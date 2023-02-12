@@ -10,7 +10,7 @@
     import FS from "../shared/lib/FS/FS";
     import FilesAPI from "./lib/fs/FilesAPI";
     import LevelController from "./lib/utils/LevelController";
-    import HotKeysController from "./lib/utils/HotKeysController";
+    import HotKeysController from "../shared/lib/HotKeysController";
     import WindowFrame from "./components/window-frame/WindowFrame.svelte";
     import Canvas from "./views/scene-editor/Canvas.svelte";
     import ROUTES from "../../backend/static/ROUTES";
@@ -35,7 +35,7 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onMount(() => {
-        StoreManager.initialize(true)
+        StoreManager.initialize()
         AlertController.initialize()
         ContextMenuController.initialize()
 
@@ -50,6 +50,7 @@
         ElectronResources.ipcRenderer.on("console", (_, data) => console.error(...data))
     })
 
+    $: HotKeysController.blockActions = engine.executingAnimation
     onDestroy(() => {
         unsubscribeSettings()
         unsubscribeEngine()

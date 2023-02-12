@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte";
     import GPU from "../../../../../engine-core/GPU";
     import Engine from "../../../../../engine-core/Engine";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
 
     let engine

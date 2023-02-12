@@ -1,8 +1,7 @@
 import StaticEditorMeshes from "../lib/StaticEditorMeshes";
 import StaticEditorShaders from "../lib/StaticEditorShaders";
 import GPU from "../../engine-core/GPU";
-import {glMatrix, mat4} from "gl-matrix";
-import CameraAPI from "../../engine-core/lib/utils/CameraAPI";
+import {mat4} from "gl-matrix";
 import Entity from "../../engine-core/instances/Entity";
 
 

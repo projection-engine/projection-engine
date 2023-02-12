@@ -2,9 +2,9 @@ import FilesStore from "../../../../shared/stores/FilesStore";
 import componentConstructor from "../../../utils/component-constructor";
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
 import Loader from "../../../lib/parsers/Loader";
-import EngineStore from "../../../../shared/stores/EngineStore";
 import AlertController from "../../../../shared/components/alert/AlertController";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+import FileSystemAPI from "../../../../../engine-core/lib/utils/FileSystemAPI";
 
 export default async function handleComponentDrop(entity, data) {
     try {
@@ -25,8 +25,10 @@ export default async function handleComponentDrop(entity, data) {
             type = "MATERIAL"
         }
 
-        if (!itemFound)
-            throw new Error("File not found")
+        if (!itemFound){
+            AlertController.error(LOCALIZATION_EN.FILE_NOT_FOUND)
+            return
+        }
 
         switch (type) {
             case "SCRIPT":
@@ -47,10 +49,7 @@ export default async function handleComponentDrop(entity, data) {
                 break
             }
             case "IMAGE": {
-                const res = await EngineStore.loadTextureFromImageID(id)
-                if (res)
-                    (entity.addComponent(COMPONENTS.SPRITE)).imageID = res
-
+                (entity.addComponent(COMPONENTS.SPRITE)).imageID = await FileSystemAPI.loadTexture(id)
                 break
             }
             default:
@@ -58,7 +57,6 @@ export default async function handleComponentDrop(entity, data) {
         }
     } catch (err) {
         console.error(err)
-        AlertController.error(LOCALIZATION_EN.FILE_NOT_FOUND)
     }
 
 }

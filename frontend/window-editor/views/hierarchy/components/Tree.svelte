@@ -1,29 +1,26 @@
 <script lang="ts">
-    import {onDestroy, onMount} from "svelte";
-    import Branch from "./TreeNode.svelte";
+    import {onDestroy} from "svelte";
+    import EntityTreeBranch from "./EntityTreeBranch.svelte";
+    import ComponentTreeBranch from "./ComponentTreeBranch.svelte";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
-    import HierarchyController from "../lib/HierarchyController";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import HierarchyController from "../../../lib/controllers/HierarchyController";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import viewportContext from "../../../templates/viewport-context";
-    import VirtualList from '@sveltejs/svelte-virtual-list';
     import SettingsStore from "../../../../shared/stores/SettingsStore";
-    import Engine from "../../../../../engine-core/Engine";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
-    import ToRenderElement from "../template/ToRenderElement";
+    import HierarchyToRenderElement from "../template/ToRenderElement";
+    import VirtualList from '@sveltejs/svelte-virtual-list';
 
-
-    export let ID:string
-    export let inputValue:string
-    export let filteredComponent:string
-    export let setIsEmpty:Function
-    export let openTree:{[key:string]:boolean}
-    export let setOpenTree:Function
-
+    export let ID: string
+    export let testSearch: Function
+    export let isOnSearch: boolean
+    export let openTree: { [key: string]: boolean }
+    export let updateOpen: Function
+    export let toRender: HierarchyToRenderElement[]
     const internalID = crypto.randomUUID()
 
-    let toRender:ToRenderElement[] = []
-    let selected:Map<string, boolean>
+    let selected: Map<string, boolean>
     let lockedEntity
 
     const unsubscribeSettings = SettingsStore.getStore(v => {
@@ -33,40 +30,11 @@
         )
     })
 
-    const testSearch = (node) => {
-        const s = inputValue, f = filteredComponent
-        return (s && node.name.includes(s) || !s) &&
-            (f && node.components.get(f) != null || !f)
-    }
-
     const unsubscribeSelection = SelectionStore.getStore(() => {
         selected = SelectionStore.TARGET === SelectionStore.TYPES.ENGINE ? SelectionStore.map : SelectionStore.EMPTY_MAP
         lockedEntity = SelectionStore.lockedEntity
     })
 
-    onMount(() => {
-        HierarchyController.registerListener(internalID, (op) => {
-            const openLocal = op || openTree
-
-            if(op !== undefined)
-                setOpenTree(op)
-            const entities = Engine.entities.array
-            const hierarchy = HierarchyController.hierarchy
-            const data = []
-            if (!inputValue && !filteredComponent)
-                for (let i = 0; i < hierarchy.length; i++) {
-                    if (!hierarchy[i].node.parent || openLocal[hierarchy[i].node.parent.id])
-                        data.push(hierarchy[i])
-                }
-             else
-                for (let i = 0; i < entities.length; i++) {
-                    if (testSearch(entities[i]))
-                        data.push({node: entities[i], depth: 0})
-                }
-            toRender = data
-            setIsEmpty(data.length === 0)
-        })
-    })
 
     onDestroy(() => {
         HierarchyController.removeListener(internalID)
@@ -78,18 +46,27 @@
 
 
 {#if toRender.length > 0}
-    <VirtualList items={toRender} let:item>
-        <Branch
-                nodeRef={item.node}
-                depth={item.depth}
-                selected={selected}
+    <VirtualList items={toRender} itemHeight={23} let:item>
+        {#if item.component}
+            <ComponentTreeBranch
+                    component={item.component}
+                    depth={item.depth }
+                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+            />
+        {:else}
+            <EntityTreeBranch
+                    {testSearch}
+                    {isOnSearch}
+                    entity={item.node}
+                    depth={item.depth}
 
-                lockedEntity={lockedEntity}
-                setLockedEntity={v => SelectionStore.lockedEntity = v}
-                internalID={ID}
-                open={openTree}
-                updateOpen={() => setOpenTree(openTree)}
-        />
+                    {selected }
+                    {lockedEntity}
+                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+                    open={openTree}
+                    {updateOpen}
+            />
+        {/if}
     </VirtualList>
 {:else}
     <div data-svelteempty="-">

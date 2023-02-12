@@ -1,6 +1,6 @@
 import FilesAPI from "../../../lib/fs/FilesAPI"
 import FilesStore from "../../../../shared/stores/FilesStore";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import FS from "../../../../shared/lib/FS/FS";
 import AlertController from "../../../../shared/components/alert/AlertController";
 

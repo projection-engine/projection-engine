@@ -1,10 +1,10 @@
 <script>
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
     import SettingsStore from "../../../shared/stores/SettingsStore";
-    import HotKeysController from "../../lib/utils/HotKeysController";
+    import HotKeysController from "../../../shared/lib/HotKeysController";
     import viewportHotkeys from "../../templates/viewport-hotkeys";
     import Tabs from "../../components/tabs/Tabs.svelte";
     import removeTab from "./utils/remove-tab";
@@ -15,7 +15,6 @@
     import TabsStore from "../../../shared/stores/TabsStore";
     import GPU from "../../../../engine-core/GPU";
     import RENDER_TARGET from "../../static/RENDER_TARGET";
-    import ElectronResources from "../../../shared/lib/ElectronResources"
 
     export let updateView
     export let viewTab

@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import MetricsController from "../../../../engine-core/lib/utils/MetricsController";
     import Icon from "../../../shared/components/icon/Icon.svelte";

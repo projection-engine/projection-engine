@@ -1,4 +1,3 @@
-import MutableObject from "../../../../../engine-core/static/MutableObject";
 
 export default function sortItems(arr:MutableObject[], isDSC:boolean, sortKey:string) {
     function compare(A, B) {

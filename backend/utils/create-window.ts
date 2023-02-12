@@ -1,6 +1,5 @@
 import {BrowserWindow, dialog} from "electron";
 import * as path from "path";
-import MutableObject from "../../engine-core/static/MutableObject";
 import * as isDev from "electron-is-dev"
 
 const RELATIVE_LOGO_PATH = "./APP_LOGO.png"

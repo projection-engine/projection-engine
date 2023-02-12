@@ -21,7 +21,7 @@ const COMMON = {
     watch,
     target: ['es2022'],
     minify: production,
-    sourcemap: false,
+    sourcemap: !production,
     ignoreAnnotations: true,
     loader: {".glsl": "text", ".frag": "text", ".vert": "text", ".svg": "text"}
 }

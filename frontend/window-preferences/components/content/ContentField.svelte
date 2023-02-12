@@ -26,7 +26,6 @@
 
             return current
         } else {
-            console.trace(toRender, key, current[key], current)
             return current[key]
         }
     }
@@ -45,7 +44,6 @@
                 current = current[key[i]]
             current[[...key].pop()] = value
 
-            console.trace(current, key)
         } else
             s[key] = value
         if (save) {

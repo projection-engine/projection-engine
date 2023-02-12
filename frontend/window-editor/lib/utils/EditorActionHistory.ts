@@ -1,12 +1,12 @@
 import UndoRedo from "./UndoRedo";
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
-import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 import serializeStructure from "../../../../engine-core/utils/serialize-structure";
-import EntityNameController from "../controllers/EntityNameController";
+import NameController from "../controllers/NameController";
 import AlertController from "../../../shared/components/alert/AlertController";
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-import EntityManager from "../EntityManager";
+import EngineStateController from "../controllers/EngineStateController";
 import Entity from "../../../../engine-core/instances/Entity";
 
 interface Action {
@@ -28,7 +28,7 @@ export default class EditorActionHistory {
 
         const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
         EditorActionHistory.#cache.save({
-            nameCache: new Map(EntityNameController.byName),
+            nameCache: new Map(NameController.byName),
             toRemove: data.map(d => d.id),
             toAdd: !isRemoval ? serializeStructure(data) : undefined
         })
@@ -57,13 +57,13 @@ export default class EditorActionHistory {
         const toAdd: Entity[] = []
         const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
 
-        EntityNameController.byName = nameCache
+        NameController.byName = nameCache
         for (let i = 0; i < parsedToAdd.length; i++) {
             if (!parsedToAdd[i])
                 continue
             toAdd.push(EntityAPI.parseEntityObject(parsedToAdd[i]))
         }
-        EntityManager.replaceBlock(toRemove, toAdd)
+        EngineStateController.replaceBlock(toRemove, toAdd)
 
     }
 }

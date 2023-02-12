@@ -1,29 +1,28 @@
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
-
-import SelectionStore from "../../../shared/stores/SelectionStore";
 import Entity from "../../../../engine-core/instances/Entity";
-import HierarchyController from "../../views/hierarchy/lib/HierarchyController";
+import EntityUpdateController from "./EntityUpdateController";
 
-export default class EntityNameController {
+export default class NameController {
     static #byName = new Map<string, string>()
     static get byName(){
-        return EntityNameController.#byName
+        return NameController.#byName
     }
 
+    static clear(){
+        NameController.#byName.clear()
+    }
     static set byName(data:Map<string, string>){
         if(data instanceof Map)
-            EntityNameController.#byName = data
+            NameController.#byName = data
     }
     static renameEntity(newName:string, entity:Entity) {
-        const found = EntityNameController.#byName.get(newName)
+        const found = NameController.#byName.get(newName)
         let validName = true
         if (found !== entity.id)
             validName = !QueryAPI.getEntityByID(found)
         if (validName) {
-            entity.name = newName
-            EntityNameController.#byName.set(newName, entity.id)
-            HierarchyController.updateHierarchy()
-            SelectionStore.updateStore()
+            EntityUpdateController.updateEntity(entity,  newName, "name")
+            NameController.#byName.set(newName, entity.id)
         } else{
             {
                 const subWord = ".00"
@@ -33,7 +32,7 @@ export default class EntityNameController {
                     currentIndex = 1
                 else
                     currentIndex += 1
-                EntityNameController.renameEntity(newName.replace(originalPrefix, "") + subWord + currentIndex, entity)
+                NameController.renameEntity(newName.replace(originalPrefix, "") + subWord + currentIndex, entity)
             }
         }
     }

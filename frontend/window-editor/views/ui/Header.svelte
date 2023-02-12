@@ -1,17 +1,16 @@
 <script>
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 
     import SelectionStore from "../../../shared/stores/SelectionStore";
-
-    import Entity from "../../../../engine-core/instances/Entity";
     import Engine from "../../../../engine-core/Engine";
     import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
     import ViewHeader from "../../components/view/components/ViewHeader.svelte";
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import EntityManager from "../../lib/EntityManager";
+    import EngineStateController from "../../lib/controllers/EngineStateController";
     import AlertController from "../../../shared/components/alert/AlertController";
+    import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 
     export let settings
@@ -33,10 +32,11 @@
     }
 
 
-    function addUiElement() {
-        const e = new Entity(undefined, "UI-ShaderNode")
+    function addUI() {
+        const e = EntityAPI.getNewEntityInstance()
+        e.name = "UI-ShaderNode"
         e.addComponent(COMPONENTS.UI)
-        EntityManager.add(e)
+        EngineStateController.add(e)
     }
 
 
@@ -44,7 +44,7 @@
 
 <ViewHeader>
     <div class="left-content">
-        <button data-sveltebuttondefault="-"  on:click={addUiElement} data-svelteview-header-button="-" style="max-width: unset">
+        <button data-sveltebuttondefault="-"  on:click={addUI} data-svelteview-header-button="-" style="max-width: unset">
             <Icon styles="font-size: .9rem">add</Icon>
             {LOCALIZATION_EN.ADD_ELEMENT}
         </button>

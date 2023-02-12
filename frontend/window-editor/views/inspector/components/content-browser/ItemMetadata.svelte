@@ -1,6 +1,5 @@
 <script>
-    import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import getTypeName from "../../../content-browser/utils/get-type-name";
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController";
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";

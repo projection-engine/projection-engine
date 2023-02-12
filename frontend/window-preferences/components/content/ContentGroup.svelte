@@ -3,6 +3,7 @@
     import SettingsStore from "../../../shared/stores/SettingsStore";
     import VisualsStore from "../../../shared/stores/VisualsStore";
     import {onDestroy} from "svelte";
+    import Accordion from "../../../shared/components/accordion/Accordion.svelte";
 
     export let toRender
 
@@ -18,8 +19,8 @@
     })
 </script>
 {#each toRender.form as form, i}
-    <fieldset>
-        <legend>{form.label}</legend>
+    <Accordion title={form.label} startOpen={true}>
+
         <div data-svelteform="-">
             {#each form.children as field}
                 {#if field.divider}
@@ -29,6 +30,6 @@
                 {/if}
             {/each}
         </div>
-    </fieldset>
+    </Accordion>
 {/each}
 

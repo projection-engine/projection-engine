@@ -1,4 +1,3 @@
-import MutableObject from "../../../engine-core/static/MutableObject";
 
 export default class Portal {
     portal?: HTMLElement

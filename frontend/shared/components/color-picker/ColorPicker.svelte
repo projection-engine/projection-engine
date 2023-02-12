@@ -77,7 +77,7 @@
         position: absolute;
         padding: 0 8px 0 2px;
         width: fit-content;
-        font-weight: 550;
+
         height: 100%;
         display: flex;
         align-items: center;

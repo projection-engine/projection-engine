@@ -1,16 +1,13 @@
 import FilesAPI from "../fs/FilesAPI"
-import initializeEntity from "./utils/initialize-entity";
+import initializeEntity from "./initialize-entity";
 import RegistryAPI from "../fs/RegistryAPI";
-
-import EngineStore from "../../../shared/stores/EngineStore";
-import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI";
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 import EditorActionHistory from "../utils/EditorActionHistory";
-import EntityConstructor from "../controllers/EntityConstructor";
+import EntityFactory from "../controllers/EntityFactory";
 import GPU from "../../../../engine-core/GPU";
-import Entity from "../../../../engine-core/instances/Entity";
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI";
 
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI";
@@ -19,7 +16,8 @@ import FS from "../../../shared/lib/FS/FS";
 import MeshComponent from "../../../../engine-core/instances/components/MeshComponent";
 import SpriteComponent from "../../../../engine-core/instances/components/SpriteComponent";
 import AlertController from "../../../shared/components/alert/AlertController";
-import EntityManager from "../EntityManager";
+import EngineStateController from "../controllers/EngineStateController";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 
 export default class Loader {
@@ -43,18 +41,19 @@ export default class Loader {
     static async scene(path) {
         const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + path, "json")
         const entities = []
-        const root = new Entity(crypto.randomUUID(), path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop())
+        const root = EntityAPI.getNewEntityInstance()
+        root.name = path.replace(FILE_TYPES.COLLECTION, "").split(FS.sep).pop()
         entities.push(root)
-        EntityConstructor.translateEntity(root)
+        EntityFactory.translateEntity(root)
         try {
             if (file) {
                 for (let i = 0; i < file.entities.length; i++) {
                     const currentEntity = file.entities[i]
                     const entity = initializeEntity(currentEntity, currentEntity.meshID)
-                    entity.parentCache = currentEntity.parent || root.id
+                    entity.parentID = currentEntity.parent || root.id
                     entities.push(entity)
                 }
-                EntityManager.appendBlock(entities)
+                EngineStateController.appendBlock(entities)
             } else
                 console.error("Collection not found")
         } catch (error) {
@@ -84,12 +83,13 @@ export default class Loader {
                 case FILE_TYPES.PRIMITIVE: {
                     const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + res.path, "json")
                     const materialID = await Loader.mesh(file, data)
-                    const entity = new Entity(undefined, "New primitive")
+                    const entity = EntityAPI.getNewEntityInstance()
+                    entity.name = "New primitive"
                     const instance = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
                     entity.addComponent(COMPONENTS.CULLING)
                     instance.materialID = materialID
                     instance.meshID = data
-                    EntityConstructor.translateEntity(entity)
+                    EntityFactory.translateEntity(entity)
                     entitiesToPush.push(entity)
 
                     break
@@ -98,13 +98,13 @@ export default class Loader {
                     await Loader.scene(res.path)
                     break
                 case FILE_TYPES.TEXTURE: {
-                    const res = await EngineStore.loadTextureFromImageID(data)
-                    if (res) {
-                        const sprite = new Entity(crypto.randomUUID(), LOCALIZATION_EN.SPRITE_RENDERER)
-                        EntityConstructor.translateEntity(sprite)
-                        sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
-                        EntityManager.add(sprite)
-                    }
+                    if(data)
+                    await FileSystemAPI.loadTexture(data)
+                    const sprite = EntityAPI.getNewEntityInstance()
+                    sprite.name = LOCALIZATION_EN.SPRITE_RENDERER
+                    EntityFactory.translateEntity(sprite)
+                    sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
+                    EngineStateController.add(sprite)
                     break
                 }
 
@@ -121,10 +121,6 @@ export default class Loader {
                         console.error(LOCALIZATION_EN.SOME_ERROR_OCCURRED + ` (Material: ${data})`)
                     break
                 }
-                // case FILE_TYPES.TERRAIN: {
-                //     await loadTerrain(res)
-                //     break
-                // }
                 default:
                     console.error(new Error("Not valid file type"))
                     break
@@ -132,7 +128,7 @@ export default class Loader {
         }
 
         if (entitiesToPush.length > 0) {
-            EntityManager.appendBlock(entitiesToPush)
+            EngineStateController.appendBlock(entitiesToPush)
             AlertController.success(LOCALIZATION_EN.ENTITIES_CREATED)
         }
     }

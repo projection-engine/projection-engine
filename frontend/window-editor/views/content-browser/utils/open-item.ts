@@ -1,5 +1,5 @@
 import LevelController from "../../../lib/utils/LevelController";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import Loader from "../../../lib/parsers/Loader";
 import openBottomView from "../../../utils/open-bottom-view";
 import VIEWS from "../../../components/view/static/VIEWS";
@@ -10,10 +10,11 @@ import AlertController from "../../../../shared/components/alert/AlertController
 import ElectronResources from "../../../../shared/lib/ElectronResources";
 
 export default function openItem(data, setCurrentDirectory, setSelected, reset, type) {
-    if(!data)
+    if (!data)
         return
     if (type === 1) {
         const fileType = "." + data.type
+        AlertController.warn(LOCALIZATION_EN.OPENING_ASSET+  " (" + data.name + ")")
         switch (fileType) {
             case FILE_TYPES.UI_LAYOUT:
             case FILE_TYPES.COMPONENT:
@@ -22,20 +23,17 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
                 ElectronResources.shell.openPath(FS.resolvePath(FS.ASSETS_PATH + FS.sep + data.id))
                     .catch(err => {
                         AlertController.error(LOCALIZATION_EN.ERROR_OPENING_FILE)
-                    console.error(err)
-                })
-                AlertController.warn(LOCALIZATION_EN.OPENING_FILE + " (" + data.name + ")")
+                        console.error(err)
+                    })
                 break
             case FILE_TYPES.PRIMITIVE:
             case FILE_TYPES.COLLECTION:
             case FILE_TYPES.TEXTURE:
-            case FILE_TYPES.TERRAIN:
                 Loader.load(data.registryID, true).catch()
                 AlertController.warn(LOCALIZATION_EN.CREATING_ENTITY)
                 break
             case FILE_TYPES.LEVEL:
-                AlertController.warn(LOCALIZATION_EN.OPENING_LEVEL + " (" + data.name + ")")
-                LevelController.loadLevel(data).catch()
+                LevelController.loadLevel(data.registryID).catch()
                 break
             case FILE_TYPES.MATERIAL:
                 ShaderEditorTools.toOpenFile = data

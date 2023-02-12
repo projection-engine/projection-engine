@@ -1,29 +1,38 @@
-import EntityAPI from "../../../../../engine-core/lib/utils/EntityAPI";
 import SelectionStore from "../../../../shared/stores/SelectionStore";
 
-import HierarchyController from "../lib/HierarchyController";
-import EntityManager from "../../../lib/EntityManager";
+import HierarchyController from "../../../lib/controllers/HierarchyController";
+import EngineStateController from "../../../lib/controllers/EngineStateController";
+import Entity from "../../../../../engine-core/instances/Entity";
+import Engine from "../../../../../engine-core/Engine";
 
-export default function handleDrop(event, entityDragged, node) {
+export default function handleDrop(event, entityDragged:Entity|Entity[], dropTargetEntity:Entity|undefined) {
 
     const toSave = Array.isArray(entityDragged) ? entityDragged : [entityDragged]
+
     const toAdd = [], newSelection = []
-    for(let i = 0; i < toSave.length; i++){
-        const currentEntity = toSave[i]
-        if (event.ctrlKey) {
-            EntityAPI.linkEntities(currentEntity, node)
-            newSelection.push(currentEntity.id)
+
+    for (let i = 0; i < toSave.length; i++) {
+        const currentEntity = <Entity>toSave[i]
+        if(currentEntity === Engine.loadedLevel)
+            continue
+        if (event.ctrlKey || dropTargetEntity?.isCollection) {
+            if (!dropTargetEntity) {
+                currentEntity.removeParent()
+                currentEntity.addParent(Engine.loadedLevel)
+            }
+            else
+                currentEntity.addParent(dropTargetEntity)
         } else if (event.shiftKey) {
             const clone = currentEntity.clone()
-
-            clone.parent = undefined
-            clone.parentCache = node?.id
+            clone.removeParent()
+            clone.parentID = dropTargetEntity?.id
             toAdd.push(clone)
+            newSelection.push(clone.id)
         }
     }
 
-    if(toAdd.length > 0)
-        EntityManager.appendBlock(toAdd, false)
+    if (toAdd.length > 0)
+        EngineStateController.appendBlock(toAdd, false)
     else {
         SelectionStore.engineSelected = newSelection
         HierarchyController.updateHierarchy()

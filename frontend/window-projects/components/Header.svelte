@@ -2,14 +2,13 @@
 
     import {onDestroy, onMount} from "svelte";
     import CreateProject from "./CreateProject.svelte";
-    import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
     import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS";
     import Portal from "../../shared/lib/Portal";
     import Icon from "../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
     import ElectronResources from "../../shared/lib/ElectronResources";
     import ROUTES from "../../../backend/static/ROUTES";
-
 
 
     export let setProjectsToShow
@@ -32,7 +31,7 @@
 
     onMount(() => {
 
-        portal.create(modal, {backdropFilter: "blur(2px)"})
+        portal.create(modal, {background: "rgba(0,0,0,.2)"})
         document.addEventListener("mousedown", handler)
         ElectronResources.ipcRenderer.on(ROUTES.OPEN_SELECTION, (event, data) => {
             if (data != null)
@@ -109,7 +108,7 @@
     }
 
     .header {
-        font-weight: 550;
+
         font-size: 1.5rem;
     }
 

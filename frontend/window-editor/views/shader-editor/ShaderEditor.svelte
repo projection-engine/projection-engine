@@ -1,6 +1,6 @@
 <script>
     import FilesAPI from "../../lib/fs/FilesAPI"
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy, onMount} from "svelte";
     import parseFile from "./utils/parse-file";
@@ -13,7 +13,7 @@
     import ElectronResources from "../../../shared/lib/ElectronResources";
     import Canvas from "./libs/Canvas";
     import shaderActions from "../../templates/shader-actions";
-    import HotKeysController from "../../lib/utils/HotKeysController";
+    import HotKeysController from "../../../shared/lib/HotKeysController";
     import ContextMenuController from "../../../shared/lib/context-menu/ContextMenuController";
     import SideBar from "./components/SideBar.svelte";
     import NODE_MAP from "./static/NODE_MAP";

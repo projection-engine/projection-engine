@@ -1,7 +1,6 @@
-import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
-import GridSystem from "../../../engine-tools/runtime/GridSystem";
-import CameraTracker from "../../../engine-tools/lib/CameraTracker";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
 import Component from "../../../engine-core/instances/components/Component";
+import SettingsStore from "../../shared/stores/SettingsStore";
 
 export default [
     {label: LOCALIZATION_EN.GLOBAL, type: "global", icon: "public"},
@@ -90,7 +89,7 @@ export default [
                         target: "settings",
                         min: 0,
                         max: 1,
-                        onChange: v => GridSystem.buffer[0] = v
+                        onChange: v => SettingsStore.data.gridColor = v
                     },
                     {
                         type: Component.propTypes.NUMBER,
@@ -99,7 +98,7 @@ export default [
                         target: "settings",
                         min: 0,
                         max: 1,
-                        onChange: v => GridSystem.buffer[3] = v
+                        onChange: v => SettingsStore.data.gridOpacity = v
                     },
                     {divider: true},
                     {
@@ -109,7 +108,7 @@ export default [
                         target: "settings",
                         increment: .01,
                         min: .001,
-                        onChange: v => GridSystem.buffer[2] = v
+                        onChange: v => SettingsStore.data.gridThreshold = v
                     },
                     {
                         type: Component.propTypes.NUMBER,
@@ -118,7 +117,7 @@ export default [
                         target: "settings",
                         increment: .0001,
                         min: .0001,
-                        onChange: v => GridSystem.buffer[1] = v
+                        onChange: v => SettingsStore.data.gridScale = v
                     },
                 ]
             },

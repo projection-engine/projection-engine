@@ -4,7 +4,7 @@ import handleDelete from "../views/content-browser/utils/handle-delete";
 import FilesStore from "../../shared/stores/FilesStore";
 import SelectionStore from "../../shared/stores/SelectionStore";
 import importFile from "../utils/import-file";
-import LOCALIZATION_EN from "../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
 import getCreationOptions from "../views/content-browser/utils/get-creation-options";
 import RegistryAPI from "../lib/fs/RegistryAPI";
 import FS from "../../shared/lib/FS/FS";

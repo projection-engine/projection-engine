@@ -3,7 +3,6 @@ import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
 import EngineTools from "../../../../../engine-tools/EngineTools";
 import CameraAPI from "../../../../../engine-core/lib/utils/CameraAPI";
 import DirectionalShadows from "../../../../../engine-core/runtime/DirectionalShadows";
-import GridSystem from "../../../../../engine-tools/runtime/GridSystem";
 import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
 import ENVIRONMENT from "../../../../../engine-core/static/ENVIRONMENT";
 import Loop from "../../../../../engine-core/Loop";
@@ -11,6 +10,8 @@ import RotationGizmo from "../../../../../engine-tools/lib/transformation/Rotati
 import TranslationGizmo from "../../../../../engine-tools/lib/transformation/TranslationGizmo";
 import ScalingGizmo from "../../../../../engine-tools/lib/transformation/ScalingGizmo";
 import GIZMOS from "../../../static/GIZMOS";
+import EngineResources from "../../../../../engine-core/lib/EngineResources";
+import VISUAL_SETTINGS from "../../../static/VISUAL_SETTINGS";
 
 
 export default function updateRenderer(selected, engine, settings) {
@@ -42,17 +43,14 @@ export default function updateRenderer(selected, engine, settings) {
     if (settings.gizmoGrid.sensitivity != null)
         GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity
 
-    GridSystem.buffer[0] = settings.gridColor || .3
-    GridSystem.buffer[1] = settings.gridScale * 20. || 20.
-    GridSystem.buffer[2] = settings.gridThreshold || 100.
-    GridSystem.buffer[3] = settings.gridOpacity || 1.
 
-    Engine.updateParams(
+
+    EngineResources.updateParams(
         settings,
-        settings.SSGI || {},
-        settings.SSR || {},
-        settings.SSS || {},
-        settings.SSAO || {},
+        settings.SSGI ?? VISUAL_SETTINGS.SSGI,
+        settings.SSR ?? VISUAL_SETTINGS.SSR,
+        settings.SSS ?? VISUAL_SETTINGS.SSS,
+        settings.SSAO ?? VISUAL_SETTINGS.SSAO,
         settings.physicsSimulationStep,
         settings.physicsSubSteps
     )

@@ -9,7 +9,6 @@ import getPivotPointMatrix from "../utils/get-pivot-point-matrix";
 import GizmoAPI from "../lib/GizmoAPI";
 import LineRenderer from "./LineRenderer";
 import Entity from "../../engine-core/instances/Entity";
-import EngineTools from "../EngineTools";
 
 
 const lineMatrix = <Float32Array>mat4.create()
@@ -58,7 +57,9 @@ export default class GizmoSystem   {
 
     static updateGizmoToolTip = () => null
 
-    static linkEntityToGizmo(main) {
+    static linkEntityToGizmo(main?:Entity) {
+        if(main?.isCollection || !main?.active)
+            return
         getPivotPointMatrix(main)
         main.__pivotChanged = true
         GizmoSystem.mainEntity = main
@@ -82,8 +83,7 @@ export default class GizmoSystem   {
 
     static execute() {
         const m = GizmoSystem.mainEntity
-        if (m != null) {
-
+        if (m != null && m.active) {
             const axis = GizmoSystem.clickedAxis
             GizmoSystem.highlightX = axis === AXIS.X || axis === AXIS.XZ || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE
             GizmoSystem.highlightY = axis === AXIS.Y || axis === AXIS.ZY || axis === AXIS.XY || axis === AXIS.SCREEN_SPACE

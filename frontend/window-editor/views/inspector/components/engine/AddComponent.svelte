@@ -2,13 +2,10 @@
     import FilesStore from "../../../../../shared/stores/FilesStore";
     import {onDestroy} from "svelte";
     import componentConstructor from "../../../../utils/component-constructor";
-    import SelectionStore from "../../../../../shared/stores/SelectionStore";
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
-    import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte";
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import NATIVE_COMPONENTS from "../../static/NATIVE_COMPONENTS";
+    import ComponentRow from "./ComponentRow.svelte";
 
     export let entity
 
@@ -18,51 +15,74 @@
 </script>
 
 
-<Dropdown hideArrow={true} buttonStyles="border-radius: 3px; background: var(--pj-background-secondary); margin-left: auto">
+<Dropdown styles={"width: 20vw; padding: 4px;  overflow: hidden"}
+          buttonStyles="border-radius: 3px; background: transparent; overflow: hidden;">
     <button data-sveltebuttondefault="-"
             slot="button"
             class="add-button"
             data-svelteoverflow="-"
     >
-        <Icon>add</Icon>
-        <ToolTip content={LOCALIZATION_EN.ADD_COMPONENT}/>
+        <slot/>
     </button>
+    {#if !entity.isCollection}
+        <fieldset>
+            <legend>{LOCALIZATION_EN.COMPONENTS}</legend>
+            <div data-sveltebuttongroup="-">
+                <ComponentRow entity={entity} offset={0}/>
+                <ComponentRow entity={entity} offset={3}/>
+                <ComponentRow entity={entity} offset={6}/>
+                <ComponentRow entity={entity} offset={9}/>
+            </div>
+        </fieldset>
 
-    {#each NATIVE_COMPONENTS as [key,  label, icon]}
-        <button data-sveltebuttondefault="-"
-                on:click={(e) =>{
-                    EditorActionHistory.save(entity)
-                    entity.addComponent(key)
-                    EditorActionHistory.save(entity)
+    {:else if store.components.length === 0}
+        <div class="empty-wrapper">
+            <div data-svelteempty="-" >
+                <Icon styles="font-size: 75px">texture</Icon>
+                {LOCALIZATION_EN.NO_CUSTOM_COMPONENTS_FOUND}
+            </div>
+        </div>
+    {/if}
+    {#if store.components.length > 0}
+        {#if !entity.isCollection}
+            <div data-sveltedivider="-"></div>
+        {/if}
+        <fieldset>
+            <legend>{LOCALIZATION_EN.CUSTOM_COMPONENTS}</legend>
+            {#each store.components as script}
 
-                    SelectionStore.updateStore()
-                    e.target.closeDropdown()
+                <button
+                        data-sveltebuttondefault="-"
+                        data-svelteinline="-"
+                        style="justify-content: flex-start; gap: 4px; border: none; background: var(--pj-background-secondary)"
+                        on:click={(e) => {
+                            componentConstructor(entity, script.registryID).catch()
+                            e.target.closeDropdown()
+                        }}>
+                    <Icon styles="font-size: 1rem">add</Icon>
+                    {script.name}
+                </button>
 
-                }}
-        >
-            <Icon>{icon}</Icon>
-            {label}
-        </button>
-    {/each}
-    <div data-sveltedivider="-"></div>
-    {#each store.components as script}
-        <button data-sveltebuttondefault="-"  on:click={(e) => {
-            componentConstructor(entity, script.registryID).catch()
-            e.target.closeDropdown()
-        }}>
-            {script.name}
-        </button>
-    {/each}
+            {/each}
+        </fieldset>
+    {/if}
+
 </Dropdown>
 
 <style>
-    .add-button{
-
+    .add-button {
         border: none;
         display: flex;
         align-items: center;
         gap: 4px;
         max-height: 22px;
         min-height: 22px;
+        padding: 0 !important;
+    }
+
+    .empty-wrapper {
+        width: 100%;
+        height: 105px;
+        position: relative;
     }
 </style>

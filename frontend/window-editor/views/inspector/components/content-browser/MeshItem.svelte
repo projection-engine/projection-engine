@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor";

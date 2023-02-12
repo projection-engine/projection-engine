@@ -1,7 +1,7 @@
 <script>
     import AssetAPI from "../../../../lib/fs/AssetAPI";
     import GPU from "../../../../../../engine-core/GPU";
-    import LOCALIZATION_EN from "../../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
     import FilesAPI from "../../../../lib/fs/FilesAPI";
     import RegistryAPI from "../../../../lib/fs/RegistryAPI";
     import compareObjects from "../../utils/compare-objects";

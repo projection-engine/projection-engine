@@ -1,4 +1,3 @@
-import MutableObject from "../../../engine-core/static/MutableObject";
 import ElectronResources from "../lib/ElectronResources";
 import ROUTES from "../../../backend/static/ROUTES";
 import STORES from "../../../backend/static/STORES";
@@ -6,15 +5,8 @@ import VisualsStore from "./VisualsStore";
 import SettingsStore from "./SettingsStore";
 
 export default class StoreManager{
-    static #isMainWindow = false
-    static get isMainWindow(){
-        return StoreManager.#isMainWindow
-    }
-    static set isMainWindow(_){}
-    static initialize(isMainWindow:boolean){
-        StoreManager.#isMainWindow = isMainWindow
+    static initialize(){
         ElectronResources.ipcRenderer.on(ROUTES.STORE_UPDATE, (_, {data, key}) => {
-            console.trace(data, key)
             switch (key){
                 case STORES.SETTINGS:
                     SettingsStore.noPush = true

@@ -1,16 +1,14 @@
-import COMPONENTS from "../../../../../engine-core/static/COMPONENTS";
-import Entity from "../../../../../engine-core/instances/Entity";
-import MutableObject from "../../../../../engine-core/static/MutableObject";
-import MeshComponent from "../../../../../engine-core/instances/components/MeshComponent";
+import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
+import Entity from "../../../../engine-core/instances/Entity";
+import MeshComponent from "../../../../engine-core/instances/components/MeshComponent";
+import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
 
 
 export default function initializeEntity(data: MutableObject, meshID: string, parent?: Entity, index?: number) {
-    const entity = new Entity(data?.id, data.name ? data.name : "primitive-" + (index || 0))
+    const entity = EntityAPI.getNewEntityInstance(data?.id)
+    entity.name = data.name ? data.name : "primitive-" + (index || 0)
     try {
-        if (parent != null) {
-            entity.parent = parent
-            parent.children.push(entity)
-        }
+        entity.addParent(parent)
         entity.changed = true
 
         for (let i = 0; i < 16; i++)

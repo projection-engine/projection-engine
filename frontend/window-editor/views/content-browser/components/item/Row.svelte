@@ -1,8 +1,8 @@
 <script>
-    import ItemInput from "./ItemInput.svelte";
     import openItem from "../../utils/open-item";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
+    import KEYS from "../../../../static/KEYS";
 
     export let currentDirectory
     export let items
@@ -49,7 +49,19 @@
             </Icon>
         {/if}
     </div>
-    <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename} isRow={true}/>
+
+    <input
+            data-svelteoverflow="-"
+            disabled={!isOnRename}
+            on:blur={ev =>  submitRename(ev.currentTarget.value)}
+            on:keydown={e => {
+                if(e.code === KEYS.Enter)
+                    submitRename(e.currentTarget.value)
+            }}
+            value={data.name}
+            style="text-align: left"
+    />
+
     <small>{data.creationDate}</small>
     {#if !data.isFolder}
         <small>{(data.size / 1e+6).toFixed(2)}mb</small>
@@ -57,10 +69,28 @@
 </div>
 
 <style>
+    input {
+        padding: 0 2px;
+        border-radius: 3px;
+        background: none;
+        text-align: center;
+        outline: none;
+        font-size: .7rem;
+        color: var(--pj-color-primary);
+        border: var(--pj-border-primary) 1px solid;
+        background: rgba(0, 0, 0, .5);
+        height: 23px;
+    }
+
+    input:disabled {
+        border: none;
+        background: none;
+        color: var(--pj-color-quaternary);
+    }
+
     small {
         font-size: .65rem;
     }
-
 
     .file {
         width: 100%;

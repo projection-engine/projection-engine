@@ -21,9 +21,8 @@ export default class WireframeRenderer {
         StaticEditorShaders.wireframe.bind()
 
         context.activeTexture(context.TEXTURE0)
-        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
+        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepthVelocity)
         context.uniform1i(uniforms.depth, 0)
-        context.uniform2fv(uniforms.bufferResolution, StaticFBO.visibility.resolution)
 
         const cameras = ResourceEntityMapper.cameras.array
         const camerasSize = cameras.length
@@ -73,7 +72,8 @@ export default class WireframeRenderer {
 
                 context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.matrix)
                 context.uniform1i(uniforms.isSelected, entity.__isSelected ? 1 : 0)
-                StaticMeshes.cube.drawLineLoop()
+                StaticEditorMeshes.clipSpaceCamera.drawLines()
+
             }
         }
     }

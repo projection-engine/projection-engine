@@ -8,7 +8,7 @@ export default function initializeListeners(){
         WindowController.closeSubWindows()
         WindowController.prepareForUse(WindowController.pathToProject).catch()
     })
-    ipcMain.on(ROUTES.LOAD_LEVEL, Events.loadLevel)
+
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, Events.loadProjectMetadata)
     ipcMain.on(ROUTES.READ_FILE, Events.readFile)
     ipcMain.on(ROUTES.SET_PROJECT_CONTEXT, Events.setProjectContext)

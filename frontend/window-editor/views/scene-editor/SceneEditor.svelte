@@ -8,7 +8,7 @@
     import dragDrop from "../../../shared/components/drag-drop/drag-drop";
     import SelectionStore from "../../../shared/stores/SelectionStore";
     import viewportContext from "../../templates/viewport-context";
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import CameraSettings from "./components/CameraSettings.svelte";
     import Header from "./Header.svelte";
     import EngineStore from "../../../shared/stores/EngineStore";

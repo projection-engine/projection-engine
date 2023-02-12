@@ -1,8 +1,7 @@
 <script>
     import EngineStore from "../../../shared/stores/EngineStore";
     import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
-    import FilesStore from "../../../shared/stores/FilesStore";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import LevelController from "../../lib/utils/LevelController";
     import getFrameOptions from "./utils/get-frame-options";
     import SettingsStore from "../../../shared/stores/SettingsStore";
@@ -12,22 +11,19 @@
     import Icon from "../../../shared/components/icon/Icon.svelte";
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte";
     import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-    import EntityStateController from "../../lib/controllers/EntityStateController";
+    import ExecutionController from "../../lib/controllers/ExecutionController";
     import addNewTab from "../../views/viewport/utils/add-new-tab";
     import removeTab from "./utils/remove-tab";
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte";
-    import LevelSelector from "./components/LevelSelector.svelte";
     import ElectronResources from "../../../shared/lib/ElectronResources";
     import ROUTES from "../../../../backend/static/ROUTES";
     import WindowTypes from "../../../../backend/static/WindowTypes";
 
 
     let engine
-    let store
     let settings
     let hasChanges = false
     const unsubscribeTracker = ChangesTrackerStore.getStore(v => hasChanges = v)
-    const unsubscribe = FilesStore.getStore(v => store = v)
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
@@ -35,7 +31,6 @@
     onDestroy(() => {
         unsubscribeTracker()
         unsubscribeEngine()
-        unsubscribe()
         unsubscribeSettings()
     })
 
@@ -71,7 +66,7 @@
     <div class="wrapper footer-header" style="height: 22px">
         <button
                 data-sveltebuttondefault="-"
-                disabled={engine.executingAnimation || !hasChanges}
+                disabled={engine.executingAnimation}
                 on:click={_ => ElectronResources.ipcRenderer.send(ROUTES.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
         >
             <Icon styles="font-size: 1rem">settings</Icon>
@@ -84,7 +79,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={engine.executingAnimation}
-                on:click={() => EntityStateController.startPlayState()}
+                on:click={() => ExecutionController.startPlayState()}
                 data-svelteview-header-button="-"
                 style="color: var(--pj-accent-color)"
         >
@@ -94,7 +89,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={!engine.executingAnimation}
-                on:click={() => EntityStateController.stopPlayState()}
+                on:click={() => ExecutionController.stopPlayState()}
                 data-svelteview-header-button="-"
                 style="--pj-accent-color: red; color: var(--pj-accent-color)"
         >
@@ -102,10 +97,7 @@
             <ToolTip content={LOCALIZATION_EN.STOP}/>
         </button>
     </div>
-    <div data-sveltevertdivider="-" style="height: 15px;"></div>
-    <div class="wrapper footer-header" style="height: 22px">
-        <LevelSelector store={store} engine={engine}/>
-    </div>
+
     <div data-sveltevertdivider="-" style="height: 15px;"></div>
     <Tabs
             removeMultipleTabs={() => {

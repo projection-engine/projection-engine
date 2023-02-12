@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import ShaderEditorTools from "../libs/ShaderEditorTools";
     import Selector from "../../../components/selector/Selector.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";

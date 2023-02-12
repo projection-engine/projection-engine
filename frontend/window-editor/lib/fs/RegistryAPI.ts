@@ -4,6 +4,7 @@ import FILE_TYPES from "../../../../static/objects/FILE_TYPES";
 import {getCall} from "../../../shared/lib/FS/get-call";
 import RegistryFile from "../../../../static/objects/RegistryFile";
 import ROUTES from "../../../../backend/static/ROUTES";
+import ElectronResources from "../../../shared/lib/ElectronResources";
 
 export default class RegistryAPI {
     static registry: { [key: string]: RegistryFile } = {}
@@ -24,7 +25,7 @@ export default class RegistryAPI {
         })
         if (registryFound) {
             registryFound.path = toResolved
-            Electron.ipcRenderer.send(ROUTES.UPDATE_REG, {id: registryFound.id, data: registryFound})
+            ElectronResources.ipcRenderer.send(ROUTES.UPDATE_REG, {id: registryFound.id, data: registryFound})
         }
     }
 

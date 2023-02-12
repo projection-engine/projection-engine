@@ -2,10 +2,9 @@ import UndoRedo from "../../../lib/utils/UndoRedo";
 import type Canvas from "./Canvas";
 import ShaderNode from "../templates/ShaderNode";
 import ShaderComment from "../templates/ShaderComment";
-import MutableObject from "../../../../../engine-core/static/MutableObject";
 import ShaderEditorTools from "./ShaderEditorTools";
 import AlertController from "../../../../shared/components/alert/AlertController";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 
 interface Action {
     toRemove: string[]
@@ -24,7 +23,6 @@ export default class ShaderEditorActionHistory {
     save(value: (ShaderNode | ShaderComment)[], isRemoval?: boolean) {
         if(value.length === 0)
             return
-        console.trace(value)
         const data = value.map(v => {
             if (v instanceof ShaderNode)
                 return ShaderEditorTools.serializeNode(v)

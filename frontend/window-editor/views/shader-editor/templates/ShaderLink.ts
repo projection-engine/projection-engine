@@ -1,7 +1,7 @@
 import type ShaderNode from "./ShaderNode";
 import type Canvas from "../libs/Canvas";
 import AlertController from "../../../../shared/components/alert/AlertController";
-import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
 import {Input} from "../static/Input";
 import {Output} from "../static/Output";
 import CanvasResources from "../libs/CanvasResources";

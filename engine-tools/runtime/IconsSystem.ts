@@ -9,10 +9,8 @@ import StaticEditorShaders from "../lib/StaticEditorShaders";
 import {mat4} from "gl-matrix";
 import MATERIAL_RENDERING_TYPES from "../../engine-core/static/MATERIAL_RENDERING_TYPES";
 import Entity from "../../engine-core/instances/Entity";
-import MutableObject from "../../engine-core/static/MutableObject";
 import StaticFBO from "../../engine-core/lib/StaticFBO";
 
-const DEFAULT_COLOR = [255, 255, 255]
 
 const iconAttributes = mat4.create()
 export default class IconsSystem {
@@ -25,7 +23,7 @@ export default class IconsSystem {
 
         for (let i = 0; i < size; i++) {
             const entity = entities[i]
-            if (!entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > settings.maxDistanceIcon)
+            if (entity.isCollection || !entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > settings.maxDistanceIcon )
                 continue
             const hasLight = entity.lightComponent !== undefined
             const hasProbe = entity.lightProbeComponent !== undefined
@@ -37,8 +35,9 @@ export default class IconsSystem {
             if (
                 tracking === entity ||
                 doesntHaveIcon && entity.uiComponent ||
-                entity.meshRef && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
-                doesntHaveIcon && entity.meshRef && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY
+                entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
+                doesntHaveIcon && entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
+                doesntHaveIcon && !entity.meshComponent?.hasMesh
             )
                 continue
             cb(entity, settings, uniforms)
@@ -60,7 +59,7 @@ export default class IconsSystem {
             scale = settings.iconScale,
             imageIndex = 0,
             isSelected = entity.__isSelected ? 1 : 0,
-            color = entity._hierarchyColor || DEFAULT_COLOR
+            color = entity.colorIdentifier
 
         switch (lightType) {
             case LIGHT_TYPES.DIRECTIONAL:
@@ -167,7 +166,7 @@ export default class IconsSystem {
         context.uniform1i(uniforms.iconSampler, 0)
 
         context.activeTexture(context.TEXTURE1)
-        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepth)
+        context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepthVelocity)
         context.uniform1i(uniforms.sceneDepth, 1)
 
         context.uniformMatrix4fv(uniforms.projectionM, false, CameraAPI.projectionMatrix)

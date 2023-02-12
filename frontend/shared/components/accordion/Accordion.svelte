@@ -35,11 +35,20 @@
 </div>
 
 <style>
+    .accordion {
+        display: grid;
+        background-color: var(--pj-background-secondary);
+        max-width: 100%;
+        user-select: none;
+        border-radius: 3px;
+        box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
+    }
     .summary-wrapper{
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        color: var(--pj-color-tertiary);
     }
     .dropdown-button {
         border: none;
@@ -64,13 +73,7 @@
         opacity: .75;
     }
 
-    .accordion {
-        display: grid;
-        background-color: var(--pj-background-secondary);
-        max-width: 100%;
-        user-select: none;
-        border-radius: 3px;
-    }
+
 
     .closed {
         overflow: hidden;

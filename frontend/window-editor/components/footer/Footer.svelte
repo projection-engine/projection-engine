@@ -1,5 +1,5 @@
 <script>
-    import LOCALIZATION_EN from "../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import ErrorLoggerAPI from "../../lib/fs/ErrorLoggerAPI";
     import FrameMetadata from "./components/FrameMetadata.svelte";
     import SceneStats from "./components/SceneStats.svelte";
@@ -8,6 +8,9 @@
     import FS from "../../../shared/lib/FS/FS";
     import ElectronResources from "../../../shared/lib/ElectronResources";
     import Console from "./components/Console.svelte";
+    import Engine from "../../../../engine-core/Engine";
+    import {onDestroy, onMount} from "svelte";
+    import EntityUpdateController from "../../lib/controllers/EntityUpdateController";
 
 
     export let settings
@@ -16,14 +19,43 @@
     const openLogs = async () => {
         if (FS.exists(ErrorLoggerAPI.path))
             ElectronResources.shell.openPath(ErrorLoggerAPI.path).catch()
-        else
-            console.error("No logs found")
     }
+    let loadedLevel
+    const ID = crypto.randomUUID()
+    let entityID
+
+    function load() {
+        loadedLevel = Engine.loadedLevel?.name
+        entityID = Engine.loadedLevel?.id
+
+        if (entityID)
+            EntityUpdateController.removeListener(entityID, ID)
+
+        if(!loadedLevel)
+            return
+        EntityUpdateController.addListener(entityID, ID, () => {
+            loadedLevel = Engine.loadedLevel.name
+        })
+    }
+
+    onMount(() => {
+        Engine.addLevelLoaderListener(ID, load)
+        load()
+    })
+    onDestroy(() => Engine.removeLevelLoaderListener(ID))
 </script>
 
-<div class="wrapper" style={settings.hideFooter ? "display: none" : undefined}>
+<div class="container" style={settings.hideFooter ? "display: none" : undefined}>
 
     <div class="meta-data" style="justify-content: flex-start">
+        {#if loadedLevel}
+            <div class="wrapper footer-header" style="max-width: clamp(100px, 5vw, 100px); background: var(--pj-background-primary)">
+                <Icon styles="font-size: .9rem">forest</Icon>
+                <small data-svelteoverflow="-">{loadedLevel}</small>
+                <ToolTip content={LOCALIZATION_EN.LOADED_LEVEL}/>
+            </div>
+            <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
+        {/if}
         <FrameMetadata settings={settings}/>
         <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
         <Console engine={engine}/>
@@ -37,7 +69,8 @@
     <div class="meta-data" style="justify-content: flex-end">
         <SceneStats/>
         <div data-sveltevertdivider="-"></div>
-        <div class="version" on:click={() => ElectronResources.shell.openExternal("https://github.com/projection-engine")}>
+        <div class="version"
+             on:click={() => ElectronResources.shell.openExternal("https://github.com/projection-engine")}>
             {LOCALIZATION_EN.VERSION}
         </div>
     </div>
@@ -72,7 +105,7 @@
     }
 
 
-    .wrapper {
+    .container {
         border-top: var(--pj-border-primary) 1px solid;
         width: 100%;
         height: 25px;

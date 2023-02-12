@@ -66,16 +66,14 @@ export default function dragDrop(draggable) {
                 DragDropController.dropTarget = draggableElement
                 DragDropController.changedElements.push(draggableElement)
                 draggableElement.style.opacity = ".5"
-                draggableElement.dragDropListeners.dragOver(event)
+                draggableElement.dragDropListeners?.dragOver?.(event)
                 break
             case "drop":
                 event.preventDefault()
-                if (!DragDropController.dropTarget)
+                if (!DragDropController.dropTarget || !draggableElement.dragDropListeners?.onDrop)
                     return;
-
-                draggableElement.dragDropListeners.onDrop(DragDropController.dragData, event)
+                draggableElement.dragDropListeners?.onDrop?.(DragDropController.dragData, event)
                 DragDropController.onLeave()
-
                 break
         }
     }
@@ -106,6 +104,8 @@ export default function dragDrop(draggable) {
             draggableElement.dragDropListeners = {
                 onDrop,
                 dragOver: (event) => {
+                    if(!onDragOverEvent)
+                        return;
                     const target = DragDropController.alertModal
                     const html = onDragOverEvent(DragDropController.dragData, event)
 

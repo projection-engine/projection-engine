@@ -1,6 +1,6 @@
 <script>
 
-    import LOCALIZATION_EN from "../../static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import Modal from "../modal/Modal.svelte";
 
     export let handleClose
@@ -52,7 +52,7 @@
 
         gap: 4px;
         width: fit-content;
-        font-weight: 550;
+
 
         font-size: 1.2rem;
     }

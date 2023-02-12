@@ -2,12 +2,11 @@ import {get, writable} from "svelte/store";
 import handleDropFolder from "../../window-editor/views/content-browser/utils/handle-drop-folder";
 import ROUTES from "../../../backend/static/ROUTES";
 import ContentBrowserAPI from "../../window-editor/lib/fs/ContentBrowserAPI";
-import LOCALIZATION_EN from "../static/LOCALIZATION_EN";
+import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
 import resolveFileName from "../../window-editor/utils/resolve-file-name";
 import FilesHierarchyStore from "./FilesHierarchyStore";
 import FS from "../lib/FS/FS";
 import {getCall} from "../lib/FS/get-call";
-import MutableObject from "../../../engine-core/static/MutableObject";
 import RegistryAPI from "../../window-editor/lib/fs/RegistryAPI";
 
 const contentBrowserStore = writable({
@@ -52,7 +51,6 @@ export default class FilesStore {
             let data = <MutableObject[]|null>(await getCall(ROUTES.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
             if(!data)
                 data = FilesStore.data.items
-            console.trace(data)
             await RegistryAPI.readRegistry()
             const fileTypes = await ContentBrowserAPI.refresh()
             FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})

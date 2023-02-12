@@ -6,7 +6,7 @@ export default function transformModal(modal: HTMLElement, button: HTMLElement) 
         return
 
     modal.style.zIndex = "-1"
-    modal.style.display = "block"
+    modal.style.display = "flex"
 
     const buttonBoundingRect = button.getBoundingClientRect()
     const halfHeight = buttonBoundingRect.height / 2
@@ -32,7 +32,6 @@ export default function transformModal(modal: HTMLElement, button: HTMLElement) 
 
     modal.style.transform = `translate(${x}, ${y})`;
     modal.style.zIndex = "999"
-    modal.style.display = "grid"
     if (button.firstElementChild)
         button.firstElementChild.setAttribute("data-sveltehighlight", "true")
 }

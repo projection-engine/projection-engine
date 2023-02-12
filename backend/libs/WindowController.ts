@@ -1,11 +1,8 @@
 import PROJECT_FOLDER_STRUCTURE from "../../static/objects/PROJECT_FOLDER_STRUCTURE";
 import readTypedFile from "../utils/read-typed-file";
 import FILE_TYPES from "../../static/objects/FILE_TYPES";
-import PROJECT_STATIC_DATA from "../../static/objects/PROJECT_STATIC_DATA";
-import MutableObject from "../../engine-core/static/MutableObject";
 import RegistryFile from "../../static/objects/RegistryFile";
 import AssimpLoader from "./assimp/AssimpLoader";
-import Events from "./Events";
 import fileSystem from "../utils/file-system";
 import ROUTES from "../static/ROUTES";
 import {BrowserWindow, screen} from "electron"
@@ -151,7 +148,7 @@ export default class WindowController {
     static async prepareForUse(pathTo: string) {
 
         WindowController.pathToRegistry = pathTo + path.sep + FILE_TYPES.REGISTRY
-        WindowController.metadata = <MutableObject>await readTypedFile(pathTo + path.sep + PROJECT_STATIC_DATA.PROJECT_FILE_EXTENSION, "json") || {}
+        WindowController.metadata = <MutableObject>await readTypedFile(pathTo + path.sep + FILE_TYPES.PROJECT, "json") || {}
         WindowController.registry = <{ [key: string]: RegistryFile }>await readTypedFile(WindowController.pathToRegistry, "json") || {}
         WindowController.pathToProject = pathTo
         WindowController.id = pathTo.split(path.sep).pop()

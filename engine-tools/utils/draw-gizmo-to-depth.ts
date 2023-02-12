@@ -14,9 +14,8 @@ export default function drawGizmoToDepth(mesh, transforms){
         translation: GizmoSystem.mainEntity.__pivotOffset,
         cameraIsOrthographic: CameraAPI.isOrthographic
     }
-    GPU.context.disable(GPU.context.CULL_FACE)
     StaticFBO.visibility.startMapping()
-
+    GPU.context.disable(GPU.context.CULL_FACE)
     for (let i = 0; i < transforms.length; i++) {
         StaticEditorShaders.toDepthBuffer.bindForUse({
             ...data,

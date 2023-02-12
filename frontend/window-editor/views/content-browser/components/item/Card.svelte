@@ -1,9 +1,9 @@
 <script>
     import Preview from "../../../../../shared/components/preview/Preview.svelte";
-    import ItemInput from "./ItemInput.svelte";
     import openItem from "../../utils/open-item";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
+    import ModalInput from "../../../../components/modal-input/ModalInput.svelte";
 
     export let currentDirectory
     export let items
@@ -59,27 +59,17 @@
 
         {/if}
     </div>
-    <ItemInput data={data} submitRename={submitRename} isOnRename={isOnRename}/>
-
+    <small data-svelteoverflow="-" style="padding: 4px; text-align: center; font-size: .7rem">{data.name}</small>
+    {#if isOnRename}
+        <ModalInput
+            alignBottom={true}
+            initialValue={data.name}
+            handleClose={submitRename}
+        />
+    {/if}
 </div>
 
 <style>
-    .file-type {
-        width: 25px;
-        height: 25px;
-
-        position: absolute;
-        bottom: 3px;
-        left: 3px;
-        opacity: .85;
-        border-radius: 3px;
-        background: rgba(0, 0, 0, .85);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
     .icon {
         position: relative;
         color: var(--pj-color-secondary);

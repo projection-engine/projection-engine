@@ -1,4 +1,4 @@
-#define FRAG_DEPTH_THRESHOLD .00001
+#define FRAG_DEPTH_THRESHOLD .1
 precision mediump float;
 
 in vec4 worldSpacePosition;

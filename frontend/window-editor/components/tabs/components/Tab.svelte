@@ -3,7 +3,7 @@
     import TabData from "../static/TabData";
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import LOCALIZATION_EN from "../../../../shared/static/LOCALIZATION_EN";
+    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
     import ViewTabItem from "../../../static/ViewTabItem";
 
     export let handler: Function
