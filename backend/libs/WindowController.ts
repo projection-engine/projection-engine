@@ -145,7 +145,7 @@ export default class WindowController {
 
     }
 
-    static async prepareForUse(pathTo: string) {
+    static async bindEssentialResources(pathTo: string) {
 
         WindowController.pathToRegistry = pathTo + path.sep + FILE_TYPES.REGISTRY
         WindowController.metadata = <MutableObject>await readTypedFile(pathTo + path.sep + FILE_TYPES.PROJECT, "json") || {}

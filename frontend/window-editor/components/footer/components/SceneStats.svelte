@@ -22,7 +22,7 @@
         meshes = GPU.meshes.size
         materials = GPU.materials.size
         textures = GPU.textures.size
-        entities = Engine.entities.map.size
+        entities = Engine.entities.size
     }
 
     onMount(() => {

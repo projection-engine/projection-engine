@@ -5,17 +5,35 @@
     import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
     import ObjectOptions from "./components/ObjectOptions.svelte";
     import SpawnSettings from "./components/SpawnSettings.svelte";
-    import getDropdownHeaderStyles from "../../../shared/components/dropdown/utils/get-dropdown-header-styles";
     import SettingsStore from "../../../shared/stores/SettingsStore";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte";
 
     export let settings
     export let engine
 
+    $: OPTIONS = [
+        {
+            label: LOCALIZATION_EN.GRID,
+            icon: settings.showGrid ? "check" : undefined,
+            onClick: () =>SettingsStore.updateStore({...settings, showGrid: !settings.showGrid})
+        },
+        {
+            label: LOCALIZATION_EN.ICONS,
+            icon: settings.showIcons ? "check" : undefined,
+            onClick: () =>SettingsStore.updateStore({...settings, showIcons: !settings.showIcons})
+        },
+        {
+            label: LOCALIZATION_EN.LINES,
+            icon: settings.showLines ? "check" : undefined,
+            onClick: () =>SettingsStore.updateStore({...settings, showLines: !settings.showLines})
+        },
+        {
+            label: LOCALIZATION_EN.OUTLINE,
+            icon: settings.showOutline ? "check" : undefined,
+            onClick: () =>SettingsStore.updateStore({...settings, showOutline: !settings.showOutline})
+        },
+    ]
 </script>
-
 
 <div class="left-content">
     <AddOptions/>
@@ -24,46 +42,15 @@
 </div>
 
 <div class="right-content">
-    <Dropdown styles="width: 250px" buttonStyles={getDropdownHeaderStyles()}>
-        <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
-            <Icon styles="font-size: 1rem">layers</Icon>
-            <ToolTip content={LOCALIZATION_EN.OVERLAY}/>
-        </button>
+    <OptionDropdown
+            noPadding={true}
+            options={OPTIONS}
+            label="layers"
+            labelAsIcon={true}
+            tooltip={LOCALIZATION_EN.OVERLAY}
+    />
 
-        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showGrid: !settings.showGrid})}>
-            {#if settings.showGrid}
-                <Icon styles="font-size: 1rem">check</Icon>
-            {:else}
-                <div style="width: 1.1rem"></div>
-            {/if}
-            {LOCALIZATION_EN.GRID}
-        </button>
-        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showIcons: !settings.showIcons})}>
-            {#if settings.showIcons}
-                <Icon styles="font-size: 1rem">check</Icon>
-            {:else}
-                <div style="width: 1.1rem"></div>
-            {/if}
-            {LOCALIZATION_EN.ICONS}
-        </button>
-        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showLines: !settings.showLines})}>
-            {#if settings.showLines}
-                <Icon styles="font-size: 1rem">check</Icon>
-            {:else}
-                <div style="width: 1.1rem"></div>
-            {/if}
-            {LOCALIZATION_EN.LINES}
-        </button>
 
-        <button data-sveltebuttondefault="-"  on:click={() => SettingsStore.updateStore({...settings, showOutline: !settings.showOutline})}>
-            {#if settings.showOutline}
-                <Icon styles="font-size: 1rem">check</Icon>
-            {:else}
-                <div style="width: 1.1rem"></div>
-            {/if}
-            {LOCALIZATION_EN.OUTLINE}
-        </button>
-    </Dropdown>
     <ShadingOption engine={engine} settings={settings}/>
 </div>
 

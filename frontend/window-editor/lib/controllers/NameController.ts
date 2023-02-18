@@ -36,4 +36,13 @@ export default class NameController {
             }
         }
     }
+    static renameInBlock(entities:Entity[]){
+        const groupID = crypto.randomUUID().substring(0, 3)
+        for (let i = 0; i < entities.length; i++){
+            const entity = entities[i];
+            if(NameController.#byName.has(entity.name))
+                entity.name = entity.name + "." + i.toString().padStart(3, "0") + "(" + groupID + ")"
+            NameController.#byName.set(entity.name, entity.id)
+        }
+    }
 }

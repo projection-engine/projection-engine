@@ -37,6 +37,7 @@ enum LOCALIZATION_EN {
     DECAL = "Decal",
     COULD_NOT_LINK_ENTITIES = "Could not link entities",
     EDITOR_CAMERA = "Editor camera",
+    COLLECTION_NOT_FOUND = "Collection not found",
     NEW_ENTITY = "New entity",
     SAVING_PREVIOUS_LEVEL = "Saving previous level",
     NEW_COLLECTION = "New collection",

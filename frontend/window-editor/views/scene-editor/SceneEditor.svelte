@@ -113,7 +113,7 @@
         unsubscribeSelection()
         ViewportInteractionHandler.destroy()
     })
-    $: focusedCamera = engine.focusedCamera ? Engine.entities.map.get(engine.focusedCamera) : null
+    $: focusedCamera = engine.focusedCamera ? Engine.entities.get(engine.focusedCamera) : null
 </script>
 
 {#if !engine.executingAnimation}

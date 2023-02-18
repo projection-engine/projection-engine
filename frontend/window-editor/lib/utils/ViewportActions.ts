@@ -88,7 +88,7 @@ export default class ViewportActions {
     }
 
     static selectAll() {
-        SelectionStore.engineSelected = Array.from(Engine.entities.map.keys())
+        SelectionStore.engineSelected = Array.from(Engine.entities.keys())
     }
 
     static fixateActive() {

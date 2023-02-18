@@ -1,6 +1,5 @@
 import {BrowserWindow, dialog} from "electron";
 import * as path from "path";
-import * as isDev from "electron-is-dev"
 
 const RELATIVE_LOGO_PATH = "./APP_LOGO.png"
 export default function createWindow(settings: MutableObject, isChild?:boolean) {
@@ -36,7 +35,7 @@ export default function createWindow(settings: MutableObject, isChild?:boolean) 
         }
     })
 
-    if (isDev) { // @ts-ignore
+    if (process.env.IS_DEV) { // @ts-ignore
         window.openDevTools(isChild ? undefined : {mode: "detach"})
     }
     return window
