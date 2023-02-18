@@ -17,28 +17,29 @@ export default function gizmoScaleEntity(event) {
     let firstEntity = GizmoSystem.mainEntity
     if (!firstEntity)
         return;
-    const axis = GizmoSystem.clickedAxis
     const isGlobal = GizmoAPI.isGlobal
     const g = event.ctrlKey ? 1 : ScalingGizmo.gridSize
-
-    switch (axis) {
+    if(GizmoSystem.clickedAxis !== AXIS.SCREEN_SPACE) {
+        const c = ScreenSpaceGizmo.onMouseMove(event)
+        SCALE_CACHE[0] = c[0]
+        SCALE_CACHE[1] = c[1]
+        SCALE_CACHE[2] = c[2]
+    }
+    switch (GizmoSystem.clickedAxis) {
         case AXIS.SCREEN_SPACE:
             SCALE_CACHE[0] = SCALE_CACHE[1] = SCALE_CACHE[2] = getAxisMovement(event) / 50
             break
         case AXIS.XY:
-            SCALE_CACHE[0] = SCALE_CACHE[1] = getAxisMovement(event) / 50
+            SCALE_CACHE[2] = 0
             break
         case AXIS.XZ:
-            SCALE_CACHE[0] = SCALE_CACHE[2] = getAxisMovement(event) / 50
+            SCALE_CACHE[1] = 0
             break
         case AXIS.ZY:
-            SCALE_CACHE[1] = SCALE_CACHE[2] = getAxisMovement(event) / 50
+            SCALE_CACHE[0] = 0
             break
         default:
-            const c = ScreenSpaceGizmo.onMouseMove(event)
-            SCALE_CACHE[0] = c[0]
-            SCALE_CACHE[1] = c[1]
-            SCALE_CACHE[2] = c[2]
+
             break
     }
 
@@ -50,10 +51,10 @@ export default function gizmoScaleEntity(event) {
         vec3.add(CACHE, CACHE, <vec3>SCALE_CACHE)
 
 
-    if (isGlobal)
-        vec3.scale(INVERSE_CACHE, CACHE, -1)
-
     if (Math.abs(CACHE[0]) >= g || Math.abs(CACHE[1]) >= g || Math.abs(CACHE[2]) >= g) {
+        const hasToTranslate = isGlobal && event.altKey
+        if (hasToTranslate)
+            vec3.scale(INVERSE_CACHE, CACHE, -1)
         const entities = EngineTools.selected
         const SIZE = entities.length
         if (SIZE === 1 && entities[0].lockedScaling)
@@ -64,14 +65,15 @@ export default function gizmoScaleEntity(event) {
                 continue
 
             vec3.add(target._scaling, target._scaling, CACHE)
-            if (isGlobal && event.altKey)
+            if (hasToTranslate)
                 vec3.add(target._translation, target._translation, INVERSE_CACHE)
             for (let j = 0; j < 3; j++)
                 target._scaling[j] = Math.round(target._scaling[j] / g) * g
             target.__changedBuffer[0] = 1
         }
-        CACHE[0] = 0
-        CACHE[1] = 0
-        CACHE[2] = 0
+        CACHE[0] = CACHE[2] = CACHE[1] = 0
+
+
     }
+    SCALE_CACHE[2] = SCALE_CACHE[1] = SCALE_CACHE[0] = 0
 }

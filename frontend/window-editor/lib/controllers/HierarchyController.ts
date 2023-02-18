@@ -38,7 +38,7 @@ export default class HierarchyController {
     }
 
     static openTree() {
-        const node = Engine.entities.map.get(SelectionStore.mainEntity)
+        const node = Engine.entities.get(SelectionStore.mainEntity)
         if (!node)
             return {}
         const open = {}

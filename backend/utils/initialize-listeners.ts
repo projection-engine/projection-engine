@@ -6,7 +6,7 @@ import Events from "../libs/Events";
 export default function initializeListeners(){
     ipcMain.on("reload", () => {
         WindowController.closeSubWindows()
-        WindowController.prepareForUse(WindowController.pathToProject).catch()
+        WindowController.bindEssentialResources(WindowController.pathToProject).catch()
     })
 
     ipcMain.on(ROUTES.LOAD_PROJECT_METADATA, Events.loadProjectMetadata)

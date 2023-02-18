@@ -148,7 +148,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
         },
         SNAP_TO_GRID: {
             label: "Snap to grid",
-            callback: () => snap(),
+            callback: snap,
             require: settings.viewportHotkeys.SNAP_TO_GRID,
         },
         FOCUS: {
@@ -169,39 +169,39 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
         },
         UNDO: {
             require: settings.viewportHotkeys.UNDO,
-            callback: () => EditorActionHistory.undo()
+            callback: EditorActionHistory.undo
         },
         REDO: {
             require: settings.viewportHotkeys.REDO,
-            callback: () => EditorActionHistory.redo()
+            callback: EditorActionHistory.redo
         },
         GROUP: {
             label: "Group selected",
             require: settings.viewportHotkeys.GROUP,
-            callback: () => ViewportActions.group()
+            callback: ViewportActions.group
         },
         FIXATE_ACTIVE: {
             label: "Fixate active",
             require: settings.viewportHotkeys.FIXATE_ACTIVE,
-            callback: () => ViewportActions.fixateActive()
+            callback: ViewportActions.fixateActive
         },
 
         COPY: {
             label: "Copy",
             require: settings.viewportHotkeys.COPY,
-            callback: () => ViewportActions.copy()
+            callback: ViewportActions.copy
         },
 
         DELETE: {
             label: "Delete",
             require: settings.viewportHotkeys.DELETE,
-            callback: () => ViewportActions.deleteSelected()
+            callback: ViewportActions.deleteSelected
         },
         PASTE: {
 
             label: "Paste",
             require: settings.viewportHotkeys.PASTE,
-            callback: () => ViewportActions.paste()
+            callback: ViewportActions.paste
         },
 
 

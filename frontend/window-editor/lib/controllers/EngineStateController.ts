@@ -16,7 +16,7 @@ import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
     const original = descriptor.value;
     descriptor.value = function (...args) {
-        if(!Engine.loadedLevel){
+        if (!Engine.loadedLevel) {
             AlertController.error(LOCALIZATION_EN.NO_LEVEL_LOADED)
             return
         }
@@ -44,6 +44,7 @@ export default class EngineStateController {
 
         HierarchyController.updateHierarchy()
     }
+
     @checkLevel
     static replaceBlock(toRemove: string[], toAdd: Entity[]) {
 
@@ -57,38 +58,25 @@ export default class EngineStateController {
         }
         EngineStateController.#updateStructure(replacedMap)
     }
+
     @checkLevel
-    static appendBlock(block: Entity[], cleanPush?: boolean) {
-        if (cleanPush) {
-            Engine.entities.map.forEach(e => EntityAPI.removeEntity(e.id))
-            NameController.byName.clear()
-        } else
-            EditorActionHistory.save(block, true)
-        const selected = []
-        for (let i = 0; i < block.length; i++) {
-            const e = block[i]
-            selected.push(e.id)
-            EntityAPI.addEntity(e)
-            getPivotPointMatrix(e)
-            NameController.renameEntity(e.name, e)
-        }
-        if (!cleanPush) {
-            SelectionStore.updateStore({
-                ...SelectionStore.data,
-                TARGET: SelectionStore.TYPES.ENGINE,
-                array: selected
-            })
-            EditorActionHistory.save(block)
-        } else
-            SelectionStore.lockedEntity = block[0]?.id
+    static appendBlock(block: Entity[]) {
+
+        EditorActionHistory.save(block, true)
+        EntityAPI.addGroup(block)
+        NameController.renameInBlock(block)
+        for (let i = 0; i < block.length; i++)
+            getPivotPointMatrix(block[i])
+        EditorActionHistory.save(block)
         EngineStateController.#updateStructure()
     }
+
     @checkLevel
     static removeBlock(payload: string[]) {
-        const hierarchy:{[key:string]:Entity} = {}
-        for (let i = 0; i < payload.length; i++){
-            const entity = Engine.entities.map.get(payload[i])
-            if(!entity)
+        const hierarchy: { [key: string]: Entity } = {}
+        for (let i = 0; i < payload.length; i++) {
+            const entity = Engine.entities.get(payload[i])
+            if (!entity)
                 continue
             hierarchy[entity.id] = entity
             QueryAPI.getHierarchyToObject(entity, hierarchy)
@@ -109,6 +97,7 @@ export default class EngineStateController {
 
         EngineStateController.#updateStructure()
     }
+
     @checkLevel
     static add(entity: Entity) {
         EditorActionHistory.save(entity, true)
@@ -125,13 +114,14 @@ export default class EngineStateController {
         })
         EngineStateController.#updateStructure()
     }
+
     @checkLevel
     static linkMultiple(payload: string[]) {
         const values = Engine.entities.array
         for (let i = 0; i < values.length; i++) {
             const s = values[i]
             if (payload.indexOf(s.id) > 0) {
-                const found = Engine.entities.map.get(payload[0])
+                const found = Engine.entities.get(payload[0])
                 s.addParent(found)
             }
         }

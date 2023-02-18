@@ -82,7 +82,7 @@ export default class Events {
     }
 
     static setProjectContext(_, pathToProject) {
-        WindowController.prepareForUse(pathToProject).catch()
+        WindowController.bindEssentialResources(pathToProject).catch()
     }
 
     static async updateGlobalSettings(_, data) {

@@ -15,7 +15,7 @@ import ShaderEditorActionHistory from "./ShaderEditorActionHistory";
 export default class Canvas {
     #initialized = false
     openFile?: OpenFile
-    #nodes = new DynamicMap<ShaderNode>()
+    #nodes = new DynamicMap<string, ShaderNode>()
     #hasMaterial = false
     history = new ShaderEditorActionHistory()
 
@@ -95,7 +95,7 @@ export default class Canvas {
             return
         if (isMaterial)
             this.#hasMaterial = true
-        this.#nodes.add(node.id, node)
+        this.#nodes.set(node.id, node)
         if (!noUpdate)
             this.clear()
     }

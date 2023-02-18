@@ -55,7 +55,7 @@ export default class Loader {
                 }
                 EngineStateController.appendBlock(entities)
             } else
-                console.error("Collection not found")
+                AlertController.error(LOCALIZATION_EN.COLLECTION_NOT_FOUND)
         } catch (error) {
             console.error(error)
         }

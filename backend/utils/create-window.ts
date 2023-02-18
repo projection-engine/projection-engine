@@ -1,5 +1,6 @@
 import {BrowserWindow, dialog} from "electron";
 import * as path from "path";
+
 const RELATIVE_LOGO_PATH = "./APP_LOGO.png"
 export default function createWindow(settings: MutableObject, isChild?:boolean) {
     const window = new BrowserWindow({

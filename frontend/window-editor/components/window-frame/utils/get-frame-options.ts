@@ -7,6 +7,7 @@ import EditorActionHistory from "../../../lib/utils/EditorActionHistory";
 import ViewportActions from "../../../lib/utils/ViewportActions";
 import SettingsStore from "../../../../shared/stores/SettingsStore";
 import GPU from "../../../../../engine-core/GPU";
+import ResourceManager from "../../../../../engine-core/runtime/ResourceManager";
 
 function callMethod(id: string) {
     switch (id) {
@@ -49,16 +50,16 @@ export default function getFrameOptions(disabledSave: boolean) {
             disabled: disabledSave,
             onClick: () => callMethod("save")
         },
-
-
+        {
+            label: "Clear unused resources",
+            onClick: ResourceManager.execute
+        },
         {divider: true, label: "Utils"},
-
         {
             label: "Toggle fullscreen",
             icon: "fullscreen",
             onClick: () => callMethod("fullscreen")
         },
-
         {
             label: "Toggle footer",
             onClick: () => callMethod("footer")
