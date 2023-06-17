@@ -8,10 +8,10 @@
     import WindowChangeStore from "./WindowChangeStore"
     import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
     import ElectronResources from "../../lib/ElectronResources"
-    import RENDER_TARGET from "../../../window-editor/static/RENDER_TARGET"
+    import RENDER_TARGET from "../../../editor/static/RENDER_TARGET"
     import HotKeysController from "../../lib/HotKeysController"
-    import LevelService from "../../../window-editor/services/engine/LevelService"
-    import LocalizationEN from "../../../../contants/LocalizationEN"
+    import LevelService from "../../../editor/services/engine/LevelService"
+    import LocalizationEN from "../../../../shared/LocalizationEN"
 
     export let noChangeTracking
 

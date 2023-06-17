@@ -1,8 +1,6 @@
 import readTypedFile from "../utils/read-typed-file"
 import importFiles from "../utils/import-files"
-import WindowController from "./WindowController"
-import resolveFileName from "../utils/resolve-file-name"
-
+import ElectronWindowService from "./ElectronWindowService"
 import createRegistryEntry from "../utils/create-registry-entry"
 import directoryStructure from "../utils/directory-structure"
 import parseContentBrowserData from "../utils/parse-content-browser-data"
@@ -14,16 +12,16 @@ import {app, dialog} from "electron"
 import * as os from "os"
 import * as fs from "fs"
 import * as pathRequire from "path"
-import IPCRoutes from "../../contants/IPCRoutes"
-import Folders from "../../contants/Folders"
+import IPCRoutes from "../../shared/IPCRoutes"
+import Folders from "../../shared/Folders"
 
 
 export default class Events {
 	static storeUpdate(ev, data) {
 		try {
-			const window = WindowController.findWindow(ev.sender.id)
-			if (window === WindowController.window)
-				WindowController.windows.forEach(w => {
+			const window = ElectronWindowService.getInstance().findWindow(ev.sender.id)
+			if (window === ElectronWindowService.getInstance().window)
+				ElectronWindowService.getInstance().windows.forEach(w => {
 					try {
 						w.webContents.send(IPCRoutes.STORE_UPDATE, data)
 					} catch (err) {
@@ -31,14 +29,14 @@ export default class Events {
 					}
 				})
 			else
-				WindowController.window.webContents.send(IPCRoutes.STORE_UPDATE, data)
+				ElectronWindowService.getInstance().window.webContents.send(IPCRoutes.STORE_UPDATE, data)
 		} catch (err) {
 			console.log(err)
 		}
 	}
 
 	static maximize(ev) {
-		const window = WindowController.findWindow(ev.sender.id)
+		const window = ElectronWindowService.getInstance().findWindow(ev.sender.id)
 		if (!window) return
 
 		if (!window.isMaximized())
@@ -48,25 +46,25 @@ export default class Events {
 	}
 
 	static close(ev) {
-		const window = WindowController.findWindow(ev.sender.id)
+		const window = ElectronWindowService.getInstance().findWindow(ev.sender.id)
 		if (!window) return
 
-		if (window === WindowController.window) {
-			WindowController.closeSubWindows()
+		if (window === ElectronWindowService.getInstance().window) {
+			ElectronWindowService.getInstance().closeSubWindows()
 			app.quit()
 		} else
 			window.destroy()
 	}
 
 	static minimize(ev) {
-		const window = WindowController.findWindow(ev.sender.id)
+		const window = ElectronWindowService.getInstance().findWindow(ev.sender.id)
 		if (!window) return
 
 		window.minimize()
 	}
 
 	static openWindow(_, {windowSettings, type}) {
-		WindowController.addWindow(windowSettings || {}, type)
+		ElectronWindowService.getInstance().addWindow(windowSettings || {}, type)
 	}
 
 	static async getGlobalSettings(ev) {
@@ -82,12 +80,12 @@ export default class Events {
 	}
 
 	static setProjectContext(_, pathToProject) {
-		WindowController.bindEssentialResources(pathToProject).catch()
+		ElectronWindowService.getInstance().bindEssentialResources(pathToProject).catch()
 	}
 
 	static async updateGlobalSettings(_, data) {
 		try {
-			const result = await dialog.showMessageBox(WindowController.window, {
+			const result = await dialog.showMessageBox(ElectronWindowService.getInstance().window, {
 				"type": "question",
 				"title": "Reload necessary to apply changes",
 				"message": "Are you sure?",
@@ -98,7 +96,7 @@ export default class Events {
 			})
 			if (result.response !== 0)
 				return
-			WindowController.closeSubWindows()
+			ElectronWindowService.getInstance().closeSubWindows()
 			await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch()
 			app.relaunch()
 			app.quit()
@@ -112,21 +110,28 @@ export default class Events {
 		const {canceled, filePaths} = await dialog.showOpenDialog({
 			properties: ["openDirectory"]
 		})
-		WindowController.window.webContents.send(IPCRoutes.OPEN_SELECTION, canceled ? null : filePaths[0])
+		ElectronWindowService.getInstance().window.webContents.send(IPCRoutes.OPEN_SELECTION, canceled ? null : filePaths[0])
 	}
 
 	static async readFile(event, {pathName, type, listenID}) {
 		event.sender.send(IPCRoutes.READ_FILE + listenID, await readTypedFile(pathName, type))
 	}
 
-
 	static resolveName(event, {ext, path, listenID}) {
-		event.sender.send(IPCRoutes.RESOLVE_NAME + listenID, resolveFileName(path, ext))
+		event.sender.send(IPCRoutes.RESOLVE_NAME + listenID, () => {
+			let n = path + ext
+			let it = 0
+			while (fs.existsSync(ElectronWindowService.getInstance().pathToAssets + pathRequire.sep + n)) {
+				n = path + `-${it}` + ext
+				it++
+			}
+			return n
+		})
 	}
 
 	static async updateRegistry(event, {id, data}) {
-		WindowController.registry[id] = data
-		await fs.promises.writeFile(WindowController.pathToRegistry, JSON.stringify(WindowController.registry))
+		ElectronWindowService.getInstance().registry[id] = data
+		await fs.promises.writeFile(ElectronWindowService.getInstance().pathToRegistry, JSON.stringify(ElectronWindowService.getInstance().registry))
 	}
 
 	static async createRegistry(event, data) {
@@ -136,7 +141,7 @@ export default class Events {
 
 
 	static loadProjectMetadata(event) {
-		event.sender.send(IPCRoutes.LOAD_PROJECT_METADATA, WindowController.metadata)
+		event.sender.send(IPCRoutes.LOAD_PROJECT_METADATA, ElectronWindowService.getInstance().metadata)
 	}
 
 	static async fileDialog(ev, {listenID, currentDirectory}) {
@@ -148,7 +153,7 @@ export default class Events {
 		const filesImported = result.filePaths || [],
 			registryEntries = []
 		if (!result.canceled && result.filePaths.length > 0)
-			await importFiles(result.filePaths, WindowController.pathToAssets + pathRequire.sep + currentDirectory, registryEntries)
+			await importFiles(result.filePaths, ElectronWindowService.getInstance().pathToAssets + pathRequire.sep + currentDirectory, registryEntries)
 
 		ev.sender.send(IPCRoutes.FILE_DIALOG + listenID, {filesImported, registryEntries})
 	}
@@ -156,37 +161,37 @@ export default class Events {
 	static async refreshContentBrowser(event, {pathName, listenID}) {
 		let data = <null | {
             [key: string]: RegistryFile
-        }>await readTypedFile(WindowController.pathToRegistry, "json").catch()
+        }>await readTypedFile(ElectronWindowService.getInstance().pathToRegistry, "json").catch()
 		if (!data) {
 			event.sender.send(IPCRoutes.REFRESH_CONTENT_BROWSER + listenID, null)
-			data = WindowController.registry
+			data = ElectronWindowService.getInstance().registry
 		}
 		console.error(data)
 		try {
-			WindowController.registry = data
+			ElectronWindowService.getInstance().registry = data
 		} catch (err) {
 			console.error(err, data)
 		}
 		const result = []
-		let registryData = Object.values(WindowController.registry)
+		let registryData = Object.values(ElectronWindowService.getInstance().registry)
 		const foundIDs = {}
 		const pathToAssets = pathName + pathRequire.sep + Folders.ASSETS
 		registryData.forEach(d => {
 			if (foundIDs[d.id])
-				delete WindowController.registry[d.id]
+				delete ElectronWindowService.getInstance().registry[d.id]
 			foundIDs[d.id] = true
 			if (!fs.existsSync(pathToAssets + d.path))
-				delete WindowController.registry[d.id]
+				delete ElectronWindowService.getInstance().registry[d.id]
 		})
-		registryData = Object.values(WindowController.registry)
+		registryData = Object.values(ElectronWindowService.getInstance().registry)
 
 		try {
-			await fs.promises.writeFile(WindowController.pathToRegistry, JSON.stringify(WindowController.registry))
+			await fs.promises.writeFile(ElectronWindowService.getInstance().pathToRegistry, JSON.stringify(ElectronWindowService.getInstance().registry))
 		} catch (error) {
 			console.error(error)
 		}
 		const assetsToParse = await directoryStructure(pathToAssets)
-		console.error(registryData.length, pathToAssets, WindowController.pathToRegistry)
+		console.error(registryData.length, pathToAssets, ElectronWindowService.getInstance().pathToRegistry)
 
 		for (let i = 0; i < assetsToParse.length; i++) {
 			try {
@@ -201,6 +206,6 @@ export default class Events {
 	}
 
 	static readRegistry(event, {listenID}) {
-		event.sender.send(IPCRoutes.READ_REGISTRY + listenID, WindowController.registry)
+		event.sender.send(IPCRoutes.READ_REGISTRY + listenID, ElectronWindowService.getInstance().registry)
 	}
 }

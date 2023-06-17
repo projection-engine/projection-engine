@@ -1,6 +1,6 @@
 import * as fs from "fs"
 import * as pathRequire from "path"
-import Folders from "../../contants/Folders";
+import Folders from "../../shared/Folders";
 
 export default async function parseContentBrowserData(p, registryData, projectPath) {
 	if (typeof p !== "string")

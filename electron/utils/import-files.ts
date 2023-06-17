@@ -1,8 +1,8 @@
 import TEXTURE_TEMPLATE from "../../engine-core/static/TEXTURE_TEMPLATE"
-import WindowController from "../libs/WindowController"
+import ElectronWindowService from "../libs/ElectronWindowService"
 import readTypedFile from "./read-typed-file"
 import createRegistryEntry from "./create-registry-entry"
-import AssimpLoader from "../libs/assimp/AssimpLoader"
+import AssimpService from "../libs/assimp/AssimpService"
 import glTF from "../libs/gltf/glTF"
 import * as Buffer from "buffer"
 
@@ -11,8 +11,8 @@ import * as fs from "fs"
 import * as crypto from "node:crypto"
 import sharp from "sharp"
 import imageSize from "image-size"
-import FileTypes from "../../contants/FileTypes";
-import Folders from "../../contants/Folders";
+import FileTypes from "../../shared/FileTypes";
+import Folders from "../../shared/Folders";
 
 export default async function importFiles(filesToLoad, dir, registryEntries) {
 	const targetDir = pathRequire.resolve(dir)
@@ -35,7 +35,7 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
 					const base64 = `data:image/${type};base64,` + bufferData.toString("base64")
 					const data = JSON.stringify({...TEXTURE_TEMPLATE, base64})
 					await fs.promises.writeFile(newRoot + FileTypes.TEXTURE, data)
-					const pathToPreview = pathRequire.resolve(WindowController.pathToPreviews + pathRequire.sep + fileID + FileTypes.PREVIEW)
+					const pathToPreview = pathRequire.resolve(ElectronWindowService.getInstance().pathToPreviews + pathRequire.sep + fileID + FileTypes.PREVIEW)
 					const dimensions = <{ width?: number, height?: number }>await new Promise(resolve => {
 						imageSize(filePath, (err, dimensions) => resolve(dimensions || {}))
 					})
@@ -66,7 +66,7 @@ export default async function importFiles(filesToLoad, dir, registryEntries) {
 		}
 	}
 	if (meshesToRead.length > 0)
-		await AssimpLoader.loader(targetDir, meshesToRead)
+		await AssimpService.getInstance().load(targetDir, meshesToRead)
 
 	return result
 }

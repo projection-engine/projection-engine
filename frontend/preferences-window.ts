@@ -1,4 +1,4 @@
-import Preferences from "./window-preferences/Preferences.svelte"
+import Preferences from "./preferences/Preferences.svelte"
 
 document.addEventListener("pointerlockerror", _ => document.exitPointerLock(), false)
 window.onerror = (ev) => {

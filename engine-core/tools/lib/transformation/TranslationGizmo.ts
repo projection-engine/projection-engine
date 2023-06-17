@@ -4,7 +4,7 @@ import Inheritance from "../Inheritance"
 import gizmoTranslateEntity from "../../utils/gizmo-translate-entity"
 import EngineTools from "../../EngineTools"
 import StaticEditorMeshes from "../StaticEditorMeshes"
-import EngineStateService from "../../../../frontend/window-editor/services/engine/EngineStateService"
+import EngineStateService from "../../../../frontend/editor/services/engine/EngineStateService"
 
 export default class TranslationGizmo extends Inheritance {
 	static gridSize = 1

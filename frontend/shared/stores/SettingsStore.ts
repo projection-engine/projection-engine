@@ -1,8 +1,8 @@
-import SETTINGS from "../../window-editor/static/SETTINGS"
+import SETTINGS from "../../editor/static/SETTINGS"
 import {get, writable} from "svelte/store"
 import ChangesTrackerStore from "./ChangesTrackerStore"
-import StoreManager from "./StoreManager"
-import UIDataStores from "../../../contants/UIDataStores";
+import StoreIPCListener from "../lib/StoreIPCListener"
+import UIDataStores from "../../../shared/UIDataStores";
 
 const settingsStore = writable(SETTINGS)
 
@@ -25,7 +25,7 @@ export default class SettingsStore {
 		SettingsStore.wasInitialized = true
 		SettingsStore.data = V
 		if (!SettingsStore.noPush)
-			StoreManager.onUpdate(V, UIDataStores.SETTINGS)
+			StoreIPCListener.getInstance().onUpdate(V, UIDataStores.SETTINGS)
 
 		settingsStore.set(V)
 	}

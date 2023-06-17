@@ -1,4 +1,4 @@
-import ENGINE from "../../window-editor/static/ENGINE"
+import ENGINE from "../../editor/static/ENGINE"
 import {writable} from "svelte/store"
 
 const engine = writable(<MutableObject>ENGINE)

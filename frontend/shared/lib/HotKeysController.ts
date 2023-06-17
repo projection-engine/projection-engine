@@ -1,4 +1,4 @@
-import KEYS from "../../window-editor/static/KEYS"
+import KEYS from "../../editor/static/KEYS"
 
 export default class HotKeysController {
 	static activeView

@@ -1,4 +1,4 @@
-import Editor from "./window-editor/Editor.svelte"
+import Editor from "./editor/Editor.svelte"
 
 document.addEventListener("pointerlockerror", _ => document.exitPointerLock(), false)
 window.onerror = (err, source, lineno) => {

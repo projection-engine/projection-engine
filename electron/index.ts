@@ -1,4 +1,4 @@
-import WindowController from "./libs/WindowController"
+import ElectronWindowService from "./libs/ElectronWindowService"
 import SETTINGS_PATH from "./static/SETTINGS_PATH"
 import DEFAULT_GLOBAL_SETTINGS from "./static/DEFAULT_GLOBAL_SETTINGS"
 
@@ -26,15 +26,20 @@ function main() {
 
 	app.commandLine.appendSwitch("enable-features", "SharedArrayBuffer")
 
-	app.on("ready", _ => WindowController.initialize().catch())
+	app.on("ready", _ => {
+		ElectronWindowService.destroy()
+		ElectronWindowService.get()
+	})
 	app.on("window-all-closed", async () => {
-		if (process.platform !== "darwin" && !WindowController.preventAppClosing)
+		if (process.platform !== "darwin" && !ElectronWindowService.getInstance().preventAppClosing)
 			app.quit()
-		WindowController.preventAppClosing = false
+		ElectronWindowService.getInstance().preventAppClosing = false
 	})
 	app.on("activate", () => {
-		if (BrowserWindow.getAllWindows().length === 0)
-			WindowController.initialize().catch()
+		if (BrowserWindow.getAllWindows().length === 0) {
+			ElectronWindowService.destroy()
+			ElectronWindowService.get()
+		}
 	})
 }
 

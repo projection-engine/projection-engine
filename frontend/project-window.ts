@@ -1,4 +1,4 @@
-import Projects from "./window-projects/Projects.svelte"
+import Projects from "./projects/Projects.svelte"
 
 
 // TO GENERATE IMAGE

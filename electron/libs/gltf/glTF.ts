@@ -2,7 +2,7 @@ import Accessor from "./instances/Accessor"
 import DataBuffer from "./instances/DataBuffer"
 import buildImage from "./utils/build-image"
 import createRegistryEntry from "../../utils/create-registry-entry"
-import WindowController from "../WindowController"
+import ElectronWindowService from "../ElectronWindowService"
 import buildPrimitive from "./utils/build-primitive"
 import buildNode from "./utils/build-node"
 import DataController from "./instances/DataController"
@@ -10,7 +10,7 @@ import linkNodeToStructure from "./utils/link-node-to-structure"
 import * as fs from "fs"
 import * as path from "path"
 import * as crypto from "node:crypto"
-import FileTypes from "../../../contants/FileTypes";
+import FileTypes from "../../../shared/FileTypes";
 
 /**
  * Execution order:
@@ -87,7 +87,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 			const pathToAsset = basePath + path.sep + "textures" + path.sep + name + FileTypes.TEXTURE
 
 			await fs.promises.writeFile(pathToAsset, JSON.stringify(texture))
-			await createRegistryEntry(ID, pathToAsset.replace(WindowController.pathToAssets, ""))
+			await createRegistryEntry(ID, pathToAsset.replace(ElectronWindowService.getInstance().pathToAssets, ""))
 		}
 
 		for (let i = 0; i < file.meshes.length; i++) {
@@ -100,7 +100,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 				const name = "mesh-" + i + "-primitive-" + j
 				const pathToAsset = basePath + path.sep + "primitives" + path.sep + name + FileTypes.PRIMITIVE
 				await fs.promises.writeFile(pathToAsset, JSON.stringify(primitiveData))
-				await createRegistryEntry(ID, pathToAsset.replace(WindowController.pathToAssets, ""))
+				await createRegistryEntry(ID, pathToAsset.replace(ElectronWindowService.getInstance().pathToAssets, ""))
 				primitives[i][j] = ID
 			}
 		}
@@ -123,7 +123,7 @@ export default async function glTF(targetDirectory, pathToFile, file) {
 
 		const pathToAsset = basePath + path.sep + scene.name + FileTypes.COLLECTION
 		await fs.promises.writeFile(pathToAsset, JSON.stringify(scene))
-		await createRegistryEntry(crypto.randomUUID(), pathToAsset.replace(WindowController.pathToAssets, ""))
+		await createRegistryEntry(crypto.randomUUID(), pathToAsset.replace(ElectronWindowService.getInstance().pathToAssets, ""))
 	} catch (error) {
 		console.error(error)
 	}

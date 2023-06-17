@@ -5,7 +5,7 @@ import ContextMenuTarget from "./templates/ContextMenuTarget"
 
 import getContextAction from "./utils/get-context-action"
 import ElectronResources from "../ElectronResources"
-import IPCRoutes from "../../../../contants/IPCRoutes";
+import IPCRoutes from "../../../../shared/IPCRoutes";
 
 export default class ContextMenuController {
 	static blockContext = false

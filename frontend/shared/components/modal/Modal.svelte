@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte"
 
-    import Portal from "../../lib/Portal"
+    import SveltePortal from "../../lib/SveltePortal"
 
     export let handleClose
     export let styles
@@ -15,7 +15,7 @@
     	}
     }
 
-    const portal = new Portal(999)
+    const portal = new SveltePortal(999)
     onMount(() => {
     	portal.create(content)
     	portal.open()

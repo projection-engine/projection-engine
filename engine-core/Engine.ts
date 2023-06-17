@@ -17,7 +17,7 @@ import Entity from "./instances/Entity"
 import DynamicMap from "./resource-libs/DynamicMap"
 import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
-import componentConstructor from "../frontend/window-editor/utils/component-constructor"
+import componentConstructor from "../frontend/editor/utils/component-constructor"
 import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
 import ResourceManager from "./runtime/ResourceManager"
 

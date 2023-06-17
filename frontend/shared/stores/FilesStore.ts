@@ -1,15 +1,15 @@
 import {get, writable} from "svelte/store"
-import handleDropFolder from "../../window-editor/views/content-browser/utils/handle-drop-folder"
+import handleDropFolder from "../../editor/views/content-browser/utils/handle-drop-folder"
 
-import ContentBrowserAPI from "../../window-editor/services/fs/ContentBrowserAPI"
+import ContentBrowserAPI from "../../editor/services/file-system/ContentBrowserAPI"
 
-import resolveFileName from "../../window-editor/utils/resolve-file-name"
+import resolveFileName from "../../editor/utils/resolve-file-name"
 import FilesHierarchyStore from "./FilesHierarchyStore"
-import FS from "../lib/FS/FS"
-import {getCall} from "../lib/FS/get-call"
-import FSRegistryService from "../../window-editor/services/fs/FSRegistryService"
-import IPCRoutes from "../../../contants/IPCRoutes";
-import LocalizationEN from "../../../contants/LocalizationEN";
+import FileSystemUtil from "../lib/FileSystemUtil"
+import {getCall} from "../util/get-call"
+import FSRegistryService from "../../editor/services/file-system/FSRegistryService"
+import IPCRoutes from "../../../shared/IPCRoutes";
+import LocalizationEN from "../../../shared/LocalizationEN";
 
 const contentBrowserStore = writable({
 	isLoading: true,
@@ -51,7 +51,7 @@ export default class FilesStore {
 
 	static async refreshFiles() {
 		try {
-			let data = <MutableObject[] | null>(await getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
+			let data = <MutableObject[] | null>(await getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemUtil.path + FileSystemUtil.sep}, false))
 			if (!data)
 				data = FilesStore.data.items
 			await FSRegistryService.readRegistry()
@@ -64,8 +64,8 @@ export default class FilesStore {
 
 
 	static async createFolder(currentDirectory) {
-		const path = await resolveFileName(currentDirectory.id + FS.sep + LocalizationEN.NEW_FOLDER, "")
-		await FS.mkdir(FS.ASSETS_PATH + FS.sep + path)
+		const path = await resolveFileName(currentDirectory.id + FileSystemUtil.sep + LocalizationEN.NEW_FOLDER, "")
+		await FileSystemUtil.mkdir(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path)
 		await FilesStore.refreshFiles()
 	}
 

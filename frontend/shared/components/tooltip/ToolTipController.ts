@@ -1,8 +1,8 @@
-import Portal from "../../lib/Portal"
+import SveltePortal from "../../lib/SveltePortal"
 
 export default class ToolTipController {
 	static #initialized = false
-	static portal = new Portal(999, false)
+	static portal = new SveltePortal(999, false)
 	static element
 	static closeCurrent
 

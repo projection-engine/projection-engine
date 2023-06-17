@@ -1,7 +1,7 @@
 import ContextMenuController from "../ContextMenuController"
 
 import ElectronResources from "../../ElectronResources"
-import IPCRoutes from "../../../../../contants/IPCRoutes";
+import IPCRoutes from "../../../../../shared/IPCRoutes";
 
 export default function getContextAction() {
 	let startPosition = undefined
