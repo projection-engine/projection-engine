@@ -50,7 +50,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		SAVE: {
 			label: "Save",
 			require: settings.viewportHotkeys.SAVE,
-			callback: LevelService.save
+			callback: LevelService.getInstance().save
 		},
 		INVERT_SELECTION: {
 			label: "Invert selection",

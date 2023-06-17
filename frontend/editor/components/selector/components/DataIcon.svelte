@@ -1,6 +1,6 @@
 <script lang="ts">
     import Preview from "../../../../shared/components/preview/Preview.svelte"
-    import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../../shared/lib/FileSystemService"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Folders from "../../../../../shared/Folders";
 
@@ -8,7 +8,7 @@
     export let type
     let previewPath
     $: {
-    	if (state) previewPath = FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS + FileSystemUtil.sep + state.registryID + ".preview"
+    	if (state) previewPath = FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS + FileSystemService.getInstance().sep + state.registryID + ".preview"
     }
 </script>
 

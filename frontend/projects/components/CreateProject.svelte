@@ -1,11 +1,11 @@
 <script lang="ts">
 
     import ProjectMetadata from "../static/ProjectMetadata";
-    import FileSystemUtil from "../../shared/lib/FileSystemUtil";
+    import FileSystemService from "../../shared/lib/FileSystemService";
 
     import Icon from "../../shared/components/icon/Icon.svelte";
     import Input from "../../shared/components/input/Input.svelte";
-    import AlertController from "../../shared/components/alert/AlertController";
+    import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem";
     import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS";
     import LocalizationEN from "../../../shared/LocalizationEN";
     import FileTypes from "../../../shared/FileTypes";
@@ -17,27 +17,27 @@
 
     const create = async (name: string) => {
         const projectID = crypto.randomUUID()
-        const projectPath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemUtil.sep + projectID
-        if (!FileSystemUtil.exists(FileSystemUtil.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH)))) {
-            AlertController.error("Directory not found, creating on root directory.")
-            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FileSystemUtil.rootDir)
+        const projectPath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + projectID
+        if (!FileSystemService.getInstance().exists(FileSystemService.getInstance().resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH)))) {
+            ToastNotificationSystem.getInstance().error("Directory not found, creating on root directory.")
+            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FileSystemService.getInstance().rootDir)
         }
 
-        const err = await FileSystemUtil.mkdir(projectPath)
+        const err = await FileSystemService.getInstance().mkdir(projectPath)
         const meta = {name: name, creationDate: (new Date()).toLocaleDateString()}
         if (!err)
-            await FileSystemUtil.write(FileSystemUtil.resolvePath(projectPath + FileSystemUtil.sep + FileTypes.PROJECT), JSON.stringify(meta))
+            await FileSystemService.getInstance().write(FileSystemService.getInstance().resolvePath(projectPath + FileSystemService.getInstance().sep + FileTypes.PROJECT), JSON.stringify(meta))
 
         setProjectsToShow([
             ...projectsToShow,
             {
                 id: projectID,
                 meta,
-                path: FileSystemUtil.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemUtil.sep + projectID)
+                path: FileSystemService.getInstance().resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + projectID)
             }
         ])
 
-        AlertController.success(LocalizationEN.PROJECT_CREATED)
+        ToastNotificationSystem.getInstance().success(LocalizationEN.PROJECT_CREATED)
         close()
         input = ""
     }

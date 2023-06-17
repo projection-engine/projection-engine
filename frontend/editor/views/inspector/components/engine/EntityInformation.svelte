@@ -16,7 +16,7 @@
     import EntityUpdateService from "../../../../services/engine/EntityUpdateService";
     import {onDestroy} from "svelte";
     import AddComponent from "./AddComponent.svelte";
-    import AlertController from "../../../../../shared/components/alert/AlertController";
+    import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem";
     import LocalizationEN from "../../../../../../shared/LocalizationEN";
 
     export let entity: Entity
@@ -86,12 +86,12 @@
                     selected={entity.parent}
                     handleChange={v => {
                         if(v === entity){
-                            AlertController.error(LocalizationEN.COULD_NOT_LINK_ENTITIES)
+                            ToastNotificationSystem.getInstance().error(LocalizationEN.COULD_NOT_LINK_ENTITIES)
                             return
                         }
                         entity.addParent(v)
                          if(entity.parent !== v){
-                            AlertController.error(LocalizationEN.COULD_NOT_LINK_ENTITIES)
+                            ToastNotificationSystem.getInstance().error(LocalizationEN.COULD_NOT_LINK_ENTITIES)
                             return
                         }
                         EntityHierarchyService.updateHierarchy()

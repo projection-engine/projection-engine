@@ -1,4 +1,4 @@
-import FileSystemUtil from "../../../shared/lib/FileSystemUtil"
+import FileSystemService from "../../../shared/lib/FileSystemService"
 import {getCall} from "../../../shared/util/get-call"
 
 import ElectronResources from "../../../shared/lib/ElectronResources"
@@ -17,10 +17,10 @@ export default class FSRegistryService {
 
 	static async updateRegistry(from, to) {
 
-		const fromResolved = FileSystemUtil.resolvePath(from).replace(FileSystemUtil.ASSETS_PATH, "")
-		const toResolved = FileSystemUtil.resolvePath(to).replace(FileSystemUtil.ASSETS_PATH, "")
+		const fromResolved = FileSystemService.getInstance().resolvePath(from).replace(FileSystemService.getInstance().ASSETS_PATH, "")
+		const toResolved = FileSystemService.getInstance().resolvePath(to).replace(FileSystemService.getInstance().ASSETS_PATH, "")
 		const registryFound = Object.values(FSRegistryService.registry).find(reg => {
-			const regResolved = FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + reg.path).replace(FileSystemUtil.ASSETS_PATH, "")
+			const regResolved = FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + reg.path).replace(FileSystemService.getInstance().ASSETS_PATH, "")
 			return regResolved === fromResolved
 		})
 		if (registryFound) {
@@ -47,10 +47,10 @@ export default class FSRegistryService {
 	}
 
 	static async findRegistry(p) {
-		const res = await FileSystemUtil.readdir(FileSystemUtil.resolvePath(FileSystemUtil.path + FileSystemUtil.sep + Folders.REGISTRY))
+		const res = await FileSystemService.getInstance().readdir(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.REGISTRY))
 		if (res) {
 			const registryData = await Promise.all(res.map(data => FSRegistryService.getRegistryEntry(data.replace(FileTypes.REGISTRY, ""))))
-			const parsedPath = FileSystemUtil.resolvePath(p)
+			const parsedPath = FileSystemService.getInstance().resolvePath(p)
 			return registryData.filter(f => f !== undefined).find(f => parsedPath.includes(f.path))
 		}
 	}

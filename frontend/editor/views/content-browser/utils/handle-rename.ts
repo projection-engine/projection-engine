@@ -1,14 +1,14 @@
 import FilesStore from "../../../../shared/stores/FilesStore"
 import ContentBrowserAPI from "../../../services/file-system/ContentBrowserAPI"
-import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
+import FileSystemService from "../../../../shared/lib/FileSystemService"
 
 export default async function handleRename(item, newName, currentDirectory, setCurrentDirectory) {
 	if (newName === item.name)
 		return
 
 	if (item.isFolder) {
-		const newNamePath = (item.parent ? item.parent + FileSystemUtil.sep + newName : FileSystemUtil.sep + newName)
-		await ContentBrowserAPI.rename(FileSystemUtil.ASSETS_PATH + item.id, FileSystemUtil.ASSETS_PATH + newNamePath)
+		const newNamePath = (item.parent ? item.parent + FileSystemService.getInstance().sep + newName : FileSystemService.getInstance().sep + newName)
+		await ContentBrowserAPI.rename(FileSystemService.getInstance().ASSETS_PATH + item.id, FileSystemService.getInstance().ASSETS_PATH + newNamePath)
 		await FilesStore.refreshFiles().catch()
 		if (item.id === currentDirectory.id)
 			setCurrentDirectory({id: newNamePath})
@@ -16,11 +16,11 @@ export default async function handleRename(item, newName, currentDirectory, setC
 	}
 
 	const nameToApply = newName + "." + item.type
-	const targetPath = FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + (item.parent ? item.parent + FileSystemUtil.sep : FileSystemUtil.sep) + nameToApply)
+	const targetPath = FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + (item.parent ? item.parent + FileSystemService.getInstance().sep : FileSystemService.getInstance().sep) + nameToApply)
 
-	if (FileSystemUtil.exists(targetPath))
+	if (FileSystemService.getInstance().exists(targetPath))
 		return
 
-	await ContentBrowserAPI.rename(FileSystemUtil.ASSETS_PATH + item.id, targetPath)
+	await ContentBrowserAPI.rename(FileSystemService.getInstance().ASSETS_PATH + item.id, targetPath)
 	await FilesStore.refreshFiles().catch()
 }

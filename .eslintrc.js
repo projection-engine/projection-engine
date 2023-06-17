@@ -14,7 +14,7 @@ module.exports = {
 			processor: "svelte3/svelte3"
 		},
 		{
-			"files": ["*.ts", "*.svelte"],
+			"files": ["*.svelte"],
 			"rules": {
 				"no-undef": "off"
 			}
@@ -30,6 +30,8 @@ module.exports = {
 		"svelte3"
 	],
 	"rules": {
+		"max-lines-per-function": ["warn", 5],
+		"complexity": ["warn", 5],
 		"indent": [
 			"error",
 			"tab"

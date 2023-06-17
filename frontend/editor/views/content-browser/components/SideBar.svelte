@@ -3,7 +3,7 @@
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import FilesHierarchyStore from "../../../../shared/stores/FilesHierarchyStore"
     import {onDestroy} from "svelte"
-    import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../../shared/lib/FileSystemService"
 
     export let setCurrentDirectory = undefined
     export let currentDirectory = undefined
@@ -22,7 +22,7 @@
                 triggerOpen={_ => {
                     let open = FilesHierarchyStore.data.open
                     const inv = !open[item.item.id]
-                    if(item.item.id === FileSystemUtil.sep && !inv)
+                    if(item.item.id === FileSystemService.getInstance().sep && !inv)
                         open = {}
                     else if(!inv){
                         for(let i =0; i < item.children.length; i++)

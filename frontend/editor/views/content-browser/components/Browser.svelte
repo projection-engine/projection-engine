@@ -13,7 +13,7 @@
     import ITEM_TYPES from "../static/ITEM_TYPES"
     import RowsHeader from "./BrowserHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController"
+    import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import handleSelection from "../utils/handle-selection"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
 
@@ -60,8 +60,8 @@
     	if (ref) {
     		const actions = getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
     		HotKeysController.unbindAction(ref)
-    		ContextMenuController.destroy(internalID)
-    		ContextMenuController.mount(
+    		ContextMenuService.getInstance().destroy(internalID)
+    		ContextMenuService.getInstance().mount(
     			actions.contextMenu,
     			internalID,
     			(trigger, element) => {
@@ -99,7 +99,7 @@
 
     onDestroy(() => {
     	HotKeysController.unbindAction(ref)
-    	ContextMenuController.destroy(internalID)
+    	ContextMenuService.getInstance().destroy(internalID)
     	unsubscribe()
     	clearTimeout(timeout)
     	resizeOBS?.disconnect?.()

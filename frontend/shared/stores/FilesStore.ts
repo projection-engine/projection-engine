@@ -5,7 +5,7 @@ import ContentBrowserAPI from "../../editor/services/file-system/ContentBrowserA
 
 import resolveFileName from "../../editor/utils/resolve-file-name"
 import FilesHierarchyStore from "./FilesHierarchyStore"
-import FileSystemUtil from "../lib/FileSystemUtil"
+import FileSystemService from "../lib/FileSystemService"
 import {getCall} from "../util/get-call"
 import FSRegistryService from "../../editor/services/file-system/FSRegistryService"
 import IPCRoutes from "../../../shared/IPCRoutes";
@@ -51,7 +51,7 @@ export default class FilesStore {
 
 	static async refreshFiles() {
 		try {
-			let data = <MutableObject[] | null>(await getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemUtil.path + FileSystemUtil.sep}, false))
+			let data = <MutableObject[] | null>(await getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemService.getInstance().path + FileSystemService.getInstance().sep}, false))
 			if (!data)
 				data = FilesStore.data.items
 			await FSRegistryService.readRegistry()
@@ -64,8 +64,8 @@ export default class FilesStore {
 
 
 	static async createFolder(currentDirectory) {
-		const path = await resolveFileName(currentDirectory.id + FileSystemUtil.sep + LocalizationEN.NEW_FOLDER, "")
-		await FileSystemUtil.mkdir(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path)
+		const path = await resolveFileName(currentDirectory.id + FileSystemService.getInstance().sep + LocalizationEN.NEW_FOLDER, "")
+		await FileSystemService.getInstance().mkdir(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + path)
 		await FilesStore.refreshFiles()
 	}
 

@@ -7,7 +7,7 @@
     import MaterialItem from "./MaterialItem.svelte"
     import MeshItem from "./MeshItem.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import FileSystemUtil from "../../../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
     import FileTypes from "../../../../../../shared/FileTypes"
 
@@ -23,7 +23,7 @@
     	data = undefined
     	if (fileType !== FileTypes.PRIMITIVE && fileType !== FileTypes.LEVEL) {
     		const fType = VALID.includes(fileType) ? "json" : undefined
-    		FSFilesService.readFile(FileSystemUtil.ASSETS_PATH + item.id, fType).then(res => data = res)
+    		FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + item.id, fType).then(res => data = res)
     	} else
     		data = undefined
     }

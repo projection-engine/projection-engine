@@ -1,4 +1,4 @@
-import ContextMenuController from "../ContextMenuController"
+import ContextMenuService from "../ContextMenuService"
 
 import ElectronResources from "../../ElectronResources"
 import IPCRoutes from "../../../../../shared/IPCRoutes";
@@ -8,17 +8,17 @@ export default function getContextAction() {
 	let open = false
 	return (event) => {
 		event.preventDefault()
-		if (ContextMenuController.blockContext)
+		if (ContextMenuService.getInstance().blockContext)
 			return
-		ContextMenuController.currentX = event.clientX
-		ContextMenuController.currentY = event.clientY
+		ContextMenuService.getInstance().currentX = event.clientX
+		ContextMenuService.getInstance().currentY = event.clientY
 		const elements = document.elementsFromPoint(event.clientX, event.clientY)
 		let focused
 		for (let i = 0; i < elements.length; i++) {
 			if ("getAttribute" in elements[i]) {
 				const ID = elements[i].id
 				const dataID = elements[i].getAttribute("data-sveltecontextid")
-				const found = ContextMenuController.data.targets[ID] || ContextMenuController.data.targets[dataID]
+				const found = ContextMenuService.getInstance().data.targets[ID] || ContextMenuService.getInstance().data.targets[dataID]
 				if (!found)
 					continue
 				focused = found
@@ -26,12 +26,12 @@ export default function getContextAction() {
 		}
 		if (focused) {
 			startPosition = {x: event.clientX, y: event.clientY}
-			ContextMenuController.data.focused = focused
+			ContextMenuService.getInstance().data.focused = focused
 		} else
 			return
 
 		let targetElement
-		const allowAll = !ContextMenuController.data.focused.triggers || ContextMenuController.data.focused.triggers.length === 0
+		const allowAll = !ContextMenuService.getInstance().data.focused.triggers || ContextMenuService.getInstance().data.focused.triggers.length === 0
 
 		if (allowAll)
 			targetElement = event.target
@@ -46,7 +46,7 @@ export default function getContextAction() {
 					const attr = attributes[i]
 					if (!attr.nodeName.includes("data-svelte"))
 						continue
-					const has = ContextMenuController.data.focused.triggers.find(f => attr.nodeName === f)
+					const has = ContextMenuService.getInstance().data.focused.triggers.find(f => attr.nodeName === f)
 					hasAttribute = hasAttribute || has !== undefined
 				}
 				if (hasAttribute) {
@@ -59,15 +59,15 @@ export default function getContextAction() {
 			let trigger = allowAll ? targetElement : undefined
 			if (!trigger)
 				Array.from(targetElement.attributes).forEach((attr: MutableObject) => {
-					const has = ContextMenuController.data.focused.triggers.find((f) => attr.nodeName === f)
+					const has = ContextMenuService.getInstance().data.focused.triggers.find((f) => attr.nodeName === f)
 					if (has)
 						trigger = has
 				})
 			open = true
-			if (ContextMenuController.data.focused.onFocus)
-				ContextMenuController.data.focused.onFocus(trigger, targetElement, event)
+			if (ContextMenuService.getInstance().data.focused.onFocus)
+				ContextMenuService.getInstance().data.focused.onFocus(trigger, targetElement, event)
 
-			ElectronResources.ipcRenderer.send(IPCRoutes.OPEN_CONTEXT_MENU, ContextMenuController.data.focused.id)
+			ElectronResources.ipcRenderer.send(IPCRoutes.OPEN_CONTEXT_MENU, ContextMenuService.getInstance().data.focused.id)
 		}
 	}
 }

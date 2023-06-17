@@ -9,7 +9,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import EngineStateService from "../../services/engine/EngineStateService"
-    import AlertController from "../../../shared/components/alert/AlertController"
+    import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../shared/LocalizationEN"
 
@@ -58,7 +58,7 @@
         <button data-sveltebuttondefault="-"
                 on:click={() => {
                     UIAPI.updateAllElements().then(() => {
-                        AlertController.log(LocalizationEN.UPDATING_UI)
+                        ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
                     })
                 }}
                 data-svelteview-header-button="-"

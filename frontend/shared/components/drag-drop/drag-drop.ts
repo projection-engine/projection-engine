@@ -1,4 +1,4 @@
-import DragDropController from "./DragDropController"
+import DragDropService from "./DragDropService"
 
 interface DragDropAttributes {
     noTransformation?: boolean
@@ -25,12 +25,12 @@ export default function dragDrop(draggable) {
 		switch (event.type) {
 		case "dragleave":
 			if (!draggableElement.contains(event.relatedTarget))
-				DragDropController.onLeave()
+				DragDropService.getInstance().onLeave()
 			break
 		case "drag":
 
 			if (this.onMouseMove)
-				this.onMouseMove(event, draggableElement, DragDropController.dragData)
+				this.onMouseMove(event, draggableElement, DragDropService.getInstance().dragData)
 			break
 		case "dragstart":
 			if (draggableElement.isDisabled) {
@@ -47,11 +47,11 @@ export default function dragDrop(draggable) {
 					dragImageElement.innerHTML = getDragImage()
 				event.dataTransfer.setDragImage(dragImageElement, 0, 0)
 			}
-			DragDropController.dragData = onDragStartEvent(event)
+			DragDropService.getInstance().dragData = onDragStartEvent(event)
 
 
-			DragDropController.dragImageElement = dragImageElement
-			DragDropController.onDragTarget = draggableElement
+			DragDropService.getInstance().dragImageElement = dragImageElement
+			DragDropService.getInstance().onDragTarget = draggableElement
 
 			break
 		case "dragend":
@@ -59,21 +59,21 @@ export default function dragDrop(draggable) {
 			if (onDragEndEvent)
 				onDragEndEvent()
 
-			DragDropController.dragData = undefined
+			DragDropService.getInstance().dragData = undefined
 			break
 		case "dragover":
 			event.preventDefault()
-			DragDropController.dropTarget = draggableElement
-			DragDropController.changedElements.push(draggableElement)
+			DragDropService.getInstance().dropTarget = draggableElement
+			DragDropService.getInstance().changedElements.push(draggableElement)
 			draggableElement.style.opacity = ".5"
 			draggableElement.dragDropListeners?.dragOver?.(event)
 			break
 		case "drop":
 			event.preventDefault()
-			if (!DragDropController.dropTarget || !draggableElement.dragDropListeners?.onDrop)
+			if (!DragDropService.getInstance().dropTarget || !draggableElement.dragDropListeners?.onDrop)
 				return
-			draggableElement.dragDropListeners?.onDrop?.(DragDropController.dragData, event)
-			DragDropController.onLeave()
+			draggableElement.dragDropListeners?.onDrop?.(DragDropService.getInstance().dragData, event)
+			DragDropService.getInstance().onLeave()
 			break
 		}
 	}
@@ -91,12 +91,12 @@ export default function dragDrop(draggable) {
 				onDragOver,
 				onDragEnd
 			} = attributes
-			DragDropController.initialize()
+			DragDropService.get()
 			draggableElement = targetElement
 			noTargetTransformation = noTransformation
 			if (typeof dragImage === "function")
 				getDragImage = dragImage
-			dragImageElement = DragDropController.createElement(getDragImage ? getDragImage() : dragImage)
+			dragImageElement = DragDropService.getInstance().createElement(getDragImage ? getDragImage() : dragImage)
 
 			onDragOverEvent = onDragOver
 			onDragEndEvent = onDragEnd
@@ -106,8 +106,8 @@ export default function dragDrop(draggable) {
 				dragOver: (event) => {
 					if(!onDragOverEvent)
 						return
-					const target = DragDropController.alertModal
-					const html = onDragOverEvent(DragDropController.dragData, event)
+					const target = DragDropService.getInstance().alertModal
+					const html = onDragOverEvent(DragDropService.getInstance().dragData, event)
 
 					if (!html)
 						return

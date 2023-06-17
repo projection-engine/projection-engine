@@ -1,17 +1,17 @@
 import FSRegistryService from "./FSRegistryService"
 import FSFilesService from "./FSFilesService"
-import FileSystemUtil from "../../../shared/lib/FileSystemUtil"
+import FileSystemService from "../../../shared/lib/FileSystemService"
 import Folders from "../../../../shared/Folders";
 
 export default class FSAssetService {
 	static async readAsset<T>(idOrPath: string): Promise<T> {
 		if(!idOrPath)
 			return
-		const isPath = FileSystemUtil.resolvePath(idOrPath).includes(FileSystemUtil.resolvePath(FileSystemUtil.path))
+		const isPath = FileSystemService.getInstance().resolvePath(idOrPath).includes(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().path))
 		if (!isPath) {
 			const reg = FSRegistryService.getRegistryEntry(idOrPath)
 			if (reg)
-				return <T>(await FSFilesService.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + reg.path))
+				return <T>(await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + reg.path))
 			return
 		}
 		return <T>(await FSFilesService.readFile(idOrPath))
@@ -20,9 +20,9 @@ export default class FSAssetService {
 
 	static async writeAsset(path, fileData, previewImage?: boolean, registryID?: string) {
 		const fileID = registryID !== undefined ? registryID : crypto.randomUUID()
-		await FileSystemUtil.write(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path), fileData)
+		await FileSystemService.getInstance().write(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + path), fileData)
 		if (previewImage)
-			await FileSystemUtil.write(FileSystemUtil.resolvePath(FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS + FileSystemUtil.sep + registryID + ".preview"), previewImage)
+			await FileSystemService.getInstance().write(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS + FileSystemService.getInstance().sep + registryID + ".preview"), previewImage)
 		await FSRegistryService.createRegistryEntry(fileID, path)
 	}
 

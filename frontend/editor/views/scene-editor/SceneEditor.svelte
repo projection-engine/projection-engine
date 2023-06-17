@@ -17,12 +17,12 @@
     import EntityInformation from "./components/EntityInformation.svelte"
     import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
     import Engine from "../../../../engine-core/Engine"
-    import ViewportInteractionHandler from "./lib/ViewportInteractionHandler"
+    import ViewportInteractionListener from "./lib/ViewportInteractionListener"
     import getUnderSelectionBox from "./utils/get-under-selection-box"
     import GizmoSettings from "./components/GizmoSettings.svelte"
     import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS"
     import Icon from "../../../shared/components/icon/Icon.svelte"
-    import ContextMenuController from "../../../shared/lib/context-menu/ContextMenuController"
+    import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import GPU from "../../../../engine-core/GPU"
     import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
     import {quat} from "gl-matrix"
@@ -76,7 +76,7 @@
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
     $: {
     	if (settings?.viewportHotkeys != null)
-    		ContextMenuController.mount(
+    		ContextMenuService.getInstance().mount(
     			getViewportContext(settings),
     			RENDER_TARGET
     		)
@@ -90,7 +90,7 @@
 
     	Engine.start()
     	CameraTracker.startTracking()
-    	ViewportInteractionHandler.initialize()
+    	ViewportInteractionListener.get()
     	draggable.onMount({
     		targetElement: GPU.canvas,
     		onDrop: (data, event) => {
@@ -109,10 +109,10 @@
 
     	unsubscribeEngine()
     	unsubscribeSettings()
-    	ContextMenuController.destroy(RENDER_TARGET)
+    	ContextMenuService.getInstance().destroy(RENDER_TARGET)
     	draggable.onDestroy()
     	unsubscribeSelection()
-    	ViewportInteractionHandler.destroy()
+    	ViewportInteractionListener.destroy()
     })
     $: focusedCamera = engine.focusedCamera ? Engine.entities.get(engine.focusedCamera) : null
 </script>

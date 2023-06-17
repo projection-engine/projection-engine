@@ -3,7 +3,7 @@ import type Canvas from "./Canvas"
 import ShaderNode from "../templates/ShaderNode"
 import ShaderComment from "../templates/ShaderComment"
 import ShaderEditorTools from "./ShaderEditorTools"
-import AlertController from "../../../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../../shared/LocalizationEN";
 
 
@@ -39,7 +39,7 @@ export default class ShaderEditorActionHistory {
 	undo() {
 		const action = this.#cache.undo()
 		if (action) {
-			AlertController.log(LocalizationEN.UNDOING_CHANGES)
+			ToastNotificationSystem.getInstance().log(LocalizationEN.UNDOING_CHANGES)
 			this.#apply(action)
 		}
 	}
@@ -47,7 +47,7 @@ export default class ShaderEditorActionHistory {
 	redo() {
 		const action = this.#cache.redo()
 		if (action) {
-			AlertController.log(LocalizationEN.REDOING_CHANGES)
+			ToastNotificationSystem.getInstance().log(LocalizationEN.REDOING_CHANGES)
 			this.#apply(action)
 		}
 	}

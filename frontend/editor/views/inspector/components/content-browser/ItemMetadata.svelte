@@ -3,7 +3,7 @@
     import getTypeName from "../../../content-browser/utils/get-type-name"
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
-    import FileSystemUtil from "../../../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
 
     export let item
@@ -11,7 +11,7 @@
 
 
     $: {
-    	FileSystemUtil.stat(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + item.id)
+    	FileSystemService.getInstance().stat(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + item.id)
     		.then(res => {
     			if (!res)
     				return
@@ -19,9 +19,9 @@
     		})
     }
     const showInFolder = () => {
-    	const id = item.id.split(FileSystemUtil.sep)
+    	const id = item.id.split(FileSystemService.getInstance().sep)
     	id.pop()
-    	GlobalContentBrowserController.pushCurrentDirectory(id.join(FileSystemUtil.sep))
+    	GlobalContentBrowserController.pushCurrentDirectory(id.join(FileSystemService.getInstance().sep))
     }
 </script>
 

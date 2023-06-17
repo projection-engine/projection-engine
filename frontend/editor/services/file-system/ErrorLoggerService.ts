@@ -1,5 +1,5 @@
 import FSFilesService from "./FSFilesService"
-import FileSystemUtil from "../../../shared/lib/FileSystemUtil"
+import FileSystemService from "../../../shared/lib/FileSystemService"
 import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI"
 import {STORAGE_KEYS} from "../../../shared/static/STORAGE_KEYS"
 import Folders from "../../../../shared/Folders";
@@ -7,7 +7,7 @@ import Folders from "../../../../shared/Folders";
 export default class ErrorLoggerService {
 
 	static get path() {
-		return sessionStorage.getItem(STORAGE_KEYS.PROJECT_PATH) + FileSystemUtil.sep + Folders.ERROR_FILE
+		return sessionStorage.getItem(STORAGE_KEYS.PROJECT_PATH) + FileSystemService.getInstance().sep + Folders.ERROR_FILE
 	}
 
 	static async save() {

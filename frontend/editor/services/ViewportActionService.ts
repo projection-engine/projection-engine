@@ -7,7 +7,7 @@ import {vec3, vec4} from "gl-matrix"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import Engine from "../../../engine-core/Engine"
-import AlertController from "../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import EngineStateService from "./engine/EngineStateService"
 
 
@@ -76,7 +76,7 @@ export default class ViewportActionService {
 			}
 		}
 		EngineStateService.appendBlock(block)
-		AlertController.log(`Pasted ${ViewportActionService.toCopy.length} entities.`)
+		ToastNotificationSystem.getInstance().log(`Pasted ${ViewportActionService.toCopy.length} entities.`)
 
 	}
 

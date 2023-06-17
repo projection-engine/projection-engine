@@ -2,7 +2,7 @@ import FSFilesService from "../../../services/file-system/FSFilesService"
 import FSRegistryService from "../../../services/file-system/FSRegistryService"
 import ShaderEditorTools from "../libs/ShaderEditorTools"
 
-import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
+import FileSystemService from "../../../../shared/lib/FileSystemService"
 import Canvas from "../libs/Canvas"
 import OpenFile from "../static/OPEN_FILE"
 import ShaderComment from "../templates/ShaderComment"
@@ -12,7 +12,7 @@ export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
 	const res = FSRegistryService.getRegistryEntry(openFile.registryID)
 	if (!res)
 		return
-	const dataToParse = await FSFilesService.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + res.path, "json")
+	const dataToParse = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + res.path, "json")
 	if (dataToParse && Object.keys(dataToParse).length > 0) {
 
 		if (dataToParse.nodes)

@@ -9,7 +9,7 @@
     import getItemDragData from "../../utils/get-item-drag-data"
     import Card from "./Card.svelte"
     import Row from "./Row.svelte"
-    import FileSystemUtil from "../../../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
     import FileTypes from "../../../../../../shared/FileTypes"
     import Folders from "../../../../../../shared/Folders"
@@ -35,7 +35,7 @@
     const draggable = dragDrop(true)
 
     $: itemMetadata = {
-        path: FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS + FileSystemUtil.sep + data.registryID + FileTypes.PREVIEW,
+        path: FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS + FileSystemService.getInstance().sep + data.registryID + FileTypes.PREVIEW,
         type: data.type ? "." + data.type : "folder",
         childQuantity,
         typeName: getTypeName(data.type)

@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import ToolTipController from "./ToolTipController"
+    import ToolTipService from "./ToolTipService"
 
     let open = false
     export let content = ""
@@ -11,32 +11,32 @@
 
     const handleMouseMove = (event) => {
 
-    	ToolTipController.element.style.left = (event.clientX + 10) + "px"
-    	ToolTipController.element.style.top = (event.clientY + 10) + "px"
+    	ToolTipService.getInstance().element.style.left = (event.clientX + 10) + "px"
+    	ToolTipService.getInstance().element.style.top = (event.clientY + 10) + "px"
 
     	let transform = {x: "0px", y: "0px"}
     	if ((event.clientX + 10 + bBox.width) >= bodyBBox.width)
     		transform.x = "calc(-100% - 10px)"
     	if ((event.clientY + 10 + bBox.height) >= bodyBBox.height)
     		transform.y = "calc(-100% - 10px)"
-    	ToolTipController.element.style.transform = `translate(${transform.x}, ${transform.y})`
+    	ToolTipService.getInstance().element.style.transform = `translate(${transform.x}, ${transform.y})`
     }
 
     function close() {
     	document.removeEventListener("mousemove", handleMouseMove)
     	open = false
-    	ToolTipController.element.setAttribute("data-sveltetooltipanimation", "")
+    	ToolTipService.getInstance().element.setAttribute("data-sveltetooltipanimation", "")
     }
 
     const hover = (event) => {
     	open = true
 
-    	bBox = ToolTipController.element.getBoundingClientRect()
+    	bBox = ToolTipService.getInstance().element.getBoundingClientRect()
     	bodyBBox = document.body.getBoundingClientRect()
 
-    	ToolTipController.element.setAttribute("data-sveltetooltipanimation", "-")
-    	ToolTipController.element.style.left = (event.clientX + 10) + "px"
-    	ToolTipController.element.style.top = (event.clientY + 10) + "px"
+    	ToolTipService.getInstance().element.setAttribute("data-sveltetooltipanimation", "-")
+    	ToolTipService.getInstance().element.style.left = (event.clientX + 10) + "px"
+    	ToolTipService.getInstance().element.style.top = (event.clientY + 10) + "px"
     	document.addEventListener("mousemove", handleMouseMove)
     	if (targetParent)
     		targetParent.addEventListener(
@@ -48,23 +48,23 @@
 
     $: {
     	if (open) {
-    		ToolTipController.portal.open()
-    		ToolTipController.closeCurrent = () => {
+    		ToolTipService.getInstance().portal.open()
+    		ToolTipService.getInstance().closeCurrent = () => {
     			close()
     			if (targetParent)
     				targetParent.removeEventListener("mouseleave", close)
     		}
     	} else
-    		ToolTipController.portal.close()
+    		ToolTipService.getInstance().portal.close()
     }
 
     $: {
     	if (open)
-    		ToolTipController.element.innerHTML = content
+    		ToolTipService.getInstance().element.innerHTML = content
 
     }
     onMount(() => {
-    	ToolTipController.initialize()
+    	ToolTipService.get()
     	targetParent = wrapper.parentElement
     	if (targetParent)
     		targetParent.addEventListener("mouseenter", hover)

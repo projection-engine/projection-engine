@@ -44,7 +44,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={engine.executingAnimation || !hasChanges}
-                on:click={_ => LevelService.save()}
+                on:click={_ => LevelService.getInstance().save()}
         >
             <Icon styles="font-size: 1rem">save</Icon>
             <ToolTip content={LocalizationEN.SAVE}/>

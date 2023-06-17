@@ -97,7 +97,7 @@
             on:click={_ => {
                 if(hasChanges)
                     WindowChangeStore.updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
-                        await LevelService.save()
+                        await LevelService.getInstance().save()
                         ElectronResources.ipcRenderer.send("close")
                     }})
                 else

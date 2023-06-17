@@ -1,12 +1,12 @@
-import readTypedFile from "../../../utils/read-typed-file"
 import * as path from "path"
+import FileSystemUtil from "../FileSystemUtil";
 
 
 function atob(str) {
 	return Buffer.from(str, "base64").toString("binary")
 }
 
-export default class DataBuffer {
+export default class GLTFBuffer {
 	basePath
 	data?: DataView
 	strData?: { uri?: string }
@@ -20,7 +20,7 @@ export default class DataBuffer {
 		if (this.strData.uri.includes("data:application/octet-stream"))
 			this.data = this.#getBufferData(this.strData.uri)
 		else {
-			const data = <string>(await readTypedFile(path.resolve(this.basePath + path.sep + this.strData.uri), "base64"))
+			const data = <string>(await FileSystemUtil.readTypedFile(path.resolve(this.basePath + path.sep + this.strData.uri), "base64"))
 			this.data = this.#getBufferData(data)
 		}
 		this.strData = undefined

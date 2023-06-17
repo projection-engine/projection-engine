@@ -10,7 +10,7 @@
 
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
     import GPU from "../../../../engine-core/GPU"
-    import AlertController from "../../../shared/components/alert/AlertController"
+    import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../shared/LocalizationEN"
 
     const INTERNAL_ID = crypto.randomUUID()
@@ -69,7 +69,7 @@
     	if (updateEnabled)
     		interval = setInterval(() => {
     			UIAPI.updateAllElements().then(() => {
-    				AlertController.log(LocalizationEN.UPDATING_UI)
+    				ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
     			})
     		}, 15000)
     }
