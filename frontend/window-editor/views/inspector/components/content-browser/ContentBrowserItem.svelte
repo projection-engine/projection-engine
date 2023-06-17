@@ -1,16 +1,17 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
-    import FilesAPI from "../../../../lib/fs/FilesAPI";
-    import TextureItem from "./TextureItem.svelte";
-    import CodeItem from "./CodeItem.svelte";
-    import ItemMetadata from "./ItemMetadata.svelte";
-    import MaterialItem from "./MaterialItem.svelte";
-    import MeshItem from "./MeshItem.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import FS from "../../../../../shared/lib/FS/FS";
 
-    const VALID = [FILE_TYPES.TEXTURE, FILE_TYPES.COLLECTION, FILE_TYPES.MATERIAL]
+    import FilesAPI from "../../../../lib/fs/FilesAPI"
+    import TextureItem from "./TextureItem.svelte"
+    import CodeItem from "./CodeItem.svelte"
+    import ItemMetadata from "./ItemMetadata.svelte"
+    import MaterialItem from "./MaterialItem.svelte"
+    import MeshItem from "./MeshItem.svelte"
+    import Icon from "../../../../../shared/components/icon/Icon.svelte"
+    import FS from "../../../../../shared/lib/FS/FS"
+    import LocalizationEN from "../../../../../../contants/LocalizationEN"
+    import FileTypes from "../../../../../../contants/FileTypes"
+
+    const VALID = [FileTypes.TEXTURE, FileTypes.COLLECTION, FileTypes.MATERIAL]
 
     export let item
     export let setTabs
@@ -19,40 +20,40 @@
     let type
     $: fileType = "." + item.type
     $: {
-        data = undefined
-        if (fileType !== FILE_TYPES.PRIMITIVE && fileType !== FILE_TYPES.LEVEL) {
-            const fType = VALID.includes(fileType) ? "json" : undefined
-            FilesAPI.readFile(FS.ASSETS_PATH + item.id, fType).then(res => data = res)
-        } else
-            data = undefined
+    	data = undefined
+    	if (fileType !== FileTypes.PRIMITIVE && fileType !== FileTypes.LEVEL) {
+    		const fType = VALID.includes(fileType) ? "json" : undefined
+    		FilesAPI.readFile(FS.ASSETS_PATH + item.id, fType).then(res => data = res)
+    	} else
+    		data = undefined
     }
     $: {
-        const VALID_TYPES = [FILE_TYPES.COMPONENT, FILE_TYPES.UI_LAYOUT, FILE_TYPES.MATERIAL,  FILE_TYPES.PRIMITIVE]
-        if (VALID_TYPES.includes(fileType)) {
-            setTabs([
-                {
-                    label: LOCALIZATION_EN.METADATA,
-                    icon: "info",
-                    index: -2,
-                    color: "var(--pj-accent-color-secondary)"
-                },
-                {divider: true},
-                {
-                    label: LOCALIZATION_EN.ASSET_PROPERTIES,
-                    icon: "description",
-                    index: -1,
-                    color: "var(--pj-accent-color-tertiary)"
-                }
-            ])
-        } else
-            setTabs([
-                {
-                    label: LOCALIZATION_EN.METADATA,
-                    icon: "info",
-                    index: -2,
-                    color: "var(--pj-accent-color-secondary)"
-                }
-            ])
+    	const VALID_TYPES = [FileTypes.COMPONENT, FileTypes.UI_LAYOUT, FileTypes.MATERIAL, FileTypes.PRIMITIVE]
+    	if (VALID_TYPES.includes(fileType)) {
+    		setTabs([
+    			{
+    				label: LocalizationEN.METADATA,
+    				icon: "info",
+    				index: -2,
+    				color: "var(--pj-accent-color-secondary)"
+    			},
+    			{divider: true},
+    			{
+    				label: LocalizationEN.ASSET_PROPERTIES,
+    				icon: "description",
+    				index: -1,
+    				color: "var(--pj-accent-color-tertiary)"
+    			}
+    		])
+    	} else
+    		setTabs([
+    			{
+    				label: LocalizationEN.METADATA,
+    				icon: "info",
+    				index: -2,
+    				color: "var(--pj-accent-color-secondary)"
+    			}
+    		])
     }
 
 </script>
@@ -61,19 +62,19 @@
 {#if tabIndex === -2}
     <ItemMetadata item={item}/>
 {:else}
-    {#if fileType === FILE_TYPES.TEXTURE && data != null}
+    {#if fileType === FileTypes.TEXTURE && data != null}
         <TextureItem data={data} item={item}/>
-    {:else if fileType === FILE_TYPES.COMPONENT || fileType === FILE_TYPES.UI_LAYOUT}
+    {:else if fileType === FileTypes.COMPONENT || fileType === FileTypes.UI_LAYOUT}
         <CodeItem data={data} item={item}/>
-    {:else if data != null && fileType === FILE_TYPES.MATERIAL}
+    {:else if data != null && fileType === FileTypes.MATERIAL}
         <MaterialItem data={data} item={item}/>
-    {:else if fileType === FILE_TYPES.PRIMITIVE}
+    {:else if fileType === FileTypes.PRIMITIVE}
         <MeshItem item={item}/>
     {:else}
         <div class="empty-wrapper">
             <div data-svelteempty="-" style="position: relative">
                 <Icon styles="font-size: 75px">category</Icon>
-                {LOCALIZATION_EN.CONTENT_BROWSER}
+                {LocalizationEN.CONTENT_BROWSER}
             </div>
         </div>
     {/if}

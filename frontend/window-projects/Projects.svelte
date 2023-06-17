@@ -1,17 +1,18 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
-    import ContextMenuController from "../shared/lib/context-menu/ContextMenuController";
-    import FS from "../shared/lib/FS/FS";
-    import List from "./components/List.svelte";
-    import Header from "./components/Header.svelte";
-    import ProjectRow from "./components/ProjectRow.svelte";
-    import refreshProjects from "./utils/refresh-projects";
-    import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS";
-    import ROUTES from "../../backend/static/ROUTES";
-    import AlertController from "../shared/components/alert/AlertController";
-    import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte";
-    import ElectronResources from "../shared/lib/ElectronResources";
-    import FILE_TYPES from "../../static/objects/FILE_TYPES";
+    import {onDestroy, onMount} from "svelte"
+    import ContextMenuController from "../shared/lib/context-menu/ContextMenuController"
+    import FS from "../shared/lib/FS/FS"
+    import List from "./components/List.svelte"
+    import Header from "./components/Header.svelte"
+    import ProjectRow from "./components/ProjectRow.svelte"
+    import refreshProjects from "./utils/refresh-projects"
+    import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS"
+
+    import AlertController from "../shared/components/alert/AlertController"
+    import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte"
+    import ElectronResources from "../shared/lib/ElectronResources"
+    import IPCRoutes from "../../contants/IPCRoutes"
+    import FileTypes from "../../contants/FileTypes"
 
 
     let basePath
@@ -23,51 +24,51 @@
     const internalID = crypto.randomUUID()
 
     onMount(() => {
-        AlertController.initialize()
-        ContextMenuController.initialize()
-        ContextMenuController.mount([
-                {
-                    icon: "delete_forever",
-                    label: "Delete",
-                    onClick: async () => {
-                        await FS.rm(FS.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected), {
-                            recursive: true,
-                            force: true
-                        })
-                        projectsToShow = projectsToShow.filter(e => e.id !== selected)
-                    }
-                },
-                {
-                    icon: "folder",
-                    label: "Open in explorer",
-                    onClick: async () => ElectronResources.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected)
-                },
-            ],
-            internalID
-        )
-        if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
-            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FS.rootDir)
-        basePath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH)
+    	AlertController.initialize()
+    	ContextMenuController.initialize()
+    	ContextMenuController.mount([
+    		{
+    			icon: "delete_forever",
+    			label: "Delete",
+    			onClick: async () => {
+    				await FS.rm(FS.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected), {
+    					recursive: true,
+    					force: true
+    				})
+    				projectsToShow = projectsToShow.filter(e => e.id !== selected)
+    			}
+    		},
+    		{
+    			icon: "folder",
+    			label: "Open in explorer",
+    			onClick: async () => ElectronResources.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + selected)
+    		},
+    	],
+    	internalID
+    	)
+    	if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
+    		localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FS.rootDir)
+    	basePath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH)
 
     })
     $: {
-        if (basePath)
-            refreshProjects(basePath).then(r => projectsToShow = r).catch()
+    	if (basePath)
+    		refreshProjects(basePath).then(r => projectsToShow = r).catch()
     }
     onDestroy(() => ContextMenuController.destroy(internalID))
 
     async function onRename(newName, item) {
-        const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + item.id + FS.sep + FILE_TYPES.PROJECT)
-        const res = await FS.read(pathName)
-        if (!res)
-            return
-        await FS.write(
-            pathName,
-            JSON.stringify({
-                ...JSON.parse(res.toString()),
-                name: newName
-            }))
-        projectsToShow = projectsToShow
+    	const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FS.sep + item.id + FS.sep + FileTypes.PROJECT)
+    	const res = await FS.read(pathName)
+    	if (!res)
+    		return
+    	await FS.write(
+    		pathName,
+    		JSON.stringify({
+    			...JSON.parse(res.toString()),
+    			name: newName
+    		}))
+    	projectsToShow = projectsToShow
     }
 </script>
 
@@ -95,13 +96,13 @@
                 let:item
                 getLabel={e => e.meta.name}
                 items={projectsToShow}
-                favoriteKey={FILE_TYPES.PROJECT}
+                favoriteKey={FileTypes.PROJECT}
                 getID={e => e.id}
         >
             <ProjectRow
 
                     selected={selected}
-                    open={pathToProject => ElectronResources.ipcRenderer.send(ROUTES.SET_PROJECT_CONTEXT, pathToProject)}
+                    open={pathToProject => ElectronResources.ipcRenderer.send(IPCRoutes.SET_PROJECT_CONTEXT, pathToProject)}
                     data={item}
                     onRename={onRename}
             />

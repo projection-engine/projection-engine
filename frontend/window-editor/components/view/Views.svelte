@@ -1,11 +1,11 @@
 <script>
-    import View from "./components/View.svelte";
-    import ViewGroup from "./components/ViewGroup.svelte";
-    import onResizeEndSplitter from "./utils/on-resize-end-splitter";
-    import switchView from "./utils/switch-view";
-    import removeTab from "./utils/remove-tab";
-    import addTab from "./utils/add-tab";
-    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte";
+    import View from "./components/View.svelte"
+    import ViewGroup from "./components/ViewGroup.svelte"
+    import onResizeEndSplitter from "./utils/on-resize-end-splitter"
+    import switchView from "./utils/switch-view"
+    import removeTab from "./utils/remove-tab"
+    import addTab from "./utils/add-tab"
+    import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
 
     export let resizePosition
     export let orientation
@@ -21,25 +21,25 @@
     $: invOrientation = orientation === "horizontal" ? "width" : "height"
 
     function onResizeStart(isWindowResize) {
-        let obj = {}
-        if (!isWindowResize || tabs.length === 0) {
-            obj[orientationNameMin] = "unset"
-            obj[orientationNameMin.replace("min", "max")] = tabs.length === 0 ? "0px" : "unset"
-        } else if (tabs.length > 0) {
-            obj[orientationNameMin] = "250px"
-            obj[orientationNameMin.replace("min", "max")] = "250px"
-        }
+    	let obj = {}
+    	if (!isWindowResize || tabs.length === 0) {
+    		obj[orientationNameMin] = "unset"
+    		obj[orientationNameMin.replace("min", "max")] = tabs.length === 0 ? "0px" : "unset"
+    	} else if (tabs.length > 0) {
+    		obj[orientationNameMin] = "250px"
+    		obj[orientationNameMin.replace("min", "max")] = "250px"
+    	}
 
-        Object.assign(ref.style, obj)
+    	Object.assign(ref.style, obj)
     }
 
     $: {
-        if (tabs.length === 0 && ref) {
-            const obj = {}
-            obj[orientationNameMin] = "unset"
-            obj[orientationNameMin.replace("min", "max")] = "0"
-            Object.assign(ref.style, obj)
-        }
+    	if (tabs.length === 0 && ref) {
+    		const obj = {}
+    		obj[orientationNameMin] = "unset"
+    		obj[orientationNameMin.replace("min", "max")] = "0"
+    		Object.assign(ref.style, obj)
+    	}
     }
 
 

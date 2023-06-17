@@ -1,42 +1,43 @@
 <script>
-    import Checkbox from "../../../../../../shared/components/checkbox/Checkbox.svelte";
-    import Component from "../../../../../../../engine-core/instances/components/Component";
-    import Selector from "../../../../../components/selector/Selector.svelte";
-    import LOCALIZATION_EN from "../../../../../../../static/objects/LOCALIZATION_EN";
-    import ColorPicker from "../../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Input from "../../../../../../shared/components/input/Input.svelte";
-    import Dropdown from "../../../../../../shared/components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../../../shared/components/icon/Icon.svelte";
-    import Range from "../../../../../../shared/components/range/Range.svelte";
-    import FileSystemAPI from "../../../../../../../engine-core/lib/utils/FileSystemAPI";
+    import Checkbox from "../../../../../../shared/components/checkbox/Checkbox.svelte"
+    import Component from "../../../../../../../engine-core/instances/components/Component"
+    import Selector from "../../../../../components/selector/Selector.svelte"
+
+    import ColorPicker from "../../../../../../shared/components/color-picker/ColorPicker.svelte"
+    import Input from "../../../../../../shared/components/input/Input.svelte"
+    import Dropdown from "../../../../../../shared/components/dropdown/Dropdown.svelte"
+    import Icon from "../../../../../../shared/components/icon/Icon.svelte"
+    import Range from "../../../../../../shared/components/range/Range.svelte"
+    import FileSystemAPI from "../../../../../../../engine-core/lib/utils/FileSystemAPI"
+    import LocalizationEN from "../../../../../../../contants/LocalizationEN"
 
     export let component = undefined
     export let submit = undefined
     export let attribute = undefined
 
-    $: label = LOCALIZATION_EN[attribute.label] ? LOCALIZATION_EN[attribute.label] : attribute.label
+    $: label = LocalizationEN[attribute.label] ? LocalizationEN[attribute.label] : attribute.label
     $: value = component[attribute.key]
     $: isDisabled = typeof attribute.disabledIf === "function" ? attribute.disabledIf(component) : component[attribute.disabledIf]
 
     let firstSubmit = false
     const setImage = async (data) => {
-        if (data) {
-            const res = await FileSystemAPI.loadTexture(data.registryID)
-            if (res)
-                submit(attribute.key, data.registryID, true)
-        } else
-            submit(attribute.key, undefined, true)
+    	if (data) {
+    		const res = await FileSystemAPI.loadTexture(data.registryID)
+    		if (res)
+    			submit(attribute.key, data.registryID, true)
+    	} else
+    		submit(attribute.key, undefined, true)
     }
     let originalValue
 
     $: {
-        if (attribute.type === Component.propTypes.ARRAY && value != null && !originalValue) {
-            const temp = []
-            for (let i = 0; i < value.length; i++) {
-                temp[i] = value[i]
-            }
-            originalValue = temp
-        }
+    	if (attribute.type === Component.propTypes.ARRAY && value != null && !originalValue) {
+    		const temp = []
+    		for (let i = 0; i < value.length; i++) {
+    			temp[i] = value[i]
+    		}
+    		originalValue = temp
+    	}
     }
     $: dropdownLabel = attribute.type === Component.propTypes.OPTIONS ? attribute.options.find(o => o.value === value) : undefined
 
@@ -88,7 +89,7 @@
                     minValue={attribute.min}
                     maxValue={attribute.max}
 
-                    label={LOCALIZATION_EN[partial] || partial}
+                    label={LocalizationEN[partial] || partial}
                     value={value[index]}
             />
         {/each}
@@ -101,7 +102,7 @@
                          submit(attribute.key, value, true)
                     }}>
                 <Icon styles="font-size: .9rem">undo</Icon>
-                {LOCALIZATION_EN.UNDO}
+                {LocalizationEN.UNDO}
             </button>
         {/if}
     {:else if attribute.type === Component.propTypes.BOOLEAN}
@@ -112,18 +113,19 @@
                 disabled={isDisabled}
         />
     {:else if attribute.type === Component.propTypes.OPTIONS}
-        <Dropdown disabled={isDisabled} width="100%" buttonStyles="border-radius: 3px; border: var(--pj-border-primary) 1px solid">
-            <button data-sveltebuttondefault="-"  slot="button" disabled={isDisabled} class="dropdown">
-                {LOCALIZATION_EN[dropdownLabel?.label] || dropdownLabel?.label}
+        <Dropdown disabled={isDisabled} width="100%"
+                  buttonStyles="border-radius: 3px; border: var(--pj-border-primary) 1px solid">
+            <button data-sveltebuttondefault="-" slot="button" disabled={isDisabled} class="dropdown">
+                {LocalizationEN[dropdownLabel?.label] || dropdownLabel?.label}
             </button>
             {#each attribute.options as option}
-                <button data-sveltebuttondefault="-"  on:click={() =>  submit(attribute.key, option.value, true)}>
+                <button data-sveltebuttondefault="-" on:click={() =>  submit(attribute.key, option.value, true)}>
                     {#if dropdownLabel?.value === option.value}
                         <Icon>check</Icon>
                     {:else}
                         <div style="width: 1.1rem"></div>
                     {/if}
-                    {LOCALIZATION_EN[option.label] || option.label}
+                    {LocalizationEN[option.label] || option.label}
                 </button>
             {/each}
         </Dropdown>

@@ -1,12 +1,13 @@
 <script>
 
-    import SETTINGS from "../../window-editor/static/SETTINGS";
-    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
-    import KEYS from "../../window-editor/static/KEYS.ts";
-    import SettingsStore from "../../shared/stores/SettingsStore";
-    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../shared/components/icon/Icon.svelte";
-    import AlertController from "../../shared/components/alert/AlertController";
+    import SETTINGS from "../../window-editor/static/SETTINGS"
+
+    import KEYS from "../../window-editor/static/KEYS.ts"
+    import SettingsStore from "../../shared/stores/SettingsStore"
+    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
+    import Icon from "../../shared/components/icon/Icon.svelte"
+    import AlertController from "../../shared/components/alert/AlertController"
+    import LocalizationEN from "../../../contants/LocalizationEN"
 
     export let shortcut = []
     export let key
@@ -14,8 +15,9 @@
     export let all
 
     function update(key, value) {
-        SettingsStore.updateStore({...SettingsStore.data, [key]: value})
+    	SettingsStore.updateStore({...SettingsStore.data, [key]: value})
     }
+
     let currentShortcut
     $: currentShortcut = [...shortcut]
     let text = ""
@@ -25,50 +27,50 @@
     $: label = key.replace("_", " ")
     $:  {
 
-        let str = ""
-        for (let i = 0; i < currentShortcut.length; i++) {
-            const current = currentShortcut[i]
+    	let str = ""
+    	for (let i = 0; i < currentShortcut.length; i++) {
+    		const current = currentShortcut[i]
 
-            let c
-            if (current === KEYS.ControlLeft || current === KEYS.ControlRight)
-                c = "ctrl"
-            else if (current === KEYS.ShiftLeft || current === KEYS.ShiftRight)
-                c = "shift"
+    		let c
+    		if (current === KEYS.ControlLeft || current === KEYS.ControlRight)
+    			c = "ctrl"
+    		else if (current === KEYS.ShiftLeft || current === KEYS.ShiftRight)
+    			c = "shift"
 
-            else if (current === KEYS.AltLeft || current === KEYS.AltRight)
-                c = "alt"
-            else
-                c = current.replace("Key", "")
-            if (i > 0)
-                str += (i === 1 ? " + " : "") + c + (i < currentShortcut.length - 1 ? " + " : "")
-            else
-                str = c
-        }
-        text = str
+    		else if (current === KEYS.AltLeft || current === KEYS.AltRight)
+    			c = "alt"
+    		else
+    			c = current.replace("Key", "")
+    		if (i > 0)
+    			str += (i === 1 ? " + " : "") + c + (i < currentShortcut.length - 1 ? " + " : "")
+    		else
+    			str = c
+    	}
+    	text = str
     }
 
     function handler(event) {
-        if (event.type === "keyup") {
-            document.removeEventListener("keydown", handler)
-            onEdit = false
-            const c = JSON.stringify(currentShortcut)
+    	if (event.type === "keyup") {
+    		document.removeEventListener("keydown", handler)
+    		onEdit = false
+    		const c = JSON.stringify(currentShortcut)
 
-            if (all.find(a => JSON.stringify(a) === c) != null) {
-                currentShortcut = [...shortcut]
-                AlertController.error(LOCALIZATION_EN.SHORTCUT_ALREADY_LINKED)
-            }
-            update(currentShortcut)
-        } else if (!event.repeat) {
-            event.preventDefault()
-            currentShortcut = [...currentShortcut, event.code]
-        }
+    		if (all.find(a => JSON.stringify(a) === c) != null) {
+    			currentShortcut = [...shortcut]
+    			AlertController.error(LocalizationEN.SHORTCUT_ALREADY_LINKED)
+    		}
+    		update(currentShortcut)
+    	} else if (!event.repeat) {
+    		event.preventDefault()
+    		currentShortcut = [...currentShortcut, event.code]
+    	}
     }
 
     function initialize() {
-        currentShortcut = []
-        onEdit = true
-        document.addEventListener("keydown", handler)
-        document.addEventListener("keyup", handler, {once: true})
+    	currentShortcut = []
+    	onEdit = true
+    	document.addEventListener("keydown", handler)
+    	document.addEventListener("keyup", handler, {once: true})
     }
 </script>
 
@@ -78,14 +80,14 @@
         <small class:editing={onEdit}>{text}</small>
         <div class="row" style="justify-content: unset;">
             {#if !onEdit}
-                <button data-sveltebuttondefault="-"  on:click={initialize}>
+                <button data-sveltebuttondefault="-" on:click={initialize}>
                     <Icon styles="font-size: .9rem">keyboard</Icon>
                 </button>
                 {#if isChanged}
                     <div data-sveltevertdivider="-" style="margin: 0"></div>
-                    <button data-sveltebuttondefault="-"  on:click={() => currentShortcut = [...original]}>
+                    <button data-sveltebuttondefault="-" on:click={() => currentShortcut = [...original]}>
                         <Icon styles="font-size: .9rem">close</Icon>
-                        <ToolTip content={LOCALIZATION_EN.ORIGINAL}/>
+                        <ToolTip content={LocalizationEN.ORIGINAL}/>
                     </button>
                 {/if}
             {/if}

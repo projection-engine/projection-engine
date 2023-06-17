@@ -1,29 +1,29 @@
 <script>
-    import Checkbox from "../../shared/components/checkbox/Checkbox.svelte";
-    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
-    import ROUTES from "../../../backend/static/ROUTES";
-    import OptionDropdown from "../../shared/components/dropdown/OptionDropdown.svelte";
-    import ElectronResources from "../../shared/lib/ElectronResources";
-    import {onMount} from "svelte";
-    import DEFAULT_GLOBAL_SETTINGS from "../../../backend/static/DEFAULT_GLOBAL_SETTINGS";
-    import {AngleBackends} from "../../../backend/static/ANGLE_BACKENDS";
-    import PropertyHeader from "../../shared/components/PropertyHeader.svelte";
+    import Checkbox from "../../shared/components/checkbox/Checkbox.svelte"
+    import OptionDropdown from "../../shared/components/dropdown/OptionDropdown.svelte"
+    import ElectronResources from "../../shared/lib/ElectronResources"
+    import {onMount} from "svelte"
+    import DEFAULT_GLOBAL_SETTINGS from "../../../electron/static/DEFAULT_GLOBAL_SETTINGS"
+    import PropertyHeader from "../../shared/components/PropertyHeader.svelte"
+    import LocalizationEN from "../../../contants/LocalizationEN"
+    import IPCRoutes from "../../../contants/IPCRoutes"
+    import AngleBackends from "../../../contants/AngleBackends"
 
 
     let globalSettings = {...DEFAULT_GLOBAL_SETTINGS}
 
     onMount(() => {
-        ElectronResources.ipcRenderer.once(ROUTES.GET_GLOBAL_SETTINGS, (_, data) => globalSettings = data)
-        ElectronResources.ipcRenderer.send(ROUTES.GET_GLOBAL_SETTINGS)
+    	ElectronResources.ipcRenderer.once(IPCRoutes.GET_GLOBAL_SETTINGS, (_, data) => globalSettings = data)
+    	ElectronResources.ipcRenderer.send(IPCRoutes.GET_GLOBAL_SETTINGS)
     })
 </script>
 
-<PropertyHeader title={LOCALIZATION_EN.GLOBAL}/>
+<PropertyHeader title={LocalizationEN.GLOBAL}/>
 <fieldset>
     <OptionDropdown
             noPadding={true}
             buttonStyles="border: none;"
-            label={LOCALIZATION_EN.GRAPHICS_BACKEND}
+            label={LocalizationEN.GRAPHICS_BACKEND}
             options={[
                 {icon:                  globalSettings.graphicsBackend === AngleBackends.OPEN_GL    ? "check":undefined,label: "OpenGL", onClick: () => globalSettings.graphicsBackend= AngleBackends.OPEN_GL},
                 {icon:                  globalSettings.graphicsBackend === AngleBackends.VULKAN     ? "check":undefined,label: "Vulkan (Default)", onClick: () => globalSettings.graphicsBackend= AngleBackends.VULKAN },
@@ -36,7 +36,7 @@
     <OptionDropdown
             noPadding={true}
             buttonStyles="border: none;"
-            label={LOCALIZATION_EN.MAX_MEMORY}
+            label={LocalizationEN.MAX_MEMORY}
             options={[
                 {icon: globalSettings.maxMemory === 1024 ? "check":undefined,label: "1024mb", onClick: () => globalSettings.maxMemory = 1024},
                 {icon: globalSettings.maxMemory === 2048 ? "check":undefined,label: "2048mb", onClick: () => globalSettings.maxMemory = 2048},
@@ -48,12 +48,12 @@
     <Checkbox
             checked={globalSettings.vsync}
             handleCheck={() => globalSettings.vsync =  !globalSettings.vsync}
-            label={LOCALIZATION_EN.VSYNC}
+            label={LocalizationEN.VSYNC}
     />
     <button
             data-sveltebuttondefault="-"
             style="width: 100%"
-            on:click={() => ElectronResources.ipcRenderer.send(ROUTES.UPDATE_GLOBAL_SETTINGS, globalSettings)}>
-        {LOCALIZATION_EN.APPLY}
+            on:click={() => ElectronResources.ipcRenderer.send(IPCRoutes.UPDATE_GLOBAL_SETTINGS, globalSettings)}>
+        {LocalizationEN.APPLY}
     </button>
 </fieldset>

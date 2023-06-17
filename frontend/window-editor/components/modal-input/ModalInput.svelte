@@ -1,6 +1,6 @@
 <script>
-    import Modal from "../../../shared/components/modal/Modal.svelte";
-    import KEYS from "../../static/KEYS";
+    import Modal from "../../../shared/components/modal/Modal.svelte"
+    import KEYS from "../../static/KEYS"
 
     export let handleClose
     export let alignBottom
@@ -10,15 +10,14 @@
     const value = {value: initialValue}
 
     function getStyle() {
-        const bBox = ref.parentElement.getBoundingClientRect()
-        return `width: ${bBox.width}px; display: block; padding: 0; background: none; border: none; height: 23px; width: 10vw; top: ${alignBottom ? bBox.top + bBox.height - 15 :bBox.top }px; left: ${bBox.left + bBox.width/2}px; transform: translate(-50%, 0%); box-shadow: var(--pj-boxshadow)`
+    	const bBox = ref.parentElement.getBoundingClientRect()
+    	return `width: ${bBox.width}px; display: block; padding: 0; background: none; border: none; height: 23px; width: 10vw; top: ${alignBottom ? bBox.top + bBox.height - 15 :bBox.top }px; left: ${bBox.left + bBox.width/2}px; transform: translate(-50%, 0%); box-shadow: var(--pj-boxshadow)`
     }
-    $: styles = ref ? getStyle() : ""
 </script>
 
 <span style="display: none" bind:this={ref}></span>
 <Modal
-        styles={styles}
+        styles={ref ? getStyle() : ""}
         handleClose={_ => handleClose(value.value)}>
     <input
             value={value.value}

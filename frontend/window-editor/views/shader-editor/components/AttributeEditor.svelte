@@ -1,10 +1,11 @@
 <script lang="ts">
     import Attribute from "./Attribute.svelte";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
     import Input from "../../../../shared/components/input/Input.svelte";
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
+    import LocalizationEN from "../../../../../contants/LocalizationEN";
 
     export let node: ShaderNode | ShaderComment
     export let updateCanvas: Function
@@ -22,7 +23,7 @@
     <div class="content-wrapper">
         <div class="wrapper">
             <fieldset>
-                <legend>{LOCALIZATION_EN.NAME}</legend>
+                <legend>{LocalizationEN.NAME}</legend>
                 <Input
                         inputValue={node.name}
                         width={"100%"}
@@ -31,12 +32,12 @@
                         node.name = ev
                         updateCanvas()
                     }}
-                        placeholder={LOCALIZATION_EN.NAME}
+                        placeholder={LocalizationEN.NAME}
                 />
             </fieldset>
             {#if node instanceof ShaderComment}
                 <fieldset>
-                    <legend>{LOCALIZATION_EN.COLOR}</legend>
+                    <legend>{LocalizationEN.COLOR}</legend>
                     <ColorPicker
                             submit={(_, arr) => {
                             node.color = arr

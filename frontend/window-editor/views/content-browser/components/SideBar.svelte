@@ -1,17 +1,17 @@
 <script>
-    import SideBarItem from "./SideBarItem.svelte";
-    import VirtualList from '@sveltejs/svelte-virtual-list';
-    import FilesHierarchyStore from "../../../../shared/stores/FilesHierarchyStore";
-    import {onDestroy} from "svelte";
-    import FS from "../../../../shared/lib/FS/FS";
+    import SideBarItem from "./SideBarItem.svelte"
+    import VirtualList from "@sveltejs/svelte-virtual-list"
+    import FilesHierarchyStore from "../../../../shared/stores/FilesHierarchyStore"
+    import {onDestroy} from "svelte"
+    import FS from "../../../../shared/lib/FS/FS"
 
     export let setCurrentDirectory = undefined
     export let currentDirectory = undefined
     let assets = []
     let open = {}
     const unsubscribe = FilesHierarchyStore.getStore(v => {
-        assets = v.items
-        open = v.open
+    	assets = v.items
+    	open = v.open
     })
     onDestroy(() => unsubscribe())
 </script>

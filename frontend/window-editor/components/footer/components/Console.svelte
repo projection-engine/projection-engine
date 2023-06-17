@@ -1,13 +1,17 @@
-<script>
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import {onDestroy, onMount} from "svelte";
-    import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI";
+<!--suppress ALL -->
 
-    import VirtualList from '@sveltejs/svelte-virtual-list';
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import Portal from "../../../../shared/lib/Portal";
+
+<script>
+
+    import {onDestroy, onMount} from "svelte"
+    import ConsoleAPI from "../../../../../engine-core/lib/utils/ConsoleAPI"
+
+    import VirtualList from "@sveltejs/svelte-virtual-list"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import Portal from "../../../../shared/lib/Portal"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     export let engine
     const internalID = crypto.randomUUID()
@@ -27,42 +31,42 @@
     let objectOpen
 
     function handler(event) {
-        if (!modal.firstChild.contains(event.target))
-            objectOpen = undefined
+    	if (!modal.firstChild.contains(event.target))
+    		objectOpen = undefined
     }
 
     onMount(() => {
-        ConsoleAPI.registerConsole(internalID, (md, messages) => {
-            metadata = md
-            toRender = messages
-            changed = true
-            newMessages = messages.length > 0
-        })
-        portal.create(modal, {background: "rgba(0,0,0,.2)"})
-        document.addEventListener("mousedown", handler)
+    	ConsoleAPI.registerConsole(internalID, (md, messages) => {
+    		metadata = md
+    		toRender = messages
+    		changed = true
+    		newMessages = messages.length > 0
+    	})
+    	portal.create(modal, {background: "rgba(0,0,0,.2)"})
+    	document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
-        ConsoleAPI.unregisterConsole(internalID)
-        portal.destroy()
-        document.removeEventListener("mousedown", handler)
+    	ConsoleAPI.unregisterConsole(internalID)
+    	portal.destroy()
+    	document.removeEventListener("mousedown", handler)
     })
 
     $: if (engine.executingAnimation && clearOnPlay) ConsoleAPI.clear()
     $: {
-        if (changed) {
-            changed = false
-            const newToRender = []
-            for (let i = 0; i < toRender.length; i++) {
-                if (!showLogs && toRender[i].type === ConsoleAPI.TYPES.LOG)
-                    continue
-                if (!showWarnings && toRender[i].type === ConsoleAPI.TYPES.WARN)
-                    continue
-                if (!showErrors && toRender[i].type === ConsoleAPI.TYPES.ERROR)
-                    continue
-                newToRender.push(toRender[i])
-            }
-            toRender = newToRender
-        }
+    	if (changed) {
+    		changed = false
+    		const newToRender = []
+    		for (let i = 0; i < toRender.length; i++) {
+    			if (!showLogs && toRender[i].type === ConsoleAPI.TYPES.LOG)
+    				continue
+    			if (!showWarnings && toRender[i].type === ConsoleAPI.TYPES.WARN)
+    				continue
+    			if (!showErrors && toRender[i].type === ConsoleAPI.TYPES.ERROR)
+    				continue
+    			newToRender.push(toRender[i])
+    		}
+    		toRender = newToRender
+    	}
     }
 
 
@@ -74,28 +78,28 @@
     <button data-sveltebuttondefault="-" slot="button" class="button frame"
             style="background: transparent; max-width: unset;">
         <Icon styles="font-size: 1rem">terminal</Icon>
-        <small>{LOCALIZATION_EN.CONSOLE}</small>
+        <small>{LocalizationEN.CONSOLE}</small>
         {#if newMessages}
             <small class="dot"></small>
         {/if}
     </button>
     <div class="dropdown-container frame">
         <div class="dropdown-header frame">
-            <strong>{LOCALIZATION_EN.CONSOLE}</strong>
+            <strong>{LocalizationEN.CONSOLE}</strong>
             <button data-sveltebuttondefault="-"
                     class="button frame button-small frame"
                     style="max-width: 22px;gap: 4px"
                     on:click={() => ConsoleAPI.clear()}>
                 <Icon>clear_all</Icon>
-                {LOCALIZATION_EN.CLEAR}
-                <ToolTip content={LOCALIZATION_EN.CLEAR}/>
+                {LocalizationEN.CLEAR}
+                <ToolTip content={LocalizationEN.CLEAR}/>
             </button>
         </div>
         {#if toRender.length === 0}
             <div style="height: 100%; width: 100%; position: relative">
                 <div data-svelteempty="-">
                     <Icon styles="font-size: 75px">terminal</Icon>
-                    {LOCALIZATION_EN.CONSOLE}
+                    {LocalizationEN.CONSOLE}
                 </div>
             </div>
         {:else}
@@ -123,10 +127,10 @@
                         <div style="width: 1.1rem"></div>
                     {/if}
                     {#if item.object}
-                        <ToolTip content={LOCALIZATION_EN.CLICK_TO_SHOW_OBJECT}/>
+                        <ToolTip content={LocalizationEN.CLICK_TO_SHOW_OBJECT}/>
                     {/if}
                     <small data-svelteoverflow="-">{item.message}</small>
-                    <ToolTip content={item.src.includes("file://") ? LOCALIZATION_EN.INTERNAL_ERROR : item.str}/>
+                    <ToolTip content={item.src.includes("file://") ? LocalizationEN.INTERNAL_ERROR : item.str}/>
                 </div>
             </VirtualList>
         {/if}

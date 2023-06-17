@@ -1,17 +1,17 @@
 <script>
 
-    import {onMount} from "svelte";
-    import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
-    import CAMERA_ROTATIONS from "../../../../../engine-tools/static/CAMERA_ROTATIONS";
+    import {onMount} from "svelte"
+    import CameraTracker from "../../../../../engine-core/tools/lib/CameraTracker"
+    import CAMERA_ROTATIONS from "../../../../../engine-core/tools/static/CAMERA_ROTATIONS"
 
     let ref
     let cameraRef
     onMount(() => CameraTracker.gizmoReference = cameraRef)
 
     function onGizmoClick(e) {
-        const face = parseInt(e.target.getAttribute("data-svelteface"))
-        if(!isNaN(face))
-            CameraTracker.rotate(face)
+    	const face = parseInt(e.target.getAttribute("data-svelteface"))
+    	if (!isNaN(face))
+    		CameraTracker.rotate(face)
     }
 </script>
 
@@ -95,7 +95,6 @@
         max-width: var(--gizmo-wrapper-size);
         max-height: var(--gizmo-wrapper-size);
     }
-
 
 
     .camera-view {

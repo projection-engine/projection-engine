@@ -4,13 +4,14 @@
     import ComponentTreeBranch from "./ComponentTreeBranch.svelte";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import HierarchyController from "../../../lib/controllers/HierarchyController";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+
     import viewportContext from "../../../templates/viewport-context";
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
     import HierarchyToRenderElement from "../template/ToRenderElement";
     import VirtualList from '@sveltejs/svelte-virtual-list';
+    import LocalizationEN from "../../../../../contants/LocalizationEN";
 
     export let ID: string
     export let testSearch: Function
@@ -71,6 +72,6 @@
 {:else}
     <div data-svelteempty="-">
         <Icon styles="font-size: 75px">account_tree</Icon>
-        {LOCALIZATION_EN.HIERARCHY}
+        {LocalizationEN.HIERARCHY}
     </div>
 {/if}

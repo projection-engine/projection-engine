@@ -1,5 +1,5 @@
 <script>
-    import {onMount} from "svelte";
+    import {onMount} from "svelte"
 
     const DELAY = 250
 
@@ -9,8 +9,8 @@
 
     let timeout, input
     const onChange = () => {
-        clearTimeout(timeout)
-        timeout = setTimeout(() => setValue(input.value), DELAY)
+    	clearTimeout(timeout)
+    	timeout = setTimeout(() => setValue(input.value), DELAY)
     }
     onMount(() => input.value = value)
     $: if(input) input.value = value

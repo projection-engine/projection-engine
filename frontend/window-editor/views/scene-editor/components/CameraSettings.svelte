@@ -1,28 +1,32 @@
 <script>
-    import ViewportActions from "../../../lib/utils/ViewportActions";
-    import focusOnCamera from "../../../utils/focus-on-camera";
-    import Engine from "../../../../../engine-core/Engine";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import CameraGizmo from "./CameraGizmo.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import SettingsStore from "../../../../shared/stores/SettingsStore";
-    import CameraTracker from "../../../../../engine-tools/lib/CameraTracker";
-    import {onDestroy, onMount} from "svelte";
-    import HierarchyController from "../../../lib/controllers/HierarchyController";
+    import ViewportActions from "../../../lib/utils/ViewportActions"
+    import focusOnCamera from "../../../utils/focus-on-camera"
+    import Engine from "../../../../../engine-core/Engine"
+
+    import CameraGizmo from "./CameraGizmo.svelte"
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import SettingsStore from "../../../../shared/stores/SettingsStore"
+    import CameraTracker from "../../../../../engine-core/tools/lib/CameraTracker"
+    import {onDestroy, onMount} from "svelte"
+    import HierarchyController from "../../../lib/controllers/HierarchyController"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     export let engine
     export let settings
     const internalID = crypto.randomUUID()
     let cameras = []
 
-    const toggleProjection = () => SettingsStore.updateStore({...settings, camera: {...settings.camera, ortho: !settings.camera.ortho}})
+    const toggleProjection = () => SettingsStore.updateStore({
+    	...settings,
+    	camera: {...settings.camera, ortho: !settings.camera.ortho}
+    })
 
     onMount(() => {
-        HierarchyController.registerListener(internalID, () => {
-            cameras = Engine.entities.array.filter(entity => entity.cameraComponent != null)
-        })
+    	HierarchyController.registerListener(internalID, () => {
+    		cameras = Engine.entities.array.filter(entity => entity.cameraComponent != null)
+    	})
     })
     onDestroy(() => HierarchyController.removeListener(internalID))
     $: CameraTracker.screenSpaceMovement = settings.screenSpaceMovement
@@ -40,7 +44,7 @@
                 class="button viewport"
                 data-sveltehighlight={engine.focusedCamera ? "-" : undefined}
         >
-            <ToolTip content={LOCALIZATION_EN.FOCUS_ON_CAMERA}/>
+            <ToolTip content={LocalizationEN.FOCUS_ON_CAMERA}/>
             <Icon styles="font-size: 1rem">videocam</Icon>
         </button>
         {#each cameras as camera}
@@ -58,8 +62,9 @@
             </button>
         {/each}
     </Dropdown>
-    <button data-sveltebuttondefault="-"  disabled={engine.focusedCamera} class="button viewport" on:click={toggleProjection}>
-        <ToolTip content={LOCALIZATION_EN.SWITCH_PROJECTION}/>
+    <button data-sveltebuttondefault="-" disabled={engine.focusedCamera} class="button viewport"
+            on:click={toggleProjection}>
+        <ToolTip content={LocalizationEN.SWITCH_PROJECTION}/>
         {#if !settings.camera.ortho}
             <div style="width: 20px; height: 20px; perspective: 40px; transform-style: preserve-3d">
                 <Icon styles="transform: rotateX(45deg)">grid_on</Icon>
@@ -69,15 +74,17 @@
         {/if}
     </button>
 
-    <button data-sveltebuttondefault="-"  disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
+    <button data-sveltebuttondefault="-" disabled={engine.focusedCamera} class="button viewport"
+            style="max-width: 25px; justify-content: center"
             on:click={() => ViewportActions.focus()}>
-        <ToolTip content={LOCALIZATION_EN.FOCUS}/>
+        <ToolTip content={LocalizationEN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>
 
-    <button data-sveltebuttondefault="-"  disabled={engine.focusedCamera} class="button viewport" style="max-width: 25px; justify-content: center"
+    <button data-sveltebuttondefault="-" disabled={engine.focusedCamera} class="button viewport"
+            style="max-width: 25px; justify-content: center"
             on:click={() => SettingsStore.updateStore({...settings, screenSpaceMovement: !settings.screenSpaceMovement})}>
-        <ToolTip content={LOCALIZATION_EN.TOGGLE_CAMERA_MOVEMENT}/>
+        <ToolTip content={LocalizationEN.TOGGLE_CAMERA_MOVEMENT}/>
         {#if settings.screenSpaceMovement}
             <Icon styles="font-size: 1rem">lock_outline</Icon>
         {:else}

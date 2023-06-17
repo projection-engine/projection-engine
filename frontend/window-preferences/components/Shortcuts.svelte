@@ -1,44 +1,45 @@
 <script>
-    import ShotcutField from "./ShotcutField.svelte";
-    import SETTINGS from "../../window-editor/static/SETTINGS";
-    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
-    import SettingsStore from "../../shared/stores/SettingsStore";
-    import PropertyHeader from "../../shared/components/PropertyHeader.svelte";
+    import ShotcutField from "./ShotcutField.svelte"
+    import SETTINGS from "../../window-editor/static/SETTINGS"
+
+    import SettingsStore from "../../shared/stores/SettingsStore"
+    import PropertyHeader from "../../shared/components/PropertyHeader.svelte"
+    import LocalizationEN from "../../../contants/LocalizationEN"
 
     export let settings
 
     function update(key, value) {
-        SettingsStore.updateStore({...settings, [key]: value})
+    	SettingsStore.updateStore({...settings, [key]: value})
     }
 
     function updateHotKey(key, objectKey, newValue) {
-        const newData = {...settings[key], [objectKey]: newValue}
-        update(key, newData)
+    	const newData = {...settings[key], [objectKey]: newValue}
+    	update(key, newData)
     }
 
     let shortcuts
     let allShortcuts
     $: {
-        const vp = Object.entries(settings.viewportHotkeys).map(v => ([...v, "viewportHotkeys", (keys) => updateHotKey("viewportHotkeys", v[0], keys)]))
-        const sc = Object.entries(settings.shaderEditorHotkeys).map(v => ([...v, "shaderEditorHotkeys", (keys) => updateHotKey("shaderEditorHotkeys", v[0], keys)]))
-        const cb = Object.entries(settings.contentBrowserHotkeys).map(v => ([...v, "contentBrowserHotkeys", (keys) => updateHotKey("contentBrowserHotkeys", v[0], keys)]))
-        allShortcuts = [
-            ...Object.values(settings.viewportHotkeys),
-            ...Object.values(settings.shaderEditorHotkeys),
-            ...Object.values(settings.contentBrowserHotkeys)
-        ]
+    	const vp = Object.entries(settings.viewportHotkeys).map(v => ([...v, "viewportHotkeys", (keys) => updateHotKey("viewportHotkeys", v[0], keys)]))
+    	const sc = Object.entries(settings.shaderEditorHotkeys).map(v => ([...v, "shaderEditorHotkeys", (keys) => updateHotKey("shaderEditorHotkeys", v[0], keys)]))
+    	const cb = Object.entries(settings.contentBrowserHotkeys).map(v => ([...v, "contentBrowserHotkeys", (keys) => updateHotKey("contentBrowserHotkeys", v[0], keys)]))
+    	allShortcuts = [
+    		...Object.values(settings.viewportHotkeys),
+    		...Object.values(settings.shaderEditorHotkeys),
+    		...Object.values(settings.contentBrowserHotkeys)
+    	]
 
-        shortcuts = {
-            viewport: vp,
-            shaderEditor: sc,
-            contentBrowser: cb
-        }
+    	shortcuts = {
+    		viewport: vp,
+    		shaderEditor: sc,
+    		contentBrowser: cb
+    	}
     }
 </script>
 
-<PropertyHeader title={LOCALIZATION_EN.SHORTCUTS}/>
-<fieldset >
-    <legend>{LOCALIZATION_EN.VIEWPORT}</legend>
+<PropertyHeader title={LocalizationEN.SHORTCUTS}/>
+<fieldset>
+    <legend>{LocalizationEN.VIEWPORT}</legend>
     <div class="shortcuts">
         {#each shortcuts.viewport as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
@@ -46,7 +47,7 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend>{LOCALIZATION_EN.SHADER_EDITOR}</legend>
+    <legend>{LocalizationEN.SHADER_EDITOR}</legend>
     <div class="shortcuts">
         {#each shortcuts.shaderEditor as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
@@ -54,7 +55,7 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend>{LOCALIZATION_EN.CONTENT_BROWSER}</legend>
+    <legend>{LocalizationEN.CONTENT_BROWSER}</legend>
     <div class="shortcuts">
         {#each shortcuts.contentBrowser as [key, value, wrapperKey, update]}
             <ShotcutField all={allShortcuts} wrapperKey={wrapperKey} shortcut={value} key={key} update={update}/>
@@ -69,7 +70,7 @@
             update("shaderEditorHotkeys", SETTINGS.shaderEditorHotkeys)
         }}
 >
-    {LOCALIZATION_EN.RESET}
+    {LocalizationEN.RESET}
 </button>
 
 <style>

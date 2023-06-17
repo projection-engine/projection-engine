@@ -1,25 +1,26 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import {onDestroy} from "svelte";
-    import SelectionStore from "../../../shared/stores/SelectionStore";
-    import FilesStore from "../../../shared/stores/FilesStore";
-    import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte";
-    import Entity from "../../../../engine-core/instances/Entity";
-    import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI";
-    import EntityInspector from "./components/engine/EntityAttributes.svelte";
 
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import PREFERENCES from "../../../window-preferences/static/PREFERENCES";
-    import CameraPreferences from "./components/engine/CameraPreferences.svelte";
-    import ContentWrapper from "../../../window-preferences/components/content/ContentWrapper.svelte";
+    import {onDestroy} from "svelte"
+    import SelectionStore from "../../../shared/stores/SelectionStore"
+    import FilesStore from "../../../shared/stores/FilesStore"
+    import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte"
+    import Entity from "../../../../engine-core/instances/Entity"
+    import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
+    import EntityInspector from "./components/engine/EntityAttributes.svelte"
+
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
+    import PREFERENCES from "../../../window-preferences/static/PREFERENCES"
+    import CameraPreferences from "./components/engine/CameraPreferences.svelte"
+    import ContentWrapper from "../../../window-preferences/components/content/ContentWrapper.svelte"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
     const internalID = crypto.randomUUID()
     const PREFERENCES_TABS = [
-        PREFERENCES[2],
-        PREFERENCES[3],
-        {type: "camera", icon: "camera", label: LOCALIZATION_EN.EDITOR_CAMERA},
-        {divider: true}
+    	PREFERENCES[2],
+    	PREFERENCES[3],
+    	{type: "camera", icon: "camera", label: LocalizationEN.EDITOR_CAMERA},
+    	{divider: true}
     ]
     let parent
 
@@ -28,51 +29,51 @@
     let tabs = []
     const unsubscribeSelection = SelectionStore.getStore(v => {
 
-        let targetItem
-        if (!v.array[0])
-            targetItem = undefined
-        else {
-            const T = SelectionStore.TYPES
-            switch (v.TARGET) {
-                case T.CONTENT_BROWSER:
-                    targetItem = FilesStore.data.items.find(i => i.id === v.array[0])
-                    break
-                case T.ENGINE:
-                    targetItem = QueryAPI.getEntityByID(v.array[0])
-                    break
-                default:
-                    targetItem = undefined
-                    break
-            }
-        }
+    	let targetItem
+    	if (!v.array[0])
+    		targetItem = undefined
+    	else {
+    		const T = SelectionStore.TYPES
+    		switch (v.TARGET) {
+    		case T.CONTENT_BROWSER:
+    			targetItem = FilesStore.data.items.find(i => i.id === v.array[0])
+    			break
+    		case T.ENGINE:
+    			targetItem = QueryAPI.getEntityByID(v.array[0])
+    			break
+    		default:
+    			targetItem = undefined
+    			break
+    		}
+    	}
 
-        if (!targetItem && v.lockedEntity != null)
-            targetItem = QueryAPI.getEntityByID(v.lockedEntity)
-        if(!targetItem) {
-            setTabs([])
-            tabIndex = -5
-        }
+    	if (!targetItem && v.lockedEntity != null)
+    		targetItem = QueryAPI.getEntityByID(v.lockedEntity)
+    	if (!targetItem) {
+    		setTabs([])
+    		tabIndex = -5
+    	}
 
-        if (selectedItem !== targetItem) {
-            selectedItem = targetItem
-            tabIndex = SelectionStore.TYPES.ENGINE === v.TARGET ? -1 : -2
-        }
+    	if (selectedItem !== targetItem) {
+    		selectedItem = targetItem
+    		tabIndex = SelectionStore.TYPES.ENGINE === v.TARGET ? -1 : -2
+    	}
     })
 
     onDestroy(() => unsubscribeSelection())
 
     function setTabs(data) {
-        const TABS = PREFERENCES_TABS.map((e, i) => {
-            if (e.divider)
-                return e
-            return {
-                ...e,
-                index: i - 5
-            }
-        })
-        if(!selectedItem)
-            TABS.pop()
-        tabs = [...TABS, ...data]
+    	const TABS = PREFERENCES_TABS.map((e, i) => {
+    		if (e.divider)
+    			return e
+    		return {
+    			...e,
+    			index: i - 5
+    		}
+    	})
+    	if (!selectedItem)
+    		TABS.pop()
+    	tabs = [...TABS, ...data]
     }
 
     $: isEntity = selectedItem instanceof Entity

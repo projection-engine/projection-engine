@@ -1,11 +1,12 @@
 <script>
-    import FilesStore from "../../../../../shared/stores/FilesStore";
-    import {onDestroy} from "svelte";
-    import componentConstructor from "../../../../utils/component-constructor";
-    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import ComponentRow from "./ComponentRow.svelte";
+    import FilesStore from "../../../../../shared/stores/FilesStore"
+    import {onDestroy} from "svelte"
+    import componentConstructor from "../../../../utils/component-constructor"
+
+    import Icon from "../../../../../shared/components/icon/Icon.svelte"
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
+    import ComponentRow from "./ComponentRow.svelte"
+    import LocalizationEN from "../../../../../../contants/LocalizationEN"
 
     export let entity
 
@@ -26,7 +27,7 @@
     </button>
     {#if !entity.isCollection}
         <fieldset>
-            <legend>{LOCALIZATION_EN.COMPONENTS}</legend>
+            <legend>{LocalizationEN.COMPONENTS}</legend>
             <div data-sveltebuttongroup="-">
                 <ComponentRow entity={entity} offset={0}/>
                 <ComponentRow entity={entity} offset={3}/>
@@ -37,9 +38,9 @@
 
     {:else if store.components.length === 0}
         <div class="empty-wrapper">
-            <div data-svelteempty="-" >
+            <div data-svelteempty="-">
                 <Icon styles="font-size: 75px">texture</Icon>
-                {LOCALIZATION_EN.NO_CUSTOM_COMPONENTS_FOUND}
+                {LocalizationEN.NO_CUSTOM_COMPONENTS_FOUND}
             </div>
         </div>
     {/if}
@@ -48,7 +49,7 @@
             <div data-sveltedivider="-"></div>
         {/if}
         <fieldset>
-            <legend>{LOCALIZATION_EN.CUSTOM_COMPONENTS}</legend>
+            <legend>{LocalizationEN.CUSTOM_COMPONENTS}</legend>
             {#each store.components as script}
 
                 <button

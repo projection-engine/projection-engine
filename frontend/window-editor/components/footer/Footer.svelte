@@ -1,46 +1,47 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import ErrorLoggerAPI from "../../lib/fs/ErrorLoggerAPI";
-    import FrameMetadata from "./components/FrameMetadata.svelte";
-    import SceneStats from "./components/SceneStats.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import FS from "../../../shared/lib/FS/FS";
-    import ElectronResources from "../../../shared/lib/ElectronResources";
-    import Console from "./components/Console.svelte";
-    import Engine from "../../../../engine-core/Engine";
-    import {onDestroy, onMount} from "svelte";
-    import EntityUpdateController from "../../lib/controllers/EntityUpdateController";
+
+    import ErrorLoggerAPI from "../../lib/fs/ErrorLoggerAPI"
+    import FrameMetadata from "./components/FrameMetadata.svelte"
+    import SceneStats from "./components/SceneStats.svelte"
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
+    import FS from "../../../shared/lib/FS/FS"
+    import ElectronResources from "../../../shared/lib/ElectronResources"
+    import Console from "./components/Console.svelte"
+    import Engine from "../../../../engine-core/Engine"
+    import {onDestroy, onMount} from "svelte"
+    import EntityUpdateController from "../../lib/controllers/EntityUpdateController"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
 
     export let settings
     export let engine
 
     const openLogs = async () => {
-        if (FS.exists(ErrorLoggerAPI.path))
-            ElectronResources.shell.openPath(ErrorLoggerAPI.path).catch()
+    	if (FS.exists(ErrorLoggerAPI.path))
+    		ElectronResources.shell.openPath(ErrorLoggerAPI.path).catch()
     }
     let loadedLevel
     const ID = crypto.randomUUID()
     let entityID
 
     function load() {
-        loadedLevel = Engine.loadedLevel?.name
-        entityID = Engine.loadedLevel?.id
+    	loadedLevel = Engine.loadedLevel?.name
+    	entityID = Engine.loadedLevel?.id
 
-        if (entityID)
-            EntityUpdateController.removeListener(entityID, ID)
+    	if (entityID)
+    		EntityUpdateController.removeListener(entityID, ID)
 
-        if(!loadedLevel)
-            return
-        EntityUpdateController.addListener(entityID, ID, () => {
-            loadedLevel = Engine.loadedLevel.name
-        })
+    	if (!loadedLevel)
+    		return
+    	EntityUpdateController.addListener(entityID, ID, () => {
+    		loadedLevel = Engine.loadedLevel.name
+    	})
     }
 
     onMount(() => {
-        Engine.addLevelLoaderListener(ID, load)
-        load()
+    	Engine.addLevelLoaderListener(ID, load)
+    	load()
     })
     onDestroy(() => Engine.removeLevelLoaderListener(ID))
 </script>
@@ -49,10 +50,11 @@
 
     <div class="meta-data" style="justify-content: flex-start">
         {#if loadedLevel}
-            <div class="wrapper footer-header" style="max-width: clamp(100px, 5vw, 100px); background: var(--pj-background-primary)">
+            <div class="wrapper footer-header"
+                 style="max-width: clamp(100px, 5vw, 100px); background: var(--pj-background-primary)">
                 <Icon styles="font-size: .9rem">forest</Icon>
                 <small data-svelteoverflow="-">{loadedLevel}</small>
-                <ToolTip content={LOCALIZATION_EN.LOADED_LEVEL}/>
+                <ToolTip content={LocalizationEN.LOADED_LEVEL}/>
             </div>
             <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
         {/if}
@@ -62,7 +64,7 @@
         <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
         <button data-sveltebuttondefault="-" on:click={openLogs} class="error-logging">
             <Icon>bug_report</Icon>
-            <ToolTip content={LOCALIZATION_EN.SHOW_RECENT_ERRORS}/>
+            <ToolTip content={LocalizationEN.SHOW_RECENT_ERRORS}/>
         </button>
     </div>
 
@@ -71,7 +73,7 @@
         <div data-sveltevertdivider="-"></div>
         <div class="version"
              on:click={() => ElectronResources.shell.openExternal("https://github.com/projection-engine")}>
-            {LOCALIZATION_EN.VERSION}
+            {LocalizationEN.VERSION}
         </div>
     </div>
 </div>

@@ -1,8 +1,9 @@
 <script>
     import ALL_NODES from "../static/ALL_NODES"
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Input from "../../../../shared/components/input/Input.svelte";
+
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import Input from "../../../../shared/components/input/Input.svelte"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     let inputValue = ""
     $: nodes = !inputValue ? ALL_NODES : ALL_NODES.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
@@ -26,7 +27,7 @@
                 width={"100%"}
                 inputValue={inputValue}
                 onChange={v => inputValue  = v}
-                placeholder={LOCALIZATION_EN.SEARCH}
+                placeholder={LocalizationEN.SEARCH}
         >
             <Icon slot="icon">search</Icon>
         </Input>

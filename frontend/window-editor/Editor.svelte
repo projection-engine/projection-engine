@@ -1,25 +1,27 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
-    import Viewport from "./views/viewport/Viewport.svelte";
-    import Footer from "./components/footer/Footer.svelte";
-    import EngineStore from "../shared/stores/EngineStore";
-    import ViewsContainer from "./components/view/Views.svelte";
-    import SettingsStore from "../shared/stores/SettingsStore";
-    import FALLBACK_VIEW from "./static/FALLBACK_VIEW";
-    import updateView from "./utils/update-view";
-    import FS from "../shared/lib/FS/FS";
-    import FilesAPI from "./lib/fs/FilesAPI";
-    import LevelController from "./lib/utils/LevelController";
-    import HotKeysController from "../shared/lib/HotKeysController";
-    import WindowFrame from "./components/window-frame/WindowFrame.svelte";
-    import Canvas from "./views/scene-editor/Canvas.svelte";
-    import ROUTES from "../../backend/static/ROUTES";
-    import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS";
-    import FilesStore from "../shared/stores/FilesStore";
-    import ContextMenuController from "../shared/lib/context-menu/ContextMenuController";
-    import AlertController from "../shared/components/alert/AlertController";
-    import ElectronResources from "../shared/lib/ElectronResources";
-    import StoreManager from "../shared/stores/StoreManager";
+    import {onDestroy, onMount} from "svelte"
+    import Viewport from "./views/viewport/Viewport.svelte"
+    import Footer from "./components/footer/Footer.svelte"
+    import EngineStore from "../shared/stores/EngineStore"
+    import ViewsContainer from "./components/view/Views.svelte"
+    import SettingsStore from "../shared/stores/SettingsStore"
+    import FALLBACK_VIEW from "./static/FALLBACK_VIEW"
+    import updateView from "./utils/update-view"
+    import FS from "../shared/lib/FS/FS"
+    import FilesAPI from "./lib/fs/FilesAPI"
+    import LevelController from "./lib/utils/LevelController"
+    import HotKeysController from "../shared/lib/HotKeysController"
+    import WindowFrame from "./components/window-frame/WindowFrame.svelte"
+    import Canvas from "./views/scene-editor/Canvas.svelte"
+
+    import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS"
+    import FilesStore from "../shared/stores/FilesStore"
+    import ContextMenuController from "../shared/lib/context-menu/ContextMenuController"
+    import AlertController from "../shared/components/alert/AlertController"
+    import ElectronResources from "../shared/lib/ElectronResources"
+    import StoreManager from "../shared/stores/StoreManager"
+
+    import IPCRoutes from "../../contants/IPCRoutes"
 
     const FALLBACK = {...FALLBACK_VIEW}
 
@@ -35,25 +37,25 @@
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     onMount(() => {
-        StoreManager.initialize()
-        AlertController.initialize()
-        ContextMenuController.initialize()
+    	StoreManager.initialize()
+    	AlertController.initialize()
+    	ContextMenuController.initialize()
 
-        ElectronResources.ipcRenderer.on(ROUTES.EDITOR_INITIALIZATION, (_, pathToProject) => {
-            sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
-            FS.initialize(pathToProject)
-            FilesAPI.initializeFolders().catch()
-            LevelController.initialize().then(_ => isMetadataReady = true).catch()
-            HotKeysController.initializeListener()
-            FilesStore.initializeContentBrowser()
-        })
-        ElectronResources.ipcRenderer.on("console", (_, data) => console.error(...data))
+    	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
+    		sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
+    		FS.initialize(pathToProject)
+    		FilesAPI.initializeFolders().catch()
+    		LevelController.initialize().then(_ => isMetadataReady = true).catch()
+    		HotKeysController.initializeListener()
+    		FilesStore.initializeContentBrowser()
+    	})
+    	ElectronResources.ipcRenderer.on("console", (_, data) => console.error(...data))
     })
 
     $: HotKeysController.blockActions = engine.executingAnimation
     onDestroy(() => {
-        unsubscribeSettings()
-        unsubscribeEngine()
+    	unsubscribeSettings()
+    	unsubscribeEngine()
     })
 </script>
 

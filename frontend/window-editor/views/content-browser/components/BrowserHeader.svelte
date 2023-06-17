@@ -1,5 +1,7 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+
+
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     export let sort
 
@@ -7,29 +9,31 @@
 
 <div class="wrapper">
     <small class="section" style="border-right: var(--pj-border-primary) 1px solid">
-        {LOCALIZATION_EN.NAME}
+        {LocalizationEN.NAME}
     </small>
     <small class="section" style="border-right: var(--pj-border-primary) 1px solid">
-        {LOCALIZATION_EN.CREATION}
+        {LocalizationEN.CREATION}
 
     </small>
     <small class="section">
-        {LOCALIZATION_EN.SIZE}
+        {LocalizationEN.SIZE}
 
     </small>
 </div>
 
 <style>
-    small{
+    small {
         font-size: .7rem;
     }
+
     .section {
         padding-left: 8px;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    .section:hover{
+
+    .section:hover {
         color: var(--pj-accent-color);
     }
 

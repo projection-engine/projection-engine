@@ -1,16 +1,17 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
 
-    import SelectionStore from "../../../shared/stores/SelectionStore";
-    import Engine from "../../../../engine-core/Engine";
-    import COMPONENTS from "../../../../engine-core/static/COMPONENTS";
-    import UIAPI from "../../../../engine-core/lib/rendering/UIAPI";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import EngineStateController from "../../lib/controllers/EngineStateController";
-    import AlertController from "../../../shared/components/alert/AlertController";
-    import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI";
+
+    import SelectionStore from "../../../shared/stores/SelectionStore"
+    import Engine from "../../../../engine-core/Engine"
+    import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
+    import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte"
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
+    import EngineStateController from "../../lib/controllers/EngineStateController"
+    import AlertController from "../../../shared/components/alert/AlertController"
+    import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
 
     export let settings
@@ -22,21 +23,21 @@
     export let toggleAutoUpdate
 
     function selectAll() {
-        const m = [], size = Engine.entities.array.length
-        for (let i = 0; i < size; i++) {
-            const e = Engine.entities.array[i]
-            if (e.uiComponent)
-                m.push(e.id)
-        }
-        SelectionStore.engineSelected = m
+    	const m = [], size = Engine.entities.array.length
+    	for (let i = 0; i < size; i++) {
+    		const e = Engine.entities.array[i]
+    		if (e.uiComponent)
+    			m.push(e.id)
+    	}
+    	SelectionStore.engineSelected = m
     }
 
 
     function addUI() {
-        const e = EntityAPI.getNewEntityInstance()
-        e.name = "UI-ShaderNode"
-        e.addComponent(COMPONENTS.UI)
-        EngineStateController.add(e)
+    	const e = EntityAPI.getNewEntityInstance()
+    	e.name = "UI-ShaderNode"
+    	e.addComponent(COMPONENTS.UI)
+    	EngineStateController.add(e)
     }
 
 
@@ -44,26 +45,29 @@
 
 <ViewHeader>
     <div class="left-content">
-        <button data-sveltebuttondefault="-"  on:click={addUI} data-svelteview-header-button="-" style="max-width: unset">
+        <button data-sveltebuttondefault="-" on:click={addUI} data-svelteview-header-button="-"
+                style="max-width: unset">
             <Icon styles="font-size: .9rem">add</Icon>
-            {LOCALIZATION_EN.ADD_ELEMENT}
+            {LocalizationEN.ADD_ELEMENT}
         </button>
-        <button data-sveltebuttondefault="-"  on:click={selectAll} data-svelteview-header-button="-" style="max-width: unset">
-            {LOCALIZATION_EN.SELECT_ALL}
+        <button data-sveltebuttondefault="-" on:click={selectAll} data-svelteview-header-button="-"
+                style="max-width: unset">
+            {LocalizationEN.SELECT_ALL}
         </button>
         <div data-sveltevertdivider="-"></div>
         <button data-sveltebuttondefault="-"
                 on:click={() => {
                     UIAPI.updateAllElements().then(() => {
-                        AlertController.log(LOCALIZATION_EN.UPDATING_UI)
+                        AlertController.log(LocalizationEN.UPDATING_UI)
                     })
                 }}
                 data-svelteview-header-button="-"
                 style="max-width: unset">
             <Icon styles="font-size: .9rem">refresh</Icon>
-            <ToolTip content={LOCALIZATION_EN.FORCE_UPDATE}/>
+            <ToolTip content={LocalizationEN.FORCE_UPDATE}/>
         </button>
-        <button data-sveltebuttondefault="-"  on:click={toggleAutoUpdate} data-svelteview-header-button="-" style="max-width: unset">
+        <button data-sveltebuttondefault="-" on:click={toggleAutoUpdate} data-svelteview-header-button="-"
+                style="max-width: unset">
             <Icon styles="font-size: .9rem">
                 {#if updateEnabled}
                     update
@@ -71,7 +75,7 @@
                     update_disabled
                 {/if}
             </Icon>
-            {LOCALIZATION_EN.AUTO_UPDATE}
+            {LocalizationEN.AUTO_UPDATE}
         </button>
         {#if selected}
             <div data-sveltevertdivider="-"></div>
@@ -82,11 +86,12 @@
     </div>
 
     <div class="right-content">
-        <button data-sveltebuttondefault="-"  data-sveltehighlight={isOnSelection ? "-" : ""} on:click={toggleOnSelection} data-svelteview-header-button="-">
+        <button data-sveltebuttondefault="-" data-sveltehighlight={isOnSelection ? "-" : ""}
+                on:click={toggleOnSelection} data-svelteview-header-button="-">
             <Icon>
                 highlight_alt
             </Icon>
-            <ToolTip content={LOCALIZATION_EN.PICKER}/>
+            <ToolTip content={LocalizationEN.PICKER}/>
         </button>
     </div>
 

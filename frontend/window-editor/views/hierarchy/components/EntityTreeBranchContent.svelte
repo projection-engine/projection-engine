@@ -12,7 +12,8 @@
     import EntityUpdateController from "../../../lib/controllers/EntityUpdateController";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import mapComponents from "../utils/map-components";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+    import LocalizationEN from "../../../../../contants/LocalizationEN";
+
 
     export let entity: Entity
     export let lockedEntity: string
@@ -27,7 +28,6 @@
     $: icons = getEngineIcon(entity)
     const draggable = dragDrop(true)
     $: draggable.disabled = isOnEdit
-
 
 
     const ID = crypto.randomUUID()
@@ -72,7 +72,7 @@
     $: isLocked = lockedEntity === entity.id
 </script>
 
-<div class="info hierarchy-branch"    data-sveltenode={entity.id} on:click={e => updateSelection(entity.id, e.ctrlKey)}>
+<div class="info hierarchy-branch" data-sveltenode={entity.id} on:click={e => updateSelection(entity.id, e.ctrlKey)}>
     <button
 
             data-sveltelocked={isLocked ? "-" : ""}
@@ -112,7 +112,7 @@
         {#if children > 0}
             <div class="component" style="color: var(--folder-color)">
                 <Icon styles="font-size: .9rem">category</Icon>
-                <ToolTip content={LOCALIZATION_EN.CHILDREN}/>
+                <ToolTip content={LocalizationEN.CHILDREN}/>
                 <small class="children-quantity">{children}</small>
             </div>
         {/if}
@@ -120,16 +120,17 @@
 </div>
 
 <style>
-    .children-quantity{
+    .children-quantity {
         font-size: .5rem;
         position: absolute;
         left: 50%;
         bottom: -3px;
-        background: rgba(0,0,0,.75);
+        background: rgba(0, 0, 0, .75);
         padding: 0 2px;
         height: fit-content;
         border-radius: 3px;
     }
+
     .component {
         color: var(--pj-accent-color-tertiary);
         display: flex;

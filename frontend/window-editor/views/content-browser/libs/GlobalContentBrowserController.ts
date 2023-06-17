@@ -1,19 +1,19 @@
-import FS from "../../../../shared/lib/FS/FS";
+import FS from "../../../../shared/lib/FS/FS"
 
 export default class GlobalContentBrowserController{
-    static subscribed = new Map()
+	static subscribed = new Map()
 
-    static subscribe(id, callback){
-        GlobalContentBrowserController.subscribed.set(id, callback)
-    }
-    static unsubscribe(id){
-        GlobalContentBrowserController.subscribed.delete(id)
-    }
+	static subscribe(id, callback){
+		GlobalContentBrowserController.subscribed.set(id, callback)
+	}
+	static unsubscribe(id){
+		GlobalContentBrowserController.subscribed.delete(id)
+	}
 
-    static pushCurrentDirectory(dir){
-        let path = dir
-        if(!path)
-            path = FS.sep
-        GlobalContentBrowserController.subscribed.forEach(e => e(path))
-    }
+	static pushCurrentDirectory(dir){
+		let path = dir
+		if(!path)
+			path = FS.sep
+		GlobalContentBrowserController.subscribed.forEach(e => e(path))
+	}
 }

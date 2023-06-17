@@ -1,19 +1,21 @@
+<!--suppress ALL -->
 <script>
-    import handleRename from "../utils/handle-rename";
-    import Item from "./item/Item.svelte";
-    import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte";
-    import contentBrowserActions from "../../../templates/content-browser-actions";
-    import VirtualList from '@sveltejs/svelte-virtual-list';
-    import {onDestroy, onMount} from "svelte";
-    import getFilesToRender from "../utils/get-files-to-render";
-    import HotKeysController from "../../../../shared/lib/HotKeysController";
-    import SelectionStore from "../../../../shared/stores/SelectionStore";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import ITEM_TYPES from "../static/ITEM_TYPES";
-    import RowsHeader from "./BrowserHeader.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
-    import handleSelection from "../utils/handle-selection";
+    import handleRename from "../utils/handle-rename"
+    import Item from "./item/Item.svelte"
+    import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte"
+    import contentBrowserActions from "../../../templates/content-browser-actions"
+    import VirtualList from "@sveltejs/svelte-virtual-list"
+    import {onDestroy, onMount} from "svelte"
+    import getFilesToRender from "../utils/get-files-to-render"
+    import HotKeysController from "../../../../shared/lib/HotKeysController"
+    import SelectionStore from "../../../../shared/stores/SelectionStore"
+
+    import ITEM_TYPES from "../static/ITEM_TYPES"
+    import RowsHeader from "./BrowserHeader.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController"
+    import handleSelection from "../utils/handle-selection"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     const CARD_SIZE = 115
     export let fileType
@@ -41,66 +43,66 @@
 
 
     const unsubscribe = SelectionStore.getStore(() => {
-        selected = SelectionStore.contentBrowserSelected
-        selectionMap = SelectionStore.map
+    	selected = SelectionStore.contentBrowserSelected
+    	selectionMap = SelectionStore.map
     })
 
     function resetItem() {
-        SelectionStore.contentBrowserSelected = []
-        onChange("")
-        setFileType(undefined)
+    	SelectionStore.contentBrowserSelected = []
+    	onChange("")
+    	setFileType(undefined)
     }
 
     $: lineHeight = viewType === ITEM_TYPES.ROW ? 23 : CARD_SIZE
     $: toRender = getFilesToRender(currentDirectory, fileType, store.items, inputValue, elementsPerRow, sortKey, sortDirection)
 
     $: {
-        if (ref) {
-            const actions = contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
-            HotKeysController.unbindAction(ref)
-            ContextMenuController.destroy(internalID)
-            ContextMenuController.mount(
-                actions.contextMenu,
-                internalID,
-                (trigger, element) => {
-                    const id = element.getAttribute("data-svelteid")
-                    if (id != null)
-                        SelectionStore.contentBrowserSelected = [id]
-                }
-            )
-            HotKeysController.bindAction(
-                ref,
-                actions.hotKeys,
-                "folder",
-                LOCALIZATION_EN.CONTENT_BROWSER
-            )
-        }
+    	if (ref) {
+    		const actions = contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
+    		HotKeysController.unbindAction(ref)
+    		ContextMenuController.destroy(internalID)
+    		ContextMenuController.mount(
+    			actions.contextMenu,
+    			internalID,
+    			(trigger, element) => {
+    				const id = element.getAttribute("data-svelteid")
+    				if (id != null)
+    					SelectionStore.contentBrowserSelected = [id]
+    			}
+    		)
+    		HotKeysController.bindAction(
+    			ref,
+    			actions.hotKeys,
+    			"folder",
+    			LocalizationEN.CONTENT_BROWSER
+    		)
+    	}
     }
     $: {
-        if (viewType === ITEM_TYPES.CARD && ref)
-            elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
-        else if (viewType !== ITEM_TYPES.CARD)
-            elementsPerRow = 1
+    	if (viewType === ITEM_TYPES.CARD && ref)
+    		elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
+    	else if (viewType !== ITEM_TYPES.CARD)
+    		elementsPerRow = 1
     }
 
     onMount(() => {
-        resizeOBS = new ResizeObserver(() => {
-            if (viewType !== ITEM_TYPES.CARD)
-                return
-            clearTimeout(timeout)
-            setTimeout(() => {
-                if (ref) elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
-            }, 250)
-        })
-        resizeOBS.observe(ref)
+    	resizeOBS = new ResizeObserver(() => {
+    		if (viewType !== ITEM_TYPES.CARD)
+    			return
+    		clearTimeout(timeout)
+    		setTimeout(() => {
+    			if (ref) elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
+    		}, 250)
+    	})
+    	resizeOBS.observe(ref)
     })
 
     onDestroy(() => {
-        HotKeysController.unbindAction(ref)
-        ContextMenuController.destroy(internalID)
-        unsubscribe()
-        clearTimeout(timeout)
-        resizeOBS?.disconnect?.()
+    	HotKeysController.unbindAction(ref)
+    	ContextMenuController.destroy(internalID)
+    	unsubscribe()
+    	clearTimeout(timeout)
+    	resizeOBS?.disconnect?.()
     })
 </script>
 
@@ -124,14 +126,13 @@
     />
     {#if toRender.length > 0}
         {#if viewType === ITEM_TYPES.ROW}
-            <RowsHeader sort={sortKey}  />
+            <RowsHeader sort={sortKey}/>
         {/if}
         <VirtualList items={toRender} let:item>
             <div class="line"
                  style={ "height:" + lineHeight + "px;" + (viewType === ITEM_TYPES.CARD ? "margin-bottom: 3px;" : "")}>
                 {#each item as child, index}
                     <Item
-                            viewType={viewType}
                             selectionMap={selectionMap}
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
@@ -144,7 +145,8 @@
                             setCurrentDirectory={setCurrentDirectory}
                             items={store.items}
                             setSelected={e => handleSelection(e, child)}
-                            onRename={currentItem}
+                            isOnRename={currentItem === child.id}
+                            isCardViewType={viewType === ITEM_TYPES.CARD}
                             submitRename={async name => {
                                 await handleRename(child, name, currentDirectory, setCurrentDirectory )
                                 currentItem = undefined
@@ -157,7 +159,7 @@
         <div data-svelteempty="-">
             <Icon styles="font-size: 100px">folder</Icon>
             <div style="font-size: .8rem">
-                {LOCALIZATION_EN.EMPTY}
+                {LocalizationEN.EMPTY}
             </div>
         </div>
     {/if}

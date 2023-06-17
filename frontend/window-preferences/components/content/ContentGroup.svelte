@@ -1,9 +1,9 @@
 <script>
-    import Builder from "./ContentField.svelte";
-    import SettingsStore from "../../../shared/stores/SettingsStore";
-    import VisualsStore from "../../../shared/stores/VisualsStore";
-    import {onDestroy} from "svelte";
-    import Accordion from "../../../shared/components/accordion/Accordion.svelte";
+    import Builder from "./ContentField.svelte"
+    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import VisualsStore from "../../../shared/stores/VisualsStore"
+    import {onDestroy} from "svelte"
+    import Accordion from "../../../shared/components/accordion/Accordion.svelte"
 
     export let toRender
 
@@ -14,8 +14,8 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onDestroy(() => {
-        unsubscribeSettings()
-        unsubscribeVisuals()
+    	unsubscribeSettings()
+    	unsubscribeVisuals()
     })
 </script>
 {#each toRender.form as form, i}

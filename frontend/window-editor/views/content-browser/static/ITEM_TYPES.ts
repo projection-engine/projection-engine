@@ -1,4 +1,4 @@
 export default {
-    CARD: 1,
-    ROW: 2
+	CARD: 1,
+	ROW: 2
 }

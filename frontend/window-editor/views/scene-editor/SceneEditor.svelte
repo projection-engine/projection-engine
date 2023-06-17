@@ -1,62 +1,63 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
-    import RENDER_TARGET from "../../static/RENDER_TARGET";
-    import SelectBox from "../../../shared/components/select-box/SelectBox.svelte";
-    import GIZMOS from "../../static/GIZMOS.ts";
-    import Loader from "../../lib/parsers/Loader";
-    import GizmoSystem from "../../../../engine-tools/runtime/GizmoSystem";
-    import dragDrop from "../../../shared/components/drag-drop/drag-drop";
-    import SelectionStore from "../../../shared/stores/SelectionStore";
-    import viewportContext from "../../templates/viewport-context";
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import CameraSettings from "./components/CameraSettings.svelte";
-    import Header from "./Header.svelte";
-    import EngineStore from "../../../shared/stores/EngineStore";
-    import SettingsStore from "../../../shared/stores/SettingsStore";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import EntityInformation from "./components/EntityInformation.svelte";
-    import CameraTracker from "../../../../engine-tools/lib/CameraTracker";
-    import Engine from "../../../../engine-core/Engine";
-    import ViewportInteractionHandler from "./lib/ViewportInteractionHandler";
-    import getUnderSelectionBox from "./utils/get-under-selection-box";
-    import GizmoSettings from "./components/GizmoSettings.svelte";
-    import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../shared/lib/context-menu/ContextMenuController";
-    import GPU from "../../../../engine-core/GPU";
-    import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI";
-    import {quat} from "gl-matrix";
+    import {onDestroy, onMount} from "svelte"
+    import RENDER_TARGET from "../../static/RENDER_TARGET"
+    import SelectBox from "../../../shared/components/select-box/SelectBox.svelte"
+    import GIZMOS from "../../static/GIZMOS.ts"
+    import Loader from "../../lib/parsers/Loader"
+    import GizmoSystem from "../../../../engine-core/tools/runtime/GizmoSystem"
+    import dragDrop from "../../../shared/components/drag-drop/drag-drop"
+    import SelectionStore from "../../../shared/stores/SelectionStore"
+    import viewportContext from "../../templates/viewport-context"
+
+    import CameraSettings from "./components/CameraSettings.svelte"
+    import Header from "./Header.svelte"
+    import EngineStore from "../../../shared/stores/EngineStore"
+    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte"
+    import EntityInformation from "./components/EntityInformation.svelte"
+    import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
+    import Engine from "../../../../engine-core/Engine"
+    import ViewportInteractionHandler from "./lib/ViewportInteractionHandler"
+    import getUnderSelectionBox from "./utils/get-under-selection-box"
+    import GizmoSettings from "./components/GizmoSettings.svelte"
+    import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS"
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import ContextMenuController from "../../../shared/lib/context-menu/ContextMenuController"
+    import GPU from "../../../../engine-core/GPU"
+    import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
+    import {quat} from "gl-matrix"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
     export let viewMetadata
 
     let previousMetadata
     $: {
 
-        if (previousMetadata !== viewMetadata) {
-            if (previousMetadata) {
-                previousMetadata.cameraMetadata = CameraAPI.serializeState()
-                previousMetadata.cameraMetadata.prevX = CameraTracker.xRotation
-                previousMetadata.cameraMetadata.prevY = CameraTracker.yRotation
-            }
+    	if (previousMetadata !== viewMetadata) {
+    		if (previousMetadata) {
+    			previousMetadata.cameraMetadata = CameraAPI.serializeState()
+    			previousMetadata.cameraMetadata.prevX = CameraTracker.xRotation
+    			previousMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+    		}
 
-            if (!viewMetadata.cameraMetadata) {
-                const pitch = quat.fromEuler([], -45, 0, 0)
-                const yaw = quat.fromEuler([], 0, 45, 0)
-                const toRad = Math.PI / 180
-                CameraAPI.update([5, 10, 5], quat.multiply([], yaw, pitch))
-                CameraTracker.xRotation = 45 * toRad
-                CameraTracker.yRotation = -45 * toRad
-            } else {
-                CameraAPI.restoreState(viewMetadata.cameraMetadata)
-                CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
-                CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
-            }
+    		if (!viewMetadata.cameraMetadata) {
+    			const pitch = quat.fromEuler([], -45, 0, 0)
+    			const yaw = quat.fromEuler([], 0, 45, 0)
+    			const toRad = Math.PI / 180
+    			CameraAPI.update([5, 10, 5], quat.multiply([], yaw, pitch))
+    			CameraTracker.xRotation = 45 * toRad
+    			CameraTracker.yRotation = -45 * toRad
+    		} else {
+    			CameraAPI.restoreState(viewMetadata.cameraMetadata)
+    			CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
+    			CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
+    		}
 
-            viewMetadata.cameraMetadata = CameraAPI.serializeState()
-            viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
-            viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
-            previousMetadata = viewMetadata
-        }
+    		viewMetadata.cameraMetadata = CameraAPI.serializeState()
+    		viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
+    		viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+    		previousMetadata = viewMetadata
+    	}
     }
     let selectedSize = -1
     let mainEntity
@@ -68,50 +69,50 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribeSelection = SelectionStore.getStore(_ => {
-        selectedSize = SelectionStore.engineSelected.length
-        mainEntity = Engine.entities.map.get(SelectionStore.engineSelected[0])
+    	selectedSize = SelectionStore.engineSelected.length
+    	mainEntity = Engine.entities.map.get(SelectionStore.engineSelected[0])
     })
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
     $: {
-        if (settings?.viewportHotkeys != null)
-            ContextMenuController.mount(
-                viewportContext(settings),
-                RENDER_TARGET
-            )
+    	if (settings?.viewportHotkeys != null)
+    		ContextMenuController.mount(
+    			viewportContext(settings),
+    			RENDER_TARGET
+    		)
     }
 
     onMount(() => {
-        if (viewMetadata.cameraMetadata)
-            CameraAPI.restoreState(viewMetadata.cameraMetadata)
-        GizmoSystem.onStart = () => isOnGizmo = true
-        GizmoSystem.onStop = () => isOnGizmo = false
+    	if (viewMetadata.cameraMetadata)
+    		CameraAPI.restoreState(viewMetadata.cameraMetadata)
+    	GizmoSystem.onStart = () => isOnGizmo = true
+    	GizmoSystem.onStop = () => isOnGizmo = false
 
-        Engine.start()
-        CameraTracker.startTracking()
-        ViewportInteractionHandler.initialize()
-        draggable.onMount({
-            targetElement: GPU.canvas,
-            onDrop: (data, event) => {
-                Loader.load(data, false, event.clientX, event.clientY).catch()
-            },
-            onDragOver: () => `
+    	Engine.start()
+    	CameraTracker.startTracking()
+    	ViewportInteractionHandler.initialize()
+    	draggable.onMount({
+    		targetElement: GPU.canvas,
+    		onDrop: (data, event) => {
+    			Loader.load(data, false, event.clientX, event.clientY).catch()
+    		},
+    		onDragOver: () => `
                 <span data-svelteicon="-" style="font-size: 70px">add</span>
-                ${LOCALIZATION_EN.DRAG_DROP}
+                ${LocalizationEN.DRAG_DROP}
             `
-        })
+    	})
     })
 
     onDestroy(() => {
-        GizmoSystem.onStop = GizmoSystem.onStart = undefined
-        viewMetadata.cameraMetadata = CameraAPI.serializeState()
+    	GizmoSystem.onStop = GizmoSystem.onStart = undefined
+    	viewMetadata.cameraMetadata = CameraAPI.serializeState()
 
-        unsubscribeEngine()
-        unsubscribeSettings()
-        ContextMenuController.destroy(RENDER_TARGET)
-        draggable.onDestroy()
-        unsubscribeSelection()
-        ViewportInteractionHandler.destroy()
+    	unsubscribeEngine()
+    	unsubscribeSettings()
+    	ContextMenuController.destroy(RENDER_TARGET)
+    	draggable.onDestroy()
+    	unsubscribeSelection()
+    	ViewportInteractionHandler.destroy()
     })
     $: focusedCamera = engine.focusedCamera ? Engine.entities.get(engine.focusedCamera) : null
 </script>
@@ -145,13 +146,13 @@
     {/if}
     {#if settings.shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
         <div class="complexity-gradient">
-            <small>{LOCALIZATION_EN.NO_CONTRIBUTION}</small>
-            <small>{LOCALIZATION_EN.ALL_SCENE_LIGHTS}</small>
+            <small>{LocalizationEN.NO_CONTRIBUTION}</small>
+            <small>{LocalizationEN.ALL_SCENE_LIGHTS}</small>
         </div>
     {:else if settings.shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
         <div class="complexity-gradient">
-            <small>{LOCALIZATION_EN.NO_CONTRIBUTION}</small>
-            <small>{LOCALIZATION_EN.MAXIMUM_NUMBER_OF_LIGHTS}</small>
+            <small>{LocalizationEN.NO_CONTRIBUTION}</small>
+            <small>{LocalizationEN.MAXIMUM_NUMBER_OF_LIGHTS}</small>
         </div>
     {/if}
 {/if}

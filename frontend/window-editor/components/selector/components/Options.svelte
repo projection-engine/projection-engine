@@ -1,11 +1,12 @@
 <script>
-    import getType from "../utils/get-type";
-    import Option from "./Option.svelte";
-    import EmbeddedMeshes from "../../../../../engine-core/static/EmbeddedMeshes";
-    import VirtualList from '@sveltejs/svelte-virtual-list';
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Input from "../../../../shared/components/input/Input.svelte";
+    import getType from "../utils/get-type"
+    import Option from "./Option.svelte"
+    import EmbeddedMeshes from "../../../../../engine-core/static/EmbeddedMeshes"
+    import VirtualList from "@sveltejs/svelte-virtual-list"
+
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import Input from "../../../../shared/components/input/Input.svelte"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     export let handleChange
     export let type
@@ -21,23 +22,23 @@
 
 
     $: {
-        const temp = getType(store, type, mergeMaterials, terrainMaterials)
-        let current
-        if (inputValue)
-            current = temp.filter(e => e.name.includes(inputValue))
-        else
-            current = [...temp]
-        if (!noDefault) {
-            if (type === "mesh")
-                Object.entries(EmbeddedMeshes).forEach(sm => {
-                    if (LOCALIZATION_EN[sm[0]] != null)
-                        current.push({
-                            name: LOCALIZATION_EN[sm[0]],
-                            registryID: sm[1]
-                        })
-                })
-        }
-        filtered = current
+    	const temp = getType(store, type, mergeMaterials, terrainMaterials)
+    	let current
+    	if (inputValue)
+    		current = temp.filter(e => e.name.includes(inputValue))
+    	else
+    		current = [...temp]
+    	if (!noDefault) {
+    		if (type === "mesh")
+    			Object.entries(EmbeddedMeshes).forEach(sm => {
+    				if (LocalizationEN[sm[0]] != null)
+    					current.push({
+    						name: LocalizationEN[sm[0]],
+    						registryID: sm[1]
+    					})
+    			})
+    	}
+    	filtered = current
     }
 
 </script>
@@ -57,7 +58,7 @@
         {:else}
             <div data-svelteempty="-">
                 <Icon styles="font-size: 2rem">folder</Icon>
-                {LOCALIZATION_EN.NOTHING}
+                {LocalizationEN.NOTHING}
             </div>
         {/if}
     </div>
@@ -66,7 +67,7 @@
                 width={"100%"}
                 inputValue={inputValue}
                 onChange={v => inputValue  = v}
-                placeholder={LOCALIZATION_EN.SEARCH}
+                placeholder={LocalizationEN.SEARCH}
         >
             <Icon slot="icon">search</Icon>
         </Input>

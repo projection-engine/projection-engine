@@ -1,40 +1,45 @@
 <script>
-    import VIEWS from "../../view/static/VIEWS";
-    import SettingsStore from "../../../../shared/stores/SettingsStore";
-    import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import VIEWS from "../../view/static/VIEWS"
+    import SettingsStore from "../../../../shared/stores/SettingsStore"
+    import {onDestroy} from "svelte"
+
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)
 
     onDestroy(() => unsubscribe())
-    $: tabs = settings.views[settings.currentView]
+    $: viewTabs = settings.views[settings.currentView]
 
     function setTabs(newValue, direction) {
-        const clone = [...settings.views]
-        clone[settings.currentView][direction] = newValue
-        SettingsStore.updateStore({...settings, views: clone})
+    	const clone = [...settings.views]
+    	clone[settings.currentView][direction] = newValue
+    	SettingsStore.updateStore({...settings, views: clone})
     }
 
 </script>
 
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.left, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "left")}>
+<button data-sveltebuttondefault="-"
+        on:click={_ => setTabs([...viewTabs.left, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "left")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">vertical_split</Icon>
-    <ToolTip content={LOCALIZATION_EN.SPLIT_LEFT}/>
+    <ToolTip content={LocalizationEN.SPLIT_LEFT}/>
 </button>
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.bottom, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "bottom")}>
+<button data-sveltebuttondefault="-"
+        on:click={_ => setTabs([...viewTabs.bottom, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "bottom")}>
     <Icon styles="font-size: 1.2rem;">horizontal_split</Icon>
-    <ToolTip content={LOCALIZATION_EN.SPLIT_BOTTOM}/>
+    <ToolTip content={LocalizationEN.SPLIT_BOTTOM}/>
 </button>
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.top, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "top")}>
+<button data-sveltebuttondefault="-"
+        on:click={_ => setTabs([...viewTabs.top, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "top")}>
     <Icon styles="font-size: 1.2rem; rotate: 180deg">horizontal_split</Icon>
-    <ToolTip content={LOCALIZATION_EN.SPLIT_TOP}/>
+    <ToolTip content={LocalizationEN.SPLIT_TOP}/>
 </button>
-<button data-sveltebuttondefault="-"  on:click={_ => setTabs([...tabs.right, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "right")}>
+<button data-sveltebuttondefault="-"
+        on:click={_ => setTabs([...viewTabs.right, [{color: [255,255,255], type: VIEWS.COMPONENT}]], "right")}>
     <Icon styles="font-size: 1.2rem;">vertical_split</Icon>
-    <ToolTip content={LOCALIZATION_EN.SPLIT_RIGHT}/>
+    <ToolTip content={LocalizationEN.SPLIT_RIGHT}/>
 </button>
 
 <style>

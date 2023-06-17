@@ -1,4 +1,4 @@
-import MaterialUniform from "./MaterialUniform";
+import MaterialUniform from "./MaterialUniform"
 
 interface MaterialSettings {
     renderingMode: number

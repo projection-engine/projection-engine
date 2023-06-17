@@ -1,17 +1,18 @@
 <script>
-    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import HierarchyController from "../../../lib/controllers/HierarchyController";
-    import Input from "../../../../shared/components/input/Input.svelte";
-    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import NATIVE_COMPONENTS from "../../inspector/static/NATIVE_COMPONENTS";
-    import EntityFactory from "../../../lib/controllers/EntityFactory";
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
 
-    export let filteredComponent, setFilteredComponent;
-    export let search, setSearch;
+    import HierarchyController from "../../../lib/controllers/HierarchyController"
+    import Input from "../../../../shared/components/input/Input.svelte"
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
+    import NATIVE_COMPONENTS from "../../inspector/static/NATIVE_COMPONENTS"
+    import EntityFactory from "../../../lib/controllers/EntityFactory"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
+
+    export let filteredComponent, setFilteredComponent
+    export let search, setSearch
 
 </script>
 <ViewHeader>
@@ -20,14 +21,14 @@
                 on:click={() => HierarchyController.openTree()}
                 data-svelteview-header-button="-"
         >
-            <ToolTip content={LOCALIZATION_EN.SHOW_SELECTED}/>
+            <ToolTip content={LocalizationEN.SHOW_SELECTED}/>
             <Icon styles="font-size: .9rem">center_focus_strong</Icon>
         </button>
         <Input
                 hasBorder={true}
                 width="100%"
                 height="22px"
-                placeholder={LOCALIZATION_EN.SEARCH}
+                placeholder={LocalizationEN.SEARCH}
                 inputValue={search}
                 onChange={setSearch}
         />
@@ -36,7 +37,7 @@
         <Dropdown buttonStyles={getDropdownHeaderStyles(filteredComponent != null ? "-" : undefined)}>
             <button data-sveltebuttondefault="-" slot="button" data-svelteview-header-dropdown="-">
                 <Icon styles="font-size: .9rem">filter_alt</Icon>
-                <ToolTip content={LOCALIZATION_EN.COMPONENT_FILTER}/>
+                <ToolTip content={LocalizationEN.COMPONENT_FILTER}/>
             </button>
             {#each NATIVE_COMPONENTS as component}
                 <button
@@ -62,7 +63,7 @@
                 data-svelteview-header-button="-"
                 style="position: relative"
         >
-            <ToolTip content={LOCALIZATION_EN.CREATE_COLLECTION}/>
+            <ToolTip content={LocalizationEN.CREATE_COLLECTION}/>
             <Icon styles="font-size: .9rem">inventory_2</Icon>
         </button>
     </div>

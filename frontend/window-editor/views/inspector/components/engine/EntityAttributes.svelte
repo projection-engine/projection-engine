@@ -3,7 +3,7 @@
     import Layout from "./dynamic-form/Layout.svelte";
     import {onDestroy, onMount} from "svelte";
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
-    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
+
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
     import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";
@@ -14,6 +14,7 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import MeshComponent from "../../../../../../engine-core/instances/components/MeshComponent";
     import Entity from "../../../../../../engine-core/instances/Entity";
+    import LocalizationEN from "../../../../../../contants/LocalizationEN";
 
     export let entity: Entity
     export let setTabs: Function
@@ -33,7 +34,7 @@
         draggable.onMount({
             targetElement: ref.parentElement,
             onDrop: d => handleComponentDrop(entity, d),
-            onDragOver: () => LOCALIZATION_EN.ADD_DRAG_DROP
+            onDragOver: () => LocalizationEN.ADD_DRAG_DROP
         })
     })
     onDestroy(() => draggable.onDestroy())
@@ -67,7 +68,7 @@
     {:else}
         <div data-svelteempty="-">
             <Icon styles="font-size: 75px">code</Icon>
-            {LOCALIZATION_EN.NO_CUSTOM_COMPONENTS_LINKED}
+            {LocalizationEN.NO_CUSTOM_COMPONENTS_LINKED}
         </div>
     {/if}
 {:else if tabIndex < components.length && component}
@@ -86,9 +87,9 @@
         />
         {#if component instanceof MeshComponent && component.hasMaterial}
             <fieldset>
-                <legend>{LOCALIZATION_EN.MATERIAL_VALUES}</legend>
+                <legend>{LocalizationEN.MATERIAL_VALUES}</legend>
                 <Checkbox
-                        label={LOCALIZATION_EN.OVERRIDE_PROPERTIES}
+                        label={LocalizationEN.OVERRIDE_PROPERTIES}
                         handleCheck={() => updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !component.overrideMaterialUniforms, true, component)}
                         checked={component.overrideMaterialUniforms}
                 />

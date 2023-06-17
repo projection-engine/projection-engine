@@ -1,5 +1,5 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte"
 
     export let toRender
     export let rowHeight
@@ -9,22 +9,22 @@
 
     let ref
     const observer = new ResizeObserver(() => {
-        if (!ref)
-            return
-        maxQuantity = Math.floor(ref.parentElement.getBoundingClientRect().height / rowHeight)
+    	if (!ref)
+    		return
+    	maxQuantity = Math.floor(ref.parentElement.getBoundingClientRect().height / rowHeight)
     })
 
     onMount(() => {
-        ref.parentElement.addEventListener("wheel", ev => {
-            ev.preventDefault()
-            const isIncrement = ev.wheelDelta < 0
-            if (isIncrement && offset < toRender.length * 1.5)
-                offset += 1
-            else if (offset > 0 && !isIncrement)
-                offset -= 1
-            console.log(offset)
-        }, {passive: false})
-        observer.observe(ref.parentElement)
+    	ref.parentElement.addEventListener("wheel", ev => {
+    		ev.preventDefault()
+    		const isIncrement = ev.wheelDelta < 0
+    		if (isIncrement && offset < toRender.length * 1.5)
+    			offset += 1
+    		else if (offset > 0 && !isIncrement)
+    			offset -= 1
+    		console.log(offset)
+    	}, {passive: false})
+    	observer.observe(ref.parentElement)
     })
     onDestroy(() => observer.disconnect())
 </script>

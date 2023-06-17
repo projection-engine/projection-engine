@@ -1,47 +1,48 @@
-import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+import LocalizationEN from "../../../../../contants/LocalizationEN";
+
 
 export default function getEngineIcon(nodeRef): { icon: string, label: string }[] {
-    let icons = []
-    if (nodeRef) {
+	const icons = []
+	if (nodeRef) {
 
-        if (nodeRef.atmosphereComponent)
-            icons.push({
-                icon: "wb_twilight",
-                label: LOCALIZATION_EN.ATMOSPHERE
-            })
-        if (nodeRef.lightProbeComponent)
-            icons.push({
-                icon: "lens_blur",
-                label: LOCALIZATION_EN.LIGHT_PROBE
-            })
-        if (nodeRef.meshComponent)
+		if (nodeRef.atmosphereComponent)
+			icons.push({
+				icon: "wb_twilight",
+				label: LocalizationEN.ATMOSPHERE
+			})
+		if (nodeRef.lightProbeComponent)
+			icons.push({
+				icon: "lens_blur",
+				label: LocalizationEN.LIGHT_PROBE
+			})
+		if (nodeRef.meshComponent)
 
-            icons.push({
-                icon: "category",
-                label: LOCALIZATION_EN.MESH
-            })
-        if (nodeRef.cameraComponent)
+			icons.push({
+				icon: "category",
+				label: LocalizationEN.MESH
+			})
+		if (nodeRef.cameraComponent)
 
-            icons.push({
-                icon: "videocam",
-                label: LOCALIZATION_EN.CAMERA
-            })
-        if (nodeRef.spriteComponent)
-            icons.push({
-                icon: "image",
-                label: LOCALIZATION_EN.SPRITE
-            })
-        if (nodeRef.uiComponent)
-            icons.push({
-                icon: "widgets",
-                label: LOCALIZATION_EN.UI_LAYOUT
-            })
+			icons.push({
+				icon: "videocam",
+				label: LocalizationEN.CAMERA
+			})
+		if (nodeRef.spriteComponent)
+			icons.push({
+				icon: "image",
+				label: LocalizationEN.SPRITE
+			})
+		if (nodeRef.uiComponent)
+			icons.push({
+				icon: "widgets",
+				label: LocalizationEN.UI_LAYOUT
+			})
 
-        if (nodeRef.lightComponent)
-            icons.push({
-                icon: "light_mode",
-                label: LOCALIZATION_EN.LIGHT
-            })
-    }
-    return icons
+		if (nodeRef.lightComponent)
+			icons.push({
+				icon: "light_mode",
+				label: LocalizationEN.LIGHT
+			})
+	}
+	return icons
 }

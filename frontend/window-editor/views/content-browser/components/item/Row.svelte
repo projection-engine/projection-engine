@@ -1,8 +1,9 @@
 <script>
-    import openItem from "../../utils/open-item";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import KEYS from "../../../../static/KEYS";
+    import openItem from "../../utils/open-item"
+    import Icon from "../../../../../shared/components/icon/Icon.svelte"
+    import KEYS from "../../../../static/KEYS"
+
+    import FileTypes from "../../../../../../contants/FileTypes"
 
     export let currentDirectory
     export let items
@@ -18,7 +19,7 @@
     export let submitRename
     export let icon
     export let draggable
-    export let isOnCuttingBoard
+    export let isToBeCut
 
 </script>
 
@@ -31,17 +32,17 @@
         data-sveltefolder={type !== 0 ? undefined : data.id}
         on:dblclick={() => openItem(data, setCurrentDirectory, setSelected, reset, type)}
         on:click={setSelected}
-        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard  ? "opacity: .5;" : "")}
+        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isToBeCut  ? "opacity: .5;" : "")}
         class="file"
 >
     <div class="icon">
         {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 1rem; "}>{icon}</Icon>
-        {:else if metadata.type === FILE_TYPES.MATERIAL}
+        {:else if metadata.type === FileTypes.MATERIAL}
             <div data-svelteshaded-material="-" style="width: 20px; height: 20px"></div>
-        {:else if metadata.type === FILE_TYPES.PRIMITIVE || metadata.type === FILE_TYPES.TEXTURE}
+        {:else if metadata.type === FileTypes.PRIMITIVE || metadata.type === FileTypes.TEXTURE}
             <Icon slot="icon" styles="font-size: 1rem">
-                {#if metadata.type === FILE_TYPES.PRIMITIVE}
+                {#if metadata.type === FileTypes.PRIMITIVE}
                     category
                 {:else}
                     image

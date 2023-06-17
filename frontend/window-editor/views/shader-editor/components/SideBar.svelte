@@ -3,12 +3,13 @@
     import Nodes from "./Nodes.svelte";
     import AttributeEditor from "./AttributeEditor.svelte";
     import ResizableBar from "../../../../shared/components/resizable/ResizableBar.svelte";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import type Canvas from "../libs/Canvas";
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
     import {onDestroy, onMount} from "svelte";
+    import LocalizationEN from "../../../../../contants/LocalizationEN";
 
     export let canvasAPI: Canvas
     let tab = 0
@@ -31,15 +32,17 @@
         <AttributeEditor node={mainNode} updateCanvas={() => canvasAPI.clear()}/>
     {/if}
     <div class="buttons">
-        <button data-sveltebuttondefault="-"  class="button" data-sveltehighlight={tab === 0 ? "-" : ""} on:click={() => tab = 0}>
+        <button data-sveltebuttondefault="-" class="button" data-sveltehighlight={tab === 0 ? "-" : ""}
+                on:click={() => tab = 0}>
             <label>
-                {LOCALIZATION_EN.ADD}
+                {LocalizationEN.ADD}
             </label>
             <Icon style="font-size: .9rem">add</Icon>
         </button>
-        <button data-sveltebuttondefault="-"  disabled={!mainNode} class="button" data-sveltehighlight={tab === 1 ? "-" : ""} on:click={() => tab = 1}>
+        <button data-sveltebuttondefault="-" disabled={!mainNode} class="button"
+                data-sveltehighlight={tab === 1 ? "-" : ""} on:click={() => tab = 1}>
             <label>
-            {LOCALIZATION_EN.EDIT_NODE}
+                {LocalizationEN.EDIT_NODE}
             </label>
             <Icon style="font-size: .9rem">edit</Icon>
         </button>
@@ -47,10 +50,11 @@
 </div>
 
 <style>
-    label{
+    label {
         writing-mode: vertical-lr;
         rotate: 180deg;
     }
+
     .wrapper {
         background: var(--pj-background-tertiary);
         border-left: var(--pj-border-primary) 1px solid;

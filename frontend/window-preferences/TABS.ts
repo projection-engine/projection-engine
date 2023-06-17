@@ -1,21 +1,22 @@
-import LOCALIZATION_EN from "../../static/objects/LOCALIZATION_EN";
+import LocalizationEN from "../../contants/LocalizationEN";
+
 
 export default [
-    {
-        icon: "desktop_windows",
-        label: LOCALIZATION_EN.VIEWPORT
-    },
-    {
-        icon: "visibility",
-        label: LOCALIZATION_EN.RENDERING
-    },
-    {
-        icon: "keyboard",
-        label: LOCALIZATION_EN.SHORTCUTS
-    },
-    {
-        icon: "photo_camera",
-        label: LOCALIZATION_EN.CAMERA
-    },
+	{
+		icon: "desktop_windows",
+		label: LocalizationEN.VIEWPORT
+	},
+	{
+		icon: "visibility",
+		label: LocalizationEN.RENDERING
+	},
+	{
+		icon: "keyboard",
+		label: LocalizationEN.SHORTCUTS
+	},
+	{
+		icon: "photo_camera",
+		label: LocalizationEN.CAMERA
+	},
 
 ]

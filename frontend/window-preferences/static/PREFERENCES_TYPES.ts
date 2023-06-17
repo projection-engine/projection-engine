@@ -1,7 +1,7 @@
 export default {
-    NUMBER: "NUMBER",
+	NUMBER: "NUMBER",
 
-    BOOLEAN: "BOOLEAN",
-    GROUP: "GROUP",
-    COLOR: "COLOR"
+	BOOLEAN: "BOOLEAN",
+	GROUP: "GROUP",
+	COLOR: "COLOR"
 }

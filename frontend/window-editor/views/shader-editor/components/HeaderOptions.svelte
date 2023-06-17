@@ -1,11 +1,12 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import ShaderEditorTools from "../libs/ShaderEditorTools";
-    import Selector from "../../../components/selector/Selector.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
-    import addComment from "../utils/add-comment";
+
+    import ShaderEditorTools from "../libs/ShaderEditorTools"
+    import Selector from "../../../components/selector/Selector.svelte"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
+    import addComment from "../utils/add-comment"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     export let openFile
     export let initializeFromFile
@@ -24,7 +25,7 @@
                 style="max-width: unset"
                 on:click={() => ShaderEditorTools.save(canvasAPI).catch()}>
             <Icon styles="font-size: .9rem">save</Icon>
-            {LOCALIZATION_EN.SAVE}
+            {LocalizationEN.SAVE}
         </button>
 
         <div data-sveltevertdivider="-"></div>
@@ -46,14 +47,14 @@
                     style="max-width: unset"
                     on:click={() =>  canvasAPI.history.undo()}>
                 <Icon styles="font-size: .9rem">undo</Icon>
-                {LOCALIZATION_EN.UNDO}
+                {LocalizationEN.UNDO}
             </button>
 
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"
                     style="max-width: unset"
                     on:click={() => canvasAPI.history.redo()}>
-                {LOCALIZATION_EN.REDO}
+                {LocalizationEN.REDO}
                 <Icon styles="font-size: .9rem">redo</Icon>
             </button>
             <div data-sveltevertdivider="-"></div>
@@ -63,14 +64,14 @@
                     on:click={() => addComment(canvasAPI)}
             >
                 <Icon styles="font-size: .9rem">chat_bubble_outline</Icon>
-                {LOCALIZATION_EN.ADD_COMMENT}
+                {LocalizationEN.ADD_COMMENT}
             </button>
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"
                     on:click={openSourceCode}
             >
                 <Icon styles="font-size: .9rem">code</Icon>
-                <ToolTip content={LOCALIZATION_EN.SOURCE}/>
+                <ToolTip content={LocalizationEN.SOURCE}/>
             </button>
         </div>
     {/if}

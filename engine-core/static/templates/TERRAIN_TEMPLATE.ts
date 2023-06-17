@@ -1,5 +1,5 @@
 export default {
-    image: "",
-    dimensions: 5,
-    scale: 5
+	image: "",
+	dimensions: 5,
+	scale: 5
 }

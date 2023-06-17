@@ -1,22 +1,23 @@
 <script>
-    import FilesStore from "../../../../shared/stores/FilesStore";
-    import EngineStore from "../../../../shared/stores/EngineStore";
-    import {onDestroy} from "svelte";
+    import FilesStore from "../../../../shared/stores/FilesStore"
+    import EngineStore from "../../../../shared/stores/EngineStore"
+    import {onDestroy} from "svelte"
 
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import ITEM_TYPES from "../static/ITEM_TYPES";
-    import getFileTypes from "../utils/get-file-types";
-    import importFile from "../../../utils/import-file";
-    import ViewHeader from "../../../components/view/components/ViewHeader.svelte";
-    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import Input from "../../../../shared/components/input/Input.svelte";
-    import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
-    import AlertController from "../../../../shared/components/alert/AlertController";
-    import FS from "../../../../shared/lib/FS/FS";
-    import SortingOptions from "./SortingOptions.svelte";
+
+    import ITEM_TYPES from "../static/ITEM_TYPES"
+    import getFileTypes from "../utils/get-file-types"
+    import importFile from "../../../utils/import-file"
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import Input from "../../../../shared/components/input/Input.svelte"
+    import AlertController from "../../../../shared/components/alert/AlertController"
+    import FS from "../../../../shared/lib/FS/FS"
+    import SortingOptions from "./SortingOptions.svelte"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
+    import FileTypes from "../../../../../contants/FileTypes"
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -34,7 +35,6 @@
     export let sortKey
 
 
-
     $: fileTypes = getFileTypes()
 
     let engine = {}
@@ -49,14 +49,14 @@
                 on:click={() => navigationHistory.undo()}
         >
             <Icon styles="font-size: .9rem">arrow_back</Icon>
-            <ToolTip content={LOCALIZATION_EN.BACK_DIR}/>
+            <ToolTip content={LocalizationEN.BACK_DIR}/>
         </button>
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
                 on:click={() => navigationHistory.redo()}
         >
             <Icon styles="transform: rotate(180deg)">arrow_back</Icon>
-            <ToolTip content={LOCALIZATION_EN.FORWARD_DIR}/>
+            <ToolTip content={LocalizationEN.FORWARD_DIR}/>
         </button>
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
@@ -67,46 +67,46 @@
                 }}
         >
             <Icon styles="transform: rotate(180deg)">subdirectory_arrow_right</Icon>
-            <ToolTip content={LOCALIZATION_EN.PARENT_DIR}/>
+            <ToolTip content={LocalizationEN.PARENT_DIR}/>
         </button>
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
                 on:click={() => {
-                    AlertController.warn(LOCALIZATION_EN.REFRESHING)
+                    AlertController.warn(LocalizationEN.REFRESHING)
                     FilesStore.refreshFiles().catch()
                 }}
         >
             <Icon styles="font-size: .9rem">sync</Icon>
-            <ToolTip content={LOCALIZATION_EN.REFRESH}/>
+            <ToolTip content={LocalizationEN.REFRESH}/>
         </button>
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
                 on:click={() => FilesStore.createFolder(currentDirectory).catch()}
         >
             <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
-            <ToolTip content={LOCALIZATION_EN.CREATE_FOLDER}/>
+            <ToolTip content={LocalizationEN.CREATE_FOLDER}/>
         </button>
         <div data-sveltevertdivider="-"></div>
         <Input
                 width="50%"
                 hasBorder={true}
                 height="22px"
-                placeholder={LOCALIZATION_EN.SEARCH}
+                placeholder={LocalizationEN.SEARCH}
                 inputValue={inputValue}
                 onChange={onChange}
         />
         <div data-sveltevertdivider="-"></div>
         <Dropdown buttonStyles={getDropdownHeaderStyles(fileType != null)}>
-            <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
-                <ToolTip content={LOCALIZATION_EN.FILTER_TYPE}/>
+            <button data-sveltebuttondefault="-" slot="button" data-svelteview-header-dropdown="-">
+                <ToolTip content={LocalizationEN.FILTER_TYPE}/>
                 <Icon styles="font-size: .9rem">filter_alt</Icon>
             </button>
             {#each fileTypes as k, i}
                 <button data-sveltebuttondefault="-"
-                        on:click={() => setFileType(fileType === FILE_TYPES[k[0]] ? undefined : FILE_TYPES[k[0]])}
+                        on:click={() => setFileType(fileType === FileTypes[k[0]] ? undefined : FileTypes[k[0]])}
                         style="text-transform: capitalize"
                 >
-                    {#if fileType === FILE_TYPES[k[0]]}
+                    {#if fileType === FileTypes[k[0]]}
                         <Icon>check</Icon>
                     {:else}
                         <div style="width: 1.1rem"></div>
@@ -129,7 +129,7 @@
                 data-svelteview-header-button="-"
         >
             <Icon styles="font-size: .9rem">view_stream</Icon>
-            <ToolTip content={LOCALIZATION_EN.ROW_VIEW}/>
+            <ToolTip content={LocalizationEN.ROW_VIEW}/>
         </button>
         <button data-sveltebuttondefault="-"
                 data-sveltehighlight={viewType === ITEM_TYPES.CARD ? "-" : ""}
@@ -137,7 +137,7 @@
                 data-svelteview-header-button="-"
         >
             <Icon styles="transform: rotate(180deg)">grid_view</Icon>
-            <ToolTip content={LOCALIZATION_EN.CARD_VIEW}/>
+            <ToolTip content={LocalizationEN.CARD_VIEW}/>
         </button>
         <div data-sveltevertdivider="-"></div>
         <button data-sveltebuttondefault="-"
@@ -145,7 +145,7 @@
                 data-sveltefocusbutton="-"
                 style="max-height: 22px"
         >
-            {LOCALIZATION_EN.IMPORT}
+            {LocalizationEN.IMPORT}
             <Icon styles="font-size: .9rem">open_in_new</Icon>
         </button>
     </div>

@@ -1,10 +1,10 @@
 export default class SelectionWorker {
-    static #worker?: Worker
-    static get worker(): Worker {
-        if (SelectionWorker.#worker)
-            return SelectionWorker.#worker
+	static #worker?: Worker
+	static get worker(): Worker {
+		if (SelectionWorker.#worker)
+			return SelectionWorker.#worker
 
-        const src = ` 
+		const src = ` 
             self.onmessage = ({data: {entities, data}}) => {
                 const map = {}
                 for(let i= 0; i < entities.length; i++){
@@ -23,11 +23,11 @@ export default class SelectionWorker {
                 self.postMessage(ids)
             }
         `
-        const workerBlob = new Blob([src], {type: "application/javascript"});
-        const workerUrl = URL.createObjectURL(workerBlob);
-        SelectionWorker.#worker = new Worker(workerUrl);
-        return SelectionWorker.#worker
-    }
+		const workerBlob = new Blob([src], {type: "application/javascript"})
+		const workerUrl = URL.createObjectURL(workerBlob)
+		SelectionWorker.#worker = new Worker(workerUrl)
+		return SelectionWorker.#worker
+	}
 
 
 }

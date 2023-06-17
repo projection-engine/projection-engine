@@ -1,14 +1,15 @@
 <script>
-    import FilesStore from "../../../shared/stores/FilesStore";
-    import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import Options from "./components/Options.svelte";
-    import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes";
-    import getType from "./utils/get-type";
-    import getIcon from "./utils/get-icon";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
+    import FilesStore from "../../../shared/stores/FilesStore"
+    import {onDestroy} from "svelte"
+
+    import Options from "./components/Options.svelte"
+    import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes"
+    import getType from "./utils/get-type"
+    import getIcon from "./utils/get-icon"
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
     export let type
     export let handleChange
@@ -25,24 +26,24 @@
 
     let state
     $: {
-        if (type === "parent")
-            state = selected ? selected : {name: LOCALIZATION_EN.EMPTY}
-        else if (selected) {
-            if (Object.values(EmbeddedMeshes).find(s => s === selected))
-                state = {
-                    name: LOCALIZATION_EN[Object.values(EmbeddedMeshes).find(s => s === selected)],
-                    registryID: selected
-                }
-            else {
-                const rID = selected?.registryID ? selected?.registryID : selected
-                let data = getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID || e.id === rID)
-                if (data?.registryID !== undefined)
-                    state = data
-                else
-                    state = {name: LOCALIZATION_EN.EMPTY}
-            }
-        } else
-            state = {name: LOCALIZATION_EN.EMPTY}
+    	if (type === "parent")
+    		state = selected ? selected : {name: LocalizationEN.EMPTY}
+    	else if (selected) {
+    		if (Object.values(EmbeddedMeshes).find(s => s === selected))
+    			state = {
+    				name: LocalizationEN[Object.values(EmbeddedMeshes).find(s => s === selected)],
+    				registryID: selected
+    			}
+    		else {
+    			const rID = selected?.registryID ? selected?.registryID : selected
+    			let data = getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID || e.id === rID)
+    			if (data?.registryID !== undefined)
+    				state = data
+    			else
+    				state = {name: LocalizationEN.EMPTY}
+    		}
+    	} else
+    		state = {name: LocalizationEN.EMPTY}
     }
 </script>
 
@@ -82,9 +83,9 @@
         />
     </Dropdown>
     <div data-sveltevertdivider="-" style="margin: 0"></div>
-    <button data-sveltebuttondefault="-"  class="remove-button" on:click={_ => handleChange(null)}>
+    <button data-sveltebuttondefault="-" class="remove-button" on:click={_ => handleChange(null)}>
         <Icon styles="font-size: 1rem">clear</Icon>
-        <ToolTip content={LOCALIZATION_EN.CLEAR}/>
+        <ToolTip content={LocalizationEN.CLEAR}/>
     </button>
 </div>
 

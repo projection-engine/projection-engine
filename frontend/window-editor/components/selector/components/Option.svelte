@@ -1,6 +1,6 @@
 <script>
-    import DataIcon from "./DataIcon.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
+    import DataIcon from "./DataIcon.svelte"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
 
     export let type
     export let setState
@@ -9,10 +9,10 @@
     export let state
 
     const onClick = e => {
-        e.currentTarget?.parentElement?.parentElement?.parentElement?.closeDropdown?.()
-        setState(data)
-        if(handleChange)
-            handleChange(data, () => setState({name: "Empty"}))
+    	e.currentTarget?.parentElement?.parentElement?.parentElement?.closeDropdown?.()
+    	setState(data)
+    	if(handleChange)
+    		handleChange(data, () => setState({name: "Empty"}))
     }
     $: isSelected = state.registryID !== undefined ? state.registryID === data.registryID : state.id !== undefined && state.id === data.id
 </script>
@@ -21,7 +21,7 @@
 
         class="option-available-nodes selector"
         style="margin-bottom: 4px;"
-        data-sveltehighlight={isSelected ? `-` : undefined}
+        data-sveltehighlight={isSelected ? "-" : undefined}
         on:click={onClick}
 >
     <DataIcon state={data} type={type}/>

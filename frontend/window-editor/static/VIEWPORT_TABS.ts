@@ -1,4 +1,4 @@
 export default {
-    EDITOR: "EDITOR",
-    UI : "UI"
+	EDITOR: "EDITOR",
+	UI : "UI"
 }

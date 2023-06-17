@@ -1,34 +1,34 @@
-import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-import Movable from "../../../../../engine-core/instances/components/Movable";
+import Movable from "../../../../../engine-core/instances/components/Movable"
+import LocalizationEN from "../../../../../contants/LocalizationEN";
 
 export default [
-    {
-        label: LOCALIZATION_EN.QUATERNION,
-        type: Movable.ROTATION_QUATERNION
-    },
+	{
+		label: LocalizationEN.QUATERNION,
+		type: Movable.ROTATION_QUATERNION
+	},
 
-    {
-        label: "XYZ " + LOCALIZATION_EN.EULER,
-        type: Movable.ROTATION_EULER_XYZ
-    },
-    {
-        label: "XZY " + LOCALIZATION_EN.EULER,
-        type: Movable.ROTATION_EULER_XZY
-    },
-    {
-        label: "YXZ " + LOCALIZATION_EN.EULER,
-        type: Movable.ROTATION_EULER_YXZ
-    },
-    {
-        label: "YZX " + LOCALIZATION_EN.EULER,
-        type: Movable.ROTATION_EULER_YZX
-    },
-    {
-        label: "ZXY " + LOCALIZATION_EN.EULER,
-        type: Movable.ROTATION_EULER_ZXY
-    },
-    {
-        label: "ZYX " + LOCALIZATION_EN.EULER,
-        type: Movable.ROTATION_EULER_ZYX
-    },
+	{
+		label: "XYZ " + LocalizationEN.EULER,
+		type: Movable.ROTATION_EULER_XYZ
+	},
+	{
+		label: "XZY " + LocalizationEN.EULER,
+		type: Movable.ROTATION_EULER_XZY
+	},
+	{
+		label: "YXZ " + LocalizationEN.EULER,
+		type: Movable.ROTATION_EULER_YXZ
+	},
+	{
+		label: "YZX " + LocalizationEN.EULER,
+		type: Movable.ROTATION_EULER_YZX
+	},
+	{
+		label: "ZXY " + LocalizationEN.EULER,
+		type: Movable.ROTATION_EULER_ZXY
+	},
+	{
+		label: "ZYX " + LocalizationEN.EULER,
+		type: Movable.ROTATION_EULER_ZYX
+	},
 ]

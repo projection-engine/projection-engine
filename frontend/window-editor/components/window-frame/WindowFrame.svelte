@@ -1,23 +1,24 @@
 <script>
-    import EngineStore from "../../../shared/stores/EngineStore";
-    import {onDestroy} from "svelte";
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import LevelController from "../../lib/utils/LevelController";
-    import getFrameOptions from "./utils/get-frame-options";
-    import SettingsStore from "../../../shared/stores/SettingsStore";
-    import Tabs from "../tabs/Tabs.svelte";
-    import CreationController from "./components/CreationController.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte";
-    import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore";
-    import ExecutionController from "../../lib/controllers/ExecutionController";
-    import addNewTab from "../../views/viewport/utils/add-new-tab";
-    import removeTab from "./utils/remove-tab";
-    import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte";
-    import ElectronResources from "../../../shared/lib/ElectronResources";
-    import ROUTES from "../../../../backend/static/ROUTES";
-    import WindowTypes from "../../../../backend/static/WindowTypes";
+    import EngineStore from "../../../shared/stores/EngineStore"
+    import {onDestroy} from "svelte"
+
+    import LevelController from "../../lib/utils/LevelController"
+    import getFrameOptions from "./utils/get-frame-options"
+    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import Tabs from "../tabs/Tabs.svelte"
+    import CreationController from "./components/CreationController.svelte"
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte"
+    import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
+    import ExecutionController from "../../lib/controllers/ExecutionController"
+    import addNewTab from "../../views/viewport/utils/add-new-tab"
+    import removeTab from "./utils/remove-tab"
+    import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte"
+    import ElectronResources from "../../../shared/lib/ElectronResources"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
+    import IPCRoutes from "../../../../contants/IPCRoutes"
+    import WindowTypes from "../../../../contants/WindowTypes"
 
 
     let engine
@@ -29,9 +30,9 @@
 
 
     onDestroy(() => {
-        unsubscribeTracker()
-        unsubscribeEngine()
-        unsubscribeSettings()
+    	unsubscribeTracker()
+    	unsubscribeEngine()
+    	unsubscribeSettings()
     })
 
     $: options = getFrameOptions(engine.executingAnimation || !hasChanges)
@@ -46,7 +47,7 @@
                 on:click={_ => LevelController.save()}
         >
             <Icon styles="font-size: 1rem">save</Icon>
-            <ToolTip content={LOCALIZATION_EN.SAVE}/>
+            <ToolTip content={LocalizationEN.SAVE}/>
         </button>
         <OptionDropdown
                 buttonStyles="background: none;"
@@ -55,7 +56,7 @@
                 label="menu"
                 autoClose={true}
                 labelAsIcon={true}
-                tooltip={LOCALIZATION_EN.OPTIONS}
+                tooltip={LocalizationEN.OPTIONS}
         />
     </div>
     <div data-sveltevertdivider="-" style="height: 15px;"></div>
@@ -67,10 +68,10 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={engine.executingAnimation}
-                on:click={_ => ElectronResources.ipcRenderer.send(ROUTES.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
+                on:click={_ => ElectronResources.ipcRenderer.send(IPCRoutes.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
         >
             <Icon styles="font-size: 1rem">settings</Icon>
-            <ToolTip content={LOCALIZATION_EN.OPEN_PREFERENCES}/>
+            <ToolTip content={LocalizationEN.OPEN_PREFERENCES}/>
         </button>
     </div>
 </FrameWrapper>
@@ -84,7 +85,7 @@
                 style="color: var(--pj-accent-color)"
         >
             <Icon>play_arrow</Icon>
-            <ToolTip content={LOCALIZATION_EN.PLAY}/>
+            <ToolTip content={LocalizationEN.PLAY}/>
         </button>
         <button
                 data-sveltebuttondefault="-"
@@ -94,7 +95,7 @@
                 style="--pj-accent-color: red; color: var(--pj-accent-color)"
         >
             <Icon>stop</Icon>
-            <ToolTip content={LOCALIZATION_EN.STOP}/>
+            <ToolTip content={LocalizationEN.STOP}/>
         </button>
     </div>
 

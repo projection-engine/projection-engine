@@ -1,6 +1,6 @@
 <script>
-    import TrafficLights from "./TrafficLights.svelte";
-    import Logo from "./Logo.svelte";
+    import TrafficLights from "./TrafficLights.svelte"
+    import Logo from "./Logo.svelte"
 
     export let noChangeTracking
 </script>

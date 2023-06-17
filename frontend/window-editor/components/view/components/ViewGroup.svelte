@@ -1,5 +1,5 @@
 <script lang="ts">
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+
     import Tabs from "../../tabs/Tabs.svelte";
     import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../static/VIEWS";
@@ -8,6 +8,7 @@
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
+    import LocalizationEN from "../../../../../contants/LocalizationEN";
 
     export let groupIndex
     export let views: ViewTabItem[]
@@ -23,7 +24,7 @@
     let focused = false
     let targetDialogElement
 
-    function update(){
+    function update() {
         currentTab = TabsStore.getValue(id, groupIndex)
     }
 
@@ -40,13 +41,13 @@
         focused = TabsStore.focused === ref
     })
     $: tabs = views.map(v => {
-        v.name = LOCALIZATION_EN[v.type]
+        v.name = LocalizationEN[v.type]
         v.icon = getViewIcon(v.type)
         v.id = v.type
         return v
     })
     $: viewTemplates = Object.values(VIEWS).map(value => ({
-        name: LOCALIZATION_EN[value],
+        name: LocalizationEN[value],
         id: value
     }))
 
@@ -93,7 +94,7 @@
                 isOpen={targetDialogElement !== undefined}
                 styles="padding: 4px"
         >
-            <strong style="font-size: .8rem">{LOCALIZATION_EN.YOU_MAY_LOSE_DATA}</strong>
+            <strong style="font-size: .8rem">{LocalizationEN.YOU_MAY_LOSE_DATA}</strong>
             <div data-svelteinline="-">
                 <button data-sveltebuttondefault="-"
                         on:click={() => {
@@ -102,10 +103,10 @@
                         }}
                         class="option"
                 >
-                    {LOCALIZATION_EN.OK}
+                    {LocalizationEN.OK}
                 </button>
-                <button data-sveltebuttondefault="-"  class="option" on:click={() => targetDialogElement = undefined}>
-                    {LOCALIZATION_EN.CANCEL}
+                <button data-sveltebuttondefault="-" class="option" on:click={() => targetDialogElement = undefined}>
+                    {LocalizationEN.CANCEL}
                 </button>
             </div>
         </Dialog>

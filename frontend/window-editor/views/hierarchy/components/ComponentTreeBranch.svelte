@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <script lang="ts">
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Component from "../../../../../engine-core/instances/components/Component";
@@ -22,10 +23,12 @@
         data-svelteentity={entity.id}
         style={"padding-left:" +  (depth * 18 + "px;") + (component.entity.active ? "" : "opacity: .5") }
 >
-    <div class="info hierarchy-branch"    data-sveltenode={entity.id}
+    <!--suppress JSUnresolvedReference -->
+    <div class="info hierarchy-branch" data-sveltenode={entity.id}
          on:click={e => updateSelection(entity.id, e.ctrlKey)}>
         {#each {length: depth} as _, i}
-            <div data-sveltevertdivider="-" style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
+            <div data-sveltevertdivider="-"
+                 style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
         {/each}
         <div class="button-small hierarchy-branch"></div>
         <button
@@ -42,6 +45,7 @@
     small {
         font-size: .7rem;
     }
+
     .divider {
         position: absolute;
         height: 23px;

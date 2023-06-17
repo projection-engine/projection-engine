@@ -1,4 +1,4 @@
-import Texture from "../instances/Texture";
+import Texture from "../instances/Texture"
 
 interface TextureMeta{
     key: string

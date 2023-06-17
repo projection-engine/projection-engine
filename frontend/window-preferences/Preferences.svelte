@@ -1,15 +1,15 @@
 <script>
-    import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte";
-    import {onDestroy, onMount} from "svelte";
-    import ResizableBar from "../shared/components/resizable/ResizableBar.svelte";
-    import SettingsStore from "../shared/stores/SettingsStore";
-    import VisualsStore from "../shared/stores/VisualsStore";
-    import GlobalSettings from "./components/GlobalSettings.svelte";
-    import ContentWrapper from "./components/content/ContentWrapper.svelte";
-    import Shortcuts from "./components/Shortcuts.svelte";
-    import PREFERENCES from "./static/PREFERENCES";
-    import Icon from "../shared/components/icon/Icon.svelte";
-    import StoreManager from "../shared/stores/StoreManager";
+    import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte"
+    import {onDestroy, onMount} from "svelte"
+    import ResizableBar from "../shared/components/resizable/ResizableBar.svelte"
+    import SettingsStore from "../shared/stores/SettingsStore"
+    import VisualsStore from "../shared/stores/VisualsStore"
+    import GlobalSettings from "./components/GlobalSettings.svelte"
+    import ContentWrapper from "./components/content/ContentWrapper.svelte"
+    import Shortcuts from "./components/Shortcuts.svelte"
+    import PREFERENCES from "./static/PREFERENCES"
+    import Icon from "../shared/components/icon/Icon.svelte"
+    import StoreManager from "../shared/stores/StoreManager"
 
     let tab = 0
 
@@ -20,11 +20,11 @@
     const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
-        StoreManager.initialize()
+    	StoreManager.initialize()
     })
     onDestroy(() => {
-        unsubscribeSettings()
-        unsubscribeVisuals()
+    	unsubscribeSettings()
+    	unsubscribeVisuals()
     })
     $: current = PREFERENCES[tab]
 </script>

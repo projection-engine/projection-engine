@@ -1,35 +1,36 @@
-import SHADING_MODELS from "../static/SHADING_MODELS";
-import StaticFBO from "../lib/StaticFBO";
-import UberShader from "../resource-libs/UberShader";
-import SceneRenderer from "./renderers/SceneRenderer";
-import SpriteRenderer from "./renderers/SpriteRenderer";
-import DecalRenderer from "./renderers/DecalRenderer";
-import MeshRenderer from "./renderers/MeshRenderer";
-import AtmosphereRenderer from "./renderers/AtmosphereRenderer";
-import Mesh from "../instances/Mesh";
-import GPU from "../GPU";
+import SHADING_MODELS from "../static/SHADING_MODELS"
+import StaticFBO from "../lib/StaticFBO"
+import UberShader from "../resource-libs/UberShader"
+import SceneRenderer from "./renderers/SceneRenderer"
+import SpriteRenderer from "./renderers/SpriteRenderer"
+import DecalRenderer from "./renderers/DecalRenderer"
+import MeshRenderer from "./renderers/MeshRenderer"
+import AtmosphereRenderer from "./renderers/AtmosphereRenderer"
+import Mesh from "../instances/Mesh"
+import GPU from "../GPU"
 
 
 export default class SceneComposition {
-    static debugShadingModel = SHADING_MODELS.DETAIL
-    static execute() {
-        if (!UberShader.uber)
-            return
-        GPU.context.flush()
+	static debugShadingModel = SHADING_MODELS.DETAIL
 
-        Mesh.finishIfUsed()
-        StaticFBO.postProcessing2.startMapping()
+	static execute() {
+		if (!UberShader.uber)
+			return
+		GPU.context.flush()
 
-        AtmosphereRenderer.execute()
-        SceneRenderer.bindGlobalResources()
-        MeshRenderer.execute(false)
-        DecalRenderer.execute()
-        SpriteRenderer.execute()
+		Mesh.finishIfUsed()
+		StaticFBO.postProcessing2.startMapping()
 
-        StaticFBO.postProcessing2.stopMapping()
+		AtmosphereRenderer.execute()
+		SceneRenderer.bindGlobalResources()
+		MeshRenderer.execute(false)
+		DecalRenderer.execute()
+		SpriteRenderer.execute()
 
-        MeshRenderer.execute(true)
-        GPU.context.flush()
-    }
+		StaticFBO.postProcessing2.stopMapping()
+
+		MeshRenderer.execute(true)
+		GPU.context.flush()
+	}
 
 }

@@ -1,6 +1,7 @@
-import {getCall} from "../../shared/lib/FS/get-call";
-import ROUTES from "../../../backend/static/ROUTES";
+import {getCall} from "../../shared/lib/FS/get-call"
+import IPCRoutes from "../../../contants/IPCRoutes";
 
-export default async function resolveFileName(path: string, ext: string):Promise<string> {
-    return await getCall(ROUTES.RESOLVE_NAME, {path, ext}, false)
+
+export default async function resolveFileName(path: string, ext: string): Promise<string> {
+	return await getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
 }

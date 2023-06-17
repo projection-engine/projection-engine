@@ -1,6 +1,7 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
-    import KEYS from "../../../../static/KEYS.ts";
+
+    import KEYS from "../../../../static/KEYS.ts"
+    import LocalizationEN from "../../../../../../contants/LocalizationEN"
 
 
     export let initial
@@ -12,55 +13,54 @@
     let value = initial ? initial[1] : ""
     let changed = false
     $: {
-        if (ref && initial != null) {
-            const inputs = ref.querySelectorAll("input")
-            inputs[0].value = initial[0]
-            inputs[1].value = initial[1]
-            value = initial[1]
-            key = initial[0]
-        }
+    	if (ref && initial != null) {
+    		const inputs = ref.querySelectorAll("input")
+    		inputs[0].value = initial[0]
+    		inputs[1].value = initial[1]
+    		value = initial[1]
+    		key = initial[0]
+    	}
     }
 
 
     const save = () => {
-        if(!changed)
-            return
+    	if (!changed)
+    		return
 
-        if (isInput && value && key) {
-            submit(key, value)
-            value = ""
-            key = ""
-            const inputs = ref.querySelectorAll("input")
-            inputs[0].value = ""
-            inputs[1].value = ""
-            inputs[0].blur()
-            inputs[1].blur()
-        }
-        else
-            submit(key, value)
+    	if (isInput && value && key) {
+    		submit(key, value)
+    		value = ""
+    		key = ""
+    		const inputs = ref.querySelectorAll("input")
+    		inputs[0].value = ""
+    		inputs[1].value = ""
+    		inputs[0].blur()
+    		inputs[1].blur()
+    	} else
+    		submit(key, value)
 
     }
 
     function apply(v, isKey) {
 
-        if (isKey)
-            key = v
-        else
-            value = v
-        if (!v) {
-            if (isInput)
-                return
-            submit(key, value)
-        } else
-            save()
-        changed = false
+    	if (isKey)
+    		key = v
+    	else
+    		value = v
+    	if (!v) {
+    		if (isInput)
+    			return
+    		submit(key, value)
+    	} else
+    		save()
+    	changed = false
     }
 </script>
 
 <div class="wrapper" bind:this={ref}>
     <input
             on:input={() => changed = true}
-            placeholder={LOCALIZATION_EN.KEY}
+            placeholder={LocalizationEN.KEY}
             on:blur={e => apply(e.currentTarget.value, true)}
             on:keydown={e => {
                 if(e.code !== KEYS.Enter)
@@ -71,7 +71,7 @@
     :
     <input
             on:input={() => changed = true}
-            placeholder={LOCALIZATION_EN.VALUE}
+            placeholder={LocalizationEN.VALUE}
             on:blur={e => apply(e.currentTarget.value)}
             on:keydown={e => {
                 if(e.code !== KEYS.Enter)

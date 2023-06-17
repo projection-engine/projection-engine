@@ -1,8 +1,9 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
-    import GIZMOS from "../../../static/GIZMOS.ts";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import GizmoSystem from "../../../../../engine-tools/runtime/GizmoSystem";
+    import {onDestroy, onMount} from "svelte"
+    import GIZMOS from "../../../static/GIZMOS.ts"
+
+    import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     const TO_DEG = 180 / Math.PI
     export let settings
@@ -13,13 +14,13 @@
     let scaleRef
 
     onMount(() => {
-        GizmoSystem.translationRef = translationRef
-        GizmoSystem.rotationRef = rotationRef
-        GizmoSystem.scaleRef = scaleRef
+    	GizmoSystem.translationRef = translationRef
+    	GizmoSystem.rotationRef = rotationRef
+    	GizmoSystem.scaleRef = scaleRef
     })
 
     onDestroy(() => {
-        GizmoSystem.translationRef = GizmoSystem.rotationRef = GizmoSystem.scaleRef = undefined
+    	GizmoSystem.translationRef = GizmoSystem.rotationRef = GizmoSystem.scaleRef = undefined
     })
 
     $: isValidPivot = settings.gizmo === GIZMOS.TRANSLATION && selectedSize === 1
@@ -28,28 +29,28 @@
 
 <div class="left-content">
     <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.TRANSLATION ? "display: none" : undefined }>
-        <strong>{LOCALIZATION_EN.TRANSLATION}</strong>
+        <strong>{LocalizationEN.TRANSLATION}</strong>
         <small bind:this={translationRef}></small>
     </div>
 
     <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.SCALE ? "display: none" : undefined }>
-        <strong>{LOCALIZATION_EN.SCALE}</strong>
+        <strong>{LocalizationEN.SCALE}</strong>
         <small bind:this={scaleRef}></small>
     </div>
 
     <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.ROTATION ? "display: none" : undefined }>
-        <strong>{LOCALIZATION_EN.ROTATION}</strong>
+        <strong>{LocalizationEN.ROTATION}</strong>
         <small bind:this={rotationRef}></small>
     </div>
 </div>
 <div class="right-content">
     {#if isValidScaling}
-        <div class="row">ALT - {LOCALIZATION_EN.ALT_FOR_FIXED}</div>
+        <div class="row">ALT - {LocalizationEN.ALT_FOR_FIXED}</div>
     {/if}
     {#if isValidPivot}
-        <div class="row">ALT - {LOCALIZATION_EN.ALT_FOR_PIVOT}</div>
+        <div class="row">ALT - {LocalizationEN.ALT_FOR_PIVOT}</div>
     {/if}
-    <div class="row">CTRL - {LOCALIZATION_EN.CTRL_FOR_UNITARY}</div>
+    <div class="row">CTRL - {LocalizationEN.CTRL_FOR_UNITARY}</div>
 </div>
 
 

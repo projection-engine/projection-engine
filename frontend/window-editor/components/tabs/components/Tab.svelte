@@ -3,8 +3,9 @@
     import TabData from "../static/TabData";
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+
     import ViewTabItem from "../../../static/ViewTabItem";
+    import LocalizationEN from "../../../../../contants/LocalizationEN";
 
     export let handler: Function
     export let removeTab: Function
@@ -19,7 +20,7 @@
     export let value: ViewTabItem
     $: spplitedTemplates = templates ? templates.reduce((all, one, i) => {
         const ch = Math.floor(i / 2);
-        all[ch] = all[ch]||[]
+        all[ch] = all[ch] || []
         all[ch].push(one);
         return all
     }, []) : undefined
@@ -39,13 +40,13 @@
     {#if !allowRenaming}
         <Dropdown hideArrow={true}
                   styles="width: 350px; overflow: hidden; padding: 4px; display: flex; flex-direction: column">
-            <button data-sveltebuttondefault="-"  slot="button" class="dropdown-button">
+            <button data-sveltebuttondefault="-" slot="button" class="dropdown-button">
                 <Icon styles={"font-size: .85rem;" + (value.originalIndex === currentTab ? "color: var(--tab-color);" : "")}>{value.icon}</Icon>
             </button>
             <fieldset>
-                <legend>{LOCALIZATION_EN.COLOR}</legend>
+                <legend>{LocalizationEN.COLOR}</legend>
                 <ColorPicker
-                        label={LOCALIZATION_EN.TAB_COLOR}
+                        label={LocalizationEN.TAB_COLOR}
                         value={color}
                         submit={(_, arr) => {
                             value.color = arr
@@ -54,7 +55,7 @@
                 />
             </fieldset>
             <fieldset>
-                <legend>{LOCALIZATION_EN.VIEWS}</legend>
+                <legend>{LocalizationEN.VIEWS}</legend>
                 {#each spplitedTemplates as items}
                     <div class="row">
                         {#each items as item}

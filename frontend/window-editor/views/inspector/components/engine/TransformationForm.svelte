@@ -1,16 +1,17 @@
 <script>
-    import SelectionStore from "../../../../../shared/stores/SelectionStore";
-    import Engine from "../../../../../../engine-core/Engine";
-    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
-    import {onDestroy} from "svelte";
-    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import EditorActionHistory from "../../../../lib/utils/EditorActionHistory";
-    import Range from "../../../../../shared/components/range/Range.svelte";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte";
-    import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
-    import ROTATION_TYPES from "../../static/ROTATION_TYPES";
-    import Movable from "../../../../../../engine-core/instances/components/Movable";
+    import SelectionStore from "../../../../../shared/stores/SelectionStore"
+    import Engine from "../../../../../../engine-core/Engine"
+
+    import {onDestroy} from "svelte"
+    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
+    import EditorActionHistory from "../../../../lib/utils/EditorActionHistory"
+    import Range from "../../../../../shared/components/range/Range.svelte"
+    import Icon from "../../../../../shared/components/icon/Icon.svelte"
+    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
+    import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
+    import ROTATION_TYPES from "../../static/ROTATION_TYPES"
+    import Movable from "../../../../../../engine-core/instances/components/Movable"
+    import LocalizationEN from "../../../../../../contants/LocalizationEN"
 
     let targets = []
     let rotationType = Movable.ROTATION_QUATERNION
@@ -22,35 +23,35 @@
     let hasStarted = false
     let lockedCache = [false, false, false]
     const unsubscribe = SelectionStore.getStore(() => {
-        const cache = []
-        SelectionStore.engineSelected.forEach(e => {
-            const c = Engine.entities.get(e)
-            if (c) {
-                cache.push(c)
-                c.__originalTranslation = undefined
-                c.__originalPivot = undefined
-                c.__originalScaling = undefined
-                c.__originalQuat = undefined
-            }
-        })
-        if (cache.length === 0) {
-            const fallback = Engine.entities.get(SelectionStore.mainEntity)
-            if (fallback)
-                fallback.__originalQuat = undefined
-            fallback && cache.push(fallback)
-        }
+    	const cache = []
+    	SelectionStore.engineSelected.forEach(e => {
+    		const c = Engine.entities.get(e)
+    		if (c) {
+    			cache.push(c)
+    			c.__originalTranslation = undefined
+    			c.__originalPivot = undefined
+    			c.__originalScaling = undefined
+    			c.__originalQuat = undefined
+    		}
+    	})
+    	if (cache.length === 0) {
+    		const fallback = Engine.entities.get(SelectionStore.mainEntity)
+    		if (fallback)
+    			fallback.__originalQuat = undefined
+    		fallback && cache.push(fallback)
+    	}
 
-        targets = cache
+    	targets = cache
 
-        if (cache.length === 1) {
-            totalTranslated = Array.from(cache[0]._translation)
-            totalScaled = Array.from(cache[0]._scaling)
-            totalPivot = Array.from(cache[0].pivotPoint)
-        } else {
-            totalTranslated = [0, 0, 0]
-            totalScaled = [0, 0, 0]
-            totalPivot = [0, 0, 0]
-        }
+    	if (cache.length === 1) {
+    		totalTranslated = Array.from(cache[0]._translation)
+    		totalScaled = Array.from(cache[0]._scaling)
+    		totalPivot = Array.from(cache[0].pivotPoint)
+    	} else {
+    		totalTranslated = [0, 0, 0]
+    		totalScaled = [0, 0, 0]
+    		totalPivot = [0, 0, 0]
+    	}
     })
 
     $: mainEntity = targets[0]
@@ -64,75 +65,75 @@
     onDestroy(unsubscribe)
 
     function rotate(axis, value) {
-        if (!hasStarted) {
-            hasStarted = true
-            EditorActionHistory.save(targets)
-        }
+    	if (!hasStarted) {
+    		hasStarted = true
+    		EditorActionHistory.save(targets)
+    	}
 
-        if (rotationType === Movable.ROTATION_QUATERNION)
-            mainEntity.rotationQuaternion[axis] = value
-        else
-            mainEntity.rotationEuler[axis] = value
-        mainEntity.changed = true
+    	if (rotationType === Movable.ROTATION_QUATERNION)
+    		mainEntity.rotationQuaternion[axis] = value
+    	else
+    		mainEntity.rotationEuler[axis] = value
+    	mainEntity.changed = true
     }
 
     function transformScaleTranslation(axis, value, isTranslation) {
-        if (!hasStarted) {
-            hasStarted = true
-            EditorActionHistory.save(targets)
-        }
-        for (let i = 0; i < targets.length; i++) {
-            const entity = targets[i]
-            if (!isTranslation) {
-                if (!entity.__originalScaling)
-                    entity.__originalScaling = isSingle ? [0, 0, 0] : Array.from(entity._scaling)
-                entity._scaling[axis] = entity.__originalScaling[axis] + value
-            } else {
-                if (!entity.__originalTranslation)
-                    entity.__originalTranslation = isSingle ? [0, 0, 0] : Array.from(entity._translation)
-                entity._translation[axis] = entity.__originalTranslation[axis] + value
-            }
-            entity.changed = true
-        }
+    	if (!hasStarted) {
+    		hasStarted = true
+    		EditorActionHistory.save(targets)
+    	}
+    	for (let i = 0; i < targets.length; i++) {
+    		const entity = targets[i]
+    		if (!isTranslation) {
+    			if (!entity.__originalScaling)
+    				entity.__originalScaling = isSingle ? [0, 0, 0] : Array.from(entity._scaling)
+    			entity._scaling[axis] = entity.__originalScaling[axis] + value
+    		} else {
+    			if (!entity.__originalTranslation)
+    				entity.__originalTranslation = isSingle ? [0, 0, 0] : Array.from(entity._translation)
+    			entity._translation[axis] = entity.__originalTranslation[axis] + value
+    		}
+    		entity.changed = true
+    	}
 
-        if (isTranslation)
-            totalTranslated[axis] = value
-        else
-            totalScaled[axis] = value
+    	if (isTranslation)
+    		totalTranslated[axis] = value
+    	else
+    		totalScaled[axis] = value
 
     }
 
     function transformPivot(axis, value) {
-        if (!hasStarted) {
-            hasStarted = true
-            EditorActionHistory.save(targets)
-        }
+    	if (!hasStarted) {
+    		hasStarted = true
+    		EditorActionHistory.save(targets)
+    	}
 
-        for (let i = 0; i < targets.length; i++) {
-            const entity = targets[i]
-            if (!entity.__originalPivot)
-                entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(entity.pivotPoint)
-            entity.pivotPoint[axis] = entity.__originalPivot[axis] + value
-            entity.__pivotChanged = true
-        }
-        totalPivot[axis] = value
+    	for (let i = 0; i < targets.length; i++) {
+    		const entity = targets[i]
+    		if (!entity.__originalPivot)
+    			entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(entity.pivotPoint)
+    		entity.pivotPoint[axis] = entity.__originalPivot[axis] + value
+    		entity.__pivotChanged = true
+    	}
+    	totalPivot[axis] = value
     }
 
     function onFinish() {
-        EditorActionHistory.save(targets)
-        hasStarted = false
+    	EditorActionHistory.save(targets)
+    	hasStarted = false
     }
 </script>
 {#if mainEntity}
 
-    <Accordion title={LOCALIZATION_EN.TRANSFORMATION} startOpen={true}>
+    <Accordion title={LocalizationEN.TRANSFORMATION} startOpen={true}>
         {#if !isSingle}
             <div class="alert" data-svelteinline="-">
-                {LOCALIZATION_EN.TRANSFORMING_GROUP}
+                {LocalizationEN.TRANSFORMING_GROUP}
             </div>
         {:else}
             <fieldset>
-                <legend>{LOCALIZATION_EN.PIVOT_POINT}</legend>
+                <legend>{LocalizationEN.PIVOT_POINT}</legend>
                 <div data-svelteinline="-">
                     <Range
                             onFinish={onFinish}
@@ -157,10 +158,10 @@
         {/if}
 
         <fieldset>
-            <legend>{LOCALIZATION_EN.TRANSLATION}</legend>
+            <legend>{LocalizationEN.TRANSLATION}</legend>
             {#if isSingle}
                 <Checkbox
-                        label={LOCALIZATION_EN.LOCKED}
+                        label={LocalizationEN.LOCKED}
                         checked={lockedCache[0]}
                         handleCheck={_ => {
                       mainEntity.lockedTranslation = !mainEntity.lockedTranslation
@@ -194,10 +195,10 @@
         </fieldset>
 
         <fieldset>
-            <legend>{LOCALIZATION_EN.SCALE}</legend>
+            <legend>{LocalizationEN.SCALE}</legend>
             {#if isSingle}
                 <Checkbox
-                        label={LOCALIZATION_EN.LOCKED}
+                        label={LocalizationEN.LOCKED}
                         checked={lockedCache[1]}
                         handleCheck={_ => {
                       mainEntity.lockedScaling = !mainEntity.lockedScaling
@@ -232,7 +233,7 @@
 
         {#if isSingle}
             <fieldset>
-                <legend>{LOCALIZATION_EN.ROTATION}</legend>
+                <legend>{LocalizationEN.ROTATION}</legend>
                 <div data-svelteform="-">
                     <Dropdown buttonStyles="background: var(--background-input); border-radius: 3px">
                         <button data-sveltebuttondefault="-" slot="button" class="button">
@@ -254,7 +255,7 @@
                         {/each}
                     </Dropdown>
                     <Checkbox
-                            label={LOCALIZATION_EN.LOCKED}
+                            label={LocalizationEN.LOCKED}
                             checked={lockedCache[2]}
                             handleCheck={_ => {
                           mainEntity.lockedRotation = !mainEntity.lockedRotation
@@ -336,7 +337,6 @@
         font-size: .75rem;
         justify-content: center;
         width: 100%;
-
 
 
     }

@@ -1,8 +1,9 @@
 <script>
 
-    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
-    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
-    import Input from "../../shared/components/input/Input.svelte";
+
+    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
+    import Input from "../../shared/components/input/Input.svelte"
+    import LocalizationEN from "../../../contants/LocalizationEN"
 
     export let open
     export let data
@@ -17,43 +18,44 @@
     $: isSelected = selected === data.id
 
     $: {
-        if (data.meta.lastModification) {
-            let a = new Date()
-            let b = new Date(a.getTime() - 8.64e+7)
-            let c = new Date(data.meta.lastModification)
+    	if (data.meta.lastModification) {
+    		let a = new Date()
+    		let b = new Date(a.getTime() - 8.64e+7)
+    		let c = new Date(data.meta.lastModification)
 
-            b.setHours(0)
-            b.setMinutes(0)
-            b.setSeconds(0, 0)
+    		b.setHours(0)
+    		b.setMinutes(0)
+    		b.setSeconds(0, 0)
 
-            a.setHours(0)
-            a.setMinutes(0)
-            a.setSeconds(0, 0)
+    		a.setHours(0)
+    		a.setMinutes(0)
+    		a.setSeconds(0, 0)
 
-            c.setHours(0)
-            c.setMinutes(0)
-            c.setSeconds(0, 0)
+    		c.setHours(0)
+    		c.setMinutes(0)
+    		c.setSeconds(0, 0)
 
-            if (a.getTime() === c.getTime())
-                changeDate = "Today";
-            else if (b.getTime() === c.getTime())
-                changeDate = "Yesterday";
-            else
-                changeDate = data.meta.lastModification
-        } else
-            changeDate = LOCALIZATION_EN.NEVER
+    		if (a.getTime() === c.getTime())
+    			changeDate = "Today"
+    		else if (b.getTime() === c.getTime())
+    			changeDate = "Yesterday"
+    		else
+    			changeDate = data.meta.lastModification
+    	} else
+    		changeDate = LocalizationEN.NEVER
     }
 </script>
 
 
-<div style={isSelected ? "border-color: var(--pj-accent-color)" : ""} class="wrapper card-home" data-sveltecard={data.id}
+<div style={isSelected ? "border-color: var(--pj-accent-color)" : ""} class="wrapper card-home"
+     data-sveltecard={data.id}
      on:mouseenter={() => hovered = true} on:mouseleave={() => hovered = false}>
     <div
             class="info card-home"
             style="width: 200%; display: flex; justify-content: unset; gap: 4px"
             on:dblclick={() => openForChange = true}
     >
-        <ToolTip content={LOCALIZATION_EN.DOUBLE_CLICK_TO_RENAME}/>
+        <ToolTip content={LocalizationEN.DOUBLE_CLICK_TO_RENAME}/>
         {#if openForChange}
             <Input
                     placeholder={data?.meta?.name}
@@ -89,10 +91,11 @@
 
         <div class={"info card-home"} style="text-align: right" data-svelteoverflow="-">
             <strong>{changeDate}</strong>
-            <small>{LOCALIZATION_EN.LAST_MODIFIED}</small>
+            <small>{LocalizationEN.LAST_MODIFIED}</small>
         </div>
         <div data-sveltevertdivider="-"></div>
-        <button data-sveltebuttondefault="-"  on:click={() => open(data.path)} data-sveltefocusbutton="-">{LOCALIZATION_EN.OPEN}</button>
+        <button data-sveltebuttondefault="-" on:click={() => open(data.path)}
+                data-sveltefocusbutton="-">{LocalizationEN.OPEN}</button>
     </div>
 </div>
 

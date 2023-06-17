@@ -1,4 +1,4 @@
-import CameraEffectsSerialization from "./CameraEffectsSerialization";
+import CameraEffectsSerialization from "./CameraEffectsSerialization"
 
 interface CameraSerialization {
     translationSmoothing: number,

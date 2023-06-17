@@ -1,11 +1,12 @@
 <script lang="ts">
     import TreeBranchContent from "./EntityTreeBranchContent.svelte";
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+
     import EntityFactory from "../../../lib/controllers/EntityFactory";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
+    import LocalizationEN from "../../../../../contants/LocalizationEN";
 
     export let testSearch: Function
     export let depth: number
@@ -49,9 +50,10 @@
     {#if hasChildren}
 
 
-            {#each {length: depth} as _, i}
-                <div data-sveltevertdivider="-" style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
-            {/each}
+        {#each {length: depth} as _, i}
+            <div data-sveltevertdivider="-"
+                 style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
+        {/each}
 
         <button
                 data-sveltebuttondefault="-"
@@ -71,7 +73,7 @@
             class="button-visibility"
             on:click={() => EntityFactory.toggleEntityVisibility(entity.id)}
     >
-        <ToolTip content={LOCALIZATION_EN.DEACTIVATE}/>
+        <ToolTip content={LocalizationEN.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">
             {#if entity.active}
                 visibility

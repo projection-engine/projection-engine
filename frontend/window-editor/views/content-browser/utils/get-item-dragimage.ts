@@ -1,29 +1,30 @@
-import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
+import LocalizationEN from "../../../../../contants/LocalizationEN";
 
-export default function getItemDragImage(childQuantity, data, type, metadata) {
-    let body
-    if (type !== 0)
-        body = `
+
+export default function getItemDragImage(data, type, metadata) {
+	let body
+	if (type !== 0)
+		body = `
                 <div>
-                    <strong>${LOCALIZATION_EN.ITEM_TYPE}:</strong>
+                    <strong>${LocalizationEN.ITEM_TYPE}:</strong>
                     <small>${metadata.typeName}</small>
                 </div>
                 <div>
-                    <strong>${LOCALIZATION_EN.REGISTRY_ID}:</strong>
+                    <strong>${LocalizationEN.REGISTRY_ID}:</strong>
                     <small>${data.registryID}</small>
                 </div>
             `
-    else
-        body = `
+	else
+		body = `
                 <div>
-                    <strong>${LOCALIZATION_EN.CHILDREN}:</strong>
-                    <small>${childQuantity}</small>
+                    <strong>${LocalizationEN.CHILDREN}:</strong>
+                    <small>${metadata.childQuantity}</small>
                 </div>
             `
-    return `
+	return `
              <div style="   display: grid;">
                 <div>
-                    <strong>${LOCALIZATION_EN.ITEM_NAME}: </strong>
+                    <strong>${LocalizationEN.ITEM_NAME}: </strong>
                     <small>${data.name}</small>
                 </div>
                 ${body}

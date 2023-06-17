@@ -1,25 +1,27 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import About from "./About.svelte";
+
+    import About from "./About.svelte"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
     let aboutModalIsOpen = false
 </script>
 
 <button data-svelteinline="-" on:click={() => aboutModalIsOpen =true}>
     <img src="APP_LOGO.png" alt="logo">
-    <small>{LOCALIZATION_EN.PROJECTION_ENGINE}</small>
+    <small>{LocalizationEN.PROJECTION_ENGINE}</small>
 </button>
 {#if aboutModalIsOpen}
     <About handleClose={() => aboutModalIsOpen = false}/>
 {/if}
 <style>
-    button{
+    button {
         background: none;
         border: none;
         padding: 0 4px;
         gap: 4px;
         cursor: pointer;
     }
+
     img {
         height: 22px;
         overflow: hidden;

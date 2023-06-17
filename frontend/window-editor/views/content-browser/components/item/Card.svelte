@@ -1,9 +1,10 @@
 <script>
-    import Preview from "../../../../../shared/components/preview/Preview.svelte";
-    import openItem from "../../utils/open-item";
-    import Icon from "../../../../../shared/components/icon/Icon.svelte";
-    import FILE_TYPES from "../../../../../../static/objects/FILE_TYPES";
-    import ModalInput from "../../../../components/modal-input/ModalInput.svelte";
+    import Preview from "../../../../../shared/components/preview/Preview.svelte"
+    import openItem from "../../utils/open-item"
+    import Icon from "../../../../../shared/components/icon/Icon.svelte"
+    import ModalInput from "../../../../components/modal-input/ModalInput.svelte"
+
+    import FileTypes from "../../../../../../contants/FileTypes"
 
     export let currentDirectory
     export let items
@@ -19,7 +20,7 @@
     export let submitRename
     export let icon
     export let draggable
-    export let isOnCuttingBoard
+    export let isToBeCut
     export let isNotDraggable
 
 </script>
@@ -32,15 +33,15 @@
         data-sveltefolder={type !== 0 ? undefined : data.id}
         on:dblclick={() => openItem(data, setCurrentDirectory, setSelected, reset, type)}
         on:click={setSelected}
-        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isOnCuttingBoard || isNotDraggable ? "opacity: .5;" : "")}
+        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isToBeCut || isNotDraggable ? "opacity: .5;" : "")}
         class="file"
 >
     <div class="icon">
         {#if icon != null}
             <Icon styles={(data.isFolder ? "color: var(--folder-color);" : "") + "font-size: 3.5rem; "}>{icon}</Icon>
-        {:else if metadata.type === FILE_TYPES.MATERIAL}
+        {:else if metadata.type === FileTypes.MATERIAL}
             <div data-svelteshaded-material="-" style="width: 60px; height: 60px"></div>
-        {:else if metadata.type === FILE_TYPES.PRIMITIVE || metadata.type === FILE_TYPES.TEXTURE}
+        {:else if metadata.type === FileTypes.PRIMITIVE || metadata.type === FileTypes.TEXTURE}
             <Preview path={metadata.path}>
                 <img
                         class="image-item"
@@ -49,7 +50,7 @@
                         let:src src={src}
                 >
                 <Icon slot="icon" styles="font-size: 4rem">
-                    {#if metadata.type === FILE_TYPES.PRIMITIVE}
+                    {#if metadata.type === FileTypes.PRIMITIVE}
                         category
                     {:else}
                         image
@@ -62,9 +63,9 @@
     <small data-svelteoverflow="-" style="padding: 4px; text-align: center; font-size: .7rem">{data.name}</small>
     {#if isOnRename}
         <ModalInput
-            alignBottom={true}
-            initialValue={data.name}
-            handleClose={submitRename}
+                alignBottom={true}
+                initialValue={data.name}
+                handleClose={submitRename}
         />
     {/if}
 </div>

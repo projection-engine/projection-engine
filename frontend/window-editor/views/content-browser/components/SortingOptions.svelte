@@ -1,10 +1,11 @@
 <script>
-    import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import {SORTS, SORTS_KEYS} from "../static/SORT_INFO";
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles";
+
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import {SORTS, SORTS_KEYS} from "../static/SORT_INFO"
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
+    import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
+    import LocalizationEN from "../../../../../contants/LocalizationEN"
 
     export let setSortKey
     export let setSortDirection
@@ -12,17 +13,17 @@
     export let sortKey
 
     function changeSort() {
-        if (sortDirection === SORTS[0])
-            setSortDirection(SORTS[1])
-        else
-            setSortDirection(SORTS[0])
+    	if (sortDirection === SORTS[0])
+    		setSortDirection(SORTS[1])
+    	else
+    		setSortDirection(SORTS[0])
     }
 
 </script>
 
 <Dropdown buttonStyles={getDropdownHeaderStyles()}>
     <button data-sveltebuttondefault="-" slot="button" data-svelteview-header-dropdown="-">
-        <ToolTip content={LOCALIZATION_EN.FILTER_TYPE}/>
+        <ToolTip content={LocalizationEN.FILTER_TYPE}/>
         <Icon styles="font-size: .9rem">sort</Icon>
     </button>
 
@@ -32,7 +33,7 @@
         {:else}
             <div style="width: 1.1rem"></div>
         {/if}
-        {LOCALIZATION_EN.NAME}
+        {LocalizationEN.NAME}
     </button>
     <button data-sveltebuttondefault="-" on:click={() => setSortKey( SORTS_KEYS[1])}>
         {#if sortKey === SORTS_KEYS[1]}
@@ -40,7 +41,7 @@
         {:else}
             <div style="width: 1.1rem"></div>
         {/if}
-        {LOCALIZATION_EN.CREATION}
+        {LocalizationEN.CREATION}
     </button>
     <button data-sveltebuttondefault="-" on:click={() => setSortKey( SORTS_KEYS[2])}>
         {#if sortKey === SORTS_KEYS[2]}
@@ -48,7 +49,7 @@
         {:else}
             <div style="width: 1.1rem"></div>
         {/if}
-        {LOCALIZATION_EN.SIZE}
+        {LocalizationEN.SIZE}
     </button>
 </Dropdown>
 <button data-sveltebuttondefault="-"
@@ -56,7 +57,7 @@
         on:click={changeSort}
 >
     <Icon styles={sortDirection === SORTS[1] ? undefined : "transform: rotate(180deg)"}>arrow_downward</Icon>
-    <ToolTip content={sortDirection === SORTS[1]  ? LOCALIZATION_EN.DESCENDING : LOCALIZATION_EN.ASCENDING}/>
+    <ToolTip content={sortDirection === SORTS[1]  ? LocalizationEN.DESCENDING : LocalizationEN.ASCENDING}/>
 </button>
 
 <style>

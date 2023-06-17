@@ -2,12 +2,13 @@
 
     import ProjectMetadata from "../static/ProjectMetadata";
     import FS from "../../shared/lib/FS/FS";
-    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
+
     import Icon from "../../shared/components/icon/Icon.svelte";
     import Input from "../../shared/components/input/Input.svelte";
     import AlertController from "../../shared/components/alert/AlertController";
     import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS";
-    import FILE_TYPES from "../../../static/objects/FILE_TYPES";
+    import LocalizationEN from "../../../contants/LocalizationEN";
+    import FileTypes from "../../../contants/FileTypes";
 
     export let close: Function
     export let setProjectsToShow: Function
@@ -25,7 +26,7 @@
         const err = await FS.mkdir(projectPath)
         const meta = {name: name, creationDate: (new Date()).toLocaleDateString()}
         if (!err)
-            await FS.write(FS.resolvePath(projectPath + FS.sep + FILE_TYPES.PROJECT), JSON.stringify(meta))
+            await FS.write(FS.resolvePath(projectPath + FS.sep + FileTypes.PROJECT), JSON.stringify(meta))
 
         setProjectsToShow([
             ...projectsToShow,
@@ -36,7 +37,7 @@
             }
         ])
 
-        AlertController.success(LOCALIZATION_EN.PROJECT_CREATED)
+        AlertController.success(LocalizationEN.PROJECT_CREATED)
         close()
         input = ""
     }
@@ -46,11 +47,11 @@
 
 <div style="padding: 8px; width: 100%">
     <div style="font-size: 1.1rem; font-weight:550; margin-bottom: 8px">
-        {LOCALIZATION_EN.CREATE}
+        {LocalizationEN.CREATE}
     </div>
     <Input
             hasBorder="true"
-            placeholder={LOCALIZATION_EN.PROJECT_NAME}
+            placeholder={LocalizationEN.PROJECT_NAME}
             onEnter={create}
             inputValue={input}
             width="100%"
@@ -65,7 +66,7 @@
             on:click={() => create(input)}
     >
         <Icon>check</Icon>
-        {LOCALIZATION_EN.DONE}
+        {LocalizationEN.DONE}
     </button>
 </div>
 

@@ -1,10 +1,11 @@
 <script>
 
-    import {onMount} from "svelte";
-    import Icon from "../../shared/components/icon/Icon.svelte";
-    import Input from "../../shared/components/input/Input.svelte";
-    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
-    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
+    import {onMount} from "svelte"
+    import Icon from "../../shared/components/icon/Icon.svelte"
+    import Input from "../../shared/components/input/Input.svelte"
+
+    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
+    import LocalizationEN from "../../../contants/LocalizationEN"
 
     export let items
     export let getLabel
@@ -16,59 +17,59 @@
     let filter = ""
     let initialized = false
     $:{
-        if (initialized)
-            localStorage.setItem(favoriteKey + "CACHE", favoriteFilter ? "0" : "1")
+    	if (initialized)
+    		localStorage.setItem(favoriteKey + "CACHE", favoriteFilter ? "0" : "1")
     }
     onMount(() => {
-        favoriteFilter = localStorage.getItem(favoriteKey + "CACHE") === "0"
-        initialized = true
-        const f = localStorage.getItem(favoriteKey)
-        if (f)
-            favorites = JSON.parse(f)
+    	favoriteFilter = localStorage.getItem(favoriteKey + "CACHE") === "0"
+    	initialized = true
+    	const f = localStorage.getItem(favoriteKey)
+    	if (f)
+    		favorites = JSON.parse(f)
     })
     const SORTS = {
-        ASC: 1,
-        DSC: 2
+    	ASC: 1,
+    	DSC: 2
     }
     let itemsToRender
     let sort = SORTS.ASC
 
     function switchSorts() {
-        switch (sort) {
-            case SORTS.ASC:
-                sort = SORTS.DSC
-                break
-            case SORTS.DSC:
-                sort = SORTS.ASC
-                break
-        }
+    	switch (sort) {
+    	case SORTS.ASC:
+    		sort = SORTS.DSC
+    		break
+    	case SORTS.DSC:
+    		sort = SORTS.ASC
+    		break
+    	}
     }
 
     function sortData(arr, isDSC) {
-        function compare(a, b) {
-            if (getLabel(a) < getLabel(b))
-                return isDSC ? -1 : 1;
-            if (getLabel(a) > getLabel(b))
-                return isDSC ? 1 : -1;
-            return 0;
-        }
+    	function compare(a, b) {
+    		if (getLabel(a) < getLabel(b))
+    			return isDSC ? -1 : 1
+    		if (getLabel(a) > getLabel(b))
+    			return isDSC ? 1 : -1
+    		return 0
+    	}
 
-        return arr.sort(compare);
+    	return arr.sort(compare)
     }
 
     $: {
-        const toRender = favoriteFilter || filter ? items.filter(e => {
-            return favoriteFilter && favorites[getID(e)] || !favoriteFilter && getLabel(e).includes(filter)
-        }) : items
-        switch (sort) {
+    	const toRender = favoriteFilter || filter ? items.filter(e => {
+    		return favoriteFilter && favorites[getID(e)] || !favoriteFilter && getLabel(e).includes(filter)
+    	}) : items
+    	switch (sort) {
 
-            case SORTS.ASC:
-                itemsToRender = sortData(toRender, false)
-                break
-            case SORTS.DSC:
-                itemsToRender = sortData(toRender, true)
-                break
-        }
+    	case SORTS.ASC:
+    		itemsToRender = sortData(toRender, false)
+    		break
+    	case SORTS.DSC:
+    		itemsToRender = sortData(toRender, true)
+    		break
+    	}
     }
 </script>
 
@@ -81,7 +82,7 @@
         <Icon>star</Icon>
     </button>
     <div data-sveltevertdivider="-"></div>
-    <button data-sveltebuttondefault="-"  on:click={switchSorts}>
+    <button data-sveltebuttondefault="-" on:click={switchSorts}>
         {#if sort === SORTS.ASC}
             <Icon>arrow_downward</Icon>
         {:else}
@@ -93,7 +94,7 @@
 
         <Input
                 hasBorder="true"
-                placeholder={LOCALIZATION_EN.SEARCH}
+                placeholder={LocalizationEN.SEARCH}
                 onEnter={v => filter = v}
                 onChange={v => filter = v}
                 height="30px"
@@ -123,7 +124,7 @@
                 }}
                 >
                     <Icon>star</Icon>
-                    <ToolTip content={LOCALIZATION_EN.FAVORITE}/>
+                    <ToolTip content={LocalizationEN.FAVORITE}/>
                 </button>
                 <slot item={item}/>
             </div>
@@ -132,7 +133,7 @@
 
         <div data-svelteempty="-">
             <Icon styles="font-size: 100px; color: #999;">folder</Icon>
-            {LOCALIZATION_EN.EMPTY}
+            {LocalizationEN.EMPTY}
         </div>
 
     {/if}

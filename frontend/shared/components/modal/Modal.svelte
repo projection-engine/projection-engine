@@ -1,29 +1,29 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte"
 
-    import Portal from "../../lib/Portal";
+    import Portal from "../../lib/Portal"
 
     export let handleClose
     export let styles
     let content
 
     function handler(event) {
-        if (!content.contains(event.target)) {
-            handleClose()
-            content.style.display = "none"
-            content.style.zIndex = "-1"
-        }
+    	if (!content.contains(event.target)) {
+    		handleClose()
+    		content.style.display = "none"
+    		content.style.zIndex = "-1"
+    	}
     }
 
     const portal = new Portal(999)
     onMount(() => {
-        portal.create(content)
-        portal.open()
-        document.addEventListener("mousedown", handler)
+    	portal.create(content)
+    	portal.open()
+    	document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
-        portal.close()
-        document.removeEventListener("mousedown", handler)
+    	portal.close()
+    	document.removeEventListener("mousedown", handler)
     })
 </script>
 

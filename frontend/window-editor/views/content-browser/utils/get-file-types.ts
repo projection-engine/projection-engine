@@ -1,8 +1,8 @@
-import LOCALIZATION_EN from "../../../../../static/objects/LOCALIZATION_EN";
-import FILE_TYPES from "../../../../../static/objects/FILE_TYPES";
+import LocalizationEN from "../../../../../contants/LocalizationEN"
+import FileTypes from "../../../../../contants/FileTypes"
 
 export default function getFileTypes() {
-    const c = {...FILE_TYPES}
-    return Object.keys(c).map(m => m === FILE_TYPES.PROJECT ? undefined : [m, LOCALIZATION_EN[m]]).filter(e => e[1] != null)
+	const c = {...FileTypes}
+	return Object.keys(c).map(m => m === FileTypes.PROJECT ? undefined : [m, LocalizationEN[m]]).filter(e => e[1] != null)
 
 }

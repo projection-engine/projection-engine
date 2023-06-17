@@ -1,14 +1,15 @@
 <script>
 
-    import {onDestroy, onMount} from "svelte";
-    import CreateProject from "./CreateProject.svelte";
-    import LOCALIZATION_EN from "../../../static/objects/LOCALIZATION_EN";
-    import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS";
-    import Portal from "../../shared/lib/Portal";
-    import Icon from "../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte";
-    import ElectronResources from "../../shared/lib/ElectronResources";
-    import ROUTES from "../../../backend/static/ROUTES";
+    import {onDestroy, onMount} from "svelte"
+    import CreateProject from "./CreateProject.svelte"
+
+    import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS"
+    import Portal from "../../shared/lib/Portal"
+    import Icon from "../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
+    import ElectronResources from "../../shared/lib/ElectronResources"
+    import LocalizationEN from "../../../contants/LocalizationEN"
+    import IPCRoutes from "../../../contants/IPCRoutes"
 
 
     export let setProjectsToShow
@@ -22,8 +23,8 @@
     let modal
 
     function handler(event) {
-        if (!modal.firstChild.contains(event.target))
-            openInput = false
+    	if (!modal.firstChild.contains(event.target))
+    		openInput = false
     }
 
     const portal = new Portal(999)
@@ -31,17 +32,17 @@
 
     onMount(() => {
 
-        portal.create(modal, {background: "rgba(0,0,0,.2)"})
-        document.addEventListener("mousedown", handler)
-        ElectronResources.ipcRenderer.on(ROUTES.OPEN_SELECTION, (event, data) => {
-            if (data != null)
-                setBasePath(data)
-            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, data)
-        })
+    	portal.create(modal, {background: "rgba(0,0,0,.2)"})
+    	document.addEventListener("mousedown", handler)
+    	ElectronResources.ipcRenderer.on(IPCRoutes.OPEN_SELECTION, (event, data) => {
+    		if (data != null)
+    			setBasePath(data)
+    		localStorage.setItem(STORAGE_KEYS.ROOT_PATH, data)
+    	})
     })
     onDestroy(() => {
-        portal.destroy()
-        document.removeEventListener("mousedown", handler)
+    	portal.destroy()
+    	document.removeEventListener("mousedown", handler)
     })
 
 
@@ -50,15 +51,15 @@
 
 <div class="wrapper">
     <div class="left-content">
-        <div class="header">{LOCALIZATION_EN.PROJECTS}</div>
+        <div class="header">{LocalizationEN.PROJECTS}</div>
         <div data-sveltevertdivider="-"></div>
         <small style="font-size: .7rem">{basePath}</small>
         <button data-sveltebuttondefault="-"
                 class="settings-button"
-                on:click={() => ElectronResources.ipcRenderer.send(ROUTES.OPEN_SELECTION)}
+                on:click={() => ElectronResources.ipcRenderer.send(IPCRoutes.OPEN_SELECTION)}
         >
             <Icon styles="font-size: .9rem">settings</Icon>
-            <ToolTip content={LOCALIZATION_EN.CHANGE_BASE_DIR}/>
+            <ToolTip content={LocalizationEN.CHANGE_BASE_DIR}/>
         </button>
 
     </div>
@@ -70,7 +71,7 @@
             style="height: 25px"
     >
         <Icon>add</Icon>
-        {LOCALIZATION_EN.CREATE}
+        {LocalizationEN.CREATE}
     </button>
 </div>
 <div bind:this={modal} class="modal">

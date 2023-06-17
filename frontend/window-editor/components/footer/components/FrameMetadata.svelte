@@ -1,6 +1,6 @@
 <script>
-    import {onDestroy, onMount} from "svelte";
-    import Loop from "../../../../../engine-core/Loop";
+    import {onDestroy, onMount} from "svelte"
+    import Loop from "../../../../../engine-core/Loop"
 
     export let settings
 
@@ -10,21 +10,21 @@
     let mem
     onMount(() => {
 
-        const cb = () => {
-            const el = Loop.elapsed
-            fr.textContent = Math.round(1000 / el) + "FPS"
-            ft.textContent = el.toFixed(2) + "ms"
-            requestAnimationFrame(cb)
-        }
-        requestAnimationFrame(cb)
+    	const cb = () => {
+    		const el = Loop.elapsed
+    		fr.textContent = Math.round(1000 / el) + "FPS"
+    		ft.textContent = el.toFixed(2) + "ms"
+    		requestAnimationFrame(cb)
+    	}
+    	requestAnimationFrame(cb)
 
-        const updateMem = () => {
-            const data = window.performance.memory.usedJSHeapSize / 1e+6
-            mem.textContent = data.toFixed(2) + "mb"
-        }
+    	const updateMem = () => {
+    		const data = window.performance.memory.usedJSHeapSize / 1e+6
+    		mem.textContent = data.toFixed(2) + "mb"
+    	}
 
-        updateMem()
-        interval = setInterval(updateMem, 2500)
+    	updateMem()
+    	interval = setInterval(updateMem, 2500)
     })
     onDestroy(() => clearInterval(interval))
 </script>

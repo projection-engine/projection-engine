@@ -1,20 +1,21 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import EngineStore from "../../../shared/stores/EngineStore";
-    import {onDestroy, onMount} from "svelte";
-    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts";
-    import SettingsStore from "../../../shared/stores/SettingsStore";
-    import HotKeysController from "../../../shared/lib/HotKeysController";
-    import viewportHotkeys from "../../templates/viewport-hotkeys";
-    import Tabs from "../../components/tabs/Tabs.svelte";
-    import removeTab from "./utils/remove-tab";
-    import updateViewport from "./utils/update-viewport";
-    import VIEWS from "../../components/view/static/VIEWS";
-    import View from "../../components/view/components/View.svelte";
-    import getViewIcon from "../../components/view/utils/get-view-icon";
-    import TabsStore from "../../../shared/stores/TabsStore";
-    import GPU from "../../../../engine-core/GPU";
-    import RENDER_TARGET from "../../static/RENDER_TARGET";
+
+    import EngineStore from "../../../shared/stores/EngineStore"
+    import {onDestroy, onMount} from "svelte"
+    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts"
+    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import HotKeysController from "../../../shared/lib/HotKeysController"
+    import viewportHotkeys from "../../templates/viewport-hotkeys"
+    import Tabs from "../../components/tabs/Tabs.svelte"
+    import removeTab from "./utils/remove-tab"
+    import updateViewport from "./utils/update-viewport"
+    import VIEWS from "../../components/view/static/VIEWS"
+    import View from "../../components/view/components/View.svelte"
+    import getViewIcon from "../../components/view/utils/get-view-icon"
+    import TabsStore from "../../../shared/stores/TabsStore"
+    import GPU from "../../../../engine-core/GPU"
+    import RENDER_TARGET from "../../static/RENDER_TARGET"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
     export let updateView
     export let viewTab
@@ -26,65 +27,65 @@
     let focused = false
 
     const unsubscribeTabs = TabsStore.getStore(_ => {
-        currentTab = TabsStore.getValue("viewport")
-        focused = ref === TabsStore.focused
+    	currentTab = TabsStore.getValue("viewport")
+    	focused = ref === TabsStore.focused
     })
     $: currentTab = TabsStore.getValue("viewport")
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     const setViewportTab = (value, index = currentTab) => {
-        const clone = [...viewTab]
-        clone[index].type = value
-        updateViewport(engine, value)
-        updateView(clone)
+    	const clone = [...viewTab]
+    	clone[index].type = value
+    	updateViewport(engine, value)
+    	updateView(clone)
     }
 
     $: {
-        if (ref != null)
-            HotKeysController.bindAction(
-                ref,
-                Object.values(viewportHotkeys(settings)),
-                "public",
-                LOCALIZATION_EN.VIEWPORT
-            )
+    	if (ref != null)
+    		HotKeysController.bindAction(
+    			ref,
+    			Object.values(viewportHotkeys(settings)),
+    			"public",
+    			LocalizationEN.VIEWPORT
+    		)
     }
 
     $: updateViewport(engine, viewTab[currentTab])
     $: tabs = viewTab.map(v => {
-        v.name = LOCALIZATION_EN[v.type]
-        v.icon = getViewIcon(v.type)
-        return v
+    	v.name = LocalizationEN[v.type]
+    	v.icon = getViewIcon(v.type)
+    	return v
     })
 
     $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
-        name: LOCALIZATION_EN[value],
-        id: value
+    	name: LocalizationEN[value],
+    	id: value
     }))
     $: isCanvasHidden = viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR
     $: {
-        if (isCanvasHidden && GPU.context) {
-            GPU.canvas.style.zIndex = "-1"
-            GPU.canvas.style.position = "absolute"
-        } else if (GPU.context) {
-            GPU.canvas.style.zIndex = "1"
-            GPU.canvas.style.position = "relative"
-        }
+    	if (isCanvasHidden && GPU.context) {
+    		GPU.canvas.style.zIndex = "-1"
+    		GPU.canvas.style.position = "absolute"
+    	} else if (GPU.context) {
+    		GPU.canvas.style.zIndex = "1"
+    		GPU.canvas.style.position = "relative"
+    	}
 
     }
     $: {
-        if (engine.executingAnimation && tabs[currentTab].type !== VIEWPORT_TABS.EDITOR)
-            setViewportTab(VIEWPORT_TABS.EDITOR)
+    	if (engine.executingAnimation && tabs[currentTab].type !== VIEWPORT_TABS.EDITOR)
+    		setViewportTab(VIEWPORT_TABS.EDITOR)
     }
     onMount(() => {
-        const wrapperRef = ref.lastElementChild
-        wrapperRef.insertBefore(document.getElementById(RENDER_TARGET), wrapperRef.firstElementChild);
+    	const wrapperRef = ref.lastElementChild
+    	wrapperRef.insertBefore(document.getElementById(RENDER_TARGET), wrapperRef.firstElementChild)
     })
     onDestroy(() => {
-        unsubscribeTabs()
-        HotKeysController.unbindAction(ref)
-        unsubscribeEngine()
-        unsubscribeSettings()
+    	unsubscribeTabs()
+    	HotKeysController.unbindAction(ref)
+    	unsubscribeEngine()
+    	unsubscribeSettings()
     })
 
 </script>

@@ -1,8 +1,8 @@
 <script>
-    import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
-    import {onDestroy, onMount} from "svelte";
-    import handleDropFolder from "../utils/handle-drop-folder";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+    import dragDrop from "../../../../shared/components/drag-drop/drag-drop"
+    import {onDestroy, onMount} from "svelte"
+    import handleDropFolder from "../utils/handle-drop-folder"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
 
     export let depth
     export let setCurrentDirectory
@@ -18,11 +18,11 @@
 
     const draggable = dragDrop(false)
     onMount(() => {
-        draggable.onMount({
-            targetElement: ref,
-            onDrop: (event) => handleDropFolder(event, id),
-            onDragOver: () => "Link folder"
-        })
+    	draggable.onMount({
+    		targetElement: ref,
+    		onDrop: (event) => handleDropFolder(event, id),
+    		onDragOver: () => "Link folder"
+    	})
     })
 
     $: isOpen = open[id]

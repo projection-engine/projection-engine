@@ -4,9 +4,9 @@
     let error = false
     let src
     $:fetch(path).then(res => {
-        res.text()
-            .then(res => src = res)
-            .catch(_ => src = null)
+    	res.text()
+    		.then(res => src = res)
+    		.catch(_ => src = null)
     }).catch(_ => src = null)
 
 </script>

@@ -1,5 +1,5 @@
 export default {
-    CAPSULE: "CAPSULE",
-    SPHERE: "SPHERE",
-    BOX: "BOX"
+	CAPSULE: "CAPSULE",
+	SPHERE: "SPHERE",
+	BOX: "BOX"
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <title>Projection Engine</title>
+
+    <link rel="stylesheet" href="global.css" />
+    <link rel="stylesheet" href="frame-module.css" />
+    <link rel="stylesheet" href="viewport-module.css" />
+    <link rel="stylesheet" href="hierarchy-module.css" />
+    <link rel="stylesheet" href="shader-module.css" />
+    <link rel="stylesheet" href="alert-module.css" />
+    <link rel="stylesheet" href="selector-module.css" />
+    <link rel="stylesheet" href="editor-window.css" />
+
+    <script defer src="editor-window.js"></script>
+    <script defer>
+      window.addEventListener("mouseup", (e) => {
+        if (e.button === 3 || e.button === 4)
+          e.preventDefault();
+      });
+      document.addEventListener('pointerlockerror', _ => document.exitPointerLock(), false);
+    </script>
+  </head>
+  <body></body>
+</html>

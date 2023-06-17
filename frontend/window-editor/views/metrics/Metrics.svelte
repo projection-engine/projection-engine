@@ -1,23 +1,24 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte";
-    import MetricsController from "../../../../engine-core/lib/utils/MetricsController";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte";
+
+    import ViewHeader from "../../components/view/components/ViewHeader.svelte"
+    import MetricsController from "../../../../engine-core/lib/utils/MetricsController"
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
+    import LocalizationEN from "../../../../contants/LocalizationEN"
 
     let isRecording = false
     let isSampling = false
     let toShow = []
 
     function toggle() {
-        if (isRecording) {
-            toShow = MetricsController.getRecord().sort((a, b) => b.percentage - a.percentage)
-            isRecording = isSampling = false
+    	if (isRecording) {
+    		toShow = MetricsController.getRecord().sort((a, b) => b.percentage - a.percentage)
+    		isRecording = isSampling = false
 
-        } else {
-            MetricsController.start()
-            isRecording = isSampling = true
-        }
+    	} else {
+    		MetricsController.start()
+    		isRecording = isSampling = true
+    	}
     }
 
 
@@ -34,7 +35,7 @@
             {:else}
                 <Icon styles="color: #ff5555">fiber_manual_record</Icon>
             {/if}
-            <ToolTip content={isRecording ? LOCALIZATION_EN.STOP_RECORDING:LOCALIZATION_EN.TOGGLE_RECORD}/>
+            <ToolTip content={isRecording ? LocalizationEN.STOP_RECORDING:LocalizationEN.TOGGLE_RECORD}/>
         </button>
     </div>
 </ViewHeader>
@@ -43,7 +44,7 @@
 <div class="content">
     {#if isSampling}
         <div class="loading-wrapper">
-            <small>{LOCALIZATION_EN.RECORDING_SAMPLES}</small>
+            <small>{LocalizationEN.RECORDING_SAMPLES}</small>
         </div>
     {:else if toShow.length > 0}
         {#each toShow as sample}
@@ -59,7 +60,7 @@
     {:else}
         <div class="loading-wrapper">
             <div data-svelteinline="-">
-                <small>{LOCALIZATION_EN.CLICK_THE_RECORD_BUTTON_TO_RECORD}</small>
+                <small>{LocalizationEN.CLICK_THE_RECORD_BUTTON_TO_RECORD}</small>
                 <Icon styles={"color: var(--pj-color-quinary)"}>fiber_manual_record</Icon>
             </div>
         </div>

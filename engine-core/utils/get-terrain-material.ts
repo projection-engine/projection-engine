@@ -1,39 +1,39 @@
 export default function getTerrainMaterial(layers) {
-    const multiplierType = layers === 0 ? "vec3" : "mat3"
-    let samplers = ""
-    let samplersData = ""
-    for (let i = 0; i <= layers; i++) {
-        samplers += `
+	const multiplierType = layers === 0 ? "vec3" : "mat3"
+	let samplers = ""
+	let samplersData = ""
+	for (let i = 0; i <= layers; i++) {
+		samplers += `
         
       uniform sampler2D albedo${i};
       uniform sampler2D normal${i};
       uniform sampler2D roughness${i};
       `
-        let currentMultiplier
-        switch (i) {
-            case 0:
-                if (layers === 0)
-                    currentMultiplier = `multipliers`
-                else
-                    currentMultiplier = `vec3(multipliers[0][0],multipliers[0][1],multipliers[0][2])`
-                break
-            case 1:
-                currentMultiplier = `vec3(multipliers[1][0],multipliers[1][1],multipliers[1][2])`
-                break
-            case 2:
-                currentMultiplier = `vec3(multipliers[2][0],multipliers[2][1],multipliers[2][2])`
-                break
-        }
-        samplersData += `
+		let currentMultiplier
+		switch (i) {
+		case 0:
+			if (layers === 0)
+				currentMultiplier = "multipliers"
+			else
+				currentMultiplier = "vec3(multipliers[0][0],multipliers[0][1],multipliers[0][2])"
+			break
+		case 1:
+			currentMultiplier = "vec3(multipliers[1][0],multipliers[1][1],multipliers[1][2])"
+			break
+		case 2:
+			currentMultiplier = "vec3(multipliers[2][0],multipliers[2][1],multipliers[2][2])"
+			break
+		}
+		samplersData += `
             ${i === 0 ? "vec3" : ""}  currentMultiplier = ${currentMultiplier};        
             ${i === 0 ? "float" : ""} layerMultiplier = layerData.${i === 0 ? "x" : i === 1 ? "y" : "z"};
             gAlbedo.rgb ${i > 0 ? "+" : ""}= texture(albedo${i}, texCoords).rgb * layerMultiplier;
             gNormal.rgb ${i > 0 ? "+" : ""}= normalize(toTangentSpace * ((texture(normal${i}, texCoords).rgb * 2.0)- 1.0)) * layerMultiplier;
             gBehaviour.g ${i > 0 ? "+" : ""}= texture(roughness${i}, texCoords).r  * layerMultiplier;
         `
-    }
+	}
 
-    return `
+	return `
 
 
 precision highp float;

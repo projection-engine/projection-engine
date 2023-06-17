@@ -1,7 +1,7 @@
 <script lang="ts">
     import Engine from "../../../../../../engine-core/Engine";
     import NameController from "../../../../lib/controllers/NameController";
-    import LOCALIZATION_EN from "../../../../../../static/objects/LOCALIZATION_EN";
+
     import Selector from "../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import EntityFactory from "../../../../lib/controllers/EntityFactory";
@@ -17,6 +17,7 @@
     import {onDestroy} from "svelte";
     import AddComponent from "./AddComponent.svelte";
     import AlertController from "../../../../../shared/components/alert/AlertController";
+    import LocalizationEN from "../../../../../../contants/LocalizationEN";
 
     export let entity: Entity
 
@@ -51,46 +52,46 @@
     <TransformationForm/>
 {/if}
 
-<Accordion title={LOCALIZATION_EN.BASIC} startOpen={entity.isCollection}>
+<Accordion title={LocalizationEN.BASIC} startOpen={entity.isCollection}>
     <div data-svelteform="-">
-            <Input
-                    width="100%"
-                    hasBorder={true}
-                    onBlur={(_,v) => NameController.renameEntity(v, entity)}
-                    onEnter={v => NameController.renameEntity(v, entity)}
-                    inputValue={entityName}
-                    height="23px"
-                    placeholder={LOCALIZATION_EN.MY_ENTITY}
-            >
-                <small slot="label">{LOCALIZATION_EN.NAME}</small>
-            </Input>
+        <Input
+                width="100%"
+                hasBorder={true}
+                onBlur={(_,v) => NameController.renameEntity(v, entity)}
+                onEnter={v => NameController.renameEntity(v, entity)}
+                inputValue={entityName}
+                height="23px"
+                placeholder={LocalizationEN.MY_ENTITY}
+        >
+            <small slot="label">{LocalizationEN.NAME}</small>
+        </Input>
 
-            <Input
-                    width="100%"
-                    hasBorder={true}
-                    onChange={v => {
+        <Input
+                width="100%"
+                hasBorder={true}
+                onChange={v => {
                     Engine.queryMap.delete(entity.queryKey)
                     Engine.queryMap.set(v, entity)
                     entity.queryKey = v
                 }}
-                    height="23px"
-                    inputValue={entity.queryKey}
-                    placeholder={LOCALIZATION_EN.QUERY_KEY}
-            >
-                <small slot="label">{LOCALIZATION_EN.QUERY_KEY}</small>
-            </Input>
+                height="23px"
+                inputValue={entity.queryKey}
+                placeholder={LocalizationEN.QUERY_KEY}
+        >
+            <small slot="label">{LocalizationEN.QUERY_KEY}</small>
+        </Input>
         {#if entity.parent}
             <Selector
                     type="parent"
                     selected={entity.parent}
                     handleChange={v => {
                         if(v === entity){
-                            AlertController.error(LOCALIZATION_EN.COULD_NOT_LINK_ENTITIES)
+                            AlertController.error(LocalizationEN.COULD_NOT_LINK_ENTITIES)
                             return
                         }
                         entity.addParent(v)
                          if(entity.parent !== v){
-                            AlertController.error(LOCALIZATION_EN.COULD_NOT_LINK_ENTITIES)
+                            AlertController.error(LocalizationEN.COULD_NOT_LINK_ENTITIES)
                             return
                         }
                         HierarchyController.updateHierarchy()
@@ -99,7 +100,7 @@
         {/if}
     </div>
 </Accordion>
-<Accordion title={LOCALIZATION_EN.VIEWPORT}>
+<Accordion title={LocalizationEN.VIEWPORT}>
     <div data-svelteform="-">
         <Checkbox
                 checked={entity.active}
@@ -108,11 +109,11 @@
                 EntityFactory.toggleEntityVisibility(entity.id)
                 entity.active = inv
             }}
-                label={LOCALIZATION_EN.ACTIVE}
+                label={LocalizationEN.ACTIVE}
         />
 
         <ColorPicker
-                label={LOCALIZATION_EN.COLOR}
+                label={LocalizationEN.COLOR}
                 value={entity.colorIdentifier||[255,255,255]}
                 submit={(_, arr) => {
                 entity.colorIdentifier = arr

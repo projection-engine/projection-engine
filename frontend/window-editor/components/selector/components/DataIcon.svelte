@@ -1,14 +1,14 @@
-<script>
-    import Preview from "../../../../shared/components/preview/Preview.svelte";
-    import FS from "../../../../shared/lib/FS/FS";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import PROJECT_FOLDER_STRUCTURE from "../../../../../static/objects/PROJECT_FOLDER_STRUCTURE";
+<script lang="ts">
+    import Preview from "../../../../shared/components/preview/Preview.svelte"
+    import FS from "../../../../shared/lib/FS/FS"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import Folders from "../../../../../contants/Folders";
 
     export let state
     export let type
     let previewPath
     $: {
-        if (state) previewPath = FS.path + FS.sep + PROJECT_FOLDER_STRUCTURE.PREVIEWS + FS.sep + state.registryID + ".preview"
+    	if (state) previewPath = FS.path + FS.sep + Folders.PREVIEWS + FS.sep + state.registryID + ".preview"
     }
 </script>
 

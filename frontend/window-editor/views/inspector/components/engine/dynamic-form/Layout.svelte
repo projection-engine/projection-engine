@@ -1,11 +1,12 @@
 <script>
-    import Property from "./Property.svelte";
-    import removeComponent from "../../../utils/remove-component";
-    import LOCALIZATION_EN from "../../../../../../../static/objects/LOCALIZATION_EN";
-    import Component from "../../../../../../../engine-core/instances/components/Component";
-    import getComponentLabel from "../../../../../utils/get-component-label";
-    import Accordion from "../../../../../../shared/components/accordion/Accordion.svelte";
-    import PropertyHeader from "../../../../../../shared/components/PropertyHeader.svelte";
+    import Property from "./Property.svelte"
+    import removeComponent from "../../../utils/remove-component"
+
+    import Component from "../../../../../../../engine-core/instances/components/Component"
+    import getComponentLabel from "../../../../../utils/get-component-label"
+    import Accordion from "../../../../../../shared/components/accordion/Accordion.svelte"
+    import PropertyHeader from "../../../../../../shared/components/PropertyHeader.svelte"
+    import LocalizationEN from "../../../../../../../contants/LocalizationEN"
 
     export let key
     export let index
@@ -17,7 +18,7 @@
     $: title = getComponentLabel(key) || component?.name
 
     function checkIsDisabled(propAttr) {
-        return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]
+    	return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]
     }
 </script>
 
@@ -30,7 +31,7 @@
 {#if Array.isArray(component.props)}
     {#each component.props as propAttr, index}
         {#if propAttr.type === Component.propTypes.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
-            <Accordion startOpen={index === 0} title={LOCALIZATION_EN[propAttr.label] || propAttr.label}
+            <Accordion startOpen={index === 0} title={LocalizationEN[propAttr.label] || propAttr.label}
                        styles="display: flex; flex-direction: column; gap: 4px;">
                 {#each propAttr.children as attribute}
                     {#if !checkIsDisabled(attribute)}

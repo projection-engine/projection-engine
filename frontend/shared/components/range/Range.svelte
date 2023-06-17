@@ -1,23 +1,23 @@
 <script>
 
-    import {onDestroy, onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte"
 
-    import getPercentage from "./utils/get-percentage";
-    import ToolTip from "../tooltip/ToolTip.svelte";
+    import getPercentage from "./utils/get-percentage"
+    import ToolTip from "../tooltip/ToolTip.svelte"
 
     const toDeg = 180 / Math.PI
 
 
-    export let label = undefined;
-    export let maxValue = undefined;
-    export let minValue = undefined;
+    export let label = undefined
+    export let maxValue = undefined
+    export let minValue = undefined
     export let onFinish = undefined
-    export let disabled = undefined;
+    export let disabled = undefined
     export let incrementPercentage = .001
     export let value = 0
     export let handleChange
     export let isAngle
-    export let integer = undefined;
+    export let integer = undefined
 
     $: precision = incrementPercentage === 1 || integer ? 0 : incrementPercentage != null && incrementPercentage.toString().split(".")[1] != null ? incrementPercentage.toString().split(".")[1].length : 3
 
@@ -28,102 +28,102 @@
     let currentValue = 0
 
     function parseToString(v) {
-        if (!precision)
-            return parseInt(v)
-        return parseFloat(v).toFixed(precision)
+    	if (!precision)
+    		return parseInt(v)
+    	return parseFloat(v).toFixed(precision)
     }
 
     $: percentageFilled = minValue != null && maxValue != null ? getPercentage(currentValue, maxValue) : undefined
     $: incrementData = (incrementPercentage ? incrementPercentage : 0.1)
     const handleMouseMove = (e) => {
-        try {
+    	try {
 
-            const multiplier = -e.movementX
-            dragged = true
-            let increment = integer ? 1 : Math.abs(incrementData * multiplier)
-            if (multiplier < 0 && (currentValue <= maxValue || !maxValue))
-                currentValue = currentValue + increment
-            else if (currentValue >= minValue || !minValue)
-                currentValue = currentValue - increment
+    		const multiplier = -e.movementX
+    		dragged = true
+    		let increment = integer ? 1 : Math.abs(incrementData * multiplier)
+    		if (multiplier < 0 && (currentValue <= maxValue || !maxValue))
+    			currentValue = currentValue + increment
+    		else if (currentValue >= minValue || !minValue)
+    			currentValue = currentValue - increment
 
-            if (integer)
-                currentValue = Math.round(parseInt(currentValue))
+    		if (integer)
+    			currentValue = Math.round(parseInt(currentValue))
 
-            if (currentValue > maxValue && maxValue !== undefined)
-                currentValue = maxValue
-            else if (currentValue < minValue && minValue !== undefined)
-                currentValue = minValue
-            if (!changed)
-                changed = true
-            if (inputRef)
-                inputRef.value = parseToString(currentValue * (isAngle ? toDeg : 1))
-            if (handleChange)
-                handleChange(currentValue)
-        } catch (err) {
-            console.error(err)
-            document.body.removeEventListener("mousemove", handleMouseMove)
-        }
+    		if (currentValue > maxValue && maxValue !== undefined)
+    			currentValue = maxValue
+    		else if (currentValue < minValue && minValue !== undefined)
+    			currentValue = minValue
+    		if (!changed)
+    			changed = true
+    		if (inputRef)
+    			inputRef.value = parseToString(currentValue * (isAngle ? toDeg : 1))
+    		if (handleChange)
+    			handleChange(currentValue)
+    	} catch (err) {
+    		console.error(err)
+    		document.body.removeEventListener("mousemove", handleMouseMove)
+    	}
     }
 
     const onChange = (e) => {
-        let finalValue = parseFloat(inputRef.value)
-        if (e.type === "keydown" && e.code !== "Enter" || isNaN(finalValue))
-            return
-        else if (e.type === "keydown")
-            inputRef.blur()
+    	let finalValue = parseFloat(inputRef.value)
+    	if (e.type === "keydown" && e.code !== "Enter" || isNaN(finalValue))
+    		return
+    	else if (e.type === "keydown")
+    		inputRef.blur()
 
-        if (maxValue !== undefined && finalValue > maxValue)
-            finalValue = maxValue
-        if (minValue !== undefined && finalValue < minValue)
-            finalValue = minValue
+    	if (maxValue !== undefined && finalValue > maxValue)
+    		finalValue = maxValue
+    	if (minValue !== undefined && finalValue < minValue)
+    		finalValue = minValue
 
-        if (handleChange)
-            handleChange(finalValue)
+    	if (handleChange)
+    		handleChange(finalValue)
 
-        if (onFinish !== undefined)
-            onFinish(finalValue)
+    	if (onFinish !== undefined)
+    		onFinish(finalValue)
 
-        if (!changed)
-            changed = true
+    	if (!changed)
+    		changed = true
     }
 
     $: {
-        if (!dragged && inputRef) {
-            const parsedValue = isNaN(parseFloat(value)) ? 0 : parseFloat(parseFloat(value).toFixed(precision ? precision : 1))
-            inputRef.value = parseToString(parsedValue * (isAngle ? toDeg : 1))
-            currentValue = parsedValue
-        }
+    	if (!dragged && inputRef) {
+    		const parsedValue = isNaN(parseFloat(value)) ? 0 : parseFloat(parseFloat(value).toFixed(precision ? precision : 1))
+    		inputRef.value = parseToString(parsedValue * (isAngle ? toDeg : 1))
+    		currentValue = parsedValue
+    	}
     }
     const handleMouseUp = (e) => {
-        if (document.pointerLockElement === inputRef)
-            document.exitPointerLock()
-        if (e.target !== inputRef)
-            return
-        if (!dragged)
-            inputRef.focus()
-        else
-            dragged = false
-        if (onFinish !== undefined)
-            onFinish(currentValue)
+    	if (document.pointerLockElement === inputRef)
+    		document.exitPointerLock()
+    	if (e.target !== inputRef)
+    		return
+    	if (!dragged)
+    		inputRef.focus()
+    	else
+    		dragged = false
+    	if (onFinish !== undefined)
+    		onFinish(currentValue)
 
-        document.body.removeEventListener("mousemove", handleMouseMove)
+    	document.body.removeEventListener("mousemove", handleMouseMove)
     }
     const handleMouseDown = e => {
-        if (disabled || document.activeElement === inputRef)
-            return;
-        e.preventDefault()
+    	if (disabled || document.activeElement === inputRef)
+    		return
+    	e.preventDefault()
 
 
-        if (!document.pointerLockElement)
-            inputRef.requestPointerLock()
-        document.body.addEventListener("mousemove", handleMouseMove)
+    	if (!document.pointerLockElement)
+    		inputRef.requestPointerLock()
+    	document.body.addEventListener("mousemove", handleMouseMove)
 
     }
     onMount(() => {
-        document.addEventListener("mouseup", handleMouseUp)
+    	document.addEventListener("mouseup", handleMouseUp)
     })
     onDestroy(() => {
-        document.removeEventListener("mouseup", handleMouseUp)
+    	document.removeEventListener("mouseup", handleMouseUp)
     })
 </script>
 
