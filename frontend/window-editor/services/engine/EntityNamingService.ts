@@ -1,28 +1,28 @@
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
 import Entity from "../../../../engine-core/instances/Entity"
-import EntityUpdateController from "./EntityUpdateController"
+import EntityUpdateService from "./EntityUpdateService"
 
-export default class NameController {
+export default class EntityNamingService {
 	static #byName = new Map<string, string>()
 	static get byName(){
-		return NameController.#byName
+		return EntityNamingService.#byName
 	}
 
 	static clear(){
-		NameController.#byName.clear()
+		EntityNamingService.#byName.clear()
 	}
 	static set byName(data:Map<string, string>){
 		if(data instanceof Map)
-			NameController.#byName = data
+			EntityNamingService.#byName = data
 	}
 	static renameEntity(newName:string, entity:Entity) {
-		const found = NameController.#byName.get(newName)
+		const found = EntityNamingService.#byName.get(newName)
 		let validName = true
 		if (found !== entity.id)
 			validName = !QueryAPI.getEntityByID(found)
 		if (validName) {
-			EntityUpdateController.updateEntity(entity,  newName, "name")
-			NameController.#byName.set(newName, entity.id)
+			EntityUpdateService.updateEntity(entity,  newName, "name")
+			EntityNamingService.#byName.set(newName, entity.id)
 		} else{
 			{
 				const subWord = ".00"
@@ -32,7 +32,7 @@ export default class NameController {
 					currentIndex = 1
 				else
 					currentIndex += 1
-				NameController.renameEntity(newName.replace(originalPrefix, "") + subWord + currentIndex, entity)
+				EntityNamingService.renameEntity(newName.replace(originalPrefix, "") + subWord + currentIndex, entity)
 			}
 		}
 	}
@@ -40,9 +40,9 @@ export default class NameController {
 		const groupID = crypto.randomUUID().substring(0, 3)
 		for (let i = 0; i < entities.length; i++){
 			const entity = entities[i]
-			if(NameController.#byName.has(entity.name))
+			if(EntityNamingService.#byName.has(entity.name))
 				entity.name = entity.name + "." + i.toString().padStart(3, "0") + "(" + groupID + ")"
-			NameController.#byName.set(entity.name, entity.id)
+			EntityNamingService.#byName.set(entity.name, entity.id)
 		}
 	}
 }

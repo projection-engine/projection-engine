@@ -1,9 +1,9 @@
 import Engine from "../../../../engine-core/Engine"
 import AXIS from "../../../../engine-core/tools/static/AXIS"
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
-import HierarchyController from "./HierarchyController"
-import EditorActionHistory from "../utils/EditorActionHistory"
-import NameController from "./NameController"
+import EntityHierarchyService from "./EntityHierarchyService"
+import EditorActionHistory from "../EditorActionHistory"
+import EntityNamingService from "./EntityNamingService"
 import getPivotPointMatrix from "../../../../engine-core/tools/utils/get-pivot-point-matrix"
 import SelectionStore from "../../../shared/stores/SelectionStore"
 import Entity from "../../../../engine-core/instances/Entity"
@@ -26,7 +26,7 @@ function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
 }
 
 
-export default class EngineStateController {
+export default class EngineStateService {
 	static #updateStructure(replacedMap?: { [key: string]: boolean }) {
 		const arr = Engine.entities.array
 		for (let i = 0; i < arr.length; i++) {
@@ -43,21 +43,21 @@ export default class EngineStateController {
 			}
 		}
 
-		HierarchyController.updateHierarchy()
+		EntityHierarchyService.updateHierarchy()
 	}
 
     @checkLevel
 	static replaceBlock(toRemove: string[], toAdd: Entity[]) {
 
 		const replacedMap = {}
-		EngineStateController.removeBlock(toRemove)
+		EngineStateService.removeBlock(toRemove)
 		for (let i = 0; i < toAdd.length; i++) {
 			const entity = toAdd[i]
 			EntityAPI.addEntity(entity)
 			replacedMap[entity.id] = true
-			NameController.renameEntity(entity.name, entity)
+			EntityNamingService.renameEntity(entity.name, entity)
 		}
-		EngineStateController.#updateStructure(replacedMap)
+		EngineStateService.#updateStructure(replacedMap)
 	}
 
     @checkLevel
@@ -65,11 +65,11 @@ export default class EngineStateController {
 
     	EditorActionHistory.save(block, true)
     	EntityAPI.addGroup(block)
-    	NameController.renameInBlock(block)
+    	EntityNamingService.renameInBlock(block)
     	for (let i = 0; i < block.length; i++)
     		getPivotPointMatrix(block[i])
     	EditorActionHistory.save(block)
-    	EngineStateController.#updateStructure()
+    	EngineStateService.#updateStructure()
     }
 
     @checkLevel
@@ -96,7 +96,7 @@ export default class EngineStateController {
     		lockedEntity: Engine.entities.array[0]?.id
     	})
 
-    	EngineStateController.#updateStructure()
+    	EngineStateService.#updateStructure()
     }
 
     @checkLevel
@@ -104,7 +104,7 @@ export default class EngineStateController {
     	EditorActionHistory.save(entity, true)
     	EditorActionHistory.save(entity)
 
-    	NameController.renameEntity(entity.name, entity)
+    	EntityNamingService.renameEntity(entity.name, entity)
     	getPivotPointMatrix(entity)
     	EntityAPI.addEntity(entity)
     	SelectionStore.updateStore({
@@ -113,7 +113,7 @@ export default class EngineStateController {
     		array: [entity.id],
     		lockedEntity: entity.id
     	})
-    	EngineStateController.#updateStructure()
+    	EngineStateService.#updateStructure()
     }
 
     @checkLevel
@@ -126,6 +126,6 @@ export default class EngineStateController {
     			s.addParent(found)
     		}
     	}
-    	EngineStateController.#updateStructure()
+    	EngineStateService.#updateStructure()
     }
 }

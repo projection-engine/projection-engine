@@ -4,7 +4,7 @@ import Entity from "../../../../engine-core/instances/Entity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 
 
-export default class HierarchyController {
+export default class EntityHierarchyService {
 	static hierarchy: HierarchyToRenderElement[] = []
 	static #listening: { [key: string]: Function } = {}
 
@@ -24,16 +24,16 @@ export default class HierarchyController {
 				callback(children[i], depth + 1)
 		}
 		callback(root, 0)
-		HierarchyController.hierarchy = data
-		Object.values(HierarchyController.#listening).forEach(v => v())
+		EntityHierarchyService.hierarchy = data
+		Object.values(EntityHierarchyService.#listening).forEach(v => v())
 	}
 
 	static removeListener(internalID: string) {
-		delete HierarchyController.#listening[internalID]
+		delete EntityHierarchyService.#listening[internalID]
 	}
 
 	static registerListener(internalID: string, callback: Function) {
-		HierarchyController.#listening[internalID] = callback
+		EntityHierarchyService.#listening[internalID] = callback
 		callback()
 	}
 
@@ -50,6 +50,6 @@ export default class HierarchyController {
 			open[target.id] = true
 			target = target.parent
 		}
-		Object.values(HierarchyController.#listening).forEach(v => v({...open}))
+		Object.values(EntityHierarchyService.#listening).forEach(v => v({...open}))
 	}
 }

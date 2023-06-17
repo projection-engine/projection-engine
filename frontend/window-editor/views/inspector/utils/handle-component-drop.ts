@@ -1,7 +1,7 @@
 import FilesStore from "../../../../shared/stores/FilesStore"
 import componentConstructor from "../../../utils/component-constructor"
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS"
-import Loader from "../../../lib/parsers/Loader"
+import EngineResourceLoaderService from "../../../services/engine/EngineResourceLoaderService"
 import AlertController from "../../../../shared/components/alert/AlertController"
 
 import FileSystemAPI from "../../../../../engine-core/lib/utils/FileSystemAPI"
@@ -42,7 +42,7 @@ export default async function handleComponentDrop(entity, data) {
 				entity.addComponent(COMPONENTS.CULLING)
 			}
 
-			await Loader.load(id, true)
+			await EngineResourceLoaderService.load(id, true)
 			entity.meshComponent.meshID = id
 			break
 		case "MATERIAL": {

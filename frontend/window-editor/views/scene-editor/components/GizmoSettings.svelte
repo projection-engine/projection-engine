@@ -15,6 +15,7 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import LocalizationEN from "../../../../../contants/LocalizationEN"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
 
     const BUTTON_DROPDOWN = "border-radius: 25px; height: 25px; background: var(--pj-background-tertiary);"
     const BUTTON_DROPDOWN_INT = "background: transparent; box-shadow: none; width: 50px; justify-content: center; gap: 6px"
@@ -73,7 +74,7 @@
                 {#if settings.gizmoGrid.translationGizmo === value}
                     <Icon>check</Icon>
                 {:else}
-                    <div style="width: 1.1rem"></div>
+                    <EmptyIcon/>
                 {/if}
                 {value}
             </button>
@@ -96,7 +97,7 @@
                 {#if settings.gizmoGrid.scaleGizmo === value}
                     <Icon>check</Icon>
                 {:else}
-                    <div style="width: 1.1rem"></div>
+                    <EmptyIcon/>
                 {/if}
                 {value}
             </button>
@@ -119,7 +120,7 @@
                 {#if settings.gizmoGrid.rotationGizmo === value}
                     <Icon>check</Icon>
                 {:else}
-                    <div style="width: 1.1rem"></div>
+                    <EmptyIcon/>
                 {/if}
                 {value}
             </button>

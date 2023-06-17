@@ -1,27 +1,27 @@
-import EngineStore from "../../../shared/stores/EngineStore"
+import EngineStore from "../../shared/stores/EngineStore"
 
-import SelectionStore from "../../../shared/stores/SelectionStore"
+import SelectionStore from "../../shared/stores/SelectionStore"
 
-import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
+import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import {vec3, vec4} from "gl-matrix"
-import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
-import Engine from "../../../../engine-core/Engine"
-import AlertController from "../../../shared/components/alert/AlertController"
-import EngineStateController from "../controllers/EngineStateController"
+import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
+import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
+import Engine from "../../../engine-core/Engine"
+import AlertController from "../../shared/components/alert/AlertController"
+import EngineStateService from "./engine/EngineStateService"
 
 
-export default class ViewportActions {
+export default class ViewportActionService {
 	static toCopy = []
 
 	static copy(single?: boolean, target?: string) {
 		const selected = SelectionStore.engineSelected
 		if (target)
-			ViewportActions.toCopy = [target]
+			ViewportActionService.toCopy = [target]
 		else if (single && selected[0])
-			ViewportActions.toCopy = [selected[0]]
+			ViewportActionService.toCopy = [selected[0]]
 		else
-			ViewportActions.toCopy = [...selected]
+			ViewportActionService.toCopy = [...selected]
 	}
 
 	static focus() {
@@ -39,7 +39,7 @@ export default class ViewportActions {
 	}
 
 	static deleteSelected() {
-		EngineStateController.removeBlock(SelectionStore.engineSelected)
+		EngineStateService.removeBlock(SelectionStore.engineSelected)
 	}
 
 	static invertSelection() {
@@ -59,11 +59,11 @@ export default class ViewportActions {
 
 	static paste(parent?: string) {
 		const block = []
-		if (!ViewportActions.toCopy)
+		if (!ViewportActionService.toCopy)
 			return
 		const targetParent = parent ? QueryAPI.getEntityByID(parent) : undefined
-		for (let i = 0; i < ViewportActions.toCopy.length; i++) {
-			const t = ViewportActions.toCopy[i]
+		for (let i = 0; i < ViewportActionService.toCopy.length; i++) {
+			const t = ViewportActionService.toCopy[i]
 			const found = QueryAPI.getEntityByID(t)
 			if (found) {
 				if (targetParent === found)
@@ -75,16 +75,16 @@ export default class ViewportActions {
 				clone.addParent(targetParent)
 			}
 		}
-		EngineStateController.appendBlock(block)
-		AlertController.log(`Pasted ${ViewportActions.toCopy.length} entities.`)
+		EngineStateService.appendBlock(block)
+		AlertController.log(`Pasted ${ViewportActionService.toCopy.length} entities.`)
 
 	}
 
 	static group() {
 		const selected = SelectionStore.engineSelected
-		ViewportActions.toCopy = selected
+		ViewportActionService.toCopy = selected
 		if (selected.length > 1)
-			EngineStateController.linkMultiple(selected)
+			EngineStateService.linkMultiple(selected)
 	}
 
 	static selectAll() {

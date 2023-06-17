@@ -18,6 +18,7 @@
     import SortingOptions from "./SortingOptions.svelte"
     import LocalizationEN from "../../../../../contants/LocalizationEN"
     import FileTypes from "../../../../../contants/FileTypes"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -109,7 +110,7 @@
                     {#if fileType === FileTypes[k[0]]}
                         <Icon>check</Icon>
                     {:else}
-                        <div style="width: 1.1rem"></div>
+                        <EmptyIcon/>
                     {/if}
                     {k[1]}
                 </button>

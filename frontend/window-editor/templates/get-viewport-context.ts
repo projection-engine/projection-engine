@@ -1,12 +1,12 @@
 import SelectionStore from "../../shared/stores/SelectionStore"
-import viewportHotkeys from "./viewport-hotkeys"
-import EntityFactory from "../lib/controllers/EntityFactory"
+import getViewportHotkeys from "./get-viewport-hotkeys"
+import EntityFactoryService from "../services/engine/EntityFactoryService"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
-import entityCreationOptions from "./entity-creation-options"
+import getEntityCreationOptions from "./get-entity-creation-options"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 
-export default function viewportContext(settings:MutableObject, forDropdown?:boolean):ContextMenuOption[] {
-	const VIEWPORT_HOTKEYS = viewportHotkeys(settings)
+export default function getViewportContext(settings:MutableObject, forDropdown?:boolean):ContextMenuOption[] {
+	const VIEWPORT_HOTKEYS = getViewportHotkeys(settings)
 	const data = [
 		{divider: true, label: "Selection"},
 		VIEWPORT_HOTKEYS.SELECT_NONE,
@@ -50,7 +50,7 @@ export default function viewportContext(settings:MutableObject, forDropdown?:boo
 					onClick: () => {
 						const selected = SelectionStore.engineSelected
 						for (let i = 0; i < selected.length; i++)
-							EntityFactory.translateEntity(QueryAPI.getEntityByID(selected[i]))
+							EntityFactoryService.translateEntity(QueryAPI.getEntityByID(selected[i]))
 					}
 				},
 				{
@@ -85,7 +85,7 @@ export default function viewportContext(settings:MutableObject, forDropdown?:boo
 		{divider: true},
 		{
 			label: "Create",
-			children: entityCreationOptions()
+			children: getEntityCreationOptions()
 		}
 	]
 	if (forDropdown)

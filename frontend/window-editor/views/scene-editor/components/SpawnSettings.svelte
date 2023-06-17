@@ -33,6 +33,7 @@
 
 <style>
     .group {
+        width: 100%;
         padding: 6px;
         display: grid;
         gap: 3px;

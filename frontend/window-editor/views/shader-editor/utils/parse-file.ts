@@ -1,5 +1,5 @@
-import FilesAPI from "../../../lib/fs/FilesAPI"
-import RegistryAPI from "../../../lib/fs/RegistryAPI"
+import FSFilesService from "../../../services/fs/FSFilesService"
+import FSRegistryService from "../../../services/fs/FSRegistryService"
 import ShaderEditorTools from "../libs/ShaderEditorTools"
 
 import FS from "../../../../shared/lib/FS/FS"
@@ -9,10 +9,10 @@ import ShaderComment from "../templates/ShaderComment"
 import ShaderLink from "../templates/ShaderLink"
 
 export default async function parseFile(openFile: OpenFile, canvasAPI: Canvas) {
-	const res = RegistryAPI.getRegistryEntry(openFile.registryID)
+	const res = FSRegistryService.getRegistryEntry(openFile.registryID)
 	if (!res)
 		return
-	const dataToParse = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + res.path, "json")
+	const dataToParse = await FSFilesService.readFile(FS.ASSETS_PATH + FS.sep + res.path, "json")
 	if (dataToParse && Object.keys(dataToParse).length > 0) {
 
 		if (dataToParse.nodes)

@@ -1,11 +1,11 @@
 <script lang="ts">
     import Engine from "../../../../../../engine-core/Engine";
-    import NameController from "../../../../lib/controllers/NameController";
+    import EntityNamingService from "../../../../services/engine/EntityNamingService";
 
     import Selector from "../../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import EntityFactory from "../../../../lib/controllers/EntityFactory";
-    import HierarchyController from "../../../../lib/controllers/HierarchyController";
+    import EntityFactoryService from "../../../../services/engine/EntityFactoryService";
+    import EntityHierarchyService from "../../../../services/engine/EntityHierarchyService";
 
     import Input from "../../../../../shared/components/input/Input.svelte";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
@@ -13,7 +13,7 @@
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import TransformationForm from "./TransformationForm.svelte";
-    import EntityUpdateController from "../../../../lib/controllers/EntityUpdateController";
+    import EntityUpdateService from "../../../../services/engine/EntityUpdateService";
     import {onDestroy} from "svelte";
     import AddComponent from "./AddComponent.svelte";
     import AlertController from "../../../../../shared/components/alert/AlertController";
@@ -27,8 +27,8 @@
     $: {
         if (entityID !== entity.id) {
             if (entityID)
-                EntityUpdateController.removeListener(entityID, ID)
-            EntityUpdateController.addListener(entity.id, ID, () => {
+                EntityUpdateService.removeListener(entityID, ID)
+            EntityUpdateService.addListener(entity.id, ID, () => {
                 entityName = entity.name
             })
             entityName = entity.name
@@ -37,7 +37,7 @@
     }
 
     onDestroy(() => {
-        EntityUpdateController.removeListener(entityID, ID)
+        EntityUpdateService.removeListener(entityID, ID)
     })
 </script>
 
@@ -57,8 +57,8 @@
         <Input
                 width="100%"
                 hasBorder={true}
-                onBlur={(_,v) => NameController.renameEntity(v, entity)}
-                onEnter={v => NameController.renameEntity(v, entity)}
+                onBlur={(_,v) => EntityNamingService.renameEntity(v, entity)}
+                onEnter={v => EntityNamingService.renameEntity(v, entity)}
                 inputValue={entityName}
                 height="23px"
                 placeholder={LocalizationEN.MY_ENTITY}
@@ -94,7 +94,7 @@
                             AlertController.error(LocalizationEN.COULD_NOT_LINK_ENTITIES)
                             return
                         }
-                        HierarchyController.updateHierarchy()
+                        EntityHierarchyService.updateHierarchy()
                     }}
             />
         {/if}
@@ -106,7 +106,7 @@
                 checked={entity.active}
                 handleCheck={_ =>  {
                 const inv = !entity.active
-                EntityFactory.toggleEntityVisibility(entity.id)
+                EntityFactoryService.toggleEntityVisibility(entity.id)
                 entity.active = inv
             }}
                 label={LocalizationEN.ACTIVE}
@@ -117,7 +117,7 @@
                 value={entity.colorIdentifier||[255,255,255]}
                 submit={(_, arr) => {
                 entity.colorIdentifier = arr
-                HierarchyController.updateHierarchy()
+                EntityHierarchyService.updateHierarchy()
             }}
         />
     </div>

@@ -1,6 +1,6 @@
 import FilesStore from "../../../../shared/stores/FilesStore"
-import RegistryAPI from "../../../lib/fs/RegistryAPI"
-import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI"
+import FSRegistryService from "../../../services/fs/FSRegistryService"
+import ContentBrowserAPI from "../../../services/fs/ContentBrowserAPI"
 
 import FS from "../../../../shared/lib/FS/FS"
 import AlertController from "../../../../shared/components/alert/AlertController"
@@ -16,7 +16,7 @@ export default async function handleDropFolder(event:string[]|string, target?:st
 			if (target !== FS.sep) {
 				let from = textData
 				if (!from.includes(FS.sep)) {
-					const reg = RegistryAPI.getRegistryEntry(from)
+					const reg = FSRegistryService.getRegistryEntry(from)
 					if (reg) from = reg.path
 					else {
 						console.error("Some error occurred")

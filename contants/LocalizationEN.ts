@@ -14,6 +14,7 @@ export default {
 	BASIC: "Basic",
 	ENTITY_PROPERTIES: "Entity properties",
 	CUSTOM_COMPONENTS: "Custom components",
+	SHADING: "Shading: ",
 	NAME_AND_KEY: "Name & key",
 	NEW_MESSAGE: "New console message",
 	FILTERING_SAMPLES: "Filtering samples",

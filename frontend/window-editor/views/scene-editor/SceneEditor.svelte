@@ -3,11 +3,11 @@
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import SelectBox from "../../../shared/components/select-box/SelectBox.svelte"
     import GIZMOS from "../../static/GIZMOS.ts"
-    import Loader from "../../lib/parsers/Loader"
+    import EngineResourceLoaderService from "../../services/engine/EngineResourceLoaderService"
     import GizmoSystem from "../../../../engine-core/tools/runtime/GizmoSystem"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import SelectionStore from "../../../shared/stores/SelectionStore"
-    import viewportContext from "../../templates/viewport-context"
+    import getViewportContext from "../../templates/get-viewport-context"
 
     import CameraSettings from "./components/CameraSettings.svelte"
     import Header from "./Header.svelte"
@@ -77,7 +77,7 @@
     $: {
     	if (settings?.viewportHotkeys != null)
     		ContextMenuController.mount(
-    			viewportContext(settings),
+    			getViewportContext(settings),
     			RENDER_TARGET
     		)
     }
@@ -94,7 +94,7 @@
     	draggable.onMount({
     		targetElement: GPU.canvas,
     		onDrop: (data, event) => {
-    			Loader.load(data, false, event.clientX, event.clientY).catch()
+    			EngineResourceLoaderService.load(data, false, event.clientX, event.clientY).catch()
     		},
     		onDragOver: () => `
                 <span data-svelteicon="-" style="font-size: 70px">add</span>
@@ -122,7 +122,7 @@
         {#if isOnGizmo}
             <EntityInformation mainEntity={mainEntity} selectedSize={selectedSize} settings={settings} engine={engine}/>
         {:else}
-            <Header settings={settings} engine={engine}/>
+            <Header settings={settings}/>
         {/if}
     </ViewHeader>
     <SelectBox

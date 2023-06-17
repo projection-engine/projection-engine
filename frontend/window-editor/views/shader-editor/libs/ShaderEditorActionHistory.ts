@@ -1,4 +1,4 @@
-import UndoRedo from "../../../lib/utils/UndoRedo"
+import UndoRedo from "../../../components/UndoRedo"
 import type Canvas from "./Canvas"
 import ShaderNode from "../templates/ShaderNode"
 import ShaderComment from "../templates/ShaderComment"

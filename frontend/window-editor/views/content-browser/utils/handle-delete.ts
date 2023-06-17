@@ -1,4 +1,4 @@
-import FilesAPI from "../../../lib/fs/FilesAPI"
+import FSFilesService from "../../../services/fs/FSFilesService"
 import FilesStore from "../../../../shared/stores/FilesStore"
 
 import FS from "../../../../shared/lib/FS/FS"
@@ -17,7 +17,7 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
 		const relatedFiles =  FilesStore.data.items.filter(item => item.id.includes(currentItem.id))
 		for (let j = 0; j < relatedFiles.length; j++) {
 			const currentFile = relatedFiles[j]
-			await FilesAPI.deleteFile(
+			await FSFilesService.deleteFile(
 				FS.ASSETS_PATH + FS.sep + currentFile.id,
 				{
 					recursive: true,
@@ -26,7 +26,7 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
 			if (currentDirectory.id === currentFile.id)
 				setCurrentDirectory({id: FS.sep})
 		}
-		await FilesAPI.deleteFile(
+		await FSFilesService.deleteFile(
 			FS.ASSETS_PATH + FS.sep + file.id,
 			{
 				recursive: true,

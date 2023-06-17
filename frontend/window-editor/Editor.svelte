@@ -8,8 +8,8 @@
     import FALLBACK_VIEW from "./static/FALLBACK_VIEW"
     import updateView from "./utils/update-view"
     import FS from "../shared/lib/FS/FS"
-    import FilesAPI from "./lib/fs/FilesAPI"
-    import LevelController from "./lib/utils/LevelController"
+    import FSFilesService from "./services/fs/FSFilesService"
+    import LevelService from "./services/engine/LevelService"
     import HotKeysController from "../shared/lib/HotKeysController"
     import WindowFrame from "./components/window-frame/WindowFrame.svelte"
     import Canvas from "./views/scene-editor/Canvas.svelte"
@@ -44,8 +44,8 @@
     	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
     		sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
     		FS.initialize(pathToProject)
-    		FilesAPI.initializeFolders().catch()
-    		LevelController.initialize().then(_ => isMetadataReady = true).catch()
+    		FSFilesService.initializeFolders().catch()
+    		LevelService.initialize().then(_ => isMetadataReady = true).catch()
     		HotKeysController.initializeListener()
     		FilesStore.initializeContentBrowser()
     	})

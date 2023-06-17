@@ -1,14 +1,14 @@
-import UndoRedo from "./UndoRedo"
-import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
+import UndoRedo from "../components/UndoRedo"
+import EntityAPI from "../../../engine-core/lib/utils/EntityAPI"
 
 
-import serializeStructure from "../../../../engine-core/utils/serialize-structure"
-import NameController from "../controllers/NameController"
-import AlertController from "../../../shared/components/alert/AlertController"
-import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
-import EngineStateController from "../controllers/EngineStateController"
-import Entity from "../../../../engine-core/instances/Entity"
-import LocalizationEN from "../../../../contants/LocalizationEN";
+import serializeStructure from "../../../engine-core/utils/serialize-structure"
+import EntityNamingService from "./engine/EntityNamingService"
+import AlertController from "../../shared/components/alert/AlertController"
+import ChangesTrackerStore from "../../shared/stores/ChangesTrackerStore"
+import EngineStateService from "./engine/EngineStateService"
+import Entity from "../../../engine-core/instances/Entity"
+import LocalizationEN from "../../../contants/LocalizationEN";
 
 interface Action {
     nameCache: Map<string, string>
@@ -29,7 +29,7 @@ export default class EditorActionHistory {
 
 		const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
 		EditorActionHistory.#cache.save({
-			nameCache: new Map(NameController.byName),
+			nameCache: new Map(EntityNamingService.byName),
 			toRemove: data.map(d => d.id),
 			toAdd: !isRemoval ? serializeStructure(data) : undefined
 		})
@@ -58,13 +58,13 @@ export default class EditorActionHistory {
 		const toAdd: Entity[] = []
 		const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
 
-		NameController.byName = nameCache
+		EntityNamingService.byName = nameCache
 		for (let i = 0; i < parsedToAdd.length; i++) {
 			if (!parsedToAdd[i])
 				continue
 			toAdd.push(EntityAPI.parseEntityObject(parsedToAdd[i]))
 		}
-		EngineStateController.replaceBlock(toRemove, toAdd)
+		EngineStateService.replaceBlock(toRemove, toAdd)
 
 	}
 }

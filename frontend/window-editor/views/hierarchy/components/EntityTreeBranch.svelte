@@ -1,7 +1,7 @@
 <script lang="ts">
     import TreeBranchContent from "./EntityTreeBranchContent.svelte";
 
-    import EntityFactory from "../../../lib/controllers/EntityFactory";
+    import EntityFactoryService from "../../../services/engine/EntityFactoryService";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
@@ -71,7 +71,7 @@
     <button
             data-sveltebuttondefault="-"
             class="button-visibility"
-            on:click={() => EntityFactory.toggleEntityVisibility(entity.id)}
+            on:click={() => EntityFactoryService.toggleEntityVisibility(entity.id)}
     >
         <ToolTip content={LocalizationEN.DEACTIVATE}/>
         <Icon styles="font-size: .8rem">

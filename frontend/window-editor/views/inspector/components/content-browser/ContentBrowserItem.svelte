@@ -1,6 +1,6 @@
 <script>
 
-    import FilesAPI from "../../../../lib/fs/FilesAPI"
+    import FSFilesService from "../../../../services/fs/FSFilesService"
     import TextureItem from "./TextureItem.svelte"
     import CodeItem from "./CodeItem.svelte"
     import ItemMetadata from "./ItemMetadata.svelte"
@@ -23,7 +23,7 @@
     	data = undefined
     	if (fileType !== FileTypes.PRIMITIVE && fileType !== FileTypes.LEVEL) {
     		const fType = VALID.includes(fileType) ? "json" : undefined
-    		FilesAPI.readFile(FS.ASSETS_PATH + item.id, fType).then(res => data = res)
+    		FSFilesService.readFile(FS.ASSETS_PATH + item.id, fType).then(res => data = res)
     	} else
     		data = undefined
     }

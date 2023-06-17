@@ -1,13 +1,13 @@
 import {get, writable} from "svelte/store"
 import handleDropFolder from "../../window-editor/views/content-browser/utils/handle-drop-folder"
 
-import ContentBrowserAPI from "../../window-editor/lib/fs/ContentBrowserAPI"
+import ContentBrowserAPI from "../../window-editor/services/fs/ContentBrowserAPI"
 
 import resolveFileName from "../../window-editor/utils/resolve-file-name"
 import FilesHierarchyStore from "./FilesHierarchyStore"
 import FS from "../lib/FS/FS"
 import {getCall} from "../lib/FS/get-call"
-import RegistryAPI from "../../window-editor/lib/fs/RegistryAPI"
+import FSRegistryService from "../../window-editor/services/fs/FSRegistryService"
 import IPCRoutes from "../../../contants/IPCRoutes";
 import LocalizationEN from "../../../contants/LocalizationEN";
 
@@ -54,7 +54,7 @@ export default class FilesStore {
 			let data = <MutableObject[] | null>(await getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FS.path + FS.sep}, false))
 			if (!data)
 				data = FilesStore.data.items
-			await RegistryAPI.readRegistry()
+			await FSRegistryService.readRegistry()
 			const fileTypes = await ContentBrowserAPI.refresh()
 			FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
 		} catch (err) {

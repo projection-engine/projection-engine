@@ -1,5 +1,5 @@
 <script>
-    import viewportContext from "../../../templates/viewport-context"
+    import getViewportContext from "../../../templates/get-viewport-context"
     import LocalizationEN from "../../../../../contants/LocalizationEN"
     import OptionDropdown from "../../../../shared/components/dropdown/OptionDropdown.svelte"
 
@@ -8,7 +8,7 @@
     $: {
     	const cache = []
 
-    	viewportContext(settings, true).forEach((v, i, arr) => {
+    	getViewportContext(settings, true).forEach((v, i, arr) => {
     		if (i >= arr.length - 1)
     			return
     		if (v.children) {

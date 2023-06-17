@@ -6,6 +6,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
     import LocalizationEN from "../../../../../contants/LocalizationEN"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
 
     export let setSortKey
     export let setSortDirection
@@ -31,7 +32,7 @@
         {#if sortKey === SORTS_KEYS[0]}
             <Icon>check</Icon>
         {:else}
-            <div style="width: 1.1rem"></div>
+            <EmptyIcon/>
         {/if}
         {LocalizationEN.NAME}
     </button>
@@ -39,7 +40,7 @@
         {#if sortKey === SORTS_KEYS[1]}
             <Icon>check</Icon>
         {:else}
-            <div style="width: 1.1rem"></div>
+            <EmptyIcon/>
         {/if}
         {LocalizationEN.CREATION}
     </button>
@@ -47,7 +48,7 @@
         {#if sortKey === SORTS_KEYS[2]}
             <Icon>check</Icon>
         {:else}
-            <div style="width: 1.1rem"></div>
+            <EmptyIcon/>
         {/if}
         {LocalizationEN.SIZE}
     </button>

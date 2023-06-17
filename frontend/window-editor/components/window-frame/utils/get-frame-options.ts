@@ -1,9 +1,9 @@
 import WindowChangeStore from "../../../../shared/components/frame/WindowChangeStore"
 
 import ElectronResources from "../../../../shared/lib/ElectronResources"
-import LevelController from "../../../lib/utils/LevelController"
-import EditorActionHistory from "../../../lib/utils/EditorActionHistory"
-import ViewportActions from "../../../lib/utils/ViewportActions"
+import LevelService from "../../../services/engine/LevelService"
+import EditorActionHistory from "../../../services/EditorActionHistory"
+import ViewportActionService from "../../../services/ViewportActionService"
 import SettingsStore from "../../../../shared/stores/SettingsStore"
 import GPU from "../../../../../engine-core/GPU"
 import ResourceManager from "../../../../../engine-core/runtime/ResourceManager"
@@ -13,7 +13,7 @@ import IPCRoutes from "../../../../../contants/IPCRoutes";
 function callMethod(id: string) {
 	switch (id) {
 	case "save":
-		LevelController.save().catch()
+		LevelService.save().catch()
 		break
 	case "undo":
 		EditorActionHistory.undo()
@@ -22,10 +22,10 @@ function callMethod(id: string) {
 		EditorActionHistory.redo()
 		break
 	case "copy":
-		ViewportActions.copy()
+		ViewportActionService.copy()
 		break
 	case "paste":
-		ViewportActions.paste()
+		ViewportActionService.paste()
 		break
 	case "footer":
 		SettingsStore.updateStore({...SettingsStore.data, hideFooter: !SettingsStore.data.hideFooter})
@@ -71,7 +71,7 @@ export default function getFrameOptions(disabledSave: boolean) {
 			icon: "refresh",
 			onClick: () => WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: () => {
-					LevelController.save().then(() => callMethod("reload"))
+					LevelService.save().then(() => callMethod("reload"))
 				}
 			})
 		},
@@ -80,7 +80,7 @@ export default function getFrameOptions(disabledSave: boolean) {
 			onClick: () => WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES,
 				callback: () => {
-					LevelController.save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
+					LevelService.save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
 				}
 			})
 		},

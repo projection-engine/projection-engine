@@ -3,7 +3,7 @@
     import handleRename from "../utils/handle-rename"
     import Item from "./item/Item.svelte"
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte"
-    import contentBrowserActions from "../../../templates/content-browser-actions"
+    import getContentBrowserActions from "../../../templates/get-content-browser-actions"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import {onDestroy, onMount} from "svelte"
     import getFilesToRender from "../utils/get-files-to-render"
@@ -58,7 +58,7 @@
 
     $: {
     	if (ref) {
-    		const actions = contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
+    		const actions = getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
     		HotKeysController.unbindAction(ref)
     		ContextMenuController.destroy(internalID)
     		ContextMenuController.mount(

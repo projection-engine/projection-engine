@@ -1,7 +1,7 @@
 <script>
     import NATIVE_COMPONENTS from "../../static/NATIVE_COMPONENTS"
     import SelectionStore from "../../../../../shared/stores/SelectionStore"
-    import EditorActionHistory from "../../../../lib/utils/EditorActionHistory"
+    import EditorActionHistory from "../../../../services/EditorActionHistory"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
 
     export let offset

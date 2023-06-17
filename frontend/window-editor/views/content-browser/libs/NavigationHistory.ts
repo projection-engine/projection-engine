@@ -1,4 +1,4 @@
-import UndoRedo from "../../../lib/utils/UndoRedo"
+import UndoRedo from "../../../components/UndoRedo"
 import FS from "../../../../shared/lib/FS/FS"
 
 export default class NavigationHistory {

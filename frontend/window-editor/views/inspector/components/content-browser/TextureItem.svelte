@@ -2,7 +2,7 @@
 
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS"
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import AssetAPI from "../../../../lib/fs/AssetAPI"
+    import FSAssetService from "../../../../services/fs/FSAssetService"
     import ElectronResources from "../../../../../shared/lib/ElectronResources"
     import GPU from "../../../../../../engine-core/GPU"
     import TEXTURE_FILTERING from "../../../../../../engine-core/static/texture/TEXTURE_FILTERING"
@@ -60,7 +60,7 @@
     			}
     		})
     	}
-    	AssetAPI.updateAsset(item.registryID, JSON.stringify(data)).catch()
+    	FSAssetService.updateAsset(item.registryID, JSON.stringify(data)).catch()
     	changed = false
     	const existing = GPU.textures.get(item.registryID)
     	if (existing != null)

@@ -1,4 +1,4 @@
-import RegistryAPI from "./RegistryAPI"
+import FSRegistryService from "./FSRegistryService"
 
 import FS from "../../../shared/lib/FS/FS"
 import ElectronResources from "../../../shared/lib/ElectronResources"
@@ -6,7 +6,7 @@ import Folders from "../../../../contants/Folders";
 import IPCRoutes from "../../../../contants/IPCRoutes";
 
 
-export default class FilesAPI {
+export default class FSFilesService {
 	static sep = ElectronResources.path.sep
 	static registry = []
 
@@ -38,15 +38,15 @@ export default class FilesAPI {
 
 		const currentPath = FS.resolvePath(pathName)
 
-		for (let i = 0; i < FilesAPI.registry.length; i++) {
-			const r = FilesAPI.registry[i]
+		for (let i = 0; i < FSFilesService.registry.length; i++) {
+			const r = FSFilesService.registry[i]
 			const rPath = FS.resolvePath(FS.ASSETS_PATH + FS.sep + r.path)
 			if (rPath.includes(currentPath))
 				await FS.rm(FS.resolvePath(FS.path + FS.sep + Folders.REGISTRY + FS.sep + r.id + ".reg"))
 		}
 		await FS.rm(currentPath, options)
 
-		const rs = await RegistryAPI.findRegistry(currentPath)
+		const rs = await FSRegistryService.findRegistry(currentPath)
 		if (rs) await FS.rm(FS.resolvePath(FS.path + FS.sep + Folders.REGISTRY + FS.sep + rs.id + ".reg"))
 	}
 

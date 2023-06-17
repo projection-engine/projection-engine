@@ -1,6 +1,6 @@
-import LevelController from "../../../lib/utils/LevelController"
+import LevelService from "../../../services/engine/LevelService"
 
-import Loader from "../../../lib/parsers/Loader"
+import EngineResourceLoaderService from "../../../services/engine/EngineResourceLoaderService"
 import openBottomView from "../../../utils/open-bottom-view"
 import VIEWS from "../../../components/view/static/VIEWS"
 import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools"
@@ -30,11 +30,11 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
 		case FileTypes.PRIMITIVE:
 		case FileTypes.COLLECTION:
 		case FileTypes.TEXTURE:
-			Loader.load(data.registryID, true).catch()
+			EngineResourceLoaderService.load(data.registryID, true).catch()
 			AlertController.warn(LocalizationEN.CREATING_ENTITY)
 			break
 		case FileTypes.LEVEL:
-			LevelController.loadLevel(data.registryID).catch()
+			LevelService.loadLevel(data.registryID).catch()
 			break
 		case FileTypes.MATERIAL:
 			ShaderEditorTools.toOpenFile = data

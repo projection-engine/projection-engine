@@ -4,8 +4,8 @@
 
     import Selector from "../../../../components/selector/Selector.svelte"
     import removeComponent from "../../utils/remove-component"
-    import RegistryAPI from "../../../../lib/fs/RegistryAPI"
-    import FilesAPI from "../../../../lib/fs/FilesAPI"
+    import FSRegistryService from "../../../../services/fs/FSRegistryService"
+    import FSFilesService from "../../../../services/fs/FSFilesService"
     import UIAPI from "../../../../../../engine-core/lib/rendering/UIAPI"
     import Engine from "../../../../../../engine-core/Engine"
     import Input from "../../../../../shared/components/input/Input.svelte"
@@ -27,10 +27,10 @@
     }
 
     async function loadUILayout(reg) {
-    	const ref = RegistryAPI.getRegistryEntry(reg.registryID)
+    	const ref = FSRegistryService.getRegistryEntry(reg.registryID)
     	if (!ref)
     		return
-    	const file = await FilesAPI.readFile(FS.ASSETS_PATH + FS.sep + ref.path)
+    	const file = await FSFilesService.readFile(FS.ASSETS_PATH + FS.sep + ref.path)
     	if (!file)
     		return
     	Engine.UILayouts.set(reg.registryID, file)

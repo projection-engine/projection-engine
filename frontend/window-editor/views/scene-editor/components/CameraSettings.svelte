@@ -1,5 +1,5 @@
 <script>
-    import ViewportActions from "../../../lib/utils/ViewportActions"
+    import ViewportActionService from "../../../services/ViewportActionService"
     import focusOnCamera from "../../../utils/focus-on-camera"
     import Engine from "../../../../../engine-core/Engine"
 
@@ -10,8 +10,9 @@
     import SettingsStore from "../../../../shared/stores/SettingsStore"
     import CameraTracker from "../../../../../engine-core/tools/lib/CameraTracker"
     import {onDestroy, onMount} from "svelte"
-    import HierarchyController from "../../../lib/controllers/HierarchyController"
+    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
     import LocalizationEN from "../../../../../contants/LocalizationEN"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
 
     export let engine
     export let settings
@@ -24,11 +25,11 @@
     })
 
     onMount(() => {
-    	HierarchyController.registerListener(internalID, () => {
+    	EntityHierarchyService.registerListener(internalID, () => {
     		cameras = Engine.entities.array.filter(entity => entity.cameraComponent != null)
     	})
     })
-    onDestroy(() => HierarchyController.removeListener(internalID))
+    onDestroy(() => EntityHierarchyService.removeListener(internalID))
     $: CameraTracker.screenSpaceMovement = settings.screenSpaceMovement
 </script>
 
@@ -56,7 +57,7 @@
                 {#if engine.focusedCamera === camera.id}
                     <Icon>check</Icon>
                 {:else}
-                    <div style="width: 1.1rem"></div>
+                    <EmptyIcon/>
                 {/if}
                 {camera.name}
             </button>
@@ -76,7 +77,7 @@
 
     <button data-sveltebuttondefault="-" disabled={engine.focusedCamera} class="button viewport"
             style="max-width: 25px; justify-content: center"
-            on:click={() => ViewportActions.focus()}>
+            on:click={() => ViewportActionService.focus()}>
         <ToolTip content={LocalizationEN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>

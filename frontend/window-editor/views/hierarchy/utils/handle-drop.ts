@@ -1,7 +1,7 @@
 import SelectionStore from "../../../../shared/stores/SelectionStore"
 
-import HierarchyController from "../../../lib/controllers/HierarchyController"
-import EngineStateController from "../../../lib/controllers/EngineStateController"
+import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
+import EngineStateService from "../../../services/engine/EngineStateService"
 import Entity from "../../../../../engine-core/instances/Entity"
 import Engine from "../../../../../engine-core/Engine"
 
@@ -32,9 +32,9 @@ export default function handleDrop(event, entityDragged:Entity|Entity[], dropTar
 	}
 
 	if (toAdd.length > 0)
-		EngineStateController.appendBlock(toAdd, false)
+		EngineStateService.appendBlock(toAdd, false)
 	else {
 		SelectionStore.engineSelected = newSelection
-		HierarchyController.updateHierarchy()
+		EntityHierarchyService.updateHierarchy()
 	}
 }

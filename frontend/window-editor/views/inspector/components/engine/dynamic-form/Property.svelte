@@ -10,6 +10,7 @@
     import Range from "../../../../../../shared/components/range/Range.svelte"
     import FileSystemAPI from "../../../../../../../engine-core/lib/utils/FileSystemAPI"
     import LocalizationEN from "../../../../../../../contants/LocalizationEN"
+    import EmptyIcon from "../../../../../../shared/components/icon/EmptyIcon.svelte";
 
     export let component = undefined
     export let submit = undefined
@@ -123,7 +124,7 @@
                     {#if dropdownLabel?.value === option.value}
                         <Icon>check</Icon>
                     {:else}
-                        <div style="width: 1.1rem"></div>
+                        <EmptyIcon/>
                     {/if}
                     {LocalizationEN[option.label] || option.label}
                 </button>

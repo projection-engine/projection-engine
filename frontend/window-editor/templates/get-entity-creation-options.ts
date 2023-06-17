@@ -1,80 +1,80 @@
-import EntityFactory from "../lib/controllers/EntityFactory"
+import EntityFactoryService from "../services/engine/EntityFactoryService"
 
 import LIGHT_TYPES from "../../../engine-core/static/LIGHT_TYPES"
 import EmbeddedMeshes from "../../../engine-core/static/EmbeddedMeshes"
 import LocalizationEN from "../../../contants/LocalizationEN";
 
-export default function entityCreationOptions() {
+export default function getEntityCreationOptions() {
 	return [
 		{
 			icon: "category",
 			label: LocalizationEN.EMPTY_ENTITY,
-			onClick: EntityFactory.createEmpty
+			onClick: EntityFactoryService.createEmpty
 		},
 		{divider: true, label: LocalizationEN.MESHES},
 		{
 			icon: "category",
 			label: LocalizationEN.CUBE,
-			onClick: () => EntityFactory.createMesh(EmbeddedMeshes.CUBE)
+			onClick: () => EntityFactoryService.createMesh(EmbeddedMeshes.CUBE)
 		},
 		{
 			icon: "category",
 			label: LocalizationEN.SPHERE,
-			onClick: () => EntityFactory.createMesh(EmbeddedMeshes.SPHERE)
+			onClick: () => EntityFactoryService.createMesh(EmbeddedMeshes.SPHERE)
 		},
 		{
 			icon: "category",
 			label: LocalizationEN.PLANE,
-			onClick: () => EntityFactory.createMesh(EmbeddedMeshes.PLANE)
+			onClick: () => EntityFactoryService.createMesh(EmbeddedMeshes.PLANE)
 		},
 		{
 			icon: "category",
 			label: LocalizationEN.CYLINDER,
-			onClick: () => EntityFactory.createMesh(EmbeddedMeshes.CYLINDER)
+			onClick: () => EntityFactoryService.createMesh(EmbeddedMeshes.CYLINDER)
 		},
 		{divider: true, label: LocalizationEN.LIGHTS},
 		{
 			icon: "wb_iridescent",
 			label: LocalizationEN.SPHERE_AREA,
-			onClick: () => EntityFactory.createLight(LIGHT_TYPES.SPHERE)
+			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.SPHERE)
 		},
 		{
 			icon: "wb_iridescent",
 			label: LocalizationEN.DISK_AREA,
-			onClick: () => EntityFactory.createLight(LIGHT_TYPES.DISK)
+			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.DISK)
 		},
 		{
 			icon: "wb_iridescent",
 			label: LocalizationEN.PLANE_AREA,
-			onClick: () => EntityFactory.createLight(LIGHT_TYPES.PLANE)
+			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.PLANE)
 		},
 
 
 		{
 			icon: "lightbulb",
 			label: LocalizationEN.POINT_LIGHT,
-			onClick: () => EntityFactory.createLight(LIGHT_TYPES.POINT)
+			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.POINT)
 		},
 		{
 			icon: "light_mode",
 			label: LocalizationEN.DIRECTIONAL_LIGHT,
-			onClick: () => EntityFactory.createLight(LIGHT_TYPES.DIRECTIONAL)
+			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.DIRECTIONAL)
 		},
 		{
 			icon: "highlight",
 			label: LocalizationEN.SPOTLIGHT,
-			onClick: () => EntityFactory.createLight(LIGHT_TYPES.SPOT)
+			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.SPOT)
 		},
 		{
 			icon: "wb_twilight",
 			label: LocalizationEN.ATMOSPHERE_RENDERER,
-			onClick: () => EntityFactory.createAtmosphere()
+			onClick: () => EntityFactoryService.createAtmosphere()
 		},
 
 		{
 			icon: "lens_blur",
 			label: LocalizationEN.LIGHT_PROBE,
-			onClick: () => EntityFactory.createProbe()
+			onClick: () => EntityFactoryService.createProbe()
 		},
 
 
@@ -82,23 +82,23 @@ export default function entityCreationOptions() {
 		{
 			icon: "videocam",
 			label: LocalizationEN.CAMERA,
-			onClick: EntityFactory.createCamera
+			onClick: EntityFactoryService.createCamera
 		},
 
 		{
 			icon: "image",
 			label: LocalizationEN.SPRITE,
-			onClick: EntityFactory.createSprite
+			onClick: EntityFactoryService.createSprite
 		},
 		{
 			icon: "layers",
 			label: LocalizationEN.DECAL,
-			onClick: EntityFactory.createDecal
+			onClick: EntityFactoryService.createDecal
 		},
 		{
 			icon: "widgets",
 			label: LocalizationEN.UI_RENDERER,
-			onClick: EntityFactory.createUI
+			onClick: EntityFactoryService.createUI
 		}
 	]
 }

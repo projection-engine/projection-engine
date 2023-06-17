@@ -1,5 +1,5 @@
 import materialCompiler from "./material-compiler/material-compiler"
-import AssetAPI from "../../../lib/fs/AssetAPI"
+import FSAssetService from "../../../services/fs/FSAssetService"
 
 import FilesStore from "../../../../shared/stores/FilesStore"
 import AlertController from "../../../../shared/components/alert/AlertController"
@@ -96,7 +96,7 @@ export default class ShaderEditorTools {
 				comments: canvasAPI.comments.map(ShaderEditorTools.serializeComment),
 				response: compiled[0]
 			}
-			await AssetAPI.updateAsset(openFile.registryID, JSON.stringify(materialData))
+			await FSAssetService.updateAsset(openFile.registryID, JSON.stringify(materialData))
 
 			const oldMaterial = GPU.materials.get(openFile.registryID)
 			if (oldMaterial) {

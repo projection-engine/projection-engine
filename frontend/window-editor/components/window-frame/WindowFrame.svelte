@@ -2,7 +2,7 @@
     import EngineStore from "../../../shared/stores/EngineStore"
     import {onDestroy} from "svelte"
 
-    import LevelController from "../../lib/utils/LevelController"
+    import LevelService from "../../services/engine/LevelService"
     import getFrameOptions from "./utils/get-frame-options"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import Tabs from "../tabs/Tabs.svelte"
@@ -11,7 +11,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte"
     import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
-    import ExecutionController from "../../lib/controllers/ExecutionController"
+    import ExecutionService from "../../services/engine/ExecutionService"
     import addNewTab from "../../views/viewport/utils/add-new-tab"
     import removeTab from "./utils/remove-tab"
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte"
@@ -44,7 +44,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={engine.executingAnimation || !hasChanges}
-                on:click={_ => LevelController.save()}
+                on:click={_ => LevelService.save()}
         >
             <Icon styles="font-size: 1rem">save</Icon>
             <ToolTip content={LocalizationEN.SAVE}/>
@@ -80,7 +80,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={engine.executingAnimation}
-                on:click={() => ExecutionController.startPlayState()}
+                on:click={() => ExecutionService.startPlayState()}
                 data-svelteview-header-button="-"
                 style="color: var(--pj-accent-color)"
         >
@@ -90,7 +90,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={!engine.executingAnimation}
-                on:click={() => ExecutionController.stopPlayState()}
+                on:click={() => ExecutionService.stopPlayState()}
                 data-svelteview-header-button="-"
                 style="--pj-accent-color: red; color: var(--pj-accent-color)"
         >

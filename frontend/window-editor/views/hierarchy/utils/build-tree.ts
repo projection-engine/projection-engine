@@ -1,11 +1,11 @@
-import HierarchyController from "../../../lib/controllers/HierarchyController"
+import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
 import searchTree from "./search-tree"
 import HierarchyToRenderElement from "../template/ToRenderElement"
 
 
 export default function buildTree(openTree: { [key: string]: boolean }, search: string, filteredComponent: string): HierarchyToRenderElement[] {
 
-	const hierarchy = HierarchyController.hierarchy
+	const hierarchy = EntityHierarchyService.hierarchy
 	const data: HierarchyToRenderElement[] = []
 	let blockStart = -1
 	let minDepth = -1

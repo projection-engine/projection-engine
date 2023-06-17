@@ -1,5 +1,5 @@
 <script>
-    import FilesAPI from "../../lib/fs/FilesAPI"
+    import FSFilesService from "../../services/fs/FSFilesService"
 
     import EngineStore from "../../../shared/stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
@@ -12,7 +12,7 @@
     import FS from "../../../shared/lib/FS/FS"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Canvas from "./libs/Canvas"
-    import shaderActions from "../../templates/shader-actions"
+    import getShaderActions from "../../templates/get-shader-actions"
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import ContextMenuController from "../../../shared/lib/context-menu/ContextMenuController"
     import SideBar from "./components/SideBar.svelte"
@@ -37,7 +37,7 @@
 
     onMount(() => {
     	canvas.initialize(canvasElement)
-    	const data = shaderActions(canvas)
+    	const data = getShaderActions(canvas)
     	ContextMenuController.mount(
     		data.contextMenu,
     		internalID
@@ -119,7 +119,7 @@
         openSourceCode={async () => {
             const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
             const newFile = FS.TEMP + FS.sep + openFile.registryID + ".log"
-            await FilesAPI.writeFile(newFile, shader, true)
+            await FSFilesService.writeFile(newFile, shader, true)
             ElectronResources.shell.openPath(newFile).catch()
         }}
 />

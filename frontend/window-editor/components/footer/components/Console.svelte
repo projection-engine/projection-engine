@@ -12,6 +12,7 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import Portal from "../../../../shared/lib/Portal"
     import LocalizationEN from "../../../../../contants/LocalizationEN"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
 
     export let engine
     const internalID = crypto.randomUUID()
@@ -124,7 +125,7 @@
                             warning
                         </Icon>
                     {:else}
-                        <div style="width: 1.1rem"></div>
+                        <EmptyIcon/>
                     {/if}
                     {#if item.object}
                         <ToolTip content={LocalizationEN.CLICK_TO_SHOW_OBJECT}/>

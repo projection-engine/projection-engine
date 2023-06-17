@@ -1,4 +1,4 @@
-import RegistryAPI from "./RegistryAPI"
+import FSRegistryService from "./FSRegistryService"
 import FS from "../../../shared/lib/FS/FS"
 import ElectronResources from "../../../shared/lib/ElectronResources"
 import FileTypes from "../../../../contants/FileTypes";
@@ -20,7 +20,7 @@ export default class ContentBrowserAPI {
 	static async rename(from, to) {
 		const fromResolved = ElectronResources.path.resolve(from)
 		const toResolved = ElectronResources.path.resolve(to)
-		await RegistryAPI.readRegistry()
+		await FSRegistryService.readRegistry()
 		try {
 			const stat = await FS.stat(fromResolved)
 			if (stat !== undefined && stat.isDirectory) {
@@ -35,7 +35,7 @@ export default class ContentBrowserAPI {
 						await FS.rename(oldPath, newPath)
 					else {
 						await FS.rename(oldPath, newPath)
-						await RegistryAPI.updateRegistry(oldPath, newPath)
+						await FSRegistryService.updateRegistry(oldPath, newPath)
 					}
 				}
 				await FS.rm(fromResolved, {recursive: true, force: true})
@@ -44,7 +44,7 @@ export default class ContentBrowserAPI {
 
 			if (stat !== undefined) {
 				await FS.rename(fromResolved, toResolved)
-				await RegistryAPI.updateRegistry(fromResolved, toResolved)
+				await FSRegistryService.updateRegistry(fromResolved, toResolved)
 				return
 			}
 
@@ -56,7 +56,7 @@ export default class ContentBrowserAPI {
 
 
 	static async refresh() {
-		const reg = await RegistryAPI.readRegistry()
+		const reg = await FSRegistryService.readRegistry()
 		const textureReg = reg.filter(r => r.path && r.path.includes(FileTypes.TEXTURE)),
 			meshesReg = reg.filter(r => r.path && r.path.includes(FileTypes.PRIMITIVE)),
 			materialsReg = reg.filter(r => r.path && r.path.includes(FileTypes.MATERIAL)),

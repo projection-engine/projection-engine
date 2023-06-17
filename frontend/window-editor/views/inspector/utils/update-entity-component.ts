@@ -1,4 +1,4 @@
-import EditorActionHistory from "../../../lib/utils/EditorActionHistory"
+import EditorActionHistory from "../../../services/EditorActionHistory"
 import SelectionStore from "../../../../shared/stores/SelectionStore"
 import LightsAPI from "../../../../../engine-core/lib/utils/LightsAPI"
 import EngineStore from "../../../../shared/stores/EngineStore"

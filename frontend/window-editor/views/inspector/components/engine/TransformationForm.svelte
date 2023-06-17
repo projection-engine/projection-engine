@@ -4,7 +4,7 @@
 
     import {onDestroy} from "svelte"
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import EditorActionHistory from "../../../../lib/utils/EditorActionHistory"
+    import EditorActionHistory from "../../../../services/EditorActionHistory"
     import Range from "../../../../../shared/components/range/Range.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
@@ -12,6 +12,7 @@
     import ROTATION_TYPES from "../../static/ROTATION_TYPES"
     import Movable from "../../../../../../engine-core/instances/components/Movable"
     import LocalizationEN from "../../../../../../contants/LocalizationEN"
+    import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
 
     let targets = []
     let rotationType = Movable.ROTATION_QUATERNION
@@ -248,7 +249,7 @@
                                 {#if rotationType === rt.type}
                                     <Icon>check</Icon>
                                 {:else}
-                                    <div style="width: 1.1rem"></div>
+                                    <EmptyIcon/>
                                 {/if}
                                 {rt.label}
                             </button>

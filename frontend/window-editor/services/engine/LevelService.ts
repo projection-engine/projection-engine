@@ -1,7 +1,7 @@
-import FilesAPI from "../fs/FilesAPI"
-import EditorActionHistory from "./EditorActionHistory"
+import FSFilesService from "../fs/FSFilesService"
+import EditorActionHistory from "../EditorActionHistory"
 import Engine from "../../../../engine-core/Engine"
-import RegistryAPI from "../fs/RegistryAPI"
+import FSRegistryService from "../fs/FSRegistryService"
 import EngineStore from "../../../shared/stores/EngineStore"
 import SelectionStore from "../../../shared/stores/SelectionStore"
 import SettingsStore from "../../../shared/stores/SettingsStore"
@@ -15,13 +15,13 @@ import serializeStructure from "../../../../engine-core/utils/serialize-structur
 import FS from "../../../shared/lib/FS/FS"
 
 import ElectronResources from "../../../shared/lib/ElectronResources"
-import ErrorLoggerAPI from "../fs/ErrorLoggerAPI"
+import ErrorLoggerService from "../fs/ErrorLoggerService"
 import AlertController from "../../../shared/components/alert/AlertController"
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
-import HierarchyController from "../controllers/HierarchyController"
+import EntityHierarchyService from "./EntityHierarchyService"
 import resolveFileName from "../../utils/resolve-file-name"
-import NameController from "../controllers/NameController"
+import EntityNamingService from "./EntityNamingService"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import AXIS from "../../../../engine-core/tools/static/AXIS"
 import WindowChangeStore from "../../../shared/components/frame/WindowChangeStore"
@@ -30,23 +30,23 @@ import LocalizationEN from "../../../../contants/LocalizationEN";
 import FileTypes from "../../../../contants/FileTypes";
 
 
-export default class LevelController {
+export default class LevelService {
 	static #initialized = false
 	static #levelToLoad
 
 	static getLevelToLoad() {
-		const old = LevelController.#levelToLoad
-		LevelController.#levelToLoad = undefined
+		const old = LevelService.#levelToLoad
+		LevelService.#levelToLoad = undefined
 		return old
 	}
 
 	static initialize(): Promise<undefined> {
 		return new Promise(resolve => {
-			if (LevelController.#initialized) {
+			if (LevelService.#initialized) {
 				resolve(undefined)
 				return
 			}
-			LevelController.#initialized = true
+			LevelService.#initialized = true
 
 			ElectronResources.ipcRenderer.once(
 				IPCRoutes.LOAD_PROJECT_METADATA,
@@ -74,7 +74,7 @@ export default class LevelController {
 						isReady: true
 					})
 
-					LevelController.#levelToLoad = meta.level
+					LevelService.#levelToLoad = meta.level
 					resolve(undefined)
 				})
 			ElectronResources.ipcRenderer.send(IPCRoutes.LOAD_PROJECT_METADATA)
@@ -91,15 +91,15 @@ export default class LevelController {
 		if (ChangesTrackerStore.data && Engine.loadedLevel) {
 			WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
-					await LevelController.save().catch()
-					LevelController.loadLevel(levelID).catch()
+					await LevelService.save().catch()
+					LevelService.loadLevel(levelID).catch()
 				}
 			})
 			return
 		}
 
-		await RegistryAPI.readRegistry()
-		NameController.clear()
+		await FSRegistryService.readRegistry()
+		EntityNamingService.clear()
 		SelectionStore.updateStore({
 			...SelectionStore.data,
 			TARGET: SelectionStore.TYPES.ENGINE,
@@ -121,7 +121,7 @@ export default class LevelController {
 				lockedEntity: Engine.loadedLevel.id
 			})
 
-		HierarchyController.updateHierarchy()
+		EntityHierarchyService.updateHierarchy()
 	}
 
 	static async save() {
@@ -133,7 +133,7 @@ export default class LevelController {
 			return
 		}
 
-		await ErrorLoggerAPI.save()
+		await ErrorLoggerService.save()
 		AlertController.warn(LocalizationEN.SAVING)
 		try {
 			const metadata = EngineStore.engine.meta
@@ -146,7 +146,7 @@ export default class LevelController {
 				viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
 			}
 
-			await FilesAPI.writeFile(
+			await FSFilesService.writeFile(
 				FS.path + FS.sep + FileTypes.PROJECT,
 				JSON.stringify({
 					...metadata,
@@ -156,13 +156,13 @@ export default class LevelController {
 					level: Engine.loadedLevel?.id
 				}), true)
 
-			await LevelController.saveCurrentLevel().catch()
+			await LevelService.saveCurrentLevel().catch()
 		} catch (err) {
 			console.error(err)
 			return
 		}
 		AlertController.success(LocalizationEN.PROJECT_SAVED)
-		await RegistryAPI.readRegistry()
+		await FSRegistryService.readRegistry()
 	}
 
 	static async saveCurrentLevel() {
@@ -173,13 +173,13 @@ export default class LevelController {
 			entities: QueryAPI.getHierarchy(Engine.loadedLevel).map(e => e.serializable()),
 		}
 
-		const assetReg = RegistryAPI.getRegistryEntry(Engine.loadedLevel.id)
+		const assetReg = FSRegistryService.getRegistryEntry(Engine.loadedLevel.id)
 		let path = assetReg?.path
 
 		if (!assetReg) {
 			path = FS.resolvePath(await resolveFileName(FS.ASSETS_PATH + FS.sep + Engine.loadedLevel.name, FileTypes.LEVEL))
-			await RegistryAPI.createRegistryEntry(Engine.loadedLevel.id, FS.sep + path.split(FS.sep).pop())
-			RegistryAPI.readRegistry().catch()
+			await FSRegistryService.createRegistryEntry(Engine.loadedLevel.id, FS.sep + path.split(FS.sep).pop())
+			FSRegistryService.readRegistry().catch()
 		} else
 			path = FS.ASSETS_PATH + FS.sep + path
 

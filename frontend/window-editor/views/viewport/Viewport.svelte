@@ -5,7 +5,7 @@
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import HotKeysController from "../../../shared/lib/HotKeysController"
-    import viewportHotkeys from "../../templates/viewport-hotkeys"
+    import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Tabs from "../../components/tabs/Tabs.svelte"
     import removeTab from "./utils/remove-tab"
     import updateViewport from "./utils/update-viewport"
@@ -45,7 +45,7 @@
     	if (ref != null)
     		HotKeysController.bindAction(
     			ref,
-    			Object.values(viewportHotkeys(settings)),
+    			Object.values(getViewportHotkeys(settings)),
     			"public",
     			LocalizationEN.VIEWPORT
     		)

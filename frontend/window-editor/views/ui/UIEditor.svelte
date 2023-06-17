@@ -8,7 +8,7 @@
     import EngineStore from "../../../shared/stores/EngineStore"
 
 
-    import HierarchyController from "../../lib/controllers/HierarchyController"
+    import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
     import GPU from "../../../../engine-core/GPU"
     import AlertController from "../../../shared/components/alert/AlertController"
     import LocalizationEN from "../../../../contants/LocalizationEN"
@@ -79,14 +79,14 @@
 
     	UIAPI.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
     	UIAPI.document.style.top = "28px"
-    	HierarchyController.registerListener(INTERNAL_ID, update)
+    	EntityHierarchyService.registerListener(INTERNAL_ID, update)
     	update()
     })
 
     onDestroy(() => {
     	clearInterval(interval)
     	obs.disconnect()
-    	HierarchyController.removeListener(INTERNAL_ID)
+    	EntityHierarchyService.removeListener(INTERNAL_ID)
     	UIAPI.hideUI()
     	UIAPI.document.style.height = "100%"
     	UIAPI.document.style.top = "0"

@@ -1,7 +1,7 @@
 import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
-import RegistryAPI from "../../../../lib/fs/RegistryAPI"
+import FSRegistryService from "../../../../services/fs/FSRegistryService"
 import Signature from "../Signature"
 
 
@@ -67,7 +67,7 @@ export default class TextureSample extends ShaderNode implements Signature {
 		this.uniformName = "sampler" + textureOffset
 		if (this.texture?.registryID) {
 			try {
-				const res = RegistryAPI.getRegistryEntry(this.texture?.registryID)
+				const res = FSRegistryService.getRegistryEntry(this.texture?.registryID)
 
 				if (res) {
 					uniforms.push({

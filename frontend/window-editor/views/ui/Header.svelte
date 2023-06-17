@@ -8,7 +8,7 @@
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import EngineStateController from "../../lib/controllers/EngineStateController"
+    import EngineStateService from "../../services/engine/EngineStateService"
     import AlertController from "../../../shared/components/alert/AlertController"
     import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../contants/LocalizationEN"
@@ -37,7 +37,7 @@
     	const e = EntityAPI.getNewEntityInstance()
     	e.name = "UI-ShaderNode"
     	e.addComponent(COMPONENTS.UI)
-    	EngineStateController.add(e)
+    	EngineStateService.add(e)
     }
 
 

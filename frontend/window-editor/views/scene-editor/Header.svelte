@@ -10,7 +10,6 @@
     import LocalizationEN from "../../../../contants/LocalizationEN"
 
     export let settings
-    export let engine
 
     $: OPTIONS = [
     	{
@@ -52,7 +51,7 @@
     />
 
 
-    <ShadingOption engine={engine} settings={settings}/>
+    <ShadingOption settings={settings}/>
 </div>
 
 

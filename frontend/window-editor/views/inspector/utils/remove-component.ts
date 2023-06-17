@@ -1,6 +1,6 @@
 import SelectionStore from "../../../../shared/stores/SelectionStore"
 
-import HierarchyController from "../../../lib/controllers/HierarchyController"
+import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
 
 export default function removeComponent(entity,index, key) {
 	if (!entity)
@@ -11,6 +11,6 @@ export default function removeComponent(entity,index, key) {
 	} else
 		entity.removeComponent(key)
 
-	HierarchyController.updateHierarchy()
+	EntityHierarchyService.updateHierarchy()
 	SelectionStore.updateStore()
 }

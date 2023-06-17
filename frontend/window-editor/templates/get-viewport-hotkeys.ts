@@ -1,26 +1,26 @@
-import ViewportActions from "../lib/utils/ViewportActions"
+import ViewportActionService from "../services/ViewportActionService"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import GIZMOS from "../static/GIZMOS"
 import SelectionStore from "../../shared/stores/SelectionStore"
-import EditorActionHistory from "../lib/utils/EditorActionHistory"
+import EditorActionHistory from "../services/EditorActionHistory"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 
 import selectEntityHierarchy from "../utils/select-entity-hierarchy"
 import snap from "../utils/snap"
 import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE"
-import EntityFactory from "../lib/controllers/EntityFactory"
+import EntityFactoryService from "../services/engine/EntityFactoryService"
 import CAMERA_ROTATIONS from "../../../engine-core/tools/static/CAMERA_ROTATIONS"
-import LevelController from "../lib/utils/LevelController"
+import LevelService from "../services/engine/LevelService"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 
 import focusOnCamera from "../utils/focus-on-camera"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
-import HierarchyController from "../lib/controllers/HierarchyController"
-import EngineStateController from "../lib/controllers/EngineStateController"
+import EntityHierarchyService from "../services/engine/EntityHierarchyService"
+import EngineStateService from "../services/engine/EngineStateService"
 import LocalizationEN from "../../../contants/LocalizationEN";
 
 
-export default function viewportHotkeys(settings): { [key: string]: ContextMenuOption } {
+export default function getViewportHotkeys(settings): { [key: string]: ContextMenuOption } {
 
 	return {
 		DUPLICATE: {
@@ -31,7 +31,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
 					return
 				const entity = QueryAPI.getEntityByID(t)
 				if (entity)
-					EngineStateController.add(entity.clone())
+					EngineStateService.add(entity.clone())
 			},
 			require: settings.viewportHotkeys.DUPLICATE,
 		},
@@ -43,24 +43,24 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
 		},
 		SHOW_SELECTED: {
 			label: LocalizationEN.SHOW_SELECTED,
-			callback: HierarchyController.openTree,
+			callback: EntityHierarchyService.openTree,
 			require: settings.viewportHotkeys.SHOW_SELECTED,
 		},
 
 		SAVE: {
 			label: "Save",
 			require: settings.viewportHotkeys.SAVE,
-			callback: LevelController.save
+			callback: LevelService.save
 		},
 		INVERT_SELECTION: {
 			label: "Invert selection",
 			require: settings.viewportHotkeys.INVERT_SELECTION,
-			callback: () => ViewportActions.invertSelection()
+			callback: () => ViewportActionService.invertSelection()
 		},
 		SELECT_ALL: {
 			label: "Select all",
 			require: settings.viewportHotkeys.SELECT_ALL,
-			callback: () => ViewportActions.selectAll()
+			callback: () => ViewportActionService.selectAll()
 		},
 		SELECT_NONE: {
 			label: "Select none",
@@ -92,8 +92,8 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
 			callback: () => {
 				const selected = SelectionStore.engineSelected
 				for (let i = 0; i < selected.length; i++)
-					EntityFactory.toggleEntityVisibility(selected[i], true)
-				HierarchyController.updateHierarchy()
+					EntityFactoryService.toggleEntityVisibility(selected[i], true)
+				EntityHierarchyService.updateHierarchy()
 			},
 			require: settings.viewportHotkeys.HIDE_ACTIVE,
 		},
@@ -155,7 +155,7 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
 		FOCUS: {
 			label: "Focus on active",
 			require: settings.viewportHotkeys.FOCUS,
-			callback: ViewportActions.focus
+			callback: ViewportActionService.focus
 		},
 		SCALE_GIZMO: {
 			require: settings.viewportHotkeys.SCALE_GIZMO,
@@ -179,30 +179,30 @@ export default function viewportHotkeys(settings): { [key: string]: ContextMenuO
 		GROUP: {
 			label: "Group selected",
 			require: settings.viewportHotkeys.GROUP,
-			callback: ViewportActions.group
+			callback: ViewportActionService.group
 		},
 		FIXATE_ACTIVE: {
 			label: "Fixate active",
 			require: settings.viewportHotkeys.FIXATE_ACTIVE,
-			callback: ViewportActions.fixateActive
+			callback: ViewportActionService.fixateActive
 		},
 
 		COPY: {
 			label: "Copy",
 			require: settings.viewportHotkeys.COPY,
-			callback: ViewportActions.copy
+			callback: ViewportActionService.copy
 		},
 
 		DELETE: {
 			label: "Delete",
 			require: settings.viewportHotkeys.DELETE,
-			callback: ViewportActions.deleteSelected
+			callback: ViewportActionService.deleteSelected
 		},
 		PASTE: {
 
 			label: "Paste",
 			require: settings.viewportHotkeys.PASTE,
-			callback: ViewportActions.paste
+			callback: ViewportActionService.paste
 		},
 
 

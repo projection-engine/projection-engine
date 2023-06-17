@@ -6,13 +6,13 @@ import SelectionStore from "../../shared/stores/SelectionStore"
 import importFile from "../utils/import-file"
 
 import getCreationOptions from "../views/content-browser/utils/get-creation-options"
-import RegistryAPI from "../lib/fs/RegistryAPI"
+import FSRegistryService from "../services/fs/FSRegistryService"
 import FS from "../../shared/lib/FS/FS"
 import AlertController from "../../shared/components/alert/AlertController"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import LocalizationEN from "../../../contants/LocalizationEN"
 
-export default function contentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
+export default function getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
 
 	const hotKeys = {
 		BACK: {
@@ -106,7 +106,7 @@ export default function contentBrowserActions(settings, navigationHistory, curre
 			{
 				label: LocalizationEN.COPY_ID,
 				onClick: () => {
-					const ID = RegistryAPI.getByPath(SelectionStore.contentBrowserSelected[0])
+					const ID = FSRegistryService.getByPath(SelectionStore.contentBrowserSelected[0])
 					if (ID) {
 						AlertController.success(LocalizationEN.COPIED)
 						ElectronResources.clipboard.writeText(ID)

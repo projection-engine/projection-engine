@@ -3,9 +3,9 @@
     import EntityTreeBranch from "./EntityTreeBranch.svelte";
     import ComponentTreeBranch from "./ComponentTreeBranch.svelte";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
-    import HierarchyController from "../../../lib/controllers/HierarchyController";
+    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService";
 
-    import viewportContext from "../../../templates/viewport-context";
+    import getViewportContext from "../../../templates/get-viewport-context";
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
@@ -26,7 +26,7 @@
 
     const unsubscribeSettings = SettingsStore.getStore(v => {
         ContextMenuController.mount(
-            viewportContext(v),
+            getViewportContext(v),
             ID
         )
     })
@@ -38,7 +38,7 @@
 
 
     onDestroy(() => {
-        HierarchyController.removeListener(internalID)
+        EntityHierarchyService.removeListener(internalID)
         unsubscribeSettings()
         unsubscribeSelection()
         ContextMenuController.destroy(ID)

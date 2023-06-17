@@ -1,9 +1,9 @@
 <script>
-    import AssetAPI from "../../../../lib/fs/AssetAPI"
+    import FSAssetService from "../../../../services/fs/FSAssetService"
     import GPU from "../../../../../../engine-core/GPU"
 
-    import FilesAPI from "../../../../lib/fs/FilesAPI"
-    import RegistryAPI from "../../../../lib/fs/RegistryAPI"
+    import FSFilesService from "../../../../services/fs/FSFilesService"
+    import FSRegistryService from "../../../../services/fs/FSRegistryService"
     import compareObjects from "../../utils/compare-objects"
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
     import MaterialUniforms from "../MaterialUniforms.svelte"
@@ -26,15 +26,15 @@
     	if (wasUpdated)
     		return
     	wasUpdated = true
-    	const reg = RegistryAPI.getRegistryEntry(ID)
-    	originalMat = await FilesAPI.readFile(FS.ASSETS_PATH + reg.path, "json")
+    	const reg = FSRegistryService.getRegistryEntry(ID)
+    	originalMat = await FSFilesService.readFile(FS.ASSETS_PATH + reg.path, "json")
     	if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
     		temp = {
     			...temp,
     			uniforms: originalMat.response.uniforms,
     			uniformValues: originalMat.response.uniformValues
     		}
-    		await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+    		await FSAssetService.updateAsset(item.registryID, JSON.stringify(temp))
     	}
     }
 
@@ -55,7 +55,7 @@
     				uniformValues: update
     			}
     		}
-    		await AssetAPI.updateAsset(item.registryID, JSON.stringify(temp))
+    		await FSAssetService.updateAsset(item.registryID, JSON.stringify(temp))
     		const instance = GPU.materials.get(item.registryID)
     		if (instance) {
     			await instance.updateUniformGroup(temp.response.uniformValues)

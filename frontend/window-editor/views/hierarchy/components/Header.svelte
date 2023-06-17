@@ -4,12 +4,13 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
 
-    import HierarchyController from "../../../lib/controllers/HierarchyController"
+    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
     import Input from "../../../../shared/components/input/Input.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
     import NATIVE_COMPONENTS from "../../inspector/static/NATIVE_COMPONENTS"
-    import EntityFactory from "../../../lib/controllers/EntityFactory"
+    import EntityFactoryService from "../../../services/engine/EntityFactoryService"
     import LocalizationEN from "../../../../../contants/LocalizationEN"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
 
     export let filteredComponent, setFilteredComponent
     export let search, setSearch
@@ -18,7 +19,7 @@
 <ViewHeader>
     <div data-svelteinline="-" style="justify-content: flex-start; width: 100%">
         <button data-sveltebuttondefault="-"
-                on:click={() => HierarchyController.openTree()}
+                on:click={() => EntityHierarchyService.openTree()}
                 data-svelteview-header-button="-"
         >
             <ToolTip content={LocalizationEN.SHOW_SELECTED}/>
@@ -51,7 +52,7 @@
                     {#if component[0] === filteredComponent}
                         <Icon>check</Icon>
                     {:else}
-                        <div style="width: 1.1rem"></div>
+                        <EmptyIcon/>
                     {/if}
 
                     {component[1]}
@@ -59,7 +60,7 @@
             {/each}
         </Dropdown>
         <button data-sveltebuttondefault="-"
-                on:click={() => EntityFactory.createEmpty(true)}
+                on:click={() => EntityFactoryService.createEmpty(true)}
                 data-svelteview-header-button="-"
                 style="position: relative"
         >

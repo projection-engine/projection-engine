@@ -5,11 +5,11 @@
     import EngineStore from "../../../shared/stores/EngineStore"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import SelectionStore from "../../../shared/stores/SelectionStore"
-    import AssetAPI from "../../lib/fs/AssetAPI"
+    import FSAssetService from "../../services/fs/FSAssetService"
     import VisualsStore from "../../../shared/stores/VisualsStore"
     import Engine from "../../../../engine-core/Engine"
     import EngineTools from "../../../../engine-core/tools/EngineTools"
-    import LevelController from "../../lib/utils/LevelController"
+    import LevelService from "../../services/engine/LevelService"
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
     import GPU from "../../../../engine-core/GPU"
 
@@ -30,13 +30,13 @@
     	Engine.initializeContext(
     		canvasRef,
     		{w: visuals.resolutionX, h: visuals.resolutionY},
-    		AssetAPI.readAsset,
+    		FSAssetService.readAsset,
     		true
     	).then(async () => {
     		done = true
     		await EngineTools.initialize().catch()
-    		const toLoad = LevelController.getLevelToLoad()
-    		await LevelController.loadLevel(toLoad).catch()
+    		const toLoad = LevelService.getLevelToLoad()
+    		await LevelService.loadLevel(toLoad).catch()
 
     		initializeEditor()
     		UIAPI.buildUI(GPU.canvas.parentElement)

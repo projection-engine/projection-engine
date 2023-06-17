@@ -42,7 +42,7 @@
     }
     $: itemIcon = getItemIcon(itemMetadata, type)
     $: {
-    	const dragDropData = getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, metadata)
+    	const dragDropData = getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
     	draggable.dragImage = dragDropData.dragImage
     	draggable.onDragOver = dragDropData.onDragOver
     	draggable.onDragStart = dragDropData.onDragStart
@@ -72,7 +72,7 @@
     }
 
     onMount(() => {
-        const dragDropData = getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, metadata)
+        const dragDropData = getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
         draggable.onMount({
             targetElement: ref,
             onDrop: (event) => handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),

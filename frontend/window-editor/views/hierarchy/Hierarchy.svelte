@@ -4,9 +4,9 @@
     import {onDestroy, onMount} from "svelte"
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
-    import HierarchyController from "../../lib/controllers/HierarchyController"
+    import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
     import SettingsStore from "../../../shared/stores/SettingsStore"
-    import viewportHotkeys from "../../templates/viewport-hotkeys"
+    import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Engine from "../../../../engine-core/Engine"
     import handleDrop from "./utils/handle-drop"
     import Header from "./components/Header.svelte"
@@ -15,69 +15,65 @@
     import LocalizationEN from "../../../../contants/LocalizationEN"
 
     let search = ""
-    const ID = crypto.randomUUID()
-
     let filteredComponent = undefined
     let ref
     let settings
     let openTree = {}
+    let isOnSearch = false
     let toRender = []
+
+    const ID = crypto.randomUUID()
+    const draggable = dragDrop()
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-    $: {
-    	if (ref != null) {
-    		HotKeysController.bindAction(
-    			ref,
-    			Object.values(viewportHotkeys(settings)),
-    			"public",
-    			LocalizationEN.VIEWPORT
-    		)
-    	}
+    function updateHierarchy(op) {
+        const openLocal = op ?? openTree
+        if (op !== openTree && op !== undefined)
+            EntityHierarchyService.updateHierarchy()
+        openTree = openLocal
+        toRender = buildTree(openTree, search, filteredComponent)
     }
 
-    const draggable = dragDrop()
+    $: {
+        if (ref != null) {
+            HotKeysController.bindAction(
+                ref,
+                Object.values(getViewportHotkeys(settings)),
+                "public",
+                LocalizationEN.VIEWPORT
+            )
+        }
+    }
 
-
-    function updateHierarchy(op) {
-    	const openLocal = op ?? openTree
-    	if (op !== openTree && op !== undefined)
-    		HierarchyController.updateHierarchy()
-    	openTree = openLocal
-    	toRender = buildTree(openTree, search, filteredComponent)
+    $: {
+        isOnSearch = search || filteredComponent
+        updateHierarchy()
     }
 
     onMount(() => {
-    	draggable.onMount({
-    		targetElement: ref,
-    		onDrop: (entityDragged, event) => {
-    			const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
-    			handleDrop(event, entityDragged, node ? Engine.entities.get(node) : undefined)
-    		},
-    		onDragOver: (_, ev) => {
-    			if (ev.ctrlKey)
-    				return "Link entities"
-    			if (ev.shiftKey)
-    				return "Copy into"
-    			return "Drop on collection (CTRL to link, SHIFT to copy and link)"
-    		}
-    	})
+        draggable.onMount({
+            targetElement: ref,
+            onDrop: (entityDragged, event) => {
+                const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
+                handleDrop(event, entityDragged, node ? Engine.entities.get(node) : undefined)
+            },
+            onDragOver: (_, ev) => {
+                if (ev.ctrlKey)
+                    return "Link entities"
+                if (ev.shiftKey)
+                    return "Copy into"
+                return "Drop on collection (CTRL to link, SHIFT to copy and link)"
+            }
+        })
 
-    	HierarchyController.registerListener(ID, updateHierarchy)
+        EntityHierarchyService.registerListener(ID, updateHierarchy)
     })
 
-    $: {
-    	search
-    	filteredComponent
-    	updateHierarchy()
-    }
     onDestroy(() => {
-    	HotKeysController.unbindAction(ref)
-    	unsubscribeSettings()
-    	draggable.onDestroy()
+        HotKeysController.unbindAction(ref)
+        unsubscribeSettings()
+        draggable.onDestroy()
     })
-    $: isOnSearch = search || filteredComponent
-
-
 </script>
 
 <Header
@@ -122,15 +118,6 @@
         min-width: 100%;
         height: 100%;
         width: fit-content;
-
         overflow: visible;
-
-        background: repeating-linear-gradient(
-                to bottom,
-                var(--pj-background-secondary) 0px,
-                var(--pj-background-secondary) 23px,
-                var(--pj-background-tertiary) 23px,
-                var(--pj-background-tertiary) 46px
-        );
     }
 </style>

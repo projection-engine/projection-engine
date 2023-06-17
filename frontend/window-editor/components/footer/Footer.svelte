@@ -1,6 +1,6 @@
 <script>
 
-    import ErrorLoggerAPI from "../../lib/fs/ErrorLoggerAPI"
+    import ErrorLoggerService from "../../services/fs/ErrorLoggerService"
     import FrameMetadata from "./components/FrameMetadata.svelte"
     import SceneStats from "./components/SceneStats.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
@@ -10,7 +10,7 @@
     import Console from "./components/Console.svelte"
     import Engine from "../../../../engine-core/Engine"
     import {onDestroy, onMount} from "svelte"
-    import EntityUpdateController from "../../lib/controllers/EntityUpdateController"
+    import EntityUpdateService from "../../services/engine/EntityUpdateService"
     import LocalizationEN from "../../../../contants/LocalizationEN"
 
 
@@ -18,8 +18,8 @@
     export let engine
 
     const openLogs = async () => {
-    	if (FS.exists(ErrorLoggerAPI.path))
-    		ElectronResources.shell.openPath(ErrorLoggerAPI.path).catch()
+    	if (FS.exists(ErrorLoggerService.path))
+    		ElectronResources.shell.openPath(ErrorLoggerService.path).catch()
     }
     let loadedLevel
     const ID = crypto.randomUUID()
@@ -30,11 +30,11 @@
     	entityID = Engine.loadedLevel?.id
 
     	if (entityID)
-    		EntityUpdateController.removeListener(entityID, ID)
+    		EntityUpdateService.removeListener(entityID, ID)
 
     	if (!loadedLevel)
     		return
-    	EntityUpdateController.addListener(entityID, ID, () => {
+    	EntityUpdateService.addListener(entityID, ID, () => {
     		loadedLevel = Engine.loadedLevel.name
     	})
     }

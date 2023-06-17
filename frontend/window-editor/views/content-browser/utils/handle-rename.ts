@@ -1,5 +1,5 @@
 import FilesStore from "../../../../shared/stores/FilesStore"
-import ContentBrowserAPI from "../../../lib/fs/ContentBrowserAPI"
+import ContentBrowserAPI from "../../../services/fs/ContentBrowserAPI"
 import FS from "../../../../shared/lib/FS/FS"
 
 export default async function handleRename(item, newName, currentDirectory, setCurrentDirectory) {

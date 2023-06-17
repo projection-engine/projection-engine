@@ -7,13 +7,13 @@ import SettingsStore from "../../../shared/stores/SettingsStore"
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
 import MeshComponent from "../../../../engine-core/instances/components/MeshComponent"
 import LightComponent from "../../../../engine-core/instances/components/LightComponent"
-import HierarchyController from "./HierarchyController"
-import EngineStateController from "./EngineStateController"
+import EntityHierarchyService from "./EntityHierarchyService"
+import EngineStateService from "./EngineStateService"
 import Engine from "../../../../engine-core/Engine"
 import LocalizationEN from "../../../../contants/LocalizationEN";
 
 
-export default class EntityFactory {
+export default class EntityFactoryService {
 	static translateEntity(entity, rotation = CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
 		if (SettingsStore.data.spawnOnOrigin) {
 			vec3.copy(entity._translation, [0, 0, 0])
@@ -30,7 +30,7 @@ export default class EntityFactory {
 	static createEmpty(collection?:boolean) {
 		const entity = EntityAPI.getNewEntityInstance(undefined, collection)
 		entity.name = collection ? LocalizationEN.NEW_COLLECTION : LocalizationEN.NEW_ENTITY
-		EngineStateController.add(entity)
+		EngineStateService.add(entity)
 	}
 
 	static createMesh(id) {
@@ -39,8 +39,8 @@ export default class EntityFactory {
 		const m = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
 		entity.addComponent(COMPONENTS.CULLING)
 		m.meshID = id
-		EntityFactory.translateEntity(entity)
-		EngineStateController.add(entity)
+		EntityFactoryService.translateEntity(entity)
+		EngineStateService.add(entity)
 
 	}
 
@@ -48,60 +48,60 @@ export default class EntityFactory {
 		const entity = EntityAPI.getNewEntityInstance()
 		entity.name = LocalizationEN.LIGHT_PROBE
 		entity.addComponent(COMPONENTS.LIGHT_PROBE)
-		EntityFactory.translateEntity(entity)
-		EngineStateController.add(entity)
+		EntityFactoryService.translateEntity(entity)
+		EngineStateService.add(entity)
 	}
 
 	static createAtmosphere() {
 		const entity = EntityAPI.getNewEntityInstance()
 		entity.name = LocalizationEN.ATMOSPHERE_RENDERER
 		entity.addComponent(COMPONENTS.ATMOSPHERE)
-		EntityFactory.translateEntity(entity)
-		EngineStateController.add(entity)
+		EntityFactoryService.translateEntity(entity)
+		EngineStateService.add(entity)
 	}
 
 	static createLight(type) {
 		const entity = EntityAPI.getNewEntityInstance()
 		entity.name = LocalizationEN.NEW_LIGHT
-		EntityFactory.translateEntity(entity)
+		EntityFactoryService.translateEntity(entity)
 		const comp = entity.addComponent<LightComponent>(COMPONENTS.LIGHT)
 		comp.type = type
-		EngineStateController.add(entity)
+		EngineStateService.add(entity)
 	}
 
 	static createCamera() {
 		const entity = EntityAPI.getNewEntityInstance()
 		entity.name = LocalizationEN.CAMERA
 		entity.addComponent(COMPONENTS.CAMERA)
-		EntityFactory.translateEntity(entity)
-		EngineStateController.add(entity)
+		EntityFactoryService.translateEntity(entity)
+		EngineStateService.add(entity)
 	}
 
 	static createUI() {
 		const entity = EntityAPI.getNewEntityInstance()
 		entity.name = LocalizationEN.UI_RENDERER
 		entity.addComponent(COMPONENTS.UI)
-		EntityFactory.translateEntity(entity)
-		EngineStateController.add(entity)
+		EntityFactoryService.translateEntity(entity)
+		EngineStateService.add(entity)
 	}
 
 	static createSprite() {
 		const entity = EntityAPI.getNewEntityInstance()
 		entity.name = LocalizationEN.SPRITE_RENDERER
 		entity.addComponent(COMPONENTS.SPRITE)
-		EngineStateController.add(entity)
+		EngineStateService.add(entity)
 	}
 
 	static createDecal() {
 		const entity = EntityAPI.getNewEntityInstance()
 		entity.name = LocalizationEN.DECAL_RENDERER
 		entity.addComponent(COMPONENTS.DECAL)
-		EngineStateController.add(entity)
+		EngineStateService.add(entity)
 	}
 
 	static toggleEntityVisibility(entityID:string, noSubmit?:boolean) {
 		EntityAPI.toggleVisibility(Engine.entities.get(entityID))
 		if (!noSubmit)
-			HierarchyController.updateHierarchy()
+			EntityHierarchyService.updateHierarchy()
 	}
 }

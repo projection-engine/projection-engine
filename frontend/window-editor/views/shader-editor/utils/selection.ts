@@ -1,5 +1,5 @@
 import SELECTION_TYPES from "../static/SELECT_ACTIONS"
-import {selectAllNodes} from "../../../templates/shader-actions"
+import {selectAllNodes} from "../../../templates/get-shader-actions"
 import type Canvas from "../libs/Canvas"
 import type ShaderNode from "../templates/ShaderNode"
 import type ShaderComment from "../templates/ShaderComment"

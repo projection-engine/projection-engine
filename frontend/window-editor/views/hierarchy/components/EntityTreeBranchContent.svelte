@@ -3,13 +3,13 @@
     import {onDestroy, onMount} from "svelte";
     import getEngineIcon from "../utils/get-engine-icon";
     import updateSelection from "../utils/update-selection";
-    import NameController from "../../../lib/controllers/NameController";
+    import EntityNamingService from "../../../services/engine/EntityNamingService";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
-    import EntityUpdateController from "../../../lib/controllers/EntityUpdateController";
+    import EntityUpdateService from "../../../services/engine/EntityUpdateService";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import mapComponents from "../utils/map-components";
     import LocalizationEN from "../../../../../contants/LocalizationEN";
@@ -38,8 +38,8 @@
     $: {
         if (entityID !== entity.id) {
             if (entityID)
-                EntityUpdateController.removeListener(entityID, ID)
-            EntityUpdateController.addListener(entity.id, ID, () => {
+                EntityUpdateService.removeListener(entityID, ID)
+            EntityUpdateService.addListener(entity.id, ID, () => {
                 entityName = entity.name
                 components = mapComponents(entity)
                 children = entity.children.array.length
@@ -53,7 +53,7 @@
     $: {
         if (!isOnEdit && entityName !== entity.name) {
             ChangesTrackerStore.updateStore(true)
-            NameController.renameEntity(entity.name, entity)
+            EntityNamingService.renameEntity(entity.name, entity)
             entityName = entity.name
         }
     }
@@ -66,7 +66,7 @@
     })
     onDestroy(() => {
         draggable.onDestroy()
-        EntityUpdateController.removeListener(entityID, ID)
+        EntityUpdateService.removeListener(entityID, ID)
     })
 
     $: isLocked = lockedEntity === entity.id

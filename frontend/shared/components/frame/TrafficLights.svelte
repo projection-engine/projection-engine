@@ -10,7 +10,7 @@
     import ElectronResources from "../../lib/ElectronResources"
     import RENDER_TARGET from "../../../window-editor/static/RENDER_TARGET"
     import HotKeysController from "../../lib/HotKeysController"
-    import LevelController from "../../../window-editor/lib/utils/LevelController"
+    import LevelService from "../../../window-editor/services/engine/LevelService"
     import LocalizationEN from "../../../../contants/LocalizationEN"
 
     export let noChangeTracking
@@ -97,7 +97,7 @@
             on:click={_ => {
                 if(hasChanges)
                     WindowChangeStore.updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
-                        await LevelController.save()
+                        await LevelService.save()
                         ElectronResources.ipcRenderer.send("close")
                     }})
                 else
