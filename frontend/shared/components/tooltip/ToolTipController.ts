@@ -1,27 +1,27 @@
-import Portal from "../../lib/Portal";
+import SveltePortal from "../../lib/SveltePortal"
 
 export default class ToolTipController {
-    static #initialized = false
-    static portal = new Portal(999, false)
-    static element
-    static closeCurrent
+	static #initialized = false
+	static portal = new SveltePortal(999, false)
+	static element
+	static closeCurrent
 
-    static initialize() {
-        if (ToolTipController.#initialized)
-            return
+	static initialize() {
+		if (ToolTipController.#initialized)
+			return
 
-        document.addEventListener("dragstart", () => {
-            ToolTipController.portal.close()
-            if (ToolTipController.closeCurrent)
-                ToolTipController.closeCurrent()
-        })
-        ToolTipController.#initialized = true
-        const el = document.createElement("div")
-        el.classList.add("tooltip")
-        el.setAttribute("data-sveltetooltip", "-")
-        ToolTipController.portal.create(el)
+		document.addEventListener("dragstart", () => {
+			ToolTipController.portal.close()
+			if (ToolTipController.closeCurrent)
+				ToolTipController.closeCurrent()
+		})
+		ToolTipController.#initialized = true
+		const el = document.createElement("div")
+		el.classList.add("tooltip")
+		el.setAttribute("data-sveltetooltip", "-")
+		ToolTipController.portal.create(el)
 
-        ToolTipController.element = el
-    }
+		ToolTipController.element = el
+	}
 
 }

@@ -3,20 +3,21 @@
     import Dropdown from "./Dropdown.svelte";
     import getDropdownHeaderStyles from "./utils/get-dropdown-header-styles";
     import Icon from "../icon/Icon.svelte";
+    import EmptyIcon from "../icon/EmptyIcon.svelte";
 
     export let label: string
     export let labelAsIcon: boolean
     export let autoClose: boolean
-    export let options: { label: string, icon?: string, divider?: boolean, onClick: Function }[]
+    export let options: { id?: any, label: string, icon?: string, divider?: boolean, onClick: Function }[]
     export let cleanLayout: boolean
     export let tooltip: string
     export let noPadding: boolean
     export let buttonStyles: string
+    export let highlightElementWithId: any
 
-    $: styles = cleanLayout ? undefined : getDropdownHeaderStyles()
 </script>
 
-<Dropdown buttonStyles={styles} hideArrow={cleanLayout}>
+<Dropdown buttonStyles={cleanLayout ? undefined : getDropdownHeaderStyles()} hideArrow={cleanLayout}>
     <button data-sveltebuttondefault="-"
             slot="button"
             data-svelteview-header-dropdown={cleanLayout? "" : "-"}
@@ -43,6 +44,7 @@
         {:else}
             <button data-sveltebuttondefault="-"
                     disabled={option.disabled}
+
                     on:click={e => {
                         option.onClick()
                         if(autoClose)
@@ -50,10 +52,16 @@
                     }}
                     style={noPadding ? undefined : "padding-left: 25px;"}
             >
-                {#if option.icon}
-                    <Icon>{option.icon}</Icon>
+                {#if highlightElementWithId !== undefined && highlightElementWithId === option.id}
+                    <Icon>check</Icon>
                 {:else}
-                    <div style="width: 1.1rem"></div>
+                    {#if option.icon}
+                        {#if option.icon === "empty"}
+                            <EmptyIcon/>
+                        {:else}
+                            <Icon>{option.icon}</Icon>
+                        {/if}
+                    {/if}
                 {/if}
                 {option.label}
             </button>

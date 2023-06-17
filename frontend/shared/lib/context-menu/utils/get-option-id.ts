@@ -1,3 +1,3 @@
 export default function getOptionID(label:string, parent:string|null) {
-    return label.toUpperCase().trim() + (parent ? parent : "-")
+	return label.toUpperCase().trim() + (parent ? parent : "-")
 }

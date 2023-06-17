@@ -1,3 +1,0 @@
-[submodule "engine-core"]
-	path = engine-core
-	url = git@github.com:projection-engine/engine.git

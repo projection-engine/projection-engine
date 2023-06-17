@@ -1,4 +1,4 @@
-import Projects from './window-projects/Projects.svelte';
+import Projects from "./projects/Projects.svelte"
 
 
 // TO GENERATE IMAGE
@@ -7,5 +7,5 @@ import Projects from './window-projects/Projects.svelte';
 
 export default new Projects({
 	target: document.body
-});
+})
 

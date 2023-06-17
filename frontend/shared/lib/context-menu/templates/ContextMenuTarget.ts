@@ -1,5 +1,5 @@
-import ContextMenuOptions from "./ContextMenuOptions";
-import MappedOption from "./MappedOption";
+import ContextMenuOptions from "./ContextMenuOptions"
+import MappedOption from "./MappedOption"
 
 interface ContextMenuTarget {
 

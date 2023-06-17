@@ -8,7 +8,7 @@
 
 <div
         class="wrapper"
-        data-sveltedisabled={disabled ? `-` : undefined}
+        data-sveltedisabled={disabled ? "-" : undefined}
         data-svelteoverflow="-"
 >
     <button

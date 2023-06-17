@@ -2,36 +2,36 @@ const offX = 4, offY = 4
 const LEFT_LIMIT = 0
 
 export default function transformModal(modal: HTMLElement, button: HTMLElement) {
-    if (!button || !modal)
-        return
+	if (!button || !modal)
+		return
 
-    modal.style.zIndex = "-1"
-    modal.style.display = "flex"
+	modal.style.zIndex = "-1"
+	modal.style.display = "flex"
 
-    const buttonBoundingRect = button.getBoundingClientRect()
-    const halfHeight = buttonBoundingRect.height / 2
-    modal.style.top = (buttonBoundingRect.top + halfHeight) + "px"
-    modal.style.left = (buttonBoundingRect.left) + "px"
-    modal.style.transform = `translate(0px, ${halfHeight + offY}px)`
+	const buttonBoundingRect = button.getBoundingClientRect()
+	const halfHeight = buttonBoundingRect.height / 2
+	modal.style.top = (buttonBoundingRect.top + halfHeight) + "px"
+	modal.style.left = (buttonBoundingRect.left) + "px"
+	modal.style.transform = `translate(0px, ${halfHeight + offY}px)`
 
-    const modalBoundingRect = modal.getBoundingClientRect()
-    const body = document.body.getBoundingClientRect()
+	const modalBoundingRect = modal.getBoundingClientRect()
+	const body = document.body.getBoundingClientRect()
 
-    let y = `${halfHeight + offY}px`
-    if (modalBoundingRect.y < 0)
-        y = "calc(50% + " + ((-modalBoundingRect.y / 2 - offY + halfHeight) / 2) + "px)"
-    if ((buttonBoundingRect.y + modalBoundingRect.height + buttonBoundingRect.height) > body.height)
-        y = `calc(-100% - ${halfHeight + offY}px)`
+	let y = `${halfHeight + offY}px`
+	if (modalBoundingRect.y < 0)
+		y = "calc(50% + " + ((-modalBoundingRect.y / 2 - offY + halfHeight) / 2) + "px)"
+	if ((buttonBoundingRect.y + modalBoundingRect.height + buttonBoundingRect.height) > body.height)
+		y = `calc(-100% - ${halfHeight + offY}px)`
 
 
-    let x = "0px"
-    if (modalBoundingRect.x < LEFT_LIMIT)
-        x = `calc(50% + ${offX}px)`
-    if ((modalBoundingRect.x + modalBoundingRect.width) > body.width)
-        x = `calc(-100% + ${buttonBoundingRect.width}px)`
+	let x = "0px"
+	if (modalBoundingRect.x < LEFT_LIMIT)
+		x = `calc(50% + ${offX}px)`
+	if ((modalBoundingRect.x + modalBoundingRect.width) > body.width)
+		x = `calc(-100% + ${buttonBoundingRect.width}px)`
 
-    modal.style.transform = `translate(${x}, ${y})`;
-    modal.style.zIndex = "999"
-    if (button.firstElementChild)
-        button.firstElementChild.setAttribute("data-sveltehighlight", "true")
+	modal.style.transform = `translate(${x}, ${y})`
+	modal.style.zIndex = "999"
+	if (button.firstElementChild)
+		button.firstElementChild.setAttribute("data-sveltehighlight", "true")
 }

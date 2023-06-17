@@ -1,16 +1,17 @@
 <script>
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import ToolTip from "../tooltip/ToolTip.svelte";
-    import Icon from "../icon/Icon.svelte";
-    import {onDestroy} from "svelte";
 
-    import Modal from "../modal/Modal.svelte";
-    import WindowChangeStore from "./WindowChangeStore";
-    import ChangesTrackerStore from "../../stores/ChangesTrackerStore";
+    import ToolTip from "../tooltip/ToolTip.svelte"
+    import Icon from "../icon/Icon.svelte"
+    import {onDestroy} from "svelte"
+
+    import Modal from "../modal/Modal.svelte"
+    import WindowChangeStore from "./WindowChangeStore"
+    import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
     import ElectronResources from "../../lib/ElectronResources"
-    import RENDER_TARGET from "../../../window-editor/static/RENDER_TARGET";
-    import HotKeysController from "../../lib/HotKeysController";
-    import LevelController from "../../../window-editor/lib/utils/LevelController";
+    import RENDER_TARGET from "../../../editor/static/RENDER_TARGET"
+    import HotKeysController from "../../lib/HotKeysController"
+    import LevelService from "../../../editor/services/engine/LevelService"
+    import LocalizationEN from "../../../../shared/LocalizationEN"
 
     export let noChangeTracking
 
@@ -21,19 +22,19 @@
     const unsubscribeChanges = ChangesTrackerStore.getStore(v => hasChanges = v)
 
     onDestroy(() => {
-        unsubscribeChanges()
-        unsubscribeMessage()
+    	unsubscribeChanges()
+    	unsubscribeMessage()
     })
 
     function toggleFullscreen() {
-        if (document.fullscreenElement != null)
-            document.exitFullscreen()
-        else {
-            if (HotKeysController.blockActions)
-                document.getElementById(RENDER_TARGET).querySelector("canvas").requestFullscreen()
-            else
-                document.body.requestFullscreen()
-        }
+    	if (document.fullscreenElement != null)
+    		document.exitFullscreen()
+    	else {
+    		if (HotKeysController.blockActions)
+    			document.getElementById(RENDER_TARGET).querySelector("canvas").requestFullscreen()
+    		else
+    			document.body.requestFullscreen()
+    	}
     }
 </script>
 
@@ -52,7 +53,7 @@
                         message.callback?.()
                     }}
             >
-                {LOCALIZATION_EN.YES}
+                {LocalizationEN.YES}
             </button>
             <button
                     data-sveltebuttondefault="-"
@@ -61,7 +62,7 @@
                        WindowChangeStore.updateStore(undefined)
                     }}
             >
-                {LOCALIZATION_EN.CANCEL}
+                {LocalizationEN.CANCEL}
             </button>
         </div>
     </Modal>
@@ -74,7 +75,7 @@
             style="background: transparent"
     >
         <Icon styles="font-size: 1rem">fullscreen</Icon>
-        <ToolTip content={LOCALIZATION_EN.FULLSCREEN}/>
+        <ToolTip content={LocalizationEN.FULLSCREEN}/>
     </button>
     <div data-sveltevertdivider="-" style="height: 15px"></div>
     <button
@@ -82,21 +83,21 @@
             on:click={_ => ElectronResources.ipcRenderer.send("minimize")}
     >
         <Icon styles="font-size: 1rem">minimize</Icon>
-        <ToolTip content={LOCALIZATION_EN.MINIMIZE}/>
+        <ToolTip content={LocalizationEN.MINIMIZE}/>
     </button>
     <button
             data-sveltebuttondefault="-"
             on:click={_ => ElectronResources.ipcRenderer.send("maximize")}
     >
         <Icon styles="font-size: 1rem">maximize</Icon>
-        <ToolTip content={LOCALIZATION_EN.MAXIMIZE}/>
+        <ToolTip content={LocalizationEN.MAXIMIZE}/>
     </button>
     <button
             data-sveltebuttondefault="-"
             on:click={_ => {
                 if(hasChanges)
-                    WindowChangeStore.updateStore({message: LOCALIZATION_EN.UNSAVED_CHANGES, callback: async () => {
-                        await LevelController.save()
+                    WindowChangeStore.updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
+                        await LevelService.save()
                         ElectronResources.ipcRenderer.send("close")
                     }})
                 else
@@ -105,7 +106,7 @@
             style="--pj-accent-color: red"
     >
         <Icon styles="font-size: 1rem">close</Icon>
-        <ToolTip content={LOCALIZATION_EN.CLOSE}/>
+        <ToolTip content={LocalizationEN.CLOSE}/>
     </button>
 </div>
 

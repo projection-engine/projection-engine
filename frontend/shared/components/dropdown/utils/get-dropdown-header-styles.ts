@@ -1,5 +1,5 @@
 export default function getDropdownHeaderStyles(highlight?: boolean): string {
-    return `
+	return `
           max-height: 22px;
           min-height: 22px;
           border-radius: 3px;

@@ -1,6 +1,6 @@
 <script>
-    import ToolTip from "../tooltip/ToolTip.svelte";
-    import Icon from "../icon/Icon.svelte";
+    import ToolTip from "../tooltip/ToolTip.svelte"
+    import Icon from "../icon/Icon.svelte"
 
     export let title
     export let background

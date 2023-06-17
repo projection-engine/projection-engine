@@ -12,6 +12,12 @@ module.exports = {
 		{
 			files: ["*.svelte"],
 			processor: "svelte3/svelte3"
+		},
+		{
+			"files": ["*.ts", "*.svelte"],
+			"rules": {
+				"no-undef": "off"
+			}
 		}
 	],
 	"parser": "@typescript-eslint/parser",

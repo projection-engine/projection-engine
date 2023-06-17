@@ -1,7 +1,6 @@
 <script>
-
-    import LOCALIZATION_EN from "../../../../static/objects/LOCALIZATION_EN";
-    import Modal from "../modal/Modal.svelte";
+    import Modal from "../modal/Modal.svelte"
+    import LocalizationEN from "../../../../shared/LocalizationEN"
 
     export let handleClose
 </script>
@@ -9,23 +8,23 @@
 <Modal handleClose={handleClose} styles="width: clamp(250px, 25vw, 1000px); height: clamp(350px, 25vh, 1000px);">
     <div class="logo">
         <img draggable="false" alt={"logo"} src={"./APP_LOGO.png"} class="image"/>
-        {LOCALIZATION_EN.PROJECTION_ENGINE}
+        {LocalizationEN.PROJECTION_ENGINE}
         <div class="info">
-            {LOCALIZATION_EN.VERSION}
+            {LocalizationEN.VERSION}
         </div>
     </div>
 
     <div>
         <div class="info">
-            {LOCALIZATION_EN.FOOTER}
+            {LocalizationEN.FOOTER}
         </div>
 
         <div class="info">
-            {LOCALIZATION_EN.LICENSE}
+            {LocalizationEN.LICENSE}
         </div>
         <br>
         <div class="info">
-            {LOCALIZATION_EN.COPYRIGHT}
+            {LocalizationEN.COPYRIGHT}
         </div>
     </div>
 </Modal>

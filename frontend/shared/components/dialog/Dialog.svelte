@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onDestroy, onMount} from "svelte";
-    import Portal from "../../lib/Portal";
+    import SveltePortal from "../../lib/SveltePortal";
     import transformModal from "./transform-modal";
 
     export let isOpen = false
@@ -8,7 +8,7 @@
     export let handleClose:Function
     export let styles:string
 
-    const portal = new Portal(500, false)
+    const portal = new SveltePortal(500, false)
     let modalRef:HTMLElement
     let mutation
 
