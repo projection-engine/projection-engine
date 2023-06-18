@@ -30,7 +30,7 @@ module.exports = {
 		"svelte3"
 	],
 	"rules": {
-		"max-lines-per-function": ["warn", 5],
+		"max-lines-per-function": ["warn", 15],
 		"complexity": ["warn", 5],
 		"indent": [
 			"error",
@@ -49,7 +49,7 @@ module.exports = {
 			"never"
 		],
 		"@typescript-eslint/ban-types": [
-			"none",
+			"off",
 			{
 				"types": {
 					"String": false,
