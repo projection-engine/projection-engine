@@ -1,6 +1,6 @@
-import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
 import LocalizationEN from "../../../../../shared/LocalizationEN";
 import AbstractSingleton from "../../../../../shared/AbstractSingleton";
+import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService";
 
 
 export default class TabContextController extends AbstractSingleton {
@@ -12,7 +12,8 @@ export default class TabContextController extends AbstractSingleton {
     constructor() {
         super();
         // TODO - ADD OPTIONS AND INTEGRATE WITH TABS
-        ContextMenuService.getInstance().mount(
+        ContextMenuService.getInstance()
+            .mount(
             [
                 {
                     label: LocalizationEN.CLOSE_ALL,

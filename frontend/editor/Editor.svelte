@@ -13,10 +13,8 @@
     import HotKeysController from "../shared/lib/HotKeysController"
     import WindowFrame from "./components/window-frame/WindowFrame.svelte"
     import Canvas from "./views/scene-editor/Canvas.svelte"
-
     import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS"
     import FilesStore from "../shared/stores/FilesStore"
-    import ContextMenuService from "../shared/lib/context-menu/ContextMenuService"
     import ToastNotificationSystem from "../shared/components/alert/ToastNotificationSystem"
     import ElectronResources from "../shared/lib/ElectronResources"
     import StoreIPCListener from "../shared/lib/StoreIPCListener"
@@ -39,11 +37,10 @@
     onMount(() => {
     	StoreIPCListener.get()
     	ToastNotificationSystem.get()
-    	ContextMenuService.get()
-
     	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
     		sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
-    		FileSystemService.get(pathToProject)
+    		FileSystemService.get()
+            FileSystemService.getInstance().init(pathToProject)
     		FSFilesService.initializeFolders().catch()
     		LevelService.get(_ => isMetadataReady = true)
     		HotKeysController.initializeListener()

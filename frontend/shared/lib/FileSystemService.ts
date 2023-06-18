@@ -14,8 +14,9 @@ export default class FileSystemService extends AbstractSingleton{
 	rootDir = ElectronResources.os.homedir()
 	ASSETS_PATH?:string
 
-	constructor(path) {
-		super();
+	init(path: string){
+		if(path == null)
+			return
 		this.path = ElectronResources.path.resolve(path.replace(FileTypes.PROJECT, "") + this.sep)
 		this.TEMP = ElectronResources.path.resolve(this.path + this.sep + Folders.TEMP + this.sep)
 		this.PREVIEW_PATH = ElectronResources.path.resolve(this.path + this.sep + Folders.PREVIEWS + this.sep)
@@ -26,9 +27,7 @@ export default class FileSystemService extends AbstractSingleton{
 			this.mkdir(this.PREVIEW_PATH).catch()
 		if(!this.exists(this.TEMP))
 			this.mkdir(this.TEMP).catch()
-
 	}
-
 	static getInstance(): FileSystemService{
 		return super.get<FileSystemService>()
 	}

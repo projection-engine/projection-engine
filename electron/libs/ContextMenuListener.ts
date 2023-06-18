@@ -11,9 +11,9 @@ export default class ContextMenuListener extends AbstractSingleton {
 
     constructor() {
         super();
-        ipcMain.on(IPCRoutes.REGISTER_CONTEXT_MENU, this.#registerContextMenu)
-        ipcMain.on(IPCRoutes.DESTROY_CONTEXT_MENU, this.#destroyContextMenu)
-        ipcMain.on(IPCRoutes.OPEN_CONTEXT_MENU, this.#openContextMenu)
+        ipcMain.on(IPCRoutes.REGISTER_CONTEXT_MENU, this.#registerContextMenu.bind(this))
+        ipcMain.on(IPCRoutes.DESTROY_CONTEXT_MENU, this.#destroyContextMenu.bind(this))
+        ipcMain.on(IPCRoutes.OPEN_CONTEXT_MENU, this.#openContextMenu.bind(this))
     }
 
     #mapMenu(e, parent) {

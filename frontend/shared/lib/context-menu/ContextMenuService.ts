@@ -2,7 +2,6 @@ import ContextMenuOption from "./templates/ContextMenuOptions"
 import findOptions from "./utils/find-options"
 import buildOptions from "./utils/build-options"
 import ContextMenuTarget from "./templates/ContextMenuTarget"
-
 import getContextAction from "./utils/get-context-action"
 import ElectronResources from "../ElectronResources"
 import IPCRoutes from "../../../../shared/IPCRoutes";

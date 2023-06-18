@@ -24,51 +24,51 @@
     const internalID = crypto.randomUUID()
 
     onMount(() => {
-    	ToastNotificationSystem.get()
-    	ContextMenuService.get()
-    	ContextMenuService.getInstance().mount([
-    		{
-    			icon: "delete_forever",
-    			label: "Delete",
-    			onClick: async () => {
-    				await FileSystemService.getInstance().rm(FileSystemService.getInstance().resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + selected), {
-    					recursive: true,
-    					force: true
-    				})
-    				projectsToShow = projectsToShow.filter(e => e.id !== selected)
-    			}
-    		},
-    		{
-    			icon: "folder",
-    			label: "Open in explorer",
-    			onClick: async () => ElectronResources.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + selected)
-    		},
-    	],
-    	internalID
-    	)
-    	if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
-    		localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FileSystemService.getInstance().rootDir)
-    	basePath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH)
+        ContextMenuService.getInstance().mount([
+                {
+                    icon: "delete_forever",
+                    label: "Delete",
+                    onClick: async () => {
+                        await FileSystemService.getInstance().rm(FileSystemService.getInstance().resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + selected), {
+                            recursive: true,
+                            force: true
+                        })
+                        projectsToShow = projectsToShow.filter(e => e.id !== selected)
+                    }
+                },
+                {
+                    icon: "folder",
+                    label: "Open in explorer",
+                    onClick: async () => ElectronResources.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + selected)
+                },
+            ],
+            internalID
+        )
+        ToastNotificationSystem.get()
+
+        if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
+            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FileSystemService.getInstance().rootDir)
+        basePath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH)
 
     })
     $: {
-    	if (basePath)
-    		refreshProjects(basePath).then(r => projectsToShow = r).catch()
+        if (basePath)
+            refreshProjects(basePath).then(r => projectsToShow = r).catch()
     }
     onDestroy(() => ContextMenuService.getInstance().destroy(internalID))
 
     async function onRename(newName, item) {
-    	const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + item.id + FileSystemService.getInstance().sep + FileTypes.PROJECT)
-    	const res = await FileSystemService.getInstance().read(pathName)
-    	if (!res)
-    		return
-    	await FileSystemService.getInstance().write(
-    		pathName,
-    		JSON.stringify({
-    			...JSON.parse(res.toString()),
-    			name: newName
-    		}))
-    	projectsToShow = projectsToShow
+        const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + item.id + FileSystemService.getInstance().sep + FileTypes.PROJECT)
+        const res = await FileSystemService.getInstance().read(pathName)
+        if (!res)
+            return
+        await FileSystemService.getInstance().write(
+            pathName,
+            JSON.stringify({
+                ...JSON.parse(res.toString()),
+                name: newName
+            }))
+        projectsToShow = projectsToShow
     }
 </script>
 

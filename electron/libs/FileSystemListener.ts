@@ -14,17 +14,17 @@ export default class FileSystemListener extends AbstractSingleton {
 
 	constructor() {
 		super()
-		ipcMain.on(IPCRoutes.FS_WATCH, this.#watch)
-		ipcMain.on(IPCRoutes.FS_UPDATE_WATCH, this.#updateWatch)
-		ipcMain.on(IPCRoutes.FS_UNWATCH, this.#unwatch)
-		ipcMain.on(IPCRoutes.FS_READ, this.#read)
-		ipcMain.on(IPCRoutes.FS_WRITE, this.#write)
-		ipcMain.on(IPCRoutes.FS_RM, this.#rm)
-		ipcMain.on(IPCRoutes.FS_MKDIR, this.#mkdir)
-		ipcMain.on(IPCRoutes.FS_STAT, this.#stat)
-		ipcMain.on(IPCRoutes.FS_EXISTS, this.#exists)
-		ipcMain.on(IPCRoutes.FS_READDIR, this.#readdir)
-		ipcMain.on(IPCRoutes.FS_RENAME, this.#rename)
+		ipcMain.on(IPCRoutes.FS_WATCH, this.#watch.bind(this))
+		ipcMain.on(IPCRoutes.FS_UPDATE_WATCH, this.#updateWatch.bind(this))
+		ipcMain.on(IPCRoutes.FS_UNWATCH, this.#unwatch.bind(this))
+		ipcMain.on(IPCRoutes.FS_READ, this.#read.bind(this))
+		ipcMain.on(IPCRoutes.FS_WRITE, this.#write.bind(this))
+		ipcMain.on(IPCRoutes.FS_RM, this.#rm.bind(this))
+		ipcMain.on(IPCRoutes.FS_MKDIR, this.#mkdir.bind(this))
+		ipcMain.on(IPCRoutes.FS_STAT, this.#stat.bind(this))
+		ipcMain.on(IPCRoutes.FS_EXISTS, this.#exists.bind(this))
+		ipcMain.on(IPCRoutes.FS_READDIR, this.#readdir.bind(this))
+		ipcMain.on(IPCRoutes.FS_RENAME, this.#rename.bind(this))
 	}
 
 	async #watch(ev, path) {

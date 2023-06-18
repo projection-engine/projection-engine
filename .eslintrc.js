@@ -47,6 +47,22 @@ module.exports = {
 		"semi": [
 			"error",
 			"never"
+		],
+		"@typescript-eslint/ban-types": [
+			"none",
+			{
+				"types": {
+					"String": false,
+					"Boolean": false,
+					"Number": false,
+					"Symbol": false,
+					"{}": false,
+					"Object": false,
+					"object": false,
+					"Function": false,
+				},
+				"extendDefaults": true
+			}
 		]
 	}
 }

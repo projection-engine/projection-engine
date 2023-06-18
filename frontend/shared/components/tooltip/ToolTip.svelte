@@ -31,12 +31,13 @@
     const hover = (event) => {
     	open = true
 
-    	bBox = ToolTipService.getInstance().element.getBoundingClientRect()
+        const instance = ToolTipService.getInstance()
+    	bBox = instance.element.getBoundingClientRect()
     	bodyBBox = document.body.getBoundingClientRect()
 
-    	ToolTipService.getInstance().element.setAttribute("data-sveltetooltipanimation", "-")
-    	ToolTipService.getInstance().element.style.left = (event.clientX + 10) + "px"
-    	ToolTipService.getInstance().element.style.top = (event.clientY + 10) + "px"
+    	instance.element.setAttribute("data-sveltetooltipanimation", "-")
+    	instance.element.style.left = (event.clientX + 10) + "px"
+    	instance.element.style.top = (event.clientY + 10) + "px"
     	document.addEventListener("mousemove", handleMouseMove)
     	if (targetParent)
     		targetParent.addEventListener(
@@ -47,24 +48,24 @@
     }
 
     $: {
+        const instance = ToolTipService.getInstance()
+
     	if (open) {
-    		ToolTipService.getInstance().portal.open()
-    		ToolTipService.getInstance().closeCurrent = () => {
+            instance.portal.open()
+            instance.closeCurrent = () => {
     			close()
     			if (targetParent)
     				targetParent.removeEventListener("mouseleave", close)
     		}
     	} else
-    		ToolTipService.getInstance().portal.close()
+            instance.portal.close()
     }
 
     $: {
     	if (open)
     		ToolTipService.getInstance().element.innerHTML = content
-
     }
     onMount(() => {
-    	ToolTipService.get()
     	targetParent = wrapper.parentElement
     	if (targetParent)
     		targetParent.addEventListener("mouseenter", hover)

@@ -88,7 +88,6 @@
             },
             {passive: false}
         )
-        TabContextController.get()
         contextID = TabContextController.getInstance().contextID
         ref.addEventListener("wheel", handler);
         sortable = new Sortable(ref, {
@@ -108,7 +107,8 @@
             },
             direction: "horizontal"
         });
-        TabContextController.getInstance().registerContext(internalID, id => {
+        TabContextController.getInstance()
+            .registerContext(internalID, id => {
             if (id === "CREATE")
                 addNewTab()
             else
