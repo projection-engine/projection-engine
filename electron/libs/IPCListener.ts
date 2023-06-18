@@ -7,7 +7,6 @@ import * as os from "os"
 import * as fs from "fs"
 import * as pathRequire from "path"
 import IPCRoutes from "../../shared/IPCRoutes"
-import Folders from "../../shared/Folders"
 import FileImporterUtil from "./FileImporterUtil"
 import AbstractSingleton from "../../shared/AbstractSingleton"
 import FileSystemUtil from "./FileSystemUtil"
@@ -54,8 +53,7 @@ export default class IPCListener extends AbstractSingleton {
 			const window = instance.findWindow(ev.sender.id)
 			if (window === instance.window)
 				for (let i = 0; i < instance.windows.length; i++) {
-					const w = instance.windows[i]
-					w.webContents.send(IPCRoutes.STORE_UPDATE, data)
+					instance.windows[i].electronWindow.webContents.send(IPCRoutes.STORE_UPDATE, data)
 				}
 			else
 				instance.window.webContents.send(IPCRoutes.STORE_UPDATE, data)
