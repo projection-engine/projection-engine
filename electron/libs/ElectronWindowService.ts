@@ -7,10 +7,10 @@ import IPCRoutes from "../../shared/IPCRoutes"
 import FileTypes from "../../shared/FileTypes"
 import Folders from "../../shared/Folders"
 import WindowTypes from "../../shared/WindowTypes"
-import FileSystemListener from "./FileSystemListener";
-import IPCListener from "./IPCListener";
-import AbstractSingleton from "../../shared/AbstractSingleton";
-import FileSystemUtil from "./FileSystemUtil";
+import FileSystemListener from "./FileSystemListener"
+import IPCListener from "./IPCListener"
+import AbstractSingleton from "../../shared/AbstractSingleton"
+import FileSystemUtil from "./FileSystemUtil"
 
 enum CurrentWindow {
     EDITOR,
@@ -18,7 +18,7 @@ enum CurrentWindow {
     NONE
 }
 
-export default class ElectronWindowService extends AbstractSingleton{
+export default class ElectronWindowService extends AbstractSingleton {
 	readonly RELATIVE_LOGO_PATH = "./APP_LOGO.png"
 	id?: string
 	pathToProject?: string
@@ -27,13 +27,13 @@ export default class ElectronWindowService extends AbstractSingleton{
 	pathToRegistry?: string
 	registry: { [key: string]: RegistryFile } = {}
 	window: BrowserWindow
-	windows: BrowserWindow[] = []
+	windows: { electronWindow: BrowserWindow, type: WindowTypes }[] = []
 	metadata: MutableObject
 	preventAppClosing = false
 	#currentWindow = CurrentWindow.NONE
 
 	constructor() {
-		super();
+		super()
 		const log = console.error
 		console.error = (...msg) => {
 			log(...msg)
@@ -45,13 +45,12 @@ export default class ElectronWindowService extends AbstractSingleton{
 
 		const primaryDisplay = screen.getPrimaryDisplay()
 		const {width, height} = primaryDisplay.workAreaSize
-
 		this.window = this.#createWindow({width: width / 2, height: height / 2})
 		ContextMenuListener.get()
 		this.openProjectWindow()
 	}
 
-	static getInstance(): ElectronWindowService{
+	static getInstance(): ElectronWindowService {
 		return super.get<ElectronWindowService>()
 	}
 
@@ -59,10 +58,9 @@ export default class ElectronWindowService extends AbstractSingleton{
 		try {
 			if (this.window.webContents.id === id)
 				return this.window
-
 			for (let i = 0; i < this.windows.length; i++) {
 				try {
-					const window = this.windows[i]
+					const window = this.windows[i].electronWindow
 					if (window.webContents.id === id)
 						return window
 				} catch (err) {
@@ -71,14 +69,13 @@ export default class ElectronWindowService extends AbstractSingleton{
 				}
 			}
 		} catch (err) {
-			return
 		}
 	}
 
 	closeSubWindows() {
 		this.windows.forEach(w => {
 			try {
-				w?.destroy?.()
+				w?.electronWindow?.destroy?.()
 			} catch (err) {
 				console.log(err)
 			}
@@ -88,25 +85,31 @@ export default class ElectronWindowService extends AbstractSingleton{
 
 
 	addWindow(settings: MutableObject, type: number) {
-		switch (type) {
-		case WindowTypes.PREFERENCES: {
-			const primaryDisplay = screen.getPrimaryDisplay()
-			const {width, height} = primaryDisplay.workAreaSize
-			const newWindow = this.#createWindow({
-				width: width * (settings.widthScale || 1),
-				height: height * (settings.heightScale || 1)
-			}, true)
-			newWindow.loadFile(path.join(__dirname, "./preferences-window.html")).catch()
-			newWindow.on("close", () => {
-				try {
-					this.windows = this.windows.filter(w => w !== newWindow)
-				} catch (err) {
-					console.log(err)
+	    try{
+			if(type === WindowTypes.PREFERENCES) {
+				const existingOne = this.windows.find(w => w.type === type)
+				if (existingOne != null) {
+					existingOne.electronWindow.show()
+					return
 				}
-			})
-			this.windows.push(newWindow)
-			break
-		}
+				const primaryDisplay = screen.getPrimaryDisplay()
+				const {width, height} = primaryDisplay.workAreaSize
+				const newWindow = this.#createWindow({
+					width: width * (settings.widthScale || 1),
+					height: height * (settings.heightScale || 1)
+				}, true)
+				this.windows.push({electronWindow: newWindow, type})
+				newWindow.loadFile(path.join(__dirname, "./preferences-window.html")).catch()
+				newWindow.on("closed", () => {
+					try {
+						this.windows = this.windows.filter(w => w.type !== type)
+					} catch (err) {
+						console.log(err)
+					}
+				})
+			}
+		}catch (err){
+			console.error(err)
 		}
 	}
 
@@ -135,37 +138,38 @@ export default class ElectronWindowService extends AbstractSingleton{
 		this.pathToAssets = path.resolve(pathTo + path.sep + Folders.ASSETS)
 		this.pathToPreviews = path.resolve(pathTo + path.sep + Folders.PREVIEWS)
 
-		Object.entries(this.registry)
-			.forEach((param: [string, RegistryFile]) => {
-				const exists = fs.existsSync(path.resolve(this.pathToAssets + path.sep + param[1].path))
-				if (!exists)
-					delete this.registry[param[0]]
-			})
+		const registryEntries = Object.entries(this.registry)
+		for (let i = 0; i < registryEntries.length; i++){
+			const param: [string, RegistryFile] = registryEntries[i]
+			const exists = fs.existsSync(path.resolve(this.pathToAssets + path.sep + param[1].path))
+			if (!exists)
+				delete this.registry[param[0]]
+		}
 		this.#currentWindow = undefined
-		this.#openEditorWindow()
+		await this.#openEditorWindow()
 	}
 
-	#openEditorWindow() {
+	async #openEditorWindow() {
 		if (this.#currentWindow === CurrentWindow.EDITOR)
 			return
 
 		this.closeSubWindows()
 		this.#currentWindow = CurrentWindow.EDITOR
-		this.window.loadFile(path.join(__dirname, "./editor-window.html"))
-			.then(() => {
-				this.window.webContents.send(IPCRoutes.EDITOR_INITIALIZATION, this.pathToProject)
-				this.window.maximize()
-			})
-			.catch()
+		try {
+			await this.window.loadFile(path.join(__dirname, "./editor-window.html"))
+		} catch (err) {
+
+		}
+		this.window.webContents.send(IPCRoutes.EDITOR_INITIALIZATION, this.pathToProject)
+		this.window.maximize()
 	}
 
-	#createWindow(settings: MutableObject, isChild?:boolean) {
+	#createWindow(settings: MutableObject, isChild?: boolean) {
 		const window = new BrowserWindow({
 			...settings,
 			darkTheme: true,
 			autoHideMenuBar: true,
 			titleBarStyle: "hidden",
-			// parent,
 			webPreferences: {
 				enableBlinkFeatures: "PreciseMemoryInfo",
 				webSecurity: false,
@@ -192,7 +196,8 @@ export default class ElectronWindowService extends AbstractSingleton{
 			}
 		})
 
-		if (process.env.IS_DEV) { // @ts-ignore
+		if (process.env.IS_DEV) {
+			// @ts-ignore
 			window.openDevTools(isChild ? undefined : {mode: "detach"})
 		}
 		return window

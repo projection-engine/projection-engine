@@ -1,3 +1,5 @@
-export default {
-	PREFERENCES: 0
+enum  WindowTypes{
+	PREFERENCES
 }
+
+export default WindowTypes
