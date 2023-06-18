@@ -2,12 +2,13 @@ import {get, writable} from "svelte/store"
 import VISUAL_SETTINGS from "../../editor/static/VISUAL_SETTINGS"
 import ChangesTrackerStore from "./ChangesTrackerStore"
 import StoreIPCListener from "../lib/StoreIPCListener"
-import UIDataStores from "../../../shared/UIDataStores";
+import UIDataStores from "../../../shared/UIDataStores"
+import AbstractStore from "./AbstractStore"
 
 
 const store = writable(VISUAL_SETTINGS)
 
-export default class VisualsStore {
+export default class VisualsStore extends AbstractStore{
 	static noPush = false
 	static data = get(store)
 
@@ -21,6 +22,8 @@ export default class VisualsStore {
 		if (!VisualsStore.noPush)
 			StoreIPCListener.getInstance().onUpdate(VisualsStore.data, UIDataStores.VISUALS)
 		store.set(VisualsStore.data)
+		super.updateStore()
+
 	}
 }
 

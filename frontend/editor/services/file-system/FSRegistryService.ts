@@ -2,17 +2,18 @@ import FileSystemService from "../../../shared/lib/FileSystemService"
 import {getCall} from "../../../shared/util/get-call"
 
 import ElectronResources from "../../../shared/lib/ElectronResources"
-import IPCRoutes from "../../../../shared/IPCRoutes";
-import Folders from "../../../../shared/Folders";
-import FileTypes from "../../../../shared/FileTypes";
+import IPCRoutes from "../../../../shared/IPCRoutes"
+import Folders from "../../../../shared/Folders"
+import FileTypes from "../../../../shared/FileTypes"
 
 export default class FSRegistryService {
 	static registry: { [key: string]: RegistryFile } = {}
+	static registryList:  RegistryFile[] = []
 
-	static async readRegistry(): Promise<RegistryFile[]> {
+	static async readRegistry(){
 		const registry = await getCall<{ [key: string]: RegistryFile }>(IPCRoutes.READ_REGISTRY, {}, false)
 		FSRegistryService.registry = registry
-		return Object.values(registry)
+		FSRegistryService.registryList = Object.values(registry)
 	}
 
 	static async updateRegistry(from, to) {

@@ -1,5 +1,5 @@
 import materialCompiler from "./material-compiler/material-compiler"
-import FSAssetService from "../../../services/file-system/FSAssetService"
+import FSAssetUtil from "../../../services/file-system/FSAssetUtil"
 
 import FilesStore from "../../../../shared/stores/FilesStore"
 import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
@@ -11,7 +11,7 @@ import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI"
 import NodesIndex from "../static/NODE_MAP"
 import ShaderLink from "../templates/ShaderLink"
 import ShaderComment from "../templates/ShaderComment"
-import LocalizationEN from "../../../../../shared/LocalizationEN";
+import LocalizationEN from "../../../../../shared/LocalizationEN"
 
 export default class ShaderEditorTools {
 
@@ -96,7 +96,7 @@ export default class ShaderEditorTools {
 				comments: canvasAPI.comments.map(ShaderEditorTools.serializeComment),
 				response: compiled[0]
 			}
-			await FSAssetService.updateAsset(openFile.registryID, JSON.stringify(materialData))
+			await FSAssetUtil.updateAsset(openFile.registryID, JSON.stringify(materialData))
 
 			const oldMaterial = GPU.materials.get(openFile.registryID)
 			if (oldMaterial) {

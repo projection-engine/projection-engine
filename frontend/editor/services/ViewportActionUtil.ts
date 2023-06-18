@@ -11,17 +11,17 @@ import ToastNotificationSystem from "../../shared/components/alert/ToastNotifica
 import EngineStateService from "./engine/EngineStateService"
 
 
-export default class ViewportActionService {
+export default class ViewportActionUtil {
 	static toCopy = []
 
 	static copy(single?: boolean, target?: string) {
 		const selected = SelectionStore.engineSelected
 		if (target)
-			ViewportActionService.toCopy = [target]
+			ViewportActionUtil.toCopy = [target]
 		else if (single && selected[0])
-			ViewportActionService.toCopy = [selected[0]]
+			ViewportActionUtil.toCopy = [selected[0]]
 		else
-			ViewportActionService.toCopy = [...selected]
+			ViewportActionUtil.toCopy = [...selected]
 	}
 
 	static focus() {
@@ -59,11 +59,11 @@ export default class ViewportActionService {
 
 	static paste(parent?: string) {
 		const block = []
-		if (!ViewportActionService.toCopy)
+		if (!ViewportActionUtil.toCopy)
 			return
 		const targetParent = parent ? QueryAPI.getEntityByID(parent) : undefined
-		for (let i = 0; i < ViewportActionService.toCopy.length; i++) {
-			const t = ViewportActionService.toCopy[i]
+		for (let i = 0; i < ViewportActionUtil.toCopy.length; i++) {
+			const t = ViewportActionUtil.toCopy[i]
 			const found = QueryAPI.getEntityByID(t)
 			if (found) {
 				if (targetParent === found)
@@ -76,13 +76,13 @@ export default class ViewportActionService {
 			}
 		}
 		EngineStateService.appendBlock(block)
-		ToastNotificationSystem.getInstance().log(`Pasted ${ViewportActionService.toCopy.length} entities.`)
+		ToastNotificationSystem.getInstance().log(`Pasted ${ViewportActionUtil.toCopy.length} entities.`)
 
 	}
 
 	static group() {
 		const selected = SelectionStore.engineSelected
-		ViewportActionService.toCopy = selected
+		ViewportActionUtil.toCopy = selected
 		if (selected.length > 1)
 			EngineStateService.linkMultiple(selected)
 	}

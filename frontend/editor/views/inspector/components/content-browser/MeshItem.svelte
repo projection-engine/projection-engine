@@ -1,6 +1,6 @@
 <script>
 
-    import FSAssetService from "../../../../services/file-system/FSAssetService"
+    import FSAssetUtil from "../../../../services/file-system/FSAssetUtil"
     import GPU from "../../../../../../engine-core/GPU"
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor"
     import FSFilesService from "../../../../services/file-system/FSFilesService"
@@ -21,7 +21,7 @@
     	data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)
 
 
-    	await FSAssetService.updateAsset(item.registryID, JSON.stringify(data))
+    	await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(data))
     	if (GPU.meshes.get(item.registryID) != null) {
     		GPUAPI.destroyMesh(item.registryID)
     		GPUAPI.allocateMesh(item.registryID, data)

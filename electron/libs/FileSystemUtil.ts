@@ -3,7 +3,6 @@ import * as path from "path"
 import * as fs from "fs"
 import ElectronWindowService from "./ElectronWindowService"
 import Folders from "../../shared/Folders"
-import IPCRoutes from "../../shared/IPCRoutes"
 
 export default class FileSystemUtil {
 	static async createRegistryEntry(fID: string, pathToFile: string) {

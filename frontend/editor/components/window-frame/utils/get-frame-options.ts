@@ -3,12 +3,12 @@ import WindowChangeStore from "../../../../shared/components/frame/WindowChangeS
 import ElectronResources from "../../../../shared/lib/ElectronResources"
 import LevelService from "../../../services/engine/LevelService"
 import EditorActionHistory from "../../../services/EditorActionHistory"
-import ViewportActionService from "../../../services/ViewportActionService"
+import ViewportActionUtil from "../../../services/ViewportActionUtil"
 import SettingsStore from "../../../../shared/stores/SettingsStore"
 import GPU from "../../../../../engine-core/GPU"
 import ResourceManager from "../../../../../engine-core/runtime/ResourceManager"
-import LocalizationEN from "../../../../../shared/LocalizationEN";
-import IPCRoutes from "../../../../../shared/IPCRoutes";
+import LocalizationEN from "../../../../../shared/LocalizationEN"
+import IPCRoutes from "../../../../../shared/IPCRoutes"
 
 function callMethod(id: string) {
 	switch (id) {
@@ -22,10 +22,10 @@ function callMethod(id: string) {
 		EditorActionHistory.redo()
 		break
 	case "copy":
-		ViewportActionService.copy()
+		ViewportActionUtil.copy()
 		break
 	case "paste":
-		ViewportActionService.paste()
+		ViewportActionUtil.paste()
 		break
 	case "footer":
 		SettingsStore.updateStore({...SettingsStore.data, hideFooter: !SettingsStore.data.hideFooter})

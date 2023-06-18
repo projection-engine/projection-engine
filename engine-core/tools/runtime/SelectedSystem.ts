@@ -4,13 +4,14 @@ import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
 import StaticMeshes from "../../lib/StaticMeshes"
 import StaticFBO from "../../lib/StaticFBO"
 import StaticEditorShaders from "../lib/StaticEditorShaders"
-import Entity from "../../instances/Entity"
+import EngineTools from "../EngineTools"
 
 
 const fallbackColor = new Float32Array([.5, .5, .5])
 const metadata = new Float32Array(9)
 export default class SelectedSystem {
-	static drawToBuffer(selected: Entity[]) {
+	static drawToBuffer() {
+		const selected = EngineTools.selected
 		const context = GPU.context
 		const length = selected.length
 		if (length > 0) {
@@ -50,7 +51,8 @@ export default class SelectedSystem {
 			StaticFBO.postProcessing1.clear()
 	}
 
-	static drawSilhouette(selected, settings) {
+	static drawSilhouette( ) {
+		const settings = SettingsStore.data
 		const context = GPU.context
 
 		StaticEditorShaders.outline.bind()

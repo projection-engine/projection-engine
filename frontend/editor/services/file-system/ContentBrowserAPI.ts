@@ -1,7 +1,7 @@
 import FSRegistryService from "./FSRegistryService"
 import FileSystemService from "../../../shared/lib/FileSystemService"
 import ElectronResources from "../../../shared/lib/ElectronResources"
-import FileTypes from "../../../../shared/FileTypes";
+import FileTypes from "../../../../shared/FileTypes"
 
 
 function mapAsset(reg, type) {
@@ -53,10 +53,9 @@ export default class ContentBrowserAPI {
 		}
 	}
 
-
-
 	static async refresh() {
-		const reg = await FSRegistryService.readRegistry()
+		await FSRegistryService.readRegistry()
+		const reg =  FSRegistryService.registryList
 		const textureReg = reg.filter(r => r.path && r.path.includes(FileTypes.TEXTURE)),
 			meshesReg = reg.filter(r => r.path && r.path.includes(FileTypes.PRIMITIVE)),
 			materialsReg = reg.filter(r => r.path && r.path.includes(FileTypes.MATERIAL)),

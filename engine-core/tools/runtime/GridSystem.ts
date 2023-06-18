@@ -2,28 +2,33 @@ import GPU from "../../GPU"
 import StaticFBO from "../../lib/StaticFBO"
 import StaticMeshes from "../../lib/StaticMeshes"
 import StaticEditorShaders from "../lib/StaticEditorShaders"
+import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
 
 export default class GridSystem {
-	static #buffer = new Float32Array([.3, 20., 50, 1])
+	static #buffer = new Float32Array([.3, 20, 50, 1])
 
+	static execute() {
+		const context = GPU.context
+		const settings = SettingsStore.data
+		if(!settings.showGrid)
+			return
 
-	static execute(settings) {
 		StaticEditorShaders.grid.bind()
 		const uniforms = StaticEditorShaders.gridUniforms
 		const buffer = GridSystem.#buffer
 		buffer[0] = settings.gridColor
-		buffer[1] = settings.gridScale* 10.
+		buffer[1] = settings.gridScale * 10
 		buffer[2] = settings.gridThreshold
 		buffer[3] = settings.gridOpacity
 
 
-		GPU.context.uniform4fv(uniforms.settings, buffer)
+		context.uniform4fv(uniforms.settings, buffer)
 
-		GPU.context.activeTexture(GPU.context.TEXTURE0)
-		GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.sceneDepthVelocity)
-		GPU.context.uniform1i(uniforms.sceneDepth, 0)
+		context.activeTexture(context.TEXTURE0)
+		context.bindTexture(context.TEXTURE_2D, StaticFBO.sceneDepthVelocity)
+		context.uniform1i(uniforms.sceneDepth, 0)
 
-		GPU.context.uniform2fv(uniforms.resolution, GPU.bufferResolution)
+		context.uniform2fv(uniforms.resolution, GPU.bufferResolution)
 
 		StaticMeshes.plane.draw()
 	}

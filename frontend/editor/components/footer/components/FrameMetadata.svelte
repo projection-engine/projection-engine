@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import Loop from "../../../../../engine-core/Loop"
+    import Renderer from "../../../../../engine-core/Renderer"
 
     export let settings
 
@@ -11,7 +11,7 @@
     onMount(() => {
 
     	const cb = () => {
-    		const el = Loop.elapsed
+    		const el = Renderer.elapsed
     		fr.textContent = Math.round(1000 / el) + "FPS"
     		ft.textContent = el.toFixed(2) + "ms"
     		requestAnimationFrame(cb)

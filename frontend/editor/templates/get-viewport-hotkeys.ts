@@ -1,4 +1,4 @@
-import ViewportActionService from "../services/ViewportActionService"
+import ViewportActionUtil from "../services/ViewportActionUtil"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import GIZMOS from "../static/GIZMOS"
 import SelectionStore from "../../shared/stores/SelectionStore"
@@ -17,7 +17,7 @@ import focusOnCamera from "../utils/focus-on-camera"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
-import LocalizationEN from "../../../shared/LocalizationEN";
+import LocalizationEN from "../../../shared/LocalizationEN"
 
 
 export default function getViewportHotkeys(settings): { [key: string]: ContextMenuOption } {
@@ -55,12 +55,12 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		INVERT_SELECTION: {
 			label: "Invert selection",
 			require: settings.viewportHotkeys.INVERT_SELECTION,
-			callback: () => ViewportActionService.invertSelection()
+			callback: () => ViewportActionUtil.invertSelection()
 		},
 		SELECT_ALL: {
 			label: "Select all",
 			require: settings.viewportHotkeys.SELECT_ALL,
-			callback: () => ViewportActionService.selectAll()
+			callback: () => ViewportActionUtil.selectAll()
 		},
 		SELECT_NONE: {
 			label: "Select none",
@@ -155,7 +155,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		FOCUS: {
 			label: "Focus on active",
 			require: settings.viewportHotkeys.FOCUS,
-			callback: ViewportActionService.focus
+			callback: ViewportActionUtil.focus
 		},
 		SCALE_GIZMO: {
 			require: settings.viewportHotkeys.SCALE_GIZMO,
@@ -179,30 +179,30 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		GROUP: {
 			label: "Group selected",
 			require: settings.viewportHotkeys.GROUP,
-			callback: ViewportActionService.group
+			callback: ViewportActionUtil.group
 		},
 		FIXATE_ACTIVE: {
 			label: "Fixate active",
 			require: settings.viewportHotkeys.FIXATE_ACTIVE,
-			callback: ViewportActionService.fixateActive
+			callback: ViewportActionUtil.fixateActive
 		},
 
 		COPY: {
 			label: "Copy",
 			require: settings.viewportHotkeys.COPY,
-			callback: ViewportActionService.copy
+			callback: ViewportActionUtil.copy
 		},
 
 		DELETE: {
 			label: "Delete",
 			require: settings.viewportHotkeys.DELETE,
-			callback: ViewportActionService.deleteSelected
+			callback: ViewportActionUtil.deleteSelected
 		},
 		PASTE: {
 
 			label: "Paste",
 			require: settings.viewportHotkeys.PASTE,
-			callback: ViewportActionService.paste
+			callback: ViewportActionUtil.paste
 		},
 
 

@@ -13,7 +13,7 @@ import CameraComponent from "../../instances/components/CameraComponent"
 import CameraResources from "../../resource-libs/CameraResources"
 import CameraSerialization from "../../static/CameraSerialization"
 import CameraNotificationDecoder from "../CameraNotificationDecoder"
-import Loop from "../../Loop"
+import Renderer from "../../Renderer"
 
 
 const TEMPLATE_CAMERA = new CameraComponent()
@@ -54,7 +54,7 @@ export default class CameraAPI extends CameraResources {
 	}
 
 	static syncThreads() {
-		CameraNotificationDecoder.elapsed = Loop.elapsed
+		CameraNotificationDecoder.elapsed = Renderer.elapsed
 		CameraAPI.#worker.postMessage(0)
 	}
 

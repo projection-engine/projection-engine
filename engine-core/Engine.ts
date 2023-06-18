@@ -1,6 +1,6 @@
 import CameraAPI from "./lib/utils/CameraAPI"
 import ENVIRONMENT from "./static/ENVIRONMENT"
-import Loop from "./Loop"
+import Renderer from "./Renderer"
 import SSAO from "./runtime/SSAO"
 import DirectionalShadows from "./runtime/DirectionalShadows"
 import ConversionAPI from "./lib/math/ConversionAPI"
@@ -32,6 +32,12 @@ export default class Engine {
 	static #initializationWasTried = false
 	static #initialized = false
 	static #loadedLevel: Entity
+	static #executionQueue = new DynamicMap<string, Function>()
+	static #frameID: number = undefined
+
+	static get isExecuting() {
+		return Engine.#frameID !== undefined
+	}
 
 	static removeLevelLoaderListener(id: string) {
 		Engine.#onLevelLoadListeners.delete(id)
@@ -100,8 +106,8 @@ export default class Engine {
 		OBS.observe(GPU.canvas)
 		Engine.#isReady = true
 		GPU.skylightProbe = new LightProbe(128)
-		if (Engine.#initializationWasTried)
-			Engine.start()
+		Renderer.registerNativeSystems()
+		Engine.start()
 	}
 
 	static async startSimulation() {
@@ -115,22 +121,33 @@ export default class Engine {
 		await ScriptsAPI.updateAllScripts()
 	}
 
-
 	static start() {
-		if (!Loop.isExecuting && Engine.#isReady) {
+
+		if (!Engine.isExecuting && Engine.#isReady) {
+			console.trace("STARTING")
 			Physics.start()
 			ResourceManager.start()
-			Loop.start()
+			Engine.#frameID = requestAnimationFrame(Engine.#loop)
 		} else
 			Engine.#initializationWasTried = true
 	}
 
+	static #loop(c){
+		const queue = Engine.#executionQueue.array
+		const queueLength = queue.length
+		Renderer.currentTimeStamp = c
+		for (let i = 0; i < queueLength; i++){
+			queue[i]()
+		}
+		Engine.#frameID = requestAnimationFrame(Engine.#loop)
+	}
+
 	static stop() {
-		Loop.stop()
+		cancelAnimationFrame(Engine.#frameID)
+		Engine.#frameID = undefined
 		ResourceManager.stop()
 		Physics.stop()
 	}
-
 
 	static async loadLevel(levelID: string, cleanEngine?: boolean) {
 		if (!levelID || Engine.#loadedLevel?.id === levelID && !cleanEngine)
@@ -192,5 +209,13 @@ export default class Engine {
 		}
 		if (newLevel)
 			EntityAPI.addEntity(newLevel)
+	}
+
+	static addSystem(id: string, callback: Function) {
+		Engine.#executionQueue.set(id, callback)
+	}
+
+	static removeSystem(id: string) {
+		Engine.#executionQueue.delete(id)
 	}
 }

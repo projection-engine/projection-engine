@@ -88,7 +88,6 @@
     	GizmoSystem.onStart = () => isOnGizmo = true
     	GizmoSystem.onStop = () => isOnGizmo = false
 
-    	Engine.start()
     	CameraTracker.startTracking()
     	ViewportInteractionListener.get()
     	draggable.onMount({

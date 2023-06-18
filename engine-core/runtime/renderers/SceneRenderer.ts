@@ -13,7 +13,7 @@ import Material from "../../instances/Material"
 import UberShader from "../../resource-libs/UberShader"
 import MaterialResourceMapper from "../../lib/MaterialResourceMapper"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
-import Loop from "../../Loop"
+import Renderer from "../../Renderer"
 import Mesh from "../../instances/Mesh"
 import loopMeshes from "../loop-meshes"
 
@@ -40,7 +40,7 @@ export default class SceneRenderer {
 		texOffset = 7
 
 		context.uniformMatrix4fv(uniforms.skyProjectionMatrix, false, CameraAPI.skyboxProjectionMatrix)
-		context.uniform1f(uniforms.elapsedTime, Loop.elapsed)
+		context.uniform1f(uniforms.elapsedTime, Renderer.elapsed)
 		context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraAPI.viewMatrix)
 		context.uniformMatrix4fv(uniforms.invViewMatrix, false, CameraAPI.invViewMatrix)
 		context.uniformMatrix4fv(uniforms.viewProjection, false, CameraAPI.viewProjectionMatrix)
