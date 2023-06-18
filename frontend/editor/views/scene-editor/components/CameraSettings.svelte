@@ -1,5 +1,5 @@
 <script>
-    import ViewportActionService from "../../../services/ViewportActionService"
+    import ViewportActionUtil from "../../../services/ViewportActionUtil"
     import focusOnCamera from "../../../utils/focus-on-camera"
     import Engine from "../../../../../engine-core/Engine"
 
@@ -12,7 +12,7 @@
     import {onDestroy, onMount} from "svelte"
     import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
-    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     export let engine
     export let settings
@@ -77,7 +77,7 @@
 
     <button data-sveltebuttondefault="-" disabled={engine.focusedCamera} class="button viewport"
             style="max-width: 25px; justify-content: center"
-            on:click={() => ViewportActionService.focus()}>
+            on:click={() => ViewportActionUtil.focus()}>
         <ToolTip content={LocalizationEN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>

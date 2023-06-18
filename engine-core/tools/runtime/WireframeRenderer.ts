@@ -8,11 +8,15 @@ import StaticFBO from "../../lib/StaticFBO"
 import StaticEditorMeshes from "../lib/StaticEditorMeshes"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import CameraIconRenderer from "./CameraIconRenderer"
+import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
 export default class WireframeRenderer {
-	static execute(settings) {
+	static execute() {
+		const settings = SettingsStore.data
+		if(!settings.showOutline)
+			return
 		const entities = Engine.entities.array
 		const size = entities.length
 		const uniforms = StaticEditorShaders.wireframeUniforms

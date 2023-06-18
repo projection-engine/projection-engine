@@ -1,9 +1,9 @@
 import FSRegistryService from "./FSRegistryService"
 import FSFilesService from "./FSFilesService"
 import FileSystemService from "../../../shared/lib/FileSystemService"
-import Folders from "../../../../shared/Folders";
+import Folders from "../../../../shared/Folders"
 
-export default class FSAssetService {
+export default class FSAssetUtil {
 	static async readAsset<T>(idOrPath: string): Promise<T> {
 		if(!idOrPath)
 			return
@@ -29,7 +29,7 @@ export default class FSAssetService {
 	static async updateAsset(registryID, fileData, previewImage?: boolean) {
 		const res = FSRegistryService.getRegistryEntry(registryID)
 		if (res)
-			await FSAssetService.writeAsset(res.path, fileData, previewImage, registryID)
+			await FSAssetUtil.writeAsset(res.path, fileData, previewImage, registryID)
 	}
 
 

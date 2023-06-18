@@ -29,8 +29,10 @@ interface SSAOSettings {
     radius: number
 }
 interface FXAASettings {
+    [key:string]: any
+
     FXAASpanMax: number
-    FXAA: number
+    FXAA: boolean
     FXAAReduceMin: number
     FXAAReduceMul: number
 }

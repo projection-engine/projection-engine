@@ -3,7 +3,7 @@ import FilesStore from "../../../../shared/stores/FilesStore"
 
 import FileSystemService from "../../../../shared/lib/FileSystemService"
 import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
-import LocalizationEN from "../../../../../shared/LocalizationEN";
+import LocalizationEN from "../../../../../shared/LocalizationEN"
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
 	const itemsToDelete = !Array.isArray(entries) ? [entries] : entries

@@ -10,6 +10,7 @@ import {mat4} from "gl-matrix"
 import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
 import Entity from "../../instances/Entity"
 import StaticFBO from "../../lib/StaticFBO"
+import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
 
 
 const iconAttributes = mat4.create()
@@ -152,11 +153,10 @@ export default class IconsSystem {
 			LineRenderer.drawZ(entity.__cacheIconMatrix)
 	}
 
-	static drawIcons(settings) {
+	static execute() {
+		const settings = SettingsStore.data
 		if (!IconsSystem.iconsTexture)
 			return
-
-
 		const context = GPU.context
 		const uniforms = StaticEditorShaders.iconUniforms
 

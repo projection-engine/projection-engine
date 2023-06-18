@@ -1,17 +1,17 @@
 import FilesStore from "../../../../shared/stores/FilesStore"
 import resolveFileName from "../../../utils/resolve-file-name"
-import FSAssetService from "../../../services/file-system/FSAssetService"
+import FSAssetUtil from "../../../services/file-system/FSAssetUtil"
 import COMPONENT_TEMPLATE from "../../../../../engine-core/static/templates/COMPONENT_TEMPLATE"
 import UI_TEMPLATE from "../../../../../engine-core/static/templates/UI_TEMPLATE"
 
 import FileSystemService from "../../../../shared/lib/FileSystemService"
-import LocalizationEN from "../../../../../shared/LocalizationEN";
-import FileTypes from "../../../../../shared/FileTypes";
+import LocalizationEN from "../../../../../shared/LocalizationEN"
+import FileTypes from "../../../../../shared/FileTypes"
 
 export default function getCreationOptions(currentDirectory) {
 	async function createFile(name, type, data) {
 		const path = await resolveFileName(currentDirectory.id + FileSystemService.getInstance().sep + name, type)
-		await FSAssetService.writeAsset(path, typeof data === "object" ? JSON.stringify(data) : data)
+		await FSAssetUtil.writeAsset(path, typeof data === "object" ? JSON.stringify(data) : data)
 		await FilesStore.refreshFiles()
 	}
 

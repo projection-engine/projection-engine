@@ -5,7 +5,6 @@ import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../Engine"
 import CameraTracker from "./lib/CameraTracker"
 import WireframeRenderer from "./runtime/WireframeRenderer"
-import SettingsStore from "../../frontend/shared/stores/SettingsStore"
 
 import ENVIRONMENT from "../static/ENVIRONMENT"
 import LineRenderer from "./runtime/LineRenderer"
@@ -14,11 +13,8 @@ import GPU from "../GPU"
 import StaticEditorMeshes from "./lib/StaticEditorMeshes"
 import StaticEditorShaders from "./lib/StaticEditorShaders"
 
-let settings
-let selected: Entity[]
 export default class EngineTools {
 	static selected: Entity[] = []
-	static selectionMap = new Map<string, boolean>()
 	static #initialized = false
 
 	static async initialize() {
@@ -26,7 +22,6 @@ export default class EngineTools {
 			return
 
 		EngineTools.#initialized = true
-
 		StaticEditorShaders.initialize()
 		await StaticEditorMeshes.initialize()
 
@@ -36,23 +31,23 @@ export default class EngineTools {
 	}
 
 	static updateSelectionData(data: string[]) {
-		EngineTools.selectionMap.clear()
-
-		for (let i = 0; i < EngineTools.selected.length; i++) {
-			const entity = EngineTools.selected[i]
+		const selected = EngineTools.selected
+		for (let i = 0; i < selected.length; i++) {
+			const entity = selected[i]
 			entity.__isSelected = false
 		}
 
-		EngineTools.selected.length = 0
-		data.forEach(d => {
+		selected.length = 0
+		for (let i = 0; i < data.length; i++){
+			const d = data[i]
 			const entity = Engine.entities.get(d)
 			if (entity !== undefined) {
-				EngineTools.selected.push(entity)
+				selected.push(entity)
 				entity.__isSelected = true
-				EngineTools.selectionMap.set(d, true)
 			}
-		})
-		const main = EngineTools.selected[0]
+		}
+
+		const main = selected[0]
 		if (main)
 			GizmoSystem.linkEntityToGizmo(main)
 		else {
@@ -60,27 +55,34 @@ export default class EngineTools {
 			GizmoSystem.mainEntity = undefined
 			GizmoSystem.hasStarted = false
 		}
-		selected = EngineTools.selected
 	}
 
-	static execute() {
-		CameraTracker.updateFrame()
-		settings = SettingsStore.data
-		const context = GPU.context
-		SelectedSystem.drawToBuffer(selected)
+	static bindSystems() {
+		Engine.addSystem("camera_tracker", CameraTracker.updateFrame)
+		Engine.addSystem("outline_draw_to_buffer", SelectedSystem.drawToBuffer)
+		Engine.addSystem("set_context_state", EngineTools.#setContextState)
+		Engine.addSystem("grid", GridSystem.execute)
+		Engine.addSystem("wireframe", WireframeRenderer.execute)
+		Engine.addSystem("outline_draw_silhouette", SelectedSystem.drawSilhouette)
+		Engine.addSystem("icons", IconsSystem.execute)
+		Engine.addSystem("gizmo", GizmoSystem.execute)
+	}
 
+	static unbindSystems() {
+		Engine.removeSystem("camera_tracker")
+		Engine.removeSystem("outline_draw_to_buffer")
+		Engine.removeSystem("set_context_state")
+		Engine.removeSystem("grid")
+		Engine.removeSystem("wireframe")
+		Engine.removeSystem("outline_draw_silhouette")
+		Engine.removeSystem("icons")
+		Engine.removeSystem("gizmo")
+	}
+
+	static #setContextState() {
+		const context = GPU.context
 		context.clear(context.DEPTH_BUFFER_BIT)
 		context.disable(context.CULL_FACE)
 		context.disable(context.DEPTH_TEST)
-		if (settings.showGrid)
-			GridSystem.execute(settings)
-		if (settings.showOutline)
-			WireframeRenderer.execute(settings)
-		SelectedSystem.drawSilhouette(selected, settings)
-		IconsSystem.drawIcons(settings)
-		context.enable(context.DEPTH_TEST)
-		context.clear(context.DEPTH_BUFFER_BIT)
-		GizmoSystem.execute()
-		context.enable(context.CULL_FACE)
 	}
 }

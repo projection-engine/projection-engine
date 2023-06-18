@@ -16,9 +16,9 @@ import SpriteComponent from "../../../../engine-core/instances/components/Sprite
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import EngineStateService from "./EngineStateService"
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
-import FileTypes from "../../../../shared/FileTypes";
-import LocalizationEN from "../../../../shared/LocalizationEN";
-import Entity from "../../../../engine-core/instances/Entity";
+import FileTypes from "../../../../shared/FileTypes"
+import LocalizationEN from "../../../../shared/LocalizationEN"
+import Entity from "../../../../engine-core/instances/Entity"
 
 
 export default class EngineResourceLoaderService {

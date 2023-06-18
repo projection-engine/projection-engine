@@ -2,8 +2,8 @@ import FSRegistryService from "./FSRegistryService"
 
 import FileSystemService from "../../../shared/lib/FileSystemService"
 import ElectronResources from "../../../shared/lib/ElectronResources"
-import Folders from "../../../../shared/Folders";
-import IPCRoutes from "../../../../shared/IPCRoutes";
+import Folders from "../../../../shared/Folders"
+import IPCRoutes from "../../../../shared/IPCRoutes"
 
 
 export default class FSFilesService {
@@ -11,15 +11,17 @@ export default class FSFilesService {
 	static registry = []
 
 	static async initializeFolders(): Promise<void> {
-		await FileSystemService.getInstance().mkdir(FileSystemService.getInstance().TEMP)
-		if (FileSystemService.getInstance().exists(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS)) await FileSystemService.getInstance().mkdir(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS)
-		if (FileSystemService.getInstance().exists(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.ASSETS)) await FileSystemService.getInstance().mkdir(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.ASSETS)
-		if (FileSystemService.getInstance().exists(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.REGISTRY)) await FileSystemService.getInstance().mkdir(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.REGISTRY)
+		const fsInstance = FileSystemService.getInstance()
+		await fsInstance.mkdir(fsInstance.TEMP)
+		if (fsInstance.exists(fsInstance.path + fsInstance.sep + Folders.PREVIEWS)) await fsInstance.mkdir(fsInstance.path + fsInstance.sep + Folders.PREVIEWS)
+		if (fsInstance.exists(fsInstance.path + fsInstance.sep + Folders.ASSETS)) await fsInstance.mkdir(fsInstance.path + fsInstance.sep + Folders.ASSETS)
+		if (fsInstance.exists(fsInstance.path + fsInstance.sep + Folders.REGISTRY)) await fsInstance.mkdir(fsInstance.path + fsInstance.sep + Folders.REGISTRY)
 	}
 
 	static async writeFile(pathName: string, data: any, absolute: boolean) {
+		const fsInstance = FileSystemService.getInstance()
 		try {
-			await FileSystemService.getInstance().write(FileSystemService.getInstance().resolvePath(!absolute ? FileSystemService.getInstance().path + pathName : pathName), typeof data === "object" ? JSON.stringify(data) : data)
+			await fsInstance.write(fsInstance.resolvePath(!absolute ? fsInstance.path + pathName : pathName), typeof data === "object" ? JSON.stringify(data) : data)
 		} catch (err) {
 			console.error(err)
 		}
@@ -35,19 +37,19 @@ export default class FSFilesService {
 
 
 	static async deleteFile(pathName, options) {
-
-		const currentPath = FileSystemService.getInstance().resolvePath(pathName)
-
-		for (let i = 0; i < FSFilesService.registry.length; i++) {
-			const r = FSFilesService.registry[i]
-			const rPath = FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + r.path)
+		const fsInstance = FileSystemService.getInstance()
+		const currentPath = fsInstance.resolvePath(pathName)
+		const registry = FSRegistryService.registryList
+		for (let i = 0; i < registry.length; i++) {
+			const r = registry[i]
+			const rPath = fsInstance.resolvePath(fsInstance.ASSETS_PATH + fsInstance.sep + r.path)
 			if (rPath.includes(currentPath))
-				await FileSystemService.getInstance().rm(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.REGISTRY + FileSystemService.getInstance().sep + r.id + ".reg"))
+				await fsInstance.rm(fsInstance.resolvePath(fsInstance.path + fsInstance.sep + Folders.REGISTRY + fsInstance.sep + r.id + ".reg"))
 		}
-		await FileSystemService.getInstance().rm(currentPath, options)
+		await fsInstance.rm(currentPath, options)
 
 		const rs = await FSRegistryService.findRegistry(currentPath)
-		if (rs) await FileSystemService.getInstance().rm(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.REGISTRY + FileSystemService.getInstance().sep + rs.id + ".reg"))
+		if (rs) await fsInstance.rm(fsInstance.resolvePath(fsInstance.path + fsInstance.sep + Folders.REGISTRY + fsInstance.sep + rs.id + ".reg"))
 	}
 
 

@@ -2,20 +2,22 @@ import SETTINGS from "../../editor/static/SETTINGS"
 import {get, writable} from "svelte/store"
 import ChangesTrackerStore from "./ChangesTrackerStore"
 import StoreIPCListener from "../lib/StoreIPCListener"
-import UIDataStores from "../../../shared/UIDataStores";
+import UIDataStores from "../../../shared/UIDataStores"
+import AbstractStore from "./AbstractStore"
 
 const settingsStore = writable(SETTINGS)
 
-export default class SettingsStore {
+export default class SettingsStore extends AbstractStore{
 	static noPush = false
 	static data = get(settingsStore)
 	static wasInitialized = false
 
 	static getStore(onChange) {
-		return settingsStore.subscribe(newValue => onChange(newValue))
+		return settingsStore.subscribe(newValue=> onChange(newValue))
 	}
 
 	static updateStore(value) {
+
 		const V = value || SettingsStore.data
 		const previous = SettingsStore.data
 
@@ -26,8 +28,8 @@ export default class SettingsStore {
 		SettingsStore.data = V
 		if (!SettingsStore.noPush)
 			StoreIPCListener.getInstance().onUpdate(V, UIDataStores.SETTINGS)
-
 		settingsStore.set(V)
+		super.updateStore()
 	}
 
 }

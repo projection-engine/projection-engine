@@ -9,6 +9,7 @@ import getPivotPointMatrix from "../utils/get-pivot-point-matrix"
 import GizmoAPI from "../lib/GizmoAPI"
 import LineRenderer from "./LineRenderer"
 import Entity from "../../instances/Entity"
+import GPU from "../../GPU"
 
 
 const lineMatrix = <Float32Array>mat4.create()
@@ -83,6 +84,9 @@ export default class GizmoSystem {
 
 
 	static execute() {
+		const context = GPU.context
+		context.enable(context.DEPTH_TEST)
+		context.clear(context.DEPTH_BUFFER_BIT)
 		const m = GizmoSystem.mainEntity
 		if (m != null && m.active) {
 			const axis = GizmoSystem.clickedAxis
@@ -107,6 +111,7 @@ export default class GizmoSystem {
 			LineRenderer.finish()
 		} else
 			GizmoSystem.hasStarted = false
+		context.enable(context.CULL_FACE)
 	}
 
 

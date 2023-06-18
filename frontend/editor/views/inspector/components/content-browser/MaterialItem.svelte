@@ -1,5 +1,5 @@
 <script>
-    import FSAssetService from "../../../../services/file-system/FSAssetService"
+    import FSAssetUtil from "../../../../services/file-system/FSAssetUtil"
     import GPU from "../../../../../../engine-core/GPU"
 
     import FSFilesService from "../../../../services/file-system/FSFilesService"
@@ -34,7 +34,7 @@
     			uniforms: originalMat.response.uniforms,
     			uniformValues: originalMat.response.uniformValues
     		}
-    		await FSAssetService.updateAsset(item.registryID, JSON.stringify(temp))
+    		await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(temp))
     	}
     }
 
@@ -55,7 +55,7 @@
     				uniformValues: update
     			}
     		}
-    		await FSAssetService.updateAsset(item.registryID, JSON.stringify(temp))
+    		await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(temp))
     		const instance = GPU.materials.get(item.registryID)
     		if (instance) {
     			await instance.updateUniformGroup(temp.response.uniformValues)

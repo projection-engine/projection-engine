@@ -1,11 +1,8 @@
 <script>
     import RENDER_TARGET from "../../static/RENDER_TARGET"
-    import {onDestroy, onMount} from "svelte"
-    import updateRenderer from "./utils/update-renderer"
-    import EngineStore from "../../../shared/stores/EngineStore"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
-    import SelectionStore from "../../../shared/stores/SelectionStore"
-    import FSAssetService from "../../services/file-system/FSAssetService"
+    import {onMount} from "svelte"
+    import EngineToolsService from "../../services/EngineToolsService"
+    import FSAssetUtil from "../../services/file-system/FSAssetUtil"
     import VisualsStore from "../../../shared/stores/VisualsStore"
     import Engine from "../../../../engine-core/Engine"
     import EngineTools from "../../../../engine-core/tools/EngineTools"
@@ -16,48 +13,26 @@
     export let initializeEditor
 
     let canvasRef
-    let done = false
-    let engine = {}
-    let settings = {}
-    let visuals = {}
-    let selected = []
-    const unsubscribeSelection = SelectionStore.getStore(() => selected = SelectionStore.engineSelected)
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
 
     onMount(() => {
     	Engine.initializeContext(
     		canvasRef,
-    		{w: visuals.resolutionX, h: visuals.resolutionY},
-    		FSAssetService.readAsset,
+    		{w: VisualsStore.data.resolutionX, h:  VisualsStore.data.resolutionY},
+    		FSAssetUtil.readAsset,
     		true
     	).then(async () => {
-    		done = true
+    		const levelServiceInstance = LevelService.getInstance()
     		await EngineTools.initialize().catch()
-    		const toLoad = LevelService.getInstance().getLevelToLoad()
-    		await LevelService.getInstance().loadLevel(toLoad).catch()
+    		const toLoad = levelServiceInstance.getLevelToLoad()
+    		await levelServiceInstance.loadLevel(toLoad).catch()
 
     		initializeEditor()
     		UIAPI.buildUI(GPU.canvas.parentElement)
     		UIAPI.hideUI()
-
-
+    		EngineToolsService.get()
     	})
     })
 
-    onDestroy(() => {
-    	unsubscribeVisuals()
-    	unsubscribeSelection()
-
-    	unsubscribeEngine()
-    	unsubscribeSettings()
-    })
-    $: {
-    	if (engine.executingAnimation)
-    		UIAPI.showUI()
-    }
-    $: if (done) updateRenderer(selected, engine, {...settings, ...visuals})
 </script>
 
 
@@ -66,8 +41,6 @@
             class="stretch"
             data-svelteviewport="-"
             bind:this={canvasRef}
-            width={visuals.resolutionX}
-            height={visuals.resolutionY}
     ></canvas>
 </div>
 

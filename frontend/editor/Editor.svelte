@@ -40,7 +40,7 @@
     	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
     		sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
     		FileSystemService.get()
-            FileSystemService.getInstance().init(pathToProject)
+    		FileSystemService.getInstance().init(pathToProject)
     		FSFilesService.initializeFolders().catch()
     		LevelService.get(_ => isMetadataReady = true)
     		HotKeysController.initializeListener()

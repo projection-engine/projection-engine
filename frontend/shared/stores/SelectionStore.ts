@@ -2,13 +2,14 @@ import {get, writable} from "svelte/store"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import Engine from "../../../engine-core/Engine"
 import Entity from "../../../engine-core/instances/Entity"
+import AbstractStore from "./AbstractStore"
 
 const TYPES = {
 	ENGINE: "ENGINE",
 	CONTENT_BROWSER: "CONTENT_BROWSER"
 }
 const selection = writable({TARGET: TYPES.ENGINE, map: new Map<string,boolean>(), array: <string[]>[], lockedEntity: undefined})
-export default class SelectionStore {
+export default class SelectionStore extends AbstractStore{
 	static data = get(selection)
 	static TYPES = TYPES
 	static EMPTY_MAP = new Map<string,boolean>()
@@ -30,6 +31,7 @@ export default class SelectionStore {
 	}
 
 	static updateStore(v = SelectionStore.data) {
+
 		let value
 		if (Array.isArray(v))
 			value = {...SelectionStore.data, array: v}
@@ -54,6 +56,8 @@ export default class SelectionStore {
 
 		SelectionStore.data = value
 		selection.set(value)
+		super.updateStore()
+
 	}
 
 	static set engineSelected(data) {
@@ -72,8 +76,6 @@ export default class SelectionStore {
 	static get contentBrowserSelected() {
 		return SelectionStore.TARGET === TYPES.CONTENT_BROWSER ? SelectionStore.array : []
 	}
-
-
 
 	static get selectedEntity():Entity {
 		return QueryAPI.getEntityByID(SelectionStore.mainEntity)
