@@ -4,8 +4,8 @@ import EngineResourceLoaderService from "../../../services/engine/EngineResource
 import openBottomView from "../../../utils/open-bottom-view"
 import VIEWS from "../../../components/view/static/VIEWS"
 import ShaderEditorTools from "../../shader-editor/libs/ShaderEditorTools"
-import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
-import AlertController from "../../../../shared/components/alert/AlertController"
+import FileSystemService from "../../../../shared/lib/FileSystemService"
+import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import ElectronResources from "../../../../shared/lib/ElectronResources"
 import FileTypes from "../../../../../shared/FileTypes";
 import LocalizationEN from "../../../../../shared/LocalizationEN";
@@ -15,15 +15,15 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
 		return
 	if (type === 1) {
 		const fileType = "." + data.type
-		AlertController.warn(LocalizationEN.OPENING_ASSET+  " (" + data.name + ")")
+		ToastNotificationSystem.getInstance().warn(LocalizationEN.OPENING_ASSET+  " (" + data.name + ")")
 		switch (fileType) {
 		case FileTypes.UI_LAYOUT:
 		case FileTypes.COMPONENT:
 		case ".js":
 		case ".json":
-			ElectronResources.shell.openPath(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + data.id))
+			ElectronResources.shell.openPath(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + data.id))
 				.catch(err => {
-					AlertController.error(LocalizationEN.ERROR_OPENING_FILE)
+					ToastNotificationSystem.getInstance().error(LocalizationEN.ERROR_OPENING_FILE)
 					console.error(err)
 				})
 			break
@@ -31,10 +31,10 @@ export default function openItem(data, setCurrentDirectory, setSelected, reset, 
 		case FileTypes.COLLECTION:
 		case FileTypes.TEXTURE:
 			EngineResourceLoaderService.load(data.registryID, true).catch()
-			AlertController.warn(LocalizationEN.CREATING_ENTITY)
+			ToastNotificationSystem.getInstance().warn(LocalizationEN.CREATING_ENTITY)
 			break
 		case FileTypes.LEVEL:
-			LevelService.loadLevel(data.registryID).catch()
+			LevelService.getInstance().loadLevel(data.registryID).catch()
 			break
 		case FileTypes.MATERIAL:
 			ShaderEditorTools.toOpenFile = data

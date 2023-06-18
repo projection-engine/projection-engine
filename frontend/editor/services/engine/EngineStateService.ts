@@ -8,7 +8,7 @@ import getPivotPointMatrix from "../../../../engine-core/tools/utils/get-pivot-p
 import SelectionStore from "../../../shared/stores/SelectionStore"
 import Entity from "../../../../engine-core/instances/Entity"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
-import AlertController from "../../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
 import LocalizationEN from "../../../../shared/LocalizationEN";
@@ -18,7 +18,7 @@ function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
 	const original = descriptor.value
 	descriptor.value = function (...args) {
 		if (!Engine.loadedLevel) {
-			AlertController.error(LocalizationEN.NO_LEVEL_LOADED)
+			ToastNotificationSystem.getInstance().error(LocalizationEN.NO_LEVEL_LOADED)
 			return
 		}
 		return original.call(this, ...args)

@@ -6,7 +6,7 @@ import Canvas from "../views/shader-editor/libs/Canvas"
 import type ShaderNode from "../views/shader-editor/templates/ShaderNode"
 import ShaderComment from "../views/shader-editor/templates/ShaderComment"
 import ALL_NODES from "../views/shader-editor/static/ALL_NODES"
-import ContextMenuController from "../../shared/lib/context-menu/ContextMenuController"
+import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
 import NODE_MAP from "../views/shader-editor/static/NODE_MAP"
 
 export function selectAllNodes(canvasAPI:Canvas){
@@ -108,7 +108,7 @@ export default function getShaderActions(canvasAPI: Canvas) {
 				label: "New node",
 				children: ALL_NODES.map(data => ({
 					...data,
-					callback: () => canvasAPI.onDrop(data.dataTransfer, ContextMenuController.currentX, ContextMenuController.currentY)
+					callback: () => canvasAPI.onDrop(data.dataTransfer, ContextMenuService.getInstance().currentX, ContextMenuService.getInstance().currentY)
 				}))
 			}
 		]

@@ -2,47 +2,44 @@ import ContextMenuOption from "./templates/ContextMenuOptions"
 import findOptions from "./utils/find-options"
 import buildOptions from "./utils/build-options"
 import ContextMenuTarget from "./templates/ContextMenuTarget"
-
 import getContextAction from "./utils/get-context-action"
 import ElectronResources from "../ElectronResources"
 import IPCRoutes from "../../../../shared/IPCRoutes";
+import AbstractSingleton from "../../../../shared/AbstractSingleton";
 
-export default class ContextMenuController {
-	static blockContext = false
-	static currentX = -1
-	static currentY = -1
+export default class ContextMenuService extends AbstractSingleton{
+	blockContext = false
+	currentX = -1
+	currentY = -1
 
-	static data: { targets: { [key: string]: ContextMenuTarget }, focused?: ContextMenuTarget } = {
+	data: { targets: { [key: string]: ContextMenuTarget }, focused?: ContextMenuTarget } = {
 		targets: {},
 		focused: undefined
 	}
 
-	static #initialized = false
-
-	static initialize() {
-		if (ContextMenuController.#initialized)
-			return
+	constructor() {
+		super();
 		ElectronResources.ipcRenderer.on(IPCRoutes.CONTEXT_MENU_CALLBACK, (ev, {id, group}) => {
-			const groupData = ContextMenuController.data.targets[group]
+			const groupData = this.data.targets[group]
 			if (!groupData)
 				return
 			groupData.options.forEach(o => findOptions(o, id, group))
 		})
 		document.addEventListener("contextmenu", getContextAction())
-
-		ContextMenuController.#initialized = true
 	}
 
-	static mount(options: ContextMenuOption[], target: string | null, onFocus?: Function) {
+	static getInstance(): ContextMenuService{
+		return super.get<ContextMenuService>()
+	}
 
-
+	mount(options: ContextMenuOption[], target: string | null, onFocus?: Function) {
 		const template = buildOptions(options, target)
 		ElectronResources.ipcRenderer.send(IPCRoutes.REGISTER_CONTEXT_MENU, {
 			id: target,
 			template
 		})
 
-		ContextMenuController.data.targets[target] = {
+		this.data.targets[target] = {
 			id: target,
 			options,
 			triggers: [],
@@ -51,11 +48,11 @@ export default class ContextMenuController {
 		}
 	}
 
-	static destroy(target: string | null) {
+	destroy(target: string | null) {
 		ElectronResources.ipcRenderer.send(IPCRoutes.DESTROY_CONTEXT_MENU, target)
-		const old = ContextMenuController.data.targets[target]
+		const old = this.data.targets[target]
 		if (!old)
 			return
-		delete ContextMenuController.data.targets[target]
+		delete this.data.targets[target]
 	}
 }

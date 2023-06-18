@@ -5,7 +5,7 @@
     import SceneStats from "./components/SceneStats.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import FileSystemUtil from "../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../shared/lib/FileSystemService"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Console from "./components/Console.svelte"
     import Engine from "../../../../engine-core/Engine"
@@ -18,7 +18,7 @@
     export let engine
 
     const openLogs = async () => {
-    	if (FileSystemUtil.exists(ErrorLoggerService.path))
+    	if (FileSystemService.getInstance().exists(ErrorLoggerService.path))
     		ElectronResources.shell.openPath(ErrorLoggerService.path).catch()
     }
     let loadedLevel

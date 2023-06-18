@@ -7,8 +7,8 @@ import importFile from "../utils/import-file"
 
 import getCreationOptions from "../views/content-browser/utils/get-creation-options"
 import FSRegistryService from "../services/file-system/FSRegistryService"
-import FileSystemUtil from "../../shared/lib/FileSystemUtil"
-import AlertController from "../../shared/components/alert/AlertController"
+import FileSystemService from "../../shared/lib/FileSystemService"
+import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import LocalizationEN from "../../../shared/LocalizationEN"
 
@@ -46,7 +46,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			label: "Refresh",
 			require: settings.contentBrowserHotkeys.REFRESH,
 			callback: () => {
-				AlertController.success(LocalizationEN.REFRESHING)
+				ToastNotificationSystem.getInstance().success(LocalizationEN.REFRESHING)
 				FilesStore.refreshFiles().catch()
 			}
 		},
@@ -54,15 +54,15 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			label: "Go to parent",
 			require: settings.contentBrowserHotkeys.GO_TO_PARENT,
 			callback: () => {
-				if (currentDirectory.id !== FileSystemUtil.sep) {
+				if (currentDirectory.id !== FileSystemService.getInstance().sep) {
 					const found = currentDirectory.id
 					if (found) {
-						const split = found.split(FileSystemUtil.sep)
+						const split = found.split(FileSystemService.getInstance().sep)
 						split.pop()
 						if (split.length === 1)
-							setCurrentDirectory({id: FileSystemUtil.sep})
+							setCurrentDirectory({id: FileSystemService.getInstance().sep})
 						else
-							setCurrentDirectory({id: split.join(FileSystemUtil.sep)})
+							setCurrentDirectory({id: split.join(FileSystemService.getInstance().sep)})
 					}
 				}
 			}
@@ -108,7 +108,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 				onClick: () => {
 					const ID = FSRegistryService.getByPath(SelectionStore.contentBrowserSelected[0])
 					if (ID) {
-						AlertController.success(LocalizationEN.COPIED)
+						ToastNotificationSystem.getInstance().success(LocalizationEN.COPIED)
 						ElectronResources.clipboard.writeText(ID)
 					}
 				}
@@ -135,7 +135,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			{
 				label: "Open current directory on explorer",
 				icon: "open_in_new",
-				onClick: () => ElectronResources.shell.showItemInFolder(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + currentDirectory.id))
+				onClick: () => ElectronResources.shell.showItemInFolder(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + currentDirectory.id))
 
 			},
 			{divider: true},

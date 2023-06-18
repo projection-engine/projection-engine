@@ -13,8 +13,8 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import Input from "../../../../shared/components/input/Input.svelte"
-    import AlertController from "../../../../shared/components/alert/AlertController"
-    import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
+    import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
+    import FileSystemService from "../../../../shared/lib/FileSystemService"
     import SortingOptions from "./SortingOptions.svelte"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import FileTypes from "../../../../../shared/FileTypes"
@@ -62,7 +62,7 @@
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
                 on:click={() => {
-                    if(currentDirectory.id === FileSystemUtil.sep)
+                    if(currentDirectory.id === FileSystemService.getInstance().sep)
                         return
                     navigationHistory.goToParent(currentDirectory)
                 }}
@@ -73,7 +73,7 @@
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
                 on:click={() => {
-                    AlertController.warn(LocalizationEN.REFRESHING)
+                    ToastNotificationSystem.getInstance().warn(LocalizationEN.REFRESHING)
                     FilesStore.refreshFiles().catch()
                 }}
         >

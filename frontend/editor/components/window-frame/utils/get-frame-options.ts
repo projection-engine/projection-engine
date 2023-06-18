@@ -13,7 +13,7 @@ import IPCRoutes from "../../../../../shared/IPCRoutes";
 function callMethod(id: string) {
 	switch (id) {
 	case "save":
-		LevelService.save().catch()
+		LevelService.getInstance().save().catch()
 		break
 	case "undo":
 		EditorActionHistory.undo()
@@ -71,7 +71,7 @@ export default function getFrameOptions(disabledSave: boolean) {
 			icon: "refresh",
 			onClick: () => WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: () => {
-					LevelService.save().then(() => callMethod("reload"))
+					LevelService.getInstance().save().then(() => callMethod("reload"))
 				}
 			})
 		},
@@ -80,7 +80,7 @@ export default function getFrameOptions(disabledSave: boolean) {
 			onClick: () => WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES,
 				callback: () => {
-					LevelService.save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
+					LevelService.getInstance().save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
 				}
 			})
 		},

@@ -35,8 +35,8 @@
     	).then(async () => {
     		done = true
     		await EngineTools.initialize().catch()
-    		const toLoad = LevelService.getLevelToLoad()
-    		await LevelService.loadLevel(toLoad).catch()
+    		const toLoad = LevelService.getInstance().getLevelToLoad()
+    		await LevelService.getInstance().loadLevel(toLoad).catch()
 
     		initializeEditor()
     		UIAPI.buildUI(GPU.canvas.parentElement)

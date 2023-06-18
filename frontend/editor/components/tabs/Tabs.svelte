@@ -88,8 +88,7 @@
             },
             {passive: false}
         )
-        TabContextController.initialize()
-        contextID = TabContextController.contextID
+        contextID = TabContextController.getInstance().contextID
         ref.addEventListener("wheel", handler);
         sortable = new Sortable(ref, {
             swapThreshold: 1,
@@ -108,7 +107,8 @@
             },
             direction: "horizontal"
         });
-        TabContextController.registerContext(internalID, id => {
+        TabContextController.getInstance()
+            .registerContext(internalID, id => {
             if (id === "CREATE")
                 addNewTab()
             else
@@ -118,7 +118,7 @@
     onDestroy(() => {
         // @ts-ignore
         sortable.destroy()
-        TabContextController.removeContext(internalID)
+        TabContextController.getInstance().removeContext(internalID)
         ref.removeEventListener("wheel", handler);
     })
 

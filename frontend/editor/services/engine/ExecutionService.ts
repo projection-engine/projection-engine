@@ -6,7 +6,7 @@ import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
 import Engine from "../../../../engine-core/Engine"
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
 import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI"
-import AlertController from "../../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
 import ResourceEntityMapper from "../../../../engine-core/resource-libs/ResourceEntityMapper"
 import LevelService from "./LevelService"
@@ -19,15 +19,15 @@ export default class ExecutionService {
 
 	static async startPlayState() {
 		if (ExecutionService.#isPlaying || !Engine.loadedLevel) {
-			AlertController.error(LocalizationEN.NO_LEVEL_LOADED)
+			ToastNotificationSystem.getInstance().error(LocalizationEN.NO_LEVEL_LOADED)
 			return
 		}
-		AlertController.warn(LocalizationEN.SAVING_STATE)
+		ToastNotificationSystem.getInstance().warn(LocalizationEN.SAVING_STATE)
 
 		ExecutionService.cameraSerialization = CameraAPI.serializeState()
 		ExecutionService.#isPlaying = true
 		CameraTracker.stopTracking()
-		await LevelService.saveCurrentLevel().catch()
+		await LevelService.getInstance().saveCurrentLevel().catch()
 		ExecutionService.#currentLevelID = Engine.loadedLevel.id
 		await Engine.startSimulation()
 		EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined, executingAnimation: true})
@@ -41,12 +41,12 @@ export default class ExecutionService {
 		Engine.entities.clear()
 		Engine.queryMap.clear()
 
-		AlertController.log(LocalizationEN.RESTORING_STATE)
+		ToastNotificationSystem.getInstance().log(LocalizationEN.RESTORING_STATE)
 		ExecutionService.#isPlaying = false
 		Engine.environment = ENVIRONMENT.DEV
 
 		UIAPI.destroyUI()
-		await LevelService.loadLevel(ExecutionService.#currentLevelID).catch()
+		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch()
 		await ScriptsAPI.updateAllScripts()
 
 		CameraAPI.trackingEntity = undefined

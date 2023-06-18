@@ -1,4 +1,4 @@
-import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
+import FileSystemService from "../../../../shared/lib/FileSystemService"
 import sortItems from "./sort-items"
 import {SORTS} from "../static/SORT_INFO"
 
@@ -38,7 +38,7 @@ export default function getFilesToRender(currentDirectory, fileType, itemsToMap,
 			items,
 			elementsPerRow
 		)
-	if (currentDirectory.id !== FileSystemUtil.sep)
+	if (currentDirectory.id !== FileSystemService.getInstance().sep)
 		return map(
 			file => file.parent === currentDirectory.id,
 			items,

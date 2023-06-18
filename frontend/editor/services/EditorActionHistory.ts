@@ -4,7 +4,7 @@ import EntityAPI from "../../../engine-core/lib/utils/EntityAPI"
 
 import serializeStructure from "../../../engine-core/utils/serialize-structure"
 import EntityNamingService from "./engine/EntityNamingService"
-import AlertController from "../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ChangesTrackerStore from "../../shared/stores/ChangesTrackerStore"
 import EngineStateService from "./engine/EngineStateService"
 import Entity from "../../../engine-core/instances/Entity"
@@ -38,7 +38,7 @@ export default class EditorActionHistory {
 	static undo() {
 		const action = EditorActionHistory.#cache.undo()
 		if (action) {
-			AlertController.log(LocalizationEN.UNDOING_CHANGES)
+			ToastNotificationSystem.getInstance().log(LocalizationEN.UNDOING_CHANGES)
 			EditorActionHistory.#apply(action)
 		} else
 			ChangesTrackerStore.updateStore(true)
@@ -47,7 +47,7 @@ export default class EditorActionHistory {
 	static redo() {
 		const action = EditorActionHistory.#cache.redo()
 		if (action) {
-			AlertController.log(LocalizationEN.REDOING_CHANGES)
+			ToastNotificationSystem.getInstance().log(LocalizationEN.REDOING_CHANGES)
 			EditorActionHistory.#apply(action)
 		}
 	}

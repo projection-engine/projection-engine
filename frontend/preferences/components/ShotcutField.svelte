@@ -6,7 +6,7 @@
     import SettingsStore from "../../shared/stores/SettingsStore"
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../shared/components/icon/Icon.svelte"
-    import AlertController from "../../shared/components/alert/AlertController"
+    import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../shared/LocalizationEN"
 
     export let shortcut = []
@@ -57,7 +57,7 @@
 
     		if (all.find(a => JSON.stringify(a) === c) != null) {
     			currentShortcut = [...shortcut]
-    			AlertController.error(LocalizationEN.SHORTCUT_ALREADY_LINKED)
+    			ToastNotificationSystem.getInstance().error(LocalizationEN.SHORTCUT_ALREADY_LINKED)
     		}
     		update(currentShortcut)
     	} else if (!event.repeat) {

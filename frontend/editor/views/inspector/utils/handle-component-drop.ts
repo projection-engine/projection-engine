@@ -2,7 +2,7 @@ import FilesStore from "../../../../shared/stores/FilesStore"
 import componentConstructor from "../../../utils/component-constructor"
 import COMPONENTS from "../../../../../engine-core/static/COMPONENTS"
 import EngineResourceLoaderService from "../../../services/engine/EngineResourceLoaderService"
-import AlertController from "../../../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 
 import FileSystemAPI from "../../../../../engine-core/lib/utils/FileSystemAPI"
 import LocalizationEN from "../../../../../shared/LocalizationEN";
@@ -27,7 +27,7 @@ export default async function handleComponentDrop(entity, data) {
 		}
 
 		if (!itemFound){
-			AlertController.error(LocalizationEN.FILE_NOT_FOUND)
+			ToastNotificationSystem.getInstance().error(LocalizationEN.FILE_NOT_FOUND)
 			return
 		}
 

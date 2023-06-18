@@ -8,7 +8,7 @@
     import getViewportContext from "../../../templates/get-viewport-context";
     import SettingsStore from "../../../../shared/stores/SettingsStore";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController";
+    import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService";
     import HierarchyToRenderElement from "../template/ToRenderElement";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import LocalizationEN from "../../../../../shared/LocalizationEN";
@@ -25,7 +25,7 @@
     let lockedEntity
 
     const unsubscribeSettings = SettingsStore.getStore(v => {
-        ContextMenuController.mount(
+        ContextMenuService.getInstance().mount(
             getViewportContext(v),
             ID
         )
@@ -41,7 +41,7 @@
         EntityHierarchyService.removeListener(internalID)
         unsubscribeSettings()
         unsubscribeSelection()
-        ContextMenuController.destroy(ID)
+        ContextMenuService.getInstance().destroy(ID)
     })
 </script>
 

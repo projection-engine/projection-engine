@@ -9,12 +9,12 @@
     import materialCompiler from "./libs/material-compiler/material-compiler"
     import HeaderOptions from "./components/HeaderOptions.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
-    import FileSystemUtil from "../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../shared/lib/FileSystemService"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Canvas from "./libs/Canvas"
     import getShaderActions from "../../templates/get-shader-actions"
     import HotKeysController from "../../../shared/lib/HotKeysController"
-    import ContextMenuController from "../../../shared/lib/context-menu/ContextMenuController"
+    import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import SideBar from "./components/SideBar.svelte"
     import NODE_MAP from "./static/NODE_MAP"
     import LocalizationEN from "../../../../shared/LocalizationEN"
@@ -38,7 +38,7 @@
     onMount(() => {
     	canvas.initialize(canvasElement)
     	const data = getShaderActions(canvas)
-    	ContextMenuController.mount(
+    	ContextMenuService.getInstance().mount(
     		data.contextMenu,
     		internalID
     	)
@@ -53,7 +53,7 @@
 
     onDestroy(() => {
     	unsubscribeEngine()
-    	ContextMenuController.destroy(internalID)
+    	ContextMenuService.getInstance().destroy(internalID)
     	if (canvas.ctx?.canvas)
     		HotKeysController.unbindAction(canvas.ctx.canvas)
     })
@@ -118,7 +118,7 @@
         canvasAPI={canvas}
         openSourceCode={async () => {
             const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
-            const newFile = FileSystemUtil.TEMP + FileSystemUtil.sep + openFile.registryID + ".log"
+            const newFile = FileSystemService.getInstance().TEMP + FileSystemService.getInstance().sep + openFile.registryID + ".log"
             await FSFilesService.writeFile(newFile, shader, true)
             ElectronResources.shell.openPath(newFile).catch()
         }}

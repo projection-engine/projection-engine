@@ -1,5 +1,5 @@
 
-export default class Accessor{
+export default class GLTFAccessor {
 	_data
 	constructor(data, buffers, bufferViews) {
 		let items = 0
@@ -51,7 +51,7 @@ export default class Accessor{
 		elementBytesLength = elementBytesLength.BYTES_PER_ELEMENT
 
 		const length = items * data.count
-		const res = this._unpackBufferViewData(
+		const res = this.#unpackBufferViewData(
 			buffers,
 			bufferViews,
 			length,
@@ -68,7 +68,7 @@ export default class Accessor{
 	get data(){
 		return this._data.data
 	}
-	_unpackBufferViewData(
+	#unpackBufferViewData(
 		buffers,
 		bufferViews,
 		length,

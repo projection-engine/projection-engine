@@ -2,7 +2,7 @@ import Canvas from "../libs/Canvas"
 import CanvasRenderer from "../libs/CanvasRenderer"
 import onMouseDownEvent from "./on-mouse-down-event"
 import {Output} from "../static/Output"
-import ContextMenuController from "../../../../shared/lib/context-menu/ContextMenuController"
+import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
 import type ShaderNode from "../templates/ShaderNode"
 import type Draggable from "../templates/Draggable"
 import ShaderLink from "../templates/ShaderLink"
@@ -25,7 +25,7 @@ export default function getMousedownEvent(canvasAPI: Canvas): (this: HTMLCanvasE
 		if (!canvasAPI.openFile)
 			return
 		if (isOnScroll) {
-			ContextMenuController.blockContext = !checkOffset(event, initialClick)
+			ContextMenuService.getInstance().blockContext = !checkOffset(event, initialClick)
 			parentElement.scrollTop -= event.movementY
 			parentElement.scrollLeft -= event.movementX
 		} else {
@@ -48,7 +48,7 @@ export default function getMousedownEvent(canvasAPI: Canvas): (this: HTMLCanvasE
 		const BBox = canvasAPI.canvas.getBoundingClientRect()
 		parentBBox = parentElement.getBoundingClientRect()
 		isOnScroll = mouseDownEvent.button === 2
-		ContextMenuController.blockContext = false
+		ContextMenuService.getInstance().blockContext = false
 
 		if (!isOnScroll)
 			onMouseDownEvent(BBox, IO, tempLink, nodesOnDrag, canvasAPI, parentBBox, parentElement, mouseDownEvent)

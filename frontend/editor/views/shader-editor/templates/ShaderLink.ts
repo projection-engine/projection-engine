@@ -1,6 +1,6 @@
 import type ShaderNode from "./ShaderNode"
 import type Canvas from "../libs/Canvas"
-import AlertController from "../../../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 
 import {Input} from "../static/Input"
 import {Output} from "../static/Output"
@@ -57,7 +57,7 @@ export default class ShaderLink {
 					const newLink = new ShaderLink(node, sourceNode, targetIO, sourceIO)
 					canvasAPI.addLink(newLink)
 				} else if (targetIO)
-					AlertController.error(LocalizationEN.INVALID_TYPE)
+					ToastNotificationSystem.getInstance().error(LocalizationEN.INVALID_TYPE)
 				break
 			}
 		}

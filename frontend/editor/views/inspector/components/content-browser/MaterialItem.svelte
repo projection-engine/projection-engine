@@ -8,8 +8,8 @@
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
     import MaterialUniforms from "../MaterialUniforms.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import FileSystemUtil from "../../../../../shared/lib/FileSystemUtil"
-    import AlertController from "../../../../../shared/components/alert/AlertController"
+    import FileSystemService from "../../../../../shared/lib/FileSystemService"
+    import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
 
     export let data
@@ -27,7 +27,7 @@
     		return
     	wasUpdated = true
     	const reg = FSRegistryService.getRegistryEntry(ID)
-    	originalMat = await FSFilesService.readFile(FileSystemUtil.ASSETS_PATH + reg.path, "json")
+    	originalMat = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + reg.path, "json")
     	if (!compareObjects(temp.uniforms, originalMat.response.uniforms)) {
     		temp = {
     			...temp,
@@ -59,7 +59,7 @@
     		const instance = GPU.materials.get(item.registryID)
     		if (instance) {
     			await instance.updateUniformGroup(temp.response.uniformValues)
-    			AlertController.success(LocalizationEN.MATERIAL_UPDATED)
+    			ToastNotificationSystem.getInstance().success(LocalizationEN.MATERIAL_UPDATED)
 
     			GPUAPI.cleanUpTextures()
     		}

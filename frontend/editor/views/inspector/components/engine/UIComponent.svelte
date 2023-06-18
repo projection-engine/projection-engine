@@ -10,7 +10,7 @@
     import Engine from "../../../../../../engine-core/Engine"
     import Input from "../../../../../shared/components/input/Input.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import FileSystemUtil from "../../../../../shared/lib/FileSystemUtil"
+    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
 
     export let entity
@@ -30,7 +30,7 @@
     	const ref = FSRegistryService.getRegistryEntry(reg.registryID)
     	if (!ref)
     		return
-    	const file = await FSFilesService.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + ref.path)
+    	const file = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + ref.path)
     	if (!file)
     		return
     	Engine.UILayouts.set(reg.registryID, file)

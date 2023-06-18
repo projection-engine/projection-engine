@@ -1,14 +1,14 @@
 import FSFilesService from "../../../services/file-system/FSFilesService"
 import FilesStore from "../../../../shared/stores/FilesStore"
 
-import FileSystemUtil from "../../../../shared/lib/FileSystemUtil"
-import AlertController from "../../../../shared/components/alert/AlertController"
+import FileSystemService from "../../../../shared/lib/FileSystemService"
+import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../../shared/LocalizationEN";
 
 export default async function handleDelete(entries, currentDirectory, setCurrentDirectory) {
 	const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
 
-	AlertController.warn(LocalizationEN.DELETING_ITEMS)
+	ToastNotificationSystem.getInstance().warn(LocalizationEN.DELETING_ITEMS)
 	for (let i = 0; i < itemsToDelete.length; i++) {
 		const currentItem = itemsToDelete[i]
 		const file = FilesStore.data.items.find(e => e.id === currentItem)
@@ -18,24 +18,24 @@ export default async function handleDelete(entries, currentDirectory, setCurrent
 		for (let j = 0; j < relatedFiles.length; j++) {
 			const currentFile = relatedFiles[j]
 			await FSFilesService.deleteFile(
-				FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + currentFile.id,
+				FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + currentFile.id,
 				{
 					recursive: true,
 					force: true
 				})
 			if (currentDirectory.id === currentFile.id)
-				setCurrentDirectory({id: FileSystemUtil.sep})
+				setCurrentDirectory({id: FileSystemService.getInstance().sep})
 		}
 		await FSFilesService.deleteFile(
-			FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + file.id,
+			FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + file.id,
 			{
 				recursive: true,
 				force: true
 			})
 		if (currentDirectory.id === file.id)
-			setCurrentDirectory({id: FileSystemUtil.sep})
+			setCurrentDirectory({id: FileSystemService.getInstance().sep})
 	}
 
 	await FilesStore.refreshFiles().catch()
-	AlertController.success(LocalizationEN.SUCCESSFUL_DELETE)
+	ToastNotificationSystem.getInstance().success(LocalizationEN.SUCCESSFUL_DELETE)
 }

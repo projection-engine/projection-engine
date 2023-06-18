@@ -5,8 +5,8 @@
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor"
     import FSFilesService from "../../../../services/file-system/FSFilesService"
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
-    import FileSystemUtil from "../../../../../shared/lib/FileSystemUtil"
-    import AlertController from "../../../../../shared/components/alert/AlertController"
+    import FileSystemService from "../../../../../shared/lib/FileSystemService"
+    import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
 
     export let item
@@ -15,7 +15,7 @@
     const updateAsset = async () => {
     	wasUpdated = true
 
-    	const data = await FSFilesService.readFile(FileSystemUtil.ASSETS_PATH + item.id, "json")
+    	const data = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + item.id, "json")
     	if (!data) return
     	data.normals = PrimitiveProcessor.computeNormals(data.indices, data.vertices, true)
     	data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)
@@ -26,7 +26,7 @@
     		GPUAPI.destroyMesh(item.registryID)
     		GPUAPI.allocateMesh(item.registryID, data)
     	}
-    	AlertController.log(LocalizationEN.UPDATING_ASSET)
+    	ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_ASSET)
     }
 </script>
 

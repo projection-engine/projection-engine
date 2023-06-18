@@ -2,7 +2,7 @@ import materialCompiler from "./material-compiler/material-compiler"
 import FSAssetService from "../../../services/file-system/FSAssetService"
 
 import FilesStore from "../../../../shared/stores/FilesStore"
-import AlertController from "../../../../shared/components/alert/AlertController"
+import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import Canvas from "./Canvas"
 import type ShaderNode from "../templates/ShaderNode"
 import GPU from "../../../../../engine-core/GPU"
@@ -110,7 +110,7 @@ export default class ShaderEditorTools {
 						executionSignature: compiled[1]
 					}, openFile.registryID)
 				} else {
-					AlertController.warn(LocalizationEN.UPDATING_UNIFORMS)
+					ToastNotificationSystem.getInstance().warn(LocalizationEN.UPDATING_UNIFORMS)
 					await oldMaterial.updateUniformGroup(compiled[0].uniformValues)
 
 					oldMaterial.doubleSided = compiled[0].settings.doubleSided
@@ -119,7 +119,7 @@ export default class ShaderEditorTools {
 				}
 			}
 
-			AlertController.success(LocalizationEN.SAVED)
+			ToastNotificationSystem.getInstance().success(LocalizationEN.SAVED)
 		} catch (err) {
 			console.error(err)
 		}
