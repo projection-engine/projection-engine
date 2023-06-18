@@ -8,7 +8,7 @@ import FileTypes from "../../shared/FileTypes"
 import Folders from "../../shared/Folders"
 import WindowTypes from "../../shared/WindowTypes"
 import FileSystemListener from "./FileSystemListener";
-import IPCEventListener from "./IPCEventListener";
+import IPCListener from "./IPCListener";
 import AbstractSingleton from "../../shared/AbstractSingleton";
 import FileSystemUtil from "./FileSystemUtil";
 
@@ -41,7 +41,7 @@ export default class ElectronWindowService extends AbstractSingleton{
 		}
 		FileSystemListener.get()
 		AssimpService.get()
-		IPCEventListener.get()
+		IPCListener.get()
 
 		const primaryDisplay = screen.getPrimaryDisplay()
 		const {width, height} = primaryDisplay.workAreaSize
