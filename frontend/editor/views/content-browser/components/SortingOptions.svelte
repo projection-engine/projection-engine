@@ -6,7 +6,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
-    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     export let setSortKey
     export let setSortDirection

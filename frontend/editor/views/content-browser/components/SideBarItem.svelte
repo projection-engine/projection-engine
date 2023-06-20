@@ -1,8 +1,8 @@
 <script>
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop"
     import {onDestroy, onMount} from "svelte"
-    import handleDropFolder from "../utils/handle-drop-folder"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
 
     export let depth
     export let setCurrentDirectory
@@ -20,7 +20,7 @@
     onMount(() => {
     	draggable.onMount({
     		targetElement: ref,
-    		onDrop: (event) => handleDropFolder(event, id),
+    		onDrop: (event) => ContentBrowserUtil.handleDropFolder(event, id),
     		onDragOver: () => "Link folder"
     	})
     })

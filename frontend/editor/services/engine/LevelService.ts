@@ -20,7 +20,6 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
 import EntityHierarchyService from "./EntityHierarchyService"
-import resolveFileName from "../../utils/resolve-file-name"
 import EntityNamingService from "./EntityNamingService"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import AXIS from "../../../../engine-core/tools/static/AXIS"
@@ -29,6 +28,7 @@ import IPCRoutes from "../../../../shared/IPCRoutes"
 import LocalizationEN from "../../../../shared/LocalizationEN"
 import FileTypes from "../../../../shared/FileTypes"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
+import EditorUtil from "../../util/EditorUtil"
 
 
 export default class LevelService extends AbstractSingleton {
@@ -173,7 +173,7 @@ export default class LevelService extends AbstractSingleton {
 		let path = assetReg?.path
 
 		if (!assetReg) {
-			path = FileSystemService.getInstance().resolvePath(await resolveFileName(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + Engine.loadedLevel.name, FileTypes.LEVEL))
+			path = FileSystemService.getInstance().resolvePath(await EditorUtil.resolveFileName(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + Engine.loadedLevel.name, FileTypes.LEVEL))
 			await FSRegistryService.createRegistryEntry(Engine.loadedLevel.id, FileSystemService.getInstance().sep + path.split(FileSystemService.getInstance().sep).pop())
 			FSRegistryService.readRegistry().catch()
 		} else

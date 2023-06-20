@@ -12,7 +12,7 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import SveltePortal from "../../../../shared/lib/SveltePortal"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
-    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     export let engine
     const internalID = crypto.randomUUID()

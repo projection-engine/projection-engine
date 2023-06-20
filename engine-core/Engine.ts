@@ -17,7 +17,6 @@ import Entity from "./instances/Entity"
 import DynamicMap from "./resource-libs/DynamicMap"
 import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
-import componentConstructor from "../frontend/editor/utils/component-constructor"
 import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
 import ResourceManager from "./runtime/ResourceManager"
 
@@ -176,8 +175,9 @@ export default class Engine {
 				try {
 					const entity = EntityAPI.parseEntityObject(entities[i])
 
-					for (let i = 0; i < entity.scripts.length; i++)
-						await componentConstructor(entity, entity.scripts[i].id, false)
+					for (let i = 0; i < entity.scripts.length; i++) {
+						await ScriptsAPI.linkScript(entity, entity.scripts[i].id)
+					}
 					const imgID = entity.spriteComponent?.imageID
 					if (imgID) {
 						const textures = GPU.textures

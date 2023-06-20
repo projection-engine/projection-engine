@@ -3,7 +3,7 @@
     import Selector from "../../../components/selector/Selector.svelte"
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte"
     import Range from "../../../../shared/components/range/Range.svelte"
-    import getNewVector from "../../shader-editor/utils/get-new-vector"
+    import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
 
     export let uniforms
     export let update
@@ -38,30 +38,30 @@
                 <Range
                         value={uniform.data[0]}
                         label={"X"}
-                        onFinish={v => update(i, getNewVector(uniform.data, v, 0, uniform.type))}
-                        handleChange={v => update(i, getNewVector(uniform.data, v, 0, uniform.type))}
+                        onFinish={v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 0, uniform.type))}
+                        handleChange={v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 0, uniform.type))}
                 />
                 <Range
 
                         value={uniform.data[1]}
                         label={"Y"}
-                        onFinish={v => update(i, getNewVector(uniform.data, v, 1, uniform.type))}
-                        handleChange={v => update(i, getNewVector(uniform.data, v, 1, uniform.type))}
+                        onFinish={v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 1, uniform.type))}
+                        handleChange={v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 1, uniform.type))}
                 />
                 {#if uniform.type === DATA_TYPES.VEC4 || uniform.type === DATA_TYPES.VEC3 }
                     <Range
 
                             value={uniform.data[2]}
                             label={"Z"}
-                            handleChange= {v => update(i, getNewVector(uniform.data, v, 2, uniform.type))}
-                            onFinish={v => update(i, getNewVector(uniform.data, v, 2, uniform.type))}
+                            handleChange= {v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 2, uniform.type))}
+                            onFinish={v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 2, uniform.type))}
                     />
                 {/if}
                 {#if uniform.type === DATA_TYPES.VEC4}
                     <Range
 
-                            onFinish={v => update(i, getNewVector(uniform.data, v, 3, uniform.type))}
-                            handleChange={v => update(i, getNewVector(uniform.data, v, 3, uniform.type))}
+                            onFinish={v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 3, uniform.type))}
+                            handleChange={v => update(i, ShaderEditorUtil.getNewVector(uniform.data, v, 3, uniform.type))}
                             value={uniform.data[3]}
                             label={"W"}
                     />

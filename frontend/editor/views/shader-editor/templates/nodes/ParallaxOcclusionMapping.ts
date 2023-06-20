@@ -1,9 +1,9 @@
 import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
-import checkGlslFloat from "../../utils/check-glsl-float"
 import Signature from "../Signature"
 import Material from "./Material"
+import ShaderEditorUtil from "../../../../util/ShaderEditorUtil"
 
 
 export default class ParallaxOcclusionMapping extends ShaderNode implements Signature{
@@ -51,11 +51,11 @@ export default class ParallaxOcclusionMapping extends ShaderNode implements Sign
 	getFunctionCall({
 		heightMap,
 		layers = {
-			name: checkGlslFloat(this.layers),
+			name: ShaderEditorUtil.checkGlslFloat(this.layers),
 			type: DATA_TYPES.FLOAT
 		},
 		heightScale = {
-			name: checkGlslFloat(this.heightScale),
+			name: ShaderEditorUtil.checkGlslFloat(this.heightScale),
 			type: DATA_TYPES.FLOAT
 		},
 	}, index) {

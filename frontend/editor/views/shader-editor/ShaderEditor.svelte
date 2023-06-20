@@ -3,7 +3,6 @@
 
     import EngineStore from "../../../shared/stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
-    import parseFile from "./utils/parse-file"
     import ShaderEditorTools from "./libs/ShaderEditorTools"
     import ViewStateController from "../../components/view/libs/ViewStateController"
     import materialCompiler from "./libs/material-compiler/material-compiler"
@@ -18,6 +17,7 @@
     import SideBar from "./components/SideBar.svelte"
     import NODE_MAP from "./static/NODE_MAP"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import ShaderEditorUtil from "../../util/ShaderEditorUtil"
 
     export let viewID
     export let viewIndex
@@ -62,7 +62,7 @@
     	canvas.openFile = openFile
     	canvas.clearState()
 
-    	await parseFile(openFile, canvas)
+    	await ShaderEditorUtil.parseFile(openFile, canvas)
     	canvas.addNode(new NODE_MAP.Material(), true)
     }
 

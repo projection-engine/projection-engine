@@ -1,9 +1,9 @@
 <script>
-    import openItem from "../../utils/open-item"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import KEYS from "../../../../static/KEYS"
 
     import FileTypes from "../../../../../../shared/FileTypes"
+    import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
 
     export let currentDirectory
     export let items
@@ -30,7 +30,7 @@
         data-sveltefile={type === 0 ? undefined : data.id}
         data-sveltename={data.name}
         data-sveltefolder={type !== 0 ? undefined : data.id}
-        on:dblclick={() => openItem(data, setCurrentDirectory, setSelected, reset, type)}
+        on:dblclick={() => ContentBrowserUtil.openItem(data, setCurrentDirectory, setSelected, reset, type)}
         on:click={setSelected}
         style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isToBeCut  ? "opacity: .5;" : "")}
         class="file"

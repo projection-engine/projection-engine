@@ -1,12 +1,12 @@
 <script>
     import FilesStore from "../../../../../shared/stores/FilesStore"
     import {onDestroy} from "svelte"
-    import componentConstructor from "../../../../utils/component-constructor"
 
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
     import ComponentRow from "./ComponentRow.svelte"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import EditorUtil from "../../../../util/EditorUtil"
 
     export let entity
 
@@ -57,7 +57,7 @@
                         data-svelteinline="-"
                         style="justify-content: flex-start; gap: 4px; border: none; background: var(--pj-background-secondary)"
                         on:click={(e) => {
-                            componentConstructor(entity, script.registryID).catch()
+                            EditorUtil.componentConstructor(entity, script.registryID).catch()
                             e.target.closeDropdown()
                         }}>
                     <Icon styles="font-size: 1rem">add</Icon>

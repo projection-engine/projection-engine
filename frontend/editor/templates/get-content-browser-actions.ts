@@ -1,16 +1,13 @@
-import selection from "../views/content-browser/utils/selection"
 import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES"
-import handleDelete from "../views/content-browser/utils/handle-delete"
 import FilesStore from "../../shared/stores/FilesStore"
 import SelectionStore from "../../shared/stores/SelectionStore"
-import importFile from "../utils/import-file"
-
-import getCreationOptions from "../views/content-browser/utils/get-creation-options"
 import FSRegistryService from "../services/file-system/FSRegistryService"
 import FileSystemService from "../../shared/lib/FileSystemService"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import LocalizationEN from "../../../shared/LocalizationEN"
+import ContentBrowserUtil from "../util/ContentBrowserUtil"
+import EditorUtil from "../util/EditorUtil"
 
 export default function getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
 
@@ -29,18 +26,18 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 		SELECT_ALL: {
 			label: "Select all",
 			require: settings.contentBrowserHotkeys.SELECT_ALL,
-			callback: () => selection(SELECTION_TYPES.ALL, currentDirectory)
+			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.ALL, currentDirectory)
 		},
 		SELECT_NONE: {
 			label: "Select none",
 			require: settings.contentBrowserHotkeys.SELECT_NONE,
-			callback: () => selection(SELECTION_TYPES.NONE, currentDirectory)
+			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.NONE, currentDirectory)
 		},
 		INVERT_SELECTION: {
 			label: "Invert selection",
 
 			require: settings.contentBrowserHotkeys.INVERT_SELECTION,
-			callback: () => selection(SELECTION_TYPES.INVERT, currentDirectory)
+			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.INVERT, currentDirectory)
 		},
 		REFRESH: {
 			label: "Refresh",
@@ -81,7 +78,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 				const s = [...SelectionStore.contentBrowserSelected]
 				if (s.length > 0) {
 					SelectionStore.contentBrowserSelected = []
-					handleDelete(s, currentDirectory, setCurrentDirectory)
+					ContentBrowserUtil.handleDelete(s, currentDirectory, setCurrentDirectory)
 				}
 			}
 		},
@@ -123,7 +120,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			{divider: true},
 			{
 				label: LocalizationEN.IMPORT,
-				onClick: () => importFile(currentDirectory)
+				onClick: () => EditorUtil.importFile(currentDirectory)
 			},
 			hotKeys.REFRESH,
 			{divider: true},
@@ -143,7 +140,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			{
 				label: "Create",
 				icon: "add",
-				children: getCreationOptions(currentDirectory)
+				children: ContentBrowserUtil.getCreationOptions(currentDirectory)
 			}
 		]
 	}

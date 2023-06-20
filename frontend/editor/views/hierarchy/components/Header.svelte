@@ -10,7 +10,7 @@
     import NATIVE_COMPONENTS from "../../inspector/static/NATIVE_COMPONENTS"
     import EntityFactoryService from "../../../services/engine/EntityFactoryService"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
-    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     export let filteredComponent, setFilteredComponent
     export let search, setSearch

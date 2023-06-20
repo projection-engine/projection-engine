@@ -18,15 +18,15 @@
     import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
     import Engine from "../../../../engine-core/Engine"
     import ViewportInteractionListener from "./lib/ViewportInteractionListener"
-    import getUnderSelectionBox from "./utils/get-under-selection-box"
     import GizmoSettings from "./components/GizmoSettings.svelte"
     import SHADING_MODELS from "../../../../engine-core/static/SHADING_MODELS"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import GPU from "../../../../engine-core/GPU"
     import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-    import {quat} from "gl-matrix"
+    import {glMatrix, quat} from "gl-matrix"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SceneEditorUtil from "../../util/SceneEditorUtil"
 
     export let viewMetadata
 
@@ -43,10 +43,9 @@
     		if (!viewMetadata.cameraMetadata) {
     			const pitch = quat.fromEuler([], -45, 0, 0)
     			const yaw = quat.fromEuler([], 0, 45, 0)
-    			const toRad = Math.PI / 180
     			CameraAPI.update([5, 10, 5], quat.multiply([], yaw, pitch))
-    			CameraTracker.xRotation = 45 * toRad
-    			CameraTracker.yRotation = -45 * toRad
+    			CameraTracker.xRotation = glMatrix.toRadian(45)
+    			CameraTracker.yRotation = -glMatrix.toRadian(45)
     		} else {
     			CameraAPI.restoreState(viewMetadata.cameraMetadata)
     			CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
@@ -129,7 +128,7 @@
             allowAll={true}
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}
-            setSelected={getUnderSelectionBox}
+            setSelected={SceneEditorUtil.getUnderSelectionBox}
             selected={[]}
             nodes={[]}
     />

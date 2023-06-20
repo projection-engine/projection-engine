@@ -1,8 +1,8 @@
 import ShaderNode from "../../ShaderNode"
 import DATA_TYPES from "../../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
-import checkGlslFloat from "../../../utils/check-glsl-float"
 import Signature from "../../Signature"
+import ShaderEditorUtil from "../../../../../util/ShaderEditorUtil";
 
 
 export default class PerlinNoise extends ShaderNode implements Signature{
@@ -68,7 +68,7 @@ export default class PerlinNoise extends ShaderNode implements Signature{
 		const response = []
 		if (!this.res && vec) {
 			this.res = `res${index}`
-			response.push(`float ${this.res} = pNoise(${vec.type === DATA_TYPES.FLOAT ? `vec2(${vec.name}, ${vec.name})` : vec.name}, ${this.samples}, ${checkGlslFloat(this.persistence)}, ${checkGlslFloat(this.frequency)}, ${checkGlslFloat(this.amplitude)}, ${checkGlslFloat(this.unitValue)});`)
+			response.push(`float ${this.res} = pNoise(${vec.type === DATA_TYPES.FLOAT ? `vec2(${vec.name}, ${vec.name})` : vec.name}, ${this.samples}, ${ShaderEditorUtil.checkGlslFloat(this.persistence)}, ${ShaderEditorUtil.checkGlslFloat(this.frequency)}, ${ShaderEditorUtil.checkGlslFloat(this.amplitude)}, ${ShaderEditorUtil.checkGlslFloat(this.unitValue)});`)
 		}
 
 		return response.join("\n")

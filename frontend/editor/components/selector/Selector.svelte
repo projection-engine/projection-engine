@@ -4,12 +4,11 @@
 
     import Options from "./components/Options.svelte"
     import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes"
-    import getType from "./utils/get-type"
-    import getIcon from "./utils/get-icon"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SelectorUtil from "../../util/SelectorUtil"
 
     export let type
     export let handleChange
@@ -36,7 +35,7 @@
     			}
     		else {
     			const rID = selected?.registryID ? selected?.registryID : selected
-    			let data = getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID || e.id === rID)
+    			let data = SelectorUtil.getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID || e.id === rID)
     			if (data?.registryID !== undefined)
     				state = data
     			else
@@ -62,7 +61,7 @@
                 style="height: 22px; border: none; padding: 0 2px; width: 100%"
         >
             <div class="icon" data-svelteinline="-">
-                <Icon styles="font-size: 1rem">{getIcon(type)}</Icon>
+                <Icon styles="font-size: 1rem">{SelectorUtil.getIcon(type)}</Icon>
                 <Icon styles="font-size: 1rem">arrow_drop_down</Icon>
             </div>
             <div data-sveltevertdivider="-" style="margin: 0"></div>

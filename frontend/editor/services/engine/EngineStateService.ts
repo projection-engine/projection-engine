@@ -11,7 +11,7 @@ import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
-import LocalizationEN from "../../../../shared/LocalizationEN";
+import LocalizationEN from "../../../../shared/LocalizationEN"
 
 
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {

@@ -2,17 +2,16 @@
 <script lang="ts">
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Component from "../../../../../engine-core/instances/components/Component";
-    import getComponentIcon from "../../../utils/get-component-icon";
-    import getComponentLabel from "../../../utils/get-component-label";
-    import updateSelection from "../utils/update-selection";
+    import HierarchyUtil from "../../../util/HierarchyUtil";
+    import EditorUtil from "../../../util/EditorUtil";
 
 
     export let depth: number
     export let component: Component
     export let setLockedEntity: Function
 
-    $: icon = getComponentIcon(component.componentKey)
-    $: label = getComponentLabel(component.componentKey)
+    $: icon = EditorUtil.getComponentIcon(component.componentKey)
+    $: label = EditorUtil.getComponentLabel(component.componentKey)
     $: entity = component.entity
 </script>
 
@@ -25,7 +24,7 @@
 >
     <!--suppress JSUnresolvedReference -->
     <div class="info hierarchy-branch" data-sveltenode={entity.id}
-         on:click={e => updateSelection(entity.id, e.ctrlKey)}>
+         on:click={e => HierarchyUtil.updateSelection(entity.id, e.ctrlKey)}>
         {#each {length: depth} as _, i}
             <div data-sveltevertdivider="-"
                  style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>

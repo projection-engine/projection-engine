@@ -7,7 +7,7 @@
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import getNewVector from "../utils/get-new-vector"
+    import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
 
     export let attribute
     export let node
@@ -47,7 +47,7 @@
                 minValue={attribute.min}
                 value={value[0]}
                 label={label}
-                onFinish={v => handleChange(getNewVector(value, v, 0, type))}
+                onFinish={v => handleChange(ShaderEditorUtil.getNewVector(value, v, 0, type))}
         />
         <Range
                 disabled={attribute.disabled}
@@ -55,7 +55,7 @@
                 minValue={attribute.min}
                 value={value[1]}
                 label={label}
-                onFinish={v => handleChange(getNewVector(value, v, 1, type))}
+                onFinish={v => handleChange(ShaderEditorUtil.getNewVector(value, v, 1, type))}
         />
         {#if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 }
             <Range
@@ -64,7 +64,7 @@
                     minValue={attribute.min}
                     value={value[2]}
                     label={label}
-                    onFinish={v => handleChange(getNewVector(value, v, 2, type))}
+                    onFinish={v => handleChange(ShaderEditorUtil.getNewVector(value, v, 2, type))}
             />
         {/if}
         {#if type === DATA_TYPES.VEC4}

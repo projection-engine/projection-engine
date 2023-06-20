@@ -2,7 +2,7 @@
     import Preview from "../../../../shared/components/preview/Preview.svelte"
     import FileSystemService from "../../../../shared/lib/FileSystemService"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import Folders from "../../../../../shared/Folders";
+    import Folders from "../../../../../shared/Folders"
 
     export let state
     export let type

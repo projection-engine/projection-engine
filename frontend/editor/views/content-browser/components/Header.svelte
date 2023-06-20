@@ -5,8 +5,6 @@
 
 
     import ITEM_TYPES from "../static/ITEM_TYPES"
-    import getFileTypes from "../utils/get-file-types"
-    import importFile from "../../../utils/import-file"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
@@ -18,7 +16,9 @@
     import SortingOptions from "./SortingOptions.svelte"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import FileTypes from "../../../../../shared/FileTypes"
-    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
+    import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
+    import EditorUtil from "../../../util/EditorUtil"
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -36,7 +36,7 @@
     export let sortKey
 
 
-    $: fileTypes = getFileTypes()
+    $: fileTypes = ContentBrowserUtil.getFileTypes()
 
     let engine = {}
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
@@ -142,7 +142,7 @@
         </button>
         <div data-sveltevertdivider="-"></div>
         <button data-sveltebuttondefault="-"
-                on:click={() => importFile(currentDirectory)}
+                on:click={() => EditorUtil.importFile(currentDirectory)}
                 data-sveltefocusbutton="-"
                 style="max-height: 22px"
         >

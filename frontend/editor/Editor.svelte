@@ -6,7 +6,6 @@
     import ViewsContainer from "./components/view/Views.svelte"
     import SettingsStore from "../shared/stores/SettingsStore"
     import FALLBACK_VIEW from "./static/FALLBACK_VIEW"
-    import updateView from "./utils/update-view"
     import FileSystemService from "../shared/lib/FileSystemService"
     import FSFilesService from "./services/file-system/FSFilesService"
     import LevelService from "./services/engine/LevelService"
@@ -20,6 +19,7 @@
     import StoreIPCListener from "../shared/lib/StoreIPCListener"
 
     import IPCRoutes from "../../shared/IPCRoutes"
+    import EditorUtil from "./util/EditorUtil"
 
     const FALLBACK = {...FALLBACK_VIEW}
 
@@ -65,7 +65,7 @@
         <div class="middle">
             <ViewsContainer
                     id="left"
-                    setTabs={(tabs) => updateView("left", tabs)}
+                    setTabs={(tabs) => EditorUtil.updateView("left", tabs)}
                     tabs={view.left}
                     reducedOpacity={engine.executingAnimation}
                     leftOffset={"8px"}
@@ -76,19 +76,19 @@
                 <ViewsContainer
                         reducedOpacity={engine.executingAnimation}
                         id="bottom"
-                        setTabs={(tabs) => updateView("top", tabs)}
+                        setTabs={(tabs) => EditorUtil.updateView("top", tabs)}
                         tabs={view.top}
                         resizePosition={"bottom"}
                         orientation={"horizontal"}
                 />
                 <Viewport
                         viewTab={view.viewport}
-                        updateView={(viewTab) => updateView("viewport", viewTab)}
+                        updateView={(viewTab) => EditorUtil.updateView("viewport", viewTab)}
                 />
                 <ViewsContainer
                         reducedOpacity={engine.executingAnimation}
                         id="bottom"
-                        setTabs={(tabs) => updateView("bottom", tabs)}
+                        setTabs={(tabs) => EditorUtil.updateView("bottom", tabs)}
                         tabs={view.bottom}
                         resizePosition={"top"}
                         orientation={"horizontal"}
@@ -97,7 +97,7 @@
             <ViewsContainer
                     reducedOpacity={engine.executingAnimation}
                     id="right"
-                    setTabs={(tabs) => updateView("right", tabs)}
+                    setTabs={(tabs) => EditorUtil.updateView("right", tabs)}
                     tabs={view.right}
                     orientation={"vertical"}
                     leftOffset={"0%"}

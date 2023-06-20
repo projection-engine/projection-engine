@@ -1,8 +1,6 @@
 <script lang="ts">
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
-    import getEngineIcon from "../utils/get-engine-icon";
-    import updateSelection from "../utils/update-selection";
     import EntityNamingService from "../../../services/engine/EntityNamingService";
     import SelectionStore from "../../../../shared/stores/SelectionStore";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
@@ -11,8 +9,8 @@
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
     import EntityUpdateService from "../../../services/engine/EntityUpdateService";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
-    import mapComponents from "../utils/map-components";
     import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import HierarchyUtil from "../../../util/HierarchyUtil";
 
 
     export let entity: Entity
@@ -25,7 +23,7 @@
     let ref: HTMLElement
 
 
-    $: icons = getEngineIcon(entity)
+    $: icons = HierarchyUtil.getEngineIcon(entity)
     const draggable = dragDrop(true)
     $: draggable.disabled = isOnEdit
 
@@ -41,11 +39,11 @@
                 EntityUpdateService.removeListener(entityID, ID)
             EntityUpdateService.addListener(entity.id, ID, () => {
                 entityName = entity.name
-                components = mapComponents(entity)
+                components = HierarchyUtil.mapComponents(entity)
                 children = entity.children.array.length
             })
             children = entity.children.array.length
-            components = mapComponents(entity)
+            components = HierarchyUtil.mapComponents(entity)
             entityName = entity.name
             entityID = entity.id
         }
@@ -72,7 +70,7 @@
     $: isLocked = lockedEntity === entity.id
 </script>
 
-<div class="info hierarchy-branch" data-sveltenode={entity.id} on:click={e => updateSelection(entity.id, e.ctrlKey)}>
+<div class="info hierarchy-branch" data-sveltenode={entity.id} on:click={e => HierarchyUtil.updateSelection(entity.id, e.ctrlKey)}>
     <button
 
             data-sveltelocked={isLocked ? "-" : ""}

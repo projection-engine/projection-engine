@@ -1,12 +1,12 @@
 <script>
     import Property from "./Property.svelte"
-    import removeComponent from "../../../utils/remove-component"
 
     import Component from "../../../../../../../engine-core/instances/components/Component"
-    import getComponentLabel from "../../../../../utils/get-component-label"
     import Accordion from "../../../../../../shared/components/accordion/Accordion.svelte"
     import PropertyHeader from "../../../../../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../../../../../shared/LocalizationEN"
+    import InspectorUtil from "../../../../../util/InspectorUtil"
+    import EditorUtil from "../../../../../util/EditorUtil";
 
     export let key
     export let index
@@ -15,16 +15,16 @@
     export let submit
     export let updateTabs
 
-    $: title = getComponentLabel(key) || component?.name
+    $: layoutTitle = EditorUtil.getComponentLabel(key) || component?.name
 
     function checkIsDisabled(propAttr) {
     	return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]
     }
 </script>
 
-{#if title}
-    <PropertyHeader title={title} allowDeletion={entity} onDelete={() => {
-        removeComponent(entity, index, key)
+{#if layoutTitle}
+    <PropertyHeader title={layoutTitle} allowDeletion={entity} onDelete={() => {
+        InspectorUtil.removeComponent(entity, index, key)
         updateTabs()
     }}/>
 {/if}

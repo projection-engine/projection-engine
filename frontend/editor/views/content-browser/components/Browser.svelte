@@ -1,12 +1,10 @@
 <!--suppress ALL -->
 <script>
-    import handleRename from "../utils/handle-rename"
     import Item from "./item/Item.svelte"
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte"
     import getContentBrowserActions from "../../../templates/get-content-browser-actions"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import {onDestroy, onMount} from "svelte"
-    import getFilesToRender from "../utils/get-files-to-render"
     import HotKeysController from "../../../../shared/lib/HotKeysController"
     import SelectionStore from "../../../../shared/stores/SelectionStore"
 
@@ -14,8 +12,8 @@
     import RowsHeader from "./BrowserHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
-    import handleSelection from "../utils/handle-selection"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
 
     const CARD_SIZE = 115
     export let fileType
@@ -54,7 +52,7 @@
     }
 
     $: lineHeight = viewType === ITEM_TYPES.ROW ? 23 : CARD_SIZE
-    $: toRender = getFilesToRender(currentDirectory, fileType, store.items, inputValue, elementsPerRow, sortKey, sortDirection)
+    $: toRender = ContentBrowserUtil.getFilesToRender(currentDirectory, fileType, store.items, inputValue, elementsPerRow, sortKey, sortDirection)
 
     $: {
     	if (ref) {
@@ -144,11 +142,11 @@
                             childQuantity={child.children}
                             setCurrentDirectory={setCurrentDirectory}
                             items={store.items}
-                            setSelected={e => handleSelection(e, child)}
+                            setSelected={e => ContentBrowserUtil.handleSelection(e, child)}
                             isOnRename={currentItem === child.id}
                             isCardViewType={viewType === ITEM_TYPES.CARD}
                             submitRename={async name => {
-                                await handleRename(child, name, currentDirectory, setCurrentDirectory )
+                                await ContentBrowserUtil.handleRename(child, name, currentDirectory, setCurrentDirectory )
                                 currentItem = undefined
                             }}
                     />
