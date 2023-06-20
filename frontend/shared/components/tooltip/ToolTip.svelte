@@ -31,7 +31,7 @@
     const hover = (event) => {
     	open = true
 
-        const instance = ToolTipService.getInstance()
+    	const instance = ToolTipService.getInstance()
     	bBox = instance.element.getBoundingClientRect()
     	bodyBBox = document.body.getBoundingClientRect()
 
@@ -48,17 +48,17 @@
     }
 
     $: {
-        const instance = ToolTipService.getInstance()
+    	const instance = ToolTipService.getInstance()
 
     	if (open) {
-            instance.portal.open()
-            instance.closeCurrent = () => {
+    		instance.portal.open()
+    		instance.closeCurrent = () => {
     			close()
     			if (targetParent)
     				targetParent.removeEventListener("mouseleave", close)
     		}
     	} else
-            instance.portal.close()
+    		instance.portal.close()
     }
 
     $: {

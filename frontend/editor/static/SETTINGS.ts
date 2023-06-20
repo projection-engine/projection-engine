@@ -3,8 +3,8 @@ import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import KEYS from "./KEYS"
 import INITIAL_LAYOUT from "./INITIAL_LAYOUT"
+import {glMatrix} from "gl-matrix"
 
-const toRad = Math.PI / 180
 export default {
 	spawnOnOrigin: false,
 	maxDistanceIcon: 50,
@@ -30,7 +30,7 @@ export default {
 	gizmo: GIZMOS.TRANSLATION,
 	transformationType: TRANSFORMATION_TYPE.GLOBAL,
 	backgroundColor: [.2, .2, .2],
-	fov: 60 * toRad,
+	fov: glMatrix.toRadian(60),
 	zNear: .1,
 	zFar: 5000,
 	// terrainTool: TERRAIN_TOOLS.SCULPT,

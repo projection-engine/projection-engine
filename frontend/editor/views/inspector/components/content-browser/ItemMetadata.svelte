@@ -1,10 +1,10 @@
 <script>
 
-    import getTypeName from "../../../content-browser/utils/get-type-name"
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
     import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import ContentBrowserUtil from "../../../../util/ContentBrowserUtil";
 
     export let item
     let data
@@ -34,7 +34,7 @@
 
     <div class="section">
         <ToolTip content={item.type}/>
-        <b>{LocalizationEN.FILE_EXTENSION}: </b><small data-svelteoverflow="-">{getTypeName(item.type)}</small>
+        <b>{LocalizationEN.FILE_EXTENSION}: </b><small data-svelteoverflow="-">{ContentBrowserUtil.getTypeName(item.type)}</small>
     </div>
     <div class="section">
         <ToolTip content={item.registryID}/>

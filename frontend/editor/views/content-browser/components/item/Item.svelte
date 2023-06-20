@@ -1,18 +1,14 @@
 <script>
-    import handleDropFolder from "../../utils/handle-drop-folder"
     import FilesStore from "../../../../../shared/stores/FilesStore"
     import {onDestroy, onMount} from "svelte"
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop"
-    import getTypeName from "../../utils/get-type-name"
-    import getItemDragImage from "../../utils/get-item-dragimage"
-    import getItemIcon from "../../utils/get-item-icon"
-    import getItemDragData from "../../utils/get-item-drag-data"
     import Card from "./Card.svelte"
     import Row from "./Row.svelte"
     import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
     import FileTypes from "../../../../../../shared/FileTypes"
     import Folders from "../../../../../../shared/Folders"
+    import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
 
     export let childQuantity
     export let reset
@@ -35,19 +31,19 @@
     const draggable = dragDrop(true)
 
     $: itemMetadata = {
-        path: FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS + FileSystemService.getInstance().sep + data.registryID + FileTypes.PREVIEW,
-        type: data.type ? "." + data.type : "folder",
-        childQuantity,
-        typeName: getTypeName(data.type)
+    	path: FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS + FileSystemService.getInstance().sep + data.registryID + FileTypes.PREVIEW,
+    	type: data.type ? "." + data.type : "folder",
+    	childQuantity,
+    	typeName: ContentBrowserUtil.getTypeName(data.type)
     }
-    $: itemIcon = getItemIcon(itemMetadata, type)
+    $: itemIcon = ContentBrowserUtil.getItemIcon(itemMetadata, type)
     $: {
-    	const dragDropData = getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
+    	const dragDropData = ContentBrowserUtil.getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
     	draggable.dragImage = dragDropData.dragImage
     	draggable.onDragOver = dragDropData.onDragOver
     	draggable.onDragStart = dragDropData.onDragStart
     	draggable.disabled = onDrag && type !== 0 || isOnRename
-        if (isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
+    	if (isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
     }
 
     $: props = {
@@ -59,7 +55,7 @@
     	type,
     	isMaterial: itemMetadata.type === FileTypes.MATERIAL,
     	isOnRename,
-        isToBeCut: toCut.includes(data.id),
+    	isToBeCut: toCut.includes(data.id),
     	metadata: itemMetadata,
     	submitRename,
     	draggable,
@@ -72,12 +68,12 @@
     }
 
     onMount(() => {
-        const dragDropData = getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
-        draggable.onMount({
-            targetElement: ref,
-            onDrop: (event) => handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),
-            ...dragDropData
-        })
+    	const dragDropData = ContentBrowserUtil.getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
+    	draggable.onMount({
+    		targetElement: ref,
+    		onDrop: (event) => ContentBrowserUtil.handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),
+    		...dragDropData
+    	})
     })
 
     onDestroy(() => draggable.onDestroy())
@@ -89,7 +85,7 @@
         {:else}
         <Row {...props}/>
     {/if}
-    <ToolTip content={getItemDragImage(data, type, itemMetadata)}/>
+    <ToolTip content={ContentBrowserUtil.getItemDragImage(data, type, itemMetadata)}/>
 </span>
 
  

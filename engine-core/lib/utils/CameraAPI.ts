@@ -1,7 +1,7 @@
 import CameraEffects from "../../resource-libs/CameraEffects"
 import Engine from "../../Engine"
 import ENVIRONMENT from "../../static/ENVIRONMENT"
-import {vec3, vec4} from "gl-matrix"
+import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../math/ConversionAPI"
 import MotionBlur from "../../runtime/MotionBlur"
 import VisibilityRenderer from "../../runtime/VisibilityRenderer"
@@ -17,7 +17,6 @@ import Renderer from "../../Renderer"
 
 
 const TEMPLATE_CAMERA = new CameraComponent()
-const toRad = Math.PI / 180
 export default class CameraAPI extends CameraResources {
 	static #dynamicAspectRatio = false
 	static metadata = new CameraEffects()
@@ -177,7 +176,7 @@ export default class CameraAPI extends CameraResources {
 
 		CameraAPI.zFar = cameraObj.zFar
 		CameraAPI.zNear = cameraObj.zNear
-		CameraAPI.fov = cameraObj.fov < Math.PI * 2 ? cameraObj.fov : cameraObj.fov * toRad
+		CameraAPI.fov = cameraObj.fov < Math.PI * 2 ? cameraObj.fov : glMatrix.toRadian(cameraObj.fov)
 		CameraAPI.#dynamicAspectRatio = cameraObj.dynamicAspectRatio
 		CameraAPI.isOrthographic = cameraObj.ortho
 		CameraAPI.cameraMotionBlur = cameraObj.cameraMotionBlur

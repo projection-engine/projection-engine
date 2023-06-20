@@ -1,6 +1,6 @@
 import ArrayBufferAPI from "./ArrayBufferAPI"
 import LIGHT_TYPES from "../../static/LIGHT_TYPES"
-import {mat4, vec3} from "gl-matrix"
+import {glMatrix, mat4, vec3} from "gl-matrix"
 import DirectionalShadows from "../../runtime/DirectionalShadows"
 import OmnidirectionalShadows from "../../runtime/OmnidirectionalShadows"
 import type Entity from "../../instances/Entity"
@@ -10,7 +10,6 @@ import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 
 
 let lightTimeout
-const toRad = Math.PI / 180
 const transformedNormalCache = vec3.create()
 const lightViewProjection = mat4.create()
 const quantity = new Uint8Array(1)
@@ -176,7 +175,7 @@ export default class LightsAPI {
 			primaryBuffer[12 + offset] = attenuation[0]
 			primaryBuffer[13 + offset] = attenuation[1]
 
-			primaryBuffer[14 + offset] = Math.cos(component.radius * toRad)
+			primaryBuffer[14 + offset] = Math.cos(glMatrix.toRadian(component.radius))
 			primaryBuffer[15 + offset] = component.hasSSS ? 1 : 0
 
 			break

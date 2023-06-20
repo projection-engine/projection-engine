@@ -1,8 +1,8 @@
 import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
-import checkGlslFloat from "../../utils/check-glsl-float"
 import Signature from "../Signature"
+import ShaderEditorUtil from "../../../../util/ShaderEditorUtil";
 
 
 export default class RGB extends ShaderNode implements Signature{
@@ -52,7 +52,7 @@ export default class RGB extends ShaderNode implements Signature{
 
 			return `uniform vec3 ${this.uniformName};`
 		}
-		return `const vec3 ${this.uniformName}  = vec3(${checkGlslFloat(v[0])}, ${checkGlslFloat(v[1])}, ${checkGlslFloat(v[2])});`
+		return `const vec3 ${this.uniformName}  = vec3(${ShaderEditorUtil.checkGlslFloat(v[0])}, ${ShaderEditorUtil.checkGlslFloat(v[1])}, ${ShaderEditorUtil.checkGlslFloat(v[2])});`
 
 	}
 

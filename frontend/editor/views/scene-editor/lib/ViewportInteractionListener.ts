@@ -1,10 +1,10 @@
 import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
 import Engine from "../../../../../engine-core/Engine"
-import onViewportClick from "../../viewport/utils/on-viewport-click"
 import SelectionStore from "../../../../shared/stores/SelectionStore"
 import SettingsStore from "../../../../shared/stores/SettingsStore"
 import GPU from "../../../../../engine-core/GPU"
 import AbstractSingleton from "../../../../../shared/AbstractSingleton"
+import ViewportUtil from "../../../util/ViewportUtil"
 
 
 export default class ViewportInteractionListener extends AbstractSingleton {
@@ -41,7 +41,7 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 
 		if (!Engine.isReady)
 			return
-		onViewportClick(
+		ViewportUtil.onViewportClick(
 			event,
 			this.mouseDelta,
 			SettingsStore.data,

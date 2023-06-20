@@ -1,7 +1,6 @@
 <script lang="ts">
 
     import Tabs from "../../tabs/Tabs.svelte";
-    import getViewIcon from "../utils/get-view-icon";
     import VIEWS from "../static/VIEWS";
     import TabsStore from "../../../../shared/stores/TabsStore";
     import {onDestroy} from "svelte";
@@ -9,6 +8,7 @@
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
     import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import ViewsUtil from "../../../util/ViewsUtil";
 
     export let groupIndex
     export let views: ViewTabItem[]
@@ -42,7 +42,7 @@
     })
     $: tabs = views.map(v => {
         v.name = LocalizationEN[v.type]
-        v.icon = getViewIcon(v.type)
+        v.icon =  ViewsUtil.getViewIcon(v.type)
         v.id = v.type
         return v
     })

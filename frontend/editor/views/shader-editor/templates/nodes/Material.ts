@@ -1,14 +1,14 @@
 import ShaderNode from "../ShaderNode"
 import DATA_TYPES from "../../../../../../engine-core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
-import checkGlslFloat from "../../utils/check-glsl-float"
 import MATERIAL_RENDERING_TYPES from "../../../../../../engine-core/static/MATERIAL_RENDERING_TYPES"
 import Signature from "../Signature"
+import ShaderEditorUtil from "../../../../util/ShaderEditorUtil"
 
 
 function arrayToGlsl(a) {
 	const arr = Array.isArray(a) ? a : [0, 0, 0]
-	return "vec3(" + arr.map(a => checkGlslFloat(parseFloat(a.toFixed(4)))) + ")"
+	return "vec3(" + arr.map(a => ShaderEditorUtil.checkGlslFloat(parseFloat(a.toFixed(4)))) + ")"
 }
 
 export default class Material extends ShaderNode implements Signature{
@@ -254,19 +254,19 @@ export default class Material extends ShaderNode implements Signature{
 		},
 		normal,
 		ao = {
-			name: checkGlslFloat(1),
+			name: ShaderEditorUtil.checkGlslFloat(1),
 			type: DATA_TYPES.FLOAT
 		},
 		roughness = {
-			name: checkGlslFloat(this.roughness),
+			name: ShaderEditorUtil.checkGlslFloat(this.roughness),
 			type: DATA_TYPES.FLOAT
 		},
 		metallic = {
-			name: checkGlslFloat(this.metallic),
+			name: ShaderEditorUtil.checkGlslFloat(this.metallic),
 			type: DATA_TYPES.FLOAT
 		},
 		opacity = {
-			name: checkGlslFloat(this.opacity),
+			name: ShaderEditorUtil.checkGlslFloat(this.opacity),
 			type: DATA_TYPES.FLOAT
 		},
 		emission = {
@@ -275,28 +275,28 @@ export default class Material extends ShaderNode implements Signature{
 		},
 
 		refraction = {
-			name: checkGlslFloat(this.refraction),
+			name: ShaderEditorUtil.checkGlslFloat(this.refraction),
 			type: DATA_TYPES.FLOAT
 		},
 		anisotropicRotation = {
-			name: checkGlslFloat(this.anisotropicRotation),
+			name: ShaderEditorUtil.checkGlslFloat(this.anisotropicRotation),
 			type: DATA_TYPES.FLOAT
 		},
 		anisotropy = {
-			name: checkGlslFloat(this.anisotropy),
+			name: ShaderEditorUtil.checkGlslFloat(this.anisotropy),
 			type: DATA_TYPES.FLOAT
 		},
 		clearCoat = {
-			name: checkGlslFloat(this.clearCoat),
+			name: ShaderEditorUtil.checkGlslFloat(this.clearCoat),
 			type: DATA_TYPES.FLOAT
 		},
 
 		sheen = {
-			name: checkGlslFloat(this.sheen),
+			name: ShaderEditorUtil.checkGlslFloat(this.sheen),
 			type: DATA_TYPES.FLOAT
 		},
 		sheenTint = {
-			name: checkGlslFloat(this.sheenTint),
+			name: ShaderEditorUtil.checkGlslFloat(this.sheenTint),
 			type: DATA_TYPES.FLOAT
 		},
 

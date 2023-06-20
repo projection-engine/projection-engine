@@ -4,20 +4,16 @@ import GIZMOS from "../static/GIZMOS"
 import SelectionStore from "../../shared/stores/SelectionStore"
 import EditorActionHistory from "../services/EditorActionHistory"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
-
-import selectEntityHierarchy from "../utils/select-entity-hierarchy"
-import snap from "../utils/snap"
 import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE"
 import EntityFactoryService from "../services/engine/EntityFactoryService"
 import CAMERA_ROTATIONS from "../../../engine-core/tools/static/CAMERA_ROTATIONS"
 import LevelService from "../services/engine/LevelService"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
-
-import focusOnCamera from "../utils/focus-on-camera"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
 import LocalizationEN from "../../../shared/LocalizationEN"
+import EditorUtil from "../util/EditorUtil"
 
 
 export default function getViewportHotkeys(settings): { [key: string]: ContextMenuOption } {
@@ -38,7 +34,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 
 		FOCUS_ON_CAMERA: {
 			label: LocalizationEN.FOCUS_ON_CAMERA,
-			callback: focusOnCamera,
+			callback: EditorUtil.focusOnCamera,
 			require: settings.viewportHotkeys.FOCUS_ON_CAMERA,
 		},
 		SHOW_SELECTED: {
@@ -82,7 +78,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 				const t = SelectionStore.mainEntity
 				if (!t)
 					return
-				const toSelect = [t, ...selectEntityHierarchy(QueryAPI.getEntityByID(t))]
+				const toSelect = [t, ...EditorUtil.selectEntityHierarchy(QueryAPI.getEntityByID(t))]
 				SelectionStore.engineSelected = [...SelectionStore.engineSelected, ...toSelect]
 			},
 
@@ -115,7 +111,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 
 		ROUND_TRANSFORMATION: {
 			label: "Round transformation",
-			callback: () => snap(1),
+			callback: () => EditorUtil.snap(1),
 			require: settings.viewportHotkeys.ROUND_TRANSFORMATION,
 		},
 
@@ -149,7 +145,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		},
 		SNAP_TO_GRID: {
 			label: "Snap to grid",
-			callback: snap,
+			callback: EditorUtil.snap,
 			require: settings.viewportHotkeys.SNAP_TO_GRID,
 		},
 		FOCUS: {

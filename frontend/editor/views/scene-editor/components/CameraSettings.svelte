@@ -1,6 +1,5 @@
 <script>
     import ViewportActionUtil from "../../../services/ViewportActionUtil"
-    import focusOnCamera from "../../../utils/focus-on-camera"
     import Engine from "../../../../../engine-core/Engine"
 
     import CameraGizmo from "./CameraGizmo.svelte"
@@ -13,6 +12,7 @@
     import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
+    import EditorUtil from "../../../util/EditorUtil"
 
     export let engine
     export let settings
@@ -52,7 +52,7 @@
             <button data-sveltebuttondefault="-"
                     style="border: none"
                     class="button viewport"
-                    on:click={_ => focusOnCamera(camera)}
+                    on:click={_ => EditorUtil.focusOnCamera(camera)}
             >
                 {#if engine.focusedCamera === camera.id}
                     <Icon>check</Icon>

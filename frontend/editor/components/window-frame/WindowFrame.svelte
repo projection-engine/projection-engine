@@ -3,7 +3,6 @@
     import {onDestroy} from "svelte"
 
     import LevelService from "../../services/engine/LevelService"
-    import getFrameOptions from "./utils/get-frame-options"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import Tabs from "../tabs/Tabs.svelte"
     import CreationController from "./components/CreationController.svelte"
@@ -12,13 +11,13 @@
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte"
     import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
     import ExecutionService from "../../services/engine/ExecutionService"
-    import addNewTab from "../../views/viewport/utils/add-new-tab"
-    import removeTab from "./utils/remove-tab"
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import IPCRoutes from "../../../../shared/IPCRoutes"
     import WindowTypes from "../../../../shared/WindowTypes"
+    import ViewportUtil from "../../util/ViewportUtil"
+    import WindowFrameUtil from "../../util/WindowFrameUtil";
 
 
     let engine
@@ -35,7 +34,7 @@
     	unsubscribeSettings()
     })
 
-    $: options = getFrameOptions(engine.executingAnimation || !hasChanges)
+    $: options = WindowFrameUtil.getFrameOptions(engine.executingAnimation || !hasChanges)
 </script>
 
 <FrameWrapper>
@@ -106,8 +105,8 @@
                 SettingsStore.updateStore({...settings, views: [currentView]})
             }}
             allowRenaming={true}
-            addNewTab={addNewTab}
-            removeTab={removeTab}
+            addNewTab={ViewportUtil.addNewTab}
+            removeTab={ViewportUtil.removeTab}
             tabs={settings.views}
             currentTab={settings.currentView}
             setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}

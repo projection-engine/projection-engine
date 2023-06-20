@@ -1,5 +1,4 @@
 <script>
-    import getType from "../utils/get-type"
     import Option from "./Option.svelte"
     import EmbeddedMeshes from "../../../../../engine-core/static/EmbeddedMeshes"
     import VirtualList from "@sveltejs/svelte-virtual-list"
@@ -7,6 +6,7 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Input from "../../../../shared/components/input/Input.svelte"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import SelectorUtil from "../../../util/SelectorUtil"
 
     export let handleChange
     export let type
@@ -22,7 +22,7 @@
 
 
     $: {
-    	const temp = getType(store, type, mergeMaterials, terrainMaterials)
+    	const temp = SelectorUtil.getType(store, type, mergeMaterials, terrainMaterials)
     	let current
     	if (inputValue)
     		current = temp.filter(e => e.name.includes(inputValue))

@@ -1,9 +1,9 @@
 import {getCall} from "../util/get-call"
 import ElectronResources from "./ElectronResources"
-import FileTypes from "../../../shared/FileTypes";
-import Folders from "../../../shared/Folders";
-import IPCRoutes from "../../../shared/IPCRoutes";
-import AbstractSingleton from "../../../shared/AbstractSingleton";
+import FileTypes from "../../../shared/FileTypes"
+import Folders from "../../../shared/Folders"
+import IPCRoutes from "../../../shared/IPCRoutes"
+import AbstractSingleton from "../../../shared/AbstractSingleton"
 
 
 export default class FileSystemService extends AbstractSingleton{

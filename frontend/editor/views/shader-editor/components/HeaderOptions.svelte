@@ -5,8 +5,8 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
-    import addComment from "../utils/add-comment"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
 
     export let openFile
     export let initializeFromFile
@@ -61,7 +61,7 @@
             <button data-sveltebuttondefault="-"
                     data-svelteview-header-button="-"
                     style="max-width: unset"
-                    on:click={() => addComment(canvasAPI)}
+                    on:click={() => ShaderEditorUtil.addComment(canvasAPI)}
             >
                 <Icon styles="font-size: .9rem">chat_bubble_outline</Icon>
                 {LocalizationEN.ADD_COMMENT}

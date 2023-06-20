@@ -1,6 +1,6 @@
 export default class SelectionWorker {
 	static #worker?: Worker
-	static get worker(): Worker {
+	static worker(): Worker {
 		if (SelectionWorker.#worker)
 			return SelectionWorker.#worker
 

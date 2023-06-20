@@ -3,7 +3,6 @@
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS.ts"
 
     import Selector from "../../../../components/selector/Selector.svelte"
-    import removeComponent from "../../utils/remove-component"
     import FSRegistryService from "../../../../services/file-system/FSRegistryService"
     import FSFilesService from "../../../../services/file-system/FSFilesService"
     import UIAPI from "../../../../../../engine-core/lib/rendering/UIAPI"
@@ -12,13 +11,14 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import InspectorUtil from "../../../../util/InspectorUtil"
 
     export let entity
     export let submit
 
     $: component = entity.uiComponent
-    $: styles = component.wrapperStyles
-    $: hasStyles = styles.length > 0
+    $: wrapperStyles = component.wrapperStyles
+    $: hasStyles = wrapperStyles.length > 0
 
 
     function update(key, value) {
@@ -43,7 +43,7 @@
     <legend class="legend">
         {LocalizationEN.UI_COMPONENT}
         <button data-sveltebuttondefault="-" class="button"
-                on:click={() => removeComponent(entity, undefined, COMPONENTS.UI)}>
+                on:click={() => InspectorUtil.removeComponent(entity, undefined, COMPONENTS.UI)}>
             <Icon>delete_forever</Icon>
         </button>
     </legend>
@@ -74,18 +74,18 @@
                 submit={(key, value) => {
                   if(!key || !value)
                       return
-                    update("wrapperStyles", [...styles, [key, value]])
+                    update("wrapperStyles", [...wrapperStyles, [key, value]])
                 }}
         />
         {#if hasStyles}
             <div data-sveltedivider="-"></div>
         {/if}
-        {#each styles as style, i}
+        {#each wrapperStyles as style, i}
             <StyleField
                     component={component}
                     submit={(key, value) => {
-                        const existingKey = styles.findIndex(s => s[0] === key)
-                        const newData = [...styles]
+                        const existingKey = wrapperStyles.findIndex(s => s[0] === key)
+                        const newData = [...wrapperStyles]
                         if(key && value){
                             if(existingKey > -1 && existingKey !== i){
                                 newData[existingKey] = [key, value]

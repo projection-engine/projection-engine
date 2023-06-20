@@ -7,7 +7,7 @@
     import {Sortable} from "sortablejs";
     import TabData from "./static/TabData";
     import Tab from "./components/Tab.svelte";
-    import TabContextController from "./lib/TabContextController";
+    import TabContextController from "./TabContextController";
 
 
     export let addNewTab: Function

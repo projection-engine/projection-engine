@@ -7,15 +7,14 @@
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Tabs from "../../components/tabs/Tabs.svelte"
-    import removeTab from "./utils/remove-tab"
-    import updateViewport from "./utils/update-viewport"
     import VIEWS from "../../components/view/static/VIEWS"
     import View from "../../components/view/components/View.svelte"
-    import getViewIcon from "../../components/view/utils/get-view-icon"
     import TabsStore from "../../../shared/stores/TabsStore"
     import GPU from "../../../../engine-core/GPU"
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import ViewportUtil from "../../util/ViewportUtil"
+    import ViewsUtil from "../../util/ViewsUtil"
 
     export let updateView
     export let viewTab
@@ -37,7 +36,7 @@
     const setViewportTab = (value, index = currentTab) => {
     	const clone = [...viewTab]
     	clone[index].type = value
-    	updateViewport(engine, value)
+    	ViewportUtil.updateViewport(engine, value)
     	updateView(clone)
     }
 
@@ -51,10 +50,10 @@
     		)
     }
 
-    $: updateViewport(engine, viewTab[currentTab])
+    $: ViewportUtil.updateViewport(engine, viewTab[currentTab])
     $: tabs = viewTab.map(v => {
     	v.name = LocalizationEN[v.type]
-    	v.icon = getViewIcon(v.type)
+    	v.icon =  ViewsUtil.getViewIcon(v.type)
     	return v
     })
 
@@ -106,7 +105,7 @@
                         clone.push({color: [255, 255, 255], type: item?.id || VIEWS.COMPONENT })
                         updateView(clone)
                 }}
-                removeTab={i => removeTab(i, viewTab,  updateView, currentTab, v => TabsStore.update("viewport", undefined, v))}
+                removeTab={i => ViewportUtil.removeTab(i, viewTab,  updateView, currentTab, v => TabsStore.update("viewport", undefined, v))}
                 removeMultipleTabs={_ => {
                     const current = tabs[currentTab]
                     TabsStore.update("viewport", undefined, 0)

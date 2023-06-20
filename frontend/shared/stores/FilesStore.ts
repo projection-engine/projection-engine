@@ -1,15 +1,14 @@
 import {get, writable} from "svelte/store"
-import handleDropFolder from "../../editor/views/content-browser/utils/handle-drop-folder"
 
 import ContentBrowserAPI from "../../editor/services/file-system/ContentBrowserAPI"
-
-import resolveFileName from "../../editor/utils/resolve-file-name"
 import FilesHierarchyStore from "./FilesHierarchyStore"
 import FileSystemService from "../lib/FileSystemService"
 import {getCall} from "../util/get-call"
 import FSRegistryService from "../../editor/services/file-system/FSRegistryService"
-import IPCRoutes from "../../../shared/IPCRoutes";
-import LocalizationEN from "../../../shared/LocalizationEN";
+import IPCRoutes from "../../../shared/IPCRoutes"
+import LocalizationEN from "../../../shared/LocalizationEN"
+import ContentBrowserUtil from "../../editor/util/ContentBrowserUtil"
+import EditorUtil from "../../editor/util/EditorUtil"
 
 const contentBrowserStore = writable({
 	isLoading: true,
@@ -64,7 +63,7 @@ export default class FilesStore {
 
 
 	static async createFolder(currentDirectory) {
-		const path = await resolveFileName(currentDirectory.id + FileSystemService.getInstance().sep + LocalizationEN.NEW_FOLDER, "")
+		const path = await EditorUtil.resolveFileName(currentDirectory.id + FileSystemService.getInstance().sep + LocalizationEN.NEW_FOLDER, "")
 		await FileSystemService.getInstance().mkdir(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + path)
 		await FilesStore.refreshFiles()
 	}
@@ -77,7 +76,7 @@ export default class FilesStore {
 
 	static paste(target?: string) {
 		if (FilesStore.data.toCut.length > 0) {
-			handleDropFolder(
+			ContentBrowserUtil.handleDropFolder(
 				[...FilesStore.data.toCut],
 				target
 			).catch(err => console.error(err))

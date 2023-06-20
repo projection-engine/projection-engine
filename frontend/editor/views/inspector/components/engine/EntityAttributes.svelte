@@ -5,16 +5,14 @@
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS";
 
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop";
-    import handleComponentDrop from "../../utils/handle-component-drop";
     import UIComponent from "./UIComponent.svelte";
-    import updateEntityComponent from "../../utils/update-entity-component";
-    import getEntityTabs from "../../utils/get-entity-tabs";
     import MaterialUniforms from "../MaterialUniforms.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import Icon from "../../../../../shared/components/icon/Icon.svelte";
     import MeshComponent from "../../../../../../engine-core/instances/components/MeshComponent";
     import Entity from "../../../../../../engine-core/instances/Entity";
     import LocalizationEN from "../../../../../../shared/LocalizationEN";
+    import InspectorUtil from "../../../../util/InspectorUtil";
 
     export let entity: Entity
     export let setTabs: Function
@@ -26,14 +24,14 @@
     let components
     $: components = entity.allComponents
     $: component = components[tabIndex]
-    $: setTabs(entity.isCollection ? [...getEntityTabs(components).slice(0, 2)] : getEntityTabs(components))
+    $: setTabs(entity.isCollection ? [...InspectorUtil.getEntityTabs(components).slice(0, 2)] : InspectorUtil.getEntityTabs(components))
     $: scripts = entity.scripts
 
     const draggable = dragDrop(false)
     onMount(() => {
         draggable.onMount({
             targetElement: ref.parentElement,
-            onDrop: d => handleComponentDrop(entity, d),
+            onDrop: d => InspectorUtil.handleComponentDrop(entity, d),
             onDragOver: () => LocalizationEN.ADD_DRAG_DROP
         })
     })
@@ -75,7 +73,7 @@
     {#if component.componentKey === COMPONENTS.UI}
         <UIComponent
                 entity={entity}
-                submit={(k, v) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, true, component)}
+                submit={(k, v) => InspectorUtil.updateEntityComponent(savedState, v => savedState = v, entity, k, v, true, component)}
         />
     {:else}
         <Layout
@@ -83,14 +81,14 @@
                 key={component.componentKey}
                 component={component}
                 updateTabs={() => components = entity.allComponents}
-                submit={(k, v, s) => updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, component)}
+                submit={(k, v, s) => InspectorUtil.updateEntityComponent(savedState, v => savedState = v, entity, k, v, s, component)}
         />
         {#if component instanceof MeshComponent && component.hasMaterial}
             <fieldset>
                 <legend>{LocalizationEN.MATERIAL_VALUES}</legend>
                 <Checkbox
                         label={LocalizationEN.OVERRIDE_PROPERTIES}
-                        handleCheck={() => updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !component.overrideMaterialUniforms, true, component)}
+                        handleCheck={() => InspectorUtil.updateEntityComponent(savedState, v => savedState = v, entity, "overrideMaterialUniforms", !component.overrideMaterialUniforms, true, component)}
                         checked={component.overrideMaterialUniforms}
                 />
                 {#if component.overrideMaterialUniforms}

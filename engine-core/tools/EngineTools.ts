@@ -12,6 +12,8 @@ import Entity from "../instances/Entity"
 import GPU from "../GPU"
 import StaticEditorMeshes from "./lib/StaticEditorMeshes"
 import StaticEditorShaders from "./lib/StaticEditorShaders"
+import StaticFBO from "../lib/StaticFBO"
+import SettingsStore from "../../frontend/shared/stores/SettingsStore"
 
 export default class EngineTools {
 	static selected: Entity[] = []
@@ -55,6 +57,17 @@ export default class EngineTools {
 			GizmoSystem.mainEntity = undefined
 			GizmoSystem.hasStarted = false
 		}
+	}
+
+	static drawIconsToBuffer() {
+		GPU.context.disable(GPU.context.DEPTH_TEST)
+		StaticFBO.visibility.use()
+		StaticEditorShaders.iconToDepth.bind()
+		GPU.context.activeTexture(GPU.context.TEXTURE0)
+		GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
+		IconsSystem.loop(IconsSystem.drawIcon, SettingsStore.data, StaticEditorShaders.iconToDepthUniforms)
+		StaticFBO.visibility.stopMapping()
+		GPU.context.enable(GPU.context.DEPTH_TEST)
 	}
 
 	static bindSystems() {

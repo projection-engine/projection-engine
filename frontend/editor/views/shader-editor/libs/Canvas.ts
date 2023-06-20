@@ -1,6 +1,3 @@
-import getMousedownEvent from "../utils/get-mousedown-event"
-import getCanvasZoomEvent from "../utils/get-canvas-zoom-event"
-
 import CanvasRenderer from "./CanvasRenderer"
 import OpenFile from "../static/OPEN_FILE"
 import type ShaderNode from "../templates/ShaderNode"
@@ -11,6 +8,7 @@ import NodesIndex from "../static/NODE_MAP"
 import NODE_MAP from "../static/NODE_MAP"
 import DynamicMap from "../../../../../engine-core/resource-libs/DynamicMap"
 import ShaderEditorActionHistory from "./ShaderEditorActionHistory"
+import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
 
 export default class Canvas {
 	#initialized = false
@@ -157,8 +155,8 @@ export default class Canvas {
 		this.ctx = canvas.getContext("2d")
 		this.updateCanvasSize()
 		canvas.addEventListener("contextmenu", e => e.preventDefault())
-		canvas.addEventListener("mousedown", getMousedownEvent(this))
-		canvas.addEventListener("wheel", getCanvasZoomEvent(this), {passive: false})
+		canvas.addEventListener("mousedown", ShaderEditorUtil.getMousedownEvent(this))
+		canvas.addEventListener("wheel", ShaderEditorUtil.getCanvasZoomEvent(this), {passive: false})
 
 		canvas.addEventListener("drop", ev => this.onDrop(ev.dataTransfer.getData("text"), ev.clientX, ev.clientY))
 		this.clear()

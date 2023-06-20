@@ -1,4 +1,4 @@
-import {mat4, vec3} from "gl-matrix"
+import {glMatrix, mat4, vec3} from "gl-matrix"
 import mapGizmoMesh from "../../utils/map-gizmo-mesh"
 import PickingAPI from "../../../lib/utils/PickingAPI"
 import CameraAPI from "../../../lib/utils/CameraAPI"
@@ -15,14 +15,13 @@ import StaticEditorMeshes from "../StaticEditorMeshes"
 import StaticEditorShaders from "../StaticEditorShaders"
 import GizmoAPI from "../GizmoAPI"
 
-const toRad = Math.PI / 180
 const toDeg = 180 / Math.PI
 const uniformCache = new Float32Array(4)
 const cacheVec3 = vec3.create()
 export default class RotationGizmo extends GizmoInterface {
 	tracking = false
-	static currentRotation: vec3 = vec3.create()
-	static gridSize: number = toRad
+	static currentRotation = vec3.create()
+	static gridSize = glMatrix.toRadian(1)
 	static currentIncrement = 0
 
 	constructor() {
@@ -61,7 +60,7 @@ export default class RotationGizmo extends GizmoInterface {
 			GizmoSystem.updateGizmoToolTip()
 		}
 
-		const g = event.ctrlKey ? toRad : RotationGizmo.gridSize * toRad
+		const g = event.ctrlKey ? glMatrix.toRadian(1) : glMatrix.toRadian(RotationGizmo.gridSize)
 		RotationGizmo.currentIncrement += event.movementX * GizmoSystem.sensitivity
 		const mappedValue = Math.round(RotationGizmo.currentIncrement / g) * g
 
@@ -152,7 +151,7 @@ export default class RotationGizmo extends GizmoInterface {
 		uniformCache[0] = axis
 		uniformCache[1] = GizmoSystem.clickedAxis
 		uniformCache[2] = RotationGizmo.currentRotation[axis - 2]
-		uniformCache[3] = RotationGizmo.gridSize * toRad
+		uniformCache[3] = glMatrix.toRadian(RotationGizmo.gridSize)
 		context.uniform4fv(uniforms.metadata, uniformCache)
 
 		StaticEditorMeshes.rotationGizmo.draw()

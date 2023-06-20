@@ -1,6 +1,4 @@
 import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools"
-import addComment from "../views/shader-editor/utils/add-comment"
-
 import SettingsStore from "../../shared/stores/SettingsStore"
 import Canvas from "../views/shader-editor/libs/Canvas"
 import type ShaderNode from "../views/shader-editor/templates/ShaderNode"
@@ -8,6 +6,7 @@ import ShaderComment from "../views/shader-editor/templates/ShaderComment"
 import ALL_NODES from "../views/shader-editor/static/ALL_NODES"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
 import NODE_MAP from "../views/shader-editor/static/NODE_MAP"
+import ShaderEditorUtil from "../util/ShaderEditorUtil"
 
 export function selectAllNodes(canvasAPI:Canvas){
 	let last: ShaderNode | ShaderComment
@@ -34,7 +33,7 @@ export default function getShaderActions(canvasAPI: Canvas) {
 		CREATE_COMMENT: {
 			label: "Create comment (under selected node)",
 			require: settings.shaderEditorHotkeys.CREATE_COMMENT,
-			callback: () => addComment(canvasAPI)
+			callback: () => ShaderEditorUtil.addComment(canvasAPI)
 		},
 		SAVE: {
 			label: "Save",

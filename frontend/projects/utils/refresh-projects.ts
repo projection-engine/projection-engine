@@ -1,6 +1,6 @@
 import FileSystemService from "../../shared/lib/FileSystemService"
-import FileTypes from "../../../shared/FileTypes";
-import LocalizationEN from "../../../shared/LocalizationEN";
+import FileTypes from "../../../shared/FileTypes"
+import LocalizationEN from "../../../shared/LocalizationEN"
 
 
 export default async function refreshProjects(path) {
@@ -33,6 +33,7 @@ export default async function refreshProjects(path) {
 			path: itemPath
 		})
 	}
+
 	return data.filter(e => e !== undefined).map(e => {
 		const res = {...e}
 		if (!res.meta) res.meta = {name: LocalizationEN.NEW_PROJECT}

@@ -1,11 +1,8 @@
 <script>
     import View from "./components/View.svelte"
     import ViewGroup from "./components/ViewGroup.svelte"
-    import onResizeEndSplitter from "./utils/on-resize-end-splitter"
-    import switchView from "./utils/switch-view"
-    import removeTab from "./utils/remove-tab"
-    import addTab from "./utils/add-tab"
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
+    import ViewsUtil from "../../util/ViewsUtil"
 
     export let resizePosition
     export let orientation
@@ -70,9 +67,9 @@
                 id={id}
                 let:view
                 let:index
-                switchView={(newView, index) => switchView(newView, groupIndex, tabs, index, setTabs)}
-                addNewTab={item => addTab(tabs, setTabs, groupIndex, item)}
-                removeTab={(i, cb, currentTab) => removeTab(i, tabs, groupIndex, setTabs, currentTab, cb)}
+                switchView={(newView, index) =>  ViewsUtil.switchView(newView, groupIndex, tabs, index, setTabs)}
+                addNewTab={item => ViewsUtil.addTab(tabs, setTabs, groupIndex, item)}
+                removeTab={(i, cb, currentTab) =>  ViewsUtil.removeTab(i, tabs, groupIndex, setTabs, currentTab, cb)}
                 removeMultipleTabs={_ => {
                     const clone = [...tabs]
                     clone.splice(groupIndex, 1)
@@ -86,7 +83,7 @@
                         id={id}
                         index={index}
                         groupIndex={groupIndex}
-                        switchView={newView => switchView(newView, groupIndex, tabs, index, setTabs )}
+                        switchView={newView =>  ViewsUtil.switchView(newView, groupIndex, tabs, index, setTabs )}
 
                 />
             {/if}
@@ -95,7 +92,7 @@
             <ResizableBar
                     type={invOrientation}
                     resetWhen={tabs}
-                    onResizeEnd={(next, prev) => onResizeEndSplitter(next, prev, invOrientation, setTabs, tabs, groupIndex)}
+                    onResizeEnd={(next, prev) => ViewsUtil.onResizeEndSplitter(next, prev, invOrientation, setTabs, tabs, groupIndex)}
             >
             </ResizableBar>
         {/if}
