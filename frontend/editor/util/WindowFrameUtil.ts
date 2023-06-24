@@ -5,7 +5,7 @@ import ViewportActionUtil from "../services/ViewportActionUtil"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import GPU from "../../../engine-core/GPU"
 import ResourceManager from "../../../engine-core/runtime/ResourceManager"
-import WindowChangeStore from "../../shared/components/frame/WindowChangeStore"
+import WindowChangeStore from "../../shared/stores/WindowChangeStore"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import IPCRoutes from "../../../shared/IPCRoutes"
 
