@@ -1,9 +1,10 @@
 import {get, writable} from "svelte/store"
+import AbstractStore from "./AbstractStore"
 
 
 const store = writable(false)
 
-export default class ChangesTrackerStore {
+export default class ChangesTrackerStore extends AbstractStore{
 	static data:boolean = get(store)
 
 	static getStore(onChange) {
@@ -15,6 +16,8 @@ export default class ChangesTrackerStore {
 			return
 		ChangesTrackerStore.data = value
 		store.set(value)
+
+		super.updateStore()
 	}
 }
 

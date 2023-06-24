@@ -1,11 +1,12 @@
 import {get, writable} from "svelte/store"
 import SettingsStore from "./SettingsStore"
 import ChangesTrackerStore from "./ChangesTrackerStore"
+import AbstractStore from "./AbstractStore"
 
 
 const store = writable(<MutableObject>{})
 
-export default class TabsStore {
+export default class TabsStore extends AbstractStore{
 	static data:MutableObject = get(store)
 
 	static get focused() {
@@ -23,6 +24,8 @@ export default class TabsStore {
 		const V = value||TabsStore.data
 		TabsStore.data = V
 		store.set(V)
+		super.updateStore()
+
 	}
 
 	static update(direction, group, value) {
@@ -41,6 +44,8 @@ export default class TabsStore {
 
 		TabsStore.data = clone
 		store.set(clone)
+		super.updateStore()
+
 	}
 
 	static getValue(direction, group?:string):number {

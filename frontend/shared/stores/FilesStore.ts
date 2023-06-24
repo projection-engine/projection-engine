@@ -9,6 +9,7 @@ import IPCRoutes from "../../../shared/IPCRoutes"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import ContentBrowserUtil from "../../editor/util/ContentBrowserUtil"
 import EditorUtil from "../../editor/util/EditorUtil"
+import AbstractStore from "./AbstractStore"
 
 const contentBrowserStore = writable({
 	isLoading: true,
@@ -27,7 +28,7 @@ const contentBrowserStore = writable({
 	collections: []
 })
 
-export default class FilesStore {
+export default class FilesStore extends AbstractStore{
 	static data = get(contentBrowserStore)
 	static #initialized = false
 
@@ -38,7 +39,6 @@ export default class FilesStore {
 				FilesHierarchyStore.update(data.items)
 			})
 			FilesStore.refreshFiles().catch()
-
 		}
 	}
 
@@ -71,8 +71,8 @@ export default class FilesStore {
 	static updateStore(value = FilesStore.data) {
 		FilesStore.data = value
 		contentBrowserStore.set({...value})
+		super.updateStore()
 	}
-
 
 	static paste(target?: string) {
 		if (FilesStore.data.toCut.length > 0) {
