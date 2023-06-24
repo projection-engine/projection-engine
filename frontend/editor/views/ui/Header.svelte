@@ -1,7 +1,6 @@
 <script>
 
 
-    import SelectionStore from "../../../shared/stores/SelectionStore"
     import Engine from "../../../../engine-core/Engine"
     import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
@@ -12,6 +11,7 @@
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
 
     export let settings
@@ -29,7 +29,7 @@
     		if (e.uiComponent)
     			m.push(e.id)
     	}
-    	SelectionStore.engineSelected = m
+    	SelectionStoreUtil.setEntitiesSelected(m)
     }
 
 

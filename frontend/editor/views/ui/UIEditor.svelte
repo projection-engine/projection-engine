@@ -1,6 +1,5 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import SelectionStore from "../../../shared/stores/SelectionStore"
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
@@ -12,6 +11,7 @@
     import GPU from "../../../../engine-core/GPU"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
     const INTERNAL_ID = crypto.randomUUID()
 
@@ -44,9 +44,9 @@
     	tooltip.style.opacity = "1"
 
     	if (e.ctrl)
-    		SelectionStore.engineSelected = [...SelectionStore.engineSelected, tooltip.hovered.id]
+    		SelectionStoreUtil.setEntitiesSelected([...SelectionStoreUtil.getEntitiesSelected(), tooltip.hovered.id])
     	else
-    		SelectionStore.engineSelected = [entity.id]
+    		SelectionStoreUtil.setEntitiesSelected(entity.id)
     	selectedEntity = entity
 
     }

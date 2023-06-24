@@ -16,7 +16,6 @@ export default class EngineStore extends AbstractStore{
 		EngineStore.engine = updated
 		engine.set(updated)
 		super.updateStore()
-
 	}
 
 }

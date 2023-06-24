@@ -3,9 +3,8 @@
     import FSAssetUtil from "../../../../services/file-system/FSAssetUtil"
     import GPU from "../../../../../../engine-core/GPU"
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor"
-    import FSFilesService from "../../../../services/file-system/FSFilesService"
+    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
-    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
 
@@ -15,7 +14,7 @@
     const updateAsset = async () => {
     	wasUpdated = true
 
-    	const data = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + item.id, "json")
+    	const data = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + item.id, "json")
     	if (!data) return
     	data.normals = PrimitiveProcessor.computeNormals(data.indices, data.vertices, true)
     	data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)

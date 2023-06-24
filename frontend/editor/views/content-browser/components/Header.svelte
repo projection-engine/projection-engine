@@ -1,5 +1,4 @@
 <script>
-    import FilesStore from "../../../../shared/stores/FilesStore"
     import EngineStore from "../../../../shared/stores/EngineStore"
     import {onDestroy} from "svelte"
 
@@ -12,13 +11,13 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import Input from "../../../../shared/components/input/Input.svelte"
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
-    import FileSystemService from "../../../../shared/lib/FileSystemService"
     import SortingOptions from "./SortingOptions.svelte"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import FileTypes from "../../../../../shared/FileTypes"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import EditorUtil from "../../../util/EditorUtil"
+    import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
     export let currentDirectory
     export let setCurrentDirectory
@@ -62,7 +61,7 @@
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
                 on:click={() => {
-                    if(currentDirectory.id === FileSystemService.getInstance().sep)
+                    if(currentDirectory.id === FileSystemUtil.sep)
                         return
                     navigationHistory.goToParent(currentDirectory)
                 }}
@@ -74,7 +73,7 @@
                 data-svelteview-header-button="-"
                 on:click={() => {
                     ToastNotificationSystem.getInstance().warn(LocalizationEN.REFRESHING)
-                    FilesStore.refreshFiles().catch()
+                    ContentBrowserUtil.refreshFiles().catch()
                 }}
         >
             <Icon styles="font-size: .9rem">sync</Icon>
@@ -82,7 +81,7 @@
         </button>
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
-                on:click={() => FilesStore.createFolder(currentDirectory).catch()}
+                on:click={() => ContentBrowserUtil.createFolder(currentDirectory).catch()}
         >
             <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
             <ToolTip content={LocalizationEN.CREATE_FOLDER}/>

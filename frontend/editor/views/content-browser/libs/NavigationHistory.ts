@@ -1,5 +1,5 @@
 import UndoRedo from "../../../components/UndoRedo"
-import FileSystemService from "../../../../shared/lib/FileSystemService"
+import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
 export default class NavigationHistory {
 	#cache = new UndoRedo<string>()
@@ -34,11 +34,11 @@ export default class NavigationHistory {
 	}
 	goToParent(currentDirectory:{[key:string]:any, id:string}) {
 		const found = currentDirectory.id
-		const split = found.split(FileSystemService.getInstance().sep)
+		const split = found.split(FileSystemUtil.sep)
 		split.pop()
-		if (!split.join(FileSystemService.getInstance().sep))
-			this.updateCurrentDirectory({id: FileSystemService.getInstance().sep}, currentDirectory)
+		if (!split.join(FileSystemUtil.sep))
+			this.updateCurrentDirectory({id: FileSystemUtil.sep}, currentDirectory)
 		else
-			this.updateCurrentDirectory({id: split.join(FileSystemService.getInstance().sep)}, currentDirectory)
+			this.updateCurrentDirectory({id: split.join(FileSystemUtil.sep)}, currentDirectory)
 	}
 }

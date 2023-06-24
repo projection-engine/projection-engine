@@ -12,6 +12,8 @@
     import HierarchyToRenderElement from "../template/ToRenderElement";
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import SelectionTargets from "../../../../../shared/SelectionTargets";
+    import SelectionStoreUtil from "../../../util/SelectionStoreUtil";
 
     export let ID: string
     export let testSearch: Function
@@ -32,8 +34,8 @@
     })
 
     const unsubscribeSelection = SelectionStore.getStore(() => {
-        selected = SelectionStore.TARGET === SelectionStore.TYPES.ENGINE ? SelectionStore.map : SelectionStore.EMPTY_MAP
-        lockedEntity = SelectionStore.lockedEntity
+        selected = SelectionStoreUtil.getSelectionTarget() === SelectionTargets.ENGINE ? SelectionStoreUtil.getSelectionMap() : new Map()
+        lockedEntity = SelectionStoreUtil.getLockedEntity()
     })
 
 
@@ -52,7 +54,7 @@
             <ComponentTreeBranch
                     component={item.component}
                     depth={item.depth }
-                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
             />
         {:else}
             <EntityTreeBranch
@@ -60,10 +62,9 @@
                     {isOnSearch}
                     entity={item.node}
                     depth={item.depth}
-
-                    {selected }
+                    {selected}
                     {lockedEntity}
-                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
                     open={openTree}
                     {updateOpen}
             />

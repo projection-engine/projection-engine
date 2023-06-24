@@ -1,7 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
     import ContextMenuService from "../shared/lib/context-menu/ContextMenuService"
-    import FileSystemService from "../shared/lib/FileSystemService"
     import List from "./components/List.svelte"
     import Header from "./components/Header.svelte"
     import ProjectRow from "./components/ProjectRow.svelte"
@@ -13,6 +12,7 @@
     import ElectronResources from "../shared/lib/ElectronResources"
     import IPCRoutes from "../../shared/IPCRoutes"
     import FileTypes from "../../shared/FileTypes"
+    import FileSystemUtil from "../shared/FileSystemUtil"
 
 
     let basePath
@@ -29,7 +29,7 @@
     			icon: "delete_forever",
     			label: "Delete",
     			onClick: async () => {
-    				await FileSystemService.getInstance().rm(FileSystemService.getInstance().resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + selected), {
+    				await FileSystemUtil.rm(FileSystemUtil.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemUtil.sep + selected), {
     					recursive: true,
     					force: true
     				})
@@ -39,7 +39,7 @@
     		{
     			icon: "folder",
     			label: "Open in explorer",
-    			onClick: async () => ElectronResources.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + selected)
+    			onClick: async () => ElectronResources.shell.showItemInFolder(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemUtil.sep + selected)
     		},
     	],
     	internalID
@@ -47,7 +47,7 @@
     	ToastNotificationSystem.get()
 
     	if (!localStorage.getItem(STORAGE_KEYS.ROOT_PATH))
-    		localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FileSystemService.getInstance().rootDir)
+    		localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FileSystemUtil.rootDir)
     	basePath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH)
 
     })
@@ -58,11 +58,11 @@
     onDestroy(() => ContextMenuService.getInstance().destroy(internalID))
 
     async function onRename(newName, item) {
-    	const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemService.getInstance().sep + item.id + FileSystemService.getInstance().sep + FileTypes.PROJECT)
-    	const res = await FileSystemService.getInstance().read(pathName)
+    	const pathName = ElectronResources.path.resolve(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemUtil.sep + item.id + FileSystemUtil.sep + FileTypes.PROJECT)
+    	const res = await FileSystemUtil.read(pathName)
     	if (!res)
     		return
-    	await FileSystemService.getInstance().write(
+    	await FileSystemUtil.write(
     		pathName,
     		JSON.stringify({
     			...JSON.parse(res.toString()),

@@ -14,6 +14,7 @@
     import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
+    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
 
     const CARD_SIZE = 115
     export let fileType
@@ -41,12 +42,12 @@
 
 
     const unsubscribe = SelectionStore.getStore(() => {
-    	selected = SelectionStore.contentBrowserSelected
-    	selectionMap = SelectionStore.map
+    	selected = SelectionStoreUtil.getContentBrowserSelected()
+    	selectionMap = SelectionStoreUtil.getSelectionMap()
     })
 
     function resetItem() {
-    	SelectionStore.contentBrowserSelected = []
+    	SelectionStoreUtil.setContentBrowserSelected([])
     	onChange("")
     	setFileType(undefined)
     }
@@ -65,7 +66,7 @@
     			(trigger, element) => {
     				const id = element.getAttribute("data-svelteid")
     				if (id != null)
-    					SelectionStore.contentBrowserSelected = [id]
+    					SelectionStoreUtil.setContentBrowserSelected([id])
     			}
     		)
     		HotKeysController.bindAction(
@@ -111,7 +112,7 @@
         on:mousedown={e => {
             const key = "data-svelteisitem"
             if(e.composedPath().find(element => element.getAttribute?.(key) != null) == null)
-                SelectionStore.contentBrowserSelected = []
+                SelectionStoreUtil.setContentBrowserSelected([])
         }}
         style={viewType === ITEM_TYPES.ROW  && toRender.length > 0? "padding: 0;": undefined}
         class="content"
@@ -120,7 +121,7 @@
             allowAll={true}
             nodes={toRender.flat()}
             selected={selected}
-            setSelected={v => SelectionStore.contentBrowserSelected = v}
+            setSelected={v => SelectionStoreUtil.setContentBrowserSelected(v)}
     />
     {#if toRender.length > 0}
         {#if viewType === ITEM_TYPES.ROW}

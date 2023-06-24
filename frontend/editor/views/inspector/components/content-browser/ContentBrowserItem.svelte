@@ -1,13 +1,12 @@
 <script>
 
-    import FSFilesService from "../../../../services/file-system/FSFilesService"
+    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import TextureItem from "./TextureItem.svelte"
     import CodeItem from "./CodeItem.svelte"
     import ItemMetadata from "./ItemMetadata.svelte"
     import MaterialItem from "./MaterialItem.svelte"
     import MeshItem from "./MeshItem.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
     import FileTypes from "../../../../../../shared/FileTypes"
 
@@ -23,7 +22,7 @@
     	data = undefined
     	if (fileType !== FileTypes.PRIMITIVE && fileType !== FileTypes.LEVEL) {
     		const fType = VALID.includes(fileType) ? "json" : undefined
-    		FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + item.id, fType).then(res => data = res)
+    		FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + item.id, fType).then(res => data = res)
     	} else
     		data = undefined
     }

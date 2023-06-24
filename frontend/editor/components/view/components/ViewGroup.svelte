@@ -9,6 +9,7 @@
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
     import LocalizationEN from "../../../../../shared/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";
+    import TabsStoreUtil from "../../../util/TabsStoreUtil";
 
     export let groupIndex
     export let views: ViewTabItem[]
@@ -25,7 +26,7 @@
     let targetDialogElement
 
     function update() {
-        currentTab = TabsStore.getValue(id, groupIndex)
+        currentTab = TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex)
     }
 
     const unsubscribe = SettingsStore.getStore(v => {
@@ -38,7 +39,7 @@
 
     const unsubscribeTabs = TabsStore.getStore(_ => {
         update()
-        focused = TabsStore.focused === ref
+        focused = TabsStoreUtil.getFocusedTab() === ref
     })
     $: tabs = views.map(v => {
         v.name = LocalizationEN[v.type]
@@ -52,7 +53,7 @@
     }))
 
     function closeTarget(i) {
-        removeTab(i, n => TabsStore.update(id, groupIndex, n), TabsStore.getValue(id, groupIndex))
+        removeTab(i, n => TabsStoreUtil.updateByAttributes(id, groupIndex, n), TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex))
     }
 
     function removeView(i: number) {
@@ -73,7 +74,7 @@
 
 </script>
 
-<div class="wrapper" bind:this={ref} on:mousedown={_ => TabsStore.focused = ref}>
+<div class="wrapper" bind:this={ref} on:mousedown={() => TabsStoreUtil.setFocusedTab(ref)}>
     <div></div>
     <div class="tabs">
         <Tabs
@@ -86,7 +87,7 @@
                 removeTab={removeView}
                 tabs={tabs}
                 currentTab={currentTab}
-                setCurrentView={v => TabsStore.update(id, groupIndex, v)}
+                setCurrentView={v => TabsStoreUtil.updateByAttributes(id, groupIndex, v)}
         />
         <Dialog
                 targetBinding={targetDialogElement}

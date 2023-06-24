@@ -27,6 +27,7 @@
     import {glMatrix, quat} from "gl-matrix"
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
+    import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
     export let viewMetadata
 
@@ -68,8 +69,9 @@
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
     const unsubscribeSelection = SelectionStore.getStore(_ => {
-    	selectedSize = SelectionStore.engineSelected.length
-    	mainEntity = Engine.entities.map.get(SelectionStore.engineSelected[0])
+    	const entitiesSelected = SelectionStoreUtil.getEntitiesSelected()
+    	selectedSize = entitiesSelected.length
+    	mainEntity = Engine.entities.map.get(entitiesSelected[0])
     })
 
     $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE

@@ -1,4 +1,4 @@
-import FSFilesService from "../file-system/FSFilesService"
+import FileSystemUtil from "../../../shared/FileSystemUtil"
 import FSRegistryService from "../file-system/FSRegistryService"
 
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
@@ -10,7 +10,6 @@ import GPU from "../../../../engine-core/GPU"
 import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI"
 
 import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI"
-import FileSystemService from "../../../shared/lib/FileSystemService"
 import MeshComponent from "../../../../engine-core/instances/components/MeshComponent"
 import SpriteComponent from "../../../../engine-core/instances/components/SpriteComponent"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
@@ -60,10 +59,10 @@ export default class EngineResourceLoaderService {
 	}
 
 	static async scene(path) {
-		const file = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + path, "json")
+		const file = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path, "json")
 		const entities = []
 		const root = EntityAPI.getNewEntityInstance()
-		root.name = path.replace(FileTypes.COLLECTION, "").split(FileSystemService.getInstance().sep).pop()
+		root.name = path.replace(FileTypes.COLLECTION, "").split(FileSystemUtil.sep).pop()
 		entities.push(root)
 		EntityFactoryService.translateEntity(root)
 		try {
@@ -102,7 +101,7 @@ export default class EngineResourceLoaderService {
 				continue
 			switch ("." + res.path.split(".").pop()) {
 			case FileTypes.PRIMITIVE: {
-				const file = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + res.path, "json")
+				const file = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + res.path, "json")
 				const materialID = await EngineResourceLoaderService.mesh(file, data)
 				const entity = EntityAPI.getNewEntityInstance()
 				entity.name = "New primitive"

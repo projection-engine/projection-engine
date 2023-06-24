@@ -1,7 +1,6 @@
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import GIZMOS from "../static/GIZMOS"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import EditorActionHistory from "../services/EditorActionHistory"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE"
@@ -14,6 +13,7 @@ import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import EditorUtil from "../util/EditorUtil"
+import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
 
 export default function getViewportHotkeys(settings): { [key: string]: ContextMenuOption } {
@@ -22,7 +22,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		DUPLICATE: {
 			label: "Duplicate active",
 			callback: () => {
-				const t = SelectionStore.mainEntity
+				const t = SelectionStoreUtil.getMainEntity()
 				if (!t)
 					return
 				const entity = QueryAPI.getEntityByID(t)
@@ -61,7 +61,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		SELECT_NONE: {
 			label: "Select none",
 			require: settings.viewportHotkeys.SELECT_NONE,
-			callback: () => SelectionStore.engineSelected = []
+			callback: () => SelectionStoreUtil.setEntitiesSelected([])
 		},
 		TRANSLATION_GIZMO: {
 
@@ -75,18 +75,18 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 			require: settings.viewportHotkeys.SELECT_HIERARCHY,
 			label: "Select hierarchy",
 			callback: () => {
-				const t = SelectionStore.mainEntity
+				const t = SelectionStoreUtil.getMainEntity()
 				if (!t)
 					return
 				const toSelect = [t, ...EditorUtil.selectEntityHierarchy(QueryAPI.getEntityByID(t))]
-				SelectionStore.engineSelected = [...SelectionStore.engineSelected, ...toSelect]
+				SelectionStoreUtil.setEntitiesSelected([...SelectionStoreUtil.getEntitiesSelected(), ...toSelect])
 			},
 
 		},
 		HIDE_ACTIVE: {
 			label: "Hide active",
 			callback: () => {
-				const selected = SelectionStore.engineSelected
+				const selected = SelectionStoreUtil.getEntitiesSelected()
 				for (let i = 0; i < selected.length; i++)
 					EntityFactoryService.toggleEntityVisibility(selected[i], true)
 				EntityHierarchyService.updateHierarchy()
@@ -96,7 +96,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		SNAP_TO_ORIGIN: {
 			label: "Snap to origin",
 			callback: () => {
-				const selected = SelectionStore.engineSelected
+				const selected = SelectionStoreUtil.getEntitiesSelected()
 				for (let i = 0; i < selected.length; i++) {
 					const entity = QueryAPI.getEntityByID(selected[i])
 					entity._translation[0] = 0

@@ -1,5 +1,5 @@
 <script>
-    import FSFilesService from "../../services/file-system/FSFilesService"
+    import FileSystemUtil from "../../../shared/FileSystemUtil"
 
     import EngineStore from "../../../shared/stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
@@ -8,7 +8,6 @@
     import materialCompiler from "./libs/material-compiler/material-compiler"
     import HeaderOptions from "./components/HeaderOptions.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
-    import FileSystemService from "../../../shared/lib/FileSystemService"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Canvas from "./libs/Canvas"
     import getShaderActions from "../../templates/get-shader-actions"
@@ -118,8 +117,8 @@
         canvasAPI={canvas}
         openSourceCode={async () => {
             const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
-            const newFile = FileSystemService.getInstance().TEMP + FileSystemService.getInstance().sep + openFile.registryID + ".log"
-            await FSFilesService.writeFile(newFile, shader, true)
+            const newFile = FileSystemUtil.TEMP + FileSystemUtil.sep + openFile.registryID + ".log"
+            await FileSystemUtil.writeFile(newFile, shader, true)
             ElectronResources.shell.openPath(newFile).catch()
         }}
 />

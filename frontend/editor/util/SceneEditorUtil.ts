@@ -6,9 +6,9 @@ import ConversionAPI from "../../../engine-core/lib/math/ConversionAPI"
 import GPU from "../../../engine-core/GPU"
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI"
 import Engine from "../../../engine-core/Engine"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import VisibilityRenderer from "../../../engine-core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine-core/tools/EngineTools"
+import SelectionStoreUtil from "./SelectionStoreUtil"
 
 export default class SceneEditorUtil {
 	static getLabel(shadingModel): string {
@@ -79,7 +79,7 @@ export default class SceneEditorUtil {
 
 				const data = PickingAPI.readBlock(nStart, nEnd)
 				worker.postMessage({entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})), data}, [data.buffer])
-				worker.onmessage = ({data: selected}) => SelectionStore.engineSelected = selected
+				worker.onmessage = ({data: selected}) => SelectionStoreUtil.setEntitiesSelected(selected)
 
 			} catch (err) {
 				console.error(err, startCoords, nStart)

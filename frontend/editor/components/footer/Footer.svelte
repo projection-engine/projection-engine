@@ -5,20 +5,20 @@
     import SceneStats from "./components/SceneStats.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import FileSystemService from "../../../shared/lib/FileSystemService"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Console from "./components/Console.svelte"
     import Engine from "../../../../engine-core/Engine"
     import {onDestroy, onMount} from "svelte"
     import EntityUpdateService from "../../services/engine/EntityUpdateService"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import FileSystemUtil from "../../../shared/FileSystemUtil"
 
 
     export let settings
     export let engine
 
     const openLogs = async () => {
-    	if (FileSystemService.getInstance().exists(ErrorLoggerService.path))
+    	if (FileSystemUtil.exists(ErrorLoggerService.path))
     		ElectronResources.shell.openPath(ErrorLoggerService.path).catch()
     }
     let loadedLevel

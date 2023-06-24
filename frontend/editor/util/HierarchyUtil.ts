@@ -4,8 +4,8 @@ import LocalizationEN from "../../../shared/LocalizationEN"
 import Entity from "../../../engine-core/instances/Entity"
 import Engine from "../../../engine-core/Engine"
 import EngineStateService from "../services/engine/EngineStateService"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import EditorUtil from "./EditorUtil"
+import SelectionStoreUtil from "./SelectionStoreUtil"
 
 export default class HierarchyUtil {
 	static buildTree(openTree: { [key: string]: boolean }, search: string, filteredComponent: string): HierarchyToRenderElement[] {
@@ -127,7 +127,7 @@ export default class HierarchyUtil {
 		if (toAdd.length > 0)
 			EngineStateService.appendBlock(toAdd)
 		else {
-			SelectionStore.engineSelected = newSelection
+			SelectionStoreUtil.setEntitiesSelected(newSelection)
 			EntityHierarchyService.updateHierarchy()
 		}
 	}
@@ -158,11 +158,12 @@ export default class HierarchyUtil {
 
 	static updateSelection(entityID: string, ctrlKey?: boolean) {
 		if (ctrlKey) {
-			if (!SelectionStore.engineSelected.includes(entityID))
-				SelectionStore.engineSelected = [...SelectionStore.engineSelected, entityID]
+			const entitiesSelected = SelectionStoreUtil.getEntitiesSelected()
+			if (!entitiesSelected.includes(entityID))
+				SelectionStoreUtil.setEntitiesSelected([...entitiesSelected, entityID])
 			else
-				SelectionStore.engineSelected = SelectionStore.engineSelected.filter(e => e !== entityID)
+				SelectionStoreUtil.setEntitiesSelected(entitiesSelected.filter(e => e !== entityID))
 		} else
-			SelectionStore.engineSelected = [entityID]
+			SelectionStoreUtil.setEntitiesSelected(entityID)
 	}
 }

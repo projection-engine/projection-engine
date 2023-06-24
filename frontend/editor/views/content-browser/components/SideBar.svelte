@@ -3,7 +3,7 @@
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import FilesHierarchyStore from "../../../../shared/stores/FilesHierarchyStore"
     import {onDestroy} from "svelte"
-    import FileSystemService from "../../../../shared/lib/FileSystemService"
+    import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
     export let setCurrentDirectory = undefined
     export let currentDirectory = undefined
@@ -19,10 +19,10 @@
 <div class="wrapper">
     <VirtualList items={assets} let:item>
         <SideBarItem
-                triggerOpen={_ => {
+                triggerOpen={() => {
                     let open = FilesHierarchyStore.data.open
                     const inv = !open[item.item.id]
-                    if(item.item.id === FileSystemService.getInstance().sep && !inv)
+                    if(item.item.id === FileSystemUtil.sep && !inv)
                         open = {}
                     else if(!inv){
                         for(let i =0; i < item.children.length; i++)
@@ -30,7 +30,7 @@
                     }
                     open[item.item.id] = inv
                     FilesHierarchyStore.data.open = open
-                    FilesHierarchyStore.update()
+                    FilesHierarchyStore.updateStore()
                 }}
                 open={open}
                 childQuantity={item.childQuantity}

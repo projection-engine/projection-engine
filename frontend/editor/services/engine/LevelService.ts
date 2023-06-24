@@ -1,4 +1,4 @@
-import FSFilesService from "../file-system/FSFilesService"
+import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorActionHistory from "../EditorActionHistory"
 import Engine from "../../../../engine-core/Engine"
 import FSRegistryService from "../file-system/FSRegistryService"
@@ -12,7 +12,6 @@ import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
 import TabsStore from "../../../shared/stores/TabsStore"
 import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
 import serializeStructure from "../../../../engine-core/utils/serialize-structure"
-import FileSystemService from "../../../shared/lib/FileSystemService"
 
 import ElectronResources from "../../../shared/lib/ElectronResources"
 import ErrorLoggerService from "../file-system/ErrorLoggerService"
@@ -29,6 +28,8 @@ import LocalizationEN from "../../../../shared/LocalizationEN"
 import FileTypes from "../../../../shared/FileTypes"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
+import SelectionTargets from "../../../../shared/SelectionTargets"
+import TabsStoreUtil from "../../util/TabsStoreUtil"
 
 
 export default class LevelService extends AbstractSingleton {
@@ -38,33 +39,35 @@ export default class LevelService extends AbstractSingleton {
 		super()
 		ElectronResources.ipcRenderer.once(
 			IPCRoutes.LOAD_PROJECT_METADATA,
-			(ev, meta) => {
-				if (!meta) {
-					ToastNotificationSystem.getInstance().error(LocalizationEN.ERROR_LOADING_PROJECT)
-					return
-				}
-				if (meta.settings !== undefined) {
-					const newSettings = {...SETTINGS, ...meta.settings}
-
-					if (newSettings.views[0].top == null)
-						newSettings.views = SETTINGS.views
-					newSettings.visualSettings = undefined
-					if (meta.layout)
-						TabsStore.updateStore(meta.layout)
-
-					SettingsStore.updateStore(newSettings)
-					if (meta.visualSettings)
-						VisualsStore.updateStore({...meta.visualSettings})
-				}
-				EngineStore.updateStore({
-					...EngineStore.engine,
-					meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined}, isReady: true
-				})
-
-				this.#levelToLoad = meta.level
-				resolvePromise()
-			})
+			(_, meta) => this.#onLoad(resolvePromise, meta))
 		ElectronResources.ipcRenderer.send(IPCRoutes.LOAD_PROJECT_METADATA)
+	}
+
+	#onLoad(resolvePromise, meta){
+		if (!meta) {
+			ToastNotificationSystem.getInstance().error(LocalizationEN.ERROR_LOADING_PROJECT)
+			return
+		}
+		if (meta.settings !== undefined) {
+			const newSettings = {...SETTINGS, ...meta.settings}
+
+			if (newSettings.views[0].top == null)
+				newSettings.views = SETTINGS.views
+			newSettings.visualSettings = undefined
+			if (meta.layout)
+				TabsStore.updateStore(meta.layout)
+
+			SettingsStore.updateStore(newSettings)
+			if (meta.visualSettings)
+				VisualsStore.updateStore({...meta.visualSettings})
+		}
+		EngineStore.updateStore({
+			...EngineStore.engine,
+			meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined}, isReady: true
+		})
+
+		this.#levelToLoad = meta.level
+		resolvePromise()
 	}
 
 	static getInstance(): LevelService{
@@ -98,7 +101,7 @@ export default class LevelService extends AbstractSingleton {
 		EntityNamingService.clear()
 		SelectionStore.updateStore({
 			...SelectionStore.data,
-			TARGET: SelectionStore.TYPES.ENGINE,
+			TARGET: SelectionTargets.ENGINE,
 			array: [],
 			lockedEntity: undefined
 		})
@@ -112,7 +115,7 @@ export default class LevelService extends AbstractSingleton {
 		if (Engine.loadedLevel)
 			SelectionStore.updateStore({
 				...SelectionStore.data,
-				TARGET: SelectionStore.TYPES.ENGINE,
+				TARGET: SelectionTargets.ENGINE,
 				array: [Engine.loadedLevel.id],
 				lockedEntity: Engine.loadedLevel.id
 			})
@@ -134,7 +137,7 @@ export default class LevelService extends AbstractSingleton {
 		try {
 			const metadata = EngineStore.engine.meta
 			const settings = {...SettingsStore.data}
-			const tabIndexViewport = TabsStore.getValue("viewport")
+			const tabIndexViewport = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
 			const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
 			if (viewMetadata !== undefined) {
 				viewMetadata.cameraMetadata = CameraAPI.serializeState()
@@ -142,8 +145,8 @@ export default class LevelService extends AbstractSingleton {
 				viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
 			}
 
-			await FSFilesService.writeFile(
-				FileSystemService.getInstance().path + FileSystemService.getInstance().sep + FileTypes.PROJECT,
+			await FileSystemUtil.writeFile(
+				FileSystemUtil.path + FileSystemUtil.sep + FileTypes.PROJECT,
 				JSON.stringify({
 					...metadata,
 					settings,
@@ -173,13 +176,13 @@ export default class LevelService extends AbstractSingleton {
 		let path = assetReg?.path
 
 		if (!assetReg) {
-			path = FileSystemService.getInstance().resolvePath(await EditorUtil.resolveFileName(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + Engine.loadedLevel.name, FileTypes.LEVEL))
-			await FSRegistryService.createRegistryEntry(Engine.loadedLevel.id, FileSystemService.getInstance().sep + path.split(FileSystemService.getInstance().sep).pop())
+			path = FileSystemUtil.resolvePath(await EditorUtil.resolveFileName(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + Engine.loadedLevel.name, FileTypes.LEVEL))
+			await FSRegistryService.createRegistryEntry(Engine.loadedLevel.id, FileSystemUtil.sep + path.split(FileSystemUtil.sep).pop())
 			FSRegistryService.readRegistry().catch()
 		} else
-			path = FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + path
+			path = FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path
 
-		await FileSystemService.getInstance().write(
+		await FileSystemUtil.write(
 			path,
 			serializeStructure(serialized)
 		)

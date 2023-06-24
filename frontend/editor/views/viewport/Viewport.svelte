@@ -15,6 +15,7 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import ViewportUtil from "../../util/ViewportUtil"
     import ViewsUtil from "../../util/ViewsUtil"
+    import TabsStoreUtil from "../../util/TabsStoreUtil"
 
     export let updateView
     export let viewTab
@@ -25,11 +26,11 @@
     let ref
     let focused = false
 
-    const unsubscribeTabs = TabsStore.getStore(_ => {
-    	currentTab = TabsStore.getValue("viewport")
-    	focused = ref === TabsStore.focused
+    const unsubscribeTabs = TabsStore.getStore(() => {
+    	currentTab = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
+    	focused = ref === TabsStoreUtil.getFocusedTab()
     })
-    $: currentTab = TabsStore.getValue("viewport")
+    $: currentTab = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
     const unsubscribeEngine = EngineStore.getStore(v => engine = v)
     const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
@@ -51,7 +52,7 @@
     }
 
     $: ViewportUtil.updateViewport(engine, viewTab[currentTab])
-    $: tabs = viewTab.map(v => {
+    $: viewportTabs = viewTab.map(v => {
     	v.name = LocalizationEN[v.type]
     	v.icon =  ViewsUtil.getViewIcon(v.type)
     	return v
@@ -73,7 +74,7 @@
 
     }
     $: {
-    	if (engine.executingAnimation && tabs[currentTab].type !== VIEWPORT_TABS.EDITOR)
+    	if (engine.executingAnimation && viewportTabs[currentTab].type !== VIEWPORT_TABS.EDITOR)
     		setViewportTab(VIEWPORT_TABS.EDITOR)
     }
     onMount(() => {
@@ -92,7 +93,7 @@
 <div
         class="viewport"
         bind:this={ref}
-        on:mousedown={_ => TabsStore.focused = ref}
+        on:mousedown={() => TabsStoreUtil.setFocusedTab(ref)}
 >
     <div style="height: 30px">
         <Tabs
@@ -101,19 +102,19 @@
                 updateView={setViewportTab}
                 templates={viewTemplates}
                 addNewTab={item => {
-                        const clone  = [...tabs]
+                        const clone  = [...viewportTabs]
                         clone.push({color: [255, 255, 255], type: item?.id || VIEWS.COMPONENT })
                         updateView(clone)
                 }}
-                removeTab={i => ViewportUtil.removeTab(i, viewTab,  updateView, currentTab, v => TabsStore.update("viewport", undefined, v))}
+                removeTab={i => ViewportUtil.removeTab(i, viewTab,  updateView, currentTab, v => TabsStoreUtil.updateByAttributes("viewport", undefined, v))}
                 removeMultipleTabs={_ => {
-                    const current = tabs[currentTab]
-                    TabsStore.update("viewport", undefined, 0)
+                    const current = viewportTabs[currentTab]
+                    TabsStoreUtil.updateByAttributes("viewport", undefined, 0)
                     updateView([current])
                 }}
-                tabs={tabs}
+                tabs={viewportTabs}
                 currentTab={currentTab}
-                setCurrentView={v => TabsStore.update("viewport", undefined, v)}
+                setCurrentView={v => TabsStoreUtil.updateByAttributes("viewport", undefined, v)}
                 allowDeletion={false}
         />
     </div>

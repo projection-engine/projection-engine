@@ -1,12 +1,12 @@
 import FSRegistryService from "./FSRegistryService"
-import FileSystemService from "../../../shared/lib/FileSystemService"
 import ElectronResources from "../../../shared/lib/ElectronResources"
 import FileTypes from "../../../../shared/FileTypes"
+import FileSystemUtil from "../../../shared/FileSystemUtil"
 
 
 function mapAsset(reg, type) {
 	return reg.map(i => new Promise(resolve => {
-		const split = i.path.split(FileSystemService.getInstance().sep)
+		const split = i.path.split(FileSystemUtil.sep)
 		resolve({
 			type,
 			registryID: i.id,
@@ -22,28 +22,28 @@ export default class ContentBrowserAPI {
 		const toResolved = ElectronResources.path.resolve(to)
 		await FSRegistryService.readRegistry()
 		try {
-			const stat = await FileSystemService.getInstance().stat(fromResolved)
+			const stat = await FileSystemUtil.stat(fromResolved)
 			if (stat !== undefined && stat.isDirectory) {
-				await FileSystemService.getInstance().mkdir(toResolved)
-				const res = await FileSystemService.getInstance().readdir(fromResolved)
+				await FileSystemUtil.mkdir(toResolved)
+				const res = await FileSystemUtil.readdir(fromResolved)
 				if (!res) return
 				for (let i = 0; i< res.length; i++) {
 					const file = res[i]
-					const oldPath = fromResolved + FileSystemService.getInstance().sep + `${file}`
-					const newPath = toResolved + FileSystemService.getInstance().sep + `${file}`
-					if ((await FileSystemService.getInstance().stat(oldPath)).isDirectory)
-						await FileSystemService.getInstance().rename(oldPath, newPath)
+					const oldPath = fromResolved + FileSystemUtil.sep + `${file}`
+					const newPath = toResolved + FileSystemUtil.sep + `${file}`
+					if ((await FileSystemUtil.stat(oldPath)).isDirectory)
+						await FileSystemUtil.rename(oldPath, newPath)
 					else {
-						await FileSystemService.getInstance().rename(oldPath, newPath)
+						await FileSystemUtil.rename(oldPath, newPath)
 						await FSRegistryService.updateRegistry(oldPath, newPath)
 					}
 				}
-				await FileSystemService.getInstance().rm(fromResolved, {recursive: true, force: true})
+				await FileSystemUtil.rm(fromResolved, {recursive: true, force: true})
 				return
 			}
 
 			if (stat !== undefined) {
-				await FileSystemService.getInstance().rename(fromResolved, toResolved)
+				await FileSystemUtil.rename(fromResolved, toResolved)
 				await FSRegistryService.updateRegistry(fromResolved, toResolved)
 				return
 			}

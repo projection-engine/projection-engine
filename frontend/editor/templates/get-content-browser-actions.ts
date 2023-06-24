@@ -1,13 +1,12 @@
 import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES"
-import FilesStore from "../../shared/stores/FilesStore"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import FSRegistryService from "../services/file-system/FSRegistryService"
-import FileSystemService from "../../shared/lib/FileSystemService"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import ContentBrowserUtil from "../util/ContentBrowserUtil"
 import EditorUtil from "../util/EditorUtil"
+import SelectionStoreUtil from "../util/SelectionStoreUtil"
+import FileSystemUtil from "../../shared/FileSystemUtil"
 
 export default function getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
 
@@ -44,22 +43,22 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			require: settings.contentBrowserHotkeys.REFRESH,
 			callback: () => {
 				ToastNotificationSystem.getInstance().success(LocalizationEN.REFRESHING)
-				FilesStore.refreshFiles().catch()
+				ContentBrowserUtil.refreshFiles().catch()
 			}
 		},
 		GO_TO_PARENT: {
 			label: "Go to parent",
 			require: settings.contentBrowserHotkeys.GO_TO_PARENT,
 			callback: () => {
-				if (currentDirectory.id !== FileSystemService.getInstance().sep) {
+				if (currentDirectory.id !== FileSystemUtil.sep) {
 					const found = currentDirectory.id
 					if (found) {
-						const split = found.split(FileSystemService.getInstance().sep)
+						const split = found.split(FileSystemUtil.sep)
 						split.pop()
 						if (split.length === 1)
-							setCurrentDirectory({id: FileSystemService.getInstance().sep})
+							setCurrentDirectory({id: FileSystemUtil.sep})
 						else
-							setCurrentDirectory({id: split.join(FileSystemService.getInstance().sep)})
+							setCurrentDirectory({id: split.join(FileSystemUtil.sep)})
 					}
 				}
 			}
@@ -68,32 +67,29 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			label: "Rename",
 			require: settings.contentBrowserHotkeys.RENAME,
 			callback: () => {
-				setCurrentItem(SelectionStore.contentBrowserSelected[0])
+				setCurrentItem(SelectionStoreUtil.getContentBrowserSelected()[0])
 			},
 		},
 		DELETE: {
 			label: LocalizationEN.DELETE,
 			require: settings.contentBrowserHotkeys.DELETE,
 			callback: () => {
-				const s = [...SelectionStore.contentBrowserSelected]
+				const s = [...SelectionStoreUtil.getContentBrowserSelected()]
 				if (s.length > 0) {
-					SelectionStore.contentBrowserSelected = []
-					ContentBrowserUtil.handleDelete(s, currentDirectory, setCurrentDirectory)
+					SelectionStoreUtil.setContentBrowserSelected([])
+					ContentBrowserUtil.handleDelete(s, currentDirectory, setCurrentDirectory).catch()
 				}
 			}
 		},
 		CUT: {
 			label: LocalizationEN.CUT,
 			require: settings.contentBrowserHotkeys.CUT,
-			callback: () => FilesStore.updateStore({
-				...FilesStore.data,
-				toCut: [...SelectionStore.contentBrowserSelected]
-			})
+			callback: () => ContentBrowserUtil.cutFiles([...SelectionStoreUtil.getContentBrowserSelected()])
 		},
 		PASTE: {
 			label: LocalizationEN.PASTE,
 			require: settings.contentBrowserHotkeys.PASTE,
-			callback: () => FilesStore.paste(currentDirectory.id)
+			callback: () => ContentBrowserUtil.paste(currentDirectory.id)
 		}
 	}
 
@@ -103,7 +99,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			{
 				label: LocalizationEN.COPY_ID,
 				onClick: () => {
-					const ID = FSRegistryService.getByPath(SelectionStore.contentBrowserSelected[0])
+					const ID = FSRegistryService.getByPath(SelectionStoreUtil.getContentBrowserSelected()[0])
 					if (ID) {
 						ToastNotificationSystem.getInstance().success(LocalizationEN.COPIED)
 						ElectronResources.clipboard.writeText(ID)
@@ -132,7 +128,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 			{
 				label: "Open current directory on explorer",
 				icon: "open_in_new",
-				onClick: () => ElectronResources.shell.showItemInFolder(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + currentDirectory.id))
+				onClick: () => ElectronResources.shell.showItemInFolder(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + currentDirectory.id))
 
 			},
 			{divider: true},

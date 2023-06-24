@@ -9,15 +9,16 @@ import ExecutionService from "../services/engine/ExecutionService"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import COMPONENTS from "../../../engine-core/static/COMPONENTS"
-import {getCall} from "../../shared/util/get-call"
 import IPCRoutes from "../../../shared/IPCRoutes"
-import FilesStore from "../../shared/stores/FilesStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
-import TabsStore from "../../shared/stores/TabsStore"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import GIZMOS from "../static/GIZMOS"
 import GizmoSystem from "../../../engine-core/tools/runtime/GizmoSystem"
 import {glMatrix} from "gl-matrix"
+import ElectronResources from "../../shared/lib/ElectronResources"
+import SelectionStoreUtil from "./SelectionStoreUtil"
+import TabsStoreUtil from "./TabsStoreUtil"
+import ContentBrowserUtil from "./ContentBrowserUtil"
 
 export default class EditorUtil {
 	static async componentConstructor(entity, scriptID, autoUpdate = true) {
@@ -31,7 +32,7 @@ export default class EditorUtil {
 		const focused = EngineStore.engine.focusedCamera
 		const isCamera = cameraTarget instanceof Entity
 		if (!focused || isCamera && cameraTarget.id !== focused) {
-			const current = isCamera ? cameraTarget : Engine.entities.get(SelectionStore.mainEntity)
+			const current = isCamera ? cameraTarget : Engine.entities.get(SelectionStoreUtil.getMainEntity())
 			if (current && current.cameraComponent) {
 				ExecutionService.cameraSerialization = CameraAPI.serializeState()
 				CameraTracker.stopTracking()
@@ -104,10 +105,10 @@ export default class EditorUtil {
 	}
 
 	static async importFile(currentDirectory) {
-		const {filesImported} = await getCall<MutableObject>(IPCRoutes.FILE_DIALOG, {currentDirectory: currentDirectory.id}, false)
+		const {filesImported} = await EditorUtil.getCall<MutableObject>(IPCRoutes.FILE_DIALOG, {currentDirectory: currentDirectory.id}, false)
 		if (filesImported.length > 0) {
 			ToastNotificationSystem.getInstance().success(LocalizationEN.IMPORT_SUCCESSFUL)
-			await FilesStore.refreshFiles()
+			await ContentBrowserUtil.refreshFiles()
 		}
 	}
 
@@ -116,7 +117,7 @@ export default class EditorUtil {
 		const tab = views[SettingsStore.data.currentView]
 		const existingTab = tab.bottom[0].findIndex(v => v?.type === view)
 		if (existingTab > -1) {
-			TabsStore.update("bottom", 0, existingTab)
+			TabsStoreUtil.updateByAttributes( "bottom", 0, existingTab)
 			return
 		}
 
@@ -126,11 +127,11 @@ export default class EditorUtil {
 			tab.bottom[0] = [{type: view, color: [255, 255, 255]}]
 
 		SettingsStore.updateStore({...SettingsStore.data, views})
-		TabsStore.update("bottom", 0, tab.bottom[0].length - 1)
+		TabsStoreUtil.updateByAttributes("bottom", 0, tab.bottom[0].length - 1)
 	}
 
 	static async resolveFileName(path: string, ext: string): Promise<string> {
-		return await getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
+		return await EditorUtil.getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
 	}
 
 	static selectEntityHierarchy(start: Entity): string[] {
@@ -142,7 +143,7 @@ export default class EditorUtil {
 	}
 
 	static snap(grid?: number) {
-		const selected = SelectionStore.engineSelected
+		const selected = SelectionStoreUtil.getEntitiesSelected()
 		for (let i = 0; i < selected.length; i++) {
 			const entity = QueryAPI.getEntityByID(selected[i])
 			const currentGizmo = SettingsStore.data.gizmo
@@ -184,4 +185,16 @@ export default class EditorUtil {
 		SettingsStore.updateStore(s)
 	}
 
+	static getCall<T>(channel, data, addMiddle = true):Promise<T> {
+		return new Promise(resolve => {
+			let listenID = crypto.randomUUID()
+			if (data.listenID)
+				listenID = data.listenID
+			ElectronResources.ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data:T) => {
+				resolve(data)
+			})
+
+			ElectronResources.ipcRenderer.send(channel, {...data, listenID})
+		})
+	}
 }

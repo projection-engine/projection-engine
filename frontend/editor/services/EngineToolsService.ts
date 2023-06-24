@@ -18,6 +18,7 @@ import VisualsStore from "../../shared/stores/VisualsStore"
 import SelectionStore from "../../shared/stores/SelectionStore"
 import UIAPI from "../../../engine-core/lib/rendering/UIAPI"
 import GPU from "../../../engine-core/GPU"
+import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
 export default class EngineToolsService extends AbstractSingleton {
 
@@ -31,7 +32,7 @@ export default class EngineToolsService extends AbstractSingleton {
 	}
 
 	#updateSelection(){
-		EngineTools.updateSelectionData(SelectionStore.engineSelected)
+		EngineTools.updateSelectionData(SelectionStoreUtil.getEntitiesSelected())
 	}
 
 	#updateEngineSettings() {

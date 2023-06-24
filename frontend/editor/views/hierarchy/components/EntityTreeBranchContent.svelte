@@ -2,7 +2,6 @@
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop";
     import {onDestroy, onMount} from "svelte";
     import EntityNamingService from "../../../services/engine/EntityNamingService";
-    import SelectionStore from "../../../../shared/stores/SelectionStore";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
@@ -11,6 +10,7 @@
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import LocalizationEN from "../../../../../shared/LocalizationEN";
     import HierarchyUtil from "../../../util/HierarchyUtil";
+    import SelectionStoreUtil from "../../../util/SelectionStoreUtil";
 
 
     export let entity: Entity
@@ -59,7 +59,7 @@
         draggable.onMount({
             targetElement: ref,
             onDragStart: () => entity,
-            dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-svelteicon="-">view_in_ar</span> ${SelectionStore.engineSelected.length > 1 ? SelectionStore.engineSelected.length + " Entities" : entity.name}</div>`,
+            dragImage: _ => `<div style="display: flex; gap: 4px"><span style="font-size: .9rem;" data-svelteicon="-">view_in_ar</span> ${SelectionStoreUtil.getEntitiesSelected().length > 1 ? SelectionStoreUtil.getEntitiesSelected().length + " Entities" : entity.name}</div>`,
         })
     })
     onDestroy(() => {

@@ -1,23 +1,24 @@
 import FilesStore from "../../shared/stores/FilesStore"
 import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import FileTypes from "../../../shared/FileTypes"
 import ElectronResources from "../../shared/lib/ElectronResources"
-import FileSystemService from "../../shared/lib/FileSystemService"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import LevelService from "../services/engine/LevelService"
 import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools"
 import VIEWS from "../components/view/static/VIEWS"
 import ContentBrowserAPI from "../services/file-system/ContentBrowserAPI"
 import FSRegistryService from "../services/file-system/FSRegistryService"
-import FSFilesService from "../services/file-system/FSFilesService"
+import FileSystemUtil from "../../shared/FileSystemUtil"
 import {SORTS} from "../views/content-browser/static/SORT_INFO"
 import FSAssetUtil from "../services/file-system/FSAssetUtil"
 import COMPONENT_TEMPLATE from "../../../engine-core/static/templates/COMPONENT_TEMPLATE"
 import UI_TEMPLATE from "../../../engine-core/static/templates/UI_TEMPLATE"
 import EditorUtil from "./EditorUtil"
+import SelectionStoreUtil from "./SelectionStoreUtil"
+import FilesHierarchyStore from "../../shared/stores/FilesHierarchyStore"
+import IPCRoutes from "../../../shared/IPCRoutes"
 
 export default class ContentBrowserUtil {
 	static sortItems(arr: MutableObject[], isDSC: boolean, sortKey: string) {
@@ -41,18 +42,18 @@ export default class ContentBrowserUtil {
 			const toSelect = []
 
 			for (let i = 0; i < linked.length; i++) {
-				if (!SelectionStore.map.get(linked[i].id))
+				if (!SelectionStoreUtil.getSelectionMap().get(linked[i].id))
 					toSelect.push(linked[i].id)
 			}
-			SelectionStore.contentBrowserSelected = toSelect
+			SelectionStoreUtil.setContentBrowserSelected(toSelect)
 			break
 		}
 		case SELECTION_TYPES.NONE:
-			SelectionStore.contentBrowserSelected = []
+			SelectionStoreUtil.setContentBrowserSelected([])
 			break
 		case SELECTION_TYPES.ALL: {
 			const linked = items.filter(i => i.id.includes(currentDirectory.id))
-			SelectionStore.contentBrowserSelected = linked.map(l => l.id)
+			SelectionStoreUtil.setContentBrowserSelected(linked.map(l => l.id))
 			break
 		}
 		default:
@@ -71,7 +72,7 @@ export default class ContentBrowserUtil {
 			case FileTypes.COMPONENT:
 			case ".js":
 			case ".json":
-				ElectronResources.shell.openPath(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + data.id))
+				ElectronResources.shell.openPath(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + data.id))
 					.catch(err => {
 						ToastNotificationSystem.getInstance().error(LocalizationEN.ERROR_OPENING_FILE)
 						console.error(err)
@@ -104,11 +105,11 @@ export default class ContentBrowserUtil {
 		let toSelect = []
 		if (e) {
 			if (e.ctrlKey)
-				toSelect = [...SelectionStore.contentBrowserSelected, child.id]
+				toSelect = [...SelectionStoreUtil.getContentBrowserSelected(), child.id]
 			else
 				toSelect = [child.id]
 		}
-		SelectionStore.contentBrowserSelected = toSelect
+		SelectionStoreUtil.setContentBrowserSelected(toSelect)
 	}
 
 	static async handleRename(item, newName, currentDirectory, setCurrentDirectory) {
@@ -116,22 +117,22 @@ export default class ContentBrowserUtil {
 			return
 
 		if (item.isFolder) {
-			const newNamePath = (item.parent ? item.parent + FileSystemService.getInstance().sep + newName : FileSystemService.getInstance().sep + newName)
-			await ContentBrowserAPI.rename(FileSystemService.getInstance().ASSETS_PATH + item.id, FileSystemService.getInstance().ASSETS_PATH + newNamePath)
-			await FilesStore.refreshFiles().catch()
+			const newNamePath = (item.parent ? item.parent + FileSystemUtil.sep + newName : FileSystemUtil.sep + newName)
+			await ContentBrowserAPI.rename(FileSystemUtil.ASSETS_PATH + item.id, FileSystemUtil.ASSETS_PATH + newNamePath)
+			await ContentBrowserUtil.refreshFiles().catch()
 			if (item.id === currentDirectory.id)
 				setCurrentDirectory({id: newNamePath})
 			return
 		}
 
 		const nameToApply = newName + "." + item.type
-		const targetPath = FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + (item.parent ? item.parent + FileSystemService.getInstance().sep : FileSystemService.getInstance().sep) + nameToApply)
+		const targetPath = FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + (item.parent ? item.parent + FileSystemUtil.sep : FileSystemUtil.sep) + nameToApply)
 
-		if (FileSystemService.getInstance().exists(targetPath))
+		if (FileSystemUtil.exists(targetPath))
 			return
 
-		await ContentBrowserAPI.rename(FileSystemService.getInstance().ASSETS_PATH + item.id, targetPath)
-		await FilesStore.refreshFiles().catch()
+		await ContentBrowserAPI.rename(FileSystemUtil.ASSETS_PATH + item.id, targetPath)
+		await ContentBrowserUtil.refreshFiles().catch()
 	}
 
 	static async handleDropFolder(event: string[] | string, target?: string) {
@@ -140,9 +141,9 @@ export default class ContentBrowserUtil {
 			for (let i = 0; i < items.length; i++) {
 				const textData = items[i]
 
-				if (target !== FileSystemService.getInstance().sep) {
+				if (target !== FileSystemUtil.sep) {
 					let from = textData
-					if (!from.includes(FileSystemService.getInstance().sep)) {
+					if (!from.includes(FileSystemUtil.sep)) {
 						const reg = FSRegistryService.getRegistryEntry(from)
 						if (reg) from = reg.path
 						else {
@@ -150,19 +151,19 @@ export default class ContentBrowserUtil {
 							return
 						}
 					}
-					const to = target + FileSystemService.getInstance().sep + from.split(FileSystemService.getInstance().sep).pop()
+					const to = target + FileSystemUtil.sep + from.split(FileSystemUtil.sep).pop()
 
 					const toItem = FilesStore.data.items.find(f => f.id === target)
 					const fromItem = FilesStore.data.items.find(f => f.id === from || (f.registryID === textData && f.registryID !== undefined))
 					if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-						await ContentBrowserAPI.rename(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + from), FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + to))
-						await FilesStore.refreshFiles()
+						await ContentBrowserAPI.rename(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + from), FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + to))
+						await ContentBrowserUtil.refreshFiles()
 					}
-				} else if (textData.includes(FileSystemService.getInstance().sep)) {
-					const newPath = FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + textData.split(FileSystemService.getInstance().sep).pop()
-					if (!FileSystemService.getInstance().exists(newPath)) {
-						await ContentBrowserAPI.rename(FileSystemService.getInstance().resolvePath(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + textData), FileSystemService.getInstance().resolvePath(newPath))
-						await FilesStore.refreshFiles()
+				} else if (textData.includes(FileSystemUtil.sep)) {
+					const newPath = FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + textData.split(FileSystemUtil.sep).pop()
+					if (!FileSystemUtil.exists(newPath)) {
+						await ContentBrowserAPI.rename(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + textData), FileSystemUtil.resolvePath(newPath))
+						await ContentBrowserUtil.refreshFiles()
 					} else ToastNotificationSystem.getInstance().error(LocalizationEN.ITEM_ALREADY_EXISTS)
 				}
 			}
@@ -183,26 +184,26 @@ export default class ContentBrowserUtil {
 			const relatedFiles = FilesStore.data.items.filter(item => item.id.includes(currentItem.id))
 			for (let j = 0; j < relatedFiles.length; j++) {
 				const currentFile = relatedFiles[j]
-				await FSFilesService.deleteFile(
-					FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + currentFile.id,
+				await FileSystemUtil.deleteFile(
+					FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + currentFile.id,
 					{
 						recursive: true,
 						force: true
 					})
 				if (currentDirectory.id === currentFile.id)
-					setCurrentDirectory({id: FileSystemService.getInstance().sep})
+					setCurrentDirectory({id: FileSystemUtil.sep})
 			}
-			await FSFilesService.deleteFile(
-				FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + file.id,
+			await FileSystemUtil.deleteFile(
+				FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + file.id,
 				{
 					recursive: true,
 					force: true
 				})
 			if (currentDirectory.id === file.id)
-				setCurrentDirectory({id: FileSystemService.getInstance().sep})
+				setCurrentDirectory({id: FileSystemUtil.sep})
 		}
 
-		await FilesStore.refreshFiles().catch()
+		await ContentBrowserUtil.refreshFiles().catch()
 		ToastNotificationSystem.getInstance().success(LocalizationEN.SUCCESSFUL_DELETE)
 	}
 
@@ -303,7 +304,7 @@ export default class ContentBrowserUtil {
 			onDragEnd: () => setOnDrag(false),
 			onDragStart: () => {
 				setOnDrag(true)
-				const ss = SelectionStore.contentBrowserSelected.map(s => items.find(i => i.id === s))
+				const ss = SelectionStoreUtil.getContentBrowserSelected().map(s => items.find(i => i.id === s))
 				if (ss.length > 0)
 					return JSON.stringify(ss.map(s => s?.registryID))
 				return JSON.stringify([type === 1 ? data.registryID : data.id])
@@ -357,7 +358,7 @@ export default class ContentBrowserUtil {
 				items,
 				elementsPerRow
 			)
-		if (currentDirectory.id !== FileSystemService.getInstance().sep)
+		if (currentDirectory.id !== FileSystemUtil.sep)
 			return ContentBrowserUtil.#map(
 				file => file.parent === currentDirectory.id,
 				items,
@@ -374,16 +375,16 @@ export default class ContentBrowserUtil {
 	}
 
 	static async #createFile(currentDirectory, name, type, data) {
-		const path = await EditorUtil.resolveFileName(currentDirectory.id + FileSystemService.getInstance().sep + name, type)
+		const path = await EditorUtil.resolveFileName(currentDirectory.id + FileSystemUtil.sep + name, type)
 		await FSAssetUtil.writeAsset(path, typeof data === "object" ? JSON.stringify(data) : data)
-		await FilesStore.refreshFiles()
+		await ContentBrowserUtil.refreshFiles()
 	}
 
 	static getCreationOptions(currentDirectory) {
 		return [
 			{
 				label: LocalizationEN.FOLDER,
-				onClick: () => FilesStore.createFolder(currentDirectory).catch()
+				onClick: () => ContentBrowserUtil.createFolder(currentDirectory).catch()
 			},
 			{divider: true},
 			{
@@ -416,5 +417,84 @@ export default class ContentBrowserUtil {
 			},
 
 		]
+	}
+
+
+
+	static initializeContentBrowser() {
+		FilesStore.addListener("self-update", FilesHierarchyStore.updateStore)
+		ContentBrowserUtil.refreshFiles().catch()
+	}
+
+
+	static async refreshFiles() {
+		try {
+			let data = <MutableObject[] | null>(await EditorUtil.getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemUtil.path + FileSystemUtil.sep}, false))
+			if (!data)
+				data = FilesStore.data.items
+			await FSRegistryService.readRegistry()
+			const fileTypes = await ContentBrowserAPI.refresh()
+			FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
+		} catch (err) {
+			console.error(err)
+		}
+	}
+
+	static getFilesToCut() {
+		return FilesStore.data.toCut
+	}
+
+	static cutFiles(toCut:string[]) {
+		FilesStore.updateStoreByKeys(["toCut"], [toCut])
+	}
+
+	static paste(target?: string) {
+		if (ContentBrowserUtil.getFilesToCut().length > 0) {
+			ContentBrowserUtil.handleDropFolder(
+				ContentBrowserUtil.getFilesToCut(),
+				target
+			).catch(err => console.error(err)).finally(() => ContentBrowserUtil.cutFiles([]))
+		}
+	}
+
+	static async createFolder(currentDirectory) {
+		const path = await EditorUtil.resolveFileName(currentDirectory.id + FileSystemUtil.sep + LocalizationEN.NEW_FOLDER, "")
+		await FileSystemUtil.mkdir(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path)
+		await ContentBrowserUtil.refreshFiles()
+	}
+
+	static updateHierarchy(items) {
+		if(!items)
+			return
+		const open = FilesHierarchyStore.data.open
+		const folders = items.filter(item => item.isFolder)
+		const fsSystem = FileSystemUtil
+		const cache:MutableObject = {
+			[fsSystem.sep]: {
+				depth: 0,
+				item: {id: fsSystem.sep, name: "Assets", isFolder: true},
+				childQuantity: folders.length
+			}
+		}
+
+		if (open[fsSystem.sep])
+			folders.filter(item => !item.parent).forEach(item => {
+				ContentBrowserUtil.#getHierarchy(cache, item, 1, folders)
+			})
+		return Object.values(cache)
+	}
+
+	static #getHierarchy(cache, item, depth = 0, folders) {
+		cache[item.id] = <MutableObject>{item, depth, childQuantity: 0, children: []}
+		const isOpen = open[item.id]
+		for (let i = 0; i < folders.length; i++) {
+			const current = folders[i]
+			if (current.parent === item.id && !cache[current.id]) {
+				cache[item.id].childQuantity++
+				cache[item.id].children.push(current.id)
+				if (isOpen)
+					ContentBrowserUtil.#getHierarchy(cache, current, depth + 1, folders)
+			}
+		}
 	}
 }

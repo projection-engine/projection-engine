@@ -12,7 +12,8 @@
     import ROTATION_TYPES from "../../static/ROTATION_TYPES"
     import Movable from "../../../../../../engine-core/instances/components/Movable"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
-    import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte"
+    import SelectionStoreUtil from "../../../../util/SelectionStoreUtil"
 
     let targets = []
     let rotationType = Movable.ROTATION_QUATERNION
@@ -25,7 +26,9 @@
     let lockedCache = [false, false, false]
     const unsubscribe = SelectionStore.getStore(() => {
     	const cache = []
-    	SelectionStore.engineSelected.forEach(e => {
+    	const entitiesSelected  = SelectionStoreUtil.getEntitiesSelected()
+    	for (let i = 0; i < entitiesSelected.length; i++){
+    		const e = entitiesSelected[i]
     		const c = Engine.entities.get(e)
     		if (c) {
     			cache.push(c)
@@ -34,9 +37,9 @@
     			c.__originalScaling = undefined
     			c.__originalQuat = undefined
     		}
-    	})
+    	}
     	if (cache.length === 0) {
-    		const fallback = Engine.entities.get(SelectionStore.mainEntity)
+    		const fallback = Engine.entities.get(SelectionStoreUtil.getMainEntity())
     		if (fallback)
     			fallback.__originalQuat = undefined
     		fallback && cache.push(fallback)

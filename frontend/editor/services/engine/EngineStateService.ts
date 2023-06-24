@@ -12,6 +12,7 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
 import LocalizationEN from "../../../../shared/LocalizationEN"
+import SelectionTargets from "../../../../shared/SelectionTargets"
 
 
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -91,7 +92,7 @@ export default class EngineStateService {
 
     	SelectionStore.updateStore({
     		...SelectionStore.data,
-    		TARGET: SelectionStore.TYPES.ENGINE,
+    		TARGET: SelectionTargets.ENGINE,
     		array: [],
     		lockedEntity: Engine.entities.array[0]?.id
     	})
@@ -109,7 +110,7 @@ export default class EngineStateService {
     	EntityAPI.addEntity(entity)
     	SelectionStore.updateStore({
     		...SelectionStore.data,
-    		TARGET: SelectionStore.TYPES.ENGINE,
+    		TARGET: SelectionTargets.ENGINE,
     		array: [entity.id],
     		lockedEntity: entity.id
     	})

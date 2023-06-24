@@ -2,16 +2,16 @@
 
     import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
-    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
-    import ContentBrowserUtil from "../../../../util/ContentBrowserUtil";
+    import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
+    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
 
     export let item
     let data
 
 
     $: {
-    	FileSystemService.getInstance().stat(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + item.id)
+    	FileSystemUtil.stat(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + item.id)
     		.then(res => {
     			if (!res)
     				return
@@ -19,9 +19,9 @@
     		})
     }
     const showInFolder = () => {
-    	const id = item.id.split(FileSystemService.getInstance().sep)
+    	const id = item.id.split(FileSystemUtil.sep)
     	id.pop()
-    	GlobalContentBrowserController.pushCurrentDirectory(id.join(FileSystemService.getInstance().sep))
+    	GlobalContentBrowserController.pushCurrentDirectory(id.join(FileSystemUtil.sep))
     }
 </script>
 

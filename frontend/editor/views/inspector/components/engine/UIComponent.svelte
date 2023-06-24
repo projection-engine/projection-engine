@@ -4,12 +4,11 @@
 
     import Selector from "../../../../components/selector/Selector.svelte"
     import FSRegistryService from "../../../../services/file-system/FSRegistryService"
-    import FSFilesService from "../../../../services/file-system/FSFilesService"
+    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import UIAPI from "../../../../../../engine-core/lib/rendering/UIAPI"
     import Engine from "../../../../../../engine-core/Engine"
     import Input from "../../../../../shared/components/input/Input.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
     import InspectorUtil from "../../../../util/InspectorUtil"
 
@@ -30,7 +29,7 @@
     	const ref = FSRegistryService.getRegistryEntry(reg.registryID)
     	if (!ref)
     		return
-    	const file = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + ref.path)
+    	const file = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + ref.path)
     	if (!file)
     		return
     	Engine.UILayouts.set(reg.registryID, file)

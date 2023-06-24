@@ -11,8 +11,8 @@
     import ITEM_TYPES from "./static/ITEM_TYPES"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
-    import FileSystemService from "../../../shared/lib/FileSystemService"
     import {SORTS, SORTS_KEYS} from "./static/SORT_INFO"
+    import FileSystemUtil from "../../../shared/FileSystemUtil"
 
 
     export let viewID
@@ -22,7 +22,7 @@
     let settings
     let sortKey = SORTS_KEYS[0]
     let sortDirection = SORTS[0]
-    let currentDirectory = {id: FileSystemService.getInstance().sep}
+    let currentDirectory = {id: FileSystemUtil.sep}
     let wasInitialized = false
     let fileType = undefined
     let inputValue = ""

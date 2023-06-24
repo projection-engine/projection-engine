@@ -14,6 +14,7 @@
     import CameraPreferences from "./components/engine/CameraPreferences.svelte"
     import ContentWrapper from "../../../preferences/components/content/ContentWrapper.svelte"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SelectionTargets from "../../../../shared/SelectionTargets"
 
     const internalID = crypto.randomUUID()
     const PREFERENCES_TABS = [
@@ -28,21 +29,14 @@
     let tabIndex = -1
     let tabs = []
     const unsubscribeSelection = SelectionStore.getStore(v => {
-
     	let targetItem
-    	if (!v.array[0])
-    		targetItem = undefined
-    	else {
-    		const T = SelectionStore.TYPES
+    	if ( v.array[0]) {
     		switch (v.TARGET) {
-    		case T.CONTENT_BROWSER:
+    		case SelectionTargets.CONTENT_BROWSER:
     			targetItem = FilesStore.data.items.find(i => i.id === v.array[0])
     			break
-    		case T.ENGINE:
+    		case SelectionTargets.ENGINE:
     			targetItem = QueryAPI.getEntityByID(v.array[0])
-    			break
-    		default:
-    			targetItem = undefined
     			break
     		}
     	}
@@ -56,7 +50,7 @@
 
     	if (selectedItem !== targetItem) {
     		selectedItem = targetItem
-    		tabIndex = SelectionStore.TYPES.ENGINE === v.TARGET ? -1 : -2
+    		tabIndex = SelectionTargets.ENGINE === v.TARGET ? -1 : -2
     	}
     })
 

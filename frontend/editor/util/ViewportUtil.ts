@@ -3,11 +3,11 @@ import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import Engine from "../../../engine-core/Engine"
 import GPU from "../../../engine-core/GPU"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import VisibilityRenderer from "../../../engine-core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine-core/tools/EngineTools"
+import SelectionStoreUtil from "./SelectionStoreUtil"
 
 export default class ViewportUtil{
 	static updateViewport(engine, currentView:ViewTabItem) {
@@ -40,7 +40,7 @@ export default class ViewportUtil{
 		const deltaY = Math.abs(mouseDelta.y - event.clientY)
 		if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
 			return
-		const selected = SelectionStore.engineSelected
+		const selected = SelectionStoreUtil.getEntitiesSelected()
 		EngineTools.drawIconsToBuffer()
 
 		const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY)

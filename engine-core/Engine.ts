@@ -19,6 +19,7 @@ import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
 import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
 import ResourceManager from "./runtime/ResourceManager"
+import LightsAPI from "./lib/utils/LightsAPI"
 
 
 export default class Engine {
@@ -93,6 +94,7 @@ export default class Engine {
 		OmnidirectionalShadows.initialize()
 		DirectionalShadows.initialize()
 		await PhysicsAPI.initialize()
+		LightsAPI.initialize()
 
 		ConversionAPI.canvasBBox = GPU.canvas.getBoundingClientRect()
 		const OBS = new ResizeObserver(() => {
