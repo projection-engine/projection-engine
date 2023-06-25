@@ -1,10 +1,10 @@
 <script>
     import {onDestroy, onMount} from "svelte"
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
     import Header from "./Header.svelte"
-    import EngineStore from "../../../shared/stores/EngineStore"
+    import EngineStore from "../../../stores/EngineStore"
 
 
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"

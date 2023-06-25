@@ -3,7 +3,7 @@
     import {onDestroy, onMount} from "svelte"
     import CreateProject from "./CreateProject.svelte"
 
-    import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS"
+    import StorageKeys from "../../../shared/StorageKeys"
     import SveltePortal from "../../shared/lib/SveltePortal"
     import Icon from "../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
@@ -37,7 +37,7 @@
     	ElectronResources.ipcRenderer.on(IPCRoutes.OPEN_SELECTION, (event, data) => {
     		if (data != null)
     			setBasePath(data)
-    		localStorage.setItem(STORAGE_KEYS.ROOT_PATH, data)
+    		localStorage.setItem(StorageKeys.ROOT_PATH, data)
     	})
     })
     onDestroy(() => {

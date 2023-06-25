@@ -1,6 +1,6 @@
 <script>
     import VIEWS from "../../view/static/VIEWS"
-    import SettingsStore from "../../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../../stores/SettingsStore"
     import {onDestroy} from "svelte"
 
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"

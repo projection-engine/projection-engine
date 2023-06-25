@@ -1,4 +1,4 @@
-import EngineStore from "../../shared/stores/EngineStore"
+import EngineStore from "../../stores/EngineStore"
 
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import {vec3, vec4} from "gl-matrix"
@@ -93,6 +93,6 @@ export default class ViewportActionUtil {
 	static fixateActive() {
 		const selected = SelectionStoreUtil.getEntitiesSelected()
 		if (selected[0])
-			EngineStore.updateStore({...EngineStore.engine, lockedEntity: selected[0]})
+			EngineStore.getInstance().updateStore({lockedEntity: selected[0]})
 	}
 }

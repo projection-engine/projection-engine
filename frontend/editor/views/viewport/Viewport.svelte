@@ -1,15 +1,15 @@
 <script>
 
-    import EngineStore from "../../../shared/stores/EngineStore"
+    import EngineStore from "../../../stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Tabs from "../../components/tabs/Tabs.svelte"
     import VIEWS from "../../components/view/static/VIEWS"
     import View from "../../components/view/components/View.svelte"
-    import TabsStore from "../../../shared/stores/TabsStore"
+    import TabsStore from "../../../stores/TabsStore"
     import GPU from "../../../../engine-core/GPU"
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import LocalizationEN from "../../../../shared/LocalizationEN"

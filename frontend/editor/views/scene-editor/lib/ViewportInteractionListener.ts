@@ -1,6 +1,6 @@
 import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
 import Engine from "../../../../../engine-core/Engine"
-import SettingsStore from "../../../../shared/stores/SettingsStore"
+import SettingsStore from "../../../../stores/SettingsStore"
 import GPU from "../../../../../engine-core/GPU"
 import AbstractSingleton from "../../../../../shared/AbstractSingleton"
 import ViewportUtil from "../../../util/ViewportUtil"

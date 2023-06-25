@@ -8,7 +8,7 @@ import StaticFBO from "../../lib/StaticFBO"
 import StaticEditorMeshes from "../lib/StaticEditorMeshes"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import CameraIconRenderer from "./CameraIconRenderer"
-import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
+import SettingsStore from "../../../frontend/stores/SettingsStore"
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()

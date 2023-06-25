@@ -1,7 +1,7 @@
 <script>
     import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE.ts"
 
-    import SettingsStore from "../../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../../stores/SettingsStore"
     import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
 
     import TranslationGizmo from "../../../../../engine-core/tools/lib/transformation/TranslationGizmo"
@@ -15,7 +15,7 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
-    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     const BUTTON_DROPDOWN = "border-radius: 25px; height: 25px; background: var(--pj-background-tertiary);"
     const BUTTON_DROPDOWN_INT = "background: transparent; box-shadow: none; width: 50px; justify-content: center; gap: 6px"

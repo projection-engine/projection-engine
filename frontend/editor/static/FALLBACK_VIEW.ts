@@ -1,7 +1,7 @@
-import SettingsStore from "../../shared/stores/SettingsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import VIEWS from "../components/view/static/VIEWS"
 import VIEWPORT_TABS from "./VIEWPORT_TABS"
-import LocalizationEN from "../../../shared/LocalizationEN";
+import LocalizationEN from "../../../shared/LocalizationEN"
 
 export default {
 	name: LocalizationEN.NEW_TAB + SettingsStore.data.views.length,

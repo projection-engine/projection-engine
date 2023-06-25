@@ -5,7 +5,7 @@
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Engine from "../../../../engine-core/Engine"
     import Header from "./components/Header.svelte"

@@ -1,4 +1,4 @@
-import FilesStore from "../../shared/stores/FilesStore"
+import FilesStore from "../../stores/FilesStore"
 import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../shared/LocalizationEN"
@@ -17,7 +17,7 @@ import COMPONENT_TEMPLATE from "../../../engine-core/static/templates/COMPONENT_
 import UI_TEMPLATE from "../../../engine-core/static/templates/UI_TEMPLATE"
 import EditorUtil from "./EditorUtil"
 import SelectionStoreUtil from "./SelectionStoreUtil"
-import FilesHierarchyStore from "../../shared/stores/FilesHierarchyStore"
+import FilesHierarchyStore from "../../stores/FilesHierarchyStore"
 import IPCRoutes from "../../../shared/IPCRoutes"
 
 export default class ContentBrowserUtil {
@@ -34,7 +34,7 @@ export default class ContentBrowserUtil {
 	}
 
 	static selection(type, currentDirectory) {
-		const items = FilesStore.data.items
+		const items = FilesStore.getInstance().data.items
 
 		switch (type) {
 		case SELECTION_TYPES.INVERT: {
@@ -42,7 +42,7 @@ export default class ContentBrowserUtil {
 			const toSelect = []
 
 			for (let i = 0; i < linked.length; i++) {
-				if (!SelectionStoreUtil.getSelectionMap().get(linked[i].id))
+				if (!SelectionStoreUtil.getSelectionList().includes(linked[i].id))
 					toSelect.push(linked[i].id)
 			}
 			SelectionStoreUtil.setContentBrowserSelected(toSelect)
@@ -136,6 +136,7 @@ export default class ContentBrowserUtil {
 	}
 
 	static async handleDropFolder(event: string[] | string, target?: string) {
+		const itemsFilesStore = FilesStore.getInstance().data.items
 		try {
 			const items = Array.isArray(event) ? event : JSON.parse(event)
 			for (let i = 0; i < items.length; i++) {
@@ -153,8 +154,8 @@ export default class ContentBrowserUtil {
 					}
 					const to = target + FileSystemUtil.sep + from.split(FileSystemUtil.sep).pop()
 
-					const toItem = FilesStore.data.items.find(f => f.id === target)
-					const fromItem = FilesStore.data.items.find(f => f.id === from || (f.registryID === textData && f.registryID !== undefined))
+					const toItem = itemsFilesStore.find(f => f.id === target)
+					const fromItem = itemsFilesStore.find(f => f.id === from || (f.registryID === textData && f.registryID !== undefined))
 					if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
 						await ContentBrowserAPI.rename(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + from), FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + to))
 						await ContentBrowserUtil.refreshFiles()
@@ -173,15 +174,16 @@ export default class ContentBrowserUtil {
 	}
 
 	static async handleDelete(entries, currentDirectory, setCurrentDirectory) {
+		const items = FilesStore.getInstance().data.items
 		const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
 
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.DELETING_ITEMS)
 		for (let i = 0; i < itemsToDelete.length; i++) {
 			const currentItem = itemsToDelete[i]
-			const file = FilesStore.data.items.find(e => e.id === currentItem)
+			const file = items.find(e => e.id === currentItem)
 			if (!file)
 				continue
-			const relatedFiles = FilesStore.data.items.filter(item => item.id.includes(currentItem.id))
+			const relatedFiles = items.filter(item => item.id.includes(currentItem.id))
 			for (let j = 0; j < relatedFiles.length; j++) {
 				const currentFile = relatedFiles[j]
 				await FileSystemUtil.deleteFile(
@@ -420,32 +422,32 @@ export default class ContentBrowserUtil {
 	}
 
 
-
 	static initializeContentBrowser() {
-		FilesStore.addListener("self-update", FilesHierarchyStore.updateStore)
+		FilesStore.getInstance().addListener("self-update", FilesHierarchyStore.getInstance().updateStore)
 		ContentBrowserUtil.refreshFiles().catch()
 	}
 
 
 	static async refreshFiles() {
+		const instance = FilesStore.getInstance()
 		try {
 			let data = <MutableObject[] | null>(await EditorUtil.getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemUtil.path + FileSystemUtil.sep}, false))
 			if (!data)
-				data = FilesStore.data.items
+				data = instance.data.items
 			await FSRegistryService.readRegistry()
 			const fileTypes = await ContentBrowserAPI.refresh()
-			FilesStore.updateStore({...FilesStore.data, items: data, ...fileTypes})
+			instance.updateStore({items: data, ...fileTypes})
 		} catch (err) {
 			console.error(err)
 		}
 	}
 
 	static getFilesToCut() {
-		return FilesStore.data.toCut
+		return FilesStore.getInstance().data.toCut
 	}
 
-	static cutFiles(toCut:string[]) {
-		FilesStore.updateStoreByKeys(["toCut"], [toCut])
+	static cutFiles(toCut: string[]) {
+		FilesStore.getInstance().updateStore({toCut})
 	}
 
 	static paste(target?: string) {
@@ -453,7 +455,9 @@ export default class ContentBrowserUtil {
 			ContentBrowserUtil.handleDropFolder(
 				ContentBrowserUtil.getFilesToCut(),
 				target
-			).catch(err => console.error(err)).finally(() => ContentBrowserUtil.cutFiles([]))
+			)
+				.catch(err => console.error(err))
+				.finally(() => ContentBrowserUtil.cutFiles([]))
 		}
 	}
 
@@ -464,12 +468,12 @@ export default class ContentBrowserUtil {
 	}
 
 	static updateHierarchy(items) {
-		if(!items)
+		if (!items)
 			return
-		const open = FilesHierarchyStore.data.open
+		const open = FilesHierarchyStore.getInstance().data.open
 		const folders = items.filter(item => item.isFolder)
 		const fsSystem = FileSystemUtil
-		const cache:MutableObject = {
+		const cache: MutableObject = {
 			[fsSystem.sep]: {
 				depth: 0,
 				item: {id: fsSystem.sep, name: "Assets", isFolder: true},

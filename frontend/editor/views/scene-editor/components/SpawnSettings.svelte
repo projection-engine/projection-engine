@@ -1,6 +1,6 @@
 <script>
 
-    import SettingsStore from "../../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../../stores/SettingsStore"
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
     import Range from "../../../../shared/components/range/Range.svelte"

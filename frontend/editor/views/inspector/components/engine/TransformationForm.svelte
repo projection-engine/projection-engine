@@ -1,5 +1,5 @@
 <script>
-    import SelectionStore from "../../../../../shared/stores/SelectionStore"
+    import SelectionStore from "../../../../../stores/SelectionStore"
     import Engine from "../../../../../../engine-core/Engine"
 
     import {onDestroy} from "svelte"

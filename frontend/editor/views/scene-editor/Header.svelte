@@ -5,7 +5,7 @@
 
     import ObjectOptions from "./components/ObjectOptions.svelte"
     import SpawnSettings from "./components/SpawnSettings.svelte"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte"
     import LocalizationEN from "../../../../shared/LocalizationEN"
 

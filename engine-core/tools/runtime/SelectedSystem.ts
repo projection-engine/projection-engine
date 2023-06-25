@@ -1,5 +1,5 @@
 import GPU from "../../GPU"
-import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
+import SettingsStore from "../../../frontend/stores/SettingsStore"
 
 import StaticMeshes from "../../lib/StaticMeshes"
 import StaticFBO from "../../lib/StaticFBO"

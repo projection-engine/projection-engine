@@ -1,7 +1,7 @@
 import materialCompiler from "./material-compiler/material-compiler"
 import FSAssetUtil from "../../../services/file-system/FSAssetUtil"
 
-import FilesStore from "../../../../shared/stores/FilesStore"
+import FilesStore from "../../../../stores/FilesStore"
 import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import Canvas from "./Canvas"
 import type ShaderNode from "../templates/ShaderNode"

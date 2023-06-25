@@ -1,7 +1,7 @@
 <script>
 
     import CameraTracker from "../../../../../../engine-core/tools/lib/CameraTracker"
-    import SettingsStore from "../../../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../../../stores/SettingsStore"
     import Layout from "./dynamic-form/Layout.svelte"
     import CAMERA_PROPS from "../../../../../../engine-core/static/component-props/CAMERA_PROPS"
     import Builder from "../../../../../preferences/components/content/ContentField.svelte"

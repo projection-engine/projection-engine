@@ -10,7 +10,7 @@ import {mat4} from "gl-matrix"
 import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
 import Entity from "../../instances/Entity"
 import StaticFBO from "../../lib/StaticFBO"
-import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
+import SettingsStore from "../../../frontend/stores/SettingsStore"
 
 
 const iconAttributes = mat4.create()

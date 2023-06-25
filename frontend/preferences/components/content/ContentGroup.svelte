@@ -1,7 +1,7 @@
 <script>
     import Builder from "./ContentField.svelte"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
-    import VisualsStore from "../../../shared/stores/VisualsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
+    import VisualsStore from "../../../stores/VisualsStore"
     import {onDestroy} from "svelte"
     import Accordion from "../../../shared/components/accordion/Accordion.svelte"
 

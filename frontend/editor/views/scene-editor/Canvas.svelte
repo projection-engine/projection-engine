@@ -3,7 +3,7 @@
     import {onMount} from "svelte"
     import EngineToolsService from "../../services/EngineToolsService"
     import FSAssetUtil from "../../services/file-system/FSAssetUtil"
-    import VisualsStore from "../../../shared/stores/VisualsStore"
+    import VisualsStore from "../../../stores/VisualsStore"
     import Engine from "../../../../engine-core/Engine"
     import EngineTools from "../../../../engine-core/tools/EngineTools"
     import LevelService from "../../services/engine/LevelService"

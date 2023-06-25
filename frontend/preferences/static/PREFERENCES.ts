@@ -1,6 +1,6 @@
 import Component from "../../../engine-core/instances/components/Component"
-import SettingsStore from "../../shared/stores/SettingsStore"
-import LocalizationEN from "../../../shared/LocalizationEN";
+import SettingsStore from "../../stores/SettingsStore"
+import LocalizationEN from "../../../shared/LocalizationEN"
 
 export default [
 	{label: LocalizationEN.GLOBAL, type: "global", icon: "public"},

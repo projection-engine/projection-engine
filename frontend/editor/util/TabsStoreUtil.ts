@@ -1,39 +1,42 @@
-import ChangesTrackerStore from "../../shared/stores/ChangesTrackerStore"
-import SettingsStore from "../../shared/stores/SettingsStore"
-import TabsStore from "../../shared/stores/TabsStore"
+import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
+import SettingsStore from "../../stores/SettingsStore"
+import TabsStore from "../../stores/TabsStore"
 
 export default class TabsStoreUtil {
 	static updateByAttributes(direction, group, value) {
-		ChangesTrackerStore.updateStore(true)
-		const clone = {...TabsStore.data}
-		if (!clone[SettingsStore.data.currentView])
-			clone[SettingsStore.data.currentView] = {}
+		ChangesTrackerStore.getInstance().updateStore({changed: true})
+		const settingsData = SettingsStore.getInstance().data
+		const clone = {...TabsStore.getInstance().data}
+		if (!clone[settingsData.currentView])
+			clone[settingsData.currentView] = {}
 
 		if (group !== undefined) {
-			if (!clone[SettingsStore.data.currentView][direction])
-				clone[SettingsStore.data.currentView][direction] = {}
-			clone[SettingsStore.data.currentView][direction][group] = value
+			if (!clone[settingsData.currentView][direction])
+				clone[settingsData.currentView][direction] = {}
+			clone[settingsData.currentView][direction][group] = value
 		} else
-			clone[SettingsStore.data.currentView][direction] = value
+			clone[settingsData.currentView][direction] = value
 
-		TabsStore.updateStore(clone)
+		TabsStore.getInstance().updateStore(clone)
 	}
 
 
 	static getFocusedTab() {
-		return TabsStore.data.focused
+		return TabsStore.getInstance().data.focused
 	}
 
 	static setFocusedTab(data) {
-		TabsStore.updateStore({...TabsStore.data, focused: data})
+		TabsStore.getInstance().updateStore({focused: data})
 	}
 
 	static getCurrentTabByCurrentView(direction, group?: string): number {
 		let value
+		const settingsData =SettingsStore.getInstance().data
+		const tabsData =TabsStore.getInstance().data
 		if (group !== undefined)
-			value = TabsStore.data[SettingsStore.data.currentView]?.[direction]?.[group]
+			value = tabsData[settingsData.currentView]?.[direction]?.[group]
 		else
-			value = TabsStore.data[SettingsStore.data.currentView]?.[direction]
+			value = tabsData[settingsData.currentView]?.[direction]
 		return value === undefined ? 0 : value
 	}
 }

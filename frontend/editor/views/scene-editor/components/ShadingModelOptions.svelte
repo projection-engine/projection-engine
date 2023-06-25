@@ -1,6 +1,6 @@
 <script>
     import SHADING_MODELS from "../../../../../engine-core/static/SHADING_MODELS"
-    import SettingsStore from "../../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../../stores/SettingsStore"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
 
 

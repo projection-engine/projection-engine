@@ -2,7 +2,7 @@
     import ShotcutField from "./ShotcutField.svelte"
     import SETTINGS from "../../editor/static/SETTINGS"
 
-    import SettingsStore from "../../shared/stores/SettingsStore"
+    import SettingsStore from "../../stores/SettingsStore"
     import PropertyHeader from "../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../shared/LocalizationEN"
 

@@ -2,27 +2,24 @@ import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorActionHistory from "../EditorActionHistory"
 import Engine from "../../../../engine-core/Engine"
 import FSRegistryService from "../file-system/FSRegistryService"
-import EngineStore from "../../../shared/stores/EngineStore"
-import SelectionStore from "../../../shared/stores/SelectionStore"
-import SettingsStore from "../../../shared/stores/SettingsStore"
-import VisualsStore from "../../../shared/stores/VisualsStore"
-import SETTINGS from "../../static/SETTINGS"
-
+import EngineStore from "../../../stores/EngineStore"
+import SelectionStore from "../../../stores/SelectionStore"
+import SettingsStore from "../../../stores/SettingsStore"
+import VisualsStore from "../../../stores/VisualsStore"
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-import TabsStore from "../../../shared/stores/TabsStore"
+import TabsStore from "../../../stores/TabsStore"
 import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
 import serializeStructure from "../../../../engine-core/utils/serialize-structure"
-
 import ElectronResources from "../../../shared/lib/ElectronResources"
 import ErrorLoggerService from "../file-system/ErrorLoggerService"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
-import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
+import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
 import EntityHierarchyService from "./EntityHierarchyService"
 import EntityNamingService from "./EntityNamingService"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import AXIS from "../../../../engine-core/tools/static/AXIS"
-import WindowChangeStore from "../../../shared/stores/WindowChangeStore"
+import WindowChangeStore from "../../../stores/WindowChangeStore"
 import IPCRoutes from "../../../../shared/IPCRoutes"
 import LocalizationEN from "../../../../shared/LocalizationEN"
 import FileTypes from "../../../../shared/FileTypes"
@@ -30,6 +27,7 @@ import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import SelectionTargets from "../../../../shared/SelectionTargets"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
+import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
 
 export default class LevelService extends AbstractSingleton {
@@ -49,21 +47,19 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 		if (meta.settings !== undefined) {
-			const newSettings = {...SETTINGS, ...meta.settings}
+			const newSettings = {...meta.settings}
 
-			if (newSettings.views[0].top == null)
-				newSettings.views = SETTINGS.views
 			newSettings.visualSettings = undefined
 			if (meta.layout)
-				TabsStore.updateStore(meta.layout)
+				TabsStore.getInstance().updateStore({layout: meta.layout})
 
-			SettingsStore.updateStore(newSettings)
+			SettingsStore.getInstance().updateStore(newSettings)
 			if (meta.visualSettings)
-				VisualsStore.updateStore({...meta.visualSettings})
+				VisualsStore.getInstance().updateStore( meta.visualSettings)
 		}
-		EngineStore.updateStore({
-			...EngineStore.engine,
-			meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined}, isReady: true
+		EngineStore.getInstance().updateStore({
+			meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined},
+			isReady: true
 		})
 
 		this.#levelToLoad = meta.level
@@ -87,8 +83,8 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 
-		if (ChangesTrackerStore.data && Engine.loadedLevel) {
-			WindowChangeStore.updateStore({
+		if (ChangesTrackerStore.getInstance().data && Engine.loadedLevel) {
+			WindowChangeStore.getInstance().updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
 					await this.save().catch()
 					this.loadLevel(levelID).catch()
@@ -99,12 +95,11 @@ export default class LevelService extends AbstractSingleton {
 
 		await FSRegistryService.readRegistry()
 		EntityNamingService.clear()
-		SelectionStore.updateStore({
-			...SelectionStore.data,
+		SelectionStore.getInstance().updateStore({
 			TARGET: SelectionTargets.ENGINE,
-			array: [],
-			lockedEntity: undefined
+			array: []
 		})
+		SelectionStoreUtil.setLockedEntity(undefined)
 		EditorActionHistory.clear()
 
 
@@ -113,21 +108,20 @@ export default class LevelService extends AbstractSingleton {
 			entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
 		})
 		if (Engine.loadedLevel)
-			SelectionStore.updateStore({
-				...SelectionStore.data,
+			SelectionStore.getInstance().updateStore({
 				TARGET: SelectionTargets.ENGINE,
 				array: [Engine.loadedLevel.id],
 				lockedEntity: Engine.loadedLevel.id
 			})
-
+		SelectionStoreUtil.setLockedEntity(Engine.loadedLevel.id)
 		EntityHierarchyService.updateHierarchy()
 	}
 
 	async save() {
-		if (!ChangesTrackerStore.data)
+		if (!ChangesTrackerStore.getInstance().data)
 			return
 
-		if (EngineStore.engine.executingAnimation) {
+		if (EngineStore.getInstance().data.executingAnimation) {
 			ToastNotificationSystem.getInstance().warn(LocalizationEN.EXECUTING_SIMULATION)
 			return
 		}
@@ -135,8 +129,8 @@ export default class LevelService extends AbstractSingleton {
 		await ErrorLoggerService.save()
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.SAVING)
 		try {
-			const metadata = EngineStore.engine.meta
-			const settings = {...SettingsStore.data}
+			const metadata = EngineStore.getInstance().data.meta
+			const settings = {...SettingsStore.getInstance().data}
 			const tabIndexViewport = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
 			const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
 			if (viewMetadata !== undefined) {
@@ -150,8 +144,8 @@ export default class LevelService extends AbstractSingleton {
 				JSON.stringify({
 					...metadata,
 					settings,
-					layout: TabsStore.data,
-					visualSettings: VisualsStore.data,
+					layout: TabsStore.getInstance().data,
+					visualSettings: VisualsStore.getInstance().data,
 					level: Engine.loadedLevel?.id
 				}), true)
 
@@ -186,7 +180,7 @@ export default class LevelService extends AbstractSingleton {
 			path,
 			serializeStructure(serialized)
 		)
-		ChangesTrackerStore.updateStore(false)
+		ChangesTrackerStore.getInstance().updateStore({changed: false})
 	}
 }
 

@@ -4,10 +4,10 @@
     import Icon from "../../shared/components/icon/Icon.svelte";
     import Input from "../../shared/components/input/Input.svelte";
     import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem";
-    import {STORAGE_KEYS} from "../../shared/static/STORAGE_KEYS";
     import LocalizationEN from "../../../shared/LocalizationEN";
     import FileTypes from "../../../shared/FileTypes";
     import FileSystemUtil from "../../shared/FileSystemUtil";
+    import StorageKeys from "../../../shared/StorageKeys";
 
     export let close: Function
     export let setProjectsToShow: Function
@@ -16,10 +16,10 @@
 
     const create = async (name: string) => {
         const projectID = crypto.randomUUID()
-        const projectPath = localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemUtil.sep + projectID
-        if (!FileSystemUtil.exists(FileSystemUtil.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH)))) {
+        const projectPath = localStorage.getItem(StorageKeys.ROOT_PATH) + FileSystemUtil.sep + projectID
+        if (!FileSystemUtil.exists(FileSystemUtil.resolvePath(localStorage.getItem(StorageKeys.ROOT_PATH)))) {
             ToastNotificationSystem.getInstance().error("Directory not found, creating on root directory.")
-            localStorage.setItem(STORAGE_KEYS.ROOT_PATH, FileSystemUtil.rootDir)
+            localStorage.setItem(StorageKeys.ROOT_PATH, FileSystemUtil.rootDir)
         }
 
         const err = await FileSystemUtil.mkdir(projectPath)
@@ -32,7 +32,7 @@
             {
                 id: projectID,
                 meta,
-                path: FileSystemUtil.resolvePath(localStorage.getItem(STORAGE_KEYS.ROOT_PATH) + FileSystemUtil.sep + projectID)
+                path: FileSystemUtil.resolvePath(localStorage.getItem(StorageKeys.ROOT_PATH) + FileSystemUtil.sep + projectID)
             }
         ])
 

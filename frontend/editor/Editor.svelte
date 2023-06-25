@@ -2,16 +2,15 @@
     import {onDestroy, onMount} from "svelte"
     import Viewport from "./views/viewport/Viewport.svelte"
     import Footer from "./components/footer/Footer.svelte"
-    import EngineStore from "../shared/stores/EngineStore"
+    import EngineStore from "../stores/EngineStore"
     import ViewsContainer from "./components/view/Views.svelte"
-    import SettingsStore from "../shared/stores/SettingsStore"
+    import SettingsStore from "../stores/SettingsStore"
     import FALLBACK_VIEW from "./static/FALLBACK_VIEW"
     import FileSystemUtil from "../shared/FileSystemUtil"
     import LevelService from "./services/engine/LevelService"
     import HotKeysController from "../shared/lib/HotKeysController"
     import WindowFrame from "./components/window-frame/WindowFrame.svelte"
     import Canvas from "./views/scene-editor/Canvas.svelte"
-    import {STORAGE_KEYS} from "../shared/static/STORAGE_KEYS"
     import ToastNotificationSystem from "../shared/components/alert/ToastNotificationSystem"
     import ElectronResources from "../shared/lib/ElectronResources"
     import StoreIPCListener from "../shared/lib/StoreIPCListener"
@@ -19,6 +18,7 @@
     import IPCRoutes from "../../shared/IPCRoutes"
     import EditorUtil from "./util/EditorUtil"
     import ContentBrowserUtil from "./util/ContentBrowserUtil"
+    import StorageKeys from "../../shared/StorageKeys"
 
     const FALLBACK = {...FALLBACK_VIEW}
 
@@ -37,7 +37,7 @@
     	StoreIPCListener.get()
     	ToastNotificationSystem.get()
     	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
-    		sessionStorage.setItem(STORAGE_KEYS.PROJECT_PATH, pathToProject)
+    		sessionStorage.setItem(StorageKeys.PROJECT_PATH, pathToProject)
     		FileSystemUtil.initializeFolders(pathToProject).catch()
     		LevelService.get(() => isMetadataReady = true)
     		HotKeysController.initializeListener()

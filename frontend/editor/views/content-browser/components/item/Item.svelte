@@ -13,7 +13,7 @@
     export let reset
     export let type
     export let data
-    export let selectionMap
+    export let selectionList
     export let setSelected
     export let submitRename
     export let items
@@ -62,7 +62,7 @@
     	currentDirectory,
     	items,
     	setOnDrag,
-    	selected: selectionMap,
+    	isSelected: selectionList.includes(data.id),
     	isToBeCut: toCut.includes(data.id)
     }
 

@@ -1,5 +1,5 @@
 <script>
-    import EngineStore from "../../../../shared/stores/EngineStore"
+    import EngineStore from "../../../../stores/EngineStore"
     import {onDestroy} from "svelte"
 
 

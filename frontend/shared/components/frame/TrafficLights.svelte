@@ -5,8 +5,8 @@
     import {onDestroy} from "svelte"
 
     import Modal from "../modal/Modal.svelte"
-    import WindowChangeStore from "../../stores/WindowChangeStore"
-    import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
+    import WindowChangeStore from "../../../stores/WindowChangeStore"
+    import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
     import ElectronResources from "../../lib/ElectronResources"
     import RENDER_TARGET from "../../../editor/static/RENDER_TARGET"
     import HotKeysController from "../../lib/HotKeysController"

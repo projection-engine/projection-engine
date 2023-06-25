@@ -2,7 +2,7 @@ import GPU from "../../GPU"
 import StaticFBO from "../../lib/StaticFBO"
 import StaticMeshes from "../../lib/StaticMeshes"
 import StaticEditorShaders from "../lib/StaticEditorShaders"
-import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
+import SettingsStore from "../../../frontend/stores/SettingsStore"
 
 export default class GridSystem {
 	static #buffer = new Float32Array([.3, 20, 50, 1])

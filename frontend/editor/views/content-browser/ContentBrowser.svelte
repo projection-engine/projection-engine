@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import FilesStore from "../../../shared/stores/FilesStore"
+    import FilesStore from "../../../stores/FilesStore"
     import NavigationHistory from "./libs/NavigationHistory"
     import SideBar from "./components/SideBar.svelte"
     import Browser from "./components/Browser.svelte"
@@ -9,7 +9,7 @@
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController"
     import ViewStateController from "../../components/view/libs/ViewStateController"
     import ITEM_TYPES from "./static/ITEM_TYPES"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
     import {SORTS, SORTS_KEYS} from "./static/SORT_INFO"
     import FileSystemUtil from "../../../shared/FileSystemUtil"

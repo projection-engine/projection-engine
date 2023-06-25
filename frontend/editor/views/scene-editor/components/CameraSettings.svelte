@@ -6,7 +6,7 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import SettingsStore from "../../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../../stores/SettingsStore"
     import CameraTracker from "../../../../../engine-core/tools/lib/CameraTracker"
     import {onDestroy, onMount} from "svelte"
     import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"

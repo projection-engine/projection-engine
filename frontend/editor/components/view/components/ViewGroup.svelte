@@ -2,9 +2,9 @@
 
     import Tabs from "../../tabs/Tabs.svelte";
     import VIEWS from "../static/VIEWS";
-    import TabsStore from "../../../../shared/stores/TabsStore";
+    import TabsStore from "../../../../stores/TabsStore";
     import {onDestroy} from "svelte";
-    import SettingsStore from "../../../../shared/stores/SettingsStore";
+    import SettingsStore from "../../../../stores/SettingsStore";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
     import LocalizationEN from "../../../../../shared/LocalizationEN";

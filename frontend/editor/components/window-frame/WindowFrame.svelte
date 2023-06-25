@@ -1,15 +1,15 @@
 <script>
-    import EngineStore from "../../../shared/stores/EngineStore"
+    import EngineStore from "../../../stores/EngineStore"
     import {onDestroy} from "svelte"
 
     import LevelService from "../../services/engine/LevelService"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import Tabs from "../tabs/Tabs.svelte"
     import CreationController from "./components/CreationController.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte"
-    import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
+    import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
     import ExecutionService from "../../services/engine/ExecutionService"
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte"
     import ElectronResources from "../../../shared/lib/ElectronResources"
@@ -17,7 +17,7 @@
     import IPCRoutes from "../../../../shared/IPCRoutes"
     import WindowTypes from "../../../../shared/WindowTypes"
     import ViewportUtil from "../../util/ViewportUtil"
-    import WindowFrameUtil from "../../util/WindowFrameUtil";
+    import WindowFrameUtil from "../../util/WindowFrameUtil"
 
 
     let engine

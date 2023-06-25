@@ -1,20 +1,17 @@
-import SelectionStore from "../../shared/stores/SelectionStore"
+import SelectionStore from "../../stores/SelectionStore"
 import SelectionTargets from "../../../shared/SelectionTargets"
+import EngineStore from "../../stores/EngineStore"
 
 export default class SelectionStoreUtil{
 	static getSelectionTarget():string {
-		return SelectionStore.data.TARGET
-	}
-
-	static getSelectionMap():Map<string,boolean> {
-		return SelectionStore.data.map
+		return SelectionStore.getInstance().data.TARGET
 	}
 
 	static getSelectionList():string[] {
-		return SelectionStore.data.array
+		return SelectionStore.getInstance().data.array
 	}
 	static setEntitiesSelected(data) {
-		SelectionStore.updateStore({...SelectionStore.data, TARGET: SelectionTargets.ENGINE, array: data})
+		SelectionStore.getInstance().updateStore({TARGET: SelectionTargets.ENGINE, array: data})
 	}
 
 	static getEntitiesSelected() {
@@ -22,7 +19,7 @@ export default class SelectionStoreUtil{
 	}
 
 	static setContentBrowserSelected(data) {
-		SelectionStore.updateStore({...SelectionStore.data, TARGET: SelectionTargets.CONTENT_BROWSER, array: data})
+		SelectionStore.getInstance().updateStore({TARGET: SelectionTargets.CONTENT_BROWSER, array: data})
 	}
 
 	static getContentBrowserSelected() {
@@ -30,16 +27,17 @@ export default class SelectionStoreUtil{
 	}
 
 	static getMainEntity() {
-		const l = SelectionStore.data.lockedEntity
+		const l = SelectionStoreUtil.getLockedEntity()
 		const m = SelectionStoreUtil.getEntitiesSelected()[0]
 		return m ? m : l
 	}
 
 	static getLockedEntity() {
-		return SelectionStore.data.lockedEntity
+		return EngineStore.getInstance().data.lockedEntity
 	}
 
-	static setLockedEntity(data) {
-		SelectionStore.updateStore({...SelectionStore.data, lockedEntity: data, TARGET: SelectionTargets.ENGINE})
+	static setLockedEntity(data:string) {
+		EngineStore.getInstance().updateStore({lockedEntity: data})
 	}
+
 }

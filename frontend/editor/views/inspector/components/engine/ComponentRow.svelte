@@ -1,6 +1,6 @@
 <script>
     import NATIVE_COMPONENTS from "../../static/NATIVE_COMPONENTS"
-    import SelectionStore from "../../../../../shared/stores/SelectionStore"
+    import SelectionStore from "../../../../../stores/SelectionStore"
     import EditorActionHistory from "../../../../services/EditorActionHistory"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
 

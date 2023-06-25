@@ -1,11 +1,11 @@
-import SettingsStore from "../../shared/stores/SettingsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import LevelService from "../services/engine/LevelService"
 import EditorActionHistory from "../services/EditorActionHistory"
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import GPU from "../../../engine-core/GPU"
 import ResourceManager from "../../../engine-core/runtime/ResourceManager"
-import WindowChangeStore from "../../shared/stores/WindowChangeStore"
+import WindowChangeStore from "../../stores/WindowChangeStore"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import IPCRoutes from "../../../shared/IPCRoutes"
 
@@ -28,7 +28,7 @@ export default class WindowFrameUtil {
 			ViewportActionUtil.paste()
 			break
 		case "footer":
-			SettingsStore.updateStore({...SettingsStore.data, hideFooter: !SettingsStore.data.hideFooter})
+			SettingsStore.getInstance().updateStore({hideFooter: !SettingsStore.getInstance().data.hideFooter})
 			break
 		case "learn-more":
 			ElectronResources.shell.openExternal("https://github.com/projection-engine").catch()
@@ -69,7 +69,7 @@ export default class WindowFrameUtil {
 			{
 				label: "Reload project",
 				icon: "refresh",
-				onClick: () => WindowChangeStore.updateStore({
+				onClick: () => WindowChangeStore.getInstance().updateStore({
 					message: LocalizationEN.UNSAVED_CHANGES, callback: () => {
 						LevelService.getInstance().save().then(() => WindowFrameUtil.#callMethod("reload"))
 					}
@@ -77,7 +77,7 @@ export default class WindowFrameUtil {
 			},
 			{
 				label: "Close project",
-				onClick: () => WindowChangeStore.updateStore({
+				onClick: () => WindowChangeStore.getInstance().updateStore({
 					message: LocalizationEN.UNSAVED_CHANGES,
 					callback: () => {
 						LevelService.getInstance().save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))

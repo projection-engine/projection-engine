@@ -1,7 +1,6 @@
 import SHADING_MODELS from "../../../engine-core/static/SHADING_MODELS"
 import LocalizationEN from "../../../shared/LocalizationEN"
-import SettingsStore from "../../shared/stores/SettingsStore"
-import SelectionWorker from "./SelectionWorker"
+import SettingsStore from "../../stores/SettingsStore"
 import ConversionAPI from "../../../engine-core/lib/math/ConversionAPI"
 import GPU from "../../../engine-core/GPU"
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI"
@@ -11,6 +10,8 @@ import EngineTools from "../../../engine-core/tools/EngineTools"
 import SelectionStoreUtil from "./SelectionStoreUtil"
 
 export default class SceneEditorUtil {
+	static #worker?: Worker
+
 	static getLabel(shadingModel): string {
 		switch (shadingModel) {
 		case SHADING_MODELS.LIGHT_ONLY:
@@ -65,12 +66,12 @@ export default class SceneEditorUtil {
 			{label: LocalizationEN.LIGHT_ONLY, id: SHADING_MODELS.LIGHT_ONLY}
 		].map(e => e.divider ? e : ({
 			...e,
-			onClick: () => SettingsStore.updateStore({...SettingsStore.data, shadingModel: e.id})
+			onClick: () => SettingsStore.getInstance().updateStore({shadingModel: e.id})
 		}))
 	}
 
 	static getUnderSelectionBox(_, startCoords, endCoords) {
-		const worker = SelectionWorker.worker()
+		const worker = SceneEditorUtil.worker()
 		if (startCoords && endCoords) {
 			EngineTools.drawIconsToBuffer()
 			const nStart = ConversionAPI.toQuadCoord(startCoords, GPU.internalResolution)
@@ -88,4 +89,34 @@ export default class SceneEditorUtil {
 			VisibilityRenderer.needsUpdate = true
 		}
 	}
+
+	static worker(): Worker {
+		if (SceneEditorUtil.#worker)
+			return SceneEditorUtil.#worker
+
+		const src = ` 
+            self.onmessage = ({data: {entities, data}}) => {
+                const map = {}
+                for(let i= 0; i < entities.length; i++){
+                    const {id, pick} = entities[i]
+                    map[Math.round(pick).toString()] = id
+                }
+                const selected = [], ids = []
+                for (let i = 0; i < data.length; i += 4) {
+                    const ID =  Math.round(data[i] + data[i + 1] + data[i + 1])
+                    const found = map[ID.toString()]
+                    if(!found || selected.includes(ID)) 
+                        continue
+                    selected.push(ID)
+                    ids.push(found)
+                }
+                self.postMessage(ids)
+            }
+        `
+		const workerBlob = new Blob([src], {type: "application/javascript"})
+		const workerUrl = URL.createObjectURL(workerBlob)
+		SceneEditorUtil.#worker = new Worker(workerUrl)
+		return SceneEditorUtil.#worker
+	}
+
 }

@@ -1,7 +1,7 @@
 <script>
     import FileSystemUtil from "../../../shared/FileSystemUtil"
 
-    import EngineStore from "../../../shared/stores/EngineStore"
+    import EngineStore from "../../../stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
     import ShaderEditorTools from "./libs/ShaderEditorTools"
     import ViewStateController from "../../components/view/libs/ViewStateController"

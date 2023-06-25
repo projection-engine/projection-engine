@@ -1,12 +1,12 @@
 import FileSystemUtil from "../../../shared/FileSystemUtil"
 import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI"
-import {STORAGE_KEYS} from "../../../shared/static/STORAGE_KEYS"
 import Folders from "../../../../shared/Folders"
+import StorageKeys from "../../../../shared/StorageKeys"
 
 export default class ErrorLoggerService {
 
 	static get path() {
-		return sessionStorage.getItem(STORAGE_KEYS.PROJECT_PATH) + FileSystemUtil.sep + Folders.ERROR_FILE
+		return sessionStorage.getItem(StorageKeys.PROJECT_PATH) + FileSystemUtil.sep + Folders.ERROR_FILE
 	}
 
 	static async save() {

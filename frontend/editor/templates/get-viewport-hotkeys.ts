@@ -1,5 +1,5 @@
 import ViewportActionUtil from "../services/ViewportActionUtil"
-import SettingsStore from "../../shared/stores/SettingsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import GIZMOS from "../static/GIZMOS"
 import EditorActionHistory from "../services/EditorActionHistory"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
@@ -17,7 +17,6 @@ import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
 
 export default function getViewportHotkeys(settings): { [key: string]: ContextMenuOption } {
-
 	return {
 		DUPLICATE: {
 			label: "Duplicate active",
@@ -67,8 +66,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 
 			require: settings.viewportHotkeys.TRANSLATION_GIZMO,
 			callback: () => {
-				const settings = SettingsStore.data
-				SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
+				SettingsStore.getInstance().updateStore({gizmo: GIZMOS.TRANSLATION})
 			}
 		},
 		SELECT_HIERARCHY: {
@@ -120,16 +118,16 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 			callback: () => {
 				switch (settings.gizmo) {
 				case GIZMOS.TRANSLATION:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
+					SettingsStore.getInstance().updateStore({gizmo: GIZMOS.SCALE})
 					break
 				case GIZMOS.SCALE:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})
+					SettingsStore.getInstance().updateStore({gizmo: GIZMOS.ROTATION})
 					break
 				case GIZMOS.ROTATION:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})
+					SettingsStore.getInstance().updateStore({gizmo: GIZMOS.NONE})
 					break
 				case GIZMOS.NONE:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
+					SettingsStore.getInstance().updateStore({gizmo: GIZMOS.TRANSLATION})
 					break
 				}
 			},
@@ -139,7 +137,7 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 			label: "Switch transformation",
 			callback: () => {
 				const newT = settings.transformationType === TRANSFORMATION_TYPE.GLOBAL ? TRANSFORMATION_TYPE.RELATIVE : TRANSFORMATION_TYPE.GLOBAL
-				SettingsStore.updateStore({...settings, transformationType: newT})
+				SettingsStore.getInstance().updateStore({transformationType: newT})
 			},
 			require: settings.viewportHotkeys.SWITCH_TRANSFORMATION,
 		},
@@ -155,14 +153,11 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 		},
 		SCALE_GIZMO: {
 			require: settings.viewportHotkeys.SCALE_GIZMO,
-			callback: () => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
+			callback: () => SettingsStore.getInstance().updateStore({gizmo: GIZMOS.SCALE})
 		},
 		ROTATION_GIZMO: {
 			require: settings.viewportHotkeys.ROTATION_GIZMO,
-			callback: () => {
-				const settings = SettingsStore.data
-				SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})
-			}
+			callback: () => SettingsStore.getInstance().updateStore({gizmo: GIZMOS.ROTATION})
 		},
 		UNDO: {
 			require: settings.viewportHotkeys.UNDO,

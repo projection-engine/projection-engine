@@ -1,16 +1,16 @@
 import LocalizationEN from "../../../shared/LocalizationEN"
-import FilesStore from "../../shared/stores/FilesStore"
+import FilesStore from "../../stores/FilesStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import COMPONENTS from "../../../engine-core/static/COMPONENTS"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import FileSystemAPI from "../../../engine-core/lib/utils/FileSystemAPI"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
-import SelectionStore from "../../shared/stores/SelectionStore"
+import SelectionStore from "../../stores/SelectionStore"
 import LightComponent from "../../../engine-core/instances/components/LightComponent"
 import LightsAPI from "../../../engine-core/lib/utils/LightsAPI"
 import EditorActionHistory from "../services/EditorActionHistory"
 import CameraComponent from "../../../engine-core/instances/components/CameraComponent"
-import EngineStore from "../../shared/stores/EngineStore"
+import EngineStore from "../../stores/EngineStore"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
 
@@ -67,10 +67,11 @@ export default class InspectorUtil {
 			entity.__cameraNeedsUpdate = true
 		}
 		component[key] = value
-		if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.engine.focusedCamera)
+		if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.getInstance().data.focusedCamera)
 			CameraAPI.updateViewTarget(entity)
 		if (save) {
-			SelectionStore.updateStore()
+			const selectionStoreInstance = SelectionStore.getInstance()
+			selectionStoreInstance.updateStore({array: selectionStoreInstance.data.array})
 			EditorActionHistory.save(entity)
 		}
 	}
@@ -85,10 +86,10 @@ export default class InspectorUtil {
 			entity.removeComponent(key)
 
 		EntityHierarchyService.updateHierarchy()
-		SelectionStore.updateStore()
+		SelectionStore.getInstance().updateStore()
 	}
 
-	static 	async handleComponentDrop(entity, data) {
+	static async handleComponentDrop(entity, data) {
 		try {
 			const id = JSON.parse(data)[0]
 			const type = InspectorUtil.#getItemFound(id)
@@ -121,18 +122,19 @@ export default class InspectorUtil {
 	}
 
 	static #getItemFound(id) {
+		const filesStoreData = FilesStore.getInstance().data
 		let type = "SCRIPT"
-		let itemFound = FilesStore.data.components.find(s => s.registryID === id)
+		let itemFound = filesStoreData.components.find(s => s.registryID === id)
 		if (!itemFound) {
-			itemFound = FilesStore.data.meshes.find(s => s.registryID === id)
+			itemFound = filesStoreData.meshes.find(s => s.registryID === id)
 			type = "MESH"
 		}
 		if (!itemFound) {
-			itemFound = FilesStore.data.textures.find(s => s.registryID === id)
+			itemFound = filesStoreData.textures.find(s => s.registryID === id)
 			type = "IMAGE"
 		}
 		if (!itemFound) {
-			itemFound = FilesStore.data.materials.find(s => s.registryID === id)
+			itemFound = filesStoreData.materials.find(s => s.registryID === id)
 			type = "MATERIAL"
 		}
 

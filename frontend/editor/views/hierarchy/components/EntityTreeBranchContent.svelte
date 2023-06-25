@@ -5,7 +5,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
-    import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
+    import ChangesTrackerStore from "../../../../stores/ChangesTrackerStore";
     import EntityUpdateService from "../../../services/engine/EntityUpdateService";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import LocalizationEN from "../../../../../shared/LocalizationEN";
@@ -50,7 +50,7 @@
     }
     $: {
         if (!isOnEdit && entityName !== entity.name) {
-            ChangesTrackerStore.updateStore(true)
+            ChangesTrackerStore.getInstance().updateStore({changed: true})
             EntityNamingService.renameEntity(entity.name, entity)
             entityName = entity.name
         }

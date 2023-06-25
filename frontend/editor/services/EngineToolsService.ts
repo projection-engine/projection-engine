@@ -12,10 +12,10 @@ import GIZMOS from "../static/GIZMOS"
 import EngineResources from "../../../engine-core/lib/EngineResources"
 import VISUAL_SETTINGS from "../static/VISUAL_SETTINGS"
 import AbstractSingleton from "../../../shared/AbstractSingleton"
-import EngineStore from "../../shared/stores/EngineStore"
-import SettingsStore from "../../shared/stores/SettingsStore"
-import VisualsStore from "../../shared/stores/VisualsStore"
-import SelectionStore from "../../shared/stores/SelectionStore"
+import EngineStore from "../../stores/EngineStore"
+import SettingsStore from "../../stores/SettingsStore"
+import VisualsStore from "../../stores/VisualsStore"
+import SelectionStore from "../../stores/SelectionStore"
 import UIAPI from "../../../engine-core/lib/rendering/UIAPI"
 import GPU from "../../../engine-core/GPU"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
@@ -24,22 +24,26 @@ export default class EngineToolsService extends AbstractSingleton {
 
 	constructor() {
 		super()
-		SelectionStore.addListener("EngineToolsService", this.#updateSelection)
-		EngineStore.addListener("EngineToolsService", this.#updateCameraTracker)
-		SettingsStore.addListener("EngineToolsService_camera", this.#updateCameraTracker)
-		SettingsStore.addListener("EngineToolsService_gizmo", this.#updateGizmo)
-		VisualsStore.addListener("EngineToolsService", this.#updateEngineSettings)
+		SelectionStore.getInstance()
+			.addListener("EngineToolsService", this.#updateSelection)
+		EngineStore.getInstance()
+			.addListener("EngineToolsService", this.#updateCameraTracker)
+		SettingsStore.getInstance()
+			.addListener("EngineToolsService_camera", this.#updateCameraTracker)
+		SettingsStore.getInstance()
+			.addListener("EngineToolsService_gizmo", this.#updateGizmo)
+		VisualsStore.getInstance()
+			.addListener("EngineToolsService", this.#updateEngineSettings)
 	}
 
-	#updateSelection(){
+	#updateSelection() {
 		EngineTools.updateSelectionData(SelectionStoreUtil.getEntitiesSelected())
 	}
 
-	#updateEngineSettings() {
-		const visualSettings = VisualsStore.data
+	#updateEngineSettings(visualSettings) {
 		GPU.canvas.width = visualSettings.resolutionX
 		GPU.canvas.height = visualSettings.resolutionY
-        
+
 		if (Engine.environment === ENVIRONMENT.DEV)
 			EngineTools.bindSystems()
 		else
@@ -57,8 +61,8 @@ export default class EngineToolsService extends AbstractSingleton {
 	}
 
 	#updateCameraTracker() {
-		const engine = EngineStore.engine
-		const settings = SettingsStore.data
+		const engine = EngineStore.getInstance().data
+		const settings = SettingsStore.getInstance().data
 		if (engine.executingAnimation)
 			UIAPI.showUI()
 		if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
@@ -74,8 +78,7 @@ export default class EngineToolsService extends AbstractSingleton {
 		}
 	}
 
-	#updateGizmo() {
-		const settings = SettingsStore.data
+	#updateGizmo(settings) {
 		RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
 		TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
 		ScalingGizmo.gridSize = settings.gizmoGrid.scaleGizmo || .001

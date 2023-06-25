@@ -13,7 +13,7 @@ import GPU from "../GPU"
 import StaticEditorMeshes from "./lib/StaticEditorMeshes"
 import StaticEditorShaders from "./lib/StaticEditorShaders"
 import StaticFBO from "../lib/StaticFBO"
-import SettingsStore from "../../frontend/shared/stores/SettingsStore"
+import SettingsStore from "../../frontend/stores/SettingsStore"
 
 export default class EngineTools {
 	static selected: Entity[] = []

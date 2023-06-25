@@ -6,7 +6,7 @@
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import {onDestroy, onMount} from "svelte"
     import HotKeysController from "../../../../shared/lib/HotKeysController"
-    import SelectionStore from "../../../../shared/stores/SelectionStore"
+    import SelectionStore from "../../../../stores/SelectionStore"
 
     import ITEM_TYPES from "../static/ITEM_TYPES"
     import RowsHeader from "./BrowserHeader.svelte"
@@ -35,7 +35,7 @@
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
-    let selectionMap
+    let selectionList
     let selected = []
     let onDrag = false
     let timeout
@@ -43,7 +43,7 @@
 
     const unsubscribe = SelectionStore.getStore(() => {
     	selected = SelectionStoreUtil.getContentBrowserSelected()
-    	selectionMap = SelectionStoreUtil.getSelectionMap()
+    	selectionList = SelectionStoreUtil.getSelectionList()
     })
 
     function resetItem() {
@@ -132,7 +132,7 @@
                  style={ "height:" + lineHeight + "px;" + (viewType === ITEM_TYPES.CARD ? "margin-bottom: 3px;" : "")}>
                 {#each item as child, index}
                     <Item
-                            selectionMap={selectionMap}
+                            selectionList={selectionList}
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
                             toCut={store.toCut}

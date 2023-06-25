@@ -1,8 +1,8 @@
 <script>
 
     import {onDestroy} from "svelte"
-    import SelectionStore from "../../../shared/stores/SelectionStore"
-    import FilesStore from "../../../shared/stores/FilesStore"
+    import SelectionStore from "../../../stores/SelectionStore"
+    import FilesStore from "../../../stores/FilesStore"
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte"
     import Entity from "../../../../engine-core/instances/Entity"
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"

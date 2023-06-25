@@ -1,8 +1,8 @@
 import ScriptsAPI from "../../../engine-core/lib/utils/ScriptsAPI"
-import SelectionStore from "../../shared/stores/SelectionStore"
+import SelectionStore from "../../stores/SelectionStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../shared/LocalizationEN"
-import EngineStore from "../../shared/stores/EngineStore"
+import EngineStore from "../../stores/EngineStore"
 import Entity from "../../../engine-core/instances/Entity"
 import Engine from "../../../engine-core/Engine"
 import ExecutionService from "../services/engine/ExecutionService"
@@ -10,7 +10,7 @@ import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import COMPONENTS from "../../../engine-core/static/COMPONENTS"
 import IPCRoutes from "../../../shared/IPCRoutes"
-import SettingsStore from "../../shared/stores/SettingsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import GIZMOS from "../static/GIZMOS"
 import GizmoSystem from "../../../engine-core/tools/runtime/GizmoSystem"
@@ -24,12 +24,13 @@ export default class EditorUtil {
 	static async componentConstructor(entity, scriptID, autoUpdate = true) {
 		await ScriptsAPI.linkScript(entity, scriptID)
 		if (autoUpdate)
-			SelectionStore.updateStore()
+			SelectionStore.getInstance().updateStore()
 		ToastNotificationSystem.getInstance().success(LocalizationEN.ADDED_COMPONENT)
 	}
 
 	static focusOnCamera(cameraTarget) {
-		const focused = EngineStore.engine.focusedCamera
+		const engineInstance = EngineStore.getInstance()
+		const focused = engineInstance.data.focusedCamera
 		const isCamera = cameraTarget instanceof Entity
 		if (!focused || isCamera && cameraTarget.id !== focused) {
 			const current = isCamera ? cameraTarget : Engine.entities.get(SelectionStoreUtil.getMainEntity())
@@ -37,12 +38,12 @@ export default class EditorUtil {
 				ExecutionService.cameraSerialization = CameraAPI.serializeState()
 				CameraTracker.stopTracking()
 				CameraAPI.updateViewTarget(current)
-				EngineStore.updateStore({...EngineStore.engine, focusedCamera: current.id})
+				engineInstance.updateStore({focusedCamera: current.id})
 			}
 		} else {
 			CameraAPI.restoreState(ExecutionService.cameraSerialization)
 			CameraTracker.startTracking()
-			EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
+			engineInstance.updateStore({focusedCamera: undefined})
 		}
 	}
 
@@ -113,8 +114,9 @@ export default class EditorUtil {
 	}
 
 	static openBottomView(view) {
-		const views = [...SettingsStore.data.views]
-		const tab = views[SettingsStore.data.currentView]
+		const settingsStore = SettingsStore.getInstance()
+		const views = [...settingsStore.data.views]
+		const tab = views[settingsStore.data.currentView]
 		const existingTab = tab.bottom[0].findIndex(v => v?.type === view)
 		if (existingTab > -1) {
 			TabsStoreUtil.updateByAttributes( "bottom", 0, existingTab)
@@ -126,7 +128,7 @@ export default class EditorUtil {
 		else
 			tab.bottom[0] = [{type: view, color: [255, 255, 255]}]
 
-		SettingsStore.updateStore({...SettingsStore.data, views})
+		settingsStore.updateStore({views})
 		TabsStoreUtil.updateByAttributes("bottom", 0, tab.bottom[0].length - 1)
 	}
 
@@ -146,7 +148,7 @@ export default class EditorUtil {
 		const selected = SelectionStoreUtil.getEntitiesSelected()
 		for (let i = 0; i < selected.length; i++) {
 			const entity = QueryAPI.getEntityByID(selected[i])
-			const currentGizmo = SettingsStore.data.gizmo
+			const currentGizmo = SettingsStore.getInstance().data.gizmo
 
 			switch (currentGizmo) {
 			case GIZMOS.TRANSLATION: {
@@ -177,12 +179,12 @@ export default class EditorUtil {
 	}
 
 	static updateView(key, newView) {
-		const s = {...SettingsStore.data}
-		const view = s.views[s.currentView]
-		const copy = [...s.views]
-		copy[s.currentView] = {...view, [key]: newView}
-		s.views = copy
-		SettingsStore.updateStore(s)
+		const settingsData = SettingsStore.getInstance().data
+		const view = settingsData.views[settingsData.currentView]
+		const copy = [...settingsData.views]
+		copy[settingsData.currentView] = {...view, [key]: newView}
+		settingsData.views = copy
+		SettingsStore.getInstance().updateStore(settingsData)
 	}
 
 	static getCall<T>(channel, data, addMiddle = true):Promise<T> {
