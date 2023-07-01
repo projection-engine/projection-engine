@@ -17,6 +17,7 @@
     import ViewsUtil from "../../util/ViewsUtil"
     import TabsStoreUtil from "../../util/TabsStoreUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let updateView
     export let viewTab
 

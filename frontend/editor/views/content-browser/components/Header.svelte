@@ -19,6 +19,7 @@
     import EditorUtil from "../../../util/EditorUtil"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let currentDirectory
     export let setCurrentDirectory
     export let fileType

@@ -16,7 +16,7 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import SelectionTargets from "../../../../shared/SelectionTargets"
 
-    const internalID = crypto.randomUUID()
+    const COMPONENT_ID = crypto.randomUUID()
     const PREFERENCES_TABS = [
     	PREFERENCES[2],
     	PREFERENCES[3],

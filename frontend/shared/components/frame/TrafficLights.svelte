@@ -2,7 +2,7 @@
 
     import ToolTip from "../tooltip/ToolTip.svelte"
     import Icon from "../icon/Icon.svelte"
-    import {onDestroy} from "svelte"
+    import {onDestroy, onMount} from "svelte"
 
     import Modal from "../modal/Modal.svelte"
     import WindowChangeStore from "../../../stores/WindowChangeStore"
@@ -13,18 +13,14 @@
     import LevelService from "../../../editor/services/engine/LevelService"
     import LocalizationEN from "../../../../shared/LocalizationEN"
 
+    const COMPONENT_ID = crypto.randomUUID()
+
     export let noChangeTracking
 
-    let hasChanges = false
     let message = undefined
 
-    const unsubscribeMessage = WindowChangeStore.getStore(v => message = v)
-    const unsubscribeChanges = ChangesTrackerStore.getStore(v => hasChanges = v)
-
-    onDestroy(() => {
-    	unsubscribeChanges()
-    	unsubscribeMessage()
-    })
+    onMount(() => WindowChangeStore.getInstance().addListener(COMPONENT_ID, data => message = data))
+    onDestroy(() => WindowChangeStore.getInstance().removeListener(COMPONENT_ID))
 
     function toggleFullscreen() {
     	if (document.fullscreenElement != null)
@@ -39,7 +35,7 @@
 </script>
 
 {#if message !== undefined && !noChangeTracking}
-    <Modal handleClose={() => WindowChangeStore.updateStore(undefined)} styles="width: 30vw; padding: 8px">
+    <Modal handleClose={() => WindowChangeStore.getInstance().updateStore({})} styles="width: 30vw; padding: 8px">
         <div data-svelteinline="-" style="width: 100%; gap: 12px">
             <Icon styles="font-size: 50px">help_outline</Icon>
             <h5>{message.message}</h5>
@@ -58,9 +54,7 @@
             <button
                     data-sveltebuttondefault="-"
                     class="modal-button"
-                    on:click={() => {
-                       WindowChangeStore.updateStore(undefined)
-                    }}
+                    on:click={() =>  WindowChangeStore.getInstance().updateStore({})}
             >
                 {LocalizationEN.CANCEL}
             </button>
@@ -94,9 +88,9 @@
     </button>
     <button
             data-sveltebuttondefault="-"
-            on:click={_ => {
-                if(hasChanges)
-                    WindowChangeStore.updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
+            on:click={() => {
+                if(ChangesTrackerStore.getInstance().data.changed)
+                    WindowChangeStore.getInstance().updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
                         await LevelService.getInstance().save()
                         ElectronResources.ipcRenderer.send("close")
                     }})

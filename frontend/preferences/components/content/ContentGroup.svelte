@@ -5,6 +5,7 @@
     import {onDestroy} from "svelte"
     import Accordion from "../../../shared/components/accordion/Accordion.svelte"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let toRender
 
     let settings

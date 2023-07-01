@@ -5,6 +5,7 @@
     import {onDestroy} from "svelte"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let setCurrentDirectory = undefined
     export let currentDirectory = undefined
     let assets = []
@@ -29,8 +30,7 @@
                             delete open[item.children[i]]
                     }
                     open[item.item.id] = inv
-                    FilesHierarchyStore.data.open = open
-                    FilesHierarchyStore.updateStore()
+                    FilesHierarchyStore.getInstance().updateStore({open})
                 }}
                 open={open}
                 childQuantity={item.childQuantity}

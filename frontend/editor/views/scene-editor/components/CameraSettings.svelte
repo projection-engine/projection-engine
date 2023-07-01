@@ -19,8 +19,7 @@
     const internalID = crypto.randomUUID()
     let cameras = []
 
-    const toggleProjection = () => SettingsStore.updateStore({
-    	...settings,
+    const toggleProjection = () => SettingsStore.getInstance().updateStore({
     	camera: {...settings.camera, ortho: !settings.camera.ortho}
     })
 
@@ -84,7 +83,7 @@
 
     <button data-sveltebuttondefault="-" disabled={engine.focusedCamera} class="button viewport"
             style="max-width: 25px; justify-content: center"
-            on:click={() => SettingsStore.updateStore({...settings, screenSpaceMovement: !settings.screenSpaceMovement})}>
+            on:click={() => SettingsStore.getInstance().updateStore({screenSpaceMovement: !settings.screenSpaceMovement})}>
         <ToolTip content={LocalizationEN.TOGGLE_CAMERA_MOVEMENT}/>
         {#if settings.screenSpaceMovement}
             <Icon styles="font-size: 1rem">lock_outline</Icon>

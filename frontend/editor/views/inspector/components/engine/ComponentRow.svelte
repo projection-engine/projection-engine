@@ -1,6 +1,5 @@
 <script>
     import NATIVE_COMPONENTS from "../../static/NATIVE_COMPONENTS"
-    import SelectionStore from "../../../../../stores/SelectionStore"
     import EditorActionHistory from "../../../../services/EditorActionHistory"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
 
@@ -16,8 +15,6 @@
                     EditorActionHistory.save(entity)
                     entity.addComponent(data[0])
                     EditorActionHistory.save(entity)
-
-                    SelectionStore.updateStore()
                     e.target.closeDropdown()
 
                 }}

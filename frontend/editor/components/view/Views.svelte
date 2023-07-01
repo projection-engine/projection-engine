@@ -3,16 +3,19 @@
     import ViewGroup from "./components/ViewGroup.svelte"
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
     import ViewsUtil from "../../util/ViewsUtil"
+    import {onDestroy, onMount} from "svelte"
+    import EngineStore from "../../../stores/EngineStore"
+
+    const COMPONENT_ID = crypto.randomUUID()
 
     export let resizePosition
     export let orientation
-    export let reducedOpacity
     export let tabs
     export let setTabs
     export let id
 
     let ref
-
+    let reducedOpacity = false
     $: orientationNameMin = orientation === "horizontal" ? "minHeight" : "minWidth"
     $: orientationName = orientation === "horizontal" ? "height" : "width"
     $: invOrientation = orientation === "horizontal" ? "width" : "height"
@@ -39,7 +42,8 @@
     	}
     }
 
-
+    onMount(() => EngineStore.getInstance().addListener(COMPONENT_ID, data => reducedOpacity = data.executingAnimation, ["executingAnimation"]))
+    onDestroy(() => EngineStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
 

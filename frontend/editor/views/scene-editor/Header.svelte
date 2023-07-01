@@ -15,22 +15,22 @@
     	{
     		label: LocalizationEN.GRID,
     		icon: settings.showGrid ? "check" : undefined,
-    		onClick: () => SettingsStore.updateStore({...settings, showGrid: !settings.showGrid})
+    		onClick: () => SettingsStore.getInstance().updateStore({showGrid: !settings.showGrid})
     	},
     	{
     		label: LocalizationEN.ICONS,
     		icon: settings.showIcons ? "check" : undefined,
-    		onClick: () => SettingsStore.updateStore({...settings, showIcons: !settings.showIcons})
+    		onClick: () => SettingsStore.getInstance().updateStore({showIcons: !settings.showIcons})
     	},
     	{
     		label: LocalizationEN.LINES,
     		icon: settings.showLines ? "check" : undefined,
-    		onClick: () => SettingsStore.updateStore({...settings, showLines: !settings.showLines})
+    		onClick: () => SettingsStore.getInstance().updateStore({showLines: !settings.showLines})
     	},
     	{
     		label: LocalizationEN.OUTLINE,
     		icon: settings.showOutline ? "check" : undefined,
-    		onClick: () => SettingsStore.updateStore({...settings, showOutline: !settings.showOutline})
+    		onClick: () => SettingsStore.getInstance().updateStore({showOutline: !settings.showOutline})
     	},
     ]
 </script>

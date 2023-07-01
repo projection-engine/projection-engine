@@ -15,7 +15,7 @@
     export let all
 
     function update(key, value) {
-    	SettingsStore.updateStore({...SettingsStore.data, [key]: value})
+    	SettingsStore.getInstance().updateStore({[key]: value})
     }
 
     let currentShortcut

@@ -2,8 +2,6 @@
     import {onDestroy, onMount} from "svelte"
     import Renderer from "../../../../../engine-core/Renderer"
 
-    export let settings
-
     let fr
     let ft
     let interval

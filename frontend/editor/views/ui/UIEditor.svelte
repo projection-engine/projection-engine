@@ -13,7 +13,7 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
-    const INTERNAL_ID = crypto.randomUUID()
+    const COMPONENT_ID = crypto.randomUUID()
 
     let engine = {}
     let settings = {}
@@ -79,14 +79,14 @@
 
     	UIAPI.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
     	UIAPI.document.style.top = "28px"
-    	EntityHierarchyService.registerListener(INTERNAL_ID, update)
+    	EntityHierarchyService.registerListener(COMPONENT_ID, update)
     	update()
     })
 
     onDestroy(() => {
     	clearInterval(interval)
     	obs.disconnect()
-    	EntityHierarchyService.removeListener(INTERNAL_ID)
+    	EntityHierarchyService.removeListener(COMPONENT_ID)
     	UIAPI.hideUI()
     	UIAPI.document.style.height = "100%"
     	UIAPI.document.style.top = "0"
@@ -105,7 +105,7 @@
         settings={settings}
 />
 <div class="wrapper ui" bind:this={ref}>
-    <div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
+    <div class="tooltip" id={COMPONENT_ID} bind:this={tooltip}></div>
 </div>
 
 <style>

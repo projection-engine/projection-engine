@@ -15,6 +15,7 @@
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil";
     import EngineStore from "../../../../stores/EngineStore";
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let ID: string
     export let testSearch: Function
     export let isOnSearch: boolean

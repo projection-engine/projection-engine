@@ -11,8 +11,8 @@
     import Icon from "../shared/components/icon/Icon.svelte"
     import StoreIPCListener from "../shared/lib/StoreIPCListener"
 
+    const COMPONENT_ID = crypto.randomUUID()
     let tab = 0
-
     let settings
     let visuals
 

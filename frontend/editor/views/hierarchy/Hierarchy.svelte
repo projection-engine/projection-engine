@@ -12,6 +12,7 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import HierarchyUtil from "../../util/HierarchyUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     let search = ""
     let filteredComponent = undefined
     let ref

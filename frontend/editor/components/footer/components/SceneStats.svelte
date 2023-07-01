@@ -1,15 +1,11 @@
 <script>
-    import EngineStore from "../../../../stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
     import GPU from "../../../../../engine-core/GPU"
     import Engine from "../../../../../engine-core/Engine"
-
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
 
-    let engine
-    const unsubscribe = EngineStore.getStore(v => engine = v)
-    let entities
+    let entities = 0
     let triangles = 0
     let materials = 0
     let interval
@@ -30,10 +26,7 @@
     	refresh()
     	interval = setInterval(refresh, 2500)
     })
-    onDestroy(() => {
-    	unsubscribe()
-    	clearInterval(interval)
-    })
+    onDestroy(() => clearInterval(interval))
 </script>
 
 <div class="wrapper footer-header">

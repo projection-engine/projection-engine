@@ -183,8 +183,8 @@ export default class EditorUtil {
 		const view = settingsData.views[settingsData.currentView]
 		const copy = [...settingsData.views]
 		copy[settingsData.currentView] = {...view, [key]: newView}
-		settingsData.views = copy
-		SettingsStore.getInstance().updateStore(settingsData)
+
+		SettingsStore.getInstance().updateStore({views: copy})
 	}
 
 	static getCall<T>(channel, data, addMiddle = true):Promise<T> {

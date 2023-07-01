@@ -16,6 +16,7 @@
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     const CARD_SIZE = 115
     export let fileType
     export let setFileType

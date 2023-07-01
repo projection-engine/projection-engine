@@ -9,7 +9,7 @@
     export let settings
 
     function update(key, value) {
-    	SettingsStore.updateStore({...settings, [key]: value})
+    	SettingsStore.getInstance().updateStore({[key]: value})
     }
 
     function updateHotKey(key, objectKey, newValue) {

@@ -1,5 +1,4 @@
 <script>
-
     import CameraTracker from "../../../../../../engine-core/tools/lib/CameraTracker"
     import SettingsStore from "../../../../../stores/SettingsStore"
     import Layout from "./dynamic-form/Layout.svelte"
@@ -11,12 +10,13 @@
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
 
+    const COMPONENT_ID = crypto.randomUUID()
     let settings
     const unsubscribe = SettingsStore.getStore(v => settings = v)
     onDestroy(unsubscribe)
     const updateCamera = (key, value, full) => {
     	if (full)
-    		SettingsStore.updateStore({...settings, camera: {...settings.camera, [key]: value}})
+    		SettingsStore.updateStore({camera: {...settings.camera, [key]: value}})
     	if (CameraTracker[key] !== undefined)
     		CameraTracker[key] = value
     }

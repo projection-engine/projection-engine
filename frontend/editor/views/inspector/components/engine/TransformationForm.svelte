@@ -15,6 +15,7 @@
     import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte"
     import SelectionStoreUtil from "../../../../util/SelectionStoreUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     let targets = []
     let rotationType = Movable.ROTATION_QUATERNION
 

@@ -29,6 +29,7 @@
     import SceneEditorUtil from "../../util/SceneEditorUtil"
     import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let viewMetadata
 
     let previousMetadata

@@ -8,6 +8,7 @@
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
     import EditorUtil from "../../../../util/EditorUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let entity
 
     let store = {}

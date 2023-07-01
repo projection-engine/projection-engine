@@ -3,13 +3,15 @@
     import Tabs from "../../tabs/Tabs.svelte";
     import VIEWS from "../static/VIEWS";
     import TabsStore from "../../../../stores/TabsStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import SettingsStore from "../../../../stores/SettingsStore";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
     import LocalizationEN from "../../../../../shared/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";
     import TabsStoreUtil from "../../../util/TabsStoreUtil";
+
+    const COMPONENT_ID = crypto.randomUUID()
 
     export let groupIndex
     export let views: ViewTabItem[]
@@ -19,7 +21,6 @@
     export let switchView
     export let id
 
-    let previous = 0
     let currentTab = 0
     let ref: HTMLElement
     let focused = false
@@ -29,19 +30,7 @@
         currentTab = TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex)
     }
 
-    const unsubscribe = SettingsStore.getStore(v => {
-        if (v.currentView === previous)
-            return
-
-        previous = v.currentView
-        update()
-    })
-
-    const unsubscribeTabs = TabsStore.getStore(_ => {
-        update()
-        focused = TabsStoreUtil.getFocusedTab() === ref
-    })
-    $: tabs = views.map(v => {
+    $: localTabViews = views.map(v => {
         v.name = LocalizationEN[v.type]
         v.icon =  ViewsUtil.getViewIcon(v.type)
         v.id = v.type
@@ -57,7 +46,7 @@
     }
 
     function removeView(i: number) {
-        const tab = tabs[i]
+        const tab = localTabViews[i]
         if (targetDialogElement)
             targetDialogElement = undefined
 
@@ -67,9 +56,13 @@
             closeTarget(i)
     }
 
+    onMount(() => {
+        TabsStore.getInstance().addListener(COMPONENT_ID, data => focused = data.focused === ref, ["focused"])
+        SettingsStore.getInstance().addListener(COMPONENT_ID,         update, ["currentView"])
+    })
     onDestroy(() => {
-        unsubscribeTabs()
-        unsubscribe()
+        TabsStore.getInstance().removeListener(COMPONENT_ID)
+        SettingsStore.getInstance().removeListener(COMPONENT_ID)
     })
 
 </script>
@@ -85,7 +78,7 @@
                 allowDeletion={true}
                 addNewTab={addNewTab}
                 removeTab={removeView}
-                tabs={tabs}
+                tabs={localTabViews}
                 currentTab={currentTab}
                 setCurrentView={v => TabsStoreUtil.updateByAttributes(id, groupIndex, v)}
         />

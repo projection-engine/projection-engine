@@ -106,7 +106,7 @@ export default class EngineStateService {
     	EntityNamingService.renameEntity(entity.name, entity)
     	getPivotPointMatrix(entity)
     	EntityAPI.addEntity(entity)
-    	SelectionStore.updateStore({
+    	SelectionStore.getInstance().updateStore({
     		TARGET: SelectionTargets.ENGINE,
     		array: [entity.id]
     	})

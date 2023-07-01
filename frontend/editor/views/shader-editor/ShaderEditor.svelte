@@ -18,6 +18,7 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import ShaderEditorUtil from "../../util/ShaderEditorUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let viewID
     export let viewIndex
     export let groupIndex

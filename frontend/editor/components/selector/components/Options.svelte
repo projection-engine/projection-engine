@@ -12,7 +12,6 @@
     export let type
     export let setState
     export let state
-    export let store
     export let noDefault
     export let mergeMaterials
     export let terrainMaterials
@@ -22,7 +21,7 @@
 
 
     $: {
-    	const temp = SelectorUtil.getType(store, type, mergeMaterials, terrainMaterials)
+    	const temp = SelectorUtil.getType(type, mergeMaterials, terrainMaterials)
     	let current
     	if (inputValue)
     		current = temp.filter(e => e.name.includes(inputValue))
