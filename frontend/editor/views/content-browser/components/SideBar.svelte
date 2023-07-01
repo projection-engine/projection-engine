@@ -2,23 +2,20 @@
     import SideBarItem from "./SideBarItem.svelte"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import FilesHierarchyStore from "../../../../stores/FilesHierarchyStore"
-    import {onDestroy} from "svelte"
+    import {onDestroy, onMount} from "svelte"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
     const COMPONENT_ID = crypto.randomUUID()
     export let setCurrentDirectory = undefined
     export let currentDirectory = undefined
-    let assets = []
-    let open = {}
-    const unsubscribe = FilesHierarchyStore.getStore(v => {
-    	assets = v.items
-    	open = v.open
-    })
-    onDestroy(() => unsubscribe())
+
+    let hierarchy
+    onMount(() => FilesHierarchyStore.getInstance().addListener(COMPONENT_ID, v => hierarchy = v, ["open", "items"]))
+    onDestroy(() => FilesHierarchyStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
 <div class="wrapper">
-    <VirtualList items={assets} let:item>
+    <VirtualList items={hierarchy.items} let:item>
         <SideBarItem
                 triggerOpen={() => {
                     let open = FilesHierarchyStore.data.open
@@ -32,7 +29,7 @@
                     open[item.item.id] = inv
                     FilesHierarchyStore.getInstance().updateStore({open})
                 }}
-                open={open}
+                open={hierarchy.open}
                 childQuantity={item.childQuantity}
                 depth={item.depth}
                 setCurrentDirectory={setCurrentDirectory}

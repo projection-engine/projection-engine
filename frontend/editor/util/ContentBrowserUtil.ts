@@ -373,7 +373,6 @@ export default class ContentBrowserUtil {
 	static getFileTypes() {
 		const c = {...FileTypes}
 		return Object.keys(c).map(m => m === FileTypes.PROJECT ? undefined : [m, LocalizationEN[m]]).filter(e => e[1] != null)
-
 	}
 
 	static async #createFile(currentDirectory, name, type, data) {

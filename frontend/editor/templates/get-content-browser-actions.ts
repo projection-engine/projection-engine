@@ -7,40 +7,41 @@ import ContentBrowserUtil from "../util/ContentBrowserUtil"
 import EditorUtil from "../util/EditorUtil"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
 import FileSystemUtil from "../../shared/FileSystemUtil"
+import SettingsStore from "../../stores/SettingsStore"
 
-export default function getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem, materials) {
-
+export default function getContentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem) {
+	const contentBrowserHotkeys = SettingsStore.getInstance().data.contentBrowserHotkeys
 	const hotKeys = {
 		BACK: {
 			label: "Go back",
-			require: settings.contentBrowserHotkeys.BACK,
+			require: contentBrowserHotkeys.BACK,
 			callback: () => navigationHistory.undo()
 		},
 		FORWARD: {
 			label: "Go forward",
-			require: settings.contentBrowserHotkeys.FORWARD,
+			require: contentBrowserHotkeys.FORWARD,
 			callback: () => navigationHistory.redo()
 		},
 
 		SELECT_ALL: {
 			label: "Select all",
-			require: settings.contentBrowserHotkeys.SELECT_ALL,
+			require: contentBrowserHotkeys.SELECT_ALL,
 			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.ALL, currentDirectory)
 		},
 		SELECT_NONE: {
 			label: "Select none",
-			require: settings.contentBrowserHotkeys.SELECT_NONE,
+			require: contentBrowserHotkeys.SELECT_NONE,
 			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.NONE, currentDirectory)
 		},
 		INVERT_SELECTION: {
 			label: "Invert selection",
 
-			require: settings.contentBrowserHotkeys.INVERT_SELECTION,
+			require: contentBrowserHotkeys.INVERT_SELECTION,
 			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.INVERT, currentDirectory)
 		},
 		REFRESH: {
 			label: "Refresh",
-			require: settings.contentBrowserHotkeys.REFRESH,
+			require: contentBrowserHotkeys.REFRESH,
 			callback: () => {
 				ToastNotificationSystem.getInstance().success(LocalizationEN.REFRESHING)
 				ContentBrowserUtil.refreshFiles().catch()
@@ -48,7 +49,7 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 		},
 		GO_TO_PARENT: {
 			label: "Go to parent",
-			require: settings.contentBrowserHotkeys.GO_TO_PARENT,
+			require: contentBrowserHotkeys.GO_TO_PARENT,
 			callback: () => {
 				if (currentDirectory.id !== FileSystemUtil.sep) {
 					const found = currentDirectory.id
@@ -65,14 +66,14 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 		},
 		RENAME: {
 			label: "Rename",
-			require: settings.contentBrowserHotkeys.RENAME,
+			require: contentBrowserHotkeys.RENAME,
 			callback: () => {
 				setCurrentItem(SelectionStoreUtil.getContentBrowserSelected()[0])
 			},
 		},
 		DELETE: {
 			label: LocalizationEN.DELETE,
-			require: settings.contentBrowserHotkeys.DELETE,
+			require: contentBrowserHotkeys.DELETE,
 			callback: () => {
 				const s = [...SelectionStoreUtil.getContentBrowserSelected()]
 				if (s.length > 0) {
@@ -83,12 +84,12 @@ export default function getContentBrowserActions(settings, navigationHistory, cu
 		},
 		CUT: {
 			label: LocalizationEN.CUT,
-			require: settings.contentBrowserHotkeys.CUT,
+			require: contentBrowserHotkeys.CUT,
 			callback: () => ContentBrowserUtil.cutFiles([...SelectionStoreUtil.getContentBrowserSelected()])
 		},
 		PASTE: {
 			label: LocalizationEN.PASTE,
-			require: settings.contentBrowserHotkeys.PASTE,
+			require: contentBrowserHotkeys.PASTE,
 			callback: () => ContentBrowserUtil.paste(currentDirectory.id)
 		}
 	}

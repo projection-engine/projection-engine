@@ -1,8 +1,4 @@
 <script>
-    import EngineStore from "../../../../stores/EngineStore"
-    import {onDestroy} from "svelte"
-
-
     import ITEM_TYPES from "../static/ITEM_TYPES"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
@@ -19,9 +15,7 @@
     import EditorUtil from "../../../util/EditorUtil"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
-    const COMPONENT_ID = crypto.randomUUID()
     export let currentDirectory
-    export let setCurrentDirectory
     export let fileType
     export let onChange
     export let inputValue
@@ -29,18 +23,11 @@
     export let viewType
     export let setViewType
     export let setFileType
-
     export let setSortKey
     export let setSortDirection
     export let sortDirection
     export let sortKey
 
-
-    $: fileTypes = ContentBrowserUtil.getFileTypes()
-
-    let engine = {}
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    onDestroy(() => unsubscribeEngine())
 </script>
 
 <ViewHeader>
@@ -102,7 +89,7 @@
                 <ToolTip content={LocalizationEN.FILTER_TYPE}/>
                 <Icon styles="font-size: .9rem">filter_alt</Icon>
             </button>
-            {#each fileTypes as k, i}
+            {#each ContentBrowserUtil.getFileTypes() as k, i}
                 <button data-sveltebuttondefault="-"
                         on:click={() => setFileType(fileType === FileTypes[k[0]] ? undefined : FileTypes[k[0]])}
                         style="text-transform: capitalize"

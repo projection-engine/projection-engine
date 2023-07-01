@@ -1,6 +1,5 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import FilesStore from "../../../stores/FilesStore"
     import NavigationHistory from "./libs/NavigationHistory"
     import SideBar from "./components/SideBar.svelte"
     import Browser from "./components/Browser.svelte"
@@ -19,7 +18,6 @@
     export let viewIndex
     export let groupIndex
 
-    let settings
     let sortKey = SORTS_KEYS[0]
     let sortDirection = SORTS[0]
     let currentDirectory = {id: FileSystemUtil.sep}
@@ -27,12 +25,7 @@
     let fileType = undefined
     let inputValue = ""
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
-    let store = {}
     let viewType = ITEM_TYPES.ROW
-
-    const internalID =crypto.randomUUID()
-    const unsubscribeStore = FilesStore.getStore(v => store = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
     $: {
@@ -51,15 +44,11 @@
     }
 
     onMount(() => {
-    	GlobalContentBrowserController.subscribe(internalID, newDir => {
+    	GlobalContentBrowserController.subscribe(COMPONENT_ID, newDir => {
     		navigationHistory.updateCurrentDirectory({id: newDir}, currentDirectory)
     	})
     })
-    onDestroy(() => {
-    	unsubscribeSettings()
-    	GlobalContentBrowserController.unsubscribe(internalID)
-    	unsubscribeStore()
-    })
+    onDestroy(() => GlobalContentBrowserController.unsubscribe(COMPONENT_ID))
 
 </script>
 
@@ -81,7 +70,6 @@
         navigationHistory={navigationHistory}
 />
 
-
 <div class="wrapper">
     <SideBar
             currentDirectory={currentDirectory}
@@ -93,11 +81,7 @@
         <Browser
                 sortDirection={sortDirection}
                 sortKey={sortKey}
-
-                settings={settings}
                 viewType={viewType}
-                internalID={internalID}
-                store={store}
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 navigationHistory={navigationHistory}

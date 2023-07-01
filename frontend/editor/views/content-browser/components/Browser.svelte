@@ -15,6 +15,7 @@
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+    import FilesStore from "../../../../stores/FilesStore"
 
     const COMPONENT_ID = crypto.randomUUID()
     const CARD_SIZE = 115
@@ -25,10 +26,7 @@
     export let currentDirectory
     export let navigationHistory
     export let setCurrentDirectory
-    export let internalID
-    export let store
     export let viewType
-    export let settings
     export let sortKey
     export let sortDirection
 
@@ -37,15 +35,9 @@
     let elementsPerRow = 0
     let resizeOBS
     let selectionList
-    let selected = []
     let onDrag = false
     let timeout
-
-
-    const unsubscribe = SelectionStore.getStore(() => {
-    	selected = SelectionStoreUtil.getContentBrowserSelected()
-    	selectionList = SelectionStoreUtil.getSelectionList()
-    })
+    let store = {}
 
     function resetItem() {
     	SelectionStoreUtil.setContentBrowserSelected([])
@@ -58,12 +50,12 @@
 
     $: {
     	if (ref) {
-    		const actions = getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
+    		const actions = getContentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
     		HotKeysController.unbindAction(ref)
-    		ContextMenuService.getInstance().destroy(internalID)
+    		ContextMenuService.getInstance().destroy(COMPONENT_ID)
     		ContextMenuService.getInstance().mount(
     			actions.contextMenu,
-    			internalID,
+    			COMPONENT_ID,
     			(trigger, element) => {
     				const id = element.getAttribute("data-svelteid")
     				if (id != null)
@@ -86,6 +78,8 @@
     }
 
     onMount(() => {
+    	FilesStore.getInstance().addListener(COMPONENT_ID, v => store = v)
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectionList = data.array, ["array"])
     	resizeOBS = new ResizeObserver(() => {
     		if (viewType !== ITEM_TYPES.CARD)
     			return
@@ -98,8 +92,10 @@
     })
 
     onDestroy(() => {
+    	FilesStore.getInstance().removeListener(COMPONENT_ID)
+    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
     	HotKeysController.unbindAction(ref)
-    	ContextMenuService.getInstance().destroy(internalID)
+    	ContextMenuService.getInstance().destroy(COMPONENT_ID)
     	unsubscribe()
     	clearTimeout(timeout)
     	resizeOBS?.disconnect?.()
@@ -108,8 +104,6 @@
 
 <div
         bind:this={ref}
-        id={internalID}
-        data-sveltewrapper={internalID}
         on:mousedown={e => {
             const key = "data-svelteisitem"
             if(e.composedPath().find(element => element.getAttribute?.(key) != null) == null)
@@ -121,8 +115,8 @@
     <SelectBox
             allowAll={true}
             nodes={toRender.flat()}
-            selected={selected}
-            setSelected={v => SelectionStoreUtil.setContentBrowserSelected(v)}
+            getSelected={SelectionStoreUtil.getContentBrowserSelected}
+            setSelected={SelectionStoreUtil.setContentBrowserSelected}
     />
     {#if toRender.length > 0}
         {#if viewType === ITEM_TYPES.ROW}

@@ -23,11 +23,10 @@
     	{type: "camera", icon: "camera", label: LocalizationEN.EDITOR_CAMERA},
     	{divider: true}
     ]
-    let parent
-
     let selectedItem
     let tabIndex = -1
     let tabs = []
+
     const unsubscribeSelection = SelectionStore.getStore(v => {
     	let targetItem
     	if ( v.array[0]) {

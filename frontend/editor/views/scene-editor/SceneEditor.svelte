@@ -132,7 +132,7 @@
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}
             setSelected={SceneEditorUtil.getUnderSelectionBox}
-            selected={[]}
+            getSelected={() => []}
             nodes={[]}
     />
     <div class="top-bar">
