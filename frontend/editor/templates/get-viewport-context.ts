@@ -5,8 +5,8 @@ import getEntityCreationOptions from "./get-entity-creation-options"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
-export default function getViewportContext(settings:MutableObject, forDropdown?:boolean):ContextMenuOption[] {
-	const VIEWPORT_HOTKEYS = getViewportHotkeys(settings)
+export default function getViewportContext(forDropdown?:boolean):ContextMenuOption[] {
+	const VIEWPORT_HOTKEYS = getViewportHotkeys()
 	const data = [
 		{divider: true, label: "Selection"},
 		VIEWPORT_HOTKEYS.SELECT_NONE,
