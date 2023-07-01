@@ -1,40 +1,43 @@
 <script>
     import ShotcutField from "./ShotcutField.svelte"
     import SETTINGS from "../../editor/static/SETTINGS"
-
     import SettingsStore from "../../stores/SettingsStore"
     import PropertyHeader from "../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../shared/LocalizationEN"
+    import {onDestroy, onMount} from "svelte"
 
-    export let settings
+    const COMPONENT_ID = crypto.randomUUID()
 
     function update(key, value) {
     	SettingsStore.getInstance().updateStore({[key]: value})
     }
 
     function updateHotKey(key, objectKey, newValue) {
-    	const newData = {...settings[key], [objectKey]: newValue}
+    	const newData = {...SettingsStore.getInstance().data[key], [objectKey]: newValue}
     	update(key, newData)
     }
 
     let shortcuts
     let allShortcuts
-    $: {
-    	const vp = Object.entries(settings.viewportHotkeys).map(v => ([...v, "viewportHotkeys", (keys) => updateHotKey("viewportHotkeys", v[0], keys)]))
-    	const sc = Object.entries(settings.shaderEditorHotkeys).map(v => ([...v, "shaderEditorHotkeys", (keys) => updateHotKey("shaderEditorHotkeys", v[0], keys)]))
-    	const cb = Object.entries(settings.contentBrowserHotkeys).map(v => ([...v, "contentBrowserHotkeys", (keys) => updateHotKey("contentBrowserHotkeys", v[0], keys)]))
-    	allShortcuts = [
-    		...Object.values(settings.viewportHotkeys),
-    		...Object.values(settings.shaderEditorHotkeys),
-    		...Object.values(settings.contentBrowserHotkeys)
-    	]
 
-    	shortcuts = {
-    		viewport: vp,
-    		shaderEditor: sc,
-    		contentBrowser: cb
-    	}
-    }
+    onMount(() => {
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
+    		const vp = Object.entries(data.viewportHotkeys).map(v => ([...v, "viewportHotkeys", (keys) => updateHotKey("viewportHotkeys", v[0], keys)]))
+    		const sc = Object.entries(data.shaderEditorHotkeys).map(v => ([...v, "shaderEditorHotkeys", (keys) => updateHotKey("shaderEditorHotkeys", v[0], keys)]))
+    		const cb = Object.entries(data.contentBrowserHotkeys).map(v => ([...v, "contentBrowserHotkeys", (keys) => updateHotKey("contentBrowserHotkeys", v[0], keys)]))
+    		allShortcuts = [
+    			...Object.values(data.viewportHotkeys),
+    			...Object.values(data.shaderEditorHotkeys),
+    			...Object.values(data.contentBrowserHotkeys)
+    		]
+    		shortcuts = {
+    			viewport: vp,
+    			shaderEditor: sc,
+    			contentBrowser: cb
+    		}
+    	})
+    })
+    onDestroy(() => SettingsStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
 <PropertyHeader title={LocalizationEN.SHORTCUTS}/>

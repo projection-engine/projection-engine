@@ -1,23 +1,8 @@
 <script>
     import Builder from "./ContentField.svelte"
-    import SettingsStore from "../../../stores/SettingsStore"
-    import VisualsStore from "../../../stores/VisualsStore"
-    import {onDestroy} from "svelte"
     import Accordion from "../../../shared/components/accordion/Accordion.svelte"
 
-    const COMPONENT_ID = crypto.randomUUID()
     export let toRender
-
-    let settings
-    let visuals
-
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
-
-    onDestroy(() => {
-    	unsubscribeSettings()
-    	unsubscribeVisuals()
-    })
 </script>
 {#each toRender.form as form, i}
     <Accordion title={form.label} startOpen={true}>
@@ -27,7 +12,7 @@
                 {#if field.divider}
                     <div data-sveltedivider="-"></div>
                 {:else}
-                    <Builder toRender={field} visuals={visuals} settings={settings}/>
+                    <Builder toRender={field}/>
                 {/if}
             {/each}
         </div>

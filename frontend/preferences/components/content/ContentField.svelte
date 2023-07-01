@@ -6,36 +6,33 @@
     import VisualsStore from "../../../stores/VisualsStore"
     import SettingsStore from "../../../stores/SettingsStore"
     import Component from "../../../../engine-core/instances/components/Component"
+    import {onDestroy, onMount} from "svelte"
+
+    const COMPONENT_ID = crypto.randomUUID()
 
     export let toRender
-    export let visuals
-    export let settings
 
-
+    let fieldValue
     let timeout
 
     function getValue(s) {
     	if (!toRender)
     		return
-
     	let current = s
     	const key = toRender.key
     	if (Array.isArray(key)) {
     		for (let i = 0; i < key.length; i++)
     			current = current[key[i]]
-
     		return current
-    	} else {
-    		return current[key]
     	}
+    	return current[key]
     }
-
 
     function setValue(value, save) {
     	if (!toRender)
     		return
     	const key = toRender.key
-    	let s = toRender?.target === "settings" ? settings : visuals
+    	let s = toRender?.target === "settings" ? SettingsStore.getInstance().data : VisualsStore.getInstance().data
     	if (save)
     		s = {...s}
     	if (Array.isArray(key)) {
@@ -54,8 +51,21 @@
     	}
     }
 
-    $: fieldValue = getValue(toRender?.target === "settings" ? settings : visuals)
+    onMount(() => {
+    	VisualsStore.getInstance().addListener(COMPONENT_ID, v => {
+    		if (toRender?.target !== "settings")
+    			fieldValue = getValue(v)
+    	})
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, v => {
+    		if (toRender?.target === "settings")
+    			fieldValue = getValue(v)
+    	})
+    })
 
+    onDestroy(() => {
+    	VisualsStore.getInstance().removeListener(COMPONENT_ID)
+    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
+    })
 </script>
 
 

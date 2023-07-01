@@ -1,6 +1,6 @@
 <script>
     import FilesStore from "../../../../../stores/FilesStore"
-    import {onDestroy} from "svelte"
+    import {onDestroy, onMount} from "svelte"
 
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
@@ -11,9 +11,9 @@
     const COMPONENT_ID = crypto.randomUUID()
     export let entity
 
-    let store = {}
-    const unsubscribeStore = FilesStore.getStore(v => store = v)
-    onDestroy(() => unsubscribeStore())
+    let components = []
+    onMount(() => FilesStore.getInstance().addListener(COMPONENT_ID, data => components = data.components, ["components"]))
+    onDestroy(() => FilesStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
 
@@ -37,7 +37,7 @@
             </div>
         </fieldset>
 
-    {:else if store.components.length === 0}
+    {:else if components.length === 0}
         <div class="empty-wrapper">
             <div data-svelteempty="-">
                 <Icon styles="font-size: 75px">texture</Icon>
@@ -45,14 +45,13 @@
             </div>
         </div>
     {/if}
-    {#if store.components.length > 0}
+    {#if components.length > 0}
         {#if !entity.isCollection}
             <div data-sveltedivider="-"></div>
         {/if}
         <fieldset>
             <legend>{LocalizationEN.CUSTOM_COMPONENTS}</legend>
-            {#each store.components as script}
-
+            {#each components as script}
                 <button
                         data-sveltebuttondefault="-"
                         data-svelteinline="-"

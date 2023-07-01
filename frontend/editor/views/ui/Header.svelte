@@ -1,6 +1,4 @@
 <script>
-
-
     import Engine from "../../../../engine-core/Engine"
     import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
@@ -13,13 +11,15 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
-
-    export let settings
-    export let engine
+    /** @type {boolean} */
     export let isOnSelection
+    /** @type {function} */
     export let toggleOnSelection
+    /** @type {object} */
     export let selected
+    /** @type {boolean} */
     export let updateEnabled
+    /** @type {function} */
     export let toggleAutoUpdate
 
     function selectAll() {
