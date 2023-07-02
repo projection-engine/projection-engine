@@ -1,8 +1,7 @@
 <script>
 
-    import {onDestroy} from "svelte"
+    import {onDestroy, onMount} from "svelte"
     import SelectionStore from "../../../stores/SelectionStore"
-    import FilesStore from "../../../stores/FilesStore"
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte"
     import Entity from "../../../../engine-core/instances/Entity"
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
@@ -15,6 +14,7 @@
     import ContentWrapper from "../../../preferences/components/content/ContentWrapper.svelte"
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import SelectionTargets from "../../../../shared/SelectionTargets"
+    import EngineStore from "../../../stores/EngineStore"
 
     const COMPONENT_ID = crypto.randomUUID()
     const PREFERENCES_TABS = [
@@ -24,54 +24,45 @@
     	{divider: true}
     ]
     let selectedItem
-    let tabIndex = -1
+    let tabIndex
     let tabs = []
+    let lockedEntity
+    let isEntity
+    let isOnDynamicTab
 
-    const unsubscribeSelection = SelectionStore.getStore(v => {
-    	let targetItem
-    	if ( v.array[0]) {
-    		switch (v.TARGET) {
-    		case SelectionTargets.CONTENT_BROWSER:
-    			targetItem = FilesStore.getData().items.find(i => i.id === v.array[0])
-    			break
-    		case SelectionTargets.ENGINE:
-    			targetItem = QueryAPI.getEntityByID(v.array[0])
-    			break
-    		}
-    	}
 
-    	if (!targetItem && v.lockedEntity != null)
-    		targetItem = QueryAPI.getEntityByID(v.lockedEntity)
-    	if (!targetItem) {
-    		setTabs([])
-    		tabIndex = -5
-    	}
-
-    	if (selectedItem !== targetItem) {
-    		selectedItem = targetItem
-    		tabIndex = SelectionTargets.ENGINE === v.TARGET ? -1 : -2
-    	}
+    onMount(() => {
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectedItem = SelectionStore.getSelectionTarget(data))
+    	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
+    		lockedEntity = data.lockedEntity ? QueryAPI.getEntityByID(data.lockedEntity) : undefined
+    	}, ["lockedEntity"])
     })
 
-    onDestroy(() => unsubscribeSelection())
+    onDestroy(() => {
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
+    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+    })
 
     function setTabs(data) {
     	const TABS = PREFERENCES_TABS.map((e, i) => {
     		if (e.divider)
     			return e
-    		return {
-    			...e,
-    			index: i - 5
-    		}
+    		return {...e, index: i - 5}
     	})
     	if (!selectedItem)
     		TABS.pop()
     	tabs = [...TABS, ...data]
     }
-
-    $: isEntity = selectedItem instanceof Entity
-    $: isOnDynamicTab = tabIndex >= -2 && selectedItem !== undefined
-
+    $: {
+    	if (!selectedItem)
+    		selectedItem = lockedEntity
+    	if (!selectedItem) {
+    		setTabs([])
+    	}
+    	tabIndex = SelectionTargets.ENGINE === SelectionStore.getData().TARGET ? -1 : -2
+    	isOnDynamicTab = tabIndex >= -2 && selectedItem !== undefined
+    	isEntity = selectedItem instanceof Entity
+    }
 </script>
 
 <div class="wrapper">
@@ -83,7 +74,7 @@
                 <button data-sveltebuttondefault="-"
                         data-sveltehighlight={tabIndex === button.index ? "-" : undefined}
                         class="tab-button shared"
-                        on:click={_ => tabIndex = button.index}
+                        on:click={() => tabIndex = button.index}
                         style={button.color ? "--pj-accent-color: " + button.color  + "; color: " + button.color : undefined}
                 >
                     <Icon styles="font-size: .9rem">{button.icon}</Icon>
@@ -100,7 +91,7 @@
                         setTabs={setTabs}
                         entity={selectedItem}
                         tabIndex={tabIndex}/>
-            {:else if !isEntity}
+            {:else}
                 <ContentBrowserItem setTabs={setTabs} item={selectedItem} tabIndex={tabIndex}/>
             {/if}
         {:else}

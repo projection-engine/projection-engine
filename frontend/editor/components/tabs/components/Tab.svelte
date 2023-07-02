@@ -1,39 +1,45 @@
-<script lang="ts">
-    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte";
-    import TabData from "../static/TabData";
-    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
+<script>
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import LocalizationEN from "../../../../../shared/LocalizationEN"
 
-    import ViewTabItem from "../../../static/ViewTabItem";
-    import LocalizationEN from "../../../../../shared/LocalizationEN";
-
-    export let handler: Function
-    export let removeTab: Function
-    export let tabs: TabData[]
-    export let currentTab: number
-    export let allowDeletion: boolean
-    export let allowRenaming: boolean
-    export let templates: { id: string, name: string }[]
-    export let updateView: Function
-    export let disabled: boolean
-    export let focused: boolean
-    export let value: ViewTabItem
-    $: spplitedTemplates = templates ? templates.reduce((all, one, i) => {
-        const ch = Math.floor(i / 2);
-        all[ch] = all[ch] || []
-        all[ch].push(one);
-        return all
-    }, []) : undefined
+    /** @type {function} */
+    export let handler
+    /** @type {function} */
+    export let removeTab
+    /** @type {{icon: string, id: string, name:string, index: number, originalIndex: number}[]} */
+    export let tabs
+    /** @type {number} */
+    export let currentTab
+    /** @type {boolean} */
+    export let allowDeletion
+    /** @type {boolean} */
+    export let allowRenaming
+    /** @type {{ id: string, name: string }[]} */
+    export let templates
+    /** @type {function} */
+    export let updateView
+    /** @type {boolean} */
+    export let focused
+    /** @type {ViewTabItem} */
+    export let value
+    let organizedTemplates
+    $: organizedTemplates = templates.reduce((all, one, i) => {
+    	const ch = Math.floor(i / 2)
+    	all[ch] = all[ch] || []
+    	all[ch].push(one)
+    	return all
+    }, [])
 
     let color = value?.color || [255, 255, 255]
-    $: colorValue = `--tab-color: rgb(${color})`
 
 </script>
 <div
         data-sveltetype={value.type}
         data-sveltehighlight={value.originalIndex === currentTab ? "-" : undefined}
         data-sveltefocused={value.originalIndex === currentTab && focused ? "-" : undefined}
-        style={colorValue}
+        style={`--tab-color: rgb(${color})`}
         class:view-static={value.icon != null}
         class:view-dynamic={value.icon == null}
 >
@@ -56,7 +62,7 @@
             </fieldset>
             <fieldset>
                 <legend>{LocalizationEN.VIEWS}</legend>
-                {#each spplitedTemplates as items}
+                {#each organizedTemplates as items}
                     <div class="row">
                         {#each items as item}
                             <button data-sveltebuttondefault="-"

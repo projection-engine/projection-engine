@@ -8,13 +8,13 @@ import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import VisibilityRenderer from "../../../engine-core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine-core/tools/EngineTools"
 import SelectionStoreUtil from "./SelectionStoreUtil"
+import EngineStore from "../../stores/EngineStore"
 
 export default class ViewportUtil{
-	static updateViewport(engine, currentView:ViewTabItem) {
-		if (!engine.isReady || engine.focusedCamera)
+	static updateViewport(currentView:ViewTabItem) {
+		if (EngineStore.getData().focusedCamera)
 			return
 		if (currentView.type === VIEWPORT_TABS.EDITOR) {
-
 			CameraTracker.startTracking()
 			Engine.start()
 		} else {

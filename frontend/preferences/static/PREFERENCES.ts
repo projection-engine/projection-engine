@@ -1,6 +1,6 @@
 import Component from "../../../engine-core/instances/components/Component"
-import SettingsStore from "../../stores/SettingsStore"
 import LocalizationEN from "../../../shared/LocalizationEN"
+import EngineToolsState from "../../../engine-core/tools/EngineToolsState"
 
 export default [
 	{label: LocalizationEN.GLOBAL, type: "global", icon: "public"},
@@ -89,7 +89,7 @@ export default [
 						target: "settings",
 						min: 0,
 						max: 1,
-						onChange: v => SettingsStore.data.gridColor = v
+						onChange: v => EngineToolsState.gridColor = v
 					},
 					{
 						type: Component.propTypes.NUMBER,
@@ -98,7 +98,7 @@ export default [
 						target: "settings",
 						min: 0,
 						max: 1,
-						onChange: v => SettingsStore.data.gridOpacity = v
+						onChange: v => EngineToolsState.gridOpacity = v
 					},
 					{divider: true},
 					{
@@ -108,7 +108,7 @@ export default [
 						target: "settings",
 						increment: .01,
 						min: .001,
-						onChange: v => SettingsStore.data.gridThreshold = v
+						onChange: v => EngineToolsState.gridThreshold = v
 					},
 					{
 						type: Component.propTypes.NUMBER,
@@ -117,7 +117,7 @@ export default [
 						target: "settings",
 						increment: .0001,
 						min: .0001,
-						onChange: v => SettingsStore.data.gridScale = v
+						onChange: v => EngineToolsState.gridScale = v
 					},
 				]
 			},

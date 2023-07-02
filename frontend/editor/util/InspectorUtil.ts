@@ -13,6 +13,8 @@ import CameraComponent from "../../../engine-core/instances/components/CameraCom
 import EngineStore from "../../stores/EngineStore"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
+import SelectionTargets from "../../../shared/SelectionTargets"
+import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 
 export default class InspectorUtil {
 	static compareObjects(obj1, obj2) {
@@ -146,4 +148,18 @@ export default class InspectorUtil {
 	}
 
 
+	static getSelectionTarget(selectionData) {
+		let selectedItem
+		if (selectionData.array[0]) {
+			switch (selectionData.TARGET) {
+			case SelectionTargets.CONTENT_BROWSER:
+				selectedItem = FilesStore.getData().items.find(i => i.id === selectionData.array[0])
+				break
+			case SelectionTargets.ENGINE:
+				selectedItem = QueryAPI.getEntityByID(selectionData.array[0])
+				break
+			}
+		}
+		return selectedItem
+	}
 }

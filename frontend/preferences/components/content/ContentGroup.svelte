@@ -6,7 +6,6 @@
 </script>
 {#each toRender.form as form, i}
     <Accordion title={form.label} startOpen={true}>
-
         <div data-svelteform="-">
             {#each form.children as field}
                 {#if field.divider}
