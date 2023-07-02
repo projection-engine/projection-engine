@@ -9,6 +9,9 @@ import VisibilityRenderer from "../../../engine-core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine-core/tools/EngineTools"
 import SelectionStoreUtil from "./SelectionStoreUtil"
 import EngineStore from "../../stores/EngineStore"
+import SettingsStore from "../../stores/SettingsStore"
+import LocalizationEN from "../../../shared/LocalizationEN"
+import VIEWS from "../components/view/static/VIEWS"
 
 export default class ViewportUtil{
 	static updateViewport(currentView:ViewTabItem) {
@@ -71,12 +74,17 @@ export default class ViewportUtil{
 		VisibilityRenderer.needsUpdate = true
 	}
 
-
-
-	static addNewTab(tabs, setTabs) {
-		const clone  = [...tabs]
-		clone.push({type: VIEWPORT_TABS.EDITOR, color: [255,255,255]})
-		setTabs(clone)
+	static addNewTab() {
+		const views = SettingsStore.getData().views
+		views.push({
+			name: LocalizationEN.NEW_TAB + views.length,
+			bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
+			right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]],
+			viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
+			left: [],
+			top: []
+		})
+		SettingsStore.getInstance().updateStore({views: views})
 	}
 
 }

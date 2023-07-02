@@ -9,7 +9,7 @@ import SelectionStoreUtil from "../util/SelectionStoreUtil"
 import FileSystemUtil from "../../shared/FileSystemUtil"
 import SettingsStore from "../../stores/SettingsStore"
 
-export default function getContentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem) {
+export default function getContentBrowserActions(navigationHistory, getCurrentDirectory, setCurrentDirectory, setCurrentItem) {
 	const contentBrowserHotkeys = SettingsStore.getData().contentBrowserHotkeys
 	const hotKeys = {
 		BACK: {
@@ -26,18 +26,18 @@ export default function getContentBrowserActions(navigationHistory, currentDirec
 		SELECT_ALL: {
 			label: "Select all",
 			require: contentBrowserHotkeys.SELECT_ALL,
-			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.ALL, currentDirectory)
+			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.ALL, getCurrentDirectory())
 		},
 		SELECT_NONE: {
 			label: "Select none",
 			require: contentBrowserHotkeys.SELECT_NONE,
-			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.NONE, currentDirectory)
+			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.NONE, getCurrentDirectory())
 		},
 		INVERT_SELECTION: {
 			label: "Invert selection",
 
 			require: contentBrowserHotkeys.INVERT_SELECTION,
-			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.INVERT, currentDirectory)
+			callback: () => ContentBrowserUtil.selection(SELECTION_TYPES.INVERT, getCurrentDirectory())
 		},
 		REFRESH: {
 			label: "Refresh",
@@ -51,8 +51,8 @@ export default function getContentBrowserActions(navigationHistory, currentDirec
 			label: "Go to parent",
 			require: contentBrowserHotkeys.GO_TO_PARENT,
 			callback: () => {
-				if (currentDirectory.id !== FileSystemUtil.sep) {
-					const found = currentDirectory.id
+				if (getCurrentDirectory().id !== FileSystemUtil.sep) {
+					const found = getCurrentDirectory().id
 					if (found) {
 						const split = found.split(FileSystemUtil.sep)
 						split.pop()
@@ -78,7 +78,7 @@ export default function getContentBrowserActions(navigationHistory, currentDirec
 				const s = [...SelectionStoreUtil.getContentBrowserSelected()]
 				if (s.length > 0) {
 					SelectionStoreUtil.setContentBrowserSelected([])
-					ContentBrowserUtil.handleDelete(s, currentDirectory, setCurrentDirectory).catch()
+					ContentBrowserUtil.handleDelete(s, getCurrentDirectory(), setCurrentDirectory).catch()
 				}
 			}
 		},
@@ -90,7 +90,7 @@ export default function getContentBrowserActions(navigationHistory, currentDirec
 		PASTE: {
 			label: LocalizationEN.PASTE,
 			require: contentBrowserHotkeys.PASTE,
-			callback: () => ContentBrowserUtil.paste(currentDirectory.id)
+			callback: () => ContentBrowserUtil.paste(getCurrentDirectory().id)
 		}
 	}
 
@@ -117,7 +117,7 @@ export default function getContentBrowserActions(navigationHistory, currentDirec
 			{divider: true},
 			{
 				label: LocalizationEN.IMPORT,
-				onClick: () => EditorUtil.importFile(currentDirectory)
+				onClick: () => EditorUtil.importFile(getCurrentDirectory())
 			},
 			hotKeys.REFRESH,
 			{divider: true},
@@ -129,7 +129,7 @@ export default function getContentBrowserActions(navigationHistory, currentDirec
 			{
 				label: "Open current directory on explorer",
 				icon: "open_in_new",
-				onClick: () => ElectronResources.shell.showItemInFolder(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + currentDirectory.id))
+				onClick: () => ElectronResources.shell.showItemInFolder(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + getCurrentDirectory().id))
 
 			},
 			{divider: true},
@@ -137,7 +137,7 @@ export default function getContentBrowserActions(navigationHistory, currentDirec
 			{
 				label: "Create",
 				icon: "add",
-				children: ContentBrowserUtil.getCreationOptions(currentDirectory)
+				children: ContentBrowserUtil.getCreationOptions(getCurrentDirectory())
 			}
 		]
 	}

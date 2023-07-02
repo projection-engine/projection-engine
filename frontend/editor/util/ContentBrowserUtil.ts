@@ -19,6 +19,10 @@ import EditorUtil from "./EditorUtil"
 import SelectionStoreUtil from "./SelectionStoreUtil"
 import FilesHierarchyStore from "../../stores/FilesHierarchyStore"
 import IPCRoutes from "../../../shared/IPCRoutes"
+import getContentBrowserActions from "../templates/get-content-browser-actions"
+import HotKeysController from "../../shared/lib/HotKeysController"
+import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
+import NavigationHistory from "../views/content-browser/libs/NavigationHistory"
 
 export default class ContentBrowserUtil {
 	static sortItems(arr: MutableObject[], isDSC: boolean, sortKey: string) {
@@ -432,12 +436,9 @@ export default class ContentBrowserUtil {
 	static async refreshFiles() {
 		const instance = FilesStore.getInstance()
 		try {
-			let data = <MutableObject[] | null>(await EditorUtil.getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemUtil.path + FileSystemUtil.sep}, false))
-			if (!data)
-				data = instance.data.items
-			await FSRegistryService.readRegistry()
-			const fileTypes = await ContentBrowserAPI.refresh()
-			instance.updateStore({items: data, ...fileTypes})
+			const items = await EditorUtil.getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemUtil.path + FileSystemUtil.sep}, false)
+			const fileTypes = await ContentBrowserAPI.getRegistryData()
+			instance.updateStore({items: items ?? instance.data.items, ...fileTypes})
 		} catch (err) {
 			console.error(err)
 		}
@@ -468,10 +469,10 @@ export default class ContentBrowserUtil {
 		await ContentBrowserUtil.refreshFiles()
 	}
 
-	static updateHierarchy(items) {
+	static updateHierarchy() {
+		const items = FilesStore.getData().items
 		if (!items)
 			return
-		const open = FilesHierarchyStore.getData().open ?? {}
 		const folders = items.filter(item => item.isFolder)
 		const fsSystem = FileSystemUtil
 		const cache: MutableObject = {
@@ -481,11 +482,12 @@ export default class ContentBrowserUtil {
 				childQuantity: folders.length
 			}
 		}
-
-		if (open[fsSystem.sep])
-			folders.filter(item => !item.parent).forEach(item => {
-				ContentBrowserUtil.#getHierarchy(cache, item, 1, folders)
-			})
+		for (let i = 0; i < folders.length; i++) {
+			const item = folders[i]
+			if (item.parent)
+				continue
+			ContentBrowserUtil.#getHierarchy(cache, item, 1, folders)
+		}
 		return Object.values(cache)
 	}
 
@@ -502,4 +504,33 @@ export default class ContentBrowserUtil {
 			}
 		}
 	}
+
+	static buildContextMenuAndHotKeys(
+		COMPONENT_ID: string,
+		ref: HTMLElement,
+		navigationHistory: typeof NavigationHistory,
+		getCurrentDirectory: Function,
+		setCurrentDirectory: Function,
+		setCurrentItem: Function
+	) {
+		const actions = getContentBrowserActions(navigationHistory, getCurrentDirectory, setCurrentDirectory, setCurrentItem)
+		HotKeysController.unbindAction(ref)
+		ContextMenuService.getInstance().destroy(COMPONENT_ID)
+		ContextMenuService.getInstance().mount(
+			actions.contextMenu,
+			COMPONENT_ID,
+			(trigger, element) => {
+				const id = element.getAttribute("data-svelteid")
+				if (id != null)
+					SelectionStoreUtil.setContentBrowserSelected([id])
+			}
+		)
+		HotKeysController.bindAction(
+			ref,
+			actions.hotKeys,
+			"folder",
+			LocalizationEN.CONTENT_BROWSER
+		)
+	}
+
 }

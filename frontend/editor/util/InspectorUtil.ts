@@ -15,6 +15,7 @@ import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
 import SelectionTargets from "../../../shared/SelectionTargets"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
+import FileTypes from "../../../shared/FileTypes"
 
 export default class InspectorUtil {
 	static compareObjects(obj1, obj2) {
@@ -161,5 +162,34 @@ export default class InspectorUtil {
 			}
 		}
 		return selectedItem
+	}
+
+	static setInspectorTabs(fileType: string, setTabs: Function){
+		const VALID_TYPES = [FileTypes.COMPONENT, FileTypes.UI_LAYOUT, FileTypes.MATERIAL, FileTypes.PRIMITIVE]
+		if (VALID_TYPES.includes(fileType)) {
+			setTabs([
+				{
+					label: LocalizationEN.METADATA,
+					icon: "info",
+					index: -2,
+					color: "var(--pj-accent-color-secondary)"
+				},
+				{divider: true},
+				{
+					label: LocalizationEN.ASSET_PROPERTIES,
+					icon: "description",
+					index: -1,
+					color: "var(--pj-accent-color-tertiary)"
+				}
+			])
+		} else
+			setTabs([
+				{
+					label: LocalizationEN.METADATA,
+					icon: "info",
+					index: -2,
+					color: "var(--pj-accent-color-secondary)"
+				}
+			])
 	}
 }

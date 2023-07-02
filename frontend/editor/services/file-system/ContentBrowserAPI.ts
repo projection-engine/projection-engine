@@ -4,18 +4,26 @@ import FileTypes from "../../../../shared/FileTypes"
 import FileSystemUtil from "../../../shared/FileSystemUtil"
 
 
-function mapAsset(reg, type) {
-	return reg.map(i => new Promise(resolve => {
-		const split = i.path.split(FileSystemUtil.sep)
-		resolve({
-			type,
-			registryID: i.id,
-			name: split[split.length - 1].split(".")[0]
-		})
-	}))
-}
-
 export default class ContentBrowserAPI {
+	static #mapAsset(reg, type) {
+		return reg.map(i => new Promise(resolve => {
+			const split = i.path.split(FileSystemUtil.sep)
+			resolve({
+				type,
+				registryID: i.id,
+				name: split[split.length - 1].split(".")[0]
+			})
+		}))
+	}
+
+	static #mapRegistryAsset(reg, type) {
+		const split = reg.path.split(FileSystemUtil.sep)
+		return {
+			type,
+			registryID: reg.id,
+			name: split[split.length - 1].split(".")[0]
+		}
+	}
 
 	static async rename(from, to) {
 		const fromResolved = ElectronResources.path.resolve(from)
@@ -27,7 +35,7 @@ export default class ContentBrowserAPI {
 				await FileSystemUtil.mkdir(toResolved)
 				const res = await FileSystemUtil.readdir(fromResolved)
 				if (!res) return
-				for (let i = 0; i< res.length; i++) {
+				for (let i = 0; i < res.length; i++) {
 					const file = res[i]
 					const oldPath = fromResolved + FileSystemUtil.sep + `${file}`
 					const newPath = toResolved + FileSystemUtil.sep + `${file}`
@@ -53,27 +61,7 @@ export default class ContentBrowserAPI {
 		}
 	}
 
-	static async refresh() {
-		await FSRegistryService.readRegistry()
-		const reg =  FSRegistryService.registryList
-		const textureReg = reg.filter(r => r.path && r.path.includes(FileTypes.TEXTURE)),
-			meshesReg = reg.filter(r => r.path && r.path.includes(FileTypes.PRIMITIVE)),
-			materialsReg = reg.filter(r => r.path && r.path.includes(FileTypes.MATERIAL)),
-			componentsReg = reg.filter(r => r.path && r.path.includes(FileTypes.COMPONENT)),
-			levelsReg = reg.filter(r => r.path && r.path.includes(FileTypes.LEVEL)),
-			uiReg = reg.filter(r => r.path && r.path.includes(FileTypes.UI_LAYOUT)),
-			collections = reg.filter(r => r.path && r.path.includes(FileTypes.COLLECTION)),
-			promises = []
-
-		promises.push(...mapAsset(textureReg, FileTypes.TEXTURE))
-		promises.push(...mapAsset(meshesReg, FileTypes.PRIMITIVE))
-		promises.push(...mapAsset(materialsReg, FileTypes.MATERIAL))
-		promises.push(...mapAsset(componentsReg, FileTypes.COMPONENT))
-		promises.push(...mapAsset(levelsReg, FileTypes.LEVEL))
-		promises.push(...mapAsset(uiReg, FileTypes.UI_LAYOUT))
-		promises.push(...mapAsset(collections, FileTypes.COLLECTION))
-
-		const loadedPromises = await Promise.all(promises)
+	static async getRegistryData() {
 		const result = {
 			textures: [],
 			meshes: [],
@@ -86,34 +74,46 @@ export default class ContentBrowserAPI {
 			terrainMaterials: [],
 			collections: []
 		}
-
-		for (let i = 0; i < loadedPromises.length; i++) {
-			const current = loadedPromises[i]
-			switch (current.type) {
-			case FileTypes.TEXTURE:
-				result.textures.push(current)
+		await FSRegistryService.readRegistry()
+		const registryList = FSRegistryService.registryList
+		for (let i = 0; i < registryList.length; i++) {
+			const registryEntry = registryList[i]
+			if (!registryEntry.path)
+				continue
+			let type
+			let slot
+			switch (true) {
+			case registryEntry.path.includes(FileTypes.TEXTURE):
+				type=FileTypes.TEXTURE
+				slot= result.textures
 				break
-			case FileTypes.PRIMITIVE:
-				result.meshes.push(current)
+			case registryEntry.path.includes(FileTypes.PRIMITIVE):
+				type=FileTypes.PRIMITIVE
+				slot= result.meshes
 				break
-			case FileTypes.MATERIAL:
-				result.materials.push(current)
+			case registryEntry.path.includes(FileTypes.MATERIAL):
+				type=FileTypes.MATERIAL
+				slot= result.materials
 				break
-			case FileTypes.COMPONENT:
-				result.components.push(current)
+			case registryEntry.path.includes(FileTypes.COMPONENT):
+				type=FileTypes.COMPONENT
+				slot= result.components
 				break
-			case FileTypes.LEVEL:
-				result.levels.push(current)
+			case registryEntry.path.includes(FileTypes.LEVEL):
+				type=FileTypes.LEVEL
+				slot= result.levels
 				break
-			case FileTypes.UI_LAYOUT:
-				result.uiLayouts.push(current)
+			case registryEntry.path.includes(FileTypes.UI_LAYOUT):
+				type=FileTypes.UI_LAYOUT
+				slot= result.uiLayouts
 				break
-			case FileTypes.COLLECTION:
-				result.collections.push(current)
-				break
-			default:
+			case registryEntry.path.includes(FileTypes.COLLECTION):
+				type=FileTypes.COLLECTION
+				slot= result.collections
 				break
 			}
+			if(type && slot)
+				slot.push(ContentBrowserAPI.#mapRegistryAsset(registryEntry, type))
 		}
 
 		return result

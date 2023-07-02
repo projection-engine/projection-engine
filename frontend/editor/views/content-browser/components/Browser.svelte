@@ -2,7 +2,6 @@
 <script>
     import Item from "./item/Item.svelte"
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte"
-    import getContentBrowserActions from "../../../templates/get-content-browser-actions"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import {onDestroy, onMount} from "svelte"
     import HotKeysController from "../../../../shared/lib/HotKeysController"
@@ -49,28 +48,6 @@
     $: toRender = ContentBrowserUtil.getFilesToRender(currentDirectory, fileType, store.items, inputValue, elementsPerRow, sortKey, sortDirection)
 
     $: {
-    	if (ref) {
-    		const actions = getContentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
-    		HotKeysController.unbindAction(ref)
-    		ContextMenuService.getInstance().destroy(COMPONENT_ID)
-    		ContextMenuService.getInstance().mount(
-    			actions.contextMenu,
-    			COMPONENT_ID,
-    			(trigger, element) => {
-    				const id = element.getAttribute("data-svelteid")
-    				if (id != null)
-    					SelectionStoreUtil.setContentBrowserSelected([id])
-    			}
-    		)
-    		HotKeysController.bindAction(
-    			ref,
-    			actions.hotKeys,
-    			"folder",
-    			LocalizationEN.CONTENT_BROWSER
-    		)
-    	}
-    }
-    $: {
     	if (viewType === ITEM_TYPES.CARD && ref)
     		elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
     	else if (viewType !== ITEM_TYPES.CARD)
@@ -78,6 +55,7 @@
     }
 
     onMount(() => {
+    	ContentBrowserUtil.buildContextMenuAndHotKeys(COMPONENT_ID, ref, navigationHistory, () => currentDirectory, setCurrentDirectory, v => currentItem = v)
     	FilesStore.getInstance().addListener(COMPONENT_ID, v => store = v)
     	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectionList = data.array, ["array"])
     	resizeOBS = new ResizeObserver(() => {

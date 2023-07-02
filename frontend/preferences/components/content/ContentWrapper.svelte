@@ -6,7 +6,7 @@
     export let tab
 </script>
 
-{#if PREFERENCES[tab]}
-    <PropertyHeader title={PREFERENCES[tab].label}/>
-    <ContentGroup toRender={PREFERENCES[tab]}/>
+{#if PREFERENCES[tab + 2]}
+    <PropertyHeader title={PREFERENCES[tab+ 2].label}/>
+    <ContentGroup toRender={PREFERENCES[tab + 2]}/>
 {/if}

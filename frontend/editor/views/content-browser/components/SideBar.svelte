@@ -13,7 +13,7 @@
     export let currentDirectory
 
     let hierarchy = {items: []}
-    onMount(() => FilesHierarchyStore.getInstance().addListener(COMPONENT_ID, v => hierarchy = v, ["open", "items"]))
+    onMount(() => FilesHierarchyStore.getInstance().addListener(COMPONENT_ID, v => hierarchy = v))
     onDestroy(() => FilesHierarchyStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 

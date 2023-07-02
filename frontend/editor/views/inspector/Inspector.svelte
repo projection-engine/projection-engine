@@ -25,7 +25,7 @@
     	{divider: true}
     ]
     let selectedItem
-    let tabIndex
+    let tabIndex = 0
     let tabs = []
     let lockedEntity
     let isEntity
@@ -33,7 +33,10 @@
 
 
     onMount(() => {
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectedItem = InspectorUtil.getSelectionTarget(data))
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => {
+    		selectedItem = InspectorUtil.getSelectionTarget(data)
+    		tabIndex = SelectionTargets.ENGINE === SelectionStore.getData().TARGET ? 2 : 0
+    	})
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
     		lockedEntity = data.lockedEntity ? QueryAPI.getEntityByID(data.lockedEntity) : undefined
     	}, ["lockedEntity"])
@@ -45,11 +48,7 @@
     })
 
     function setTabs(data) {
-    	const TABS = PREFERENCES_TABS.map((e, i) => {
-    		if (e.divider)
-    			return e
-    		return {...e, index: i - 5}
-    	})
+    	const TABS = [...PREFERENCES_TABS]
     	if (!selectedItem)
     		TABS.pop()
     	tabs = [...TABS, ...data]
@@ -60,22 +59,21 @@
     	if (!selectedItem) {
     		setTabs([])
     	}
-    	tabIndex = SelectionTargets.ENGINE === SelectionStore.getData().TARGET ? -1 : -2
-    	isOnDynamicTab = tabIndex >= -2 && selectedItem !== undefined
+    	isOnDynamicTab = tabIndex >= 2 && selectedItem !== undefined
     	isEntity = selectedItem instanceof Entity
     }
 </script>
 
 <div class="wrapper">
     <div class="tabs">
-        {#each tabs as button}
+        {#each tabs as button, index}
             {#if button.divider}
                 <div data-sveltedivider="-"></div>
             {:else}
                 <button data-sveltebuttondefault="-"
-                        data-sveltehighlight={tabIndex === button.index ? "-" : undefined}
+                        data-sveltehighlight={tabIndex === index ? "-" : undefined}
                         class="tab-button shared"
-                        on:click={() => tabIndex = button.index}
+                        on:click={() => tabIndex = index}
                         style={button.color ? "--pj-accent-color: " + button.color  + "; color: " + button.color : undefined}
                 >
                     <Icon styles="font-size: .9rem">{button.icon}</Icon>
@@ -88,18 +86,18 @@
         {#if isOnDynamicTab}
             {#if isEntity}
                 <EntityInspector
-                        setTabIndex={i => tabIndex = i}
+                        setTabIndex={i => tabIndex = i + 5}
                         setTabs={setTabs}
                         entity={selectedItem}
-                        tabIndex={tabIndex}/>
+                        tabIndex={tabIndex - 5}/>
             {:else}
                 <ContentBrowserItem setTabs={setTabs} item={selectedItem} tabIndex={tabIndex}/>
             {/if}
         {:else}
-            {#if tabs[tabIndex + 5]?.type === "camera"}
+            {#if tabs[tabIndex]?.type === "camera"}
                 <CameraPreferences/>
             {:else}
-                <ContentWrapper tab={tabIndex + 7}/>
+                <ContentWrapper tab={tabIndex}/>
             {/if}
         {/if}
     </div>

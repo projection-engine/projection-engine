@@ -29,7 +29,7 @@
     let executingAnimation = false
     let ref
     let focused = false
-    let viewportTabs
+
 
     const setViewportTab = (value, index = currentTab) => {
     	const clone = [...viewTab]
@@ -102,7 +102,7 @@
                 removeMultipleTabs={removeMultipleTabs}
                 removeTab={i => ViewportUtil.removeTab(i, viewTab,  updateView, currentTab, v => TabsStoreUtil.updateByAttributes("viewport", undefined, v))}
                 setCurrentView={v => TabsStoreUtil.updateByAttributes("viewport", undefined, v)}
-                tabs={viewportTabs}
+                tabs={viewTab}
                 templates={VIEW_TEMPLATES}
                 updateView={setViewportTab}
         />
