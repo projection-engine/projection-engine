@@ -5,7 +5,6 @@
     import GIZMOS from "../../static/GIZMOS.ts"
     import GizmoSystem from "../../../../engine-core/tools/runtime/GizmoSystem"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
-
     import CameraSettings from "./components/CameraSettings.svelte"
     import SceneOptions from "./SceneOptions.svelte"
     import EngineStore from "../../../stores/EngineStore"
@@ -25,14 +24,13 @@
 
     const COMPONENT_ID = crypto.randomUUID()
     const draggable = dragDrop(false)
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
 
     export let viewMetadata
 
     let previousMetadata
     let isOnGizmo = false
-    let engine = {}
     let isSelectBoxDisabled
+    let executingAnimation
     let shadingModel
     let focusedCamera
 
@@ -49,8 +47,9 @@
     		shadingModel = data.shadingModel
     	}, ["gizmo"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
+    		executingAnimation = data.executingAnimation
     		focusedCamera = data.focusedCamera ? Engine.entities.get(data.focusedCamera) : null
-    	}, ["focusedCamera"])
+    	}, ["focusedCamera", "executingAnimation"])
     	GizmoSystem.onStart = () => isOnGizmo = true
     	GizmoSystem.onStop = () => isOnGizmo = false
     	SceneEditorUtil.onSceneEditorMount(draggable, viewMetadata)
@@ -61,17 +60,16 @@
     	EngineStore.getInstance().removeListener(COMPONENT_ID)
     	GizmoSystem.onStop = GizmoSystem.onStart = undefined
     	viewMetadata.cameraMetadata = CameraAPI.serializeState()
-    	unsubscribeEngine()
     	ContextMenuService.getInstance().destroy(RENDER_TARGET)
     	draggable.onDestroy()
     	ViewportInteractionListener.destroy()
     })
 </script>
 
-{#if !engine.executingAnimation}
+{#if !executingAnimation}
     <ViewHeader>
         {#if isOnGizmo}
-            <EntityInformation  engine={engine}/>
+            <EntityInformation/>
         {:else}
             <SceneOptions/>
         {/if}

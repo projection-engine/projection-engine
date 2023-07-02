@@ -17,6 +17,7 @@
     import TabsStoreUtil from "../../util/TabsStoreUtil"
 
     const COMPONENT_ID = crypto.randomUUID()
+    const VIEW_TEMPLATES = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({name: LocalizationEN[value], id: value}))
 
     /** @type {function} */
     export let updateView
@@ -29,12 +30,6 @@
     let ref
     let focused = false
     let viewportTabs
-
-    const VIEW_TEMPLATES = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({name: LocalizationEN[value], id: value}))
-    const unsubscribeTabs = TabsStore.getStore(() => {
-    	currentTab = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
-    	focused = ref === TabsStoreUtil.getFocusedTab()
-    })
 
     const setViewportTab = (value, index = currentTab) => {
     	const clone = [...viewTab]
@@ -58,6 +53,10 @@
     }
 
     onMount(() => {
+    	TabsStore.getInstance().addListener(COMPONENT_ID, () => {
+    		currentTab = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
+    		focused = ref === TabsStoreUtil.getFocusedTab()
+    	})
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
     		if (data.executingAnimation && viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR)
     			setViewportTab(VIEWPORT_TABS.EDITOR)
@@ -70,8 +69,8 @@
     })
 
     onDestroy(() => {
+    	TabsStore.getInstance().removeListener(COMPONENT_ID)
     	EngineStore.getInstance().removeListener(COMPONENT_ID)
-    	unsubscribeTabs()
     	HotKeysController.unbindAction(ref)
     })
 
