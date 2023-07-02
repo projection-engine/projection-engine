@@ -9,7 +9,6 @@ import TranslationGizmo from "../../../engine-core/tools/lib/transformation/Tran
 import ScalingGizmo from "../../../engine-core/tools/lib/transformation/ScalingGizmo"
 import GIZMOS from "../static/GIZMOS"
 import EngineResources from "../../../engine-core/lib/EngineResources"
-import VISUAL_SETTINGS from "../static/VISUAL_SETTINGS"
 import AbstractSingleton from "../../../shared/AbstractSingleton"
 import EngineStore from "../../stores/EngineStore"
 import SettingsStore from "../../stores/SettingsStore"
@@ -26,20 +25,21 @@ export default class EngineToolsService extends AbstractSingleton {
 	constructor() {
 		super()
 		SelectionStore.getInstance()
-			.addListener("EngineToolsService", this.#updateSelection)
+			.addListener("EngineToolsService", EngineToolsService.#updateSelection)
 		EngineStore.getInstance()
-			.addListener("EngineToolsService", this.#updateCameraTracker)
+			.addListener("EngineToolsService", EngineToolsService.#updateCameraTracker)
 		SettingsStore.getInstance()
-			.addListener("EngineToolsService_camera", this.#updateWithSettings)
+			.addListener("EngineToolsService_camera", EngineToolsService.#updateWithSettings)
 		VisualsStore.getInstance()
-			.addListener("EngineToolsService", this.#updateEngineSettings)
+			.addListener("EngineToolsService", EngineToolsService.#updateEngineSettings)
 	}
 
-	#updateSelection() {
+	static #updateSelection() {
 		EngineTools.updateSelectionData(SelectionStoreUtil.getEntitiesSelected())
 	}
 
-	#updateEngineState(visualSettings:typeof VISUAL_SETTINGS) {
+	static #updateEngineState() {
+		const visualSettings = VisualsStore.getData()
 		EngineState.fxaaEnabled = visualSettings.FXAA
 		EngineState.fxaaSpanMax = visualSettings.FXAASpanMax
 		EngineState.fxaaReduceMin = visualSettings.FXAAReduceMin
@@ -70,7 +70,8 @@ export default class EngineToolsService extends AbstractSingleton {
 		EngineResources.updateParams()
 	}
 
-	#updateEngineSettings(visualSettings:typeof VISUAL_SETTINGS) {
+	static 	#updateEngineSettings() {
+		const visualSettings = VisualsStore.getData()
 		GPU.canvas.width = visualSettings.resolutionX
 		GPU.canvas.height = visualSettings.resolutionY
 
@@ -78,10 +79,10 @@ export default class EngineToolsService extends AbstractSingleton {
 			EngineTools.bindSystems()
 		else
 			EngineTools.unbindSystems()
-		this.#updateEngineState(visualSettings)
+		EngineToolsService.#updateEngineState()
 	}
 
-	#updateCameraTracker() {
+	static #updateCameraTracker() {
 		const engine = EngineStore.getData()
 		const settings = SettingsStore.getData()
 		if (engine.executingAnimation)
@@ -99,7 +100,8 @@ export default class EngineToolsService extends AbstractSingleton {
 		}
 	}
 
-	#updateEngineToolsState(settings) {
+	static 	#updateEngineToolsState() {
+		const settings = SettingsStore.getData()
 		EngineToolsState.gridColor = settings.gridColor
 		EngineToolsState.gridScale = settings.gridScale * 10
 		EngineToolsState.gridThreshold = settings.gridThreshold
@@ -110,7 +112,8 @@ export default class EngineToolsService extends AbstractSingleton {
 		EngineToolsState.iconScale = settings.iconScale
 	}
 
-	#updateWithSettings(settings) {
+	static #updateWithSettings() {
+		const settings = SettingsStore.getData()
 		RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
 		TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
 		ScalingGizmo.gridSize = settings.gizmoGrid.scaleGizmo || .001
@@ -129,7 +132,8 @@ export default class EngineToolsService extends AbstractSingleton {
 			GizmoSystem.targetGizmo = GizmoSystem.scaleGizmo
 			break
 		}
-		this.#updateCameraTracker()
-		this.#updateEngineToolsState(settings)
+		EngineToolsService.#updateCameraTracker()
+		EngineToolsService.#updateEngineToolsState()
+		CameraAPI.isOrthographic = settings.camera.ortho
 	}
 }

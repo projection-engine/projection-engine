@@ -17,9 +17,9 @@
 
     export let noChangeTracking
 
-    let message = undefined
+    let windowChangeState = {}
 
-    onMount(() => WindowChangeStore.getInstance().addListener(COMPONENT_ID, data => message = data))
+    onMount(() => WindowChangeStore.getInstance().addListener(COMPONENT_ID, data => windowChangeState = data))
     onDestroy(() => WindowChangeStore.getInstance().removeListener(COMPONENT_ID))
 
     function toggleFullscreen() {
@@ -34,20 +34,18 @@
     }
 </script>
 
-{#if message !== undefined && !noChangeTracking}
+{#if windowChangeState.message !== undefined && !noChangeTracking}
     <Modal handleClose={() => WindowChangeStore.getInstance().updateStore({})} styles="width: 30vw; padding: 8px">
         <div data-svelteinline="-" style="width: 100%; gap: 12px">
             <Icon styles="font-size: 50px">help_outline</Icon>
-            <h5>{message.message}</h5>
+            <h5>{windowChangeState.message}</h5>
         </div>
         <div data-svelteinline="-" style="width: 100%; gap: 8px; padding-left: 50%">
             <button
                     data-sveltebuttondefault="-"
                     data-sveltefocusbutton="-"
                     class="modal-button"
-                    on:click={() => {
-                        message.callback?.()
-                    }}
+                    on:click={windowChangeState.callback}
             >
                 {LocalizationEN.YES}
             </button>

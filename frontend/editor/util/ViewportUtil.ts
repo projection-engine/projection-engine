@@ -23,7 +23,16 @@ export default class ViewportUtil{
 		}
 	}
 
+	/**
+	 *
+	 * @param i {number}
+	 * @param tabs {object[]}
+	 * @param setTabs {function}
+	 * @param currentTab {number}
+	 * @param cb {function}
+	 */
 	static removeTab(i, tabs,  setTabs, currentTab, cb) {
+		console.trace(tabs)
 		const clone  = [...tabs]
 		clone.splice(i, 1)
 		if (i === currentTab || i < currentTab)

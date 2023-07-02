@@ -25,11 +25,11 @@
     let cameraGizmoSize
 
     onMount(() => {
-    	SettingsStore.getInstance.addListener(COMPONENT_ID, data => {
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
     		view = data.views?.[data.currentView]
     		cameraGizmoSize = data.cameraGizmoSize
     	}, ["views", "currentView", "cameraGizmoSize"])
-    	EngineStore.getInstance.addListener(COMPONENT_ID, data => HotKeysController.blockActions = data.executingAnimation, ["executingAnimation"])
+    	EngineStore.getInstance().addListener(COMPONENT_ID, data => HotKeysController.blockActions = data.executingAnimation, ["executingAnimation"])
     	StoreIPCListener.get()
     	ToastNotificationSystem.get()
     	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
@@ -42,10 +42,9 @@
     	ElectronResources.ipcRenderer.on("console", (_, data) => console.error(...data))
     })
 
-    $:
     onDestroy(() => {
-    	EngineStore.getInstance.removeListener(COMPONENT_ID)
-    	SettingsStore.getInstance.removeListener(COMPONENT_ID)
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
+    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
     })
 </script>
 

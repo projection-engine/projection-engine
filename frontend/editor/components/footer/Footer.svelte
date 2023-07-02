@@ -15,7 +15,7 @@
     import SettingsStore from "../../../stores/SettingsStore"
 
     const COMPONENT_ID = crypto.randomUUID()
-    let settings
+    let settings = {}
     const openLogs = async () => {
     	if (FileSystemUtil.exists(ErrorLoggerService.path))
     		ElectronResources.shell.openPath(ErrorLoggerService.path).catch()

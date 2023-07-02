@@ -22,7 +22,7 @@
     const COMPONENT_ID = crypto.randomUUID()
 
     let executingAnimation = false
-    let settings
+    let settings = {}
     let hasChanges = false
 
     onMount(() => {
@@ -36,6 +36,13 @@
     	ChangesTrackerStore.getInstance().removeListener(COMPONENT_ID)
     	SettingsStore.getInstance().removeListener(COMPONENT_ID)
     })
+    function removeTab(i) {
+    	let currentView = settings.currentView
+    	if (i === currentView || i < currentView)
+    		currentView = currentView === 0 ? 0 : currentView - 1
+    	const views = settings.views.filter((_, index) => i !== index)
+    	SettingsStore.getInstance().updateStore({views, currentView})
+    }
 </script>
 
 <FrameWrapper>
@@ -108,7 +115,7 @@
             }}
             allowRenaming={true}
             addNewTab={ViewportUtil.addNewTab}
-            removeTab={ViewportUtil.removeTab}
+            removeTab={removeTab}
             tabs={settings.views}
             currentTab={settings.currentView}
             setCurrentView={v => SettingsStore.getInstance().updateStore({currentView: v})}

@@ -20,7 +20,7 @@
     const BUTTON_DROPDOWN_INT = "background: transparent; box-shadow: none; width: 50px; justify-content: center; gap: 6px"
 
     let transformationType
-    let gizmoGrid
+    let gizmoGrid = {}
     let gizmo
 
     onMount(() => {

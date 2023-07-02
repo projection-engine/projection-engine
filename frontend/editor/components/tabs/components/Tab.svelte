@@ -25,12 +25,15 @@
     /** @type {ViewTabItem} */
     export let value
     let organizedTemplates
-    $: organizedTemplates = templates.reduce((all, one, i) => {
-    	const ch = Math.floor(i / 2)
-    	all[ch] = all[ch] || []
-    	all[ch].push(one)
-    	return all
-    }, [])
+    $: {
+    	if (templates != null)
+    		organizedTemplates = templates.reduce((all, one, i) => {
+    			const ch = Math.floor(i / 2)
+    			all[ch] = all[ch] || []
+    			all[ch].push(one)
+    			return all
+    		}, [])
+    }
 
     let color = value?.color || [255, 255, 255]
 

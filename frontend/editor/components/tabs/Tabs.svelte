@@ -28,8 +28,6 @@
     /** @type {function} */
     export let updateView
     /** @type {boolean} */
-    export let disabled
-    /** @type {boolean} */
     export let focused
     /** @type {string} */
     export let styles
@@ -37,14 +35,17 @@
     const COMPONENT_ID = crypto.randomUUID()
 
 
-    let sortedTabs
+    let sortedTabs = []
     let sortable
     let ref
     let contextID
+
     $: {
-    	for (let i = 0; i < tabs.length; i++)
-    		tabs[i].originalIndex = i
-    	sortedTabs = tabs.sort((a, b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    	if(tabs != null) {
+    		for (let i = 0; i < tabs.length; i++)
+    			tabs[i].originalIndex = i
+    		sortedTabs = tabs.sort((a, b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    	}
     }
 
     /**

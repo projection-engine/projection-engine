@@ -62,8 +62,8 @@
     	currentDirectory,
     	items,
     	setOnDrag,
-    	isSelected: selectionList.includes(data.id),
-    	isToBeCut: toCut.includes(data.id)
+    	isSelected: selectionList != null && selectionList.includes(data.id),
+    	isToBeCut: toCut != null && toCut.includes(data.id)
     }
 
     onMount(() => {

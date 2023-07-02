@@ -1,5 +1,7 @@
 <script>
 
+    import Icon from "../icon/Icon.svelte"
+
     export let checked
     export let handleCheck
     export let label
@@ -17,7 +19,11 @@
             class:check-button-checked={checked}
             disabled={disabled}
             on:click={() => handleCheck(checked)}
-    ></button>
+    >
+        {#if checked}
+            <Icon styles="font-size: .8rem; color: white">check</Icon>
+        {/if}
+    </button>
     {label}
 </div>
 

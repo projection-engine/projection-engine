@@ -15,6 +15,7 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import SelectionTargets from "../../../../shared/SelectionTargets"
     import EngineStore from "../../../stores/EngineStore"
+    import InspectorUtil from "../../util/InspectorUtil"
 
     const COMPONENT_ID = crypto.randomUUID()
     const PREFERENCES_TABS = [
@@ -32,7 +33,7 @@
 
 
     onMount(() => {
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectedItem = SelectionStore.getSelectionTarget(data))
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectedItem = InspectorUtil.getSelectionTarget(data))
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
     		lockedEntity = data.lockedEntity ? QueryAPI.getEntityByID(data.lockedEntity) : undefined
     	}, ["lockedEntity"])

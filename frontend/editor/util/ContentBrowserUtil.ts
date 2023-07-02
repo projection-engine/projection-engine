@@ -422,7 +422,9 @@ export default class ContentBrowserUtil {
 
 
 	static initializeContentBrowser() {
-		FilesStore.getInstance().addListener("self-update", FilesHierarchyStore.getInstance().updateStore)
+		FilesStore.getInstance().addListener("self-update", () => {
+			FilesHierarchyStore.getInstance().updateStore()
+		})
 		ContentBrowserUtil.refreshFiles().catch()
 	}
 
@@ -469,7 +471,7 @@ export default class ContentBrowserUtil {
 	static updateHierarchy(items) {
 		if (!items)
 			return
-		const open = FilesHierarchyStore.getData().open
+		const open = FilesHierarchyStore.getData().open ?? {}
 		const folders = items.filter(item => item.isFolder)
 		const fsSystem = FileSystemUtil
 		const cache: MutableObject = {

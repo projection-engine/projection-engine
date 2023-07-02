@@ -36,7 +36,7 @@
                 data-svelteview-header-button="-"
                 on:click={() => navigationHistory.undo()}
         >
-            <Icon styles="font-size: .9rem">arrow_back</Icon>
+            <Icon>arrow_back</Icon>
             <ToolTip content={LocalizationEN.BACK_DIR}/>
         </button>
         <button data-sveltebuttondefault="-"

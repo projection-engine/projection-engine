@@ -6,10 +6,13 @@
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
     const COMPONENT_ID = crypto.randomUUID()
-    export let setCurrentDirectory = undefined
-    export let currentDirectory = undefined
 
-    let hierarchy
+    /** @type {function} */
+    export let setCurrentDirectory
+    /** @type {{id: string}} */
+    export let currentDirectory
+
+    let hierarchy = {items: []}
     onMount(() => FilesHierarchyStore.getInstance().addListener(COMPONENT_ID, v => hierarchy = v, ["open", "items"]))
     onDestroy(() => FilesHierarchyStore.getInstance().removeListener(COMPONENT_ID))
 </script>

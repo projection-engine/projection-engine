@@ -96,7 +96,6 @@
     	SelectionStore.getInstance().removeListener(COMPONENT_ID)
     	HotKeysController.unbindAction(ref)
     	ContextMenuService.getInstance().destroy(COMPONENT_ID)
-    	unsubscribe()
     	clearTimeout(timeout)
     	resizeOBS?.disconnect?.()
     })

@@ -17,7 +17,7 @@
     	update(key, newData)
     }
 
-    let shortcuts
+    let shortcuts = {viewport: [], shaderEditor: [], contentBrowser: []}
     let allShortcuts
 
     onMount(() => {

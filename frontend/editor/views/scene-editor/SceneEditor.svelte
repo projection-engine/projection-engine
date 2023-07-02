@@ -30,7 +30,7 @@
     let previousMetadata
     let isOnGizmo = false
     let isSelectBoxDisabled
-    let executingAnimation
+    let executingAnimation = false
     let shadingModel
     let focusedCamera
 

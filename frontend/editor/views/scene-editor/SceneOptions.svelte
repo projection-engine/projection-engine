@@ -74,7 +74,6 @@
             tooltip={LocalizationEN.OVERLAY}
     />
     <OptionDropdown
-            noPadding={true}
             options={SceneEditorUtil.getShadingModels()}
             label={shadingModelLabel}
             autoClose={true}
