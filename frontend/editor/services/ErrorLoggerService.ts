@@ -1,7 +1,7 @@
-import FileSystemUtil from "../../../shared/FileSystemUtil"
-import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI"
-import Folders from "../../../../shared/Folders"
-import StorageKeys from "../../../../shared/StorageKeys"
+import FileSystemUtil from "../../shared/FileSystemUtil"
+import ConsoleAPI from "../../../engine-core/lib/utils/ConsoleAPI"
+import Folders from "../../../shared/Folders"
+import StorageKeys from "../../../shared/StorageKeys"
 
 export default class ErrorLoggerService {
 

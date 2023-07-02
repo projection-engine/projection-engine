@@ -1,5 +1,5 @@
 import FileSystemUtil from "../../../shared/FileSystemUtil"
-import FSRegistryService from "../file-system/FSRegistryService"
+import EditorFSUtil from "../../util/EditorFSUtil"
 
 import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
@@ -96,7 +96,7 @@ export default class EngineResourceLoaderService {
 			const data = items[i]
 			if (!data)
 				continue
-			const res = FSRegistryService.getRegistryEntry(data)
+			const res = EditorFSUtil.getRegistryEntry(data)
 			if (!res)
 				continue
 			switch ("." + res.path.split(".").pop()) {

@@ -2,7 +2,6 @@
 
     import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS"
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import FSAssetUtil from "../../../../services/file-system/FSAssetUtil"
     import ElectronResources from "../../../../../shared/lib/ElectronResources"
     import GPU from "../../../../../../engine-core/GPU"
     import TEXTURE_FILTERING from "../../../../../../engine-core/static/texture/TEXTURE_FILTERING"
@@ -13,6 +12,7 @@
     import Range from "../../../../../shared/components/range/Range.svelte"
     import TEXTURE_TEMPLATE from "../../../../../../engine-core/static/TEXTURE_TEMPLATE"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import EditorFSUtil from "../../../../util/EditorFSUtil"
 
     const B = "height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"
     export let item
@@ -60,7 +60,7 @@
     			}
     		})
     	}
-    	FSAssetUtil.updateAsset(item.registryID, JSON.stringify(data)).catch()
+    	EditorFSUtil.updateAsset(item.registryID, JSON.stringify(data)).catch()
     	changed = false
     	const existing = GPU.textures.get(item.registryID)
     	if (existing != null)

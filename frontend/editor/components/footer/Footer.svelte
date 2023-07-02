@@ -1,6 +1,6 @@
 <script>
 
-    import ErrorLoggerService from "../../services/file-system/ErrorLoggerService"
+    import ErrorLoggerService from "../../services/ErrorLoggerService"
     import FrameMetadata from "./components/PerformanceStatistics.svelte"
     import SceneStats from "./components/SceneStats.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"

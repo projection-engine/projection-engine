@@ -1,9 +1,8 @@
 <script>
-    import FSAssetUtil from "../../../../services/file-system/FSAssetUtil"
     import GPU from "../../../../../../engine-core/GPU"
 
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
-    import FSRegistryService from "../../../../services/file-system/FSRegistryService"
+    import EditorFSUtil from "../../../../util/EditorFSUtil"
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
     import MaterialUniforms from "../MaterialUniforms.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
@@ -25,7 +24,7 @@
     	if (wasUpdated)
     		return
     	wasUpdated = true
-    	const reg = FSRegistryService.getRegistryEntry(ID)
+    	const reg = EditorFSUtil.getRegistryEntry(ID)
     	originalMat = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + reg.path, "json")
     	if (!InspectorUtil.compareObjects(temp.uniforms, originalMat.response.uniforms)) {
     		temp = {
@@ -33,7 +32,7 @@
     			uniforms: originalMat.response.uniforms,
     			uniformValues: originalMat.response.uniformValues
     		}
-    		await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(temp))
+    		await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(temp))
     	}
     }
 
@@ -54,7 +53,7 @@
     				uniformValues: update
     			}
     		}
-    		await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(temp))
+    		await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(temp))
     		const instance = GPU.materials.get(item.registryID)
     		if (instance) {
     			await instance.updateUniformGroup(temp.response.uniformValues)

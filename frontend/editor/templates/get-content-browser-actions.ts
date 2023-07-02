@@ -1,5 +1,5 @@
 import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES"
-import FSRegistryService from "../services/file-system/FSRegistryService"
+import EditorFSUtil from "../util/EditorFSUtil"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import LocalizationEN from "../../../shared/LocalizationEN"
@@ -100,7 +100,7 @@ export default function getContentBrowserActions(navigationHistory, getCurrentDi
 			{
 				label: LocalizationEN.COPY_ID,
 				onClick: () => {
-					const ID = FSRegistryService.getByPath(SelectionStoreUtil.getContentBrowserSelected()[0])
+					const ID = EditorFSUtil.getByPath(SelectionStoreUtil.getContentBrowserSelected()[0])
 					if (ID) {
 						ToastNotificationSystem.getInstance().success(LocalizationEN.COPIED)
 						ElectronResources.clipboard.writeText(ID)

@@ -1,12 +1,12 @@
 <script>
 
-    import FSAssetUtil from "../../../../services/file-system/FSAssetUtil"
     import GPU from "../../../../../../engine-core/GPU"
     import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor"
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import EditorFSUtil from "../../../../util/EditorFSUtil"
 
     export let item
     let wasUpdated = false
@@ -20,7 +20,7 @@
     	data.tangents = PrimitiveProcessor.computeTangents(data.indices, data.vertices, data.uvs, data.normals, true)
 
 
-    	await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(data))
+    	await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(data))
     	if (GPU.meshes.get(item.registryID) != null) {
     		GPUAPI.destroyMesh(item.registryID)
     		GPUAPI.allocateMesh(item.registryID, data)

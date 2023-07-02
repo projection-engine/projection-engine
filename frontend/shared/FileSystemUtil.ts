@@ -1,4 +1,4 @@
-import FSRegistryService from "../editor/services/file-system/FSRegistryService"
+import EditorFSUtil from "../editor/util/EditorFSUtil"
 import ElectronResources from "./lib/ElectronResources"
 import Folders from "../../shared/Folders"
 import IPCRoutes from "../../shared/IPCRoutes"
@@ -47,7 +47,7 @@ export default class FileSystemUtil {
 
 	static async deleteFile(pathName, options) {
 		const currentPath = FileSystemUtil.resolvePath(pathName)
-		const registry = FSRegistryService.registryList
+		const registry = EditorFSUtil.registryList
 		for (let i = 0; i < registry.length; i++) {
 			const r = registry[i]
 			const rPath = FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + r.path)
@@ -56,7 +56,7 @@ export default class FileSystemUtil {
 		}
 		await FileSystemUtil.rm(currentPath, options)
 
-		const rs = await FSRegistryService.findRegistry(currentPath)
+		const rs = await EditorFSUtil.findRegistry(currentPath)
 		if (rs) await FileSystemUtil.rm(FileSystemUtil.resolvePath(FileSystemUtil.path + FileSystemUtil.sep + Folders.REGISTRY + FileSystemUtil.sep + rs.id + ".reg"))
 	}
 

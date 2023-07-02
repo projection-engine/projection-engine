@@ -3,7 +3,7 @@
     import COMPONENTS from "../../../../../../engine-core/static/COMPONENTS.ts"
 
     import Selector from "../../../../components/selector/Selector.svelte"
-    import FSRegistryService from "../../../../services/file-system/FSRegistryService"
+    import EditorFSUtil from "../../../../util/EditorFSUtil"
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import UIAPI from "../../../../../../engine-core/lib/rendering/UIAPI"
     import Engine from "../../../../../../engine-core/Engine"
@@ -26,7 +26,7 @@
     }
 
     async function loadUILayout(reg) {
-    	const ref = FSRegistryService.getRegistryEntry(reg.registryID)
+    	const ref = EditorFSUtil.getRegistryEntry(reg.registryID)
     	if (!ref)
     		return
     	const file = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + ref.path)

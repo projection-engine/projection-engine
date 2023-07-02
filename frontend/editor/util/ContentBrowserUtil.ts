@@ -8,11 +8,9 @@ import EngineResourceLoaderService from "../services/engine/EngineResourceLoader
 import LevelService from "../services/engine/LevelService"
 import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools"
 import VIEWS from "../components/view/static/VIEWS"
-import ContentBrowserAPI from "../services/file-system/ContentBrowserAPI"
-import FSRegistryService from "../services/file-system/FSRegistryService"
+import EditorFSUtil from "./EditorFSUtil"
 import FileSystemUtil from "../../shared/FileSystemUtil"
 import {SORTS} from "../views/content-browser/static/SORT_INFO"
-import FSAssetUtil from "../services/file-system/FSAssetUtil"
 import COMPONENT_TEMPLATE from "../../../engine-core/static/templates/COMPONENT_TEMPLATE"
 import UI_TEMPLATE from "../../../engine-core/static/templates/UI_TEMPLATE"
 import EditorUtil from "./EditorUtil"
@@ -122,7 +120,7 @@ export default class ContentBrowserUtil {
 
 		if (item.isFolder) {
 			const newNamePath = (item.parent ? item.parent + FileSystemUtil.sep + newName : FileSystemUtil.sep + newName)
-			await ContentBrowserAPI.rename(FileSystemUtil.ASSETS_PATH + item.id, FileSystemUtil.ASSETS_PATH + newNamePath)
+			await ContentBrowserUtil.rename(FileSystemUtil.ASSETS_PATH + item.id, FileSystemUtil.ASSETS_PATH + newNamePath)
 			await ContentBrowserUtil.refreshFiles().catch()
 			if (item.id === currentDirectory.id)
 				setCurrentDirectory({id: newNamePath})
@@ -135,7 +133,7 @@ export default class ContentBrowserUtil {
 		if (FileSystemUtil.exists(targetPath))
 			return
 
-		await ContentBrowserAPI.rename(FileSystemUtil.ASSETS_PATH + item.id, targetPath)
+		await ContentBrowserUtil.rename(FileSystemUtil.ASSETS_PATH + item.id, targetPath)
 		await ContentBrowserUtil.refreshFiles().catch()
 	}
 
@@ -149,7 +147,7 @@ export default class ContentBrowserUtil {
 				if (target !== FileSystemUtil.sep) {
 					let from = textData
 					if (!from.includes(FileSystemUtil.sep)) {
-						const reg = FSRegistryService.getRegistryEntry(from)
+						const reg = EditorFSUtil.getRegistryEntry(from)
 						if (reg) from = reg.path
 						else {
 							console.error("Some error occurred")
@@ -161,13 +159,13 @@ export default class ContentBrowserUtil {
 					const toItem = itemsFilesStore.find(f => f.id === target)
 					const fromItem = itemsFilesStore.find(f => f.id === from || (f.registryID === textData && f.registryID !== undefined))
 					if (from !== to && toItem && toItem.id !== from && fromItem && fromItem.parent !== to && toItem.isFolder) {
-						await ContentBrowserAPI.rename(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + from), FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + to))
+						await ContentBrowserUtil.rename(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + from), FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + to))
 						await ContentBrowserUtil.refreshFiles()
 					}
 				} else if (textData.includes(FileSystemUtil.sep)) {
 					const newPath = FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + textData.split(FileSystemUtil.sep).pop()
 					if (!FileSystemUtil.exists(newPath)) {
-						await ContentBrowserAPI.rename(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + textData), FileSystemUtil.resolvePath(newPath))
+						await ContentBrowserUtil.rename(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + textData), FileSystemUtil.resolvePath(newPath))
 						await ContentBrowserUtil.refreshFiles()
 					} else ToastNotificationSystem.getInstance().error(LocalizationEN.ITEM_ALREADY_EXISTS)
 				}
@@ -381,7 +379,7 @@ export default class ContentBrowserUtil {
 
 	static async #createFile(currentDirectory, name, type, data) {
 		const path = await EditorUtil.resolveFileName(currentDirectory.id + FileSystemUtil.sep + name, type)
-		await FSAssetUtil.writeAsset(path, typeof data === "object" ? JSON.stringify(data) : data)
+		await EditorFSUtil.writeAsset(path, typeof data === "object" ? JSON.stringify(data) : data)
 		await ContentBrowserUtil.refreshFiles()
 	}
 
@@ -437,7 +435,7 @@ export default class ContentBrowserUtil {
 		const instance = FilesStore.getInstance()
 		try {
 			const items = await EditorUtil.getCall(IPCRoutes.REFRESH_CONTENT_BROWSER, {pathName: FileSystemUtil.path + FileSystemUtil.sep}, false)
-			const fileTypes = await ContentBrowserAPI.getRegistryData()
+			const fileTypes = await ContentBrowserUtil.getRegistryData()
 			instance.updateStore({items: items ?? instance.data.items, ...fileTypes})
 		} catch (err) {
 			console.error(err)
@@ -531,6 +529,109 @@ export default class ContentBrowserUtil {
 			"folder",
 			LocalizationEN.CONTENT_BROWSER
 		)
+	}
+
+	static #mapRegistryAsset(reg, type) {
+		const split = reg.path.split(FileSystemUtil.sep)
+		return {
+			type,
+			registryID: reg.id,
+			name: split[split.length - 1].split(".")[0]
+		}
+	}
+
+	static async rename(from, to) {
+		const fromResolved = ElectronResources.path.resolve(from)
+		const toResolved = ElectronResources.path.resolve(to)
+		await EditorFSUtil.readRegistry()
+		try {
+			const stat = await FileSystemUtil.stat(fromResolved)
+			if (stat !== undefined && stat.isDirectory) {
+				await FileSystemUtil.mkdir(toResolved)
+				const res = await FileSystemUtil.readdir(fromResolved)
+				if (!res) return
+				for (let i = 0; i < res.length; i++) {
+					const file = res[i]
+					const oldPath = fromResolved + FileSystemUtil.sep + `${file}`
+					const newPath = toResolved + FileSystemUtil.sep + `${file}`
+					if ((await FileSystemUtil.stat(oldPath)).isDirectory)
+						await FileSystemUtil.rename(oldPath, newPath)
+					else {
+						await FileSystemUtil.rename(oldPath, newPath)
+						await EditorFSUtil.updateRegistry(oldPath, newPath)
+					}
+				}
+				await FileSystemUtil.rm(fromResolved, {recursive: true, force: true})
+				return
+			}
+
+			if (stat !== undefined) {
+				await FileSystemUtil.rename(fromResolved, toResolved)
+				await EditorFSUtil.updateRegistry(fromResolved, toResolved)
+				return
+			}
+
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	static async getRegistryData() {
+		const result = {
+			textures: [],
+			meshes: [],
+			materials: [],
+			components: [],
+			terrains: [],
+			levels: [],
+			uiLayouts: [],
+			materialInstances: [],
+			terrainMaterials: [],
+			collections: []
+		}
+		await EditorFSUtil.readRegistry()
+		const registryList = EditorFSUtil.registryList
+		for (let i = 0; i < registryList.length; i++) {
+			const registryEntry = registryList[i]
+			if (!registryEntry.path)
+				continue
+			let type
+			let slot
+			switch (true) {
+			case registryEntry.path.includes(FileTypes.TEXTURE):
+				type = FileTypes.TEXTURE
+				slot = result.textures
+				break
+			case registryEntry.path.includes(FileTypes.PRIMITIVE):
+				type = FileTypes.PRIMITIVE
+				slot = result.meshes
+				break
+			case registryEntry.path.includes(FileTypes.MATERIAL):
+				type = FileTypes.MATERIAL
+				slot = result.materials
+				break
+			case registryEntry.path.includes(FileTypes.COMPONENT):
+				type = FileTypes.COMPONENT
+				slot = result.components
+				break
+			case registryEntry.path.includes(FileTypes.LEVEL):
+				type = FileTypes.LEVEL
+				slot = result.levels
+				break
+			case registryEntry.path.includes(FileTypes.UI_LAYOUT):
+				type = FileTypes.UI_LAYOUT
+				slot = result.uiLayouts
+				break
+			case registryEntry.path.includes(FileTypes.COLLECTION):
+				type = FileTypes.COLLECTION
+				slot = result.collections
+				break
+			}
+			if (type && slot)
+				slot.push(ContentBrowserUtil.#mapRegistryAsset(registryEntry, type))
+		}
+
+		return result
 	}
 
 }

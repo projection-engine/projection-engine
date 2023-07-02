@@ -1,7 +1,7 @@
 import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorActionHistory from "../EditorActionHistory"
 import Engine from "../../../../engine-core/Engine"
-import FSRegistryService from "../file-system/FSRegistryService"
+import EditorFSUtil from "../../util/EditorFSUtil"
 import EngineStore from "../../../stores/EngineStore"
 import SelectionStore from "../../../stores/SelectionStore"
 import SettingsStore from "../../../stores/SettingsStore"
@@ -11,7 +11,7 @@ import TabsStore from "../../../stores/TabsStore"
 import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
 import serializeStructure from "../../../../engine-core/utils/serialize-structure"
 import ElectronResources from "../../../shared/lib/ElectronResources"
-import ErrorLoggerService from "../file-system/ErrorLoggerService"
+import ErrorLoggerService from "../ErrorLoggerService"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
@@ -93,7 +93,7 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 
-		await FSRegistryService.readRegistry()
+		await EditorFSUtil.readRegistry()
 		EntityNamingService.clear()
 		SelectionStore.getInstance().updateStore({
 			TARGET: SelectionTargets.ENGINE,
@@ -155,7 +155,7 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 		ToastNotificationSystem.getInstance().success(LocalizationEN.PROJECT_SAVED)
-		await FSRegistryService.readRegistry()
+		await EditorFSUtil.readRegistry()
 	}
 
 	async saveCurrentLevel() {
@@ -166,13 +166,13 @@ export default class LevelService extends AbstractSingleton {
 			entities: QueryAPI.getHierarchy(Engine.loadedLevel).map(e => e.serializable()),
 		}
 
-		const assetReg = FSRegistryService.getRegistryEntry(Engine.loadedLevel.id)
+		const assetReg = EditorFSUtil.getRegistryEntry(Engine.loadedLevel.id)
 		let path = assetReg?.path
 
 		if (!assetReg) {
 			path = FileSystemUtil.resolvePath(await EditorUtil.resolveFileName(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + Engine.loadedLevel.name, FileTypes.LEVEL))
-			await FSRegistryService.createRegistryEntry(Engine.loadedLevel.id, FileSystemUtil.sep + path.split(FileSystemUtil.sep).pop())
-			FSRegistryService.readRegistry().catch()
+			await EditorFSUtil.createRegistryEntry(Engine.loadedLevel.id, FileSystemUtil.sep + path.split(FileSystemUtil.sep).pop())
+			EditorFSUtil.readRegistry().catch()
 		} else
 			path = FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path
 
