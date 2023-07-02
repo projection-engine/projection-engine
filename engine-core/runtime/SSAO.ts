@@ -5,16 +5,14 @@ import StaticShaders from "../lib/StaticShaders"
 import StaticUBOs from "../lib/StaticUBOs"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
+import EngineState from "../EngineState"
 
-const RESOLUTION = 4
 
 export default class SSAO {
 	static noiseScale = new Float32Array(2)
-	static blurSamples = 2
-	static maxSamples = 64
-	static enabled = true
 
 	static async initialize() {
+		const RESOLUTION = 4
 		SSAO.noiseScale[0] = GPU.internalResolution.w / RESOLUTION
 		SSAO.noiseScale[1] = GPU.internalResolution.h / RESOLUTION
 
@@ -38,7 +36,7 @@ export default class SSAO {
 		GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.noiseSampler)
 		GPU.context.uniform1i(StaticShaders.ssaoUniforms.noiseSampler, 1)
 
-		GPU.context.uniform1i(StaticShaders.ssaoUniforms.maxSamples, SSAO.maxSamples)
+		GPU.context.uniform1i(StaticShaders.ssaoUniforms.maxSamples, EngineState.ssaoMaxSamples)
 
 		StaticMeshes.drawQuad()
 		StaticFBO.ssao.stopMapping()
@@ -52,14 +50,14 @@ export default class SSAO {
 		GPU.context.bindTexture(GPU.context.TEXTURE_2D, StaticFBO.ssaoSampler)
 		GPU.context.uniform1i(StaticShaders.boxBlurUniforms.sampler, 0)
 
-		GPU.context.uniform1i(StaticShaders.boxBlurUniforms.samples, SSAO.blurSamples)
+		GPU.context.uniform1i(StaticShaders.boxBlurUniforms.samples, EngineState.ssaoBlurSamples)
 
 		StaticMeshes.drawQuad()
 		StaticFBO.ssaoBlurred.stopMapping()
 	}
 
 	static execute() {
-		if (!SSAO.enabled)
+		if (!EngineState.ssaoEnabled)
 			return
 
 		SSAO.#draw()

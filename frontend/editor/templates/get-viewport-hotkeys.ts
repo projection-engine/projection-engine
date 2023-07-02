@@ -17,7 +17,7 @@ import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
 
 export default function getViewportHotkeys(): { [key: string]: ContextMenuOption } {
-	const viewportHotkeys = SettingsStore.getInstance().data.viewportHotkeys
+	const viewportHotkeys = SettingsStore.getData().viewportHotkeys
 	return {
 		DUPLICATE: {
 			label: "Duplicate active",

@@ -83,7 +83,7 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 
-		if (ChangesTrackerStore.getInstance().data && Engine.loadedLevel) {
+		if (ChangesTrackerStore.getData() && Engine.loadedLevel) {
 			WindowChangeStore.getInstance().updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
 					await this.save().catch()
@@ -118,10 +118,10 @@ export default class LevelService extends AbstractSingleton {
 	}
 
 	async save() {
-		if (!ChangesTrackerStore.getInstance().data)
+		if (!ChangesTrackerStore.getData().changed)
 			return
 
-		if (EngineStore.getInstance().data.executingAnimation) {
+		if (EngineStore.getData().executingAnimation) {
 			ToastNotificationSystem.getInstance().warn(LocalizationEN.EXECUTING_SIMULATION)
 			return
 		}
@@ -129,8 +129,8 @@ export default class LevelService extends AbstractSingleton {
 		await ErrorLoggerService.save()
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.SAVING)
 		try {
-			const metadata = EngineStore.getInstance().data.meta
-			const settings = {...SettingsStore.getInstance().data}
+			const metadata = EngineStore.getData().meta
+			const settings = {...SettingsStore.getData()}
 			const tabIndexViewport = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
 			const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
 			if (viewMetadata !== undefined) {
@@ -144,8 +144,8 @@ export default class LevelService extends AbstractSingleton {
 				JSON.stringify({
 					...metadata,
 					settings,
-					layout: TabsStore.getInstance().data,
-					visualSettings: VisualsStore.getInstance().data,
+					layout: TabsStore.getData(),
+					visualSettings: VisualsStore.getData(),
 					level: Engine.loadedLevel?.id
 				}), true)
 

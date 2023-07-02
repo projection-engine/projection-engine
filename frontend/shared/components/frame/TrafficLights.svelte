@@ -89,7 +89,7 @@
     <button
             data-sveltebuttondefault="-"
             on:click={() => {
-                if(ChangesTrackerStore.getInstance().data.changed)
+                if(ChangesTrackerStore.getData().changed)
                     WindowChangeStore.getInstance().updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
                         await LevelService.getInstance().save()
                         ElectronResources.ipcRenderer.send("close")

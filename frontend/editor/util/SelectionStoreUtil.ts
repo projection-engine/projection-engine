@@ -4,11 +4,11 @@ import EngineStore from "../../stores/EngineStore"
 
 export default class SelectionStoreUtil{
 	static getSelectionTarget():string {
-		return SelectionStore.getInstance().data.TARGET
+		return SelectionStore.getData().TARGET
 	}
 
 	static getSelectionList():string[] {
-		return SelectionStore.getInstance().data.array
+		return SelectionStore.getData().array
 	}
 	static setEntitiesSelected(data) {
 		SelectionStore.getInstance().updateStore({TARGET: SelectionTargets.ENGINE, array: data})
@@ -33,7 +33,7 @@ export default class SelectionStoreUtil{
 	}
 
 	static getLockedEntity() {
-		return EngineStore.getInstance().data.lockedEntity
+		return EngineStore.getData().lockedEntity
 	}
 
 	static setLockedEntity(data:string) {

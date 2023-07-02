@@ -32,7 +32,7 @@
     	if (!toRender)
     		return
     	const key = toRender.key
-    	let s = toRender?.target === "settings" ? SettingsStore.getInstance().data : VisualsStore.getInstance().data
+    	let s = toRender?.target === "settings" ? SettingsStore.getData() : VisualsStore.getData()
     	if (save)
     		s = {...s}
     	if (Array.isArray(key)) {

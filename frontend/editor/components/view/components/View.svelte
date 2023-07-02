@@ -6,7 +6,7 @@
     import ShaderEditor from "../../../views/shader-editor/ShaderEditor.svelte"
     import UILayout from "../../../views/ui/UIEditor.svelte"
     import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts"
-    import EditorLayout from "../../../views/scene-editor/SceneEditor.svelte"
+    import SceneEditor from "../../../views/scene-editor/SceneEditor.svelte"
     import Metrics from "../../../views/metrics/Metrics.svelte"
 
     /** @type {string} */
@@ -40,7 +40,7 @@
     		component = UILayout
     		break
     	case VIEWPORT_TABS.EDITOR:
-    		component = EditorLayout
+    		component = SceneEditor
     		break
     	case VIEWS.METRICS:
     		component = Metrics

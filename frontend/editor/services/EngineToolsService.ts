@@ -2,7 +2,6 @@ import Engine from "../../../engine-core/Engine"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import EngineTools from "../../../engine-core/tools/EngineTools"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
-import DirectionalShadows from "../../../engine-core/runtime/DirectionalShadows"
 import GizmoSystem from "../../../engine-core/tools/runtime/GizmoSystem"
 import ENVIRONMENT from "../../../engine-core/static/ENVIRONMENT"
 import RotationGizmo from "../../../engine-core/tools/lib/transformation/RotationGizmo"
@@ -19,6 +18,8 @@ import SelectionStore from "../../stores/SelectionStore"
 import UIAPI from "../../../engine-core/lib/rendering/UIAPI"
 import GPU from "../../../engine-core/GPU"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
+import EngineToolsState from "../../../engine-core/tools/EngineToolsState"
+import EngineState from "../../../engine-core/EngineState"
 
 export default class EngineToolsService extends AbstractSingleton {
 
@@ -29,9 +30,7 @@ export default class EngineToolsService extends AbstractSingleton {
 		EngineStore.getInstance()
 			.addListener("EngineToolsService", this.#updateCameraTracker)
 		SettingsStore.getInstance()
-			.addListener("EngineToolsService_camera", this.#updateCameraTracker)
-		SettingsStore.getInstance()
-			.addListener("EngineToolsService_gizmo", this.#updateGizmo)
+			.addListener("EngineToolsService_camera", this.#updateWithSettings)
 		VisualsStore.getInstance()
 			.addListener("EngineToolsService", this.#updateEngineSettings)
 	}
@@ -40,7 +39,38 @@ export default class EngineToolsService extends AbstractSingleton {
 		EngineTools.updateSelectionData(SelectionStoreUtil.getEntitiesSelected())
 	}
 
-	#updateEngineSettings(visualSettings) {
+	#updateEngineState(visualSettings:typeof VISUAL_SETTINGS) {
+		EngineState.fxaaEnabled = visualSettings.FXAA
+		EngineState.fxaaSpanMax = visualSettings.FXAASpanMax
+		EngineState.fxaaReduceMin = visualSettings.FXAAReduceMin
+		EngineState.fxaaReduceMul = visualSettings.FXAAReduceMul
+		EngineState.ssgiEnabled = visualSettings.SSGI.enabled
+		EngineState.ssgiBlurSamples = visualSettings.SSGI.blurSamples
+		EngineState.ssgiBlurRadius = visualSettings.SSGI.blurRadius
+		EngineState.ssgiStepSize = visualSettings. SSGI.stepSize
+		EngineState.ssgiMaxSteps = visualSettings. SSGI.maxSteps
+		EngineState.ssgiStrength = visualSettings. SSGI.strength
+		EngineState.ssrFalloff = visualSettings.SSR.falloff
+		EngineState.ssrStepSize = visualSettings.SSR.stepSize
+		EngineState.ssrMaxSteps = visualSettings.SSR.maxSteps
+		EngineState.sssMaxDistance = visualSettings.SSS.maxDistance
+		EngineState.sssDepthThickness = visualSettings.SSS.depthThickness
+		EngineState.sssEdgeFalloff = visualSettings. SSS.edgeFalloff
+		EngineState.sssDepthDelta = visualSettings.SSS.depthDelta
+		EngineState.sssMaxSteps = visualSettings.SSS.maxSteps
+		EngineState.ssaoEnabled = visualSettings.SSAO.enabled
+		EngineState.ssaoFalloffDistance = visualSettings.SSAO.falloffDistance
+		EngineState.ssaoRadius = visualSettings.SSAO.radius
+		EngineState.ssaoPower = visualSettings.SSAO.power
+		EngineState.ssaoBias = visualSettings. SSAO.bias
+		EngineState.ssaoBlurSamples = visualSettings.SSAO.blurSamples
+		EngineState.ssaoMaxSamples = visualSettings.SSAO.maxSamples
+		EngineState.physicsSubSteps = visualSettings.physicsSubSteps
+		EngineState.physicsSimulationStep = visualSettings.physicsSimulationStep
+		EngineResources.updateParams()
+	}
+
+	#updateEngineSettings(visualSettings:typeof VISUAL_SETTINGS) {
 		GPU.canvas.width = visualSettings.resolutionX
 		GPU.canvas.height = visualSettings.resolutionY
 
@@ -48,21 +78,12 @@ export default class EngineToolsService extends AbstractSingleton {
 			EngineTools.bindSystems()
 		else
 			EngineTools.unbindSystems()
-		DirectionalShadows.allocateBuffers(visualSettings.shadowAtlasQuantity, visualSettings.shadowMapResolution)
-		EngineResources.updateParams(
-			visualSettings,
-			visualSettings.SSGI ?? VISUAL_SETTINGS.SSGI,
-			visualSettings.SSR ?? VISUAL_SETTINGS.SSR,
-			visualSettings.SSS ?? VISUAL_SETTINGS.SSS,
-			visualSettings.SSAO ?? VISUAL_SETTINGS.SSAO,
-			visualSettings.physicsSimulationStep,
-			visualSettings.physicsSubSteps
-		)
+		this.#updateEngineState(visualSettings)
 	}
 
 	#updateCameraTracker() {
-		const engine = EngineStore.getInstance().data
-		const settings = SettingsStore.getInstance().data
+		const engine = EngineStore.getData()
+		const settings = SettingsStore.getData()
 		if (engine.executingAnimation)
 			UIAPI.showUI()
 		if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
@@ -78,7 +99,18 @@ export default class EngineToolsService extends AbstractSingleton {
 		}
 	}
 
-	#updateGizmo(settings) {
+	#updateEngineToolsState(settings) {
+		EngineToolsState.gridColor = settings.gridColor
+		EngineToolsState.gridScale = settings.gridScale * 10
+		EngineToolsState.gridThreshold = settings.gridThreshold
+		EngineToolsState.gridOpacity = settings.gridOpacity
+		EngineToolsState.showGrid = settings.showGrid
+		EngineToolsState.showIcons = settings.showIcons
+		EngineToolsState.showLines = settings.showLines
+		EngineToolsState.iconScale = settings.iconScale
+	}
+
+	#updateWithSettings(settings) {
 		RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
 		TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
 		ScalingGizmo.gridSize = settings.gizmoGrid.scaleGizmo || .001
@@ -97,5 +129,7 @@ export default class EngineToolsService extends AbstractSingleton {
 			GizmoSystem.targetGizmo = GizmoSystem.scaleGizmo
 			break
 		}
+		this.#updateCameraTracker()
+		this.#updateEngineToolsState(settings)
 	}
 }

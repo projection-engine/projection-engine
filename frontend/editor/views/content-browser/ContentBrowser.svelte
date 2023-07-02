@@ -27,7 +27,7 @@
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
     let viewType = ITEM_TYPES.ROW
 
-    $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
+    $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.getData().currentView
     $: {
     	if (wasInitialized) {
     		localStorage.setItem(viewTypeCache, viewType)

@@ -5,30 +5,13 @@ import StaticShaders from "../lib/StaticShaders"
 import Framebuffer from "../instances/Framebuffer"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import EngineResources from "../lib/EngineResources"
-
-/**
- * rayMarchSettings definition:
- *
- * 0: SSR-falloff
- * 1: SSR-minRayStep
- * 2: SSR-stepSize
- * 3: SSGI_stepSize
- * 4: SSGI_intensity
- * 5: ENABLED_SSGI
- * 6: ENABLED_SSR
- * 7: SSGI_maxSteps
- * 8: SSR_maxSteps
- */
+import EngineState from "../EngineState"
 
 let cleared = false
 export default class SSGI {
-	static blurSamples = 5
-	static blurRadius = 5
-	static enabled = true
-
+	static uniformSettings = new Float32Array(3)
 	static execute() {
-		if (!SSGI.enabled) {
+		if (!EngineState.ssgiEnabled) {
 			if (!cleared) {
 				StaticFBO.ssgi.clear()
 				cleared = true
@@ -49,7 +32,7 @@ export default class SSGI {
 		context.bindTexture(context.TEXTURE_2D, StaticFBO.postProcessing2Sampler)
 		context.uniform1i(uniforms.previousFrame, 1)
 
-		context.uniform3fv(uniforms.rayMarchSettings, EngineResources.SSGISettings)
+		context.uniform3fv(uniforms.rayMarchSettings, SSGI.uniformSettings)
 
 		StaticMeshes.drawQuad()
 		SSGI.#applyBlur(context, StaticFBO.ssgiFallback, StaticFBO.ssgiSampler, true)
@@ -65,8 +48,8 @@ export default class SSGI {
 		if (first) {
 			StaticShaders.bilateralBlur.bind()
 
-			context.uniform1f(uniforms.blurRadius, SSGI.blurRadius)
-			context.uniform1i(uniforms.samples, SSGI.blurSamples)
+			context.uniform1f(uniforms.blurRadius, EngineState.ssgiBlurRadius)
+			context.uniform1i(uniforms.samples, EngineState.ssgiBlurSamples)
 			context.uniform2fv(uniforms.bufferResolution, StaticFBO.ssgiFallback.resolution)
 
 			context.activeTexture(context.TEXTURE0)
@@ -74,7 +57,7 @@ export default class SSGI {
 			context.uniform1i(uniforms.entityIDSampler, 0)
 		}
 		else
-			context.uniform1i(uniforms.samples, SSGI.blurSamples/2)
+			context.uniform1i(uniforms.samples, EngineState.ssgiBlurSamples/2)
 		FBO.startMapping()
 
 		context.activeTexture(context.TEXTURE1)

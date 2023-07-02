@@ -5,7 +5,25 @@ import getEntityCreationOptions from "./get-entity-creation-options"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
-export default function getViewportContext(forDropdown?:boolean):ContextMenuOption[] {
+export function getViewportOptionsForDropdown() {
+	const result = []
+	const options = getViewportContext(true)
+	for (let i = 0; i < options.length; i++) {
+		const v = options[i]
+		if (i >= options.length - 1)
+			continue
+		if (v.children) {
+			result.push({divider: true, label: v.label})
+			v.children.forEach(v => {
+				result.push(v)
+			})
+		} else
+			result.push(v)
+	}
+	return result
+}
+
+export default function getViewportContext(forDropdown?: boolean): ContextMenuOption[] {
 	const VIEWPORT_HOTKEYS = getViewportHotkeys()
 	const data = [
 		{divider: true, label: "Selection"},

@@ -4,41 +4,51 @@
 
     import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import SettingsStore from "../../../../stores/SettingsStore"
+    import SelectionStore from "../../../../stores/SelectionStore"
+    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
 
-    const TO_DEG = 180 / Math.PI
-    export let settings
-    export let selectedSize
+    const COMPONENT_ID = crypto.randomUUID()
 
+    let selectedSize
     let translationRef
     let rotationRef
     let scaleRef
+    let gizmo
+    let isValidPivot = false
+    let isValidScaling = false
 
     onMount(() => {
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedSize = SelectionStoreUtil.getEntitiesSelected().length)
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
+    		gizmo = data.gizmo
+    		isValidPivot = gizmo === GIZMOS.TRANSLATION && selectedSize === 1
+    		isValidScaling = gizmo === GIZMOS.SCALE
+    	}, ["gizmo"])
     	GizmoSystem.translationRef = translationRef
     	GizmoSystem.rotationRef = rotationRef
     	GizmoSystem.scaleRef = scaleRef
     })
 
     onDestroy(() => {
+    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
     	GizmoSystem.translationRef = GizmoSystem.rotationRef = GizmoSystem.scaleRef = undefined
     })
-
-    $: isValidPivot = settings.gizmo === GIZMOS.TRANSLATION && selectedSize === 1
-    $: isValidScaling = settings.gizmo === GIZMOS.SCALE
 </script>
 
 <div class="left-content">
-    <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.TRANSLATION ? "display: none" : undefined }>
+    <div data-svelteinline="-" style={gizmo !== GIZMOS.TRANSLATION ? "display: none" : undefined }>
         <strong>{LocalizationEN.TRANSLATION}</strong>
         <small bind:this={translationRef}></small>
     </div>
 
-    <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.SCALE ? "display: none" : undefined }>
+    <div data-svelteinline="-" style={gizmo !== GIZMOS.SCALE ? "display: none" : undefined }>
         <strong>{LocalizationEN.SCALE}</strong>
         <small bind:this={scaleRef}></small>
     </div>
 
-    <div data-svelteinline="-" style={settings.gizmo !== GIZMOS.ROTATION ? "display: none" : undefined }>
+    <div data-svelteinline="-" style={gizmo !== GIZMOS.ROTATION ? "display: none" : undefined }>
         <strong>{LocalizationEN.ROTATION}</strong>
         <small bind:this={rotationRef}></small>
     </div>

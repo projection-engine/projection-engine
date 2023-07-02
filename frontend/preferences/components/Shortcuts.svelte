@@ -13,7 +13,7 @@
     }
 
     function updateHotKey(key, objectKey, newValue) {
-    	const newData = {...SettingsStore.getInstance().data[key], [objectKey]: newValue}
+    	const newData = {...SettingsStore.getData()[key], [objectKey]: newValue}
     	update(key, newData)
     }
 

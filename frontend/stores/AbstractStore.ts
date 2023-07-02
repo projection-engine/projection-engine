@@ -53,4 +53,8 @@ export default class AbstractStore extends AbstractSingleton {
 	static getInstance(): AbstractStore {
 		return super.get<AbstractStore>()
 	}
+
+	static getData(){
+		return this.getInstance().data
+	}
 }

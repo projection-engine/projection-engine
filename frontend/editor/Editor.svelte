@@ -9,7 +9,7 @@
     import LevelService from "./services/engine/LevelService"
     import HotKeysController from "../shared/lib/HotKeysController"
     import WindowFrame from "./components/window-frame/WindowFrame.svelte"
-    import Canvas from "./views/scene-editor/Canvas.svelte"
+    import Canvas from "./views/Canvas.svelte"
     import ToastNotificationSystem from "../shared/components/alert/ToastNotificationSystem"
     import ElectronResources from "../shared/lib/ElectronResources"
     import StoreIPCListener from "../shared/lib/StoreIPCListener"

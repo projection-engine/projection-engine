@@ -67,7 +67,7 @@ export default class InspectorUtil {
 			entity.__cameraNeedsUpdate = true
 		}
 		component[key] = value
-		if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.getInstance().data.focusedCamera)
+		if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.getData().focusedCamera)
 			CameraAPI.updateViewTarget(entity)
 		if (save) {
 			const selectionStoreInstance = SelectionStore.getInstance()
@@ -122,7 +122,7 @@ export default class InspectorUtil {
 	}
 
 	static #getItemFound(id) {
-		const filesStoreData = FilesStore.getInstance().data
+		const filesStoreData = FilesStore.getData()
 		let type = "SCRIPT"
 		let itemFound = filesStoreData.components.find(s => s.registryID === id)
 		if (!itemFound) {

@@ -22,7 +22,7 @@ export function selectAllNodes(canvasAPI:Canvas){
 	canvasAPI.clear()
 }
 export default function getShaderActions(canvasAPI: Canvas) {
-	const settings = SettingsStore.data
+	const settings = SettingsStore.getData()
 
 	const options = {
 		SELECT_ALL: {

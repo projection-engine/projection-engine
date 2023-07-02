@@ -2,24 +2,14 @@ import Engine from "../Engine"
 import PhysicsAPI from "../lib/rendering/PhysicsAPI"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
+import EngineState from "../EngineState"
 
 export default class Physics {
-	static #sStep = 0.01666666
 	static #interval = null
-	static subSteps = 10
-
-	static set simulationStep(data: number) {
-		Physics.#sStep = data / 1000
-	}
-
-	static get simulationStep(): number {
-		return Physics.#sStep * 1000
-	}
-
 
 	static start() {
 		clearInterval(Physics.#interval)
-		Physics.#interval = setInterval(Physics.#execute, Physics.#sStep * 1000)
+		Physics.#interval = setInterval(Physics.#execute, EngineState.physicsSimulationStep)
 	}
 
 	static stop() {
@@ -35,7 +25,7 @@ export default class Physics {
 		const length = rigidBodies.length
 		const tempTransformation = PhysicsAPI.tempTransformation
 
-		PhysicsAPI.world.stepSimulation(Physics.simulationStep, Physics.subSteps)
+		PhysicsAPI.world.stepSimulation(EngineState.physicsSimulationStep, EngineState.physicsSubSteps)
 
 		for (let i = 0; i < length; i++) {
 			const current = rigidBodies[i]

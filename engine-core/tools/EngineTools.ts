@@ -5,7 +5,6 @@ import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../Engine"
 import CameraTracker from "./lib/CameraTracker"
 import WireframeRenderer from "./runtime/WireframeRenderer"
-
 import ENVIRONMENT from "../static/ENVIRONMENT"
 import LineRenderer from "./runtime/LineRenderer"
 import Entity from "../instances/Entity"
@@ -13,7 +12,6 @@ import GPU from "../GPU"
 import StaticEditorMeshes from "./lib/StaticEditorMeshes"
 import StaticEditorShaders from "./lib/StaticEditorShaders"
 import StaticFBO from "../lib/StaticFBO"
-import SettingsStore from "../../frontend/stores/SettingsStore"
 
 export default class EngineTools {
 	static selected: Entity[] = []
@@ -65,7 +63,7 @@ export default class EngineTools {
 		StaticEditorShaders.iconToDepth.bind()
 		GPU.context.activeTexture(GPU.context.TEXTURE0)
 		GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
-		IconsSystem.loop(IconsSystem.drawIcon, SettingsStore.data, StaticEditorShaders.iconToDepthUniforms)
+		IconsSystem.loop(IconsSystem.drawIcon, StaticEditorShaders.iconToDepthUniforms)
 		StaticFBO.visibility.stopMapping()
 		GPU.context.enable(GPU.context.DEPTH_TEST)
 	}

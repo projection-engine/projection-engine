@@ -28,7 +28,7 @@ export default class ShaderEditorTools {
 		if (!nodeInstance)
 			return
 		Object.keys(node).forEach(o => {
-			if (o === "texture" && nodeInstance instanceof NodesIndex.TextureSample) nodeInstance[o] = FilesStore.data.textures.find(i => i.registryID === node[o].registryID)
+			if (o === "texture" && nodeInstance instanceof NodesIndex.TextureSample) nodeInstance[o] = FilesStore.getData().textures.find(i => i.registryID === node[o].registryID)
 			else {
 				const input = nodeInstance.inputs.find(i => i.key === o)
 				if (!input && !nodeInstance.output.find(i => i.key === o))

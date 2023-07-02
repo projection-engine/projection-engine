@@ -10,10 +10,3 @@
     <PropertyHeader title={PREFERENCES[tab].label}/>
     <ContentGroup toRender={PREFERENCES[tab]}/>
 {/if}
-<style>
-    h3 {
-        padding: 0 8px;
-        margin: 8px 0;
-
-    }
-</style>

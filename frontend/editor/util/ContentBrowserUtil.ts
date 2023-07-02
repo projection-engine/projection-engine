@@ -34,7 +34,7 @@ export default class ContentBrowserUtil {
 	}
 
 	static selection(type, currentDirectory) {
-		const items = FilesStore.getInstance().data.items
+		const items = FilesStore.getData().items
 
 		switch (type) {
 		case SELECTION_TYPES.INVERT: {
@@ -136,7 +136,7 @@ export default class ContentBrowserUtil {
 	}
 
 	static async handleDropFolder(event: string[] | string, target?: string) {
-		const itemsFilesStore = FilesStore.getInstance().data.items
+		const itemsFilesStore = FilesStore.getData().items
 		try {
 			const items = Array.isArray(event) ? event : JSON.parse(event)
 			for (let i = 0; i < items.length; i++) {
@@ -174,7 +174,7 @@ export default class ContentBrowserUtil {
 	}
 
 	static async handleDelete(entries, currentDirectory, setCurrentDirectory) {
-		const items = FilesStore.getInstance().data.items
+		const items = FilesStore.getData().items
 		const itemsToDelete = !Array.isArray(entries) ? [entries] : entries
 
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.DELETING_ITEMS)
@@ -442,7 +442,7 @@ export default class ContentBrowserUtil {
 	}
 
 	static getFilesToCut() {
-		return FilesStore.getInstance().data.toCut
+		return FilesStore.getData().toCut
 	}
 
 	static cutFiles(toCut: string[]) {
@@ -469,7 +469,7 @@ export default class ContentBrowserUtil {
 	static updateHierarchy(items) {
 		if (!items)
 			return
-		const open = FilesHierarchyStore.getInstance().data.open
+		const open = FilesHierarchyStore.getData().open
 		const folders = items.filter(item => item.isFolder)
 		const fsSystem = FileSystemUtil
 		const cache: MutableObject = {

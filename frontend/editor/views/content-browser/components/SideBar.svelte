@@ -18,7 +18,7 @@
     <VirtualList items={hierarchy.items} let:item>
         <SideBarItem
                 triggerOpen={() => {
-                    let open = FilesHierarchyStore.data.open
+                    let open = FilesHierarchyStore.getData().open
                     const inv = !open[item.item.id]
                     if(item.item.id === FileSystemUtil.sep && !inv)
                         open = {}

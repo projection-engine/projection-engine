@@ -24,7 +24,7 @@ export default class SelectorUtil{
 	}
 
 	static getType(type, mergeMaterials, terrainMaterials) {
-		const store = FilesStore.getInstance().data
+		const store = FilesStore.getData()
 		switch (type) {
 		case "image":
 			return store.textures

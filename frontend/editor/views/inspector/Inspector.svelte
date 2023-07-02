@@ -32,7 +32,7 @@
     	if ( v.array[0]) {
     		switch (v.TARGET) {
     		case SelectionTargets.CONTENT_BROWSER:
-    			targetItem = FilesStore.data.items.find(i => i.id === v.array[0])
+    			targetItem = FilesStore.getData().items.find(i => i.id === v.array[0])
     			break
     		case SelectionTargets.ENGINE:
     			targetItem = QueryAPI.getEntityByID(v.array[0])

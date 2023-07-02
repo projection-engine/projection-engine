@@ -28,7 +28,7 @@ export default class WindowFrameUtil {
 			ViewportActionUtil.paste()
 			break
 		case "footer":
-			SettingsStore.getInstance().updateStore({hideFooter: !SettingsStore.getInstance().data.hideFooter})
+			SettingsStore.getInstance().updateStore({hideFooter: !SettingsStore.getData().hideFooter})
 			break
 		case "learn-more":
 			ElectronResources.shell.openExternal("https://github.com/projection-engine").catch()

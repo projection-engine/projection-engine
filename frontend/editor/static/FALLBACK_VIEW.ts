@@ -4,7 +4,7 @@ import VIEWPORT_TABS from "./VIEWPORT_TABS"
 import LocalizationEN from "../../../shared/LocalizationEN"
 
 export default {
-	name: LocalizationEN.NEW_TAB + SettingsStore.data.views.length,
+	name: LocalizationEN.NEW_TAB + SettingsStore.getData().views.length,
 	bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
 	right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]],
 	viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],

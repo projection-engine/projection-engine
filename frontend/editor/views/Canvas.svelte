@@ -1,14 +1,14 @@
 <script>
-    import RENDER_TARGET from "../../static/RENDER_TARGET"
+    import RENDER_TARGET from "../static/RENDER_TARGET"
     import {onMount} from "svelte"
-    import EngineToolsService from "../../services/EngineToolsService"
-    import FSAssetUtil from "../../services/file-system/FSAssetUtil"
-    import VisualsStore from "../../../stores/VisualsStore"
-    import Engine from "../../../../engine-core/Engine"
-    import EngineTools from "../../../../engine-core/tools/EngineTools"
-    import LevelService from "../../services/engine/LevelService"
-    import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
-    import GPU from "../../../../engine-core/GPU"
+    import EngineToolsService from "../services/EngineToolsService"
+    import FSAssetUtil from "../services/file-system/FSAssetUtil"
+    import VisualsStore from "../../stores/VisualsStore"
+    import Engine from "../../../engine-core/Engine"
+    import EngineTools from "../../../engine-core/tools/EngineTools"
+    import LevelService from "../services/engine/LevelService"
+    import UIAPI from "../../../engine-core/lib/rendering/UIAPI"
+    import GPU from "../../../engine-core/GPU"
 
     export let initializeEditor
 
@@ -17,7 +17,7 @@
     onMount(() => {
     	Engine.initializeContext(
     		canvasRef,
-    		{w: VisualsStore.data.resolutionX, h:  VisualsStore.data.resolutionY},
+    		{w: VisualsStore.getData().resolutionX, h:  VisualsStore.getData().resolutionY},
     		FSAssetUtil.readAsset,
     		true
     	).then(async () => {

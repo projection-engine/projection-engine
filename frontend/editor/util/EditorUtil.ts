@@ -148,7 +148,7 @@ export default class EditorUtil {
 		const selected = SelectionStoreUtil.getEntitiesSelected()
 		for (let i = 0; i < selected.length; i++) {
 			const entity = QueryAPI.getEntityByID(selected[i])
-			const currentGizmo = SettingsStore.getInstance().data.gizmo
+			const currentGizmo = SettingsStore.getData().gizmo
 
 			switch (currentGizmo) {
 			case GIZMOS.TRANSLATION: {
@@ -179,7 +179,7 @@ export default class EditorUtil {
 	}
 
 	static updateView(key, newView) {
-		const settingsData = SettingsStore.getInstance().data
+		const settingsData = SettingsStore.getData()
 		const view = settingsData.views[settingsData.currentView]
 		const copy = [...settingsData.views]
 		copy[settingsData.currentView] = {...view, [key]: newView}

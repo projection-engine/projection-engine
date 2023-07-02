@@ -10,7 +10,7 @@ import FileSystemUtil from "../../shared/FileSystemUtil"
 import SettingsStore from "../../stores/SettingsStore"
 
 export default function getContentBrowserActions(navigationHistory, currentDirectory, setCurrentDirectory, setCurrentItem) {
-	const contentBrowserHotkeys = SettingsStore.getInstance().data.contentBrowserHotkeys
+	const contentBrowserHotkeys = SettingsStore.getData().contentBrowserHotkeys
 	const hotKeys = {
 		BACK: {
 			label: "Go back",

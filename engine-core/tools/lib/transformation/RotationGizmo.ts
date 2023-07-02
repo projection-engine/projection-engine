@@ -114,8 +114,6 @@ export default class RotationGizmo extends GizmoInterface {
 		}
 	}
 
-
-
 	transformGizmo() {
 		if (!GizmoSystem.mainEntity)
 			return

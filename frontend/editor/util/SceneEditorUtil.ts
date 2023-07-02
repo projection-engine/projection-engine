@@ -8,6 +8,18 @@ import Engine from "../../../engine-core/Engine"
 import VisibilityRenderer from "../../../engine-core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine-core/tools/EngineTools"
 import SelectionStoreUtil from "./SelectionStoreUtil"
+import ScalingGizmo from "../../../engine-core/tools/lib/transformation/ScalingGizmo"
+import TranslationGizmo from "../../../engine-core/tools/lib/transformation/TranslationGizmo"
+import RotationGizmo from "../../../engine-core/tools/lib/transformation/RotationGizmo"
+import {glMatrix, quat} from "gl-matrix"
+import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
+import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
+import ViewportInteractionListener from "../views/scene-editor/lib/ViewportInteractionListener"
+import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
+import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
+import getViewportContext from "../templates/get-viewport-context"
+import RENDER_TARGET from "../static/RENDER_TARGET"
+import SETTINGS from "../static/SETTINGS"
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
@@ -119,4 +131,78 @@ export default class SceneEditorUtil {
 		return SceneEditorUtil.#worker
 	}
 
+	static updateGizmoGrid(key, value)  {
+		switch (key) {
+		case key === "scalingGizmo":
+			ScalingGizmo.gridSize = value
+			break
+		case key === "translationGizmo":
+			TranslationGizmo.gridSize = value
+			break
+		case key === "rotationGizmo":
+			RotationGizmo.gridSize = value * Math.PI / 180
+			break
+		}
+		SettingsStore.getInstance().updateStore({gizmoGrid: {...SettingsStore.getData().gizmoGrid, [key]: value}})
+	}
+
+	static restoreCameraState(viewMetadata){
+		if (!viewMetadata.cameraMetadata) {
+			const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
+			const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
+			CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
+			CameraTracker.xRotation = glMatrix.toRadian(45)
+			CameraTracker.yRotation = -glMatrix.toRadian(45)
+		} else {
+			CameraAPI.restoreState(viewMetadata.cameraMetadata)
+			CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
+			CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
+		}
+
+		viewMetadata.cameraMetadata = CameraAPI.serializeState()
+		viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
+		viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+	}
+
+	static onSceneEditorMount(draggable, viewMetadata){
+		ContextMenuService.getInstance().mount(getViewportContext(), RENDER_TARGET)
+		if (viewMetadata.cameraMetadata)
+			CameraAPI.restoreState(viewMetadata.cameraMetadata)
+
+		CameraTracker.startTracking()
+		ViewportInteractionListener.get()
+		draggable.onMount({
+			targetElement: GPU.canvas,
+			onDrop: (data, event) => EngineResourceLoaderService.load(data, false, event.clientX, event.clientY).catch(),
+			onDragOver: () => `
+                <span data-svelteicon="-" style="font-size: 70px">add</span>
+                ${LocalizationEN.DRAG_DROP}
+            `
+		})
+	}
+
+	static getSceneOptions(settings: typeof SETTINGS){
+		return [
+			{
+				label: LocalizationEN.GRID,
+				icon: settings.showGrid ? "check" : undefined,
+				onClick: () => SettingsStore.getInstance().updateStore({showGrid: !settings.showGrid})
+			},
+			{
+				label: LocalizationEN.ICONS,
+				icon: settings.showIcons ? "check" : undefined,
+				onClick: () => SettingsStore.getInstance().updateStore({showIcons: !settings.showIcons})
+			},
+			{
+				label: LocalizationEN.LINES,
+				icon: settings.showLines ? "check" : undefined,
+				onClick: () => SettingsStore.getInstance().updateStore({showLines: !settings.showLines})
+			},
+			{
+				label: LocalizationEN.OUTLINE,
+				icon: settings.showOutline ? "check" : undefined,
+				onClick: () => SettingsStore.getInstance().updateStore({showOutline: !settings.showOutline})
+			},
+		]
+	}
 }

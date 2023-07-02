@@ -2,7 +2,6 @@ import CameraAPI from "./lib/utils/CameraAPI"
 import ENVIRONMENT from "./static/ENVIRONMENT"
 import Renderer from "./Renderer"
 import SSAO from "./runtime/SSAO"
-import DirectionalShadows from "./runtime/DirectionalShadows"
 import ConversionAPI from "./lib/math/ConversionAPI"
 import Physics from "./runtime/Physics"
 import FrameComposition from "./runtime/FrameComposition"
@@ -92,7 +91,6 @@ export default class Engine {
 		FrameComposition.initialize()
 		await SSAO.initialize()
 		OmnidirectionalShadows.initialize()
-		DirectionalShadows.initialize()
 		await PhysicsAPI.initialize()
 		LightsAPI.initialize()
 

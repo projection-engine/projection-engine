@@ -6,7 +6,7 @@
     import LocalizationEN from "../../../../../shared/LocalizationEN"
 
     function setTabs(newValue, direction) {
-    	const settings = SettingsStore.getInstance().data
+    	const settings = SettingsStore.getData()
     	const viewTabs = settings.views[settings.currentView]
     	const clone = [...settings.views]
     	clone[settings.currentView][direction] = [...viewTabs[direction], newValue]

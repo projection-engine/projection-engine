@@ -44,7 +44,7 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 		ViewportUtil.onViewportClick(
 			event,
 			this.mouseDelta,
-			SettingsStore.data,
+			SettingsStore.getData(),
 			(data) => {
 				if (GizmoSystem.wasOnGizmo) {
 					GizmoSystem.wasOnGizmo = false

@@ -1,10 +1,10 @@
 import GPU from "../../GPU"
-import SettingsStore from "../../../frontend/stores/SettingsStore"
 
 import StaticMeshes from "../../lib/StaticMeshes"
 import StaticFBO from "../../lib/StaticFBO"
 import StaticEditorShaders from "../lib/StaticEditorShaders"
 import EngineTools from "../EngineTools"
+import EngineToolsState from "../EngineToolsState"
 
 
 const fallbackColor = new Float32Array([.5, .5, .5])
@@ -52,20 +52,19 @@ export default class SelectedSystem {
 	}
 
 	static drawSilhouette( ) {
-		const settings = SettingsStore.data
 		const context = GPU.context
 
 		StaticEditorShaders.outline.bind()
 		const outlineShaderUniforms = StaticEditorShaders.outlineUniforms
 		context.uniform2fv(outlineShaderUniforms.bufferSize, GPU.bufferResolution)
-		context.uniform1f(outlineShaderUniforms.outlineWidth, settings.outlineWidth)
-		if (settings.showOutline) {
+		context.uniform1f(outlineShaderUniforms.outlineWidth, EngineToolsState.outlineWidth)
+		if (EngineToolsState.showOutline) {
 			context.activeTexture(context.TEXTURE0)
 			context.bindTexture(context.TEXTURE_2D, StaticFBO.entityIDSampler)
 			context.uniform1i(outlineShaderUniforms.silhouette, 0)
 
 			context.uniform1i(outlineShaderUniforms.isOutline, 1)
-			context.uniform3fv(outlineShaderUniforms.outlineColor, SettingsStore.data.outlineColor || fallbackColor)
+			context.uniform3fv(outlineShaderUniforms.outlineColor, EngineToolsState.outlineColor || fallbackColor)
 
 			StaticMeshes.drawQuad()
 		}
