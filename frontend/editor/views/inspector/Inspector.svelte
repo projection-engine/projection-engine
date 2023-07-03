@@ -9,21 +9,14 @@
 
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import PREFERENCES from "../../../preferences/static/PREFERENCES"
     import CameraPreferences from "./components/engine/CameraPreferences.svelte"
     import ContentWrapper from "../../../preferences/components/content/ContentWrapper.svelte"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
     import SelectionTargets from "../../../../shared/SelectionTargets"
     import EngineStore from "../../../stores/EngineStore"
     import InspectorUtil from "../../util/InspectorUtil"
+    import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
 
     const COMPONENT_ID = crypto.randomUUID()
-    const PREFERENCES_TABS = [
-    	PREFERENCES[2],
-    	PREFERENCES[3],
-    	{type: "camera", icon: "camera", label: LocalizationEN.EDITOR_CAMERA},
-    	{divider: true}
-    ]
     let selectedItem
     let tabIndex = 0
     let tabs = []
@@ -35,7 +28,7 @@
     onMount(() => {
     	SelectionStore.getInstance().addListener(COMPONENT_ID, data => {
     		selectedItem = InspectorUtil.getSelectionTarget(data)
-    		tabIndex = SelectionTargets.ENGINE === SelectionStore.getData().TARGET ? 2 : 0
+    		tabIndex = SelectionTargets.ENGINE === SelectionStore.getData().TARGET ? 3 : 0
     	})
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
     		lockedEntity = data.lockedEntity ? QueryAPI.getEntityByID(data.lockedEntity) : undefined
@@ -48,20 +41,22 @@
     })
 
     function setTabs(data) {
-    	const TABS = [...PREFERENCES_TABS]
+    	const TABS = [...INSPECTOR_TABS]
     	if (!selectedItem)
     		TABS.pop()
     	tabs = [...TABS, ...data]
     }
+
     $: {
     	if (!selectedItem)
     		selectedItem = lockedEntity
-    	if (!selectedItem) {
+    	if (!selectedItem)
     		setTabs([])
-    	}
-    	isOnDynamicTab = tabIndex >= 2 && selectedItem !== undefined
+    	isOnDynamicTab = tabIndex > 2 && selectedItem !== undefined
     	isEntity = selectedItem instanceof Entity
     }
+
+    $: console.trace(isEntity, isOnDynamicTab)
 </script>
 
 <div class="wrapper">
@@ -86,19 +81,17 @@
         {#if isOnDynamicTab}
             {#if isEntity}
                 <EntityInspector
-                        setTabIndex={i => tabIndex = i + 5}
+                        setTabIndex={i => tabIndex = i}
                         setTabs={setTabs}
                         entity={selectedItem}
-                        tabIndex={tabIndex - 5}/>
+                        tabIndex={tabIndex}/>
             {:else}
                 <ContentBrowserItem setTabs={setTabs} item={selectedItem} tabIndex={tabIndex}/>
             {/if}
+        {:else if tabIndex === 2}
+            <CameraPreferences/>
         {:else}
-            {#if tabs[tabIndex]?.type === "camera"}
-                <CameraPreferences/>
-            {:else}
-                <ContentWrapper tab={tabIndex}/>
-            {/if}
+            <ContentWrapper data={tabs[tabIndex]}/>
         {/if}
     </div>
 </div>

@@ -32,7 +32,7 @@
         {:else if PREFERENCES[tab].type === "shortcuts"}
             <Shortcuts/>
         {:else}
-            <ContentWrapper {tab}/>
+            <ContentWrapper data={PREFERENCES[tab]}/>
         {/if}
     </div>
 </div>
