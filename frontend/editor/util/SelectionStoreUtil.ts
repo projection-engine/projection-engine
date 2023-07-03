@@ -11,7 +11,7 @@ export default class SelectionStoreUtil{
 		return SelectionStore.getData().array
 	}
 	static setEntitiesSelected(data) {
-		SelectionStore.getInstance().updateStore({TARGET: SelectionTargets.ENGINE, array: data})
+		SelectionStore.updateStore({TARGET: SelectionTargets.ENGINE, array: data})
 	}
 
 	static getEntitiesSelected() {
@@ -19,7 +19,7 @@ export default class SelectionStoreUtil{
 	}
 
 	static setContentBrowserSelected(data) {
-		SelectionStore.getInstance().updateStore({TARGET: SelectionTargets.CONTENT_BROWSER, array: data})
+		SelectionStore.updateStore({TARGET: SelectionTargets.CONTENT_BROWSER, array: data})
 	}
 
 	static getContentBrowserSelected() {
@@ -37,7 +37,7 @@ export default class SelectionStoreUtil{
 	}
 
 	static setLockedEntity(data:string) {
-		EngineStore.getInstance().updateStore({lockedEntity: data})
+		EngineStore.updateStore({lockedEntity: data})
 	}
 
 }

@@ -41,7 +41,7 @@
     	if (i === currentView || i < currentView)
     		currentView = currentView === 0 ? 0 : currentView - 1
     	const views = settings.views.filter((_, index) => i !== index)
-    	SettingsStore.getInstance().updateStore({views, currentView})
+    	SettingsStore.updateStore({views, currentView})
     }
 </script>
 
@@ -118,7 +118,7 @@
             removeTab={removeTab}
             tabs={settings.views}
             currentTab={settings.currentView}
-            setCurrentView={v => SettingsStore.getInstance().updateStore({currentView: v})}
+            setCurrentView={v => SettingsStore.updateStore({currentView: v})}
     />
 </div>
 

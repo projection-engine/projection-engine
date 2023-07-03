@@ -90,7 +90,7 @@ export default class EngineStateService {
 
     	EntityAPI.removeGroup(entities, false)
 
-    	SelectionStore.getInstance().updateStore({
+    	SelectionStore.updateStore({
     		TARGET: SelectionTargets.ENGINE,
     		array: []
     	})
@@ -106,7 +106,7 @@ export default class EngineStateService {
     	EntityNamingService.renameEntity(entity.name, entity)
     	getPivotPointMatrix(entity)
     	EntityAPI.addEntity(entity)
-    	SelectionStore.getInstance().updateStore({
+    	SelectionStore.updateStore({
     		TARGET: SelectionTargets.ENGINE,
     		array: [entity.id]
     	})

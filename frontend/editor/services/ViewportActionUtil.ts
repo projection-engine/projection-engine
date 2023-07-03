@@ -93,6 +93,6 @@ export default class ViewportActionUtil {
 	static fixateActive() {
 		const selected = SelectionStoreUtil.getEntitiesSelected()
 		if (selected[0])
-			EngineStore.getInstance().updateStore({lockedEntity: selected[0]})
+			EngineStore.updateStore({lockedEntity: selected[0]})
 	}
 }

@@ -10,7 +10,7 @@
     	const viewTabs = settings.views[settings.currentView]
     	const clone = [...settings.views]
     	clone[settings.currentView][direction] = [...viewTabs[direction], newValue]
-    	SettingsStore.getInstance().updateStore({views: clone})
+    	SettingsStore.updateStore({views: clone})
     }
 
 </script>

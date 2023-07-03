@@ -78,7 +78,7 @@ export default class SceneEditorUtil {
 			{label: LocalizationEN.LIGHT_ONLY, id: SHADING_MODELS.LIGHT_ONLY}
 		].map(e => e.divider ? e : ({
 			...e,
-			onClick: () => SettingsStore.getInstance().updateStore({shadingModel: e.id})
+			onClick: () => SettingsStore.updateStore({shadingModel: e.id})
 		}))
 	}
 
@@ -143,7 +143,7 @@ export default class SceneEditorUtil {
 			RotationGizmo.gridSize = value * Math.PI / 180
 			break
 		}
-		SettingsStore.getInstance().updateStore({gizmoGrid: {...SettingsStore.getData().gizmoGrid, [key]: value}})
+		SettingsStore.updateStore({gizmoGrid: {...SettingsStore.getData().gizmoGrid, [key]: value}})
 	}
 
 	static restoreCameraState(viewMetadata){
@@ -186,22 +186,22 @@ export default class SceneEditorUtil {
 			{
 				label: LocalizationEN.GRID,
 				icon: settings.showGrid ? "check" : undefined,
-				onClick: () => SettingsStore.getInstance().updateStore({showGrid: !settings.showGrid})
+				onClick: () => SettingsStore.updateStore({showGrid: !settings.showGrid})
 			},
 			{
 				label: LocalizationEN.ICONS,
 				icon: settings.showIcons ? "check" : undefined,
-				onClick: () => SettingsStore.getInstance().updateStore({showIcons: !settings.showIcons})
+				onClick: () => SettingsStore.updateStore({showIcons: !settings.showIcons})
 			},
 			{
 				label: LocalizationEN.LINES,
 				icon: settings.showLines ? "check" : undefined,
-				onClick: () => SettingsStore.getInstance().updateStore({showLines: !settings.showLines})
+				onClick: () => SettingsStore.updateStore({showLines: !settings.showLines})
 			},
 			{
 				label: LocalizationEN.OUTLINE,
 				icon: settings.showOutline ? "check" : undefined,
-				onClick: () => SettingsStore.getInstance().updateStore({showOutline: !settings.showOutline})
+				onClick: () => SettingsStore.updateStore({showOutline: !settings.showOutline})
 			},
 		]
 	}

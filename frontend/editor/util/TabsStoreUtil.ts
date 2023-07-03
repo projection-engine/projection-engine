@@ -4,7 +4,7 @@ import TabsStore from "../../stores/TabsStore"
 
 export default class TabsStoreUtil {
 	static updateByAttributes(direction, group, value) {
-		ChangesTrackerStore.getInstance().updateStore({changed: true})
+		ChangesTrackerStore.updateStore({changed: true})
 		const settingsData = SettingsStore.getData()
 		const clone = {...TabsStore.getData()}
 		if (!clone[settingsData.currentView])
@@ -17,7 +17,7 @@ export default class TabsStoreUtil {
 		} else
 			clone[settingsData.currentView][direction] = value
 
-		TabsStore.getInstance().updateStore(clone)
+		TabsStore.updateStore(clone)
 	}
 
 
@@ -26,7 +26,7 @@ export default class TabsStoreUtil {
 	}
 
 	static setFocusedTab(data) {
-		TabsStore.getInstance().updateStore({focused: data})
+		TabsStore.updateStore({focused: data})
 	}
 
 	static getCurrentTabByCurrentView(direction, group?: string): number {

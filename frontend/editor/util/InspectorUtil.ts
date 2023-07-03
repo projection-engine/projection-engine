@@ -89,7 +89,7 @@ export default class InspectorUtil {
 			entity.removeComponent(key)
 
 		EntityHierarchyService.updateHierarchy()
-		SelectionStore.getInstance().updateStore()
+		SelectionStore.updateStore()
 	}
 
 	static async handleComponentDrop(entity, data) {

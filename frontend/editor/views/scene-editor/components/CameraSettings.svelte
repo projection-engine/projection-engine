@@ -40,7 +40,7 @@
     })
     
     const toggleProjection = () => {
-    	SettingsStore.getInstance().updateStore({camera: {...camera, ortho: !camera.ortho}})
+    	SettingsStore.updateStore({camera: {...camera, ortho: !camera.ortho}})
     }
 
 </script>
@@ -96,7 +96,7 @@
 
     <button data-sveltebuttondefault="-" disabled={focusedCamera} class="button viewport"
             style="max-width: 25px; justify-content: center"
-            on:click={() => SettingsStore.getInstance().updateStore({screenSpaceMovement: !screenSpaceMovement})}>
+            on:click={() => SettingsStore.updateStore({screenSpaceMovement: !screenSpaceMovement})}>
         <ToolTip content={LocalizationEN.TOGGLE_CAMERA_MOVEMENT}/>
         {#if screenSpaceMovement}
             <Icon styles="font-size: 1rem">lock_outline</Icon>

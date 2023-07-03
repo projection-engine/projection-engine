@@ -50,7 +50,7 @@
     }
     $: {
         if (!isOnEdit && entityName !== entity.name) {
-            ChangesTrackerStore.getInstance().updateStore({changed: true})
+            ChangesTrackerStore.updateStore({changed: true})
             EntityNamingService.renameEntity(entity.name, entity)
             entityName = entity.name
         }

@@ -30,7 +30,7 @@
                             delete open[item.children[i]]
                     }
                     open[item.item.id] = inv
-                    FilesHierarchyStore.getInstance().updateStore({open})
+                    FilesHierarchyStore.updateStore({open})
                 }}
                 open={hierarchy.open}
                 childQuantity={item.childQuantity}

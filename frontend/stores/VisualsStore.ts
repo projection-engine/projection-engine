@@ -14,7 +14,7 @@ export default class VisualsStore extends AbstractStore{
 
 	updateStore(value) {
 		if (VisualsStore.#wasInitialized)
-			ChangesTrackerStore.getInstance().updateStore({changed: true})
+			ChangesTrackerStore.updateStore({changed: true})
 		VisualsStore.#wasInitialized = true
 		super.updateStore(value)
 		if (!VisualsStore.noPush)

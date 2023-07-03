@@ -51,13 +51,13 @@ export default class LevelService extends AbstractSingleton {
 
 			newSettings.visualSettings = undefined
 			if (meta.layout)
-				TabsStore.getInstance().updateStore({layout: meta.layout})
+				TabsStore.updateStore({layout: meta.layout})
 
-			SettingsStore.getInstance().updateStore(newSettings)
+			SettingsStore.updateStore(newSettings)
 			if (meta.visualSettings)
-				VisualsStore.getInstance().updateStore( meta.visualSettings)
+				VisualsStore.updateStore( meta.visualSettings)
 		}
-		EngineStore.getInstance().updateStore({
+		EngineStore.updateStore({
 			meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined},
 			isReady: true
 		})
@@ -84,7 +84,7 @@ export default class LevelService extends AbstractSingleton {
 		}
 
 		if (ChangesTrackerStore.getData() && Engine.loadedLevel) {
-			WindowChangeStore.getInstance().updateStore({
+			WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
 					await this.save().catch()
 					this.loadLevel(levelID).catch()
@@ -95,7 +95,7 @@ export default class LevelService extends AbstractSingleton {
 
 		await EditorFSUtil.readRegistry()
 		EntityNamingService.clear()
-		SelectionStore.getInstance().updateStore({
+		SelectionStore.updateStore({
 			TARGET: SelectionTargets.ENGINE,
 			array: []
 		})
@@ -108,7 +108,7 @@ export default class LevelService extends AbstractSingleton {
 			entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
 		})
 		if (Engine.loadedLevel)
-			SelectionStore.getInstance().updateStore({
+			SelectionStore.updateStore({
 				TARGET: SelectionTargets.ENGINE,
 				array: [Engine.loadedLevel.id],
 				lockedEntity: Engine.loadedLevel.id
@@ -180,7 +180,7 @@ export default class LevelService extends AbstractSingleton {
 			path,
 			serializeStructure(serialized)
 		)
-		ChangesTrackerStore.getInstance().updateStore({changed: false})
+		ChangesTrackerStore.updateStore({changed: false})
 	}
 }
 

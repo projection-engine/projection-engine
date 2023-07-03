@@ -24,25 +24,24 @@ export default class Renderer {
 	static elapsed = 0
 	static currentTimeStamp = 0
 
-
 	static copyToCurrentFrame() {
 		GPUAPI.copyTexture(StaticFBO.postProcessing1, StaticFBO.postProcessing2, GPU.context.COLOR_BUFFER_BIT)
 	}
 
-	static registerNativeSystems() {
-		Engine.addSystem("start", Renderer.#prepareLoop)
-		Engine.addSystem("sync", Renderer.#sync)
-		Engine.addSystem("start_metrics", MetricsController.init)
-		Engine.addSystem("execute_scripts", Renderer.#executeScripts)
-		Engine.addSystem("shadows_dir", DirectionalShadows.execute)
-		Engine.addSystem("shadows_omni", OmnidirectionalShadows.execute)
-		Engine.addSystem("visibility", VisibilityRenderer.execute)
-		Engine.addSystem("composition", SceneComposition.execute)
-		Engine.addSystem("copy_frame", Renderer.copyToCurrentFrame)
-		Engine.addSystem("ssgi", SSGI.execute)
-		Engine.addSystem("lens", LensPostProcessing.execute)
-		Engine.addSystem("frame_composition", FrameComposition.execute)
-		Engine.addSystem("end_metrics", MetricsController.end)
+	static loop() {
+		Renderer.#prepareLoop()
+		MetricsController.init()
+		Renderer.#executeScripts()
+		DirectionalShadows.execute()
+		OmnidirectionalShadows.execute()
+		VisibilityRenderer.execute()
+		SceneComposition.execute()
+		Renderer.copyToCurrentFrame()
+		SSGI.execute()
+		LensPostProcessing.execute()
+		FrameComposition.execute()
+		Renderer.#sync()
+		MetricsController.end()
 	}
 
 	static #prepareLoop() {
@@ -75,7 +74,7 @@ export default class Renderer {
 		MetricsController.currentState = METRICS_FLAGS.SCRIPT
 	}
 
-	static #sync(){
+	static #sync() {
 		EntityWorkerAPI.hasChangeBuffer[0] = 0
 		CameraAPI.syncThreads()
 		EntityWorkerAPI.syncThreads()

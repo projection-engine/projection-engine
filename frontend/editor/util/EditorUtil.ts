@@ -24,7 +24,7 @@ export default class EditorUtil {
 	static async componentConstructor(entity, scriptID, autoUpdate = true) {
 		await ScriptsAPI.linkScript(entity, scriptID)
 		if (autoUpdate)
-			SelectionStore.getInstance().updateStore()
+			SelectionStore.updateStore()
 		ToastNotificationSystem.getInstance().success(LocalizationEN.ADDED_COMPONENT)
 	}
 
@@ -184,7 +184,7 @@ export default class EditorUtil {
 		const copy = [...settingsData.views]
 		copy[settingsData.currentView] = {...view, [key]: newView}
 
-		SettingsStore.getInstance().updateStore({views: copy})
+		SettingsStore.updateStore({views: copy})
 	}
 
 	static getCall<T>(channel, data, addMiddle = true):Promise<T> {

@@ -84,7 +84,7 @@ export default class ViewportUtil{
 			left: [],
 			top: []
 		})
-		SettingsStore.getInstance().updateStore({views: views})
+		SettingsStore.updateStore({views: views})
 	}
 
 }

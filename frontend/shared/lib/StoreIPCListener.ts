@@ -13,12 +13,12 @@ export default class StoreIPCListener extends AbstractSingleton {
 			switch (key) {
 			case UIDataStores.SETTINGS:
 				SettingsStore.noPush = true
-				SettingsStore.getInstance().updateStore(data)
+				SettingsStore.updateStore(data)
 				SettingsStore.noPush = false
 				break
 			case UIDataStores.VISUALS:
 				VisualsStore.noPush = true
-				VisualsStore.getInstance().updateStore(data)
+				VisualsStore.updateStore(data)
 				VisualsStore.noPush = false
 				break
 			}

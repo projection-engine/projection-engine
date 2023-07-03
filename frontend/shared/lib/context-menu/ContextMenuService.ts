@@ -1,11 +1,12 @@
 import ContextMenuOption from "./templates/ContextMenuOptions"
 import findOptions from "./utils/find-options"
-import buildOptions from "./utils/build-options"
 import ContextMenuTarget from "./templates/ContextMenuTarget"
 import getContextAction from "./utils/get-context-action"
 import ElectronResources from "../ElectronResources"
-import IPCRoutes from "../../../../shared/IPCRoutes";
-import AbstractSingleton from "../../../../shared/AbstractSingleton";
+import IPCRoutes from "../../../../shared/IPCRoutes"
+import AbstractSingleton from "../../../../shared/AbstractSingleton"
+import MappedOption from "./templates/MappedOption"
+import getOptionID from "./utils/get-option-id"
 
 export default class ContextMenuService extends AbstractSingleton{
 	blockContext = false
@@ -18,7 +19,7 @@ export default class ContextMenuService extends AbstractSingleton{
 	}
 
 	constructor() {
-		super();
+		super()
 		ElectronResources.ipcRenderer.on(IPCRoutes.CONTEXT_MENU_CALLBACK, (ev, {id, group}) => {
 			const groupData = this.data.targets[group]
 			if (!groupData)
@@ -33,7 +34,7 @@ export default class ContextMenuService extends AbstractSingleton{
 	}
 
 	mount(options: ContextMenuOption[], target: string | null, onFocus?: Function) {
-		const template = buildOptions(options, target)
+		const template = this.#buildOptions(options, target)
 		ElectronResources.ipcRenderer.send(IPCRoutes.REGISTER_CONTEXT_MENU, {
 			id: target,
 			template
@@ -54,5 +55,48 @@ export default class ContextMenuService extends AbstractSingleton{
 		if (!old)
 			return
 		delete this.data.targets[target]
+	}
+
+	#buildOptions(options: ContextMenuOption[], id: string|null): MappedOption[]{
+		const template: MappedOption[] = []
+		for (let i = 0; i < options.length; i++){
+			const option = options[i]
+			if (option.divider)
+				template.push({type: "separator"})
+			else {
+				const internalID = getOptionID(option.label, id)
+				const cb = option.onClick || option.callback
+
+				if (cb) {
+
+					const temp = <MappedOption>{
+						label: option.label,
+						id: internalID
+					}
+					if (option.require) {
+						const mapped = option.require.map(r => {
+							const lower = r.toLowerCase()
+							if (lower.includes("control"))
+								return "CmdOrCtrl"
+							if (lower.includes("alt"))
+								return "Alt"
+							if (lower.includes("shift"))
+								return "Shift"
+
+							return r.toUpperCase().replace("KEY", "").replace("ARROW", "")
+						})
+						temp.accelerator = mapped.join("+")
+					}
+					template.push(temp)
+				} else if (Array.isArray(option.children) && option.children.length > 0)
+					template.push({
+						label: option.label,
+						id: internalID,
+						submenu: this.#buildOptions(option.children, id)
+					})
+
+			}
+		}
+		return template
 	}
 }

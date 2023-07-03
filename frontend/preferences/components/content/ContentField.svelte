@@ -44,9 +44,9 @@
     		s[key] = value
     	if (save) {
     		if (toRender?.target === "settings")
-    			SettingsStore.getInstance().updateStore(s)
+    			SettingsStore.updateStore(s)
     		else
-    			VisualsStore.getInstance().updateStore(s)
+    			VisualsStore.updateStore(s)
     	}
     }
 

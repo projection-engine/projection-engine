@@ -105,7 +105,7 @@ export default class Engine {
 		OBS.observe(GPU.canvas)
 		Engine.#isReady = true
 		GPU.skylightProbe = new LightProbe(128)
-		Renderer.registerNativeSystems()
+		Engine.addSystem("start", Renderer.loop)
 		Engine.start()
 	}
 
@@ -123,7 +123,6 @@ export default class Engine {
 	static start() {
 
 		if (!Engine.isExecuting && Engine.#isReady) {
-			console.trace("STARTING")
 			Physics.start()
 			ResourceManager.start()
 			Engine.#frameID = requestAnimationFrame(Engine.#loop)

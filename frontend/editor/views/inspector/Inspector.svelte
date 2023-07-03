@@ -56,7 +56,6 @@
     	isEntity = selectedItem instanceof Entity
     }
 
-    $: console.trace(isEntity, isOnDynamicTab)
 </script>
 
 <div class="wrapper">
@@ -84,7 +83,8 @@
                         setTabIndex={i => tabIndex = i}
                         setTabs={setTabs}
                         entity={selectedItem}
-                        tabIndex={tabIndex}/>
+                        tabIndex={tabIndex}
+                />
             {:else}
                 <ContentBrowserItem setTabs={setTabs} item={selectedItem} tabIndex={tabIndex}/>
             {/if}

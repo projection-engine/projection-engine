@@ -50,6 +50,10 @@ export default class AbstractStore extends AbstractSingleton {
 	}
 
 	static getData() {
-		return this.getInstance().data
+		return this.get<AbstractStore>().data
+	}
+	
+	static updateStore(data) {
+		return this.get<AbstractStore>().updateStore(data)
 	}
 }

@@ -37,6 +37,8 @@
     let onDrag = false
     let timeout
     let store = {}
+    let isRowType = false
+    let lineHeight = 23
 
     function resetItem() {
     	SelectionStoreUtil.setContentBrowserSelected([])
@@ -44,13 +46,16 @@
     	setFileType(undefined)
     }
 
-    $: lineHeight = viewType === ITEM_TYPES.ROW ? 23 : CARD_SIZE
+    $:{
+    	isRowType = viewType === ITEM_TYPES.ROW
+    	lineHeight = isRowType ? 23 : CARD_SIZE
+    }
     $: toRender = ContentBrowserUtil.getFilesToRender(currentDirectory, fileType, store.items, inputValue, elementsPerRow, sortKey, sortDirection)
 
     $: {
-    	if (viewType === ITEM_TYPES.CARD && ref)
+    	if (!isRowType && ref)
     		elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
-    	else if (viewType !== ITEM_TYPES.CARD)
+    	else if (isRowType)
     		elementsPerRow = 1
     }
 
@@ -59,7 +64,7 @@
     	FilesStore.getInstance().addListener(COMPONENT_ID, v => store = v)
     	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectionList = data.array, ["array"])
     	resizeOBS = new ResizeObserver(() => {
-    		if (viewType !== ITEM_TYPES.CARD)
+    		if (isRowType)
     			return
     		clearTimeout(timeout)
     		setTimeout(() => {
@@ -77,16 +82,18 @@
     	clearTimeout(timeout)
     	resizeOBS?.disconnect?.()
     })
+
 </script>
 
 <div
         bind:this={ref}
+        id={COMPONENT_ID}
         on:mousedown={e => {
             const key = "data-svelteisitem"
             if(e.composedPath().find(element => element.getAttribute?.(key) != null) == null)
                 SelectionStoreUtil.setContentBrowserSelected([])
         }}
-        style={viewType === ITEM_TYPES.ROW  && toRender.length > 0? "padding: 0;": undefined}
+        style={isRowType && toRender.length > 0? "padding: 0;": undefined}
         class="content"
 >
     <SelectBox
@@ -96,7 +103,7 @@
             setSelected={SelectionStoreUtil.setContentBrowserSelected}
     />
     {#if toRender.length > 0}
-        {#if viewType === ITEM_TYPES.ROW}
+        {#if isRowType}
             <RowsHeader sort={sortKey}/>
         {/if}
         <VirtualList items={toRender} let:item>

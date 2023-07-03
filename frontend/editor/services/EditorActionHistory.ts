@@ -25,7 +25,7 @@ export default class EditorActionHistory {
 	}
 
 	static save(value: Entity[] | Entity, isRemoval?: boolean) {
-		ChangesTrackerStore.getInstance().updateStore({changed: true})
+		ChangesTrackerStore.updateStore({changed: true})
 
 		const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
 		EditorActionHistory.#cache.save({
@@ -41,7 +41,7 @@ export default class EditorActionHistory {
 			ToastNotificationSystem.getInstance().log(LocalizationEN.UNDOING_CHANGES)
 			EditorActionHistory.#apply(action)
 		} else
-			ChangesTrackerStore.getInstance().updateStore({changed: true})
+			ChangesTrackerStore.updateStore({changed: true})
 	}
 
 	static redo() {

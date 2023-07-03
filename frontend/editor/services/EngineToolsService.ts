@@ -19,6 +19,7 @@ import GPU from "../../../engine-core/GPU"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
 import EngineToolsState from "../../../engine-core/tools/EngineToolsState"
 import EngineState from "../../../engine-core/EngineState"
+import SETTINGS from "../static/SETTINGS"
 
 export default class EngineToolsService extends AbstractSingleton {
 
@@ -101,7 +102,7 @@ export default class EngineToolsService extends AbstractSingleton {
 	}
 
 	static 	#updateEngineToolsState() {
-		const settings = SettingsStore.getData()
+		const settings = SettingsStore.getData() as typeof SETTINGS
 		EngineToolsState.gridColor = settings.gridColor
 		EngineToolsState.gridScale = settings.gridScale * 10
 		EngineToolsState.gridThreshold = settings.gridThreshold
@@ -110,6 +111,9 @@ export default class EngineToolsService extends AbstractSingleton {
 		EngineToolsState.showIcons = settings.showIcons
 		EngineToolsState.showLines = settings.showLines
 		EngineToolsState.iconScale = settings.iconScale
+		EngineToolsState.showOutline = settings.showOutline
+		EngineToolsState.outlineColor = settings.outlineColor
+		EngineToolsState.outlineWidth = settings.outlineWidth
 	}
 
 	static #updateWithSettings() {

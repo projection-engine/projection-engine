@@ -14,7 +14,7 @@ export default class SettingsStore extends AbstractStore{
 
 	updateStore(value) {
 		if (SettingsStore.#wasInitialized)
-			ChangesTrackerStore.getInstance().updateStore({changed: true})
+			ChangesTrackerStore.updateStore({changed: true})
 		SettingsStore.#wasInitialized = true
 		super.updateStore(value)
 		if (!SettingsStore.noPush)

@@ -30,7 +30,7 @@ export default class ExecutionService {
 		await LevelService.getInstance().saveCurrentLevel().catch()
 		ExecutionService.#currentLevelID = Engine.loadedLevel.id
 		await Engine.startSimulation()
-		EngineStore.getInstance().updateStore({focusedCamera: undefined, executingAnimation: true})
+		EngineStore.updateStore({focusedCamera: undefined, executingAnimation: true})
 	}
 
 	static async stopPlayState() {
@@ -51,7 +51,7 @@ export default class ExecutionService {
 
 		CameraAPI.trackingEntity = undefined
 		CameraTracker.startTracking()
-		EngineStore.getInstance().updateStore({executingAnimation: false})
+		EngineStore.updateStore({executingAnimation: false})
 		CameraAPI.restoreState(ExecutionService.cameraSerialization)
 	}
 

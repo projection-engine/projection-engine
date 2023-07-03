@@ -9,7 +9,7 @@
     const COMPONENT_ID = crypto.randomUUID()
 
     function update(key, value) {
-    	SettingsStore.getInstance().updateStore({[key]: value})
+    	SettingsStore.updateStore({[key]: value})
     }
 
     function updateHotKey(key, objectKey, newValue) {

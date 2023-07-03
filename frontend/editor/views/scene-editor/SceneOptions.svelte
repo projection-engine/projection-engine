@@ -53,13 +53,13 @@
                     label={LocalizationEN.DISTANCE}
                     minValue={.001}
                     value={spawnDistanceFromCamera}
-                    onFinish={v => SettingsStore.getInstance().updateStore({spawnDistanceFromCamera: v})}
+                    onFinish={v => SettingsStore.updateStore({spawnDistanceFromCamera: v})}
             />
             <div data-sveltedivider="-"></div>
             <Checkbox
                     label={LocalizationEN.SPAWN_ON_ORIGIN}
                     checked={spawnOnOrigin}
-                    handleCheck={() => SettingsStore.getInstance().updateStore({spawnOnOrigin: !spawnOnOrigin})}
+                    handleCheck={() => SettingsStore.updateStore({spawnOnOrigin: !spawnOnOrigin})}
             />
         </div>
     </Dropdown>

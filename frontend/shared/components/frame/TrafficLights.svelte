@@ -35,7 +35,7 @@
 </script>
 
 {#if windowChangeState.message !== undefined && !noChangeTracking}
-    <Modal handleClose={() => WindowChangeStore.getInstance().updateStore({})} styles="width: 30vw; padding: 8px">
+    <Modal handleClose={() => WindowChangeStore.updateStore({})} styles="width: 30vw; padding: 8px">
         <div data-svelteinline="-" style="width: 100%; gap: 12px">
             <Icon styles="font-size: 50px">help_outline</Icon>
             <h5>{windowChangeState.message}</h5>
@@ -52,7 +52,7 @@
             <button
                     data-sveltebuttondefault="-"
                     class="modal-button"
-                    on:click={() =>  WindowChangeStore.getInstance().updateStore({})}
+                    on:click={() =>  WindowChangeStore.updateStore({})}
             >
                 {LocalizationEN.CANCEL}
             </button>
@@ -88,7 +88,7 @@
             data-sveltebuttondefault="-"
             on:click={() => {
                 if(ChangesTrackerStore.getData().changed)
-                    WindowChangeStore.getInstance().updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
+                    WindowChangeStore.updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
                         await LevelService.getInstance().save()
                         ElectronResources.ipcRenderer.send("close")
                     }})

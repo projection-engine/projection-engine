@@ -38,7 +38,7 @@ export default class EngineTools {
 		}
 
 		selected.length = 0
-		for (let i = 0; i < data.length; i++){
+		for (let i = 0; i < data.length; i++) {
 			const d = data[i]
 			const entity = Engine.entities.get(d)
 			if (entity !== undefined) {
@@ -68,26 +68,23 @@ export default class EngineTools {
 		GPU.context.enable(GPU.context.DEPTH_TEST)
 	}
 
+	static #loop() {
+		CameraTracker.updateFrame()
+		SelectedSystem.drawToBuffer()
+		EngineTools.#setContextState()
+		GridSystem.execute()
+		WireframeRenderer.execute()
+		SelectedSystem.drawSilhouette()
+		IconsSystem.execute()
+		GizmoSystem.execute()
+	}
+
 	static bindSystems() {
-		Engine.addSystem("camera_tracker", CameraTracker.updateFrame)
-		Engine.addSystem("outline_draw_to_buffer", SelectedSystem.drawToBuffer)
-		Engine.addSystem("set_context_state", EngineTools.#setContextState)
-		Engine.addSystem("grid", GridSystem.execute)
-		Engine.addSystem("wireframe", WireframeRenderer.execute)
-		Engine.addSystem("outline_draw_silhouette", SelectedSystem.drawSilhouette)
-		Engine.addSystem("icons", IconsSystem.execute)
-		Engine.addSystem("gizmo", GizmoSystem.execute)
+		Engine.addSystem("ENGINE_TOOLS_RENDERER", EngineTools.#loop)
 	}
 
 	static unbindSystems() {
-		Engine.removeSystem("camera_tracker")
-		Engine.removeSystem("outline_draw_to_buffer")
-		Engine.removeSystem("set_context_state")
-		Engine.removeSystem("grid")
-		Engine.removeSystem("wireframe")
-		Engine.removeSystem("outline_draw_silhouette")
-		Engine.removeSystem("icons")
-		Engine.removeSystem("gizmo")
+		Engine.removeSystem("ENGINE_TOOLS_RENDERER")
 	}
 
 	static #setContextState() {

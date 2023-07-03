@@ -425,7 +425,7 @@ export default class ContentBrowserUtil {
 
 	static initializeContentBrowser() {
 		FilesStore.getInstance().addListener("self-update", () => {
-			FilesHierarchyStore.getInstance().updateStore()
+			FilesHierarchyStore.updateStore()
 		})
 		ContentBrowserUtil.refreshFiles().catch()
 	}
@@ -447,7 +447,7 @@ export default class ContentBrowserUtil {
 	}
 
 	static cutFiles(toCut: string[]) {
-		FilesStore.getInstance().updateStore({toCut})
+		FilesStore.updateStore({toCut})
 	}
 
 	static paste(target?: string) {
@@ -471,27 +471,29 @@ export default class ContentBrowserUtil {
 		const items = FilesStore.getData().items
 		if (!items)
 			return
+		const open = FilesHierarchyStore.getData().open
 		const folders = items.filter(item => item.isFolder)
-		const fsSystem = FileSystemUtil
-		const cache: MutableObject = {
-			[fsSystem.sep]: {
+		const cache = {
+			[FileSystemUtil.sep]: {
 				depth: 0,
-				item: {id: fsSystem.sep, name: "Assets", isFolder: true},
+				item: {id: FileSystemUtil.sep, name: "Assets", isFolder: true},
 				childQuantity: folders.length
 			}
 		}
-		for (let i = 0; i < folders.length; i++) {
-			const item = folders[i]
-			if (item.parent)
-				continue
-			ContentBrowserUtil.#getHierarchy(cache, item, 1, folders)
+		if (open[FileSystemUtil.sep]) {
+			for (let i = 0; i < folders.length; i++) {
+				const item = folders[i]
+				if (item.parent)
+					continue
+				ContentBrowserUtil.#getHierarchy(cache, item, 1, folders)
+			}
 		}
 		return Object.values(cache)
 	}
 
 	static #getHierarchy(cache, item, depth = 0, folders) {
-		cache[item.id] = <MutableObject>{item, depth, childQuantity: 0, children: []}
-		const isOpen = open[item.id]
+		cache[item.id] = {item, depth, childQuantity: 0, children: []}
+		const isOpen = FilesHierarchyStore.getData().open[item.id]
 		for (let i = 0; i < folders.length; i++) {
 			const current = folders[i]
 			if (current.parent === item.id && !cache[current.id]) {

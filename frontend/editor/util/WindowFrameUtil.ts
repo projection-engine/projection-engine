@@ -28,7 +28,7 @@ export default class WindowFrameUtil {
 			ViewportActionUtil.paste()
 			break
 		case "footer":
-			SettingsStore.getInstance().updateStore({hideFooter: !SettingsStore.getData().hideFooter})
+			SettingsStore.updateStore({hideFooter: !SettingsStore.getData().hideFooter})
 			break
 		case "learn-more":
 			ElectronResources.shell.openExternal("https://github.com/projection-engine").catch()
@@ -69,7 +69,7 @@ export default class WindowFrameUtil {
 			{
 				label: "Reload project",
 				icon: "refresh",
-				onClick: () => WindowChangeStore.getInstance().updateStore({
+				onClick: () => WindowChangeStore.updateStore({
 					message: LocalizationEN.UNSAVED_CHANGES, callback: () => {
 						LevelService.getInstance().save().then(() => WindowFrameUtil.#callMethod("reload"))
 					}
@@ -77,7 +77,7 @@ export default class WindowFrameUtil {
 			},
 			{
 				label: "Close project",
-				onClick: () => WindowChangeStore.getInstance().updateStore({
+				onClick: () => WindowChangeStore.updateStore({
 					message: LocalizationEN.UNSAVED_CHANGES,
 					callback: () => {
 						LevelService.getInstance().save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))

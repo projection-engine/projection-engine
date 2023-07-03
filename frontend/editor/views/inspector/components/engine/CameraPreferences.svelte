@@ -27,7 +27,7 @@
 
     const updateCamera = (key, value, full) => {
     	if (full)
-    		SettingsStore.getInstance().updateStore({camera: {...camera, [key]: value}})
+    		SettingsStore.updateStore({camera: {...camera, [key]: value}})
     	if (CameraTracker[key] !== undefined)
     		CameraTracker[key] = value
     }

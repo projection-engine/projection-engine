@@ -67,7 +67,7 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 
 			require: viewportHotkeys.TRANSLATION_GIZMO,
 			callback: () => {
-				SettingsStore.getInstance().updateStore({gizmo: GIZMOS.TRANSLATION})
+				SettingsStore.updateStore({gizmo: GIZMOS.TRANSLATION})
 			}
 		},
 		SELECT_HIERARCHY: {
@@ -156,11 +156,11 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 		},
 		SCALE_GIZMO: {
 			require: viewportHotkeys.SCALE_GIZMO,
-			callback: () => SettingsStore.getInstance().updateStore({gizmo: GIZMOS.SCALE})
+			callback: () => SettingsStore.updateStore({gizmo: GIZMOS.SCALE})
 		},
 		ROTATION_GIZMO: {
 			require: viewportHotkeys.ROTATION_GIZMO,
-			callback: () => SettingsStore.getInstance().updateStore({gizmo: GIZMOS.ROTATION})
+			callback: () => SettingsStore.updateStore({gizmo: GIZMOS.ROTATION})
 		},
 		UNDO: {
 			require: viewportHotkeys.UNDO,
