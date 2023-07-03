@@ -1,13 +1,11 @@
 <script>
-    import FSAssetUtil from "../../../../services/file-system/FSAssetUtil"
     import GPU from "../../../../../../engine-core/GPU"
 
-    import FSFilesService from "../../../../services/file-system/FSFilesService"
-    import FSRegistryService from "../../../../services/file-system/FSRegistryService"
+    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
+    import EditorFSUtil from "../../../../util/EditorFSUtil"
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
     import MaterialUniforms from "../MaterialUniforms.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
     import InspectorUtil from "../../../../util/InspectorUtil"
@@ -26,15 +24,15 @@
     	if (wasUpdated)
     		return
     	wasUpdated = true
-    	const reg = FSRegistryService.getRegistryEntry(ID)
-    	originalMat = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + reg.path, "json")
+    	const reg = EditorFSUtil.getRegistryEntry(ID)
+    	originalMat = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + reg.path, "json")
     	if (!InspectorUtil.compareObjects(temp.uniforms, originalMat.response.uniforms)) {
     		temp = {
     			...temp,
     			uniforms: originalMat.response.uniforms,
     			uniformValues: originalMat.response.uniformValues
     		}
-    		await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(temp))
+    		await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(temp))
     	}
     }
 
@@ -55,7 +53,7 @@
     				uniformValues: update
     			}
     		}
-    		await FSAssetUtil.updateAsset(item.registryID, JSON.stringify(temp))
+    		await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(temp))
     		const instance = GPU.materials.get(item.registryID)
     		if (instance) {
     			await instance.updateUniformGroup(temp.response.uniformValues)

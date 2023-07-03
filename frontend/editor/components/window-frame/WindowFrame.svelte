@@ -1,15 +1,15 @@
 <script>
-    import EngineStore from "../../../shared/stores/EngineStore"
-    import {onDestroy} from "svelte"
+    import EngineStore from "../../../stores/EngineStore"
+    import {onDestroy, onMount} from "svelte"
 
     import LevelService from "../../services/engine/LevelService"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import Tabs from "../tabs/Tabs.svelte"
     import CreationController from "./components/CreationController.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte"
-    import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
+    import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
     import ExecutionService from "../../services/engine/ExecutionService"
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte"
     import ElectronResources from "../../../shared/lib/ElectronResources"
@@ -17,24 +17,32 @@
     import IPCRoutes from "../../../../shared/IPCRoutes"
     import WindowTypes from "../../../../shared/WindowTypes"
     import ViewportUtil from "../../util/ViewportUtil"
-    import WindowFrameUtil from "../../util/WindowFrameUtil";
+    import WindowFrameUtil from "../../util/WindowFrameUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
 
-    let engine
-    let settings
+    let executingAnimation = false
+    let settings = {}
     let hasChanges = false
-    const unsubscribeTracker = ChangesTrackerStore.getStore(v => hasChanges = v)
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
-
-    onDestroy(() => {
-    	unsubscribeTracker()
-    	unsubscribeEngine()
-    	unsubscribeSettings()
+    onMount(() => {
+    	EngineStore.getInstance().addListener(COMPONENT_ID, v => executingAnimation = v.executingAnimation, ["executingAnimation"])
+    	ChangesTrackerStore.getInstance().addListener(COMPONENT_ID, v => hasChanges = v.changed)
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, v => settings = v, ["views", "currentView"])
     })
-
-    $: options = WindowFrameUtil.getFrameOptions(engine.executingAnimation || !hasChanges)
+    
+    onDestroy(() => {
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
+    	ChangesTrackerStore.getInstance().removeListener(COMPONENT_ID)
+    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
+    })
+    function removeTab(i) {
+    	let currentView = settings.currentView
+    	if (i === currentView || i < currentView)
+    		currentView = currentView === 0 ? 0 : currentView - 1
+    	const views = settings.views.filter((_, index) => i !== index)
+    	SettingsStore.updateStore({views, currentView})
+    }
 </script>
 
 <FrameWrapper>
@@ -42,8 +50,8 @@
     <div class="wrapper footer-header" style="height: 22px">
         <button
                 data-sveltebuttondefault="-"
-                disabled={engine.executingAnimation || !hasChanges}
-                on:click={_ => LevelService.getInstance().save()}
+                disabled={executingAnimation || !hasChanges}
+                on:click={() => LevelService.getInstance().save()}
         >
             <Icon styles="font-size: 1rem">save</Icon>
             <ToolTip content={LocalizationEN.SAVE}/>
@@ -51,7 +59,7 @@
         <OptionDropdown
                 buttonStyles="background: none;"
                 cleanLayout={true}
-                options={options}
+                options={WindowFrameUtil.getFrameOptions(executingAnimation || !hasChanges)}
                 label="menu"
                 autoClose={true}
                 labelAsIcon={true}
@@ -66,8 +74,8 @@
     <div class="wrapper footer-header" style="height: 22px">
         <button
                 data-sveltebuttondefault="-"
-                disabled={engine.executingAnimation}
-                on:click={_ => ElectronResources.ipcRenderer.send(IPCRoutes.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
+                disabled={executingAnimation}
+                on:click={() => ElectronResources.ipcRenderer.send(IPCRoutes.OPEN_WINDOW,  {windowSettings: {heightScale: .75, widthScale: 1/3}, type: WindowTypes.PREFERENCES})}
         >
             <Icon styles="font-size: 1rem">settings</Icon>
             <ToolTip content={LocalizationEN.OPEN_PREFERENCES}/>
@@ -78,7 +86,7 @@
     <div class="wrapper footer-header" style="height: 22px">
         <button
                 data-sveltebuttondefault="-"
-                disabled={engine.executingAnimation}
+                disabled={executingAnimation}
                 on:click={() => ExecutionService.startPlayState()}
                 data-svelteview-header-button="-"
                 style="color: var(--pj-accent-color)"
@@ -88,7 +96,7 @@
         </button>
         <button
                 data-sveltebuttondefault="-"
-                disabled={!engine.executingAnimation}
+                disabled={!executingAnimation}
                 on:click={() => ExecutionService.stopPlayState()}
                 data-svelteview-header-button="-"
                 style="--pj-accent-color: red; color: var(--pj-accent-color)"
@@ -101,15 +109,16 @@
     <div data-sveltevertdivider="-" style="height: 15px;"></div>
     <Tabs
             removeMultipleTabs={() => {
-                const currentView = settings.views[settings.currentView]
-                SettingsStore.updateStore({...settings, views: [currentView]})
+                const settingsInstance =  SettingsStore.getInstance()
+                const currentView = settingsInstance.data.views[settingsInstance.data.currentView]
+               settingsInstance.updateStore({views: [currentView]})
             }}
             allowRenaming={true}
             addNewTab={ViewportUtil.addNewTab}
-            removeTab={ViewportUtil.removeTab}
+            removeTab={removeTab}
             tabs={settings.views}
             currentTab={settings.currentView}
-            setCurrentView={v => SettingsStore.updateStore({...settings, currentView: v})}
+            setCurrentView={v => SettingsStore.updateStore({currentView: v})}
     />
 </div>
 

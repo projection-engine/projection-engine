@@ -2,29 +2,25 @@
 
     import ToolTip from "../tooltip/ToolTip.svelte"
     import Icon from "../icon/Icon.svelte"
-    import {onDestroy} from "svelte"
+    import {onDestroy, onMount} from "svelte"
 
     import Modal from "../modal/Modal.svelte"
-    import WindowChangeStore from "../../stores/WindowChangeStore"
-    import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
+    import WindowChangeStore from "../../../stores/WindowChangeStore"
+    import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
     import ElectronResources from "../../lib/ElectronResources"
     import RENDER_TARGET from "../../../editor/static/RENDER_TARGET"
     import HotKeysController from "../../lib/HotKeysController"
     import LevelService from "../../../editor/services/engine/LevelService"
     import LocalizationEN from "../../../../shared/LocalizationEN"
 
+    const COMPONENT_ID = crypto.randomUUID()
+
     export let noChangeTracking
 
-    let hasChanges = false
-    let message = undefined
+    let windowChangeState = {}
 
-    const unsubscribeMessage = WindowChangeStore.getStore(v => message = v)
-    const unsubscribeChanges = ChangesTrackerStore.getStore(v => hasChanges = v)
-
-    onDestroy(() => {
-    	unsubscribeChanges()
-    	unsubscribeMessage()
-    })
+    onMount(() => WindowChangeStore.getInstance().addListener(COMPONENT_ID, data => windowChangeState = data))
+    onDestroy(() => WindowChangeStore.getInstance().removeListener(COMPONENT_ID))
 
     function toggleFullscreen() {
     	if (document.fullscreenElement != null)
@@ -38,29 +34,25 @@
     }
 </script>
 
-{#if message !== undefined && !noChangeTracking}
-    <Modal handleClose={() => WindowChangeStore.updateStore(undefined)} styles="width: 30vw; padding: 8px">
+{#if windowChangeState.message !== undefined && !noChangeTracking}
+    <Modal handleClose={() => WindowChangeStore.updateStore({})} styles="width: 30vw; padding: 8px">
         <div data-svelteinline="-" style="width: 100%; gap: 12px">
             <Icon styles="font-size: 50px">help_outline</Icon>
-            <h5>{message.message}</h5>
+            <h5>{windowChangeState.message}</h5>
         </div>
         <div data-svelteinline="-" style="width: 100%; gap: 8px; padding-left: 50%">
             <button
                     data-sveltebuttondefault="-"
                     data-sveltefocusbutton="-"
                     class="modal-button"
-                    on:click={() => {
-                        message.callback?.()
-                    }}
+                    on:click={windowChangeState.callback}
             >
                 {LocalizationEN.YES}
             </button>
             <button
                     data-sveltebuttondefault="-"
                     class="modal-button"
-                    on:click={() => {
-                       WindowChangeStore.updateStore(undefined)
-                    }}
+                    on:click={() =>  WindowChangeStore.updateStore({})}
             >
                 {LocalizationEN.CANCEL}
             </button>
@@ -94,8 +86,8 @@
     </button>
     <button
             data-sveltebuttondefault="-"
-            on:click={_ => {
-                if(hasChanges)
+            on:click={() => {
+                if(ChangesTrackerStore.getData().changed)
                     WindowChangeStore.updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
                         await LevelService.getInstance().save()
                         ElectronResources.ipcRenderer.send("close")

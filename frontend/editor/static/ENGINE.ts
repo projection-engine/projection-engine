@@ -3,5 +3,6 @@ export default {
 	cameraInitialized: false,
 	executingAnimation: false,
 	scripts: [],
-	focusedCamera: undefined
+	focusedCamera: undefined,
+	lockedEntity: undefined
 }

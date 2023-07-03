@@ -1,4 +1,4 @@
-import FileSystemService from "../../../../shared/lib/FileSystemService"
+import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
 export default class GlobalContentBrowserController{
 	static subscribed = new Map()
@@ -13,7 +13,7 @@ export default class GlobalContentBrowserController{
 	static pushCurrentDirectory(dir){
 		let path = dir
 		if(!path)
-			path = FileSystemService.getInstance().sep
+			path = FileSystemUtil.sep
 		GlobalContentBrowserController.subscribed.forEach(e => e(path))
 	}
 }

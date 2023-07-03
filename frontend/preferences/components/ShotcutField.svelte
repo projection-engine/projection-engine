@@ -3,7 +3,7 @@
     import SETTINGS from "../../editor/static/SETTINGS"
 
     import KEYS from "../../editor/static/KEYS.ts"
-    import SettingsStore from "../../shared/stores/SettingsStore"
+    import SettingsStore from "../../stores/SettingsStore"
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../shared/components/icon/Icon.svelte"
     import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
@@ -15,7 +15,7 @@
     export let all
 
     function update(key, value) {
-    	SettingsStore.updateStore({...SettingsStore.data, [key]: value})
+    	SettingsStore.updateStore({[key]: value})
     }
 
     let currentShortcut

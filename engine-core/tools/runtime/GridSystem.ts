@@ -2,24 +2,23 @@ import GPU from "../../GPU"
 import StaticFBO from "../../lib/StaticFBO"
 import StaticMeshes from "../../lib/StaticMeshes"
 import StaticEditorShaders from "../lib/StaticEditorShaders"
-import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
+import EngineToolsState from "../EngineToolsState"
 
 export default class GridSystem {
 	static #buffer = new Float32Array([.3, 20, 50, 1])
 
 	static execute() {
 		const context = GPU.context
-		const settings = SettingsStore.data
-		if(!settings.showGrid)
+		if(!EngineToolsState.showGrid)
 			return
 
 		StaticEditorShaders.grid.bind()
 		const uniforms = StaticEditorShaders.gridUniforms
 		const buffer = GridSystem.#buffer
-		buffer[0] = settings.gridColor
-		buffer[1] = settings.gridScale * 10
-		buffer[2] = settings.gridThreshold
-		buffer[3] = settings.gridOpacity
+		buffer[0] = EngineToolsState.gridColor
+		buffer[1] = EngineToolsState.gridScale
+		buffer[2] = EngineToolsState.gridThreshold
+		buffer[3] = EngineToolsState.gridOpacity
 
 
 		context.uniform4fv(uniforms.settings, buffer)

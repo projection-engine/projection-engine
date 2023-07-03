@@ -1,18 +1,21 @@
 import LocalizationEN from "../../../shared/LocalizationEN"
-import FilesStore from "../../shared/stores/FilesStore"
+import FilesStore from "../../stores/FilesStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import COMPONENTS from "../../../engine-core/static/COMPONENTS"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import FileSystemAPI from "../../../engine-core/lib/utils/FileSystemAPI"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
-import SelectionStore from "../../shared/stores/SelectionStore"
+import SelectionStore from "../../stores/SelectionStore"
 import LightComponent from "../../../engine-core/instances/components/LightComponent"
 import LightsAPI from "../../../engine-core/lib/utils/LightsAPI"
 import EditorActionHistory from "../services/EditorActionHistory"
 import CameraComponent from "../../../engine-core/instances/components/CameraComponent"
-import EngineStore from "../../shared/stores/EngineStore"
+import EngineStore from "../../stores/EngineStore"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
+import SelectionTargets from "../../../shared/SelectionTargets"
+import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
+import FileTypes from "../../../shared/FileTypes"
 
 export default class InspectorUtil {
 	static compareObjects(obj1, obj2) {
@@ -67,10 +70,11 @@ export default class InspectorUtil {
 			entity.__cameraNeedsUpdate = true
 		}
 		component[key] = value
-		if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.engine.focusedCamera)
+		if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.getData().focusedCamera)
 			CameraAPI.updateViewTarget(entity)
 		if (save) {
-			SelectionStore.updateStore()
+			const selectionStoreInstance = SelectionStore.getInstance()
+			selectionStoreInstance.updateStore({array: selectionStoreInstance.data.array})
 			EditorActionHistory.save(entity)
 		}
 	}
@@ -88,7 +92,7 @@ export default class InspectorUtil {
 		SelectionStore.updateStore()
 	}
 
-	static 	async handleComponentDrop(entity, data) {
+	static async handleComponentDrop(entity, data) {
 		try {
 			const id = JSON.parse(data)[0]
 			const type = InspectorUtil.#getItemFound(id)
@@ -121,18 +125,19 @@ export default class InspectorUtil {
 	}
 
 	static #getItemFound(id) {
+		const filesStoreData = FilesStore.getData()
 		let type = "SCRIPT"
-		let itemFound = FilesStore.data.components.find(s => s.registryID === id)
+		let itemFound = filesStoreData.components.find(s => s.registryID === id)
 		if (!itemFound) {
-			itemFound = FilesStore.data.meshes.find(s => s.registryID === id)
+			itemFound = filesStoreData.meshes.find(s => s.registryID === id)
 			type = "MESH"
 		}
 		if (!itemFound) {
-			itemFound = FilesStore.data.textures.find(s => s.registryID === id)
+			itemFound = filesStoreData.textures.find(s => s.registryID === id)
 			type = "IMAGE"
 		}
 		if (!itemFound) {
-			itemFound = FilesStore.data.materials.find(s => s.registryID === id)
+			itemFound = filesStoreData.materials.find(s => s.registryID === id)
 			type = "MATERIAL"
 		}
 
@@ -144,4 +149,47 @@ export default class InspectorUtil {
 	}
 
 
+	static getSelectionTarget(selectionData) {
+		let selectedItem
+		if (selectionData.array[0]) {
+			switch (selectionData.TARGET) {
+			case SelectionTargets.CONTENT_BROWSER:
+				selectedItem = FilesStore.getData().items.find(i => i.id === selectionData.array[0])
+				break
+			case SelectionTargets.ENGINE:
+				selectedItem = QueryAPI.getEntityByID(selectionData.array[0])
+				break
+			}
+		}
+		return selectedItem
+	}
+
+	static setInspectorTabs(fileType: string, setTabs: Function){
+		const VALID_TYPES = [FileTypes.COMPONENT, FileTypes.UI_LAYOUT, FileTypes.MATERIAL, FileTypes.PRIMITIVE]
+		if (VALID_TYPES.includes(fileType)) {
+			setTabs([
+				{
+					label: LocalizationEN.METADATA,
+					icon: "info",
+					index: -2,
+					color: "var(--pj-accent-color-secondary)"
+				},
+				{divider: true},
+				{
+					label: LocalizationEN.ASSET_PROPERTIES,
+					icon: "description",
+					index: -1,
+					color: "var(--pj-accent-color-tertiary)"
+				}
+			])
+		} else
+			setTabs([
+				{
+					label: LocalizationEN.METADATA,
+					icon: "info",
+					index: -2,
+					color: "var(--pj-accent-color-secondary)"
+				}
+			])
+	}
 }

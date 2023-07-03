@@ -1,20 +1,19 @@
 <script>
-    import FilesStore from "../../../../../shared/stores/FilesStore"
     import {onDestroy, onMount} from "svelte"
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop"
     import Card from "./Card.svelte"
     import Row from "./Row.svelte"
-    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
     import FileTypes from "../../../../../../shared/FileTypes"
     import Folders from "../../../../../../shared/Folders"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
+    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
 
     export let childQuantity
     export let reset
     export let type
     export let data
-    export let selectionMap
+    export let selectionList
     export let setSelected
     export let submitRename
     export let items
@@ -22,16 +21,16 @@
     export let currentDirectory
     export let setOnDrag
     export let onDrag
-    export let toCut = []
     export let isOnRename
     export let isCardViewType
+    export let toCut
 
     let ref
 
     const draggable = dragDrop(true)
 
     $: itemMetadata = {
-    	path: FileSystemService.getInstance().path + FileSystemService.getInstance().sep + Folders.PREVIEWS + FileSystemService.getInstance().sep + data.registryID + FileTypes.PREVIEW,
+    	path: FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS + FileSystemUtil.sep + data.registryID + FileTypes.PREVIEW,
     	type: data.type ? "." + data.type : "folder",
     	childQuantity,
     	typeName: ContentBrowserUtil.getTypeName(data.type)
@@ -43,7 +42,7 @@
     	draggable.onDragOver = dragDropData.onDragOver
     	draggable.onDragStart = dragDropData.onDragStart
     	draggable.disabled = onDrag && type !== 0 || isOnRename
-    	if (isOnRename) FilesStore.updateStore({...FilesStore.data, toCut: []})
+    	if (isOnRename) ContentBrowserUtil.cutFiles([])
     }
 
     $: props = {
@@ -55,7 +54,6 @@
     	type,
     	isMaterial: itemMetadata.type === FileTypes.MATERIAL,
     	isOnRename,
-    	isToBeCut: toCut.includes(data.id),
     	metadata: itemMetadata,
     	submitRename,
     	draggable,
@@ -64,7 +62,8 @@
     	currentDirectory,
     	items,
     	setOnDrag,
-    	selected: selectionMap
+    	isSelected: selectionList != null && selectionList.includes(data.id),
+    	isToBeCut: toCut != null && toCut.includes(data.id)
     }
 
     onMount(() => {

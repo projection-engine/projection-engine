@@ -3,19 +3,14 @@
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import SelectBox from "../../../shared/components/select-box/SelectBox.svelte"
     import GIZMOS from "../../static/GIZMOS.ts"
-    import EngineResourceLoaderService from "../../services/engine/EngineResourceLoaderService"
     import GizmoSystem from "../../../../engine-core/tools/runtime/GizmoSystem"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
-    import SelectionStore from "../../../shared/stores/SelectionStore"
-    import getViewportContext from "../../templates/get-viewport-context"
-
     import CameraSettings from "./components/CameraSettings.svelte"
-    import Header from "./Header.svelte"
-    import EngineStore from "../../../shared/stores/EngineStore"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SceneOptions from "./SceneOptions.svelte"
+    import EngineStore from "../../../stores/EngineStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
     import EntityInformation from "./components/EntityInformation.svelte"
-    import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
     import Engine from "../../../../engine-core/Engine"
     import ViewportInteractionListener from "./lib/ViewportInteractionListener"
     import GizmoSettings from "./components/GizmoSettings.svelte"
@@ -24,103 +19,59 @@
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import GPU from "../../../../engine-core/GPU"
     import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-    import {glMatrix, quat} from "gl-matrix"
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
+
+    const COMPONENT_ID = crypto.randomUUID()
+    const draggable = dragDrop(false)
 
     export let viewMetadata
 
     let previousMetadata
+    let isOnGizmo = false
+    let isSelectBoxDisabled
+    let executingAnimation = false
+    let shadingModel
+    let focusedCamera
+
     $: {
-
     	if (previousMetadata !== viewMetadata) {
-    		if (previousMetadata) {
-    			previousMetadata.cameraMetadata = CameraAPI.serializeState()
-    			previousMetadata.cameraMetadata.prevX = CameraTracker.xRotation
-    			previousMetadata.cameraMetadata.prevY = CameraTracker.yRotation
-    		}
-
-    		if (!viewMetadata.cameraMetadata) {
-    			const pitch = quat.fromEuler([], -45, 0, 0)
-    			const yaw = quat.fromEuler([], 0, 45, 0)
-    			CameraAPI.update([5, 10, 5], quat.multiply([], yaw, pitch))
-    			CameraTracker.xRotation = glMatrix.toRadian(45)
-    			CameraTracker.yRotation = -glMatrix.toRadian(45)
-    		} else {
-    			CameraAPI.restoreState(viewMetadata.cameraMetadata)
-    			CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
-    			CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
-    		}
-
-    		viewMetadata.cameraMetadata = CameraAPI.serializeState()
-    		viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
-    		viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+    		SceneEditorUtil.restoreCameraState(viewMetadata)
     		previousMetadata = viewMetadata
     	}
     }
-    let selectedSize = -1
-    let mainEntity
-    let isOnGizmo = false
-    let engine = {}
-    let settings = {}
-
-    const draggable = dragDrop(false)
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const unsubscribeSelection = SelectionStore.getStore(_ => {
-    	selectedSize = SelectionStore.engineSelected.length
-    	mainEntity = Engine.entities.map.get(SelectionStore.engineSelected[0])
-    })
-
-    $: isSelectBoxDisabled = settings.gizmo !== GIZMOS.NONE
-    $: {
-    	if (settings?.viewportHotkeys != null)
-    		ContextMenuService.getInstance().mount(
-    			getViewportContext(settings),
-    			RENDER_TARGET
-    		)
-    }
 
     onMount(() => {
-    	if (viewMetadata.cameraMetadata)
-    		CameraAPI.restoreState(viewMetadata.cameraMetadata)
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
+    		isSelectBoxDisabled = data.gizmo !== GIZMOS.NONE
+    		shadingModel = data.shadingModel
+    	}, ["gizmo"])
+    	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
+    		executingAnimation = data.executingAnimation
+    		focusedCamera = data.focusedCamera ? Engine.entities.get(data.focusedCamera) : null
+    	}, ["focusedCamera", "executingAnimation"])
     	GizmoSystem.onStart = () => isOnGizmo = true
     	GizmoSystem.onStop = () => isOnGizmo = false
-
-    	CameraTracker.startTracking()
-    	ViewportInteractionListener.get()
-    	draggable.onMount({
-    		targetElement: GPU.canvas,
-    		onDrop: (data, event) => {
-    			EngineResourceLoaderService.load(data, false, event.clientX, event.clientY).catch()
-    		},
-    		onDragOver: () => `
-                <span data-svelteicon="-" style="font-size: 70px">add</span>
-                ${LocalizationEN.DRAG_DROP}
-            `
-    	})
+    	SceneEditorUtil.onSceneEditorMount(draggable, viewMetadata)
     })
 
     onDestroy(() => {
+    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
     	GizmoSystem.onStop = GizmoSystem.onStart = undefined
     	viewMetadata.cameraMetadata = CameraAPI.serializeState()
-
-    	unsubscribeEngine()
-    	unsubscribeSettings()
     	ContextMenuService.getInstance().destroy(RENDER_TARGET)
     	draggable.onDestroy()
-    	unsubscribeSelection()
     	ViewportInteractionListener.destroy()
     })
-    $: focusedCamera = engine.focusedCamera ? Engine.entities.get(engine.focusedCamera) : null
 </script>
 
-{#if !engine.executingAnimation}
+{#if !executingAnimation}
     <ViewHeader>
         {#if isOnGizmo}
-            <EntityInformation mainEntity={mainEntity} selectedSize={selectedSize} settings={settings} engine={engine}/>
+            <EntityInformation/>
         {:else}
-            <Header settings={settings}/>
+            <SceneOptions/>
         {/if}
     </ViewHeader>
     <SelectBox
@@ -129,25 +80,25 @@
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}
             setSelected={SceneEditorUtil.getUnderSelectionBox}
-            selected={[]}
+            getSelected={() => []}
             nodes={[]}
     />
     <div class="top-bar">
-        <GizmoSettings settings={settings} engine={engine}/>
-        <CameraSettings engine={engine} settings={settings}/>
+        <GizmoSettings/>
+        <CameraSettings/>
     </div>
-    {#if focusedCamera}
+    {#if focusedCamera != null}
         <div class="focused-camera" data-svelteinline="-">
             <Icon styles="font-size: .85rem">videocam</Icon>
             {focusedCamera.name}
         </div>
     {/if}
-    {#if settings.shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
+    {#if shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
         <div class="complexity-gradient">
             <small>{LocalizationEN.NO_CONTRIBUTION}</small>
             <small>{LocalizationEN.ALL_SCENE_LIGHTS}</small>
         </div>
-    {:else if settings.shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
+    {:else if shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
         <div class="complexity-gradient">
             <small>{LocalizationEN.NO_CONTRIBUTION}</small>
             <small>{LocalizationEN.MAXIMUM_NUMBER_OF_LIGHTS}</small>

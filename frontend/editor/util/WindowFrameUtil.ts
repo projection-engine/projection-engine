@@ -1,11 +1,11 @@
-import SettingsStore from "../../shared/stores/SettingsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import LevelService from "../services/engine/LevelService"
 import EditorActionHistory from "../services/EditorActionHistory"
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import GPU from "../../../engine-core/GPU"
 import ResourceManager from "../../../engine-core/runtime/ResourceManager"
-import WindowChangeStore from "../../shared/stores/WindowChangeStore"
+import WindowChangeStore from "../../stores/WindowChangeStore"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import IPCRoutes from "../../../shared/IPCRoutes"
 
@@ -28,7 +28,7 @@ export default class WindowFrameUtil {
 			ViewportActionUtil.paste()
 			break
 		case "footer":
-			SettingsStore.updateStore({...SettingsStore.data, hideFooter: !SettingsStore.data.hideFooter})
+			SettingsStore.updateStore({hideFooter: !SettingsStore.getData().hideFooter})
 			break
 		case "learn-more":
 			ElectronResources.shell.openExternal("https://github.com/projection-engine").catch()

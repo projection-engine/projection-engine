@@ -1,8 +1,7 @@
 <script>
 
-    import {onDestroy} from "svelte"
-    import SelectionStore from "../../../shared/stores/SelectionStore"
-    import FilesStore from "../../../shared/stores/FilesStore"
+    import {onDestroy, onMount} from "svelte"
+    import SelectionStore from "../../../stores/SelectionStore"
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte"
     import Entity from "../../../../engine-core/instances/Entity"
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
@@ -10,87 +9,65 @@
 
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import PREFERENCES from "../../../preferences/static/PREFERENCES"
     import CameraPreferences from "./components/engine/CameraPreferences.svelte"
     import ContentWrapper from "../../../preferences/components/content/ContentWrapper.svelte"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SelectionTargets from "../../../../shared/SelectionTargets"
+    import EngineStore from "../../../stores/EngineStore"
+    import InspectorUtil from "../../util/InspectorUtil"
+    import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
 
-    const internalID = crypto.randomUUID()
-    const PREFERENCES_TABS = [
-    	PREFERENCES[2],
-    	PREFERENCES[3],
-    	{type: "camera", icon: "camera", label: LocalizationEN.EDITOR_CAMERA},
-    	{divider: true}
-    ]
-    let parent
-
+    const COMPONENT_ID = crypto.randomUUID()
     let selectedItem
-    let tabIndex = -1
+    let tabIndex = 0
     let tabs = []
-    const unsubscribeSelection = SelectionStore.getStore(v => {
+    let lockedEntity
+    let isEntity
+    let isOnDynamicTab
 
-    	let targetItem
-    	if (!v.array[0])
-    		targetItem = undefined
-    	else {
-    		const T = SelectionStore.TYPES
-    		switch (v.TARGET) {
-    		case T.CONTENT_BROWSER:
-    			targetItem = FilesStore.data.items.find(i => i.id === v.array[0])
-    			break
-    		case T.ENGINE:
-    			targetItem = QueryAPI.getEntityByID(v.array[0])
-    			break
-    		default:
-    			targetItem = undefined
-    			break
-    		}
-    	}
 
-    	if (!targetItem && v.lockedEntity != null)
-    		targetItem = QueryAPI.getEntityByID(v.lockedEntity)
-    	if (!targetItem) {
-    		setTabs([])
-    		tabIndex = -5
-    	}
-
-    	if (selectedItem !== targetItem) {
-    		selectedItem = targetItem
-    		tabIndex = SelectionStore.TYPES.ENGINE === v.TARGET ? -1 : -2
-    	}
+    onMount(() => {
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => {
+    		selectedItem = InspectorUtil.getSelectionTarget(data)
+    		tabIndex = SelectionTargets.ENGINE === SelectionStore.getData().TARGET ? 3 : 0
+    	})
+    	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
+    		lockedEntity = data.lockedEntity ? QueryAPI.getEntityByID(data.lockedEntity) : undefined
+    	}, ["lockedEntity"])
     })
 
-    onDestroy(() => unsubscribeSelection())
+    onDestroy(() => {
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
+    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+    })
 
     function setTabs(data) {
-    	const TABS = PREFERENCES_TABS.map((e, i) => {
-    		if (e.divider)
-    			return e
-    		return {
-    			...e,
-    			index: i - 5
-    		}
-    	})
+    	const TABS = [...INSPECTOR_TABS]
     	if (!selectedItem)
     		TABS.pop()
     	tabs = [...TABS, ...data]
     }
 
-    $: isEntity = selectedItem instanceof Entity
-    $: isOnDynamicTab = tabIndex >= -2 && selectedItem !== undefined
+    $: {
+    	if (!selectedItem)
+    		selectedItem = lockedEntity
+    	if (!selectedItem)
+    		setTabs([])
+    	isOnDynamicTab = tabIndex > 2 && selectedItem !== undefined
+    	isEntity = selectedItem instanceof Entity
+    }
 
 </script>
 
 <div class="wrapper">
     <div class="tabs">
-        {#each tabs as button}
+        {#each tabs as button, index}
             {#if button.divider}
                 <div data-sveltedivider="-"></div>
             {:else}
                 <button data-sveltebuttondefault="-"
-                        data-sveltehighlight={tabIndex === button.index ? "-" : undefined}
+                        data-sveltehighlight={tabIndex === index ? "-" : undefined}
                         class="tab-button shared"
-                        on:click={_ => tabIndex = button.index}
+                        on:click={() => tabIndex = index}
                         style={button.color ? "--pj-accent-color: " + button.color  + "; color: " + button.color : undefined}
                 >
                     <Icon styles="font-size: .9rem">{button.icon}</Icon>
@@ -106,16 +83,15 @@
                         setTabIndex={i => tabIndex = i}
                         setTabs={setTabs}
                         entity={selectedItem}
-                        tabIndex={tabIndex}/>
-            {:else if !isEntity}
+                        tabIndex={tabIndex}
+                />
+            {:else}
                 <ContentBrowserItem setTabs={setTabs} item={selectedItem} tabIndex={tabIndex}/>
             {/if}
+        {:else if tabIndex === 2}
+            <CameraPreferences/>
         {:else}
-            {#if tabs[tabIndex + 5]?.type === "camera"}
-                <CameraPreferences/>
-            {:else}
-                <ContentWrapper tab={tabIndex + 7}/>
-            {/if}
+            <ContentWrapper data={tabs[tabIndex]}/>
         {/if}
     </div>
 </div>

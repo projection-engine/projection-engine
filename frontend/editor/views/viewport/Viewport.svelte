@@ -1,136 +1,120 @@
 <script>
 
-    import EngineStore from "../../../shared/stores/EngineStore"
+    import EngineStore from "../../../stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
     import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Tabs from "../../components/tabs/Tabs.svelte"
     import VIEWS from "../../components/view/static/VIEWS"
     import View from "../../components/view/components/View.svelte"
-    import TabsStore from "../../../shared/stores/TabsStore"
+    import TabsStore from "../../../stores/TabsStore"
     import GPU from "../../../../engine-core/GPU"
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import ViewportUtil from "../../util/ViewportUtil"
     import ViewsUtil from "../../util/ViewsUtil"
+    import TabsStoreUtil from "../../util/TabsStoreUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
+    const VIEW_TEMPLATES = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({name: LocalizationEN[value], id: value}))
+
+    /** @type {function} */
     export let updateView
+    /** @type {object[]} */
     export let viewTab
 
-    let currentTab = 0
-    let engine = {}
-    let settings = {}
+    let currentTab = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
+    let isReady = false
+    let executingAnimation = false
     let ref
     let focused = false
 
-    const unsubscribeTabs = TabsStore.getStore(_ => {
-    	currentTab = TabsStore.getValue("viewport")
-    	focused = ref === TabsStore.focused
-    })
-    $: currentTab = TabsStore.getValue("viewport")
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     const setViewportTab = (value, index = currentTab) => {
     	const clone = [...viewTab]
     	clone[index].type = value
-    	ViewportUtil.updateViewport(engine, value)
+    	ViewportUtil.updateViewport(value)
     	updateView(clone)
     }
 
     $: {
-    	if (ref != null)
-    		HotKeysController.bindAction(
-    			ref,
-    			Object.values(getViewportHotkeys(settings)),
-    			"public",
-    			LocalizationEN.VIEWPORT
-    		)
-    }
-
-    $: ViewportUtil.updateViewport(engine, viewTab[currentTab])
-    $: tabs = viewTab.map(v => {
-    	v.name = LocalizationEN[v.type]
-    	v.icon =  ViewsUtil.getViewIcon(v.type)
-    	return v
-    })
-
-    $: viewTemplates = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
-    	name: LocalizationEN[value],
-    	id: value
-    }))
-    $: isCanvasHidden = viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR
-    $: {
-    	if (isCanvasHidden && GPU.context) {
+    	viewTab.forEach(v => {
+    		v.name = LocalizationEN[v.type]
+    		v.icon = ViewsUtil.getViewIcon(v.type)
+    	})
+    	if (viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR && GPU.context) {
     		GPU.canvas.style.zIndex = "-1"
     		GPU.canvas.style.position = "absolute"
     	} else if (GPU.context) {
     		GPU.canvas.style.zIndex = "1"
     		GPU.canvas.style.position = "relative"
     	}
+    }
 
-    }
-    $: {
-    	if (engine.executingAnimation && tabs[currentTab].type !== VIEWPORT_TABS.EDITOR)
-    		setViewportTab(VIEWPORT_TABS.EDITOR)
-    }
     onMount(() => {
+    	TabsStore.getInstance().addListener(COMPONENT_ID, () => {
+    		currentTab = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
+    		focused = ref === TabsStoreUtil.getFocusedTab()
+    	})
+    	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
+    		if (data.executingAnimation && viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR)
+    			setViewportTab(VIEWPORT_TABS.EDITOR)
+    		isReady = data.isReady
+    		executingAnimation = data.executingAnimation
+    	}, ["executingAnimation", "isReady"])
+    	HotKeysController.bindAction(ref, Object.values(getViewportHotkeys()), "public", LocalizationEN.VIEWPORT)
     	const wrapperRef = ref.lastElementChild
     	wrapperRef.insertBefore(document.getElementById(RENDER_TARGET), wrapperRef.firstElementChild)
     })
+
     onDestroy(() => {
-    	unsubscribeTabs()
+    	TabsStore.getInstance().removeListener(COMPONENT_ID)
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
     	HotKeysController.unbindAction(ref)
-    	unsubscribeEngine()
-    	unsubscribeSettings()
     })
 
+    const addNewTab = item => {
+    	const clone = [...viewTab]
+    	clone.push({color: [255, 255, 255], type: item?.id || VIEWS.COMPONENT})
+    	updateView(clone)
+    }
+
+    const removeMultipleTabs = () => {
+    	const current = viewTab[currentTab]
+    	TabsStoreUtil.updateByAttributes("viewport", undefined, 0)
+    	updateView([current])
+    }
 </script>
 
 <div
         class="viewport"
         bind:this={ref}
-        on:mousedown={_ => TabsStore.focused = ref}
+        on:mousedown={() => TabsStoreUtil.setFocusedTab(ref)}
 >
     <div style="height: 30px">
         <Tabs
-                focused={focused}
-                disabled={engine.executingAnimation}
-                updateView={setViewportTab}
-                templates={viewTemplates}
-                addNewTab={item => {
-                        const clone  = [...tabs]
-                        clone.push({color: [255, 255, 255], type: item?.id || VIEWS.COMPONENT })
-                        updateView(clone)
-                }}
-                removeTab={i => ViewportUtil.removeTab(i, viewTab,  updateView, currentTab, v => TabsStore.update("viewport", undefined, v))}
-                removeMultipleTabs={_ => {
-                    const current = tabs[currentTab]
-                    TabsStore.update("viewport", undefined, 0)
-                    updateView([current])
-                }}
-                tabs={tabs}
-                currentTab={currentTab}
-                setCurrentView={v => TabsStore.update("viewport", undefined, v)}
+                addNewTab={addNewTab}
                 allowDeletion={false}
+                currentTab={currentTab}
+                disabled={executingAnimation}
+                focused={focused}
+                removeMultipleTabs={removeMultipleTabs}
+                removeTab={i => ViewportUtil.removeTab(i, viewTab,  updateView, currentTab, v => TabsStoreUtil.updateByAttributes("viewport", undefined, v))}
+                setCurrentView={v => TabsStoreUtil.updateByAttributes("viewport", undefined, v)}
+                tabs={viewTab}
+                templates={VIEW_TEMPLATES}
+                updateView={setViewportTab}
         />
     </div>
     <div class="wrapper">
-        {#if engine.isReady}
+        {#if isReady}
             <View
                     instance={viewTab[currentTab]}
                     id={"VIEWPORT"}
                     index={currentTab}
                     groupIndex={0}
-                    styles={`
-                        position: absolute;
-                        top: 0;
-                        display: flex;
-                        align-items: center;
-                    `}
-                    switchView={setViewportTab}
+                    styles="position: absolute; top: 0; display: flex; align-items: center;"
             />
         {/if}
     </div>

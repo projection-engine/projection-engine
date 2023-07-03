@@ -1,6 +1,6 @@
 import ENVIRONMENT from "../../../../engine-core/static/ENVIRONMENT"
 
-import EngineStore from "../../../shared/stores/EngineStore"
+import EngineStore from "../../../stores/EngineStore"
 import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
 import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
 import Engine from "../../../../engine-core/Engine"
@@ -10,7 +10,7 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 
 import ResourceEntityMapper from "../../../../engine-core/resource-libs/ResourceEntityMapper"
 import LevelService from "./LevelService"
-import LocalizationEN from "../../../../shared/LocalizationEN";
+import LocalizationEN from "../../../../shared/LocalizationEN"
 
 export default class ExecutionService {
 	static #currentLevelID
@@ -30,7 +30,7 @@ export default class ExecutionService {
 		await LevelService.getInstance().saveCurrentLevel().catch()
 		ExecutionService.#currentLevelID = Engine.loadedLevel.id
 		await Engine.startSimulation()
-		EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined, executingAnimation: true})
+		EngineStore.updateStore({focusedCamera: undefined, executingAnimation: true})
 	}
 
 	static async stopPlayState() {
@@ -51,7 +51,7 @@ export default class ExecutionService {
 
 		CameraAPI.trackingEntity = undefined
 		CameraTracker.startTracking()
-		EngineStore.updateStore({...EngineStore.engine, executingAnimation: false})
+		EngineStore.updateStore({executingAnimation: false})
 		CameraAPI.restoreState(ExecutionService.cameraSerialization)
 	}
 

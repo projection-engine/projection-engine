@@ -33,15 +33,6 @@ export default {
 	fov: glMatrix.toRadian(60),
 	zNear: .1,
 	zFar: 5000,
-	// terrainTool: TERRAIN_TOOLS.SCULPT,
-	// terrainSettings: {
-	//     brushOnDecrease: true,
-	//     brushSize: 5,
-	//     brushStrength: .5,
-	//     foliageDensity: 10,
-	//     foliageQuantity: 1000,
-	//     brushScale: .05
-	// },
 
 	viewportHotkeys: {
 		FORWARD_MOVEMENT_CAMERA: [KEYS.KeyW],

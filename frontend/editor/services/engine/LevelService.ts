@@ -1,34 +1,33 @@
-import FSFilesService from "../file-system/FSFilesService"
+import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorActionHistory from "../EditorActionHistory"
 import Engine from "../../../../engine-core/Engine"
-import FSRegistryService from "../file-system/FSRegistryService"
-import EngineStore from "../../../shared/stores/EngineStore"
-import SelectionStore from "../../../shared/stores/SelectionStore"
-import SettingsStore from "../../../shared/stores/SettingsStore"
-import VisualsStore from "../../../shared/stores/VisualsStore"
-import SETTINGS from "../../static/SETTINGS"
-
+import EditorFSUtil from "../../util/EditorFSUtil"
+import EngineStore from "../../../stores/EngineStore"
+import SelectionStore from "../../../stores/SelectionStore"
+import SettingsStore from "../../../stores/SettingsStore"
+import VisualsStore from "../../../stores/VisualsStore"
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-import TabsStore from "../../../shared/stores/TabsStore"
+import TabsStore from "../../../stores/TabsStore"
 import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
 import serializeStructure from "../../../../engine-core/utils/serialize-structure"
-import FileSystemService from "../../../shared/lib/FileSystemService"
-
 import ElectronResources from "../../../shared/lib/ElectronResources"
-import ErrorLoggerService from "../file-system/ErrorLoggerService"
+import ErrorLoggerService from "../ErrorLoggerService"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
-import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
+import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
 import EntityHierarchyService from "./EntityHierarchyService"
 import EntityNamingService from "./EntityNamingService"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import AXIS from "../../../../engine-core/tools/static/AXIS"
-import WindowChangeStore from "../../../shared/stores/WindowChangeStore"
+import WindowChangeStore from "../../../stores/WindowChangeStore"
 import IPCRoutes from "../../../../shared/IPCRoutes"
 import LocalizationEN from "../../../../shared/LocalizationEN"
 import FileTypes from "../../../../shared/FileTypes"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
+import SelectionTargets from "../../../../shared/SelectionTargets"
+import TabsStoreUtil from "../../util/TabsStoreUtil"
+import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
 
 export default class LevelService extends AbstractSingleton {
@@ -38,33 +37,33 @@ export default class LevelService extends AbstractSingleton {
 		super()
 		ElectronResources.ipcRenderer.once(
 			IPCRoutes.LOAD_PROJECT_METADATA,
-			(ev, meta) => {
-				if (!meta) {
-					ToastNotificationSystem.getInstance().error(LocalizationEN.ERROR_LOADING_PROJECT)
-					return
-				}
-				if (meta.settings !== undefined) {
-					const newSettings = {...SETTINGS, ...meta.settings}
-
-					if (newSettings.views[0].top == null)
-						newSettings.views = SETTINGS.views
-					newSettings.visualSettings = undefined
-					if (meta.layout)
-						TabsStore.updateStore(meta.layout)
-
-					SettingsStore.updateStore(newSettings)
-					if (meta.visualSettings)
-						VisualsStore.updateStore({...meta.visualSettings})
-				}
-				EngineStore.updateStore({
-					...EngineStore.engine,
-					meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined}, isReady: true
-				})
-
-				this.#levelToLoad = meta.level
-				resolvePromise()
-			})
+			(_, meta) => this.#onLoad(resolvePromise, meta))
 		ElectronResources.ipcRenderer.send(IPCRoutes.LOAD_PROJECT_METADATA)
+	}
+
+	#onLoad(resolvePromise, meta){
+		if (!meta) {
+			ToastNotificationSystem.getInstance().error(LocalizationEN.ERROR_LOADING_PROJECT)
+			return
+		}
+		if (meta.settings !== undefined) {
+			const newSettings = {...meta.settings}
+
+			newSettings.visualSettings = undefined
+			if (meta.layout)
+				TabsStore.updateStore({layout: meta.layout})
+
+			SettingsStore.updateStore(newSettings)
+			if (meta.visualSettings)
+				VisualsStore.updateStore( meta.visualSettings)
+		}
+		EngineStore.updateStore({
+			meta: {...meta, settings: undefined, visualSettings: undefined, layout: undefined},
+			isReady: true
+		})
+
+		this.#levelToLoad = meta.level
+		resolvePromise()
 	}
 
 	static getInstance(): LevelService{
@@ -84,7 +83,7 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 
-		if (ChangesTrackerStore.data && Engine.loadedLevel) {
+		if (ChangesTrackerStore.getData() && Engine.loadedLevel) {
 			WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
 					await this.save().catch()
@@ -94,14 +93,13 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 
-		await FSRegistryService.readRegistry()
+		await EditorFSUtil.readRegistry()
 		EntityNamingService.clear()
 		SelectionStore.updateStore({
-			...SelectionStore.data,
-			TARGET: SelectionStore.TYPES.ENGINE,
-			array: [],
-			lockedEntity: undefined
+			TARGET: SelectionTargets.ENGINE,
+			array: []
 		})
+		SelectionStoreUtil.setLockedEntity(undefined)
 		EditorActionHistory.clear()
 
 
@@ -111,20 +109,19 @@ export default class LevelService extends AbstractSingleton {
 		})
 		if (Engine.loadedLevel)
 			SelectionStore.updateStore({
-				...SelectionStore.data,
-				TARGET: SelectionStore.TYPES.ENGINE,
+				TARGET: SelectionTargets.ENGINE,
 				array: [Engine.loadedLevel.id],
 				lockedEntity: Engine.loadedLevel.id
 			})
-
+		SelectionStoreUtil.setLockedEntity(Engine.loadedLevel.id)
 		EntityHierarchyService.updateHierarchy()
 	}
 
 	async save() {
-		if (!ChangesTrackerStore.data)
+		if (!ChangesTrackerStore.getData().changed)
 			return
 
-		if (EngineStore.engine.executingAnimation) {
+		if (EngineStore.getData().executingAnimation) {
 			ToastNotificationSystem.getInstance().warn(LocalizationEN.EXECUTING_SIMULATION)
 			return
 		}
@@ -132,9 +129,9 @@ export default class LevelService extends AbstractSingleton {
 		await ErrorLoggerService.save()
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.SAVING)
 		try {
-			const metadata = EngineStore.engine.meta
-			const settings = {...SettingsStore.data}
-			const tabIndexViewport = TabsStore.getValue("viewport")
+			const metadata = EngineStore.getData().meta
+			const settings = {...SettingsStore.getData()}
+			const tabIndexViewport = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
 			const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
 			if (viewMetadata !== undefined) {
 				viewMetadata.cameraMetadata = CameraAPI.serializeState()
@@ -142,13 +139,13 @@ export default class LevelService extends AbstractSingleton {
 				viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
 			}
 
-			await FSFilesService.writeFile(
-				FileSystemService.getInstance().path + FileSystemService.getInstance().sep + FileTypes.PROJECT,
+			await FileSystemUtil.writeFile(
+				FileSystemUtil.path + FileSystemUtil.sep + FileTypes.PROJECT,
 				JSON.stringify({
 					...metadata,
 					settings,
-					layout: TabsStore.data,
-					visualSettings: VisualsStore.data,
+					layout: TabsStore.getData(),
+					visualSettings: VisualsStore.getData(),
 					level: Engine.loadedLevel?.id
 				}), true)
 
@@ -158,7 +155,7 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 		ToastNotificationSystem.getInstance().success(LocalizationEN.PROJECT_SAVED)
-		await FSRegistryService.readRegistry()
+		await EditorFSUtil.readRegistry()
 	}
 
 	async saveCurrentLevel() {
@@ -169,21 +166,21 @@ export default class LevelService extends AbstractSingleton {
 			entities: QueryAPI.getHierarchy(Engine.loadedLevel).map(e => e.serializable()),
 		}
 
-		const assetReg = FSRegistryService.getRegistryEntry(Engine.loadedLevel.id)
+		const assetReg = EditorFSUtil.getRegistryEntry(Engine.loadedLevel.id)
 		let path = assetReg?.path
 
 		if (!assetReg) {
-			path = FileSystemService.getInstance().resolvePath(await EditorUtil.resolveFileName(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + Engine.loadedLevel.name, FileTypes.LEVEL))
-			await FSRegistryService.createRegistryEntry(Engine.loadedLevel.id, FileSystemService.getInstance().sep + path.split(FileSystemService.getInstance().sep).pop())
-			FSRegistryService.readRegistry().catch()
+			path = FileSystemUtil.resolvePath(await EditorUtil.resolveFileName(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + Engine.loadedLevel.name, FileTypes.LEVEL))
+			await EditorFSUtil.createRegistryEntry(Engine.loadedLevel.id, FileSystemUtil.sep + path.split(FileSystemUtil.sep).pop())
+			EditorFSUtil.readRegistry().catch()
 		} else
-			path = FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + path
+			path = FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path
 
-		await FileSystemService.getInstance().write(
+		await FileSystemUtil.write(
 			path,
 			serializeStructure(serialized)
 		)
-		ChangesTrackerStore.updateStore(false)
+		ChangesTrackerStore.updateStore({changed: false})
 	}
 }
 

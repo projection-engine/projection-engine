@@ -1,28 +1,26 @@
 <script>
 
-    import ErrorLoggerService from "../../services/file-system/ErrorLoggerService"
-    import FrameMetadata from "./components/FrameMetadata.svelte"
+    import ErrorLoggerService from "../../services/ErrorLoggerService"
+    import FrameMetadata from "./components/PerformanceStatistics.svelte"
     import SceneStats from "./components/SceneStats.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import FileSystemService from "../../../shared/lib/FileSystemService"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Console from "./components/Console.svelte"
     import Engine from "../../../../engine-core/Engine"
     import {onDestroy, onMount} from "svelte"
     import EntityUpdateService from "../../services/engine/EntityUpdateService"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import FileSystemUtil from "../../../shared/FileSystemUtil"
+    import SettingsStore from "../../../stores/SettingsStore"
 
-
-    export let settings
-    export let engine
-
+    const COMPONENT_ID = crypto.randomUUID()
+    let settings = {}
     const openLogs = async () => {
-    	if (FileSystemService.getInstance().exists(ErrorLoggerService.path))
+    	if (FileSystemUtil.exists(ErrorLoggerService.path))
     		ElectronResources.shell.openPath(ErrorLoggerService.path).catch()
     }
     let loadedLevel
-    const ID = crypto.randomUUID()
     let entityID
 
     function load() {
@@ -30,20 +28,25 @@
     	entityID = Engine.loadedLevel?.id
 
     	if (entityID)
-    		EntityUpdateService.removeListener(entityID, ID)
+    		EntityUpdateService.removeListener(entityID, COMPONENT_ID)
 
     	if (!loadedLevel)
     		return
-    	EntityUpdateService.addListener(entityID, ID, () => {
+    	EntityUpdateService.addListener(entityID, COMPONENT_ID, () => {
     		loadedLevel = Engine.loadedLevel.name
     	})
     }
 
     onMount(() => {
-    	Engine.addLevelLoaderListener(ID, load)
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => settings = data, ["hideFooter"])
+    	Engine.addLevelLoaderListener(COMPONENT_ID, load)
     	load()
     })
-    onDestroy(() => Engine.removeLevelLoaderListener(ID))
+
+    onDestroy(() => {
+    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
+    	Engine.removeLevelLoaderListener(COMPONENT_ID)
+    })
 </script>
 
 <div class="container" style={settings.hideFooter ? "display: none" : undefined}>
@@ -58,9 +61,9 @@
             </div>
             <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
         {/if}
-        <FrameMetadata settings={settings}/>
+        <FrameMetadata/>
         <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
-        <Console engine={engine}/>
+        <Console/>
         <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
         <button data-sveltebuttondefault="-" on:click={openLogs} class="error-logging">
             <Icon>bug_report</Icon>

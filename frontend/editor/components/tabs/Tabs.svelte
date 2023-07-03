@@ -1,132 +1,139 @@
-<script lang="ts">
-    import KEYS from "../../static/KEYS.ts";
-    import {onDestroy, onMount} from "svelte";
-    import Icon from "../../../shared/components/icon/Icon.svelte";
-    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte";
-    // @ts-ignore
-    import {Sortable} from "sortablejs";
-    import TabData from "./static/TabData";
-    import Tab from "./components/Tab.svelte";
-    import TabContextController from "./TabContextController";
+<script>
+    import KEYS from "../../static/KEYS.ts"
+    import {onDestroy, onMount} from "svelte"
+    import Icon from "../../../shared/components/icon/Icon.svelte"
+    import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"
+    import {Sortable} from "sortablejs"
+    import Tab from "./components/Tab.svelte"
+    import TabContextController from "./TabContextController"
+
+    /** @type {function} */
+    export let addNewTab
+    /** @type {function} */
+    export let removeTab
+    /** @type {function} */
+    export let removeMultipleTabs
+    /** @type {{icon: string, id: string, name:string, index: number, originalIndex: number}[]} */
+    export let tabs
+    /** @type {number} */
+    export let currentTab
+    /** @type {function} */
+    export let setCurrentView
+    /** @type {boolean} */
+    export let allowDeletion
+    /** @type {boolean} */
+    export let allowRenaming
+    /** @type {{ id: string, name: string }[]} */
+    export let templates
+    /** @type {function} */
+    export let updateView
+    /** @type {boolean} */
+    export let focused
+    /** @type {string} */
+    export let styles
+
+    const COMPONENT_ID = crypto.randomUUID()
 
 
-    export let addNewTab: Function
-    export let removeTab: Function
-    export let removeMultipleTabs: Function
+    let sortedTabs = []
+    let sortable
+    let ref
+    let contextID
 
-    export let tabs: TabData[]
+    $: {
+    	if(tabs != null) {
+    		for (let i = 0; i < tabs.length; i++)
+    			tabs[i].originalIndex = i
+    		sortedTabs = tabs.sort((a, b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    	}
+    }
 
-    export let currentTab: number
-    export let setCurrentView: Function
-    export let allowDeletion: boolean
-    export let allowRenaming: boolean
-    export let templates: { id: string, name: string }[]
-    export let updateView: Function
-    export let disabled: boolean
-    export let focused: boolean
-    export let styles: string
-
-    const internalID = crypto.randomUUID()
-
-    $: sortedTabs = tabs.map((v, i) => {
-        v.originalIndex = i
-        return v
-    }).sort((a, b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
-
-    let sortable: Sortable
-    let ref: HTMLElement
-    let contextID: string
-
-    const handler = (e: KeyboardEvent | MouseEvent | WheelEvent, v?: TabData, i?: number) => {
-        const T = <HTMLInputElement>e.currentTarget
-        switch (e.type) {
-            case "keydown": {
-                const event = <KeyboardEvent>e
-                if (event.code !== KEYS.Enter)
-                    break
-                const target = <HTMLInputElement>e.target
-                v.name = target.value
-                T.type = "button"
-                break
-            }
-            case "dblclick": {
-                if (allowRenaming)
-                    T.type = "text"
-                break
-            }
-            case "input":
-                const target = <HTMLInputElement>e.target
-                v.name = target.value
-                break
-            case "blur":
-                T.type = "button"
-                break
-            case "click":
-                setCurrentView(i)
-                break
-            case "wheel":
-                e.preventDefault();
-                if (ref.scrollWidth > ref.offsetWidth && "deltaY" in e) {
-                    const value = e.deltaY
-                    ref.scrollLeft += value;
-                }
-                break
-        }
+    /**
+     *
+     * @param event
+     * @param tabData
+     * @param index
+     */
+    const handler = (event, tabData, index) => {
+    	const T = event.currentTarget
+    	switch (event.type) {
+    	case "keydown": {
+    		if (event.code !== KEYS.Enter)
+    			break
+    		const target = e.target
+    		tabData.name = target.value
+    		T.type = "button"
+    		break
+    	}
+    	case "dblclick": {
+    		if (allowRenaming)
+    			T.type = "text"
+    		break
+    	}
+    	case "input":
+    		const target = e.target
+    		tabData.name = target.value
+    		break
+    	case "blur":
+    		T.type = "button"
+    		break
+    	case "click":
+    		setCurrentView(index)
+    		break
+    	case "wheel":
+    		e.preventDefault()
+    		if (ref.scrollWidth > ref.offsetWidth && "deltaY" in e) {
+    			const value = e.deltaY
+    			ref.scrollLeft += value
+    		}
+    		break
+    	}
     }
     onMount(() => {
-
-        ref.addEventListener(
-            "wheel",
-            ev => {
-                ev.preventDefault()
-                // @ts-ignore
-                if (ev.wheelDelta > 0)
-                    ref.scrollLeft += ref.scrollWidth * .1
-                else
-                    ref.scrollLeft -= ref.scrollWidth * .1
-
-            },
-            {passive: false}
-        )
-        contextID = TabContextController.getInstance().contextID
-        ref.addEventListener("wheel", handler);
-        sortable = new Sortable(ref, {
-            swapThreshold: 1,
-            animation: 0,
-            onEnd: () => {
-                const elements = ref.children
-                const ids: { [key: string]: number } = {}
-                for (let i = 0; i < elements.length; i++) {
-                    const element = elements[i]
-                    ids[element.getAttribute("data-sveltetype")] = i
-                }
-                for (let i = 0; i < tabs.length; i++) {
-                    const item = tabs[i]
-                    item.index = ids[item.type]
-                }
-            },
-            direction: "horizontal"
-        });
-        TabContextController.getInstance()
-            .registerContext(internalID, id => {
-            if (id === "CREATE")
-                addNewTab()
-            else
-                removeMultipleTabs()
-        })
+    	ref.addEventListener(
+    		"wheel",
+    		ev => {
+    			ev.preventDefault()
+    			if (ev.wheelDelta > 0)
+    				ref.scrollLeft += ref.scrollWidth * .1
+    			else
+    				ref.scrollLeft -= ref.scrollWidth * .1
+    		},
+    		{passive: false}
+    	)
+    	contextID = TabContextController.getInstance().contextID
+    	ref.addEventListener("wheel", handler)
+    	sortable = new Sortable(ref, {
+    		swapThreshold: 1,
+    		animation: 0,
+    		onEnd: () => {
+    			const elements = ref.children
+    			const ids = {}
+    			for (let i = 0; i < elements.length; i++) {
+    				const element = elements[i]
+    				ids[element.getAttribute("data-sveltetype")] = i
+    			}
+    			for (let i = 0; i < tabs.length; i++) {
+    				const item = tabs[i]
+    				item.index = ids[item.type]
+    			}
+    		},
+    		direction: "horizontal"
+    	})
+    	TabContextController.getInstance().registerContext(COMPONENT_ID, id => id === "CREATE" ? addNewTab() : removeMultipleTabs())
     })
+
     onDestroy(() => {
-        // @ts-ignore
-        sortable.destroy()
-        TabContextController.getInstance().removeContext(internalID)
-        ref.removeEventListener("wheel", handler);
+    	sortable.destroy()
+    	TabContextController.getInstance().removeContext(COMPONENT_ID)
+    	ref.removeEventListener("wheel", handler)
     })
 
 </script>
 
 <div
         class="container" bind:this={ref}
-        id={internalID}
+        id={COMPONENT_ID}
         data-sveltecontextid={contextID}
         style={styles}
 >
@@ -140,19 +147,18 @@
                 allowRenaming={allowRenaming}
                 templates={templates}
                 updateView={updateView}
-                disabled={disabled}
                 focused={focused}
                 value={v}
         />
     {/each}
 
     {#if allowRenaming}
-        <button data-sveltebuttondefault="-"  on:click={addNewTab} class="add-button">
+        <button data-sveltebuttondefault="-" on:click={addNewTab} class="add-button">
             <Icon styles="font-size: .9rem">add</Icon>
         </button>
     {:else}
         <Dropdown hideArrow="true" buttonStyles="margin-left: auto">
-            <button data-sveltebuttondefault="-"  class="add-button" slot="button">
+            <button data-sveltebuttondefault="-" class="add-button" slot="button">
                 <Icon styles="font-size: .9rem">add</Icon>
             </button>
             {#each templates as item}

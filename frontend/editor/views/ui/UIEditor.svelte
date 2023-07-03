@@ -1,22 +1,18 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import SelectionStore from "../../../shared/stores/SelectionStore"
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
     import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
     import Header from "./Header.svelte"
-    import EngineStore from "../../../shared/stores/EngineStore"
 
 
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
     import GPU from "../../../../engine-core/GPU"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
-    const INTERNAL_ID = crypto.randomUUID()
+    const COMPONENT_ID = crypto.randomUUID()
 
-    let engine = {}
-    let settings = {}
     let ref
     let tooltip
     let isOnSelection = false
@@ -24,12 +20,9 @@
     let selectedEntity
 
 
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const obs = new ResizeObserver(() => {
-    	UIAPI.document.style.height = ref.offsetHeight + "px"
-    })
-    const handler = e => {
+    const resizeObserver = new ResizeObserver(() => UIAPI.document.style.height = ref.offsetHeight + "px")
+
+    function clickHandler(e){
     	if (!isOnSelection)
     		return
 
@@ -44,54 +37,49 @@
     	tooltip.style.opacity = "1"
 
     	if (e.ctrl)
-    		SelectionStore.engineSelected = [...SelectionStore.engineSelected, tooltip.hovered.id]
+    		SelectionStoreUtil.setEntitiesSelected([...SelectionStoreUtil.getEntitiesSelected(), tooltip.hovered.id])
     	else
-    		SelectionStore.engineSelected = [entity.id]
+    		SelectionStoreUtil.setEntitiesSelected(entity.id)
     	selectedEntity = entity
-
     }
-    $: {
-    	if (!isOnSelection && tooltip)
-    		tooltip.style.zIndex = "-1"
-    }
+    $: if (!isOnSelection && tooltip) tooltip.style.zIndex = "-1"
 
     function update() {
     	const targets = document.querySelectorAll("[data-enginewrapper='-']")
-    	targets.forEach(t => {
-    		t.removeEventListener("click", handler)
-    		t.addEventListener("click", handler)
-    	})
+    	for (let i = 0; i < targets.length; i++){
+    		const t = targets[i]
+    		t.removeEventListener("click", clickHandler)
+    		t.addEventListener("click", clickHandler)
+    	}
     }
 
-    let interval
+    let updateInterval
     $: {
-    	clearInterval(interval)
-    	if (updateEnabled)
-    		interval = setInterval(() => {
-    			UIAPI.updateAllElements().then(() => {
-    				ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
-    			})
+    	clearInterval(updateInterval)
+    	if (updateEnabled) {
+    		updateInterval = setInterval(async() => {
+    			await UIAPI.updateAllElements()
+    			ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
     		}, 15000)
+    	}
     }
     onMount(() => {
-    	obs.observe(ref)
+    	resizeObserver.observe(ref)
     	UIAPI.showUI()
 
     	UIAPI.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
     	UIAPI.document.style.top = "28px"
-    	EntityHierarchyService.registerListener(INTERNAL_ID, update)
+    	EntityHierarchyService.registerListener(COMPONENT_ID, update)
     	update()
     })
 
     onDestroy(() => {
-    	clearInterval(interval)
-    	obs.disconnect()
-    	EntityHierarchyService.removeListener(INTERNAL_ID)
+    	clearInterval(updateInterval)
+    	resizeObserver.disconnect()
+    	EntityHierarchyService.removeListener(COMPONENT_ID)
     	UIAPI.hideUI()
     	UIAPI.document.style.height = "100%"
     	UIAPI.document.style.top = "0"
-    	unsubscribeSettings()
-    	unsubscribeEngine()
     })
 </script>
 
@@ -101,11 +89,9 @@
         toggleOnSelection={() => isOnSelection = !isOnSelection}
         updateEnabled={updateEnabled}
         toggleAutoUpdate={() => updateEnabled = !updateEnabled}
-        engine={engine}
-        settings={settings}
 />
 <div class="wrapper ui" bind:this={ref}>
-    <div class="tooltip" id={INTERNAL_ID} bind:this={tooltip}></div>
+    <div class="tooltip" id={COMPONENT_ID} bind:this={tooltip}></div>
 </div>
 
 <style>

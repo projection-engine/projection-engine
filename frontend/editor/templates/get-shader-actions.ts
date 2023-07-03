@@ -1,5 +1,5 @@
 import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools"
-import SettingsStore from "../../shared/stores/SettingsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import Canvas from "../views/shader-editor/libs/Canvas"
 import type ShaderNode from "../views/shader-editor/templates/ShaderNode"
 import ShaderComment from "../views/shader-editor/templates/ShaderComment"
@@ -22,7 +22,7 @@ export function selectAllNodes(canvasAPI:Canvas){
 	canvasAPI.clear()
 }
 export default function getShaderActions(canvasAPI: Canvas) {
-	const settings = SettingsStore.data
+	const settings = SettingsStore.getData()
 
 	const options = {
 		SELECT_ALL: {

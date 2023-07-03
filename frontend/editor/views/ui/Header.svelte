@@ -1,7 +1,4 @@
 <script>
-
-
-    import SelectionStore from "../../../shared/stores/SelectionStore"
     import Engine from "../../../../engine-core/Engine"
     import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
     import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
@@ -12,14 +9,17 @@
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../shared/LocalizationEN"
+    import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
-
-    export let settings
-    export let engine
+    /** @type {boolean} */
     export let isOnSelection
+    /** @type {function} */
     export let toggleOnSelection
+    /** @type {object} */
     export let selected
+    /** @type {boolean} */
     export let updateEnabled
+    /** @type {function} */
     export let toggleAutoUpdate
 
     function selectAll() {
@@ -29,7 +29,7 @@
     		if (e.uiComponent)
     			m.push(e.id)
     	}
-    	SelectionStore.engineSelected = m
+    	SelectionStoreUtil.setEntitiesSelected(m)
     }
 
 

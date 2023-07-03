@@ -1,6 +1,3 @@
-<!--suppress ALL -->
-
-
 <script>
 
     import {onDestroy, onMount} from "svelte"
@@ -13,21 +10,14 @@
     import SveltePortal from "../../../../shared/lib/SveltePortal"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
+    import EngineStore from "../../../../stores/EngineStore"
 
-    export let engine
-    const internalID = crypto.randomUUID()
+    const COMPONENT_ID = crypto.randomUUID()
     const TYPES = ConsoleAPI.TYPES
     const portal = new SveltePortal(999)
 
-    let metadata
     let toRender = []
     let newMessages = false
-    let showWarnings = true
-    let showLogs = true
-    let showErrors = true
-    let clearOnPlay = false
-    let ref
-    let changed
     let modal
     let objectOpen
 
@@ -37,42 +27,23 @@
     }
 
     onMount(() => {
-    	ConsoleAPI.registerConsole(internalID, (md, messages) => {
-    		metadata = md
+    	EngineStore.getInstance().addListener(COMPONENT_ID, () => ConsoleAPI.clear(), ["executingAnimation"])
+    	ConsoleAPI.registerConsole(COMPONENT_ID, (md, messages) => {
     		toRender = messages
-    		changed = true
     		newMessages = messages.length > 0
     	})
     	portal.create(modal, {background: "rgba(0,0,0,.2)"})
     	document.addEventListener("mousedown", handler)
     })
+
     onDestroy(() => {
-    	ConsoleAPI.unregisterConsole(internalID)
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
+    	ConsoleAPI.unregisterConsole(COMPONENT_ID)
     	portal.destroy()
     	document.removeEventListener("mousedown", handler)
     })
 
-    $: if (engine.executingAnimation && clearOnPlay) ConsoleAPI.clear()
-    $: {
-    	if (changed) {
-    		changed = false
-    		const newToRender = []
-    		for (let i = 0; i < toRender.length; i++) {
-    			if (!showLogs && toRender[i].type === ConsoleAPI.TYPES.LOG)
-    				continue
-    			if (!showWarnings && toRender[i].type === ConsoleAPI.TYPES.WARN)
-    				continue
-    			if (!showErrors && toRender[i].type === ConsoleAPI.TYPES.ERROR)
-    				continue
-    			newToRender.push(toRender[i])
-    		}
-    		toRender = newToRender
-    	}
-    }
-
-
     $: objectOpen != null ? portal.open() : portal.close()
-
 </script>
 
 <Dropdown styles="width: clamp(250px, 20vw, 1000px" onOpen={_ => newMessages = false}>
@@ -137,7 +108,6 @@
         {/if}
     </div>
 </Dropdown>
-
 <div bind:this={modal} class="container-modal">
     <pre data-sveltepre="-" style="overflow: visible; height: fit-content; line-height: .9rem">{objectOpen}</pre>
 </div>

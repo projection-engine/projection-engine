@@ -14,7 +14,7 @@
     export let entity: Entity
     export let open: { [key: string]: boolean }
     export let updateOpen: Function
-    export let selected: Map<string, boolean>
+    export let selectedList:string[]
     export let lockedEntity: string
     export let setLockedEntity: Function
 
@@ -33,18 +33,18 @@
     }
 
     $: isOpen = open[entity.id]
-    $: isSelected = selected.has(entity.id)
+    $: isNodeSelected = selectedList.includes(entity.id)
     $: childQuantity = Math.max(entity.children.array.length, entity.allComponents.length)
     $: hasChildren = childQuantity > 0
     $: isMatchToSearch = isOnSearch && testSearch(entity)
 </script>
 
 <div
-        data-svelteselected={isSelected || isMatchToSearch? "-" : ""}
+        data-svelteselected={isNodeSelected || isMatchToSearch? "-" : ""}
         data-sveltenode={entity.id}
 
         class="wrapper hierarchy-branch"
-        style={(isMatchToSearch && !isSelected ? "--pj-accent-color-light: var(--pj-accent-color-tertiary);" : "")+ "padding-left:" +  (depth * 18 + "px;") + (entity.active ? "" : "opacity: .5") }
+        style={(isMatchToSearch && !isNodeSelected ? "--pj-accent-color-light: var(--pj-accent-color-tertiary);" : "")+ "padding-left:" +  (depth * 18 + "px;") + (entity.active ? "" : "opacity: .5") }
 >
 
     {#if hasChildren}

@@ -1,7 +1,6 @@
 import ViewportActionUtil from "../services/ViewportActionUtil"
-import SettingsStore from "../../shared/stores/SettingsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import GIZMOS from "../static/GIZMOS"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import EditorActionHistory from "../services/EditorActionHistory"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE"
@@ -14,89 +13,89 @@ import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
 import LocalizationEN from "../../../shared/LocalizationEN"
 import EditorUtil from "../util/EditorUtil"
+import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
 
-export default function getViewportHotkeys(settings): { [key: string]: ContextMenuOption } {
-
+export default function getViewportHotkeys(): { [key: string]: ContextMenuOption } {
+	const viewportHotkeys = SettingsStore.getData().viewportHotkeys
 	return {
 		DUPLICATE: {
 			label: "Duplicate active",
 			callback: () => {
-				const t = SelectionStore.mainEntity
+				const t = SelectionStoreUtil.getMainEntity()
 				if (!t)
 					return
 				const entity = QueryAPI.getEntityByID(t)
 				if (entity)
 					EngineStateService.add(entity.clone())
 			},
-			require: settings.viewportHotkeys.DUPLICATE,
+			require: viewportHotkeys.DUPLICATE,
 		},
 
 		FOCUS_ON_CAMERA: {
 			label: LocalizationEN.FOCUS_ON_CAMERA,
 			callback: EditorUtil.focusOnCamera,
-			require: settings.viewportHotkeys.FOCUS_ON_CAMERA,
+			require: viewportHotkeys.FOCUS_ON_CAMERA,
 		},
 		SHOW_SELECTED: {
 			label: LocalizationEN.SHOW_SELECTED,
 			callback: EntityHierarchyService.openTree,
-			require: settings.viewportHotkeys.SHOW_SELECTED,
+			require: viewportHotkeys.SHOW_SELECTED,
 		},
 
 		SAVE: {
 			label: "Save",
-			require: settings.viewportHotkeys.SAVE,
+			require: viewportHotkeys.SAVE,
 			callback: LevelService.getInstance().save
 		},
 		INVERT_SELECTION: {
 			label: "Invert selection",
-			require: settings.viewportHotkeys.INVERT_SELECTION,
+			require: viewportHotkeys.INVERT_SELECTION,
 			callback: () => ViewportActionUtil.invertSelection()
 		},
 		SELECT_ALL: {
 			label: "Select all",
-			require: settings.viewportHotkeys.SELECT_ALL,
+			require: viewportHotkeys.SELECT_ALL,
 			callback: () => ViewportActionUtil.selectAll()
 		},
 		SELECT_NONE: {
 			label: "Select none",
-			require: settings.viewportHotkeys.SELECT_NONE,
-			callback: () => SelectionStore.engineSelected = []
+			require: viewportHotkeys.SELECT_NONE,
+			callback: () => SelectionStoreUtil.setEntitiesSelected([])
 		},
 		TRANSLATION_GIZMO: {
 
-			require: settings.viewportHotkeys.TRANSLATION_GIZMO,
+			require: viewportHotkeys.TRANSLATION_GIZMO,
 			callback: () => {
-				const settings = SettingsStore.data
-				SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
+				SettingsStore.updateStore({gizmo: GIZMOS.TRANSLATION})
 			}
 		},
 		SELECT_HIERARCHY: {
-			require: settings.viewportHotkeys.SELECT_HIERARCHY,
+			require: viewportHotkeys.SELECT_HIERARCHY,
 			label: "Select hierarchy",
 			callback: () => {
-				const t = SelectionStore.mainEntity
+				const t = SelectionStoreUtil.getMainEntity()
 				if (!t)
 					return
 				const toSelect = [t, ...EditorUtil.selectEntityHierarchy(QueryAPI.getEntityByID(t))]
-				SelectionStore.engineSelected = [...SelectionStore.engineSelected, ...toSelect]
+				SelectionStoreUtil.setEntitiesSelected([...SelectionStoreUtil.getEntitiesSelected(), ...toSelect])
 			},
 
 		},
 		HIDE_ACTIVE: {
 			label: "Hide active",
 			callback: () => {
-				const selected = SelectionStore.engineSelected
+				const selected = SelectionStoreUtil.getEntitiesSelected()
 				for (let i = 0; i < selected.length; i++)
 					EntityFactoryService.toggleEntityVisibility(selected[i], true)
 				EntityHierarchyService.updateHierarchy()
 			},
-			require: settings.viewportHotkeys.HIDE_ACTIVE,
+			require: viewportHotkeys.HIDE_ACTIVE,
 		},
 		SNAP_TO_ORIGIN: {
 			label: "Snap to origin",
 			callback: () => {
-				const selected = SelectionStore.engineSelected
+				const selected = SelectionStoreUtil.getEntitiesSelected()
 				for (let i = 0; i < selected.length; i++) {
 					const entity = QueryAPI.getEntityByID(selected[i])
 					entity._translation[0] = 0
@@ -106,128 +105,127 @@ export default function getViewportHotkeys(settings): { [key: string]: ContextMe
 					entity.__changedBuffer[0] = 1
 				}
 			},
-			require: settings.viewportHotkeys.SNAP_TO_ORIGIN,
+			require: viewportHotkeys.SNAP_TO_ORIGIN,
 		},
 
 		ROUND_TRANSFORMATION: {
 			label: "Round transformation",
 			callback: () => EditorUtil.snap(1),
-			require: settings.viewportHotkeys.ROUND_TRANSFORMATION,
+			require: viewportHotkeys.ROUND_TRANSFORMATION,
 		},
 
 		CYCLE_GIZMOS: {
 			label: "Cycle gizmos",
 			callback: () => {
-				switch (settings.gizmo) {
+				const settingsInstance = SettingsStore.getInstance()
+				switch (settingsInstance.data.gizmo) {
 				case GIZMOS.TRANSLATION:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
+					settingsInstance.updateStore({gizmo: GIZMOS.SCALE})
 					break
 				case GIZMOS.SCALE:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})
+					settingsInstance.updateStore({gizmo: GIZMOS.ROTATION})
 					break
 				case GIZMOS.ROTATION:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.NONE})
+					settingsInstance.updateStore({gizmo: GIZMOS.NONE})
 					break
 				case GIZMOS.NONE:
-					SettingsStore.updateStore({...settings, gizmo: GIZMOS.TRANSLATION})
+					settingsInstance.updateStore({gizmo: GIZMOS.TRANSLATION})
 					break
 				}
 			},
-			require: settings.viewportHotkeys.SWITCH_TRANSFORMATION,
+			require: viewportHotkeys.SWITCH_TRANSFORMATION,
 		},
 		SWITCH_TRANSFORMATION: {
 			label: "Switch transformation",
 			callback: () => {
-				const newT = settings.transformationType === TRANSFORMATION_TYPE.GLOBAL ? TRANSFORMATION_TYPE.RELATIVE : TRANSFORMATION_TYPE.GLOBAL
-				SettingsStore.updateStore({...settings, transformationType: newT})
+				const settingsInstance = SettingsStore.getInstance()
+				const newT = settingsInstance.data.transformationType === TRANSFORMATION_TYPE.GLOBAL ? TRANSFORMATION_TYPE.RELATIVE : TRANSFORMATION_TYPE.GLOBAL
+				settingsInstance.updateStore({transformationType: newT})
 			},
-			require: settings.viewportHotkeys.SWITCH_TRANSFORMATION,
+			require: viewportHotkeys.SWITCH_TRANSFORMATION,
 		},
 		SNAP_TO_GRID: {
 			label: "Snap to grid",
 			callback: EditorUtil.snap,
-			require: settings.viewportHotkeys.SNAP_TO_GRID,
+			require: viewportHotkeys.SNAP_TO_GRID,
 		},
 		FOCUS: {
 			label: "Focus on active",
-			require: settings.viewportHotkeys.FOCUS,
+			require: viewportHotkeys.FOCUS,
 			callback: ViewportActionUtil.focus
 		},
 		SCALE_GIZMO: {
-			require: settings.viewportHotkeys.SCALE_GIZMO,
-			callback: () => SettingsStore.updateStore({...settings, gizmo: GIZMOS.SCALE})
+			require: viewportHotkeys.SCALE_GIZMO,
+			callback: () => SettingsStore.updateStore({gizmo: GIZMOS.SCALE})
 		},
 		ROTATION_GIZMO: {
-			require: settings.viewportHotkeys.ROTATION_GIZMO,
-			callback: () => {
-				const settings = SettingsStore.data
-				SettingsStore.updateStore({...settings, gizmo: GIZMOS.ROTATION})
-			}
+			require: viewportHotkeys.ROTATION_GIZMO,
+			callback: () => SettingsStore.updateStore({gizmo: GIZMOS.ROTATION})
 		},
 		UNDO: {
-			require: settings.viewportHotkeys.UNDO,
+			require: viewportHotkeys.UNDO,
 			callback: EditorActionHistory.undo
 		},
 		REDO: {
-			require: settings.viewportHotkeys.REDO,
+			require: viewportHotkeys.REDO,
 			callback: EditorActionHistory.redo
 		},
 		GROUP: {
 			label: "Group selected",
-			require: settings.viewportHotkeys.GROUP,
+			require: viewportHotkeys.GROUP,
 			callback: ViewportActionUtil.group
 		},
 		FIXATE_ACTIVE: {
 			label: "Fixate active",
-			require: settings.viewportHotkeys.FIXATE_ACTIVE,
+			require: viewportHotkeys.FIXATE_ACTIVE,
 			callback: ViewportActionUtil.fixateActive
 		},
 
 		COPY: {
 			label: "Copy",
-			require: settings.viewportHotkeys.COPY,
+			require: viewportHotkeys.COPY,
 			callback: ViewportActionUtil.copy
 		},
 
 		DELETE: {
 			label: "Delete",
-			require: settings.viewportHotkeys.DELETE,
+			require: viewportHotkeys.DELETE,
 			callback: ViewportActionUtil.deleteSelected
 		},
 		PASTE: {
 
 			label: "Paste",
-			require: settings.viewportHotkeys.PASTE,
+			require: viewportHotkeys.PASTE,
 			callback: ViewportActionUtil.paste
 		},
 
 
 		CAMERA_TOP: {
 
-			require: settings.viewportHotkeys.CAMERA_TOP,
+			require: viewportHotkeys.CAMERA_TOP,
 			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)
 		},
 		CAMERA_BOTTOM: {
 
-			require: settings.viewportHotkeys.CAMERA_BOTTOM,
+			require: viewportHotkeys.CAMERA_BOTTOM,
 			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)
 		},
 		CAMERA_LEFT: {
 
-			require: settings.viewportHotkeys.CAMERA_LEFT,
+			require: viewportHotkeys.CAMERA_LEFT,
 			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)
 		},
 		CAMERA_RIGHT: {
 
-			require: settings.viewportHotkeys.CAMERA_RIGHT,
+			require: viewportHotkeys.CAMERA_RIGHT,
 			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)
 		},
 		CAMERA_FRONT: {
-			require: settings.viewportHotkeys.CAMERA_FRONT,
+			require: viewportHotkeys.CAMERA_FRONT,
 			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)
 		},
 		CAMERA_BACK: {
-			require: settings.viewportHotkeys.CAMERA_BACK,
+			require: viewportHotkeys.CAMERA_BACK,
 			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)
 		}
 

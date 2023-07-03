@@ -5,7 +5,6 @@
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
     import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Engine from "../../../../engine-core/Engine"
     import Header from "./components/Header.svelte"
@@ -15,14 +14,12 @@
     let search = ""
     let filteredComponent = undefined
     let ref
-    let settings
     let openTree = {}
     let isOnSearch = false
     let toRender = []
 
     const ID = crypto.randomUUID()
     const draggable = dragDrop()
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
 
     function updateHierarchy(op) {
     	const openLocal = op ?? openTree
@@ -33,22 +30,17 @@
     }
 
     $: {
-    	if (ref != null) {
-    		HotKeysController.bindAction(
-    			ref,
-    			Object.values(getViewportHotkeys(settings)),
-    			"public",
-    			LocalizationEN.VIEWPORT
-    		)
-    	}
-    }
-
-    $: {
     	isOnSearch = search || filteredComponent
     	updateHierarchy()
     }
 
     onMount(() => {
+    	HotKeysController.bindAction(
+    		ref,
+    		Object.values(getViewportHotkeys()),
+    		"public",
+    		LocalizationEN.VIEWPORT
+    	)
     	draggable.onMount({
     		targetElement: ref,
     		onDrop: (entityDragged, event) => {
@@ -69,7 +61,6 @@
 
     onDestroy(() => {
     	HotKeysController.unbindAction(ref)
-    	unsubscribeSettings()
     	draggable.onDestroy()
     })
 </script>

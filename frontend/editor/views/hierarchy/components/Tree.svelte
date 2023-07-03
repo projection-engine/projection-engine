@@ -1,50 +1,48 @@
-<script lang="ts">
-    import {onDestroy} from "svelte";
-    import EntityTreeBranch from "./EntityTreeBranch.svelte";
-    import ComponentTreeBranch from "./ComponentTreeBranch.svelte";
-    import SelectionStore from "../../../../shared/stores/SelectionStore";
-    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService";
+<script>
+    import {onDestroy, onMount} from "svelte"
+    import EntityTreeBranch from "./EntityTreeBranch.svelte"
+    import ComponentTreeBranch from "./ComponentTreeBranch.svelte"
+    import SelectionStore from "../../../../stores/SelectionStore"
+    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
 
-    import getViewportContext from "../../../templates/get-viewport-context";
-    import SettingsStore from "../../../../shared/stores/SettingsStore";
-    import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService";
-    import HierarchyToRenderElement from "../template/ToRenderElement";
-    import VirtualList from '@sveltejs/svelte-virtual-list';
-    import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import getViewportContext from "../../../templates/get-viewport-context"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
+    import VirtualList from "@sveltejs/svelte-virtual-list"
+    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+    import EngineStore from "../../../../stores/EngineStore"
 
-    export let ID: string
-    export let testSearch: Function
-    export let isOnSearch: boolean
-    export let openTree: { [key: string]: boolean }
-    export let updateOpen: Function
-    export let toRender: HierarchyToRenderElement[]
-    const internalID = crypto.randomUUID()
+    const COMPONENT_ID = crypto.randomUUID()
+    /** @type { string }*/
+    export let ID
+    /** @type { function }*/
+    export let testSearch
+    /** @type { boolean }*/
+    export let isOnSearch
+    /** @type { {[key: string]: boolean} }*/
+    export let openTree
+    /** @type { function }*/
+    export let updateOpen
+    /** @type {HierarchyToRenderElement[]}*/
+    export let toRender
 
-    let selected: Map<string, boolean>
+    let selectedList
     let lockedEntity
 
-    const unsubscribeSettings = SettingsStore.getStore(v => {
-        ContextMenuService.getInstance().mount(
-            getViewportContext(v),
-            ID
-        )
+    onMount(() => {
+    	ContextMenuService.getInstance().mount(getViewportContext(), ID)
+    	EngineStore.getInstance().addListener(COMPONENT_ID, data => lockedEntity = data.lockedEntity, ["lockedEntity"])
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedList = SelectionStoreUtil.getEntitiesSelected())
     })
-
-    const unsubscribeSelection = SelectionStore.getStore(() => {
-        selected = SelectionStore.TARGET === SelectionStore.TYPES.ENGINE ? SelectionStore.map : SelectionStore.EMPTY_MAP
-        lockedEntity = SelectionStore.lockedEntity
-    })
-
 
     onDestroy(() => {
-        EntityHierarchyService.removeListener(internalID)
-        unsubscribeSettings()
-        unsubscribeSelection()
-        ContextMenuService.getInstance().destroy(ID)
+    	EngineStore.getInstance().removeListener(COMPONENT_ID)
+    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+    	EntityHierarchyService.removeListener(COMPONENT_ID)
+    	ContextMenuService.getInstance().destroy(ID)
     })
 </script>
-
 
 {#if toRender.length > 0}
     <VirtualList items={toRender} itemHeight={23} let:item>
@@ -52,7 +50,7 @@
             <ComponentTreeBranch
                     component={item.component}
                     depth={item.depth }
-                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
             />
         {:else}
             <EntityTreeBranch
@@ -60,10 +58,9 @@
                     {isOnSearch}
                     entity={item.node}
                     depth={item.depth}
-
-                    {selected }
+                    {selectedList}
                     {lockedEntity}
-                    setLockedEntity={v => SelectionStore.lockedEntity = v}
+                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
                     open={openTree}
                     {updateOpen}
             />

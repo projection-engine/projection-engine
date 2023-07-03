@@ -15,7 +15,7 @@
     export let type
     export let isMaterial
     export let isOnRename
-    export let selected
+    export let isSelected
     export let metadata
     export let submitRename
     export let icon
@@ -33,7 +33,7 @@
         data-sveltefolder={type !== 0 ? undefined : data.id}
         on:dblclick={() => ContentBrowserUtil.openItem(data, setCurrentDirectory, setSelected, reset, type)}
         on:click={setSelected}
-        style={(selected.get(data.id) && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isToBeCut || isNotDraggable ? "opacity: .5;" : "")}
+        style={(isSelected && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isToBeCut || isNotDraggable ? "opacity: .5;" : "")}
         class="file"
 >
     <div class="icon">

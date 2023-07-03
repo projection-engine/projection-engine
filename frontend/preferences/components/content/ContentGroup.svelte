@@ -1,35 +1,43 @@
 <script>
-    import Builder from "./ContentField.svelte"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
-    import VisualsStore from "../../../shared/stores/VisualsStore"
-    import {onDestroy} from "svelte"
+    import ContentField from "./ContentField.svelte"
     import Accordion from "../../../shared/components/accordion/Accordion.svelte"
+    import {onDestroy, onMount} from "svelte"
+    import VisualsStore from "../../../stores/VisualsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
 
+    const COMPONENT_ID = crypto.randomUUID()
     export let toRender
 
     let settings
-    let visuals
+    let visualSettings
 
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
+    onMount(() => {
+    	VisualsStore.getInstance().addListener(COMPONENT_ID, v => visualSettings = v)
+    	SettingsStore.getInstance().addListener(COMPONENT_ID, v => settings = v)
+    })
 
     onDestroy(() => {
-    	unsubscribeSettings()
-    	unsubscribeVisuals()
+    	VisualsStore.getInstance().removeListener(COMPONENT_ID)
+    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
     })
 </script>
-{#each toRender.form as form, i}
-    <Accordion title={form.label} startOpen={true}>
 
-        <div data-svelteform="-">
-            {#each form.children as field}
-                {#if field.divider}
-                    <div data-sveltedivider="-"></div>
-                {:else}
-                    <Builder toRender={field} visuals={visuals} settings={settings}/>
-                {/if}
-            {/each}
-        </div>
-    </Accordion>
-{/each}
-
+{#if settings !== undefined && visualSettings !== undefined}
+    {#each toRender.form as form, i}
+        <Accordion title={form.label} startOpen={true}>
+            <div data-svelteform="-">
+                {#each form.children as field}
+                    {#if field.divider}
+                        <div data-sveltedivider="-"></div>
+                    {:else}
+                        <ContentField
+                                {settings}
+                                {visualSettings}
+                                toRender={field}
+                        />
+                    {/if}
+                {/each}
+            </div>
+        </Accordion>
+    {/each}
+{/if}

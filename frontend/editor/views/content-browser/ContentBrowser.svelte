@@ -1,6 +1,5 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import FilesStore from "../../../shared/stores/FilesStore"
     import NavigationHistory from "./libs/NavigationHistory"
     import SideBar from "./components/SideBar.svelte"
     import Browser from "./components/Browser.svelte"
@@ -9,32 +8,26 @@
     import GlobalContentBrowserController from "./libs/GlobalContentBrowserController"
     import ViewStateController from "../../components/view/libs/ViewStateController"
     import ITEM_TYPES from "./static/ITEM_TYPES"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
-    import FileSystemService from "../../../shared/lib/FileSystemService"
     import {SORTS, SORTS_KEYS} from "./static/SORT_INFO"
+    import FileSystemUtil from "../../../shared/FileSystemUtil"
 
-
+    const COMPONENT_ID = crypto.randomUUID()
     export let viewID
     export let viewIndex
     export let groupIndex
 
-    let settings
     let sortKey = SORTS_KEYS[0]
     let sortDirection = SORTS[0]
-    let currentDirectory = {id: FileSystemService.getInstance().sep}
+    let currentDirectory = {id: FileSystemUtil.sep}
     let wasInitialized = false
     let fileType = undefined
     let inputValue = ""
     let navigationHistory = new NavigationHistory(v => currentDirectory = v)
-    let store = {}
     let viewType = ITEM_TYPES.ROW
 
-    const internalID =crypto.randomUUID()
-    const unsubscribeStore = FilesStore.getStore(v => store = v)
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-
-    $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.data.currentView
+    $: viewTypeCache = viewID + "-" + viewIndex + "-" + groupIndex + "-" + SettingsStore.getData().currentView
     $: {
     	if (wasInitialized) {
     		localStorage.setItem(viewTypeCache, viewType)
@@ -51,15 +44,11 @@
     }
 
     onMount(() => {
-    	GlobalContentBrowserController.subscribe(internalID, newDir => {
+    	GlobalContentBrowserController.subscribe(COMPONENT_ID, newDir => {
     		navigationHistory.updateCurrentDirectory({id: newDir}, currentDirectory)
     	})
     })
-    onDestroy(() => {
-    	unsubscribeSettings()
-    	GlobalContentBrowserController.unsubscribe(internalID)
-    	unsubscribeStore()
-    })
+    onDestroy(() => GlobalContentBrowserController.unsubscribe(COMPONENT_ID))
 
 </script>
 
@@ -81,7 +70,6 @@
         navigationHistory={navigationHistory}
 />
 
-
 <div class="wrapper">
     <SideBar
             currentDirectory={currentDirectory}
@@ -93,11 +81,7 @@
         <Browser
                 sortDirection={sortDirection}
                 sortKey={sortKey}
-
-                settings={settings}
                 viewType={viewType}
-                internalID={internalID}
-                store={store}
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 navigationHistory={navigationHistory}

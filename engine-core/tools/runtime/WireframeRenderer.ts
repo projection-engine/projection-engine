@@ -8,14 +8,13 @@ import StaticFBO from "../../lib/StaticFBO"
 import StaticEditorMeshes from "../lib/StaticEditorMeshes"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import CameraIconRenderer from "./CameraIconRenderer"
-import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
+import EngineToolsState from "../EngineToolsState"
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
 export default class WireframeRenderer {
 	static execute() {
-		const settings = SettingsStore.data
-		if(!settings.showOutline)
+		if(!EngineToolsState.showOutline)
 			return
 		const entities = Engine.entities.array
 		const size = entities.length
@@ -31,12 +30,12 @@ export default class WireframeRenderer {
 		const cameras = ResourceEntityMapper.cameras.array
 		const camerasSize = cameras.length
 		for (let i = 0; i < camerasSize; i++)
-			CameraIconRenderer.execute(settings, cameras[i])
+			CameraIconRenderer.execute(cameras[i])
 
 
 		for (let i = 0; i < size; i++) {
 			const entity = entities[i]
-			if (!entity.active || entity.distanceFromCamera > settings.maxDistanceIcon)
+			if (!entity.active || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
 				continue
 
 			const collision = entity.physicsColliderComponent

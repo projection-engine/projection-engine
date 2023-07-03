@@ -1,23 +1,24 @@
 import ScriptsAPI from "../../../engine-core/lib/utils/ScriptsAPI"
-import SelectionStore from "../../shared/stores/SelectionStore"
+import SelectionStore from "../../stores/SelectionStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../shared/LocalizationEN"
-import EngineStore from "../../shared/stores/EngineStore"
+import EngineStore from "../../stores/EngineStore"
 import Entity from "../../../engine-core/instances/Entity"
 import Engine from "../../../engine-core/Engine"
 import ExecutionService from "../services/engine/ExecutionService"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import COMPONENTS from "../../../engine-core/static/COMPONENTS"
-import {getCall} from "../../shared/util/get-call"
 import IPCRoutes from "../../../shared/IPCRoutes"
-import FilesStore from "../../shared/stores/FilesStore"
-import SettingsStore from "../../shared/stores/SettingsStore"
-import TabsStore from "../../shared/stores/TabsStore"
+import SettingsStore from "../../stores/SettingsStore"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import GIZMOS from "../static/GIZMOS"
 import GizmoSystem from "../../../engine-core/tools/runtime/GizmoSystem"
 import {glMatrix} from "gl-matrix"
+import ElectronResources from "../../shared/lib/ElectronResources"
+import SelectionStoreUtil from "./SelectionStoreUtil"
+import TabsStoreUtil from "./TabsStoreUtil"
+import ContentBrowserUtil from "./ContentBrowserUtil"
 
 export default class EditorUtil {
 	static async componentConstructor(entity, scriptID, autoUpdate = true) {
@@ -28,20 +29,21 @@ export default class EditorUtil {
 	}
 
 	static focusOnCamera(cameraTarget) {
-		const focused = EngineStore.engine.focusedCamera
+		const engineInstance = EngineStore.getInstance()
+		const focused = engineInstance.data.focusedCamera
 		const isCamera = cameraTarget instanceof Entity
 		if (!focused || isCamera && cameraTarget.id !== focused) {
-			const current = isCamera ? cameraTarget : Engine.entities.get(SelectionStore.mainEntity)
+			const current = isCamera ? cameraTarget : Engine.entities.get(SelectionStoreUtil.getMainEntity())
 			if (current && current.cameraComponent) {
 				ExecutionService.cameraSerialization = CameraAPI.serializeState()
 				CameraTracker.stopTracking()
 				CameraAPI.updateViewTarget(current)
-				EngineStore.updateStore({...EngineStore.engine, focusedCamera: current.id})
+				engineInstance.updateStore({focusedCamera: current.id})
 			}
 		} else {
 			CameraAPI.restoreState(ExecutionService.cameraSerialization)
 			CameraTracker.startTracking()
-			EngineStore.updateStore({...EngineStore.engine, focusedCamera: undefined})
+			engineInstance.updateStore({focusedCamera: undefined})
 		}
 	}
 
@@ -104,19 +106,20 @@ export default class EditorUtil {
 	}
 
 	static async importFile(currentDirectory) {
-		const {filesImported} = await getCall<MutableObject>(IPCRoutes.FILE_DIALOG, {currentDirectory: currentDirectory.id}, false)
+		const {filesImported} = await EditorUtil.getCall<MutableObject>(IPCRoutes.FILE_DIALOG, {currentDirectory: currentDirectory.id}, false)
 		if (filesImported.length > 0) {
 			ToastNotificationSystem.getInstance().success(LocalizationEN.IMPORT_SUCCESSFUL)
-			await FilesStore.refreshFiles()
+			await ContentBrowserUtil.refreshFiles()
 		}
 	}
 
 	static openBottomView(view) {
-		const views = [...SettingsStore.data.views]
-		const tab = views[SettingsStore.data.currentView]
+		const settingsStore = SettingsStore.getInstance()
+		const views = [...settingsStore.data.views]
+		const tab = views[settingsStore.data.currentView]
 		const existingTab = tab.bottom[0].findIndex(v => v?.type === view)
 		if (existingTab > -1) {
-			TabsStore.update("bottom", 0, existingTab)
+			TabsStoreUtil.updateByAttributes( "bottom", 0, existingTab)
 			return
 		}
 
@@ -125,12 +128,12 @@ export default class EditorUtil {
 		else
 			tab.bottom[0] = [{type: view, color: [255, 255, 255]}]
 
-		SettingsStore.updateStore({...SettingsStore.data, views})
-		TabsStore.update("bottom", 0, tab.bottom[0].length - 1)
+		settingsStore.updateStore({views})
+		TabsStoreUtil.updateByAttributes("bottom", 0, tab.bottom[0].length - 1)
 	}
 
 	static async resolveFileName(path: string, ext: string): Promise<string> {
-		return await getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
+		return await EditorUtil.getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
 	}
 
 	static selectEntityHierarchy(start: Entity): string[] {
@@ -142,10 +145,10 @@ export default class EditorUtil {
 	}
 
 	static snap(grid?: number) {
-		const selected = SelectionStore.engineSelected
+		const selected = SelectionStoreUtil.getEntitiesSelected()
 		for (let i = 0; i < selected.length; i++) {
 			const entity = QueryAPI.getEntityByID(selected[i])
-			const currentGizmo = SettingsStore.data.gizmo
+			const currentGizmo = SettingsStore.getData().gizmo
 
 			switch (currentGizmo) {
 			case GIZMOS.TRANSLATION: {
@@ -176,12 +179,24 @@ export default class EditorUtil {
 	}
 
 	static updateView(key, newView) {
-		const s = {...SettingsStore.data}
-		const view = s.views[s.currentView]
-		const copy = [...s.views]
-		copy[s.currentView] = {...view, [key]: newView}
-		s.views = copy
-		SettingsStore.updateStore(s)
+		const settingsData = SettingsStore.getData()
+		const view = settingsData.views[settingsData.currentView]
+		const copy = [...settingsData.views]
+		copy[settingsData.currentView] = {...view, [key]: newView}
+
+		SettingsStore.updateStore({views: copy})
 	}
 
+	static getCall<T>(channel, data, addMiddle = true):Promise<T> {
+		return new Promise(resolve => {
+			let listenID = crypto.randomUUID()
+			if (data.listenID)
+				listenID = data.listenID
+			ElectronResources.ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data:T) => {
+				resolve(data)
+			})
+
+			ElectronResources.ipcRenderer.send(channel, {...data, listenID})
+		})
+	}
 }

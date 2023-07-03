@@ -5,7 +5,6 @@ import SelectedSystem from "./runtime/SelectedSystem"
 import Engine from "../Engine"
 import CameraTracker from "./lib/CameraTracker"
 import WireframeRenderer from "./runtime/WireframeRenderer"
-
 import ENVIRONMENT from "../static/ENVIRONMENT"
 import LineRenderer from "./runtime/LineRenderer"
 import Entity from "../instances/Entity"
@@ -13,7 +12,6 @@ import GPU from "../GPU"
 import StaticEditorMeshes from "./lib/StaticEditorMeshes"
 import StaticEditorShaders from "./lib/StaticEditorShaders"
 import StaticFBO from "../lib/StaticFBO"
-import SettingsStore from "../../frontend/shared/stores/SettingsStore"
 
 export default class EngineTools {
 	static selected: Entity[] = []
@@ -40,7 +38,7 @@ export default class EngineTools {
 		}
 
 		selected.length = 0
-		for (let i = 0; i < data.length; i++){
+		for (let i = 0; i < data.length; i++) {
 			const d = data[i]
 			const entity = Engine.entities.get(d)
 			if (entity !== undefined) {
@@ -65,31 +63,28 @@ export default class EngineTools {
 		StaticEditorShaders.iconToDepth.bind()
 		GPU.context.activeTexture(GPU.context.TEXTURE0)
 		GPU.context.bindTexture(GPU.context.TEXTURE_2D, IconsSystem.iconsTexture)
-		IconsSystem.loop(IconsSystem.drawIcon, SettingsStore.data, StaticEditorShaders.iconToDepthUniforms)
+		IconsSystem.loop(IconsSystem.drawIcon, StaticEditorShaders.iconToDepthUniforms)
 		StaticFBO.visibility.stopMapping()
 		GPU.context.enable(GPU.context.DEPTH_TEST)
 	}
 
+	static #loop() {
+		CameraTracker.updateFrame()
+		SelectedSystem.drawToBuffer()
+		EngineTools.#setContextState()
+		GridSystem.execute()
+		WireframeRenderer.execute()
+		SelectedSystem.drawSilhouette()
+		IconsSystem.execute()
+		GizmoSystem.execute()
+	}
+
 	static bindSystems() {
-		Engine.addSystem("camera_tracker", CameraTracker.updateFrame)
-		Engine.addSystem("outline_draw_to_buffer", SelectedSystem.drawToBuffer)
-		Engine.addSystem("set_context_state", EngineTools.#setContextState)
-		Engine.addSystem("grid", GridSystem.execute)
-		Engine.addSystem("wireframe", WireframeRenderer.execute)
-		Engine.addSystem("outline_draw_silhouette", SelectedSystem.drawSilhouette)
-		Engine.addSystem("icons", IconsSystem.execute)
-		Engine.addSystem("gizmo", GizmoSystem.execute)
+		Engine.addSystem("ENGINE_TOOLS_RENDERER", EngineTools.#loop)
 	}
 
 	static unbindSystems() {
-		Engine.removeSystem("camera_tracker")
-		Engine.removeSystem("outline_draw_to_buffer")
-		Engine.removeSystem("set_context_state")
-		Engine.removeSystem("grid")
-		Engine.removeSystem("wireframe")
-		Engine.removeSystem("outline_draw_silhouette")
-		Engine.removeSystem("icons")
-		Engine.removeSystem("gizmo")
+		Engine.removeSystem("ENGINE_TOOLS_RENDERER")
 	}
 
 	static #setContextState() {

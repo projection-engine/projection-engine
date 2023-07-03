@@ -1,7 +1,6 @@
 import materialCompiler from "./material-compiler/material-compiler"
-import FSAssetUtil from "../../../services/file-system/FSAssetUtil"
 
-import FilesStore from "../../../../shared/stores/FilesStore"
+import FilesStore from "../../../../stores/FilesStore"
 import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import Canvas from "./Canvas"
 import type ShaderNode from "../templates/ShaderNode"
@@ -12,6 +11,7 @@ import NodesIndex from "../static/NODE_MAP"
 import ShaderLink from "../templates/ShaderLink"
 import ShaderComment from "../templates/ShaderComment"
 import LocalizationEN from "../../../../../shared/LocalizationEN"
+import EditorFSUtil from "../../../util/EditorFSUtil"
 
 export default class ShaderEditorTools {
 
@@ -28,7 +28,7 @@ export default class ShaderEditorTools {
 		if (!nodeInstance)
 			return
 		Object.keys(node).forEach(o => {
-			if (o === "texture" && nodeInstance instanceof NodesIndex.TextureSample) nodeInstance[o] = FilesStore.data.textures.find(i => i.registryID === node[o].registryID)
+			if (o === "texture" && nodeInstance instanceof NodesIndex.TextureSample) nodeInstance[o] = FilesStore.getData().textures.find(i => i.registryID === node[o].registryID)
 			else {
 				const input = nodeInstance.inputs.find(i => i.key === o)
 				if (!input && !nodeInstance.output.find(i => i.key === o))
@@ -96,7 +96,7 @@ export default class ShaderEditorTools {
 				comments: canvasAPI.comments.map(ShaderEditorTools.serializeComment),
 				response: compiled[0]
 			}
-			await FSAssetUtil.updateAsset(openFile.registryID, JSON.stringify(materialData))
+			await EditorFSUtil.updateAsset(openFile.registryID, JSON.stringify(materialData))
 
 			const oldMaterial = GPU.materials.get(openFile.registryID)
 			if (oldMaterial) {

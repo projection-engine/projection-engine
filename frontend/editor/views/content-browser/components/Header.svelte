@@ -1,9 +1,4 @@
 <script>
-    import FilesStore from "../../../../shared/stores/FilesStore"
-    import EngineStore from "../../../../shared/stores/EngineStore"
-    import {onDestroy} from "svelte"
-
-
     import ITEM_TYPES from "../static/ITEM_TYPES"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
@@ -12,16 +7,15 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import Input from "../../../../shared/components/input/Input.svelte"
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
-    import FileSystemService from "../../../../shared/lib/FileSystemService"
     import SortingOptions from "./SortingOptions.svelte"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import FileTypes from "../../../../../shared/FileTypes"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import EditorUtil from "../../../util/EditorUtil"
+    import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
     export let currentDirectory
-    export let setCurrentDirectory
     export let fileType
     export let onChange
     export let inputValue
@@ -29,18 +23,11 @@
     export let viewType
     export let setViewType
     export let setFileType
-
     export let setSortKey
     export let setSortDirection
     export let sortDirection
     export let sortKey
 
-
-    $: fileTypes = ContentBrowserUtil.getFileTypes()
-
-    let engine = {}
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-    onDestroy(() => unsubscribeEngine())
 </script>
 
 <ViewHeader>
@@ -49,7 +36,7 @@
                 data-svelteview-header-button="-"
                 on:click={() => navigationHistory.undo()}
         >
-            <Icon styles="font-size: .9rem">arrow_back</Icon>
+            <Icon>arrow_back</Icon>
             <ToolTip content={LocalizationEN.BACK_DIR}/>
         </button>
         <button data-sveltebuttondefault="-"
@@ -62,7 +49,7 @@
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
                 on:click={() => {
-                    if(currentDirectory.id === FileSystemService.getInstance().sep)
+                    if(currentDirectory.id === FileSystemUtil.sep)
                         return
                     navigationHistory.goToParent(currentDirectory)
                 }}
@@ -74,7 +61,7 @@
                 data-svelteview-header-button="-"
                 on:click={() => {
                     ToastNotificationSystem.getInstance().warn(LocalizationEN.REFRESHING)
-                    FilesStore.refreshFiles().catch()
+                    ContentBrowserUtil.refreshFiles().catch()
                 }}
         >
             <Icon styles="font-size: .9rem">sync</Icon>
@@ -82,7 +69,7 @@
         </button>
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
-                on:click={() => FilesStore.createFolder(currentDirectory).catch()}
+                on:click={() => ContentBrowserUtil.createFolder(currentDirectory).catch()}
         >
             <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
             <ToolTip content={LocalizationEN.CREATE_FOLDER}/>
@@ -102,7 +89,7 @@
                 <ToolTip content={LocalizationEN.FILTER_TYPE}/>
                 <Icon styles="font-size: .9rem">filter_alt</Icon>
             </button>
-            {#each fileTypes as k, i}
+            {#each ContentBrowserUtil.getFileTypes() as k, i}
                 <button data-sveltebuttondefault="-"
                         on:click={() => setFileType(fileType === FileTypes[k[0]] ? undefined : FileTypes[k[0]])}
                         style="text-transform: capitalize"

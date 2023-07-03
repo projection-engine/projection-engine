@@ -5,7 +5,7 @@
     export let targetElementID
     export let disabled
     export let setSelected
-    export let selected = []
+    export let getSelected
     export let nodes
     export let allowAll
     export let targetElement
@@ -107,7 +107,7 @@
     				if (!event.ctrlKey)
     					setSelected(toSelect, start, end)
     				else
-    					setSelected([...selected, ...toSelect], start, end)
+    					setSelected([...getSelected(), ...toSelect], start, end)
     			}
     			ref.style.height = "0px"
     			ref.style.width = "0px"
@@ -125,7 +125,6 @@
     	}
     }
     $: {
-
     	if (ref || targetElement) {
     		const el = targetElement ? targetElement : ref.parentElement
     		if (disabled)

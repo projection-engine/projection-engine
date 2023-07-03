@@ -2,9 +2,8 @@ import Canvas from "../views/shader-editor/libs/Canvas"
 import ShaderNode from "../views/shader-editor/templates/ShaderNode"
 import ShaderComment from "../views/shader-editor/templates/ShaderComment"
 import OpenFile from "../views/shader-editor/static/OPEN_FILE"
-import FSRegistryService from "../services/file-system/FSRegistryService"
-import FSFilesService from "../services/file-system/FSFilesService"
-import FileSystemService from "../../shared/lib/FileSystemService"
+import EditorFSUtil from "./EditorFSUtil"
+import FileSystemUtil from "../../shared/FileSystemUtil"
 import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools"
 import ShaderLink from "../views/shader-editor/templates/ShaderLink"
 import CanvasResources from "../views/shader-editor/libs/CanvasResources"
@@ -256,10 +255,10 @@ export default class ShaderEditorUtil{
 	}
 
 	static async parseFile(openFile: OpenFile, canvasAPI: Canvas) {
-		const res = FSRegistryService.getRegistryEntry(openFile.registryID)
+		const res = EditorFSUtil.getRegistryEntry(openFile.registryID)
 		if (!res)
 			return
-		const dataToParse = await FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + FileSystemService.getInstance().sep + res.path, "json")
+		const dataToParse = await FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + res.path, "json")
 		if (dataToParse && Object.keys(dataToParse).length > 0) {
 
 			if (dataToParse.nodes)

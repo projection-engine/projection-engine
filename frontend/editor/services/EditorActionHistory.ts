@@ -5,10 +5,10 @@ import EntityAPI from "../../../engine-core/lib/utils/EntityAPI"
 import serializeStructure from "../../../engine-core/utils/serialize-structure"
 import EntityNamingService from "./engine/EntityNamingService"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
-import ChangesTrackerStore from "../../shared/stores/ChangesTrackerStore"
+import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
 import EngineStateService from "./engine/EngineStateService"
 import Entity from "../../../engine-core/instances/Entity"
-import LocalizationEN from "../../../shared/LocalizationEN";
+import LocalizationEN from "../../../shared/LocalizationEN"
 
 interface Action {
     nameCache: Map<string, string>
@@ -25,7 +25,7 @@ export default class EditorActionHistory {
 	}
 
 	static save(value: Entity[] | Entity, isRemoval?: boolean) {
-		ChangesTrackerStore.updateStore(true)
+		ChangesTrackerStore.updateStore({changed: true})
 
 		const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
 		EditorActionHistory.#cache.save({
@@ -41,7 +41,7 @@ export default class EditorActionHistory {
 			ToastNotificationSystem.getInstance().log(LocalizationEN.UNDOING_CHANGES)
 			EditorActionHistory.#apply(action)
 		} else
-			ChangesTrackerStore.updateStore(true)
+			ChangesTrackerStore.updateStore({changed: true})
 	}
 
 	static redo() {

@@ -2,13 +2,16 @@
 
     import Tabs from "../../tabs/Tabs.svelte";
     import VIEWS from "../static/VIEWS";
-    import TabsStore from "../../../../shared/stores/TabsStore";
-    import {onDestroy} from "svelte";
-    import SettingsStore from "../../../../shared/stores/SettingsStore";
+    import TabsStore from "../../../../stores/TabsStore";
+    import {onDestroy, onMount} from "svelte";
+    import SettingsStore from "../../../../stores/SettingsStore";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
     import LocalizationEN from "../../../../../shared/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";
+    import TabsStoreUtil from "../../../util/TabsStoreUtil";
+
+    const COMPONENT_ID = crypto.randomUUID()
 
     export let groupIndex
     export let views: ViewTabItem[]
@@ -18,29 +21,16 @@
     export let switchView
     export let id
 
-    let previous = 0
     let currentTab = 0
     let ref: HTMLElement
     let focused = false
     let targetDialogElement
 
     function update() {
-        currentTab = TabsStore.getValue(id, groupIndex)
+        currentTab = TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex)
     }
 
-    const unsubscribe = SettingsStore.getStore(v => {
-        if (v.currentView === previous)
-            return
-
-        previous = v.currentView
-        update()
-    })
-
-    const unsubscribeTabs = TabsStore.getStore(_ => {
-        update()
-        focused = TabsStore.focused === ref
-    })
-    $: tabs = views.map(v => {
+    $: localTabViews = views.map(v => {
         v.name = LocalizationEN[v.type]
         v.icon =  ViewsUtil.getViewIcon(v.type)
         v.id = v.type
@@ -52,11 +42,11 @@
     }))
 
     function closeTarget(i) {
-        removeTab(i, n => TabsStore.update(id, groupIndex, n), TabsStore.getValue(id, groupIndex))
+        removeTab(i, n => TabsStoreUtil.updateByAttributes(id, groupIndex, n), TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex))
     }
 
     function removeView(i: number) {
-        const tab = tabs[i]
+        const tab = localTabViews[i]
         if (targetDialogElement)
             targetDialogElement = undefined
 
@@ -66,14 +56,18 @@
             closeTarget(i)
     }
 
+    onMount(() => {
+        TabsStore.getInstance().addListener(COMPONENT_ID, data => focused = data.focused === ref, ["focused"])
+        SettingsStore.getInstance().addListener(COMPONENT_ID,         update, ["currentView"])
+    })
     onDestroy(() => {
-        unsubscribeTabs()
-        unsubscribe()
+        TabsStore.getInstance().removeListener(COMPONENT_ID)
+        SettingsStore.getInstance().removeListener(COMPONENT_ID)
     })
 
 </script>
 
-<div class="wrapper" bind:this={ref} on:mousedown={_ => TabsStore.focused = ref}>
+<div class="wrapper" bind:this={ref} on:mousedown={() => TabsStoreUtil.setFocusedTab(ref)}>
     <div></div>
     <div class="tabs">
         <Tabs
@@ -84,9 +78,9 @@
                 allowDeletion={true}
                 addNewTab={addNewTab}
                 removeTab={removeView}
-                tabs={tabs}
+                tabs={localTabViews}
                 currentTab={currentTab}
-                setCurrentView={v => TabsStore.update(id, groupIndex, v)}
+                setCurrentView={v => TabsStoreUtil.updateByAttributes(id, groupIndex, v)}
         />
         <Dialog
                 targetBinding={targetDialogElement}

@@ -12,10 +12,8 @@
     export let open
     export let triggerOpen
     export let childQuantity
-    $: isCurrentDir = currentDirectory.id === id
+
     let ref
-
-
     const draggable = dragDrop(false)
     onMount(() => {
     	draggable.onMount({
@@ -25,20 +23,19 @@
     	})
     })
 
-    $: isOpen = open[id]
     onDestroy(() => draggable.onDestroy())
 </script>
 
 
 <div
-        data-svelteselected={isCurrentDir ? "-" : undefined}
+        data-svelteselected={currentDirectory.id === id ? "-" : undefined}
         bind:this={ref}
         class="wrapper hierarchy-branch"
         style={`padding-left: ${depth * 18}px;`}
 >
     {#if childQuantity > 0}
         <button data-sveltebuttondefault="-"
-                data-svelteopen={isOpen ? "-" : ""}
+                data-svelteopen={open[id] ? "-" : ""}
                 class="button-small hierarchy-branch"
                 on:click={triggerOpen}
         >

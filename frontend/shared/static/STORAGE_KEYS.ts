@@ -1,4 +1,0 @@
-export enum STORAGE_KEYS{
-    PROJECT_PATH= "PROJECT_PATH", 
-    ROOT_PATH = "ROOT_PATH"
-}

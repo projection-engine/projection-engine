@@ -17,9 +17,9 @@
 <style>
     h4{
         margin: 0;
-
         font-size: initial !important;
     }
+
     .title-wrapper {
         border-bottom: var(--pj-border-primary) 1px solid;
         justify-content: space-between;

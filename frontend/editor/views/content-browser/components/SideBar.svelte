@@ -1,38 +1,38 @@
 <script>
     import SideBarItem from "./SideBarItem.svelte"
     import VirtualList from "@sveltejs/svelte-virtual-list"
-    import FilesHierarchyStore from "../../../../shared/stores/FilesHierarchyStore"
-    import {onDestroy} from "svelte"
-    import FileSystemService from "../../../../shared/lib/FileSystemService"
+    import FilesHierarchyStore from "../../../../stores/FilesHierarchyStore"
+    import {onDestroy, onMount} from "svelte"
+    import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
-    export let setCurrentDirectory = undefined
-    export let currentDirectory = undefined
-    let assets = []
-    let open = {}
-    const unsubscribe = FilesHierarchyStore.getStore(v => {
-    	assets = v.items
-    	open = v.open
-    })
-    onDestroy(() => unsubscribe())
+    const COMPONENT_ID = crypto.randomUUID()
+
+    /** @type {function} */
+    export let setCurrentDirectory
+    /** @type {{id: string}} */
+    export let currentDirectory
+
+    let hierarchy = {items: []}
+    onMount(() => FilesHierarchyStore.getInstance().addListener(COMPONENT_ID, v => hierarchy = v))
+    onDestroy(() => FilesHierarchyStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
 <div class="wrapper">
-    <VirtualList items={assets} let:item>
+    <VirtualList items={hierarchy.items} let:item>
         <SideBarItem
-                triggerOpen={_ => {
-                    let open = FilesHierarchyStore.data.open
+                triggerOpen={() => {
+                    let open = FilesHierarchyStore.getData().open
                     const inv = !open[item.item.id]
-                    if(item.item.id === FileSystemService.getInstance().sep && !inv)
+                    if(item.item.id === FileSystemUtil.sep && !inv)
                         open = {}
                     else if(!inv){
                         for(let i =0; i < item.children.length; i++)
                             delete open[item.children[i]]
                     }
                     open[item.item.id] = inv
-                    FilesHierarchyStore.data.open = open
-                    FilesHierarchyStore.update()
+                    FilesHierarchyStore.updateStore({open})
                 }}
-                open={open}
+                open={hierarchy.open}
                 childQuantity={item.childQuantity}
                 depth={item.depth}
                 setCurrentDirectory={setCurrentDirectory}

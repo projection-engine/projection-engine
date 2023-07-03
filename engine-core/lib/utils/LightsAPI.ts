@@ -19,12 +19,15 @@ const quantity = new Uint8Array(1)
 const cache1Mat4 = mat4.create()
 const cache2Mat4 = mat4.create()
 export default class LightsAPI {
-
-
-	static primaryBuffer = <Float32Array>ArrayBufferAPI.allocateVector(UberShader.MAX_LIGHTS * 16, 0, false, false, false)
-	static secondaryBuffer = <Float32Array>ArrayBufferAPI.allocateVector(UberShader.MAX_LIGHTS * 16, 0, false, false, false)
+    
+	static primaryBuffer?: Float32Array
+	static secondaryBuffer?: Float32Array
 	static lightsQuantity = 0
 
+	static initialize() {
+		LightsAPI.primaryBuffer = <Float32Array>ArrayBufferAPI.allocateVector(UberShader.MAX_LIGHTS * 16, 0, false, false, false)
+		LightsAPI.secondaryBuffer = <Float32Array>ArrayBufferAPI.allocateVector(UberShader.MAX_LIGHTS * 16, 0, false, false, false)
+	}
 
 	static packageLights(keepOld?: boolean, force?: boolean) {
 		if (force) {

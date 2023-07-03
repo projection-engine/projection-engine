@@ -3,7 +3,7 @@ import {vec3, vec4} from "gl-matrix"
 
 
 import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-import SettingsStore from "../../../shared/stores/SettingsStore"
+import SettingsStore from "../../../stores/SettingsStore"
 import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
 import MeshComponent from "../../../../engine-core/instances/components/MeshComponent"
 import LightComponent from "../../../../engine-core/instances/components/LightComponent"
@@ -15,13 +15,13 @@ import LocalizationEN from "../../../../shared/LocalizationEN"
 
 export default class EntityFactoryService {
 	static translateEntity(entity, rotation = CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
-		if (SettingsStore.data.spawnOnOrigin) {
+		if (SettingsStore.getData().spawnOnOrigin) {
 			vec3.copy(entity._translation, [0, 0, 0])
 			entity.__changedBuffer[0] = 1
 			return
 		}
 
-		const position = <vec4>[0, 0, -(SettingsStore.data.spawnDistanceFromCamera || 10), 1]
+		const position = <vec4>[0, 0, -(SettingsStore.getData().spawnDistanceFromCamera || 10), 1]
 		vec4.transformQuat(position, position, rotation)
 		vec3.add(entity._translation, translation, <vec3>position)
 		entity.__changedBuffer[0] = 1

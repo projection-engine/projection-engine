@@ -1,17 +1,21 @@
-<script lang="ts">
-    import Dropdown from "../dropdown/Dropdown.svelte";
-    import ToolTip from "../tooltip/ToolTip.svelte";
-    import HsvPicker from "./HsvPicker.svelte";
+<script>
+    import Dropdown from "../dropdown/Dropdown.svelte"
+    import ToolTip from "../tooltip/ToolTip.svelte"
+    import HsvPicker from "./HsvPicker.svelte"
 
 
-    let changed = false
-
-    export let submit: Function
+    /** @type {function}*/
+    export let submit
+    /** @type {string}*/
     export let height = "25px"
-    export let value: number[]
+    /** @type {number[]}*/
+    export let value
+    /** @type {number}*/
     export let timeout = 250
-    export let label: string
-    export let disabled: boolean
+    /** @type {string}*/
+    export let label
+    /** @type {boolean}*/
+    export let disabled
 
     let submitTimeout
     let startColor = [0, 0, 0]

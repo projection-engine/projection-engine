@@ -10,21 +10,21 @@ import {mat4} from "gl-matrix"
 import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
 import Entity from "../../instances/Entity"
 import StaticFBO from "../../lib/StaticFBO"
-import SettingsStore from "../../../frontend/shared/stores/SettingsStore"
+import EngineToolsState from "../EngineToolsState"
 
 
 const iconAttributes = mat4.create()
 export default class IconsSystem {
 	static iconsTexture?: WebGLTexture
 
-	static loop(cb, settings, uniforms?: MutableObject) {
+	static loop(cb, uniforms?: MutableObject) {
 		const tracking = CameraAPI.trackingEntity
 		const entities = Engine.entities.array
 		const size = entities.length
 
 		for (let i = 0; i < size; i++) {
 			const entity = entities[i]
-			if (entity.isCollection || !entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > settings.maxDistanceIcon)
+			if (entity.isCollection || !entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
 				continue
 			const hasLight = entity.lightComponent !== undefined
 			const hasProbe = entity.lightProbeComponent !== undefined
@@ -41,13 +41,12 @@ export default class IconsSystem {
                 doesntHaveIcon && !entity.meshComponent?.hasMesh
 			)
 				continue
-			cb(entity, settings, uniforms)
+			cb(entity, uniforms)
 		}
 	}
 
 	static drawIcon(
 		entity: Entity,
-		settings,
 		U
 	) {
 		const uniforms = U || StaticEditorShaders.iconUniforms
@@ -57,9 +56,9 @@ export default class IconsSystem {
 		let doNotFaceCamera = 0,
 			drawSphere = 0,
 			removeSphereCenter = 0,
-			scale = settings.iconScale,
-			imageIndex = 0,
-			isSelected = entity.__isSelected ? 1 : 0,
+			scale = EngineToolsState.iconScale,
+			imageIndex = 0
+		const isSelected = entity.__isSelected ? 1 : 0,
 			color = entity.colorIdentifier
 
 		switch (lightType) {
@@ -154,7 +153,6 @@ export default class IconsSystem {
 	}
 
 	static execute() {
-		const settings = SettingsStore.data
 		if (!IconsSystem.iconsTexture)
 			return
 		const context = GPU.context
@@ -172,10 +170,10 @@ export default class IconsSystem {
 		context.uniformMatrix4fv(uniforms.projectionM, false, CameraAPI.projectionMatrix)
 		context.uniformMatrix4fv(uniforms.viewM, false, CameraAPI.viewMatrix)
 
-		if (settings.showIcons)
-			IconsSystem.loop(IconsSystem.drawIcon, settings)
-		if (settings.showLines)
-			IconsSystem.loop(IconsSystem.#drawVisualizations, settings)
+		if (EngineToolsState.showIcons)
+			IconsSystem.loop(IconsSystem.drawIcon)
+		if (EngineToolsState.showLines)
+			IconsSystem.loop(IconsSystem.#drawVisualizations)
 		LineRenderer.finish()
 
 

@@ -1,29 +1,29 @@
-import FileSystemService from "../../shared/lib/FileSystemService"
 import FileTypes from "../../../shared/FileTypes"
 import LocalizationEN from "../../../shared/LocalizationEN"
+import FileSystemUtil from "../../shared/FileSystemUtil"
 
 
 export default async function refreshProjects(path) {
 
-	const res = await FileSystemService.getInstance().readdir(path)
+	const res = await FileSystemUtil.readdir(path)
 	if (!res)
 		return []
 	const data = []
 	for (let i = 0; i < res.length; i++) {
-		const itemPath = path + FileSystemService.getInstance().sep + res[i]
-		const stat = await FileSystemService.getInstance().stat(itemPath)
+		const itemPath = path + FileSystemUtil.sep + res[i]
+		const stat = await FileSystemUtil.stat(itemPath)
 
 		if(!stat?.isDirectory)
 			continue
-		const children = await FileSystemService.getInstance().readdir(itemPath)
+		const children = await FileSystemUtil.readdir(itemPath)
 		if(!children)
 			continue
 		const metadata = children.find(c => c.includes(FileTypes.PROJECT))
 
 		if(!metadata)
 			continue
-		const blob = await FileSystemService.getInstance().read(itemPath + FileSystemService.getInstance().sep  + metadata)
-		const parts = itemPath.split(FileSystemService.getInstance().sep)
+		const blob = await FileSystemUtil.read(itemPath + FileSystemUtil.sep  + metadata)
+		const parts = itemPath.split(FileSystemUtil.sep)
 		const parsedMetadata = JSON.parse(blob.toString())
 
 		data.push({

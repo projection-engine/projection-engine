@@ -1,14 +1,11 @@
 <script>
-    import FSFilesService from "../../services/file-system/FSFilesService"
-
-    import EngineStore from "../../../shared/stores/EngineStore"
+    import FileSystemUtil from "../../../shared/FileSystemUtil"
     import {onDestroy, onMount} from "svelte"
     import ShaderEditorTools from "./libs/ShaderEditorTools"
     import ViewStateController from "../../components/view/libs/ViewStateController"
     import materialCompiler from "./libs/material-compiler/material-compiler"
     import HeaderOptions from "./components/HeaderOptions.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
-    import FileSystemService from "../../../shared/lib/FileSystemService"
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Canvas from "./libs/Canvas"
     import getShaderActions from "../../templates/get-shader-actions"
@@ -19,29 +16,26 @@
     import LocalizationEN from "../../../../shared/LocalizationEN"
     import ShaderEditorUtil from "../../util/ShaderEditorUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
+
+    /** @type {string} */
     export let viewID
+    /** @type {number} */
     export let viewIndex
+    /** @type {number} */
     export let groupIndex
 
-    let engine
 
     const canvas = new Canvas()
-    const internalID = crypto.randomUUID()
-    const unsubscribeEngine = EngineStore.getStore(v => engine = v)
-
     let openFile
     let ref
-
     let wasInitialized = false
     let canvasElement
 
     onMount(() => {
     	canvas.initialize(canvasElement)
     	const data = getShaderActions(canvas)
-    	ContextMenuService.getInstance().mount(
-    		data.contextMenu,
-    		internalID
-    	)
+    	ContextMenuService.getInstance().mount(data.contextMenu, COMPONENT_ID)
     	if (canvas.ctx?.canvas)
     		HotKeysController.bindAction(
     			canvas.ctx.canvas,
@@ -52,8 +46,7 @@
     })
 
     onDestroy(() => {
-    	unsubscribeEngine()
-    	ContextMenuService.getInstance().destroy(internalID)
+    	ContextMenuService.getInstance().destroy(COMPONENT_ID)
     	if (canvas.ctx?.canvas)
     		HotKeysController.unbindAction(canvas.ctx.canvas)
     })
@@ -77,16 +70,15 @@
     }
 
     $: {
-    	if (wasInitialized) {
-    		const newState = {
+    	if (wasInitialized)
+    		ViewStateController.updateState(viewID, viewIndex, groupIndex, {
     			openFile,
     			comments: canvas.comments,
     			selection: Array.from(canvas.selectionMap.keys()),
     			nodes: canvas.nodes,
     			links: canvas.links
-    		}
-    		ViewStateController.updateState(viewID, viewIndex, groupIndex, newState)
-    	} else {
+    		})
+    	else {
     		const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
     		const newFile = ShaderEditorTools.toOpenFile || state?.openFile
 
@@ -108,7 +100,12 @@
     	}
     }
 
-
+    const openSourceCode = async () => {
+    	const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
+    	const newFile = FileSystemUtil.TEMP + FileSystemUtil.sep + openFile.registryID + ".log"
+    	await FileSystemUtil.writeFile(newFile, shader, true)
+    	ElectronResources.shell.openPath(newFile).catch()
+    }
 </script>
 
 <HeaderOptions
@@ -116,14 +113,9 @@
         openFile={openFile}
         initializeFromFile={initializeFromFile}
         canvasAPI={canvas}
-        openSourceCode={async () => {
-            const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
-            const newFile = FileSystemService.getInstance().TEMP + FileSystemService.getInstance().sep + openFile.registryID + ".log"
-            await FSFilesService.writeFile(newFile, shader, true)
-            ElectronResources.shell.openPath(newFile).catch()
-        }}
+        openSourceCode={openSourceCode}
 />
-<div class="wrapper" bind:this={ref} id={internalID}>
+<div class="wrapper" bind:this={ref} id={COMPONENT_ID}>
     <canvas on:dragover={e => e.preventDefault()} class="canvas"
             bind:this={canvasElement}></canvas>
 </div>

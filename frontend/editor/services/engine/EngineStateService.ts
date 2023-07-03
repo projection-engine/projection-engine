@@ -5,13 +5,15 @@ import EntityHierarchyService from "./EntityHierarchyService"
 import EditorActionHistory from "../EditorActionHistory"
 import EntityNamingService from "./EntityNamingService"
 import getPivotPointMatrix from "../../../../engine-core/tools/utils/get-pivot-point-matrix"
-import SelectionStore from "../../../shared/stores/SelectionStore"
+import SelectionStore from "../../../stores/SelectionStore"
 import Entity from "../../../../engine-core/instances/Entity"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
 import LocalizationEN from "../../../../shared/LocalizationEN"
+import SelectionTargets from "../../../../shared/SelectionTargets"
+import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
 
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -62,7 +64,6 @@ export default class EngineStateService {
 
     @checkLevel
     static appendBlock(block: Entity[]) {
-
     	EditorActionHistory.save(block, true)
     	EntityAPI.addGroup(block)
     	EntityNamingService.renameInBlock(block)
@@ -90,12 +91,10 @@ export default class EngineStateService {
     	EntityAPI.removeGroup(entities, false)
 
     	SelectionStore.updateStore({
-    		...SelectionStore.data,
-    		TARGET: SelectionStore.TYPES.ENGINE,
-    		array: [],
-    		lockedEntity: Engine.entities.array[0]?.id
+    		TARGET: SelectionTargets.ENGINE,
+    		array: []
     	})
-
+    	SelectionStoreUtil.setLockedEntity(Engine.entities.array[0]?.id)
     	EngineStateService.#updateStructure()
     }
 
@@ -108,11 +107,10 @@ export default class EngineStateService {
     	getPivotPointMatrix(entity)
     	EntityAPI.addEntity(entity)
     	SelectionStore.updateStore({
-    		...SelectionStore.data,
-    		TARGET: SelectionStore.TYPES.ENGINE,
-    		array: [entity.id],
-    		lockedEntity: entity.id
+    		TARGET: SelectionTargets.ENGINE,
+    		array: [entity.id]
     	})
+    	SelectionStoreUtil.setLockedEntity(entity.id)
     	EngineStateService.#updateStructure()
     }
 

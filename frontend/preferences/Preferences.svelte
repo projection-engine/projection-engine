@@ -1,9 +1,7 @@
 <script>
     import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte"
-    import {onDestroy, onMount} from "svelte"
+    import {onMount} from "svelte"
     import ResizableBar from "../shared/components/resizable/ResizableBar.svelte"
-    import SettingsStore from "../shared/stores/SettingsStore"
-    import VisualsStore from "../shared/stores/VisualsStore"
     import GlobalSettings from "./components/GlobalSettings.svelte"
     import ContentWrapper from "./components/content/ContentWrapper.svelte"
     import Shortcuts from "./components/Shortcuts.svelte"
@@ -12,21 +10,7 @@
     import StoreIPCListener from "../shared/lib/StoreIPCListener"
 
     let tab = 0
-
-    let settings
-    let visuals
-
-    const unsubscribeSettings = SettingsStore.getStore(v => settings = v)
-    const unsubscribeVisuals = VisualsStore.getStore(v => visuals = v)
-
-    onMount(() => {
-    	StoreIPCListener.get()
-    })
-    onDestroy(() => {
-    	unsubscribeSettings()
-    	unsubscribeVisuals()
-    })
-    $: current = PREFERENCES[tab]
+    onMount(() => StoreIPCListener.get())
 </script>
 
 <FrameWrapper noChangeTracking={true}/>
@@ -43,12 +27,12 @@
     </div>
     <ResizableBar type="width"/>
     <div class="content">
-        {#if current.type === "global"}
+        {#if PREFERENCES[tab].type === "global"}
             <GlobalSettings/>
-        {:else if current.type === "shortcuts"}
-            <Shortcuts settings={settings}/>
+        {:else if PREFERENCES[tab].type === "shortcuts"}
+            <Shortcuts/>
         {:else}
-            <ContentWrapper {tab}/>
+            <ContentWrapper data={PREFERENCES[tab]}/>
         {/if}
     </div>
 </div>

@@ -1,7 +1,4 @@
 <script>
-    import FilesStore from "../../../shared/stores/FilesStore"
-    import {onDestroy} from "svelte"
-
     import Options from "./components/Options.svelte"
     import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes"
     import Icon from "../../../shared/components/icon/Icon.svelte"
@@ -19,9 +16,6 @@
     export let disabled
     export let terrainMaterials
 
-    let store = {}
-    const unsubscribeStore = FilesStore.getStore(v => store = v)
-    onDestroy(() => unsubscribeStore())
 
     let state
     $: {
@@ -35,7 +29,7 @@
     			}
     		else {
     			const rID = selected?.registryID ? selected?.registryID : selected
-    			let data = SelectorUtil.getType(store, type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID || e.id === rID)
+    			let data = SelectorUtil.getType(type, mergeMaterials, terrainMaterials).find(e => e.registryID === rID || e.id === rID)
     			if (data?.registryID !== undefined)
     				state = data
     			else
@@ -47,7 +41,6 @@
 </script>
 
 <div data-svelteinline="-" class="wrapper" style={styles}>
-
     <Dropdown
             disabled={disabled}
             hideArrow={true}
@@ -74,11 +67,9 @@
                 noDefault={noDefault}
                 handleChange={handleChange}
                 type={type}
-
                 selected={selected}
                 setState={v => state = v}
                 state={state}
-                store={store}
         />
     </Dropdown>
     <div data-sveltevertdivider="-" style="margin: 0"></div>

@@ -3,6 +3,7 @@ import StaticEditorShaders from "../lib/StaticEditorShaders"
 import GPU from "../../GPU"
 import {mat4} from "gl-matrix"
 import Entity from "../../instances/Entity"
+import EngineToolsState from "../EngineToolsState"
 
 
 const invView = mat4.create()
@@ -26,8 +27,8 @@ export default class CameraIconRenderer {
 		}
 	}
 
-	static execute(settings, entity: Entity) {
-		if (entity.distanceFromCamera > settings.maxDistanceIcon)
+	static execute(entity: Entity) {
+		if (entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
 			return
 		CameraIconRenderer.#createFrustumMatrix(entity)
 		const context = GPU.context

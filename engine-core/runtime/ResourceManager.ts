@@ -18,7 +18,6 @@ export default class ResourceManager {
 	}
 
 	static execute() {
-		console.log("EXECUTING")
 		const meshes = GPU.meshes.array
 		for (let i = 0; i < meshes.length; i++) {
 			const current = meshes[i]

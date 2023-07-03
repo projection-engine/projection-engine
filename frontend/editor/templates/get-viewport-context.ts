@@ -1,12 +1,30 @@
-import SelectionStore from "../../shared/stores/SelectionStore"
 import getViewportHotkeys from "./get-viewport-hotkeys"
 import EntityFactoryService from "../services/engine/EntityFactoryService"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import getEntityCreationOptions from "./get-entity-creation-options"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
+import SelectionStoreUtil from "../util/SelectionStoreUtil"
 
-export default function getViewportContext(settings:MutableObject, forDropdown?:boolean):ContextMenuOption[] {
-	const VIEWPORT_HOTKEYS = getViewportHotkeys(settings)
+export function getViewportOptionsForDropdown() {
+	const result = []
+	const options = getViewportContext(true)
+	for (let i = 0; i < options.length; i++) {
+		const v = options[i]
+		if (i >= options.length - 1)
+			continue
+		if (v.children) {
+			result.push({divider: true, label: v.label})
+			v.children.forEach(v => {
+				result.push(v)
+			})
+		} else
+			result.push(v)
+	}
+	return result
+}
+
+export default function getViewportContext(forDropdown?: boolean): ContextMenuOption[] {
+	const VIEWPORT_HOTKEYS = getViewportHotkeys()
 	const data = [
 		{divider: true, label: "Selection"},
 		VIEWPORT_HOTKEYS.SELECT_NONE,
@@ -33,7 +51,7 @@ export default function getViewportContext(settings:MutableObject, forDropdown?:
 				{
 					label: "Pivot point to origin",
 					onClick: () => {
-						const selected = QueryAPI.getEntityByID(SelectionStore.engineSelected[0])
+						const selected = QueryAPI.getEntityByID(SelectionStoreUtil.getEntitiesSelected()[0])
 						if (selected) {
 							selected.pivotPoint[0] = 0
 							selected.pivotPoint[1] = 0
@@ -48,7 +66,7 @@ export default function getViewportContext(settings:MutableObject, forDropdown?:
 				{
 					label: "Translate to screen",
 					onClick: () => {
-						const selected = SelectionStore.engineSelected
+						const selected = SelectionStoreUtil.getEntitiesSelected()
 						for (let i = 0; i < selected.length; i++)
 							EntityFactoryService.translateEntity(QueryAPI.getEntityByID(selected[i]))
 					}
@@ -56,7 +74,7 @@ export default function getViewportContext(settings:MutableObject, forDropdown?:
 				{
 					label: "Apply transformation",
 					onClick: () => {
-						const comp = SelectionStore.selectedEntity
+						const comp = QueryAPI.getEntityByID(SelectionStoreUtil.getMainEntity())
 						comp.baseTransformationMatrix = comp.matrix
 
 						comp.translation[0] = 0

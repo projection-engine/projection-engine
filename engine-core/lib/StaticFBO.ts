@@ -1,9 +1,9 @@
 import GPU from "../GPU"
 import Framebuffer from "../instances/Framebuffer"
-import DirectionalShadows from "../runtime/DirectionalShadows"
 import ImageProcessor from "./math/ImageProcessor"
 import IMAGE_WORKER_ACTIONS from "../static/IMAGE_WORKER_ACTIONS"
 import StaticUBOs from "./StaticUBOs"
+import EngineState from "../EngineState"
 
 const RESOLUTION = 4
 
@@ -122,7 +122,7 @@ export default class StaticFBO {
 		const context = GPU.context
 		if (StaticFBO.shadows)
 			context.deleteTexture(StaticFBO.shadows.depthSampler)
-		StaticFBO.shadows = new Framebuffer(DirectionalShadows.maxResolution, DirectionalShadows.maxResolution).depthTexture()
+		StaticFBO.shadows = new Framebuffer(EngineState.shadowMapResolution, EngineState.shadowMapResolution).depthTexture()
 		StaticFBO.shadowsSampler = StaticFBO.shadows.depthSampler
 	}
 

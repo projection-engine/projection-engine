@@ -2,11 +2,10 @@
 <script>
     import Item from "./item/Item.svelte"
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte"
-    import getContentBrowserActions from "../../../templates/get-content-browser-actions"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import {onDestroy, onMount} from "svelte"
     import HotKeysController from "../../../../shared/lib/HotKeysController"
-    import SelectionStore from "../../../../shared/stores/SelectionStore"
+    import SelectionStore from "../../../../stores/SelectionStore"
 
     import ITEM_TYPES from "../static/ITEM_TYPES"
     import RowsHeader from "./BrowserHeader.svelte"
@@ -14,7 +13,10 @@
     import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import LocalizationEN from "../../../../../shared/LocalizationEN"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
+    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+    import FilesStore from "../../../../stores/FilesStore"
 
+    const COMPONENT_ID = crypto.randomUUID()
     const CARD_SIZE = 115
     export let fileType
     export let setFileType
@@ -23,10 +25,7 @@
     export let currentDirectory
     export let navigationHistory
     export let setCurrentDirectory
-    export let internalID
-    export let store
     export let viewType
-    export let settings
     export let sortKey
     export let sortDirection
 
@@ -34,58 +33,38 @@
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
-    let selectionMap
-    let selected = []
+    let selectionList
     let onDrag = false
     let timeout
-
-
-    const unsubscribe = SelectionStore.getStore(() => {
-    	selected = SelectionStore.contentBrowserSelected
-    	selectionMap = SelectionStore.map
-    })
+    let store = {}
+    let isRowType = false
+    let lineHeight = 23
 
     function resetItem() {
-    	SelectionStore.contentBrowserSelected = []
+    	SelectionStoreUtil.setContentBrowserSelected([])
     	onChange("")
     	setFileType(undefined)
     }
 
-    $: lineHeight = viewType === ITEM_TYPES.ROW ? 23 : CARD_SIZE
+    $:{
+    	isRowType = viewType === ITEM_TYPES.ROW
+    	lineHeight = isRowType ? 23 : CARD_SIZE
+    }
     $: toRender = ContentBrowserUtil.getFilesToRender(currentDirectory, fileType, store.items, inputValue, elementsPerRow, sortKey, sortDirection)
 
     $: {
-    	if (ref) {
-    		const actions = getContentBrowserActions(settings, navigationHistory, currentDirectory, setCurrentDirectory, v => currentItem = v, store.materials)
-    		HotKeysController.unbindAction(ref)
-    		ContextMenuService.getInstance().destroy(internalID)
-    		ContextMenuService.getInstance().mount(
-    			actions.contextMenu,
-    			internalID,
-    			(trigger, element) => {
-    				const id = element.getAttribute("data-svelteid")
-    				if (id != null)
-    					SelectionStore.contentBrowserSelected = [id]
-    			}
-    		)
-    		HotKeysController.bindAction(
-    			ref,
-    			actions.hotKeys,
-    			"folder",
-    			LocalizationEN.CONTENT_BROWSER
-    		)
-    	}
-    }
-    $: {
-    	if (viewType === ITEM_TYPES.CARD && ref)
+    	if (!isRowType && ref)
     		elementsPerRow = Math.floor(ref.offsetWidth / (CARD_SIZE + 8))
-    	else if (viewType !== ITEM_TYPES.CARD)
+    	else if (isRowType)
     		elementsPerRow = 1
     }
 
     onMount(() => {
+    	ContentBrowserUtil.buildContextMenuAndHotKeys(COMPONENT_ID, ref, navigationHistory, () => currentDirectory, setCurrentDirectory, v => currentItem = v)
+    	FilesStore.getInstance().addListener(COMPONENT_ID, v => store = v)
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectionList = data.array, ["array"])
     	resizeOBS = new ResizeObserver(() => {
-    		if (viewType !== ITEM_TYPES.CARD)
+    		if (isRowType)
     			return
     		clearTimeout(timeout)
     		setTimeout(() => {
@@ -96,34 +75,35 @@
     })
 
     onDestroy(() => {
+    	FilesStore.getInstance().removeListener(COMPONENT_ID)
+    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
     	HotKeysController.unbindAction(ref)
-    	ContextMenuService.getInstance().destroy(internalID)
-    	unsubscribe()
+    	ContextMenuService.getInstance().destroy(COMPONENT_ID)
     	clearTimeout(timeout)
     	resizeOBS?.disconnect?.()
     })
+
 </script>
 
 <div
         bind:this={ref}
-        id={internalID}
-        data-sveltewrapper={internalID}
+        id={COMPONENT_ID}
         on:mousedown={e => {
             const key = "data-svelteisitem"
             if(e.composedPath().find(element => element.getAttribute?.(key) != null) == null)
-                SelectionStore.contentBrowserSelected = []
+                SelectionStoreUtil.setContentBrowserSelected([])
         }}
-        style={viewType === ITEM_TYPES.ROW  && toRender.length > 0? "padding: 0;": undefined}
+        style={isRowType && toRender.length > 0? "padding: 0;": undefined}
         class="content"
 >
     <SelectBox
             allowAll={true}
             nodes={toRender.flat()}
-            selected={selected}
-            setSelected={v => SelectionStore.contentBrowserSelected = v}
+            getSelected={SelectionStoreUtil.getContentBrowserSelected}
+            setSelected={SelectionStoreUtil.setContentBrowserSelected}
     />
     {#if toRender.length > 0}
-        {#if viewType === ITEM_TYPES.ROW}
+        {#if isRowType}
             <RowsHeader sort={sortKey}/>
         {/if}
         <VirtualList items={toRender} let:item>
@@ -131,7 +111,7 @@
                  style={ "height:" + lineHeight + "px;" + (viewType === ITEM_TYPES.CARD ? "margin-bottom: 3px;" : "")}>
                 {#each item as child, index}
                     <Item
-                            selectionMap={selectionMap}
+                            selectionList={selectionList}
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
                             toCut={store.toCut}

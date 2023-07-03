@@ -1,8 +1,8 @@
 <script>
-    import SelectionStore from "../../../../../shared/stores/SelectionStore"
+    import SelectionStore from "../../../../../stores/SelectionStore"
     import Engine from "../../../../../../engine-core/Engine"
 
-    import {onDestroy} from "svelte"
+    import {onDestroy, onMount} from "svelte"
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
     import EditorActionHistory from "../../../../services/EditorActionHistory"
     import Range from "../../../../../shared/components/range/Range.svelte"
@@ -12,58 +12,69 @@
     import ROTATION_TYPES from "../../static/ROTATION_TYPES"
     import Movable from "../../../../../../engine-core/instances/components/Movable"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
-    import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
+    import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte"
+    import SelectionStoreUtil from "../../../../util/SelectionStoreUtil"
 
+    const COMPONENT_ID = crypto.randomUUID()
     let targets = []
     let rotationType = Movable.ROTATION_QUATERNION
-
     let totalTranslated = [0, 0, 0]
     let totalScaled = [0, 0, 0]
     let totalPivot = [0, 0, 0]
-
+    let mainEntity
+    let isSingle
+    let lockedRotation
+    let lockedTranslation
+    let lockedScaling
     let hasStarted = false
     let lockedCache = [false, false, false]
-    const unsubscribe = SelectionStore.getStore(() => {
-    	const cache = []
-    	SelectionStore.engineSelected.forEach(e => {
-    		const c = Engine.entities.get(e)
-    		if (c) {
-    			cache.push(c)
-    			c.__originalTranslation = undefined
-    			c.__originalPivot = undefined
-    			c.__originalScaling = undefined
-    			c.__originalQuat = undefined
+
+    onMount(() => {
+    	SelectionStore.getInstance().addListener(COMPONENT_ID, () => {
+    		const cache = []
+    		const entitiesSelected = SelectionStoreUtil.getEntitiesSelected()
+    		for (let i = 0; i < entitiesSelected.length; i++) {
+    			const e = entitiesSelected[i]
+    			const c = Engine.entities.get(e)
+    			if (c) {
+    				cache.push(c)
+    				c.__originalTranslation = undefined
+    				c.__originalPivot = undefined
+    				c.__originalScaling = undefined
+    				c.__originalQuat = undefined
+    			}
+    		}
+    		if (cache.length === 0) {
+    			const fallback = Engine.entities.get(SelectionStoreUtil.getMainEntity())
+    			if (fallback)
+    				fallback.__originalQuat = undefined
+    			fallback && cache.push(fallback)
+    		}
+
+    		targets = cache
+
+    		if (cache.length === 1) {
+    			totalTranslated = Array.from(cache[0]._translation)
+    			totalScaled = Array.from(cache[0]._scaling)
+    			totalPivot = Array.from(cache[0].pivotPoint)
+    		} else {
+    			totalTranslated = [0, 0, 0]
+    			totalScaled = [0, 0, 0]
+    			totalPivot = [0, 0, 0]
     		}
     	})
-    	if (cache.length === 0) {
-    		const fallback = Engine.entities.get(SelectionStore.mainEntity)
-    		if (fallback)
-    			fallback.__originalQuat = undefined
-    		fallback && cache.push(fallback)
-    	}
-
-    	targets = cache
-
-    	if (cache.length === 1) {
-    		totalTranslated = Array.from(cache[0]._translation)
-    		totalScaled = Array.from(cache[0]._scaling)
-    		totalPivot = Array.from(cache[0].pivotPoint)
-    	} else {
-    		totalTranslated = [0, 0, 0]
-    		totalScaled = [0, 0, 0]
-    		totalPivot = [0, 0, 0]
-    	}
     })
 
-    $: mainEntity = targets[0]
-    $: rotationType = mainEntity?.rotationType[0]
-    $: isSingle = targets.length === 1
-    $: lockedRotation = isSingle && mainEntity?.lockedRotation
-    $: lockedTranslation = isSingle && mainEntity?.lockedTranslation
-    $: lockedScaling = isSingle && mainEntity?.lockedScaling
+    onDestroy(() => SelectionStore.getInstance().removeListener(COMPONENT_ID))
 
-
-    onDestroy(unsubscribe)
+    $: {
+    	mainEntity = targets[0]
+    	rotationType = mainEntity?.rotationType[0]
+    	isSingle = targets.length === 1
+    	lockedRotation = isSingle && mainEntity?.lockedRotation
+    	lockedTranslation = isSingle && mainEntity?.lockedTranslation
+    	lockedScaling = isSingle && mainEntity?.lockedScaling
+    }
 
     function rotate(axis, value) {
     	if (!hasStarted) {

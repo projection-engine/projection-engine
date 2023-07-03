@@ -3,39 +3,35 @@
     import Checkbox from "../../../shared/components/checkbox/Checkbox.svelte"
     import ColorPicker from "../../../shared/components/color-picker/ColorPicker.svelte"
     import Range from "../../../shared/components/range/Range.svelte"
-    import VisualsStore from "../../../shared/stores/VisualsStore"
-    import SettingsStore from "../../../shared/stores/SettingsStore"
+    import VisualsStore from "../../../stores/VisualsStore"
+    import SettingsStore from "../../../stores/SettingsStore"
     import Component from "../../../../engine-core/instances/components/Component"
 
     export let toRender
-    export let visuals
     export let settings
+    export let visualSettings
 
-
+    let fieldValue
     let timeout
 
     function getValue(s) {
     	if (!toRender)
     		return
-
     	let current = s
     	const key = toRender.key
     	if (Array.isArray(key)) {
     		for (let i = 0; i < key.length; i++)
     			current = current[key[i]]
-
     		return current
-    	} else {
-    		return current[key]
     	}
+    	return current[key]
     }
-
 
     function setValue(value, save) {
     	if (!toRender)
     		return
     	const key = toRender.key
-    	let s = toRender?.target === "settings" ? settings : visuals
+    	let s = toRender?.target === "settings" ? settings : visualSettings
     	if (save)
     		s = {...s}
     	if (Array.isArray(key)) {
@@ -54,7 +50,12 @@
     	}
     }
 
-    $: fieldValue = getValue(toRender?.target === "settings" ? settings : visuals)
+    $: {
+    	if (toRender?.target === "settings")
+    		fieldValue = getValue(settings)
+    	else
+    		fieldValue = getValue(visualSettings)
+    }
 
 </script>
 

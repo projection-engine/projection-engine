@@ -3,18 +3,21 @@ import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
 import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import Engine from "../../../engine-core/Engine"
 import GPU from "../../../engine-core/GPU"
-import SelectionStore from "../../shared/stores/SelectionStore"
 import PickingAPI from "../../../engine-core/lib/utils/PickingAPI"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
 import VisibilityRenderer from "../../../engine-core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine-core/tools/EngineTools"
+import SelectionStoreUtil from "./SelectionStoreUtil"
+import EngineStore from "../../stores/EngineStore"
+import SettingsStore from "../../stores/SettingsStore"
+import LocalizationEN from "../../../shared/LocalizationEN"
+import VIEWS from "../components/view/static/VIEWS"
 
 export default class ViewportUtil{
-	static updateViewport(engine, currentView:ViewTabItem) {
-		if (!engine.isReady || engine.focusedCamera)
+	static updateViewport(currentView:ViewTabItem) {
+		if (EngineStore.getData().focusedCamera)
 			return
 		if (currentView.type === VIEWPORT_TABS.EDITOR) {
-
 			CameraTracker.startTracking()
 			Engine.start()
 		} else {
@@ -23,7 +26,16 @@ export default class ViewportUtil{
 		}
 	}
 
+	/**
+	 *
+	 * @param i {number}
+	 * @param tabs {object[]}
+	 * @param setTabs {function}
+	 * @param currentTab {number}
+	 * @param cb {function}
+	 */
 	static removeTab(i, tabs,  setTabs, currentTab, cb) {
+		console.trace(tabs)
 		const clone  = [...tabs]
 		clone.splice(i, 1)
 		if (i === currentTab || i < currentTab)
@@ -40,7 +52,7 @@ export default class ViewportUtil{
 		const deltaY = Math.abs(mouseDelta.y - event.clientY)
 		if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
 			return
-		const selected = SelectionStore.engineSelected
+		const selected = SelectionStoreUtil.getEntitiesSelected()
 		EngineTools.drawIconsToBuffer()
 
 		const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY)
@@ -62,12 +74,17 @@ export default class ViewportUtil{
 		VisibilityRenderer.needsUpdate = true
 	}
 
-
-
-	static addNewTab(tabs, setTabs) {
-		const clone  = [...tabs]
-		clone.push({type: VIEWPORT_TABS.EDITOR, color: [255,255,255]})
-		setTabs(clone)
+	static addNewTab() {
+		const views = SettingsStore.getData().views
+		views.push({
+			name: LocalizationEN.NEW_TAB + views.length,
+			bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
+			right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]],
+			viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
+			left: [],
+			top: []
+		})
+		SettingsStore.updateStore({views: views})
 	}
 
 }

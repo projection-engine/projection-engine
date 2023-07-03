@@ -2,7 +2,6 @@ import CameraAPI from "./lib/utils/CameraAPI"
 import ENVIRONMENT from "./static/ENVIRONMENT"
 import Renderer from "./Renderer"
 import SSAO from "./runtime/SSAO"
-import DirectionalShadows from "./runtime/DirectionalShadows"
 import ConversionAPI from "./lib/math/ConversionAPI"
 import Physics from "./runtime/Physics"
 import FrameComposition from "./runtime/FrameComposition"
@@ -19,6 +18,7 @@ import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
 import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
 import ResourceManager from "./runtime/ResourceManager"
+import LightsAPI from "./lib/utils/LightsAPI"
 
 
 export default class Engine {
@@ -91,8 +91,8 @@ export default class Engine {
 		FrameComposition.initialize()
 		await SSAO.initialize()
 		OmnidirectionalShadows.initialize()
-		DirectionalShadows.initialize()
 		await PhysicsAPI.initialize()
+		LightsAPI.initialize()
 
 		ConversionAPI.canvasBBox = GPU.canvas.getBoundingClientRect()
 		const OBS = new ResizeObserver(() => {
@@ -105,7 +105,7 @@ export default class Engine {
 		OBS.observe(GPU.canvas)
 		Engine.#isReady = true
 		GPU.skylightProbe = new LightProbe(128)
-		Renderer.registerNativeSystems()
+		Engine.addSystem("start", Renderer.loop)
 		Engine.start()
 	}
 
@@ -123,7 +123,6 @@ export default class Engine {
 	static start() {
 
 		if (!Engine.isExecuting && Engine.#isReady) {
-			console.trace("STARTING")
 			Physics.start()
 			ResourceManager.start()
 			Engine.#frameID = requestAnimationFrame(Engine.#loop)

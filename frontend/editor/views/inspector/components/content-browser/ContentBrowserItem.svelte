@@ -1,65 +1,40 @@
 <script>
 
-    import FSFilesService from "../../../../services/file-system/FSFilesService"
+    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import TextureItem from "./TextureItem.svelte"
     import CodeItem from "./CodeItem.svelte"
     import ItemMetadata from "./ItemMetadata.svelte"
     import MaterialItem from "./MaterialItem.svelte"
     import MeshItem from "./MeshItem.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import FileSystemService from "../../../../../shared/lib/FileSystemService"
     import LocalizationEN from "../../../../../../shared/LocalizationEN"
     import FileTypes from "../../../../../../shared/FileTypes"
+    import InspectorUtil from "../../../../util/InspectorUtil"
 
     const VALID = [FileTypes.TEXTURE, FileTypes.COLLECTION, FileTypes.MATERIAL]
 
+    /** @type {object}*/
     export let item
+    /** @type {function}*/
     export let setTabs
+    /** @type {number}*/
     export let tabIndex
+
     let data
-    let type
-    $: fileType = "." + item.type
+    let fileType
     $: {
+    	fileType = "." + item.type
     	data = undefined
     	if (fileType !== FileTypes.PRIMITIVE && fileType !== FileTypes.LEVEL) {
     		const fType = VALID.includes(fileType) ? "json" : undefined
-    		FSFilesService.readFile(FileSystemService.getInstance().ASSETS_PATH + item.id, fType).then(res => data = res)
-    	} else
-    		data = undefined
-    }
-    $: {
-    	const VALID_TYPES = [FileTypes.COMPONENT, FileTypes.UI_LAYOUT, FileTypes.MATERIAL, FileTypes.PRIMITIVE]
-    	if (VALID_TYPES.includes(fileType)) {
-    		setTabs([
-    			{
-    				label: LocalizationEN.METADATA,
-    				icon: "info",
-    				index: -2,
-    				color: "var(--pj-accent-color-secondary)"
-    			},
-    			{divider: true},
-    			{
-    				label: LocalizationEN.ASSET_PROPERTIES,
-    				icon: "description",
-    				index: -1,
-    				color: "var(--pj-accent-color-tertiary)"
-    			}
-    		])
-    	} else
-    		setTabs([
-    			{
-    				label: LocalizationEN.METADATA,
-    				icon: "info",
-    				index: -2,
-    				color: "var(--pj-accent-color-secondary)"
-    			}
-    		])
+    		FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + item.id, fType).then(res => data = res)
+    	}
+    	InspectorUtil.setInspectorTabs(fileType, setTabs)
     }
 
 </script>
 
-
-{#if tabIndex === -2}
+{#if tabIndex === 3}
     <ItemMetadata item={item}/>
 {:else}
     {#if fileType === FileTypes.TEXTURE && data != null}

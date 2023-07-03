@@ -1,7 +1,7 @@
 import Engine from "../../../../engine-core/Engine"
-import SelectionStore from "../../../shared/stores/SelectionStore"
 import Entity from "../../../../engine-core/instances/Entity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
+import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
 
 export default class EntityHierarchyService {
@@ -38,7 +38,7 @@ export default class EntityHierarchyService {
 	}
 
 	static openTree() {
-		const node = Engine.entities.get(SelectionStore.mainEntity)
+		const node = Engine.entities.get(SelectionStoreUtil.getMainEntity())
 		if (!node)
 			return {}
 		const open = {}
