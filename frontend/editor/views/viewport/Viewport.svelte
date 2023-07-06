@@ -76,7 +76,7 @@
 
     const addNewTab = item => {
     	const clone = [...viewTab]
-    	clone.push({color: [255, 255, 255], type: item?.id || VIEWS.COMPONENT})
+    	clone.push({color: [255, 255, 255], type: item?.id || VIEWS.INSPECTOR})
     	updateView(clone)
     }
 

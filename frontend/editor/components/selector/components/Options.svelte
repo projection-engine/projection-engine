@@ -79,7 +79,6 @@
         position: relative;
         height: 100%;
         padding: 3px;
-
         overflow-y: auto;
     }
 </style>

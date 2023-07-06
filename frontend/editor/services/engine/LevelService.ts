@@ -11,7 +11,6 @@ import TabsStore from "../../../stores/TabsStore"
 import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
 import serializeStructure from "../../../../engine-core/utils/serialize-structure"
 import ElectronResources from "../../../shared/lib/ElectronResources"
-import ErrorLoggerService from "../ErrorLoggerService"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import ChangesTrackerStore from "../../../stores/ChangesTrackerStore"
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
@@ -126,7 +125,6 @@ export default class LevelService extends AbstractSingleton {
 			return
 		}
 
-		await ErrorLoggerService.save()
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.SAVING)
 		try {
 			const metadata = EngineStore.getData().meta

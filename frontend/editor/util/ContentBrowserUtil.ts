@@ -425,7 +425,7 @@ export default class ContentBrowserUtil {
 
 	static initializeContentBrowser() {
 		FilesStore.getInstance().addListener("self-update", () => {
-			FilesHierarchyStore.updateStore()
+			FilesHierarchyStore.updateStore({})
 		})
 		ContentBrowserUtil.refreshFiles().catch()
 	}

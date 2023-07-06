@@ -8,6 +8,7 @@
     import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts"
     import SceneEditor from "../../../views/scene-editor/SceneEditor.svelte"
     import Metrics from "../../../views/metrics/Metrics.svelte"
+    import Console from "../../../views/console/Console.svelte"
 
     /** @type {string} */
     export let styles
@@ -18,7 +19,7 @@
     /** @type {number} */
     export let groupIndex
     /** @type {number} */
-    export let index 
+    export let index
 
     let component
     $:  {
@@ -29,13 +30,12 @@
     	case VIEWS.HIERARCHY:
     		component = Hierarchy
     		break
-    	case VIEWS.COMPONENT:
+    	case VIEWS.INSPECTOR:
     		component = ComponentEditor
     		break
     	case VIEWS.FILES:
     		component = ContentBrowser
     		break
-
     	case VIEWPORT_TABS.UI:
     		component = UILayout
     		break
@@ -44,6 +44,9 @@
     		break
     	case VIEWS.METRICS:
     		component = Metrics
+    		break
+    	case VIEWS.CONSOLE:
+    		component = Console
     		break
     	default:
     		component = undefined

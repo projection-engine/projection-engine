@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <script>
     import Item from "./item/Item.svelte"
     import SelectBox from "../../../../shared/components/select-box/SelectBox.svelte"
@@ -38,7 +37,8 @@
     let timeout
     let store = {}
     let isRowType = false
-    let lineHeight = 23
+    let lineHeight
+    let toRender
 
     function resetItem() {
     	SelectionStoreUtil.setContentBrowserSelected([])
@@ -160,7 +160,6 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-
         position: relative;
         border-radius: 3px;
     }
