@@ -1,7 +1,7 @@
 import VIEWS from "../components/view/static/VIEWS"
 import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
 
-export default class ViewsUtil{
+export default class ViewsUtil {
 	static switchView(newView, groupIndex, tabs, index, setTabs,) {
 		if (!newView) {
 			const copy = [...tabs]
@@ -19,9 +19,9 @@ export default class ViewsUtil{
 	}
 
 	static removeTab(i, tabs, groupIndex, setTabs, currentTab, cb) {
-		const clone  = [...tabs]
+		const clone = [...tabs]
 		clone[groupIndex].splice(i, 1)
-		if(clone[groupIndex].length=== 0)
+		if (clone[groupIndex].length === 0)
 			clone.splice(groupIndex, 1)
 
 		if (i === currentTab || i < currentTab)
@@ -30,7 +30,7 @@ export default class ViewsUtil{
 		setTabs(clone)
 	}
 
-	static onResizeEndSplitter (next, prev, invOrientation, setTabs, tabs, groupIndex)  {
+	static onResizeEndSplitter(next, prev, invOrientation, setTabs, tabs, groupIndex) {
 		const nextBB = next.getBoundingClientRect()
 		const prevBB = prev.getBoundingClientRect()
 		if (prevBB[invOrientation] < 30) {
@@ -50,9 +50,10 @@ export default class ViewsUtil{
 
 	static getViewIcon(view) {
 		switch (view) {
-
-		case VIEWS.COMPONENT:
+		case VIEWS.INSPECTOR:
 			return "category"
+		case VIEWS.CONSOLE:
+			return "terminal"
 		case VIEWS.FILES:
 			return "folder"
 		case VIEWS.SHADER_EDITOR:
@@ -61,7 +62,6 @@ export default class ViewsUtil{
 			return "account_tree"
 		case VIEWPORT_TABS.EDITOR:
 			return "public"
-
 		case VIEWPORT_TABS.UI:
 			return "widgets"
 		case VIEWS.METRICS:
@@ -70,8 +70,8 @@ export default class ViewsUtil{
 	}
 
 	static addTab(tabs, setTabs, groupIndex, item) {
-		const clone  = [...tabs]
-		clone[groupIndex].push({color: [255, 255, 255], type: item?.id || VIEWS.COMPONENT })
+		const clone = [...tabs]
+		clone[groupIndex].push({color: [255, 255, 255], type: item?.id || VIEWS.INSPECTOR})
 		setTabs(clone)
 	}
 }

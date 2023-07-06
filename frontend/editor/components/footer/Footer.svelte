@@ -1,25 +1,19 @@
 <script>
 
-    import ErrorLoggerService from "../../services/ErrorLoggerService"
     import FrameMetadata from "./components/PerformanceStatistics.svelte"
     import SceneStats from "./components/SceneStats.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import ElectronResources from "../../../shared/lib/ElectronResources"
-    import Console from "./components/Console.svelte"
     import Engine from "../../../../engine-core/Engine"
     import {onDestroy, onMount} from "svelte"
     import EntityUpdateService from "../../services/engine/EntityUpdateService"
     import LocalizationEN from "../../../../shared/LocalizationEN"
-    import FileSystemUtil from "../../../shared/FileSystemUtil"
     import SettingsStore from "../../../stores/SettingsStore"
 
     const COMPONENT_ID = crypto.randomUUID()
     let settings = {}
-    const openLogs = async () => {
-    	if (FileSystemUtil.exists(ErrorLoggerService.path))
-    		ElectronResources.shell.openPath(ErrorLoggerService.path).catch()
-    }
+
     let loadedLevel
     let entityID
 
@@ -62,13 +56,6 @@
             <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
         {/if}
         <FrameMetadata/>
-        <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
-        <Console/>
-        <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
-        <button data-sveltebuttondefault="-" on:click={openLogs} class="error-logging">
-            <Icon>bug_report</Icon>
-            <ToolTip content={LocalizationEN.SHOW_RECENT_ERRORS}/>
-        </button>
     </div>
 
     <div class="meta-data" style="justify-content: flex-end">
@@ -82,18 +69,6 @@
 </div>
 
 <style>
-
-    .error-logging {
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        max-height: 18px;
-        min-height: 18px;
-        max-width: 18px;
-        min-width: 18px;
-    }
-
     .meta-data {
         width: 100%;
         display: flex;
