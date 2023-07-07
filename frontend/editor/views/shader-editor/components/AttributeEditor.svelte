@@ -5,7 +5,7 @@
     import Input from "../../../../shared/components/input/Input.svelte";
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
-    import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
 
     export let node: ShaderNode | ShaderComment
     export let updateCanvas: Function

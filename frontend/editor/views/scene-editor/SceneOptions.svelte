@@ -1,7 +1,7 @@
 <script>
     import SettingsStore from "../../../stores/SettingsStore"
     import OptionDropdown from "../../../shared/components/dropdown/OptionDropdown.svelte"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
     import getEntityCreationOptions from "../../templates/get-entity-creation-options"
     import {getViewportOptionsForDropdown} from "../../templates/get-viewport-context"

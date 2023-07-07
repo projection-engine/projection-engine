@@ -11,7 +11,7 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import CameraPreferences from "./components/engine/CameraPreferences.svelte"
     import ContentWrapper from "../../../preferences/components/content/ContentWrapper.svelte"
-    import SelectionTargets from "../../../../shared/SelectionTargets"
+    import SelectionTargets from "../../../../shared/enums/SelectionTargets"
     import EngineStore from "../../../stores/EngineStore"
     import InspectorUtil from "../../util/InspectorUtil"
     import INSPECTOR_TABS from "./static/INSPECTOR_TABS"

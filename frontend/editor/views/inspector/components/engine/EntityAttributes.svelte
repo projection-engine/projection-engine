@@ -10,7 +10,7 @@
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import MeshComponent from "../../../../../../engine-core/instances/components/MeshComponent"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import InspectorUtil from "../../../../util/InspectorUtil"
     import INSPECTOR_TABS from "../../static/INSPECTOR_TABS"
 

@@ -162,7 +162,7 @@ export default class EntityAPI {
 				if (!excludedKeys.includes(k))
 					parsedEntity[k] = entity[k]
 			} catch (err) {
-				console.warn(err)
+				console.error(err)
 			}
 		}
 
@@ -174,7 +174,7 @@ export default class EntityAPI {
 				for (let j = 0; j < parsedEntity[key].length; j++)
 					parsedEntity[key][j] = entity[key][j]
 			} catch (err) {
-				console.warn(err)
+				console.error(err)
 			}
 		}
 
@@ -212,7 +212,7 @@ export default class EntityAPI {
 
 
 				} catch (err) {
-					console.warn(err)
+					console.error(err)
 				}
 			}
 		}

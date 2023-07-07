@@ -9,7 +9,7 @@
     import CameraTracker from "../../../../../engine-core/tools/lib/CameraTracker"
     import {onDestroy, onMount} from "svelte"
     import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import EditorUtil from "../../../util/EditorUtil"
     import EngineStore from "../../../../stores/EngineStore"

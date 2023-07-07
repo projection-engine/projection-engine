@@ -1,7 +1,7 @@
 <script>
 
 
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 
     export let sort
 

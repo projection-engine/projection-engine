@@ -4,10 +4,10 @@
     import Icon from "../../shared/components/icon/Icon.svelte";
     import Input from "../../shared/components/input/Input.svelte";
     import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem";
-    import LocalizationEN from "../../../shared/LocalizationEN";
-    import FileTypes from "../../../shared/FileTypes";
+    import LocalizationEN from "../../../shared/enums/LocalizationEN";
+    import FileTypes from "../../../shared/enums/FileTypes";
     import FileSystemUtil from "../../shared/FileSystemUtil";
-    import StorageKeys from "../../../shared/StorageKeys";
+    import StorageKeys from "../../../shared/enums/StorageKeys";
 
     export let close: Function
     export let setProjectsToShow: Function

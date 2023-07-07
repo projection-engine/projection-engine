@@ -1,9 +1,8 @@
 import Preferences from "./preferences/Preferences.svelte"
+import WindowInitializer from "./shared/WindowInitializer"
 
-document.addEventListener("pointerlockerror", _ => document.exitPointerLock(), false)
-window.onerror = (ev) => {
-	console.error(ev)
-}
-export default new Preferences({
+WindowInitializer.initialize()
+
+new Preferences({
 	target: document.body
 })

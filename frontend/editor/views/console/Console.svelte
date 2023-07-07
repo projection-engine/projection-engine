@@ -7,7 +7,7 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import SveltePortal from "../../../shared/lib/SveltePortal"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import EngineStore from "../../../stores/EngineStore"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
 

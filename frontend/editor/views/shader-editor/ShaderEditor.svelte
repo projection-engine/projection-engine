@@ -13,7 +13,7 @@
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import SideBar from "./components/SideBar.svelte"
     import NODE_MAP from "./static/NODE_MAP"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import ShaderEditorUtil from "../../util/ShaderEditorUtil"
 
     const COMPONENT_ID = crypto.randomUUID()
@@ -104,7 +104,7 @@
     	const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
     	const newFile = FileSystemUtil.TEMP + FileSystemUtil.sep + openFile.registryID + ".log"
     	await FileSystemUtil.writeFile(newFile, shader, true)
-    	ElectronResources.shell.openPath(newFile).catch()
+    	ElectronResources.shell.openPath(newFile).catch(console.error)
     }
 </script>
 

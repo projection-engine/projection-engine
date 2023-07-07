@@ -8,7 +8,7 @@
     import ChangesTrackerStore from "../../../../stores/ChangesTrackerStore";
     import EntityUpdateService from "../../../services/engine/EntityUpdateService";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
-    import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
     import HierarchyUtil from "../../../util/HierarchyUtil";
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil";
 

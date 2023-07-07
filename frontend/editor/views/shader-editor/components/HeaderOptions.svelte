@@ -5,7 +5,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
 
     export let openFile
@@ -23,7 +23,7 @@
                 disabled={!openFile}
                 data-svelteview-header-button="-"
                 style="max-width: unset"
-                on:click={() => ShaderEditorTools.save(canvasAPI).catch()}>
+                on:click={() => ShaderEditorTools.save(canvasAPI).catch(console.error)}>
             <Icon styles="font-size: .9rem">save</Icon>
             {LocalizationEN.SAVE}
         </button>

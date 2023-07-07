@@ -8,7 +8,7 @@
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
     import GPU from "../../../../engine-core/GPU"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
     const COMPONENT_ID = crypto.randomUUID()

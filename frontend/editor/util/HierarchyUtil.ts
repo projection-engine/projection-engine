@@ -1,6 +1,6 @@
 import HierarchyToRenderElement from "../views/hierarchy/template/ToRenderElement"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
-import LocalizationEN from "../../../shared/LocalizationEN"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import Entity from "../../../engine-core/instances/Entity"
 import Engine from "../../../engine-core/Engine"
 import EngineStateService from "../services/engine/EngineStateService"

@@ -1,10 +1,8 @@
 import Editor from "./editor/Editor.svelte"
+import WindowInitializer from "./shared/WindowInitializer"
 
-document.addEventListener("pointerlockerror", _ => document.exitPointerLock(), false)
-window.onerror = (err, source, lineno) => {
-	console.log("ERROR CAUGHT: ", err, lineno, source)
-	return false;
-}
-export default new Editor({
+WindowInitializer.initialize()
+
+new Editor({
 	target: document.body
 })

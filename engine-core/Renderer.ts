@@ -68,7 +68,7 @@ export default class Renderer {
 				if (script.onUpdate)
 					script.onUpdate()
 			} catch (err) {
-				console.warn(err)
+				console.error(err)
 			}
 		}
 		MetricsController.currentState = METRICS_FLAGS.SCRIPT

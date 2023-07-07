@@ -4,7 +4,7 @@
     import Component from "../../../../../../../engine-core/instances/components/Component"
     import Accordion from "../../../../../../shared/components/accordion/Accordion.svelte"
     import PropertyHeader from "../../../../../../shared/components/PropertyHeader.svelte"
-    import LocalizationEN from "../../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import InspectorUtil from "../../../../../util/InspectorUtil"
     import EditorUtil from "../../../../../util/EditorUtil";
 

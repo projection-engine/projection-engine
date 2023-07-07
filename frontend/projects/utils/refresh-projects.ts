@@ -1,5 +1,5 @@
-import FileTypes from "../../../shared/FileTypes"
-import LocalizationEN from "../../../shared/LocalizationEN"
+import FileTypes from "../../../shared/enums/FileTypes"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import FileSystemUtil from "../../shared/FileSystemUtil"
 
 

@@ -5,7 +5,7 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
     import ComponentRow from "./ComponentRow.svelte"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorUtil from "../../../../util/EditorUtil"
 
     const COMPONENT_ID = crypto.randomUUID()
@@ -57,7 +57,7 @@
                         data-svelteinline="-"
                         style="justify-content: flex-start; gap: 4px; border: none; background: var(--pj-background-secondary)"
                         on:click={(e) => {
-                            EditorUtil.componentConstructor(entity, script.registryID).catch()
+                            EditorUtil.componentConstructor(entity, script.registryID).catch(console.error)
                             e.target.closeDropdown()
                         }}>
                     <Icon styles="font-size: 1rem">add</Icon>

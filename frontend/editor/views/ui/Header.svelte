@@ -8,7 +8,7 @@
     import EngineStateService from "../../services/engine/EngineStateService"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
     /** @type {boolean} */

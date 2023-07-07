@@ -3,7 +3,7 @@
     import GPU from "../../../../../engine-core/GPU"
     import Engine from "../../../../../engine-core/Engine"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 
     let entities = 0
     let triangles = 0

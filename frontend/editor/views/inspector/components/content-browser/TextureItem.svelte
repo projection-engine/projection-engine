@@ -11,7 +11,7 @@
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import Range from "../../../../../shared/components/range/Range.svelte"
     import TEXTURE_TEMPLATE from "../../../../../../engine-core/static/TEXTURE_TEMPLATE"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
 
     const B = "height: 22px; border-radius: 3px; background: var(--pj-background-tertiary); border:var(--pj-border-primary) 1px solid;"
@@ -60,7 +60,7 @@
     			}
     		})
     	}
-    	EditorFSUtil.updateAsset(item.registryID, JSON.stringify(data)).catch()
+    	EditorFSUtil.updateAsset(item.registryID, JSON.stringify(data)).catch(console.error)
     	changed = false
     	const existing = GPU.textures.get(item.registryID)
     	if (existing != null)

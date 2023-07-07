@@ -4,7 +4,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import SelectorUtil from "../../util/SelectorUtil"
 
     export let type

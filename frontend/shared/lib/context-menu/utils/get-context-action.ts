@@ -1,7 +1,7 @@
 import ContextMenuService from "../ContextMenuService"
 
 import ElectronResources from "../../ElectronResources"
-import IPCRoutes from "../../../../../shared/IPCRoutes";
+import IPCRoutes from "../../../../../shared/enums/IPCRoutes";
 
 export default function getContextAction() {
 	let startPosition = undefined

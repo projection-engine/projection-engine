@@ -2,7 +2,7 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import KEYS from "../../../../static/KEYS"
 
-    import FileTypes from "../../../../../../shared/FileTypes"
+    import FileTypes from "../../../../../../shared/enums/FileTypes"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
 
     export let currentDirectory

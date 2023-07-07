@@ -1,8 +1,8 @@
 import * as pathRequire from "path"
 import * as path from "path"
 import * as fs from "fs"
-import ElectronWindowService from "./ElectronWindowService"
-import Folders from "../../shared/Folders"
+import ElectronWindowService from "../ElectronWindowService"
+import Folders from "../../shared/enums/Folders"
 
 export default class FileSystemUtil {
 	static async createRegistryEntry(fID: string, pathToFile: string) {
@@ -89,8 +89,8 @@ export default class FileSystemUtil {
 				break
 			}
 			return result
-		} catch (e) {
-			console.error(e)
+		} catch (err) {
+			console.error(err)
 			return null
 		}
 	}
@@ -113,8 +113,8 @@ export default class FileSystemUtil {
 				const fileMetadata = await FileSystemUtil.parseContentBrowserData(assetsToParse[i], registryData, instance.pathToProject)
 				if (fileMetadata && (fileMetadata.registryID || fileMetadata.isFolder))
 					result.push(fileMetadata)
-			} catch (error) {
-				console.error(error)
+			} catch (err) {
+				console.error(err)
 			}
 		}
 		return result
@@ -139,7 +139,7 @@ export default class FileSystemUtil {
 		const instance = ElectronWindowService.getInstance()
 		const data = <null | {
             [key: string]: RegistryFile
-        }>await FileSystemUtil.readTypedFile(instance.pathToRegistry, "json").catch()
+        }>await FileSystemUtil.readTypedFile(instance.pathToRegistry, "json").catch(console.error)
 		if (!data)
 			return
 		instance.registry = data

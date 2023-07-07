@@ -1,4 +1,4 @@
-import ElectronWindowService from "./ElectronWindowService"
+import ElectronWindowService from "../ElectronWindowService"
 import SETTINGS_PATH from "../static/SETTINGS_PATH"
 import DEFAULT_GLOBAL_SETTINGS from "../static/DEFAULT_GLOBAL_SETTINGS"
 
@@ -6,7 +6,7 @@ import {app, dialog, ipcMain} from "electron"
 import * as os from "os"
 import * as fs from "fs"
 import * as pathRequire from "path"
-import IPCRoutes from "../../shared/IPCRoutes"
+import IPCRoutes from "../../shared/enums/IPCRoutes"
 import FileImporterUtil from "./FileImporterUtil"
 import AbstractSingleton from "../../shared/AbstractSingleton"
 import FileSystemUtil from "./FileSystemUtil"
@@ -44,7 +44,7 @@ export default class IPCListener extends AbstractSingleton {
 	#reload() {
 		const electronInstance = ElectronWindowService.getInstance()
 		electronInstance.closeSubWindows()
-		electronInstance.bindEssentialResources(electronInstance.pathToProject).catch()
+		electronInstance.bindEssentialResources(electronInstance.pathToProject).catch(console.error)
 	}
 
 	#storeUpdate(ev, data) {
@@ -58,7 +58,7 @@ export default class IPCListener extends AbstractSingleton {
 			else
 				instance.window.webContents.send(IPCRoutes.STORE_UPDATE, data)
 		} catch (err) {
-			console.log(err)
+			console.error(err)
 		}
 	}
 
@@ -101,12 +101,13 @@ export default class IPCListener extends AbstractSingleton {
 			else
 				ev.sender.send(IPCRoutes.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
 		} catch (err) {
+			console.error(err)
 			ev.sender.send(IPCRoutes.GET_GLOBAL_SETTINGS, DEFAULT_GLOBAL_SETTINGS)
 		}
 	}
 
 	#setProjectContext(_, pathToProject) {
-		ElectronWindowService.getInstance().bindEssentialResources(pathToProject).catch()
+		ElectronWindowService.getInstance().bindEssentialResources(pathToProject).catch(console.error)
 	}
 
 	async #updateGlobalSettings(_, data) {
@@ -123,10 +124,11 @@ export default class IPCListener extends AbstractSingleton {
 			if (result.response !== 0)
 				return
 			ElectronWindowService.getInstance().closeSubWindows()
-			await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch()
+			await fs.promises.writeFile(os.homedir() + pathRequire.sep + SETTINGS_PATH, JSON.stringify(data)).catch(console.error)
 			app.relaunch()
 			app.quit()
 		} catch (err) {
+			console.error(err)
 			app.relaunch()
 			app.quit()
 		}

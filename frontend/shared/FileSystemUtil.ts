@@ -1,8 +1,8 @@
 import EditorFSUtil from "../editor/util/EditorFSUtil"
 import ElectronResources from "./lib/ElectronResources"
-import Folders from "../../shared/Folders"
-import IPCRoutes from "../../shared/IPCRoutes"
-import FileTypes from "../../shared/FileTypes"
+import Folders from "../../shared/enums/Folders"
+import IPCRoutes from "../../shared/enums/IPCRoutes"
+import FileTypes from "../../shared/enums/FileTypes"
 import EditorUtil from "../editor/util/EditorUtil"
 
 

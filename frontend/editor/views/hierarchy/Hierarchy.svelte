@@ -8,7 +8,7 @@
     import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Engine from "../../../../engine-core/Engine"
     import Header from "./components/Header.svelte"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import HierarchyUtil from "../../util/HierarchyUtil"
 
     let search = ""

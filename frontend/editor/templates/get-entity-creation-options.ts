@@ -2,7 +2,7 @@ import EntityFactoryService from "../services/engine/EntityFactoryService"
 
 import LIGHT_TYPES from "../../../engine-core/static/LIGHT_TYPES"
 import EmbeddedMeshes from "../../../engine-core/static/EmbeddedMeshes"
-import LocalizationEN from "../../../shared/LocalizationEN";
+import LocalizationEN from "../../../shared/enums/LocalizationEN";
 
 export default function getEntityCreationOptions() {
 	return [

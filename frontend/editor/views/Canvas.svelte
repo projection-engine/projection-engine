@@ -22,9 +22,9 @@
     		true
     	).then(async () => {
     		const levelServiceInstance = LevelService.getInstance()
-    		await EngineTools.initialize().catch()
+    		await EngineTools.initialize().catch(console.error)
     		const toLoad = levelServiceInstance.getLevelToLoad()
-    		await levelServiceInstance.loadLevel(toLoad).catch()
+    		await levelServiceInstance.loadLevel(toLoad).catch(console.error)
 
     		initializeEditor()
     		UIAPI.buildUI(GPU.canvas.parentElement)

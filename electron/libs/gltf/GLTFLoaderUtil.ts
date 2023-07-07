@@ -1,12 +1,12 @@
 import GLTFAccessor from "./GLTFAccessor"
 import GLTFBuffer from "./GLTFBuffer"
-import ElectronWindowService from "../ElectronWindowService"
+import ElectronWindowService from "../../ElectronWindowService"
 import * as fs from "fs"
 import * as path from "path"
 import * as crypto from "node:crypto"
-import FileTypes from "../../../shared/FileTypes";
-import GLTFBuilderUtil from "./GLTFBuilderUtil";
-import FileSystemUtil from "../FileSystemUtil";
+import FileTypes from "../../../shared/enums/FileTypes"
+import GLTFBuilderUtil from "./GLTFBuilderUtil"
+import FileSystemUtil from "../FileSystemUtil"
 
 export default class GLTFLoaderUtil {
 	static glTFHierarchyNodes = new Map()
@@ -40,7 +40,7 @@ export default class GLTFLoaderUtil {
 	}
 
 	static #getResourceRoot(pathToFile: string) {
-		let resourceRoot = pathToFile.split(path.sep)
+		const resourceRoot = pathToFile.split(path.sep)
 		resourceRoot.pop()
 		return resourceRoot.join(path.sep)
 	}
@@ -98,7 +98,7 @@ export default class GLTFLoaderUtil {
 			}
 		}
 		for (let i = 0; i < scene.entities.length; i++) {
-			const e = scene.entities[i];
+			const e = scene.entities[i]
 			GLTFBuilderUtil.linkNodeToStructure(e)
 			delete e.index
 			delete e.mesh

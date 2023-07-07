@@ -3,7 +3,7 @@
 
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Input from "../../../../shared/components/input/Input.svelte"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 
     let inputValue = ""
     $: nodes = !inputValue ? ALL_NODES : ALL_NODES.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))

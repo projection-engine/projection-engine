@@ -13,10 +13,10 @@
     import ToastNotificationSystem from "../shared/components/alert/ToastNotificationSystem"
     import ElectronResources from "../shared/lib/ElectronResources"
     import StoreIPCListener from "../shared/lib/StoreIPCListener"
-    import IPCRoutes from "../../shared/IPCRoutes"
+    import IPCRoutes from "../../shared/enums/IPCRoutes"
     import EditorUtil from "./util/EditorUtil"
     import ContentBrowserUtil from "./util/ContentBrowserUtil"
-    import StorageKeys from "../../shared/StorageKeys"
+    import StorageKeys from "../../shared/enums/StorageKeys"
 
     const COMPONENT_ID = crypto.randomUUID()
     let isMetadataReady = false
@@ -34,12 +34,11 @@
     	ToastNotificationSystem.get()
     	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
     		sessionStorage.setItem(StorageKeys.PROJECT_PATH, pathToProject)
-    		FileSystemUtil.initializeFolders(pathToProject).catch()
+    		FileSystemUtil.initializeFolders(pathToProject).catch(console.error)
     		LevelService.get(() => isMetadataReady = true)
     		HotKeysController.initializeListener()
     		ContentBrowserUtil.initializeContentBrowser()
     	})
-    	ElectronResources.ipcRenderer.on("console", (_, data) => console.error(...data))
     })
 
     onDestroy(() => {

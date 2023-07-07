@@ -9,10 +9,10 @@
     import ToastNotificationSystem from "../shared/components/alert/ToastNotificationSystem"
     import FrameWrapper from "../shared/components/frame/FrameWrapper.svelte"
     import ElectronResources from "../shared/lib/ElectronResources"
-    import IPCRoutes from "../../shared/IPCRoutes"
-    import FileTypes from "../../shared/FileTypes"
+    import IPCRoutes from "../../shared/enums/IPCRoutes"
+    import FileTypes from "../../shared/enums/FileTypes"
     import FileSystemUtil from "../shared/FileSystemUtil"
-    import StorageKeys from "../../shared/StorageKeys"
+    import StorageKeys from "../../shared/enums/StorageKeys"
 
 
     let basePath
@@ -53,7 +53,7 @@
     })
     $: {
     	if (basePath)
-    		refreshProjects(basePath).then(r => projectsToShow = r).catch()
+    		refreshProjects(basePath).then(r => projectsToShow = r).catch(console.error)
     }
     onDestroy(() => ContextMenuService.getInstance().destroy(internalID))
 

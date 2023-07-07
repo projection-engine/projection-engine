@@ -5,7 +5,7 @@ import ToastNotificationSystem from "../../../../shared/components/alert/ToastNo
 import {Input} from "../static/Input"
 import {Output} from "../static/Output"
 import CanvasResources from "../libs/CanvasResources"
-import LocalizationEN from "../../../../../shared/LocalizationEN";
+import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
 
 export default class ShaderLink {
 	targetRef: Input

@@ -2,8 +2,8 @@ import {ipcMain,} from "electron"
 
 import * as pathRequire from "path"
 import * as fs from "fs"
-import FileTypes from "../../shared/FileTypes"
-import IPCRoutes from "../../shared/IPCRoutes"
+import FileTypes from "../../shared/enums/FileTypes"
+import IPCRoutes from "../../shared/enums/IPCRoutes"
 import AbstractSingleton from "../../shared/AbstractSingleton"
 import FileSystemUtil from "./FileSystemUtil"
 
@@ -61,7 +61,7 @@ export default class FileSystemListener extends AbstractSingleton {
 		try {
 			result = await fs.promises.readFile(pathRequire.resolve(path), options)
 		} catch (err) {
-
+			console.error(err)
 		}
 		event.sender.send(IPCRoutes.FS_READ + listenID, result ? result.toString() : undefined)
 	}
@@ -71,6 +71,8 @@ export default class FileSystemListener extends AbstractSingleton {
 		try {
 			await fs.promises.writeFile(pathRequire.resolve(path), data)
 		} catch (err) {
+			error = err
+			console.error(err)
 		}
 		event.sender.send(IPCRoutes.FS_WRITE + listenID, error)
 	}
@@ -82,6 +84,7 @@ export default class FileSystemListener extends AbstractSingleton {
 			await fs.promises.rm(pathRequire.resolve(path), options)
 		} catch (err) {
 			error = err
+			console.error(err)
 		}
 		event.sender.send(IPCRoutes.FS_RM + listenID, error)
 	}
@@ -92,6 +95,7 @@ export default class FileSystemListener extends AbstractSingleton {
 			await fs.promises.mkdir(pathRequire.resolve(path))
 		} catch (err) {
 			error = err
+			console.error(err)
 		}
 		event.sender.send(IPCRoutes.FS_MKDIR + listenID, error)
 	}
@@ -118,7 +122,7 @@ export default class FileSystemListener extends AbstractSingleton {
 		try {
 			response = await fs.promises.readdir(pathRequire.resolve(path), options)
 		} catch (err) {
-
+			console.error(err)
 		}
 		event.sender.send(IPCRoutes.FS_READDIR + listenID, response)
 	}
@@ -130,6 +134,7 @@ export default class FileSystemListener extends AbstractSingleton {
 			await fs.promises.rename(pathRequire.resolve(oldPath), pathRequire.resolve(newPath))
 		} catch (err) {
 			result = err
+			console.error(err)
 		}
 		event.sender.send(IPCRoutes.FS_RENAME + listenID, result)
 	}

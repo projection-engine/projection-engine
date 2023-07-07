@@ -11,8 +11,8 @@ import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
 import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
-import LocalizationEN from "../../../../shared/LocalizationEN"
-import SelectionTargets from "../../../../shared/SelectionTargets"
+import LocalizationEN from "../../../../shared/enums/LocalizationEN"
+import SelectionTargets from "../../../../shared/enums/SelectionTargets"
 import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
 

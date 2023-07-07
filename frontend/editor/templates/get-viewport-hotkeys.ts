@@ -11,7 +11,7 @@ import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
-import LocalizationEN from "../../../shared/LocalizationEN"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import EditorUtil from "../util/EditorUtil"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
 

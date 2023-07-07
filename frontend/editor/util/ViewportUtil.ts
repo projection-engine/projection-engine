@@ -10,7 +10,7 @@ import EngineTools from "../../../engine-core/tools/EngineTools"
 import SelectionStoreUtil from "./SelectionStoreUtil"
 import EngineStore from "../../stores/EngineStore"
 import SettingsStore from "../../stores/SettingsStore"
-import LocalizationEN from "../../../shared/LocalizationEN"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import VIEWS from "../components/view/static/VIEWS"
 
 export default class ViewportUtil{

@@ -1,4 +1,4 @@
-import LocalizationEN from "../../shared/LocalizationEN"
+import LocalizationEN from "../../shared/enums/LocalizationEN"
 
 
 export default [

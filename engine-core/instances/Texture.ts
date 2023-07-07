@@ -84,7 +84,7 @@ export default class Texture {
 	update(attributes: TextureParams) {
 		if (this.loaded)
 			GPU.context.deleteTexture(this.texture)
-		this.initialize(attributes).catch()
+		this.initialize(attributes).catch(console.error)
 
 	}
 

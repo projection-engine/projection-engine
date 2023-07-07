@@ -13,9 +13,9 @@
     import ExecutionService from "../../services/engine/ExecutionService"
     import FrameWrapper from "../../../shared/components/frame/FrameWrapper.svelte"
     import ElectronResources from "../../../shared/lib/ElectronResources"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
-    import IPCRoutes from "../../../../shared/IPCRoutes"
-    import WindowTypes from "../../../../shared/WindowTypes"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
+    import IPCRoutes from "../../../../shared/enums/IPCRoutes"
+    import WindowTypes from "../../../../shared/enums/WindowTypes"
     import ViewportUtil from "../../util/ViewportUtil"
     import WindowFrameUtil from "../../util/WindowFrameUtil"
 

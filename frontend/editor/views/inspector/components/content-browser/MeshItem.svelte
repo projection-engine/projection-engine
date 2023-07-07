@@ -5,7 +5,7 @@
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
 
     export let item

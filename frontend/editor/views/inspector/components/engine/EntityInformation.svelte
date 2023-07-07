@@ -17,7 +17,7 @@
     import {onDestroy} from "svelte";
     import AddComponent from "./AddComponent.svelte";
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem";
-    import LocalizationEN from "../../../../../../shared/LocalizationEN";
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
 
     export let entity: Entity
 

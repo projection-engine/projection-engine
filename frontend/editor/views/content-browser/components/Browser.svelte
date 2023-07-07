@@ -10,7 +10,7 @@
     import RowsHeader from "./BrowserHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
     import FilesStore from "../../../../stores/FilesStore"

@@ -4,7 +4,7 @@ import ShaderNode from "../templates/ShaderNode"
 import ShaderComment from "../templates/ShaderComment"
 import ShaderEditorTools from "./ShaderEditorTools"
 import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
-import LocalizationEN from "../../../../../shared/LocalizationEN";
+import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
 
 
 interface Action {

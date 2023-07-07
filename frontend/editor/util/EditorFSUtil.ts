@@ -1,7 +1,7 @@
 import ElectronResources from "../../shared/lib/ElectronResources"
-import IPCRoutes from "../../../shared/IPCRoutes"
-import Folders from "../../../shared/Folders"
-import FileTypes from "../../../shared/FileTypes"
+import IPCRoutes from "../../../shared/enums/IPCRoutes"
+import Folders from "../../../shared/enums/Folders"
+import FileTypes from "../../../shared/enums/FileTypes"
 import EditorUtil from "./EditorUtil"
 import FileSystemUtil from "../../shared/FileSystemUtil"
 

@@ -3,13 +3,13 @@
     import {onDestroy, onMount} from "svelte"
     import CreateProject from "./CreateProject.svelte"
 
-    import StorageKeys from "../../../shared/StorageKeys"
+    import StorageKeys from "../../../shared/enums/StorageKeys"
     import SveltePortal from "../../shared/lib/SveltePortal"
     import Icon from "../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
     import ElectronResources from "../../shared/lib/ElectronResources"
-    import LocalizationEN from "../../../shared/LocalizationEN"
-    import IPCRoutes from "../../../shared/IPCRoutes"
+    import LocalizationEN from "../../../shared/enums/LocalizationEN"
+    import IPCRoutes from "../../../shared/enums/IPCRoutes"
 
 
     export let setProjectsToShow

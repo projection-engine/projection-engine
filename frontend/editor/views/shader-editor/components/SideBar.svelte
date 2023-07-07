@@ -9,7 +9,7 @@
     import type ShaderNode from "../templates/ShaderNode";
     import ShaderComment from "../templates/ShaderComment";
     import {onDestroy, onMount} from "svelte";
-    import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
 
     export let canvasAPI: Canvas
     let tab = 0
