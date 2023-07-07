@@ -2,7 +2,7 @@ import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES"
 import EditorFSUtil from "../util/EditorFSUtil"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ElectronResources from "../../shared/lib/ElectronResources"
-import LocalizationEN from "../../../shared/LocalizationEN"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import ContentBrowserUtil from "../util/ContentBrowserUtil"
 import EditorUtil from "../util/EditorUtil"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"
@@ -44,7 +44,7 @@ export default function getContentBrowserActions(navigationHistory, getCurrentDi
 			require: contentBrowserHotkeys.REFRESH,
 			callback: () => {
 				ToastNotificationSystem.getInstance().success(LocalizationEN.REFRESHING)
-				ContentBrowserUtil.refreshFiles().catch()
+				ContentBrowserUtil.refreshFiles().catch(console.error)
 			}
 		},
 		GO_TO_PARENT: {
@@ -78,7 +78,7 @@ export default function getContentBrowserActions(navigationHistory, getCurrentDi
 				const s = [...SelectionStoreUtil.getContentBrowserSelected()]
 				if (s.length > 0) {
 					SelectionStoreUtil.setContentBrowserSelected([])
-					ContentBrowserUtil.handleDelete(s, getCurrentDirectory(), setCurrentDirectory).catch()
+					ContentBrowserUtil.handleDelete(s, getCurrentDirectory(), setCurrentDirectory).catch(console.error)
 				}
 			}
 		},

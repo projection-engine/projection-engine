@@ -1,4 +1,4 @@
-import AngleBackends from "../../shared/AngleBackends"
+import AngleBackends from "../../shared/enums/AngleBackends"
 
 export default {
 	graphicsBackend: AngleBackends.VULKAN,

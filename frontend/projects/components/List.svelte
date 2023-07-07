@@ -5,7 +5,7 @@
     import Input from "../../shared/components/input/Input.svelte"
 
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
-    import LocalizationEN from "../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../shared/enums/LocalizationEN"
 
     export let items
     export let getLabel

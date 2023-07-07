@@ -9,7 +9,7 @@
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
     import NATIVE_COMPONENTS from "../../inspector/static/NATIVE_COMPONENTS"
     import EntityFactoryService from "../../../services/engine/EntityFactoryService"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     export let filteredComponent, setFilteredComponent

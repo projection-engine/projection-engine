@@ -7,7 +7,7 @@
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../shared/components/icon/Icon.svelte"
     import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
-    import LocalizationEN from "../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../shared/enums/LocalizationEN"
 
     export let shortcut = []
     export let key

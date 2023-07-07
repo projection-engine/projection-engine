@@ -6,7 +6,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Entity from "../../../../../engine-core/instances/Entity";
     import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
-    import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
 
     export let testSearch: Function
     export let depth: number

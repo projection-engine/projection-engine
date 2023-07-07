@@ -7,7 +7,7 @@
     import SettingsStore from "../../../../stores/SettingsStore";
     import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
-    import LocalizationEN from "../../../../../shared/LocalizationEN";
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";
     import TabsStoreUtil from "../../../util/TabsStoreUtil";
 

@@ -10,7 +10,7 @@ import LightComponent from "../../../../engine-core/instances/components/LightCo
 import EntityHierarchyService from "./EntityHierarchyService"
 import EngineStateService from "./EngineStateService"
 import Engine from "../../../../engine-core/Engine"
-import LocalizationEN from "../../../../shared/LocalizationEN"
+import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
 
 export default class EntityFactoryService {

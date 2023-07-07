@@ -3,7 +3,7 @@
     import GIZMOS from "../../../static/GIZMOS.ts"
 
     import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../../stores/SettingsStore"
     import SelectionStore from "../../../../stores/SelectionStore"
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil"

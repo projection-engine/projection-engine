@@ -5,9 +5,9 @@
     import {onMount} from "svelte"
     import DEFAULT_GLOBAL_SETTINGS from "../../../electron/static/DEFAULT_GLOBAL_SETTINGS"
     import PropertyHeader from "../../shared/components/PropertyHeader.svelte"
-    import LocalizationEN from "../../../shared/LocalizationEN"
-    import IPCRoutes from "../../../shared/IPCRoutes"
-    import AngleBackends from "../../../shared/AngleBackends"
+    import LocalizationEN from "../../../shared/enums/LocalizationEN"
+    import IPCRoutes from "../../../shared/enums/IPCRoutes"
+    import AngleBackends from "../../../shared/enums/AngleBackends"
 
 
     let globalSettings = {...DEFAULT_GLOBAL_SETTINGS}

@@ -1,16 +1,17 @@
-import AssimpService from "./assimp/AssimpService"
+import AssimpService from "./libs/assimp/AssimpService"
 import {BrowserWindow, dialog, screen} from "electron"
 import * as fs from "fs"
 import * as path from "path"
-import ContextMenuListener from "./ContextMenuListener"
-import IPCRoutes from "../../shared/IPCRoutes"
-import FileTypes from "../../shared/FileTypes"
-import Folders from "../../shared/Folders"
-import WindowTypes from "../../shared/WindowTypes"
-import FileSystemListener from "./FileSystemListener"
-import IPCListener from "./IPCListener"
-import AbstractSingleton from "../../shared/AbstractSingleton"
-import FileSystemUtil from "./FileSystemUtil"
+import ContextMenuListener from "./libs/ContextMenuListener"
+import IPCRoutes from "../shared/enums/IPCRoutes"
+import FileTypes from "../shared/enums/FileTypes"
+import Folders from "../shared/enums/Folders"
+import WindowTypes from "../shared/enums/WindowTypes"
+import FileSystemListener from "./libs/FileSystemListener"
+import IPCListener from "./libs/IPCListener"
+import AbstractSingleton from "../shared/AbstractSingleton"
+import FileSystemUtil from "./libs/FileSystemUtil"
+import MainLogger from "../shared/MainLogger"
 
 enum CurrentWindow {
     EDITOR,
@@ -34,11 +35,7 @@ export default class ElectronWindowService extends AbstractSingleton {
 
 	constructor() {
 		super()
-		const log = console.error
-		console.error = (...msg) => {
-			log(...msg)
-			this.window.webContents.send("console", msg)
-		}
+		MainLogger.initialize()
 		FileSystemListener.get()
 		AssimpService.get()
 		IPCListener.get()
@@ -65,21 +62,22 @@ export default class ElectronWindowService extends AbstractSingleton {
 						return window
 				} catch (err) {
 					this.windows.splice(i, 1)
-					console.log(err)
+					console.error(err)
 				}
 			}
 		} catch (err) {
+			console.error(err)
 		}
 	}
 
 	closeSubWindows() {
-		this.windows.forEach(w => {
+		for (let i = 0; i < this.windows.length; i++){
 			try {
-				w?.electronWindow?.destroy?.()
+				this.windows[i].electronWindow.destroy()
 			} catch (err) {
-				console.log(err)
+				console.error(err)
 			}
-		})
+		}
 		this.windows = []
 	}
 
@@ -99,12 +97,12 @@ export default class ElectronWindowService extends AbstractSingleton {
 					height: height * (settings.heightScale || 1)
 				}, true)
 				this.windows.push({electronWindow: newWindow, type})
-				newWindow.loadFile(path.join(__dirname, "./preferences-window.html")).catch()
+				newWindow.loadFile(path.join(__dirname, "./preferences-window.html")).catch(console.error)
 				newWindow.on("closed", () => {
 					try {
 						this.windows = this.windows.filter(w => w.type !== type)
 					} catch (err) {
-						console.log(err)
+						console.error(err)
 					}
 				})
 			}
@@ -122,7 +120,7 @@ export default class ElectronWindowService extends AbstractSingleton {
 		const primaryDisplay = screen.getPrimaryDisplay()
 		const {width, height} = primaryDisplay.workAreaSize
 		this.#currentWindow = CurrentWindow.PROJECTS
-		this.window.loadFile(path.join(__dirname, "./project-window.html")).catch()
+		this.window.loadFile(path.join(__dirname, "./project-window.html")).catch(console.error)
 		this.window.setSize(width / 2, height / 2)
 	}
 
@@ -158,7 +156,7 @@ export default class ElectronWindowService extends AbstractSingleton {
 		try {
 			await this.window.loadFile(path.join(__dirname, "./editor-window.html"))
 		} catch (err) {
-
+			console.error(err)
 		}
 		this.window.webContents.send(IPCRoutes.EDITOR_INITIALIZATION, this.pathToProject)
 		this.window.maximize()
@@ -197,7 +195,6 @@ export default class ElectronWindowService extends AbstractSingleton {
 		})
 
 		if (process.env.IS_DEV) {
-			// @ts-ignore
 			window.openDevTools(isChild ? undefined : {mode: "detach"})
 		}
 		return window

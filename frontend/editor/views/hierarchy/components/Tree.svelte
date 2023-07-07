@@ -9,7 +9,7 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import VirtualList from "@sveltejs/svelte-virtual-list"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
     import EngineStore from "../../../../stores/EngineStore"
 

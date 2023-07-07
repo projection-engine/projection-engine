@@ -38,7 +38,7 @@ export default function getShaderActions(canvasAPI: Canvas) {
 		SAVE: {
 			label: "Save",
 			require: settings.shaderEditorHotkeys.SAVE,
-			callback: () => ShaderEditorTools.save( canvasAPI).catch()
+			callback: () => ShaderEditorTools.save( canvasAPI).catch(console.error)
 		},
 		COPY: {
 			label: "Copy (selected)",

@@ -6,14 +6,14 @@ import ElectronResources from "../../shared/lib/ElectronResources"
 import GPU from "../../../engine-core/GPU"
 import ResourceManager from "../../../engine-core/runtime/ResourceManager"
 import WindowChangeStore from "../../stores/WindowChangeStore"
-import LocalizationEN from "../../../shared/LocalizationEN"
-import IPCRoutes from "../../../shared/IPCRoutes"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
+import IPCRoutes from "../../../shared/enums/IPCRoutes"
 
 export default class WindowFrameUtil {
 	static #callMethod(id: string) {
 		switch (id) {
 		case "save":
-			LevelService.getInstance().save().catch()
+			LevelService.getInstance().save().catch(console.error)
 			break
 		case "undo":
 			EditorActionHistory.undo()
@@ -31,11 +31,11 @@ export default class WindowFrameUtil {
 			SettingsStore.updateStore({hideFooter: !SettingsStore.getData().hideFooter})
 			break
 		case "learn-more":
-			ElectronResources.shell.openExternal("https://github.com/projection-engine").catch()
+			ElectronResources.shell.openExternal("https://github.com/projection-engine").catch(console.error)
 			break
 
 		case "fullscreen":
-			GPU.canvas.requestFullscreen().catch()
+			GPU.canvas.requestFullscreen().catch(console.error)
 			break
 		case "reload":
 			ElectronResources.ipcRenderer.send("reload")

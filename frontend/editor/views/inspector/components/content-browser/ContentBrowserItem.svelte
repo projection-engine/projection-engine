@@ -7,8 +7,8 @@
     import MaterialItem from "./MaterialItem.svelte"
     import MeshItem from "./MeshItem.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
-    import FileTypes from "../../../../../../shared/FileTypes"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import FileTypes from "../../../../../../shared/enums/FileTypes"
     import InspectorUtil from "../../../../util/InspectorUtil"
 
     const VALID = [FileTypes.TEXTURE, FileTypes.COLLECTION, FileTypes.MATERIAL]

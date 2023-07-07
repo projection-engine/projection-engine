@@ -11,7 +11,7 @@
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import ROTATION_TYPES from "../../static/ROTATION_TYPES"
     import Movable from "../../../../../../engine-core/instances/components/Movable"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte"
     import SelectionStoreUtil from "../../../../util/SelectionStoreUtil"
 

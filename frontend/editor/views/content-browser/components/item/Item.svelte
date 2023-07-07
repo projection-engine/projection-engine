@@ -4,8 +4,8 @@
     import Card from "./Card.svelte"
     import Row from "./Row.svelte"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
-    import FileTypes from "../../../../../../shared/FileTypes"
-    import Folders from "../../../../../../shared/Folders"
+    import FileTypes from "../../../../../../shared/enums/FileTypes"
+    import Folders from "../../../../../../shared/enums/Folders"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
 

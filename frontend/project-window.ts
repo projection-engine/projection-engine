@@ -1,11 +1,9 @@
 import Projects from "./projects/Projects.svelte"
+import WindowInitializer from "./shared/WindowInitializer"
 
+WindowInitializer.initialize()
 
-// TO GENERATE IMAGE
-// import doWork from "../../../GENERATE_IMAGE_ICONS";
-// doWork()
-
-export default new Projects({
+new Projects({
 	target: document.body
 })
 

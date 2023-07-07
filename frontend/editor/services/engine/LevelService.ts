@@ -19,12 +19,12 @@ import EntityNamingService from "./EntityNamingService"
 import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
 import AXIS from "../../../../engine-core/tools/static/AXIS"
 import WindowChangeStore from "../../../stores/WindowChangeStore"
-import IPCRoutes from "../../../../shared/IPCRoutes"
-import LocalizationEN from "../../../../shared/LocalizationEN"
-import FileTypes from "../../../../shared/FileTypes"
+import IPCRoutes from "../../../../shared/enums/IPCRoutes"
+import LocalizationEN from "../../../../shared/enums/LocalizationEN"
+import FileTypes from "../../../../shared/enums/FileTypes"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
-import SelectionTargets from "../../../../shared/SelectionTargets"
+import SelectionTargets from "../../../../shared/enums/SelectionTargets"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
 import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
@@ -85,8 +85,8 @@ export default class LevelService extends AbstractSingleton {
 		if (ChangesTrackerStore.getData() && Engine.loadedLevel) {
 			WindowChangeStore.updateStore({
 				message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
-					await this.save().catch()
-					this.loadLevel(levelID).catch()
+					await this.save().catch(console.error)
+					this.loadLevel(levelID).catch(console.error)
 				}
 			})
 			return
@@ -147,7 +147,7 @@ export default class LevelService extends AbstractSingleton {
 					level: Engine.loadedLevel?.id
 				}), true)
 
-			await this.saveCurrentLevel().catch()
+			await this.saveCurrentLevel().catch(console.error)
 		} catch (err) {
 			console.error(err)
 			return
@@ -170,7 +170,7 @@ export default class LevelService extends AbstractSingleton {
 		if (!assetReg) {
 			path = FileSystemUtil.resolvePath(await EditorUtil.resolveFileName(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + Engine.loadedLevel.name, FileTypes.LEVEL))
 			await EditorFSUtil.createRegistryEntry(Engine.loadedLevel.id, FileSystemUtil.sep + path.split(FileSystemUtil.sep).pop())
-			EditorFSUtil.readRegistry().catch()
+			EditorFSUtil.readRegistry().catch(console.error)
 		} else
 			path = FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path
 

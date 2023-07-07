@@ -3,7 +3,7 @@
 
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
     import Input from "../../shared/components/input/Input.svelte"
-    import LocalizationEN from "../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../shared/enums/LocalizationEN"
 
     export let open
     export let data

@@ -10,7 +10,7 @@ import GPUAPI from "../../../../../engine-core/lib/rendering/GPUAPI"
 import NodesIndex from "../static/NODE_MAP"
 import ShaderLink from "../templates/ShaderLink"
 import ShaderComment from "../templates/ShaderComment"
-import LocalizationEN from "../../../../../shared/LocalizationEN"
+import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import EditorFSUtil from "../../../util/EditorFSUtil"
 
 export default class ShaderEditorTools {

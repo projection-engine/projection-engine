@@ -1,7 +1,7 @@
 import VISUAL_SETTINGS from "../editor/static/VISUAL_SETTINGS"
 import ChangesTrackerStore from "./ChangesTrackerStore"
 import StoreIPCListener from "../shared/lib/StoreIPCListener"
-import UIDataStores from "../../shared/UIDataStores"
+import UIDataStores from "../../shared/enums/UIDataStores"
 import AbstractStore from "./AbstractStore"
 
 export default class VisualsStore extends AbstractStore{

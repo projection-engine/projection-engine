@@ -27,7 +27,7 @@ export default class StaticEditorMeshes {
 			StaticEditorMeshes.scaleGizmo = new Mesh(SCALE_MESH)
 			StaticEditorMeshes.translationGizmo = new Mesh(TRANSLATION_MESH)
 
-			const image = await fetch("./image.base64").catch()
+			const image = await fetch("./image.base64").catch(console.error)
 			if (image !== undefined) {
 				const t = new Texture(crypto.randomUUID())
 				await t.initialize({img: await image.text()})

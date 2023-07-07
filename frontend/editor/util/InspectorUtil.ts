@@ -1,4 +1,4 @@
-import LocalizationEN from "../../../shared/LocalizationEN"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import FilesStore from "../../stores/FilesStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import COMPONENTS from "../../../engine-core/static/COMPONENTS"
@@ -13,9 +13,9 @@ import CameraComponent from "../../../engine-core/instances/components/CameraCom
 import EngineStore from "../../stores/EngineStore"
 import CameraAPI from "../../../engine-core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
-import SelectionTargets from "../../../shared/SelectionTargets"
+import SelectionTargets from "../../../shared/enums/SelectionTargets"
 import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
-import FileTypes from "../../../shared/FileTypes"
+import FileTypes from "../../../shared/enums/FileTypes"
 
 export default class InspectorUtil {
 	static compareObjects(obj1, obj2) {

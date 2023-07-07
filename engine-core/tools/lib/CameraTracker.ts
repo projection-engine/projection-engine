@@ -272,7 +272,7 @@ export default class CameraTracker {
 				break
 			}
 		} catch (err) {
-			console.warn(err)
+			console.error(err)
 		}
 	}
 

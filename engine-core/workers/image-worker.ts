@@ -127,8 +127,8 @@ self.onmessage = async ({data: {type, data, id}}) => {
 			break
 		}
 		return
-	} catch (error) {
-		console.error(error)
+	} catch (err) {
+		console.error(err)
 		self.postMessage({data: null, id})
 	}
 }

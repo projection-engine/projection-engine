@@ -1,8 +1,8 @@
 import FilesStore from "../../stores/FilesStore"
 import SELECTION_TYPES from "../views/content-browser/static/SELECTION_TYPES"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
-import LocalizationEN from "../../../shared/LocalizationEN"
-import FileTypes from "../../../shared/FileTypes"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
+import FileTypes from "../../../shared/enums/FileTypes"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import LevelService from "../services/engine/LevelService"
@@ -16,7 +16,7 @@ import UI_TEMPLATE from "../../../engine-core/static/templates/UI_TEMPLATE"
 import EditorUtil from "./EditorUtil"
 import SelectionStoreUtil from "./SelectionStoreUtil"
 import FilesHierarchyStore from "../../stores/FilesHierarchyStore"
-import IPCRoutes from "../../../shared/IPCRoutes"
+import IPCRoutes from "../../../shared/enums/IPCRoutes"
 import getContentBrowserActions from "../templates/get-content-browser-actions"
 import HotKeysController from "../../shared/lib/HotKeysController"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
@@ -83,11 +83,11 @@ export default class ContentBrowserUtil {
 			case FileTypes.PRIMITIVE:
 			case FileTypes.COLLECTION:
 			case FileTypes.TEXTURE:
-				EngineResourceLoaderService.load(data.registryID, true).catch()
+				EngineResourceLoaderService.load(data.registryID, true).catch(console.error)
 				ToastNotificationSystem.getInstance().warn(LocalizationEN.CREATING_ENTITY)
 				break
 			case FileTypes.LEVEL:
-				LevelService.getInstance().loadLevel(data.registryID).catch()
+				LevelService.getInstance().loadLevel(data.registryID).catch(console.error)
 				break
 			case FileTypes.MATERIAL:
 				ShaderEditorTools.toOpenFile = data
@@ -121,7 +121,7 @@ export default class ContentBrowserUtil {
 		if (item.isFolder) {
 			const newNamePath = (item.parent ? item.parent + FileSystemUtil.sep + newName : FileSystemUtil.sep + newName)
 			await ContentBrowserUtil.rename(FileSystemUtil.ASSETS_PATH + item.id, FileSystemUtil.ASSETS_PATH + newNamePath)
-			await ContentBrowserUtil.refreshFiles().catch()
+			await ContentBrowserUtil.refreshFiles().catch(console.error)
 			if (item.id === currentDirectory.id)
 				setCurrentDirectory({id: newNamePath})
 			return
@@ -134,7 +134,7 @@ export default class ContentBrowserUtil {
 			return
 
 		await ContentBrowserUtil.rename(FileSystemUtil.ASSETS_PATH + item.id, targetPath)
-		await ContentBrowserUtil.refreshFiles().catch()
+		await ContentBrowserUtil.refreshFiles().catch(console.error)
 	}
 
 	static async handleDropFolder(event: string[] | string, target?: string) {
@@ -207,7 +207,7 @@ export default class ContentBrowserUtil {
 				setCurrentDirectory({id: FileSystemUtil.sep})
 		}
 
-		await ContentBrowserUtil.refreshFiles().catch()
+		await ContentBrowserUtil.refreshFiles().catch(console.error)
 		ToastNotificationSystem.getInstance().success(LocalizationEN.SUCCESSFUL_DELETE)
 	}
 
@@ -387,7 +387,7 @@ export default class ContentBrowserUtil {
 		return [
 			{
 				label: LocalizationEN.FOLDER,
-				onClick: () => ContentBrowserUtil.createFolder(currentDirectory).catch()
+				onClick: () => ContentBrowserUtil.createFolder(currentDirectory).catch(console.error)
 			},
 			{divider: true},
 			{
@@ -427,7 +427,7 @@ export default class ContentBrowserUtil {
 		FilesStore.getInstance().addListener("self-update", () => {
 			FilesHierarchyStore.updateStore({})
 		})
-		ContentBrowserUtil.refreshFiles().catch()
+		ContentBrowserUtil.refreshFiles().catch(console.error)
 	}
 
 

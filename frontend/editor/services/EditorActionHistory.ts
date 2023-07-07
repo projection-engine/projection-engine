@@ -8,7 +8,7 @@ import ToastNotificationSystem from "../../shared/components/alert/ToastNotifica
 import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
 import EngineStateService from "./engine/EngineStateService"
 import Entity from "../../../engine-core/instances/Entity"
-import LocalizationEN from "../../../shared/LocalizationEN"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 
 interface Action {
     nameCache: Map<string, string>

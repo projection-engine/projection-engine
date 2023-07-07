@@ -1,7 +1,7 @@
 <script lang="ts">
     import Preview from "../../../../shared/components/preview/Preview.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import Folders from "../../../../../shared/Folders"
+    import Folders from "../../../../../shared/enums/Folders"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
     export let state

@@ -1,4 +1,4 @@
-import LocalizationEN from "../../../../shared/LocalizationEN"
+import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
 

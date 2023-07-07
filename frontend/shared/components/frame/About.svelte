@@ -1,6 +1,6 @@
 <script>
     import Modal from "../modal/Modal.svelte"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
     export let handleClose
 </script>

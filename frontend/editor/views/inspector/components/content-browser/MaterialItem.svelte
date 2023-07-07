@@ -7,7 +7,7 @@
     import MaterialUniforms from "../MaterialUniforms.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import InspectorUtil from "../../../../util/InspectorUtil"
 
     export let data

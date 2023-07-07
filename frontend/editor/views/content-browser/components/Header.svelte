@@ -8,8 +8,8 @@
     import Input from "../../../../shared/components/input/Input.svelte"
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
     import SortingOptions from "./SortingOptions.svelte"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
-    import FileTypes from "../../../../../shared/FileTypes"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
+    import FileTypes from "../../../../../shared/enums/FileTypes"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import EditorUtil from "../../../util/EditorUtil"
@@ -61,7 +61,7 @@
                 data-svelteview-header-button="-"
                 on:click={() => {
                     ToastNotificationSystem.getInstance().warn(LocalizationEN.REFRESHING)
-                    ContentBrowserUtil.refreshFiles().catch()
+                    ContentBrowserUtil.refreshFiles().catch(console.error)
                 }}
         >
             <Icon styles="font-size: .9rem">sync</Icon>
@@ -69,7 +69,7 @@
         </button>
         <button data-sveltebuttondefault="-"
                 data-svelteview-header-button="-"
-                on:click={() => ContentBrowserUtil.createFolder(currentDirectory).catch()}
+                on:click={() => ContentBrowserUtil.createFolder(currentDirectory).catch(console.error)}
         >
             <Icon styles="transform: rotate(180deg)">create_new_folder</Icon>
             <ToolTip content={LocalizationEN.CREATE_FOLDER}/>

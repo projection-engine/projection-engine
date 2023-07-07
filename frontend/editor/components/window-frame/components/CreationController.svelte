@@ -3,7 +3,7 @@
     import SettingsStore from "../../../../stores/SettingsStore"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 
     function setTabs(newValue, direction) {
     	const settings = SettingsStore.getData()

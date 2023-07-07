@@ -1,5 +1,5 @@
 import SelectionStore from "../../stores/SelectionStore"
-import SelectionTargets from "../../../shared/SelectionTargets"
+import SelectionTargets from "../../../shared/enums/SelectionTargets"
 import EngineStore from "../../stores/EngineStore"
 
 export default class SelectionStoreUtil{

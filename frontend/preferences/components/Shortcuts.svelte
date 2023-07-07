@@ -3,7 +3,7 @@
     import SETTINGS from "../../editor/static/SETTINGS"
     import SettingsStore from "../../stores/SettingsStore"
     import PropertyHeader from "../../shared/components/PropertyHeader.svelte"
-    import LocalizationEN from "../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../shared/enums/LocalizationEN"
     import {onDestroy, onMount} from "svelte"
 
     const COMPONENT_ID = crypto.randomUUID()

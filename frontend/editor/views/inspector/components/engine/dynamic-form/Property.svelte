@@ -9,7 +9,7 @@
     import Icon from "../../../../../../shared/components/icon/Icon.svelte"
     import Range from "../../../../../../shared/components/range/Range.svelte"
     import FileSystemAPI from "../../../../../../../engine-core/lib/utils/FileSystemAPI"
-    import LocalizationEN from "../../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../../shared/components/icon/EmptyIcon.svelte";
 
     export let component = undefined

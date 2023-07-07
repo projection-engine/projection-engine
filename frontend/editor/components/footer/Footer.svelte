@@ -8,8 +8,9 @@
     import Engine from "../../../../engine-core/Engine"
     import {onDestroy, onMount} from "svelte"
     import EntityUpdateService from "../../services/engine/EntityUpdateService"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../stores/SettingsStore"
+    import LoggerConfig from "./components/LoggerConfig.svelte"
 
     const COMPONENT_ID = crypto.randomUUID()
     let settings = {}
@@ -56,6 +57,8 @@
             <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
         {/if}
         <FrameMetadata/>
+        <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
+        <LoggerConfig/>
     </div>
 
     <div class="meta-data" style="justify-content: flex-end">

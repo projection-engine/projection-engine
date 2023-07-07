@@ -96,7 +96,7 @@ export default class MeshComponent extends Component {
 				this.entity.materialRef = found
 				this.#materialUniforms = this.entity.materialRef.uniforms
 				this._mappedUniforms = {}
-				MaterialAPI.mapUniforms(this.#materialUniforms, this.#texturesInUse, this._mappedUniforms).catch()
+				MaterialAPI.mapUniforms(this.#materialUniforms, this.#texturesInUse, this._mappedUniforms).catch(console.error)
 				MaterialResourceMapper.linkEntityMaterial(this.entity, materialID)
 
 			})
@@ -104,7 +104,7 @@ export default class MeshComponent extends Component {
 			this.entity.materialRef = found
 			this.#materialUniforms = this.entity.materialRef.uniforms
 			this._mappedUniforms = {}
-			MaterialAPI.mapUniforms(this.#materialUniforms, this.#texturesInUse, this._mappedUniforms).catch()
+			MaterialAPI.mapUniforms(this.#materialUniforms, this.#texturesInUse, this._mappedUniforms).catch(console.error)
 			MaterialResourceMapper.linkEntityMaterial(this.entity, materialID)
 		}
 	}

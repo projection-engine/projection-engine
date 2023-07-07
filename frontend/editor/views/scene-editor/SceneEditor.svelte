@@ -19,7 +19,7 @@
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import GPU from "../../../../engine-core/GPU"
     import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
 
     const COMPONENT_ID = crypto.randomUUID()

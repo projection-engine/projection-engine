@@ -11,7 +11,7 @@
     import RENDER_TARGET from "../../../editor/static/RENDER_TARGET"
     import HotKeysController from "../../lib/HotKeysController"
     import LevelService from "../../../editor/services/engine/LevelService"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
     const COMPONENT_ID = crypto.randomUUID()
 

@@ -10,7 +10,7 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 
 import ResourceEntityMapper from "../../../../engine-core/resource-libs/ResourceEntityMapper"
 import LevelService from "./LevelService"
-import LocalizationEN from "../../../../shared/LocalizationEN"
+import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
 export default class ExecutionService {
 	static #currentLevelID
@@ -27,7 +27,7 @@ export default class ExecutionService {
 		ExecutionService.cameraSerialization = CameraAPI.serializeState()
 		ExecutionService.#isPlaying = true
 		CameraTracker.stopTracking()
-		await LevelService.getInstance().saveCurrentLevel().catch()
+		await LevelService.getInstance().saveCurrentLevel().catch(console.error)
 		ExecutionService.#currentLevelID = Engine.loadedLevel.id
 		await Engine.startSimulation()
 		EngineStore.updateStore({focusedCamera: undefined, executingAnimation: true})
@@ -46,7 +46,7 @@ export default class ExecutionService {
 		Engine.environment = ENVIRONMENT.DEV
 
 		UIAPI.destroyUI()
-		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch()
+		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)
 		await ScriptsAPI.updateAllScripts()
 
 		CameraAPI.trackingEntity = undefined

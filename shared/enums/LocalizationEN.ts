@@ -1,4 +1,7 @@
 export default {
+	LOGGER_SILENT: "Writes log/error/warning to terminal (integrated) only",
+	LOGGER_DETAILED: "Writes every log/error/warning to file and to terminal (integrated)",
+
 	RAYLEIGH_HEIGHT: "Rayleigh height",
 	MIE_HEIGHT: "Mie height",
 	RAYLEIGH_BETA_VALUES: "Rayleigh beta values",

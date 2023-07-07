@@ -8,7 +8,6 @@ export default class HotKeysController {
 
 	static initializeListener() {
 		function handler(event) {
-			// console.log(Object.keys(hotkeys.keyMap))
 			const h = HotKeysController.holding
 			if (event.repeat || HotKeysController.blockActions || document.pointerLockElement != null)
 				return

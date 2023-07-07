@@ -1,5 +1,5 @@
 import SHADING_MODELS from "../../../engine-core/static/SHADING_MODELS"
-import LocalizationEN from "../../../shared/LocalizationEN"
+import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import SettingsStore from "../../stores/SettingsStore"
 import ConversionAPI from "../../../engine-core/lib/math/ConversionAPI"
 import GPU from "../../../engine-core/GPU"
@@ -173,7 +173,7 @@ export default class SceneEditorUtil {
 		ViewportInteractionListener.get()
 		draggable.onMount({
 			targetElement: GPU.canvas,
-			onDrop: (data, event) => EngineResourceLoaderService.load(data, false, event.clientX, event.clientY).catch(),
+			onDrop: (data, event) => EngineResourceLoaderService.load(data, false, event.clientX, event.clientY).catch(console.error),
 			onDragOver: () => `
                 <span data-svelteicon="-" style="font-size: 70px">add</span>
                 ${LocalizationEN.DRAG_DROP}

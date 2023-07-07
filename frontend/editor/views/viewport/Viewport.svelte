@@ -11,7 +11,7 @@
     import TabsStore from "../../../stores/TabsStore"
     import GPU from "../../../../engine-core/GPU"
     import RENDER_TARGET from "../../static/RENDER_TARGET"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import ViewportUtil from "../../util/ViewportUtil"
     import ViewsUtil from "../../util/ViewsUtil"
     import TabsStoreUtil from "../../util/TabsStoreUtil"

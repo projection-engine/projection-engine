@@ -5,7 +5,7 @@
 
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Input from "../../../../shared/components/input/Input.svelte"
-    import LocalizationEN from "../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SelectorUtil from "../../../util/SelectorUtil"
 
     export let handleChange

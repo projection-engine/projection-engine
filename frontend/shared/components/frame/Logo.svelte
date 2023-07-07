@@ -1,7 +1,7 @@
 <script>
 
     import About from "./About.svelte"
-    import LocalizationEN from "../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
     let aboutModalIsOpen = false
 </script>

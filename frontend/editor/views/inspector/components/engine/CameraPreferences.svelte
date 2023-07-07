@@ -7,7 +7,7 @@
     import {onDestroy, onMount} from "svelte"
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte"
-    import LocalizationEN from "../../../../../../shared/LocalizationEN"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import CAMERA_PREFERENCES from "../../static/CAMERA_PREFERENCES"
 
     const COMPONENT_ID = crypto.randomUUID()
