@@ -1,6 +1,6 @@
 <script>
     import Options from "./components/Options.svelte"
-    import EmbeddedMeshes from "../../../../engine-core/static/EmbeddedMeshes"
+    import EmbeddedMeshes from "../../../../engine-core/core/static/EmbeddedMeshes"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"

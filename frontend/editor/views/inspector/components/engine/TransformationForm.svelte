@@ -1,6 +1,6 @@
 <script>
     import SelectionStore from "../../../../../stores/SelectionStore"
-    import Engine from "../../../../../../engine-core/Engine"
+    import Engine from "../../../../../../engine-core/core/Engine"
 
     import {onDestroy, onMount} from "svelte"
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
@@ -10,7 +10,7 @@
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import ROTATION_TYPES from "../../static/ROTATION_TYPES"
-    import Movable from "../../../../../../engine-core/instances/components/Movable"
+    import Movable from "../../../../../../engine-core/core/instances/components/Movable"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte"
     import SelectionStoreUtil from "../../../../util/SelectionStoreUtil"

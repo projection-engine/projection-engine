@@ -1,12 +1,12 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
-    import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
+    import UIAPI from "../../../../engine-core/core/lib/rendering/UIAPI"
+    import QueryAPI from "../../../../engine-core/core/lib/utils/QueryAPI"
     import Header from "./Header.svelte"
 
 
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
-    import GPU from "../../../../engine-core/GPU"
+    import GPU from "../../../../engine-core/core/GPU"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import SelectionStoreUtil from "../../util/SelectionStoreUtil"

@@ -2,7 +2,7 @@
     import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE.ts"
 
     import SettingsStore from "../../../../stores/SettingsStore"
-    import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
+    import GizmoSystem from "../../../../../engine-core/tools/gizmo/GizmoSystem"
     import GIZMOS from "../../../static/GIZMOS.ts"
     import ROTATION_GRID from "../static/ROTATION_GRID"
     import SCALE_GRID from "../static/SCALE_GRID"

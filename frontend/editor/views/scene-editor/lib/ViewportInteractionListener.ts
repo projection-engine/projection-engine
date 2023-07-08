@@ -1,10 +1,11 @@
-import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
-import Engine from "../../../../../engine-core/Engine"
+import GizmoSystem from "../../../../../engine-core/tools/gizmo/GizmoSystem"
+import Engine from "../../../../../engine-core/core/Engine"
 import SettingsStore from "../../../../stores/SettingsStore"
-import GPU from "../../../../../engine-core/GPU"
+import GPU from "../../../../../engine-core/core/GPU"
 import AbstractSingleton from "../../../../../shared/AbstractSingleton"
 import ViewportUtil from "../../../util/ViewportUtil"
 import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+import GizmoDepthPickingUtil from "../../../../../engine-core/tools/gizmo/util/GizmoDepthPickingUtil"
 
 
 export default class ViewportInteractionListener extends AbstractSingleton {
@@ -30,7 +31,7 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 			return
 		this.mouseDelta = {x: e.clientX, y: e.clientY}
 
-		GizmoSystem.targetGizmo.onMouseDown(e)
+		GizmoDepthPickingUtil.onMouseDown(e)
 		document.addEventListener("mousemove", GizmoSystem.targetGizmo.onMouseMove)
 
 	}

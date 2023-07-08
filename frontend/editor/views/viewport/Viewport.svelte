@@ -9,7 +9,7 @@
     import VIEWS from "../../components/view/static/VIEWS"
     import View from "../../components/view/components/View.svelte"
     import TabsStore from "../../../stores/TabsStore"
-    import GPU from "../../../../engine-core/GPU"
+    import GPU from "../../../../engine-core/core/GPU"
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import ViewportUtil from "../../util/ViewportUtil"

@@ -1,7 +1,7 @@
 <script>
 
     import {onDestroy, onMount} from "svelte"
-    import ConsoleAPI from "../../../../engine-core/lib/utils/ConsoleAPI"
+    import ConsoleAPI from "../../../../engine-core/core/lib/utils/ConsoleAPI"
 
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"

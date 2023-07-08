@@ -1,4 +1,4 @@
-import SHADING_MODELS from "../../../engine-core/static/SHADING_MODELS"
+import SHADING_MODELS from "../../../engine-core/core/static/SHADING_MODELS"
 import GIZMOS from "./GIZMOS"
 import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
 import KEYS from "./KEYS"

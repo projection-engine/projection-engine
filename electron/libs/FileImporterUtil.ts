@@ -1,4 +1,4 @@
-import TEXTURE_TEMPLATE from "../../engine-core/static/TEXTURE_TEMPLATE"
+import TEXTURE_TEMPLATE from "../../engine-core/core/static/TEXTURE_TEMPLATE"
 import ElectronWindowService from "../ElectronWindowService"
 import AssimpService from "./assimp/AssimpService"
 import GLTFLoaderUtil from "./gltf/GLTFLoaderUtil"

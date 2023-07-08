@@ -1,5 +1,5 @@
 <script>
-    import DATA_TYPES from "../../../../../engine-core/static/DATA_TYPES"
+    import DATA_TYPES from "../../../../../engine-core/core/static/DATA_TYPES"
     import Selector from "../../../components/selector/Selector.svelte"
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte"
     import Range from "../../../../shared/components/range/Range.svelte"

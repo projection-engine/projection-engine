@@ -1,9 +1,9 @@
 <script>
 
-    import GPU from "../../../../../../engine-core/GPU"
-    import PrimitiveProcessor from "../../../../../../engine-core/lib/math/PrimitiveProcessor"
+    import GPU from "../../../../../../engine-core/core/GPU"
+    import PrimitiveProcessor from "../../../../../../engine-core/core/lib/math/PrimitiveProcessor"
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
-    import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
+    import GPUAPI from "../../../../../../engine-core/core/lib/rendering/GPUAPI"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorFSUtil from "../../../../util/EditorFSUtil"

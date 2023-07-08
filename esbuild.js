@@ -75,10 +75,10 @@ const electron = {
 }
 
 const workers = [
-	worker("engine-core/workers/entity-worker.ts", "build/entity-worker.js"),
-	worker("engine-core/workers/camera-worker.ts", "build/camera-worker.js"),
-	worker("engine-core/workers/terrain-worker.ts", "build/terrain-worker.js"),
-	worker("engine-core/workers/image-worker.ts", "build/image-worker.js"),
+	worker("engine-core/core/workers/entity-worker.ts", "build/entity-worker.js"),
+	worker("engine-core/core/workers/camera-worker.ts", "build/camera-worker.js"),
+	worker("engine-core/core/workers/terrain-worker.ts", "build/terrain-worker.js"),
+	worker("engine-core/core/workers/image-worker.ts", "build/image-worker.js"),
 ]
 
 workers.forEach((worker, i) => {

@@ -1,7 +1,7 @@
 <script>
 
     import {onMount} from "svelte"
-    import CameraTracker from "../../../../../engine-core/tools/lib/CameraTracker"
+    import CameraTracker from "../../../../../engine-core/tools/utils/CameraTracker"
     import CAMERA_ROTATIONS from "../../../../../engine-core/tools/static/CAMERA_ROTATIONS"
 
     let ref

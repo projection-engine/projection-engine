@@ -1,4 +1,4 @@
-import COMPONENTS from "../../../../../engine-core/static/COMPONENTS"
+import COMPONENTS from "../../../../../engine-core/core/static/COMPONENTS"
 import EditorUtil from "../../../util/EditorUtil"
 
 

@@ -1,23 +1,23 @@
 import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorFSUtil from "../../util/EditorFSUtil"
 
-import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
-import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
-import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
+import COMPONENTS from "../../../../engine-core/core/static/COMPONENTS"
+import PickingAPI from "../../../../engine-core/core/lib/utils/PickingAPI"
+import QueryAPI from "../../../../engine-core/core/lib/utils/QueryAPI"
 import EditorActionHistory from "../EditorActionHistory"
 import EntityFactoryService from "./EntityFactoryService"
-import GPU from "../../../../engine-core/GPU"
-import GPUAPI from "../../../../engine-core/lib/rendering/GPUAPI"
+import GPU from "../../../../engine-core/core/GPU"
+import GPUAPI from "../../../../engine-core/core/lib/rendering/GPUAPI"
 
-import FileSystemAPI from "../../../../engine-core/lib/utils/FileSystemAPI"
-import MeshComponent from "../../../../engine-core/instances/components/MeshComponent"
-import SpriteComponent from "../../../../engine-core/instances/components/SpriteComponent"
+import FileSystemAPI from "../../../../engine-core/core/lib/utils/FileSystemAPI"
+import MeshComponent from "../../../../engine-core/core/instances/components/MeshComponent"
+import SpriteComponent from "../../../../engine-core/core/instances/components/SpriteComponent"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import EngineStateService from "./EngineStateService"
-import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
+import EntityAPI from "../../../../engine-core/core/lib/utils/EntityAPI"
 import FileTypes from "../../../../shared/enums/FileTypes"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
-import Entity from "../../../../engine-core/instances/Entity"
+import Entity from "../../../../engine-core/core/instances/Entity"
 
 
 export default class EngineResourceLoaderService {

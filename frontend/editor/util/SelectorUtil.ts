@@ -1,4 +1,4 @@
-import Engine from "../../../engine-core/Engine"
+import Engine from "../../../engine-core/core/Engine"
 import FilesStore from "../../stores/FilesStore"
 
 export default class SelectorUtil{

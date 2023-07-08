@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte"
     import GIZMOS from "../../../static/GIZMOS.ts"
 
-    import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
+    import GizmoSystem from "../../../../../engine-core/tools/gizmo/GizmoSystem"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../../stores/SettingsStore"
     import SelectionStore from "../../../../stores/SelectionStore"

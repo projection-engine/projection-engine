@@ -1,6 +1,6 @@
 <script>
     import Option from "./Option.svelte"
-    import EmbeddedMeshes from "../../../../../engine-core/static/EmbeddedMeshes"
+    import EmbeddedMeshes from "../../../../../engine-core/core/static/EmbeddedMeshes"
     import VirtualList from "@sveltejs/svelte-virtual-list"
 
     import Icon from "../../../../shared/components/icon/Icon.svelte"

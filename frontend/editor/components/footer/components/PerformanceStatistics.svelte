@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import Renderer from "../../../../../engine-core/Renderer"
-    import Engine from "../../../../../engine-core/Engine"
+    import Renderer from "../../../../../engine-core/core/Renderer"
+    import Engine from "../../../../../engine-core/core/Engine"
 
     const COMPONENT_ID = crypto.randomUUID()
     const MEMORY_UPDATE_INTERVAL = 2000

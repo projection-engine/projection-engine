@@ -1,6 +1,6 @@
 <script>
     import Checkbox from "../../../../../../shared/components/checkbox/Checkbox.svelte"
-    import Component from "../../../../../../../engine-core/instances/components/Component"
+    import Component from "../../../../../../../engine-core/core/instances/components/Component"
     import Selector from "../../../../../components/selector/Selector.svelte"
 
     import ColorPicker from "../../../../../../shared/components/color-picker/ColorPicker.svelte"
@@ -8,7 +8,7 @@
     import Dropdown from "../../../../../../shared/components/dropdown/Dropdown.svelte"
     import Icon from "../../../../../../shared/components/icon/Icon.svelte"
     import Range from "../../../../../../shared/components/range/Range.svelte"
-    import FileSystemAPI from "../../../../../../../engine-core/lib/utils/FileSystemAPI"
+    import FileSystemAPI from "../../../../../../../engine-core/core/lib/utils/FileSystemAPI"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../../shared/components/icon/EmptyIcon.svelte";
 

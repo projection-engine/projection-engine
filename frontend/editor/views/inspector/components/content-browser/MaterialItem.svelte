@@ -1,9 +1,9 @@
 <script>
-    import GPU from "../../../../../../engine-core/GPU"
+    import GPU from "../../../../../../engine-core/core/GPU"
 
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
-    import GPUAPI from "../../../../../../engine-core/lib/rendering/GPUAPI"
+    import GPUAPI from "../../../../../../engine-core/core/lib/rendering/GPUAPI"
     import MaterialUniforms from "../MaterialUniforms.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
