@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import GIZMOS from "../../../static/GIZMOS.ts"
+    import GIZMOS from "../../../../../shared/enums/Gizmos.ts"
 
     import GizmoSystem from "../../../../../engine-core/tools/gizmo/GizmoSystem"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"

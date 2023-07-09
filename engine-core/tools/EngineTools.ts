@@ -12,6 +12,7 @@ import GPU from "../core/GPU"
 import StaticEditorMeshes from "./utils/StaticEditorMeshes"
 import StaticEditorShaders from "./utils/StaticEditorShaders"
 import StaticFBO from "../core/lib/StaticFBO"
+import GizmoState from "./gizmo/util/GizmoState"
 
 export default class EngineTools {
 	static selected: Entity[] = []
@@ -26,7 +27,6 @@ export default class EngineTools {
 		await StaticEditorMeshes.initialize()
 
 		Engine.environment = ENVIRONMENT.DEV
-		GizmoSystem.initialize()
 		LineRenderer.initialize()
 	}
 
@@ -47,14 +47,7 @@ export default class EngineTools {
 			}
 		}
 
-		const main = selected[0]
-		if (main)
-			GizmoSystem.linkEntityToGizmo(main)
-		else {
-			GizmoSystem.targetRotation = undefined
-			GizmoSystem.mainEntity = undefined
-			GizmoSystem.hasStarted = false
-		}
+		GizmoState.mainEntity = selected[0]
 	}
 
 	static drawIconsToBuffer() {

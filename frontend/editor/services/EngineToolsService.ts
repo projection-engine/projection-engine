@@ -2,12 +2,7 @@ import Engine from "../../../engine-core/core/Engine"
 import CameraTracker from "../../../engine-core/tools/utils/CameraTracker"
 import EngineTools from "../../../engine-core/tools/EngineTools"
 import CameraAPI from "../../../engine-core/core/lib/utils/CameraAPI"
-import GizmoSystem from "../../../engine-core/tools/gizmo/GizmoSystem"
 import ENVIRONMENT from "../../../engine-core/core/static/ENVIRONMENT"
-import RotationGizmo from "../../../engine-core/tools/gizmo/transformation/RotationGizmo"
-import TranslationGizmo from "../../../engine-core/tools/gizmo/transformation/TranslationGizmo"
-import ScalingGizmo from "../../../engine-core/tools/gizmo/transformation/ScalingGizmo"
-import GIZMOS from "../static/GIZMOS"
 import EngineResources from "../../../engine-core/core/lib/EngineResources"
 import AbstractSingleton from "../../../shared/AbstractSingleton"
 import EngineStore from "../../stores/EngineStore"
@@ -20,6 +15,7 @@ import SelectionStoreUtil from "../util/SelectionStoreUtil"
 import EngineToolsState from "../../../engine-core/tools/EngineToolsState"
 import EngineState from "../../../engine-core/core/EngineState"
 import SETTINGS from "../static/SETTINGS"
+import GizmoState from "../../../engine-core/tools/gizmo/util/GizmoState"
 
 export default class EngineToolsService extends AbstractSingleton {
 
@@ -118,24 +114,12 @@ export default class EngineToolsService extends AbstractSingleton {
 
 	static #updateWithSettings() {
 		const settings = SettingsStore.getData()
-		RotationGizmo.gridSize = settings.gizmoGrid.rotationGizmo || .001
-		TranslationGizmo.gridSize = settings.gizmoGrid.translationGizmo || .001
-		ScalingGizmo.gridSize = settings.gizmoGrid.scaleGizmo || .001
-
-		GizmoSystem.transformationType = settings.transformationType
-		if (settings.gizmoGrid.sensitivity != null)
-			GizmoSystem.sensitivity = settings.gizmoGrid.sensitivity
-		switch (settings.gizmo) {
-		case GIZMOS.TRANSLATION:
-			GizmoSystem.targetGizmo = GizmoSystem.translationGizmo
-			break
-		case GIZMOS.ROTATION:
-			GizmoSystem.targetGizmo = GizmoSystem.rotationGizmo
-			break
-		case GIZMOS.SCALE:
-			GizmoSystem.targetGizmo = GizmoSystem.scaleGizmo
-			break
-		}
+		GizmoState.rotationGridSize = settings.gizmoGrid.rotationGizmo || .001
+		GizmoState.translationGridSize = settings.gizmoGrid.translationGizmo || .001
+		GizmoState.scalingGridSize = settings.gizmoGrid.scaleGizmo || .001
+		GizmoState.transformationType = settings.transformationType
+		GizmoState.sensitivity =settings?.gizmoGrid?.sensitivity / 100 || .001
+		GizmoState.gizmoType =settings.gizmo
 		EngineToolsService.#updateCameraTracker()
 		EngineToolsService.#updateEngineToolsState()
 		CameraAPI.isOrthographic = settings.camera.ortho

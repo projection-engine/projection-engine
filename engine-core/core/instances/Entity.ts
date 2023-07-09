@@ -53,7 +53,6 @@ export default class Entity extends ComponentResources {
     	return this.components.array
     }
 
-
     setPickID(data: number[]) {
     	data.forEach((v, i) => this.#pickID[i] = v)
     	this.#pickIndex = (data[0] + data[1] + data[2]) * 255

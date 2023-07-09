@@ -1,23 +1,37 @@
-import GizmoSystem from "../GizmoSystem"
 import AXIS from "../../static/AXIS"
-import GizmoAPI from "../util/GizmoAPI"
 import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
-import PickingAPI from "../../../core/lib/utils/PickingAPI"
 import {mat4, vec3} from "gl-matrix"
 import GizmoUtil from "../util/GizmoUtil"
+import AbstractSingleton from "../../../../shared/AbstractSingleton"
+import IGizmo from "../IGizmo"
+import Mesh from "../../../core/instances/Mesh"
+import Entity from "../../../core/instances/Entity"
+import GizmoMouseUtil from "../util/GizmoMouseUtil"
 
-export default class DualAxisGizmo {
-	static xyGizmo
-	static xzGizmo
-	static zyGizmo
-	static XZ_ID = PickingAPI.getPickerId(AXIS.XZ)
-	static XY_ID = PickingAPI.getPickerId(AXIS.XY)
-	static ZY_ID = PickingAPI.getPickerId(AXIS.ZY)
-	static initialize() {
-		DualAxisGizmo.xyGizmo = DualAxisGizmo.#mapGizmoMesh("XY", 2)
-		DualAxisGizmo.xzGizmo = DualAxisGizmo.#mapGizmoMesh("XZ", 3)
-		DualAxisGizmo.zyGizmo = DualAxisGizmo.#mapGizmoMesh("ZY", 4)
+export default class DualAxisGizmo extends AbstractSingleton implements IGizmo {
+	mesh: Mesh
+	/**
+     * XY gizmo
+     */
+	xGizmo: Entity
+	/**
+     * ZY gizmo
+     */
+	yGizmo: Entity
+	/**
+     * XZ gizmo
+     */
+	zGizmo: Entity
+
+	constructor() {
+		super()
+		this.mesh = StaticEditorMeshes.dualAxisGizmo
+		this.xGizmo = DualAxisGizmo.#mapGizmoMesh("XY", 5)
+		this.zGizmo = DualAxisGizmo.#mapGizmoMesh("XZ", 6)
+		this.yGizmo = DualAxisGizmo.#mapGizmoMesh("ZY", 7)
 	}
+
+	clearState(){}
 
 	static #mapGizmoMesh(axis: string, index: number) {
 		const rotation = vec3.create()
@@ -36,35 +50,26 @@ export default class DualAxisGizmo {
 		return GizmoUtil.getGizmoEntity(index, rotation, scale)
 	}
 
-	static transformGizmo(){
-		mat4.copy(DualAxisGizmo.xyGizmo.matrix, DualAxisGizmo.xyGizmo.__cacheMatrix)
-		mat4.copy(DualAxisGizmo.zyGizmo.matrix, DualAxisGizmo.zyGizmo.__cacheMatrix)
-		mat4.copy(DualAxisGizmo.xzGizmo.matrix, DualAxisGizmo.xzGizmo.__cacheMatrix)
-		GizmoAPI.translateMatrix(DualAxisGizmo.xyGizmo)
-		GizmoAPI.translateMatrix(DualAxisGizmo.zyGizmo)
-		GizmoAPI.translateMatrix(DualAxisGizmo.xzGizmo)
+	drawGizmo(): void {
+		GizmoUtil.drawGizmo(this.mesh, this.xGizmo.matrix, AXIS.XY)
+		GizmoUtil.drawGizmo(this.mesh, this.zGizmo.matrix, AXIS.XZ)
+		GizmoUtil.drawGizmo(this.mesh, this.yGizmo.matrix, AXIS.ZY)
 	}
 
+	drawToDepth(data: MutableObject){
+		GizmoMouseUtil.drawToDepth(data, this.mesh, this.xGizmo.matrix, this.xGizmo.pickID)
+		GizmoMouseUtil.drawToDepth(data, this.mesh, this.zGizmo.matrix, this.zGizmo.pickID)
+		GizmoMouseUtil.drawToDepth(data, this.mesh, this.yGizmo.matrix, this.yGizmo.pickID)
+	}
 
-	static drawGizmo() {
-		if (!GizmoSystem.mainEntity)
-			return
-		const meshToDraw = StaticEditorMeshes.dualAxisGizmo
+	onMouseMove(){}
 
-		GizmoAPI.drawGizmo(
-			meshToDraw,
-			DualAxisGizmo.xyGizmo.matrix,
-			AXIS.XY
-		)
-		GizmoAPI.drawGizmo(
-			meshToDraw,
-			DualAxisGizmo.xzGizmo.matrix,
-			AXIS.XZ
-		)
-		GizmoAPI.drawGizmo(
-			meshToDraw,
-			DualAxisGizmo.zyGizmo.matrix,
-			AXIS.ZY
-		)
+	transformGizmo(){
+		mat4.copy(this.xGizmo.matrix, this.xGizmo.__cacheMatrix)
+		mat4.copy(this.zGizmo.matrix, this.zGizmo.__cacheMatrix)
+		mat4.copy(this.yGizmo.matrix, this.yGizmo.__cacheMatrix)
+		GizmoUtil.translateMatrix(this.xGizmo)
+		GizmoUtil.translateMatrix(this.zGizmo)
+		GizmoUtil.translateMatrix(this.yGizmo)
 	}
 }

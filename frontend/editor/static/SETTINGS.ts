@@ -1,6 +1,6 @@
 import SHADING_MODELS from "../../../engine-core/core/static/SHADING_MODELS"
-import GIZMOS from "./GIZMOS"
-import TRANSFORMATION_TYPE from "./TRANSFORMATION_TYPE"
+import GIZMOS from "../../../shared/enums/Gizmos"
+import GizmoTransformationType from "../../../shared/enums/GizmoTransformationType"
 import KEYS from "./KEYS"
 import INITIAL_LAYOUT from "./INITIAL_LAYOUT"
 import {glMatrix} from "gl-matrix"
@@ -23,12 +23,12 @@ export default {
 	gridOpacity: 1,
 	gridColor: .3,
 	gridScale: 1,
-	gridThreshold: 100.,
+	gridThreshold: 100,
 	iconScale: 1,
 	spawnDistanceFromCamera: 10,
 	shadingModel: SHADING_MODELS.DETAIL,
 	gizmo: GIZMOS.TRANSLATION,
-	transformationType: TRANSFORMATION_TYPE.GLOBAL,
+	transformationType: GizmoTransformationType.GLOBAL,
 	backgroundColor: [.2, .2, .2],
 	fov: glMatrix.toRadian(60),
 	zNear: .1,

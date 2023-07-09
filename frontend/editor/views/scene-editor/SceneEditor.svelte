@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte"
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import SelectBox from "../../../shared/components/select-box/SelectBox.svelte"
-    import GIZMOS from "../../static/GIZMOS.ts"
+    import GIZMOS from "../../../../shared/enums/Gizmos.ts"
     import GizmoSystem from "../../../../engine-core/tools/gizmo/GizmoSystem"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import CameraSettings from "./components/CameraSettings.svelte"
