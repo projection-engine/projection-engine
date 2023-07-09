@@ -6,6 +6,7 @@ import AXIS from "../../static/AXIS"
 import VisibilityRenderer from "../../../core/runtime/VisibilityRenderer"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GizmoState from "./GizmoState"
+import GizmoSystem from "../GizmoSystem"
 
 export default class GizmoMouseUtil {
 
@@ -15,29 +16,24 @@ export default class GizmoMouseUtil {
 		GizmoState.clickedAxis = AXIS.NONE
 		if (!GizmoState.mainEntity)
 			return
-		for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
-			GizmoState.targetGizmos[i].transformGizmo()
-		}
+		GizmoSystem.callListeners(true)
+		GizmoSystem.onStop?.()
 	}
-	
+
 	static onMouseDown(event: MouseEvent) {
 		if (!GizmoState.mainEntity)
 			return
-		for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
-			const gizmo = GizmoState.targetGizmos[i]
-			gizmo.transformGizmo()
-			gizmo.clearState()
-		}
+		GizmoSystem.callListeners(true)
 		GizmoMouseUtil.#drawGizmoToDepth()
-		GizmoState.clickedAxis = PickingAPI.readEntityID(event.clientX, event.clientY)
-
-		if (!GizmoState.clickedAxis) {
+		const axis = PickingAPI.readEntityID(event.clientX, event.clientY)
+		if (axis === 0) {
 			GizmoMouseUtil.onMouseUp()
+			return
 		}
-		else {
-			GizmoState.wasOnGizmo = true
-			GPU.canvas.requestPointerLock()
-		}
+		document.body.requestPointerLock()
+		GizmoState.wasOnGizmo = true
+		GizmoState.clickedAxis = axis
+		GizmoSystem.onStart?.()
 	}
 
 	static #drawGizmoToDepth() {
@@ -62,7 +58,7 @@ export default class GizmoMouseUtil {
 		mesh.draw()
 	}
 
-	static onMouseMove(event:MouseEvent){
+	static onMouseMove(event: MouseEvent) {
 		for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
 			GizmoState.targetGizmos[i].onMouseMove(event)
 		}

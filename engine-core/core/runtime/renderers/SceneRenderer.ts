@@ -6,7 +6,6 @@ import Engine from "../../Engine"
 import CameraAPI from "../../lib/utils/CameraAPI"
 import StaticFBO from "../../lib/StaticFBO"
 import OmnidirectionalShadows from "../OmnidirectionalShadows"
-import SceneComposition from "../SceneComposition"
 import UberMaterialAttributeGroup from "../../resource-libs/UberMaterialAttributeGroup"
 import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
 import Material from "../../instances/Material"
@@ -16,6 +15,7 @@ import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import Renderer from "../../Renderer"
 import Mesh from "../../instances/Mesh"
 import loopMeshes from "../loop-meshes"
+import EngineState from "../../EngineState"
 
 let stateWasCleared = false, isDoubleSided = false, isSky = false, texOffset = 0
 
@@ -34,7 +34,7 @@ export default class SceneRenderer {
 
 		UberShader.uber.bind()
 		if (Engine.developmentMode)
-			context.uniform1i(uniforms.shadingModel, SceneComposition.debugShadingModel)
+			context.uniform1i(uniforms.shadingModel, EngineState.debugShadingModel)
 
 		stateWasCleared = isDoubleSided = isSky = false
 		texOffset = 7

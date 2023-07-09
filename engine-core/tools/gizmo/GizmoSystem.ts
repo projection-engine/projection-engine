@@ -2,18 +2,35 @@ import GPU from "../../core/GPU"
 import GizmoUtil from "./util/GizmoUtil"
 import GizmoState from "./util/GizmoState"
 import GizmoLineSystem from "./GizmoLineSystem"
+import DynamicMap from "../../core/resource-libs/DynamicMap"
 
 
 export default class GizmoSystem {
 	static onStart?: Function
 	static onStop?: Function
+	static #listeners = new DynamicMap<string, Function>()
 
-	static translationRef: HTMLElement
-	static rotationRef: HTMLElement
-	static scaleRef: HTMLElement
-	static tooltip
-	static updateGizmoToolTip = () => null
+	static addListener(id: string, callback: Function) {
+		GizmoSystem.#listeners.set(id, callback)
+	}
 
+	static removeListener(id: string) {
+		GizmoSystem.#listeners.delete(id)
+	}
+
+	static callListeners(clearState = false) {
+		for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
+			const gizmo = GizmoState.targetGizmos[i]
+			if (clearState)
+				gizmo.clearState()
+			gizmo.transformGizmo()
+		}
+
+		const arr = GizmoSystem.#listeners.array
+		for (let i = 0; i < arr.length; i++) {
+			arr[i]()
+		}
+	}
 
 	static execute() {
 		const context = GPU.context
@@ -26,7 +43,7 @@ export default class GizmoSystem {
 			for (let i = 0; i < targetGizmosSize; i++) {
 				GizmoState.targetGizmos[i].drawGizmo()
 			}
-			if(targetGizmosSize > 0){
+			if (targetGizmosSize > 0) {
 				GizmoLineSystem.updateLineMatrix()
 				GizmoLineSystem.execute()
 			}

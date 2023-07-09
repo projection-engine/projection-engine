@@ -11,6 +11,9 @@
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"
     import {onDestroy, onMount} from "svelte"
 
+    /** @type boolean */
+    export let isOnGizmo
+
     const COMPONENT_ID = crypto.randomUUID()
     let options = []
     let spawnDistanceFromCamera
@@ -33,7 +36,7 @@
     })
 </script>
 
-<div class="left-content">
+<div class="left-content" style={!isOnGizmo ? undefined : "display: none"}>
     <OptionDropdown
             options={getEntityCreationOptions()}
             label={LocalizationEN.ADD}
@@ -65,7 +68,7 @@
     </Dropdown>
 
 </div>
-<div class="right-content">
+<div class="right-content" style={!isOnGizmo ? undefined : "display: none"}>
     <OptionDropdown
             noPadding={true}
             options={options}

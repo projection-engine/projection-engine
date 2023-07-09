@@ -68,11 +68,8 @@
 
 {#if !executingAnimation}
     <ViewHeader>
-        {#if isOnGizmo}
-            <EntityInformation/>
-        {:else}
-            <SceneOptions/>
-        {/if}
+        <EntityInformation {isOnGizmo}/>
+        <SceneOptions {isOnGizmo}/>
     </ViewHeader>
     <SelectBox
             targetElement={GPU.canvas}

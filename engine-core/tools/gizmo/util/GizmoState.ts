@@ -4,7 +4,6 @@ import GizmoSystem from "../GizmoSystem"
 import AXIS from "../../static/AXIS"
 import GizmoTransformationType from "../../../../shared/enums/GizmoTransformationType"
 import EngineTools from "../../EngineTools"
-import {glMatrix} from "gl-matrix"
 import IGizmo from "../IGizmo"
 import Gizmos from "../../../../shared/enums/Gizmos"
 import TranslationGizmo from "../transformation/TranslationGizmo"
@@ -21,8 +20,8 @@ export default class GizmoState {
 	static clickedAxis = AXIS.NONE
 	static transformationType = GizmoTransformationType.GLOBAL
 	static sensitivity = .001
-	static #wasOnGizmo = false
-	static rotationGridSize = glMatrix.toRadian(1)
+	static wasOnGizmo = false
+	static rotationGridSize = 1
 	static translationGridSize = 1
 	static scalingGridSize = 1
 	static #gizmoType = Gizmos.NONE
@@ -30,7 +29,9 @@ export default class GizmoState {
 	static get targetGizmos() {
 		return GizmoState.#targetGizmos
 	}
-
+	static get gizmoType() {
+		return GizmoState.#gizmoType
+	}
 	static set gizmoType(data: Gizmos) {
 		GizmoState.#gizmoType = data
 		GizmoState.#targetGizmos.length = 0
@@ -45,18 +46,6 @@ export default class GizmoState {
 			GizmoState.#targetGizmos.push(ScalingGizmo.get(), DualAxisGizmo.get(), ScreenSpaceGizmo.get())
 			break
 		}
-	}
-
-	static get wasOnGizmo() {
-		return GizmoState.#wasOnGizmo
-	}
-
-	static set wasOnGizmo(data) {
-		GizmoState.#wasOnGizmo = data
-		if (data)
-			GizmoSystem.onStart?.()
-		else
-			GizmoSystem.onStop?.()
 	}
 
 	static get mainEntity() {
@@ -75,11 +64,8 @@ export default class GizmoState {
 		mainEntity.__pivotChanged = true
 		GizmoState.#mainEntity = mainEntity
 		GizmoState.targetRotation = mainEntity.rotationQuaternionFinal
-		for (let i = 0; i < GizmoState.#targetGizmos.length; i++) {
-			const gizmo = GizmoState.#targetGizmos[i]
-			gizmo.transformGizmo()
-			gizmo.clearState()
-		}
+
+		GizmoSystem.callListeners(true)
 	}
 
 	static get isGlobal() {

@@ -1,17 +1,15 @@
 import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
-import GizmoSystem from "../GizmoSystem"
-import {mat4, quat, vec3, vec4} from "gl-matrix"
+import {quat, vec3, vec4} from "gl-matrix"
 import GizmoUtil from "../util/GizmoUtil"
 import AXIS from "../../static/AXIS"
-import ScreenSpaceGizmo from "./ScreenSpaceGizmo"
 import EngineTools from "../../EngineTools"
 import GizmoState from "../util/GizmoState"
-import EditorActionHistory from "../../../../frontend/editor/services/EditorActionHistory"
 import GizmoMouseUtil from "../util/GizmoMouseUtil"
 import Mesh from "../../../core/instances/Mesh"
 import Entity from "../../../core/instances/Entity"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import IGizmo from "../IGizmo"
+import GizmoSystem from "../GizmoSystem"
 
 export default class ScalingGizmo extends AbstractSingleton implements IGizmo {
 	#INVERSE_CACHE = vec3.create()
@@ -59,12 +57,6 @@ export default class ScalingGizmo extends AbstractSingleton implements IGizmo {
 	}
 
 	transformGizmo() {
-		if (!GizmoState.mainEntity)
-			return
-		mat4.copy(this.xGizmo.matrix, this.xGizmo.__cacheMatrix)
-		mat4.copy(this.yGizmo.matrix, this.yGizmo.__cacheMatrix)
-		mat4.copy(this.zGizmo.matrix, this.zGizmo.__cacheMatrix)
-
 		GizmoUtil.translateMatrix(this.xGizmo)
 		GizmoUtil.translateMatrix(this.yGizmo)
 		GizmoUtil.translateMatrix(this.zGizmo)
@@ -77,16 +69,8 @@ export default class ScalingGizmo extends AbstractSingleton implements IGizmo {
 	}
 
 	onMouseMove(event) {
-		if (!GizmoState.hasTransformationStarted) {
-			GizmoState.hasTransformationStarted = true
-			EditorActionHistory.save(EngineTools.selected)
-			GizmoSystem.updateGizmoToolTip()
-		}
 		this.#gizmoScaleEntity(event)
-		if (GizmoSystem.scaleRef) {
-			const mainEntity = GizmoState.mainEntity
-			GizmoSystem.scaleRef.textContent = `X ${mainEntity._scaling[0].toFixed(2)} | Y ${mainEntity._scaling[1].toFixed(2)} | Z ${mainEntity._scaling[2].toFixed(2)}`
-		}
+
 	}
 
 
@@ -98,7 +82,7 @@ export default class ScalingGizmo extends AbstractSingleton implements IGizmo {
 		const isGlobal = GizmoState.isGlobal
 		const g = event.ctrlKey ? 1 : GizmoState.scalingGridSize
 		if (GizmoState.clickedAxis !== AXIS.SCREEN_SPACE) {
-			const c = ScreenSpaceGizmo.onMouseMove(event)
+			const c = GizmoUtil.mapToScreenMovement(event)
 			this.#SCALE_CACHE[0] = c[0]
 			this.#SCALE_CACHE[1] = c[1]
 			this.#SCALE_CACHE[2] = c[2]
@@ -118,11 +102,10 @@ export default class ScalingGizmo extends AbstractSingleton implements IGizmo {
 			break
 		}
 
-		if (isGlobal) {
+		if (isGlobal)
 			vec4.transformQuat(this.#SCALE_CACHE, <vec4>this.#SCALE_CACHE, GizmoState.targetRotation)
-			vec3.add(CACHE, CACHE, <vec3>this.#SCALE_CACHE)
-		} else
-			vec3.add(CACHE, CACHE, <vec3>this.#SCALE_CACHE)
+
+		vec3.add(CACHE, CACHE, <vec3>this.#SCALE_CACHE)
 
 		if (Math.abs(CACHE[0]) >= g || Math.abs(CACHE[1]) >= g || Math.abs(CACHE[2]) >= g) {
 			const hasToTranslate = isGlobal && event.altKey
@@ -145,6 +128,7 @@ export default class ScalingGizmo extends AbstractSingleton implements IGizmo {
 				target.__changedBuffer[0] = 1
 			}
 			CACHE[0] = CACHE[2] = CACHE[1] = 0
+			GizmoSystem.callListeners()
 		}
 
 		this.#SCALE_CACHE[2] = this.#SCALE_CACHE[1] = this.#SCALE_CACHE[0] = 0

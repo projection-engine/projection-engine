@@ -26,7 +26,7 @@ export default class EngineState{
 	static ssaoMaxSamples = 64
 	static physicsSubSteps = 10
 	static physicsSimulationStep = 16.66666
-
 	static shadowAtlasQuantity = 4
 	static shadowMapResolution = 4096
+	static debugShadingModel = 0
 }

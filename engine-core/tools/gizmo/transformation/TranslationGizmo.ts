@@ -1,23 +1,21 @@
-import GizmoSystem from "../GizmoSystem"
 import EngineTools from "../../EngineTools"
 import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
 import EngineStateService from "../../../../frontend/editor/services/engine/EngineStateService"
-import {mat4, vec3, vec4} from "gl-matrix"
+import {vec3, vec4} from "gl-matrix"
 import GizmoUtil from "../util/GizmoUtil"
-import ScreenSpaceGizmo from "./ScreenSpaceGizmo"
 import GizmoState from "../util/GizmoState"
-import EditorActionHistory from "../../../../frontend/editor/services/EditorActionHistory"
 import GizmoMouseUtil from "../util/GizmoMouseUtil"
 import AXIS from "../../static/AXIS"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import IGizmo from "../IGizmo"
 import Mesh from "../../../core/instances/Mesh"
 import Entity from "../../../core/instances/Entity"
+import GizmoSystem from "../GizmoSystem"
 
 export default class TranslationGizmo extends AbstractSingleton implements IGizmo {
 	#hasCloned = false
-	#cache: [number,number,number] = [0, 0, 0]
-
+	#transformationIncrement =  vec3.create()
+	#transformationIncrement1 =  vec4.create()
 	mesh: Mesh
 	xGizmo: Entity
 	yGizmo: Entity
@@ -51,23 +49,17 @@ export default class TranslationGizmo extends AbstractSingleton implements IGizm
 	}
 
 	transformGizmo() {
-		mat4.copy(this.xGizmo.matrix, this.xGizmo.__cacheMatrix)
-		mat4.copy(this.yGizmo.matrix, this.yGizmo.__cacheMatrix)
-		mat4.copy(this.zGizmo.matrix, this.zGizmo.__cacheMatrix)
-
 		GizmoUtil.translateMatrix(this.xGizmo)
 		GizmoUtil.translateMatrix(this.yGizmo)
 		GizmoUtil.translateMatrix(this.zGizmo)
 	}
+
 	clearState(){
-		this.#cache.fill(0)
+		this.#transformationIncrement.fill(0)
 		this.#hasCloned = false
 	}
 
 	drawGizmo() {
-		if (!GizmoState.mainEntity)
-			return
-
 		GizmoUtil.drawGizmo(this.mesh, this.xGizmo.matrix, AXIS.X)
 		GizmoUtil.drawGizmo(this.mesh, this.yGizmo.matrix, AXIS.Y)
 		GizmoUtil.drawGizmo(this.mesh, this.zGizmo.matrix, AXIS.Z)
@@ -75,11 +67,6 @@ export default class TranslationGizmo extends AbstractSingleton implements IGizm
 
 
 	onMouseMove(event:MouseEvent) {
-		if (!GizmoState.hasTransformationStarted) {
-			GizmoState.hasTransformationStarted = true
-			EditorActionHistory.save(EngineTools.selected)
-			GizmoSystem.updateGizmoToolTip()
-		}
 		if(!this.#hasCloned && event.shiftKey){
 			const clones = EngineTools.selected.map(m => m.clone())
 			EngineStateService.appendBlock(clones)
@@ -87,29 +74,24 @@ export default class TranslationGizmo extends AbstractSingleton implements IGizm
 		}
 		this.#hasCloned = event.shiftKey
 		this.#gizmoTranslateEntity(event)
-		if(GizmoSystem.translationRef) {
-			const mainEntity = GizmoState.mainEntity
-			GizmoSystem.translationRef.textContent = `X ${mainEntity._translation[0].toFixed(2)} | Y ${mainEntity._translation[1].toFixed(2)} | Z ${mainEntity._translation[2].toFixed(2)}`
-		}
-	}
+ 	}
 
 	#gizmoTranslateEntity(event) {
-		const CACHE = vec4.create()
 		const firstEntity = GizmoState.mainEntity
-		const LOCAL_CACHE = this.#cache
+		const transformationIncrement = this.#transformationIncrement
 		if (!firstEntity)
 			return
-		const g = event.ctrlKey ? 1 : GizmoState.translationGridSize
-		const vec = ScreenSpaceGizmo.onMouseMove(event)
+		const grid = event.ctrlKey ? 1 : GizmoState.translationGridSize
+		const vec = GizmoUtil.mapToScreenMovement(event)
 
 		if (GizmoState.isGlobal)
-			vec3.copy(<vec3>CACHE, vec)
+			vec3.copy(<vec3>this.#transformationIncrement1, vec)
 		else
-			vec4.transformQuat(CACHE, [vec[0], vec[1], vec[2], 1], firstEntity.rotationQuaternionFinal)
+			vec4.transformQuat(this.#transformationIncrement1, [vec[0], vec[1], vec[2], 1], firstEntity.rotationQuaternionFinal)
 
 
-		vec3.add(LOCAL_CACHE, LOCAL_CACHE, <vec3>CACHE)
-		if (Math.abs(LOCAL_CACHE[0]) >= g || Math.abs(LOCAL_CACHE[1]) >= g || Math.abs(this.#cache[2]) >= g) {
+		vec3.add(transformationIncrement, transformationIncrement, <vec3>this.#transformationIncrement1)
+		if (Math.abs(transformationIncrement[0]) >= grid || Math.abs(transformationIncrement[1]) >= grid || Math.abs(transformationIncrement[2]) >= grid) {
 			const entities = EngineTools.selected
 			const SIZE = entities.length
 			if (SIZE === 1 && entities[0].lockedTranslation)
@@ -118,15 +100,19 @@ export default class TranslationGizmo extends AbstractSingleton implements IGizm
 				const target = entities[i]
 				if (target.lockedTranslation)
 					continue
+				transformationIncrement[0] = GizmoUtil.nearestX(transformationIncrement[0],grid)
+				transformationIncrement[1] = GizmoUtil.nearestX(transformationIncrement[1],grid)
+				transformationIncrement[2] = GizmoUtil.nearestX(transformationIncrement[2],grid)
 				if (SIZE === 1 && event.altKey) {
-					vec3.add(target.pivotPoint, target.pivotPoint, LOCAL_CACHE)
+					vec3.add(target.pivotPoint, target.pivotPoint, transformationIncrement)
 					target.__pivotChanged = true
 					continue
 				}
-				vec3.add(target._translation, target._translation, LOCAL_CACHE)
+				vec3.add(target._translation, target._translation, transformationIncrement)
 				target.__changedBuffer[0] = 1
 			}
-			LOCAL_CACHE.fill(0)
+			transformationIncrement[0] = transformationIncrement[1]= transformationIncrement[2]=0
+			GizmoSystem.callListeners()
 		}
 	}
 

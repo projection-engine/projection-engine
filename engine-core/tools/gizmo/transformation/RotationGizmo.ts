@@ -1,10 +1,8 @@
-import {glMatrix, mat4, quat, vec3} from "gl-matrix"
+import {glMatrix, quat, vec3} from "gl-matrix"
 import CameraAPI from "../../../core/lib/utils/CameraAPI"
-import GizmoSystem from "../GizmoSystem"
 import AXIS from "../../static/AXIS"
 import GPU from "../../../core/GPU"
 import EngineTools from "../../EngineTools"
-import EditorActionHistory from "../../../../frontend/editor/services/EditorActionHistory"
 import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GizmoUtil from "../util/GizmoUtil"
@@ -16,6 +14,7 @@ import IGizmo from "../IGizmo"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import Entity from "../../../core/instances/Entity"
 import Mesh from "../../../core/instances/Mesh"
+import GizmoSystem from "../GizmoSystem"
 
 const toDeg = 180 / Math.PI
 const uniformCache = new Float32Array(4)
@@ -50,7 +49,7 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 		return GizmoUtil.getGizmoEntity(index, rotation, scale)
 	}
 
-	clearState(){
+	clearState() {
 		this.#currentRotation.fill(0)
 		this.#currentIncrement = 0
 	}
@@ -62,21 +61,13 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 	}
 
 	onMouseMove(event: MouseEvent) {
-		if (!GizmoState.mainEntity)
+		const grid = event.ctrlKey ? 1 : GizmoState.rotationGridSize
+		const movement = GizmoUtil.mapToScreenMovement(event)
+		this.#currentIncrement -= movement[0] + movement[1] + movement[2]
+		if (Math.abs(this.#currentIncrement) < grid)
 			return
-		if (!GizmoState.hasTransformationStarted) {
-			GizmoState.hasTransformationStarted = true
-			EditorActionHistory.save(EngineTools.selected)
-			GizmoSystem.updateGizmoToolTip()
-		}
-
-		const g = event.ctrlKey ? glMatrix.toRadian(1) : glMatrix.toRadian(GizmoState.rotationGridSize)
-		this.#currentIncrement += event.movementX * GizmoState.sensitivity
-		const mappedValue = Math.round(this.#currentIncrement / g) * g
-
-		if (Math.abs(mappedValue) > 0)
-			this.#currentIncrement = 0
-
+		const mappedValue = glMatrix.toRadian(GizmoUtil.nearestX(this.#currentIncrement, grid))
+		this.#currentIncrement = 0
 		switch (GizmoState.clickedAxis) {
 		case AXIS.X:
 			this.#gizmoRotateEntity([mappedValue, 0, 0])
@@ -89,23 +80,10 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 			break
 		}
 		GizmoState.hasTransformationStarted = true
-
-		if (GizmoSystem.rotationRef) {
-			const EX = this.#currentRotation[0] * 2 * toDeg,
-				EY = this.#currentRotation[1] * 2 * toDeg,
-				EZ = this.#currentRotation[2] * 2 * toDeg
-			GizmoSystem.rotationRef.textContent = `X ${EX.toFixed(2)} | Y ${EY.toFixed(2)} | Z ${EZ.toFixed(2)}`
-		}
 	}
 
 
 	transformGizmo() {
-		if (!GizmoState.mainEntity)
-			return
-		this.#currentIncrement = 0
-		mat4.copy(this.xGizmo.matrix, this.xGizmo.__cacheMatrix)
-		mat4.copy(this.yGizmo.matrix, this.yGizmo.__cacheMatrix)
-		mat4.copy(this.zGizmo.matrix, this.zGizmo.__cacheMatrix)
 
 		GizmoUtil.translateMatrix(this.xGizmo)
 		GizmoUtil.translateMatrix(this.yGizmo)
@@ -133,7 +111,7 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 			uniformCache[0] = axis
 			uniformCache[1] = GizmoState.clickedAxis
 			uniformCache[2] = this.#currentRotation[axis - 2]
-			uniformCache[3] = glMatrix.toRadian(GizmoState.rotationGridSize)
+			uniformCache[3] = GizmoState.rotationGridSize
 			context.uniform4fv(uniforms.metadata, uniformCache)
 
 			this.mesh.draw()
@@ -178,6 +156,7 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 			} else
 				vec3.add(target.rotationEuler, target.rotationEuler, vec)
 			target.__changedBuffer[0] = 1
+			GizmoSystem.callListeners()
 		}
 	}
 }

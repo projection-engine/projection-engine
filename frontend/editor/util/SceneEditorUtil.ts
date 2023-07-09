@@ -8,9 +8,6 @@ import Engine from "../../../engine-core/core/Engine"
 import VisibilityRenderer from "../../../engine-core/core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine-core/tools/EngineTools"
 import SelectionStoreUtil from "./SelectionStoreUtil"
-import ScalingGizmo from "../../../engine-core/tools/gizmo/transformation/ScalingGizmo"
-import TranslationGizmo from "../../../engine-core/tools/gizmo/transformation/TranslationGizmo"
-import RotationGizmo from "../../../engine-core/tools/gizmo/transformation/RotationGizmo"
 import {glMatrix, quat} from "gl-matrix"
 import CameraAPI from "../../../engine-core/core/lib/utils/CameraAPI"
 import CameraTracker from "../../../engine-core/tools/utils/CameraTracker"
@@ -91,7 +88,10 @@ export default class SceneEditorUtil {
 			try {
 
 				const data = PickingAPI.readBlock(nStart, nEnd)
-				worker.postMessage({entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})), data}, [data.buffer])
+				worker.postMessage({
+					entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})),
+					data
+				}, [data.buffer])
 				worker.onmessage = ({data: selected}) => SelectionStoreUtil.setEntitiesSelected(selected)
 
 			} catch (err) {
@@ -131,22 +131,11 @@ export default class SceneEditorUtil {
 		return SceneEditorUtil.#worker
 	}
 
-	static updateGizmoGrid(key, value)  {
-		switch (key) {
-		case key === "scalingGizmo":
-			ScalingGizmo.gridSize = value
-			break
-		case key === "translationGizmo":
-			TranslationGizmo.gridSize = value
-			break
-		case key === "rotationGizmo":
-			RotationGizmo.gridSize = value * Math.PI / 180
-			break
-		}
+	static updateGizmoGrid(key, value) {
 		SettingsStore.updateStore({gizmoGrid: {...SettingsStore.getData().gizmoGrid, [key]: value}})
 	}
 
-	static restoreCameraState(viewMetadata){
+	static restoreCameraState(viewMetadata) {
 		if (!viewMetadata.cameraMetadata) {
 			const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
 			const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
@@ -164,7 +153,7 @@ export default class SceneEditorUtil {
 		viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
 	}
 
-	static onSceneEditorMount(draggable, viewMetadata){
+	static onSceneEditorMount(draggable, viewMetadata) {
 		ContextMenuService.getInstance().mount(getViewportContext(), RENDER_TARGET)
 		if (viewMetadata.cameraMetadata)
 			CameraAPI.restoreState(viewMetadata.cameraMetadata)
@@ -181,7 +170,7 @@ export default class SceneEditorUtil {
 		})
 	}
 
-	static getSceneOptions(settings: typeof SETTINGS){
+	static getSceneOptions(settings: typeof SETTINGS) {
 		return [
 			{
 				label: LocalizationEN.GRID,
@@ -204,5 +193,35 @@ export default class SceneEditorUtil {
 				onClick: () => SettingsStore.updateStore({showOutline: !settings.showOutline})
 			},
 		]
+	}
+
+	static quaternionToEulerAngles(quaternion) {
+		// Ensure quaternion is normalized
+		let x = quaternion[0], y = quaternion[1], z = quaternion[2], w = quaternion[3]
+		const magnitude = quat.length(quaternion)
+		x /= magnitude
+		y /= magnitude
+		z /= magnitude
+		w /= magnitude
+
+		// Calculate roll (rotation around x-axis)
+		const sinRoll = 2 * (w * x + y * z)
+		const cosRoll = 1 - 2 * (x * x + y * y)
+		const roll = Math.atan2(sinRoll, cosRoll)
+
+		// Calculate pitch (rotation around y-axis)
+		const sinPitch = 2 * (w * y - z * x)
+		const pitch = Math.asin(sinPitch)
+
+		// Calculate yaw (rotation around z-axis)
+		const sinYaw = 2 * (w * z + x * y)
+		const cosYaw = 1 - 2 * (z * z + x * x)
+		const yaw = Math.atan2(sinYaw, cosYaw)
+
+		return {
+			roll: roll,
+			pitch: pitch,
+			yaw: yaw,
+		}
 	}
 }
