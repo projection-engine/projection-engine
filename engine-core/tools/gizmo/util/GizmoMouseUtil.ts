@@ -7,6 +7,7 @@ import VisibilityRenderer from "../../../core/runtime/VisibilityRenderer"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GizmoState from "./GizmoState"
 import GizmoSystem from "../GizmoSystem"
+import GizmoUtil from "./GizmoUtil"
 
 export default class GizmoMouseUtil {
 
@@ -16,20 +17,20 @@ export default class GizmoMouseUtil {
 		GizmoState.clickedAxis = AXIS.NONE
 		if (!GizmoState.mainEntity)
 			return
-		GizmoSystem.callListeners(true)
+		GizmoUtil.updateGizmosTransformation(true)
+		GizmoSystem.callListeners()
 		GizmoSystem.onStop?.()
 	}
 
 	static onMouseDown(event: MouseEvent) {
 		if (!GizmoState.mainEntity)
 			return
-		GizmoSystem.callListeners(true)
+		GizmoUtil.updateGizmosTransformation(true)
 		GizmoMouseUtil.#drawGizmoToDepth()
 		const axis = PickingAPI.readEntityID(event.clientX, event.clientY)
-		if (axis === 0) {
-			GizmoMouseUtil.onMouseUp()
+		if (axis === 0)
 			return
-		}
+		GizmoSystem.callListeners(false)
 		document.body.requestPointerLock()
 		GizmoState.wasOnGizmo = true
 		GizmoState.clickedAxis = axis

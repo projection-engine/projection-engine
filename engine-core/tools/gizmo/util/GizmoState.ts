@@ -29,9 +29,11 @@ export default class GizmoState {
 	static get targetGizmos() {
 		return GizmoState.#targetGizmos
 	}
+
 	static get gizmoType() {
 		return GizmoState.#gizmoType
 	}
+
 	static set gizmoType(data: Gizmos) {
 		GizmoState.#gizmoType = data
 		GizmoState.#targetGizmos.length = 0
@@ -46,6 +48,7 @@ export default class GizmoState {
 			GizmoState.#targetGizmos.push(ScalingGizmo.get(), DualAxisGizmo.get(), ScreenSpaceGizmo.get())
 			break
 		}
+		GizmoUtil.updateGizmosTransformation(true)
 	}
 
 	static get mainEntity() {
@@ -64,8 +67,8 @@ export default class GizmoState {
 		mainEntity.__pivotChanged = true
 		GizmoState.#mainEntity = mainEntity
 		GizmoState.targetRotation = mainEntity.rotationQuaternionFinal
-
-		GizmoSystem.callListeners(true)
+		GizmoUtil.updateGizmosTransformation(true)
+		GizmoSystem.callListeners()
 	}
 
 	static get isGlobal() {

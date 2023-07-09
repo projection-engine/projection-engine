@@ -18,14 +18,9 @@ export default class GizmoSystem {
 		GizmoSystem.#listeners.delete(id)
 	}
 
-	static callListeners(clearState = false) {
-		for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
-			const gizmo = GizmoState.targetGizmos[i]
-			if (clearState)
-				gizmo.clearState()
-			gizmo.transformGizmo()
-		}
-
+	static callListeners(updateTransformation = true) {
+		if (updateTransformation)
+			GizmoUtil.updateGizmosTransformation()
 		const arr = GizmoSystem.#listeners.array
 		for (let i = 0; i < arr.length; i++) {
 			arr[i]()

@@ -12,6 +12,15 @@ import ConversionAPI from "../../../core/lib/math/ConversionAPI"
 
 
 export default class GizmoUtil {
+	static updateGizmosTransformation(clearState = false) {
+		for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
+			const gizmo = GizmoState.targetGizmos[i]
+			if (clearState)
+				gizmo.clearState()
+			gizmo.transformGizmo()
+		}
+	}
+
 	static createTransformationCache(entity) {
 		if (entity.__changedBuffer[1] || !entity.__cacheCenterMatrix || entity.__pivotChanged) {
 			const m = !entity.__cacheCenterMatrix ? mat4.create() : entity.__cacheCenterMatrix
@@ -27,10 +36,7 @@ export default class GizmoUtil {
 			entity.__cacheIconMatrix[13] = entity.absoluteTranslation[1]
 			entity.__cacheIconMatrix[14] = entity.absoluteTranslation[2]
 
-			if (GizmoState.mainEntity) {
-
-				GizmoSystem.callListeners()
-			}
+			if (GizmoState.mainEntity) GizmoSystem.callListeners()
 			entity.__pivotChanged = false
 		}
 	}
@@ -105,23 +111,30 @@ export default class GizmoUtil {
 			matrix[14] += mainEntity.__pivotOffset[2]
 		}
 	}
+
 	static nearestX(num, x) {
 		return Math.round(num / x) * x
 	}
 
-	static mapToScreenMovement(event: MouseEvent): [number, number, number] {
+	static mapToScreenMovement(event: MouseEvent): vec3 {
 		if (GizmoState.clickedAxis === AXIS.NONE)
 			return [0, 0, 0]
 		const cameraDistance = 100
-		const x = event.movementX * cameraDistance * 1000
-		const y = event.movementY * cameraDistance * 1000
-		const ssP = <[number, number, number]>ConversionAPI.toWorldCoordinates(x, y).slice(0, 3)
-		vec3.scale(ssP, ssP, 1 / cameraDistance ** 2)
-		GizmoUtil.#mapToAxis(ssP)
-		return ssP
+		const x = event.movementX
+		const y = event.movementY
+		const ssP = ConversionAPI.other(x, y)
+		const ss2 = ConversionAPI.toWorldCoordinates(x, y)
+		console.log({
+			x, y,
+			NEW: {x: ssP[0], y: ssP[1], z: ssP[2]},
+			OLD: {x: ss2[0], y: ss2[1], z: ss2[2]}
+		})
+		// vec3.scale(ssP, ssP, 1 / cameraDistance ** 2)
+		GizmoUtil.#mapToAxis(ss2)
+		return [ss2[0], ss2[1], ss2[2]]
 	}
 
-	static #mapToAxis(vec: [number, number, number]) {
+	static #mapToAxis(vec: vec3 | Float32Array) {
 		switch (GizmoState.clickedAxis) {
 		case AXIS.X:
 			vec[1] = 0

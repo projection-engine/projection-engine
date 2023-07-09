@@ -6,9 +6,9 @@ import CameraAPI from "../utils/CameraAPI"
  */
 
 export default class ConversionAPI {
-	static canvasBBox?:DOMRect
+	static canvasBBox?: DOMRect
 
-	static toQuadCoord(coords:{x: number, y: number}, quadSize:{w: number, h: number}): {x: number, y: number} {
+	static toQuadCoord(coords: { x: number, y: number }, quadSize: { w: number, h: number }): { x: number, y: number } {
 		const target = ConversionAPI.canvasBBox
 		const {x, y} = coords
 		const {w, h} = quadSize
@@ -20,6 +20,23 @@ export default class ConversionAPI {
 			x: x * multiplierX - target.left * multiplierX,
 			y: h - y * multiplierY + target.top * multiplierY - 1
 		}
+	}
+
+	static other(x, y) {
+		const bBox = ConversionAPI.canvasBBox
+
+		const normalizedX = (x / bBox.width) * 2 - 1
+		const normalizedY = 1 - (y / bBox.height) * 2
+		const homogeneousCoordinates = vec4.fromValues(normalizedX, normalizedY, 1, 1)
+
+		const transformedVector = vec4.create()
+		vec4.transformMat4(transformedVector, homogeneousCoordinates, CameraAPI.invProjectionMatrix)
+		vec4.scale(transformedVector, transformedVector, 1 / transformedVector[3])
+		const worldSpaceCoordinates = vec3.fromValues(transformedVector[0], transformedVector[1], transformedVector[2])
+		const worldSpacePoint = vec3.create()
+		vec3.transformMat4(worldSpacePoint, worldSpaceCoordinates, CameraAPI.viewMatrix)
+		vec3.normalize(worldSpacePoint, worldSpacePoint)
+		return worldSpacePoint
 	}
 
 	static toWorldCoordinates(x, y): vec4 {
