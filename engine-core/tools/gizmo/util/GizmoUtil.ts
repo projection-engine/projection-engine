@@ -116,22 +116,26 @@ export default class GizmoUtil {
 		return Math.round(num / x) * x
 	}
 
+	static assignValueToVector(vecValue:vec3, target:vec3){
+		if(vecValue[0] !== 0){
+			target[0] = vecValue[0]
+		}
+		if(vecValue[1] !== 0){
+			target[1] = vecValue[1]
+		}
+		if(vecValue[2] !== 0){
+			target[2] = vecValue[2]
+		}
+	}
 	static mapToScreenMovement(event: MouseEvent): vec3 {
 		if (GizmoState.clickedAxis === AXIS.NONE)
 			return [0, 0, 0]
-		const cameraDistance = 100
-		const x = event.movementX
-		const y = event.movementY
-		const ssP = ConversionAPI.other(x, y)
-		const ss2 = ConversionAPI.toWorldCoordinates(x, y)
-		console.log({
-			x, y,
-			NEW: {x: ssP[0], y: ssP[1], z: ssP[2]},
-			OLD: {x: ss2[0], y: ss2[1], z: ss2[2]}
-		})
-		// vec3.scale(ssP, ssP, 1 / cameraDistance ** 2)
-		GizmoUtil.#mapToAxis(ss2)
-		return [ss2[0], ss2[1], ss2[2]]
+
+		const x = event.clientX
+		const y = event.clientY
+		const worldCoordinates = ConversionAPI.toWorldCoordinates(x, y)
+		GizmoUtil.#mapToAxis(worldCoordinates)
+		return worldCoordinates
 	}
 
 	static #mapToAxis(vec: vec3 | Float32Array) {

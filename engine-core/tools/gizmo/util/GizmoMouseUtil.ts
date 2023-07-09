@@ -13,7 +13,7 @@ export default class GizmoMouseUtil {
 
 	static onMouseUp() {
 		GizmoState.hasTransformationStarted = false
-		document.exitPointerLock()
+		// document.exitPointerLock()
 		GizmoState.clickedAxis = AXIS.NONE
 		if (!GizmoState.mainEntity)
 			return
@@ -31,7 +31,7 @@ export default class GizmoMouseUtil {
 		if (axis === 0)
 			return
 		GizmoSystem.callListeners(false)
-		document.body.requestPointerLock()
+		// document.body.requestPointerLock()
 		GizmoState.wasOnGizmo = true
 		GizmoState.clickedAxis = axis
 		GizmoSystem.onStart?.()

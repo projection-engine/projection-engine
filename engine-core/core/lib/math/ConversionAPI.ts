@@ -1,4 +1,4 @@
-import {vec3, vec4} from "gl-matrix"
+import {mat4, vec3, vec4} from "gl-matrix"
 import CameraAPI from "../utils/CameraAPI"
 
 /**
@@ -22,42 +22,17 @@ export default class ConversionAPI {
 		}
 	}
 
-	static other(x, y) {
+	static toWorldCoordinates(x, y): vec3 {
+		const cameraDistance = vec3.len(<vec3>CameraAPI.position)
 		const bBox = ConversionAPI.canvasBBox
+		const normalizedX = ((x  -bBox.x) / bBox.width) * 2 - 1
+		const normalizedY = 1 - ((y - bBox.y) / bBox.height) * 2
+		const homogeneousCoordinates = vec4.fromValues(normalizedX * cameraDistance, normalizedY * cameraDistance, 1, 1)
 
-		const normalizedX = (x / bBox.width) * 2 - 1
-		const normalizedY = 1 - (y / bBox.height) * 2
-		const homogeneousCoordinates = vec4.fromValues(normalizedX, normalizedY, 1, 1)
-
+		const invMat = mat4.mul(mat4.create(), CameraAPI.invViewMatrix, CameraAPI.invProjectionMatrix)
 		const transformedVector = vec4.create()
-		vec4.transformMat4(transformedVector, homogeneousCoordinates, CameraAPI.invProjectionMatrix)
-		vec4.scale(transformedVector, transformedVector, 1 / transformedVector[3])
-		const worldSpaceCoordinates = vec3.fromValues(transformedVector[0], transformedVector[1], transformedVector[2])
-		const worldSpacePoint = vec3.create()
-		vec3.transformMat4(worldSpacePoint, worldSpaceCoordinates, CameraAPI.viewMatrix)
-		vec3.normalize(worldSpacePoint, worldSpacePoint)
-		return worldSpacePoint
-	}
-
-	static toWorldCoordinates(x, y): vec4 {
-		const eyeCoords = vec4.create()
-
-		// NORMALIZED DEVICE SPACE
-		const bBox = ConversionAPI.canvasBBox
-		const xNormalized = ((x - bBox.x) / bBox.width) * 2 - 1,
-			yNormalized = -((y - bBox.y) / bBox.height) * 2 + 1
-
-		// HOMOGENEOUS CLIP SPACE
-		const homogeneousCoords = <vec4>[xNormalized, yNormalized, 0, 0]
-
-		// EYE SPACE
-
-		vec4.transformMat4(eyeCoords, homogeneousCoords, CameraAPI.invProjectionMatrix)
-		eyeCoords[2] = -1
-		eyeCoords[3] = 1
-
-		// WORLD SPACE
-		return vec4.transformMat4(vec4.create(), eyeCoords, CameraAPI.invViewMatrix)
+		vec4.transformMat4(transformedVector, homogeneousCoordinates, invMat)
+		return [transformedVector[0], transformedVector[1], transformedVector[2]]
 	}
 
 	static toLinearWorldCoordinates(x, y): vec4 {
