@@ -1,7 +1,7 @@
 import resolveRelationship from "./resolve-relationship"
 import type ShaderNode from "../../../templates/ShaderNode"
 import type ShaderLink from "../../../templates/ShaderLink"
-import MaterialUniform from "../../../../../../../engine-core/static/MaterialUniform"
+import MaterialUniform from "../../../../../../../engine-core/core/static/MaterialUniform"
 import NODE_MAP from "../../../static/NODE_MAP"
 
 type response = { functionDeclaration: string, uniformsDeclaration: string, uniforms: Object[] , uniformValues: MaterialUniform[] }

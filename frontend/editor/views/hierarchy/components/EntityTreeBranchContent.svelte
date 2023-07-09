@@ -4,7 +4,7 @@
     import EntityNamingService from "../../../services/engine/EntityNamingService";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Entity from "../../../../../engine-core/instances/Entity";
+    import Entity from "../../../../../engine-core/core/instances/Entity";
     import ChangesTrackerStore from "../../../../stores/ChangesTrackerStore";
     import EntityUpdateService from "../../../services/engine/EntityUpdateService";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";

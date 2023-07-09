@@ -7,7 +7,7 @@ import type ShaderComment from "../templates/ShaderComment"
 import NODE_TYPES from "../static/NODE_TYPES"
 import {Input} from "../static/Input"
 import {Output} from "../static/Output"
-import {INVERSE_MATERIAL_RENDERING_TYPES} from "../../../../../engine-core/static/MATERIAL_RENDERING_TYPES"
+import {INVERSE_MATERIAL_RENDERING_TYPES} from "../../../../../engine-core/core/static/MATERIAL_RENDERING_TYPES"
 import DraggableNodeUtils from "./DraggableNodeUtils"
 import CanvasResources from "./CanvasResources"
 

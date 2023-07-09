@@ -5,7 +5,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import ElectronResources from "../../../shared/lib/ElectronResources"
-    import Engine from "../../../../engine-core/Engine"
+    import Engine from "../../../../engine-core/core/Engine"
     import {onDestroy, onMount} from "svelte"
     import EntityUpdateService from "../../services/engine/EntityUpdateService"
     import LocalizationEN from "../../../../shared/enums/LocalizationEN"

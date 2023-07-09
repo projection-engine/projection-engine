@@ -1,13 +1,13 @@
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import SettingsStore from "../../stores/SettingsStore"
-import GIZMOS from "../static/GIZMOS"
+import GIZMOS from "../../../shared/enums/Gizmos"
 import EditorActionHistory from "../services/EditorActionHistory"
-import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
-import TRANSFORMATION_TYPE from "../static/TRANSFORMATION_TYPE"
+import QueryAPI from "../../../engine-core/core/lib/utils/QueryAPI"
+import GizmoTransformationType from "../../../shared/enums/GizmoTransformationType"
 import EntityFactoryService from "../services/engine/EntityFactoryService"
 import CAMERA_ROTATIONS from "../../../engine-core/tools/static/CAMERA_ROTATIONS"
 import LevelService from "../services/engine/LevelService"
-import CameraTracker from "../../../engine-core/tools/lib/CameraTracker"
+import CameraTracker from "../../../engine-core/tools/utils/CameraTracker"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
@@ -139,7 +139,7 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 			label: "Switch transformation",
 			callback: () => {
 				const settingsInstance = SettingsStore.getInstance()
-				const newT = settingsInstance.data.transformationType === TRANSFORMATION_TYPE.GLOBAL ? TRANSFORMATION_TYPE.RELATIVE : TRANSFORMATION_TYPE.GLOBAL
+				const newT = settingsInstance.data.transformationType === GizmoTransformationType.GLOBAL ? GizmoTransformationType.RELATIVE : GizmoTransformationType.GLOBAL
 				settingsInstance.updateStore({transformationType: newT})
 			},
 			require: viewportHotkeys.SWITCH_TRANSFORMATION,

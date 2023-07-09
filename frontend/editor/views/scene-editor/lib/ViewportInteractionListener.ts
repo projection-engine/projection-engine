@@ -1,10 +1,11 @@
-import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
-import Engine from "../../../../../engine-core/Engine"
+import Engine from "../../../../../engine-core/core/Engine"
 import SettingsStore from "../../../../stores/SettingsStore"
-import GPU from "../../../../../engine-core/GPU"
+import GPU from "../../../../../engine-core/core/GPU"
 import AbstractSingleton from "../../../../../shared/AbstractSingleton"
 import ViewportUtil from "../../../util/ViewportUtil"
 import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+import GizmoState from "../../../../../engine-core/tools/gizmo/util/GizmoState"
+import GizmoMouseUtil from "../../../../../engine-core/tools/gizmo/util/GizmoMouseUtil"
 
 
 export default class ViewportInteractionListener extends AbstractSingleton {
@@ -30,14 +31,14 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 			return
 		this.mouseDelta = {x: e.clientX, y: e.clientY}
 
-		GizmoSystem.targetGizmo.onMouseDown(e)
-		document.addEventListener("mousemove", GizmoSystem.targetGizmo.onMouseMove)
+		GizmoMouseUtil.onMouseDown(e)
+		document.addEventListener("mousemove", GizmoMouseUtil.onMouseMove)
 
 	}
 
 	#onMouseUp(event) {
-		GizmoSystem.targetGizmo.onMouseUp()
-		document.removeEventListener("mousemove", GizmoSystem.targetGizmo.onMouseMove)
+		GizmoMouseUtil.onMouseUp()
+		document.removeEventListener("mousemove", GizmoMouseUtil.onMouseMove)
 
 		if (!Engine.isReady)
 			return
@@ -46,8 +47,8 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 			this.mouseDelta,
 			SettingsStore.getData(),
 			(data) => {
-				if (GizmoSystem.wasOnGizmo) {
-					GizmoSystem.wasOnGizmo = false
+				if (GizmoState.wasOnGizmo) {
+					GizmoState.wasOnGizmo = false
 					return
 				}
 				SelectionStoreUtil.setEntitiesSelected(data)

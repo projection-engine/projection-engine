@@ -61,8 +61,11 @@ module.exports = {
 					"object": false,
 					"Function": false,
 				},
-				"extendDefaults": true
-			}
-		]
+				"extendDefaults": true,
+
+			},
+		],
+		"@typescript-eslint/no-empty-function": "off",
+		"@typescript-eslint/no-unused-vars": "off"
 	}
 }

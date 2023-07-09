@@ -1,15 +1,15 @@
-import COMPONENTS from "../../../../engine-core/static/COMPONENTS"
+import COMPONENTS from "../../../../engine-core/core/static/COMPONENTS"
 import {vec3, vec4} from "gl-matrix"
 
 
-import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
+import CameraAPI from "../../../../engine-core/core/lib/utils/CameraAPI"
 import SettingsStore from "../../../stores/SettingsStore"
-import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
-import MeshComponent from "../../../../engine-core/instances/components/MeshComponent"
-import LightComponent from "../../../../engine-core/instances/components/LightComponent"
+import EntityAPI from "../../../../engine-core/core/lib/utils/EntityAPI"
+import MeshComponent from "../../../../engine-core/core/instances/components/MeshComponent"
+import LightComponent from "../../../../engine-core/core/instances/components/LightComponent"
 import EntityHierarchyService from "./EntityHierarchyService"
 import EngineStateService from "./EngineStateService"
-import Engine from "../../../../engine-core/Engine"
+import Engine from "../../../../engine-core/core/Engine"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
 

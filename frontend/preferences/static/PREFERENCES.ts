@@ -1,4 +1,4 @@
-import Component from "../../../engine-core/instances/components/Component"
+import Component from "../../../engine-core/core/instances/components/Component"
 import LocalizationEN from "../../../shared/enums/LocalizationEN"
 import EngineToolsState from "../../../engine-core/tools/EngineToolsState"
 

@@ -1,5 +1,5 @@
 <script>
-    import DATA_TYPES from "../../../../../engine-core/static/DATA_TYPES"
+    import DATA_TYPES from "../../../../../engine-core/core/static/DATA_TYPES"
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
     import Selector from "../../../components/selector/Selector.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"

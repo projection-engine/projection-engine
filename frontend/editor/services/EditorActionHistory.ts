@@ -1,13 +1,13 @@
 import UndoRedo from "../components/UndoRedo"
-import EntityAPI from "../../../engine-core/lib/utils/EntityAPI"
+import EntityAPI from "../../../engine-core/core/lib/utils/EntityAPI"
 
 
-import serializeStructure from "../../../engine-core/utils/serialize-structure"
+import serializeStructure from "../../../engine-core/core/utils/serialize-structure"
 import EntityNamingService from "./engine/EntityNamingService"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ChangesTrackerStore from "../../stores/ChangesTrackerStore"
 import EngineStateService from "./engine/EngineStateService"
-import Entity from "../../../engine-core/instances/Entity"
+import Entity from "../../../engine-core/core/instances/Entity"
 import LocalizationEN from "../../../shared/enums/LocalizationEN"
 
 interface Action {

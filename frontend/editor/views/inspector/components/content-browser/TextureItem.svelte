@@ -1,16 +1,16 @@
 <script>
 
-    import TEXTURE_FORMATS from "../../../../../../engine-core/static/texture/TEXTURE_FORMATS"
+    import TEXTURE_FORMATS from "../../../../../../engine-core/core/static/texture/TEXTURE_FORMATS"
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
     import ElectronResources from "../../../../../shared/lib/ElectronResources"
-    import GPU from "../../../../../../engine-core/GPU"
-    import TEXTURE_FILTERING from "../../../../../../engine-core/static/texture/TEXTURE_FILTERING"
-    import TEXTURE_WRAPPING from "../../../../../../engine-core/static/texture/TEXTURE_WRAPPING"
+    import GPU from "../../../../../../engine-core/core/GPU"
+    import TEXTURE_FILTERING from "../../../../../../engine-core/core/static/texture/TEXTURE_FILTERING"
+    import TEXTURE_WRAPPING from "../../../../../../engine-core/core/static/texture/TEXTURE_WRAPPING"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import Range from "../../../../../shared/components/range/Range.svelte"
-    import TEXTURE_TEMPLATE from "../../../../../../engine-core/static/TEXTURE_TEMPLATE"
+    import TEXTURE_TEMPLATE from "../../../../../../engine-core/core/static/TEXTURE_TEMPLATE"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
 

@@ -1,14 +1,14 @@
-import ENVIRONMENT from "../../../../engine-core/static/ENVIRONMENT"
+import ENVIRONMENT from "../../../../engine-core/core/static/ENVIRONMENT"
 
 import EngineStore from "../../../stores/EngineStore"
-import CameraTracker from "../../../../engine-core/tools/lib/CameraTracker"
-import UIAPI from "../../../../engine-core/lib/rendering/UIAPI"
-import Engine from "../../../../engine-core/Engine"
-import CameraAPI from "../../../../engine-core/lib/utils/CameraAPI"
-import ScriptsAPI from "../../../../engine-core/lib/utils/ScriptsAPI"
+import CameraTracker from "../../../../engine-core/tools/utils/CameraTracker"
+import UIAPI from "../../../../engine-core/core/lib/rendering/UIAPI"
+import Engine from "../../../../engine-core/core/Engine"
+import CameraAPI from "../../../../engine-core/core/lib/utils/CameraAPI"
+import ScriptsAPI from "../../../../engine-core/core/lib/utils/ScriptsAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
-import ResourceEntityMapper from "../../../../engine-core/resource-libs/ResourceEntityMapper"
+import ResourceEntityMapper from "../../../../engine-core/core/resource-libs/ResourceEntityMapper"
 import LevelService from "./LevelService"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 

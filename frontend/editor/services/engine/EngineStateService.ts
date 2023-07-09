@@ -1,19 +1,19 @@
-import Engine from "../../../../engine-core/Engine"
+import Engine from "../../../../engine-core/core/Engine"
 import AXIS from "../../../../engine-core/tools/static/AXIS"
-import EntityAPI from "../../../../engine-core/lib/utils/EntityAPI"
+import EntityAPI from "../../../../engine-core/core/lib/utils/EntityAPI"
 import EntityHierarchyService from "./EntityHierarchyService"
 import EditorActionHistory from "../EditorActionHistory"
 import EntityNamingService from "./EntityNamingService"
-import getPivotPointMatrix from "../../../../engine-core/tools/utils/get-pivot-point-matrix"
 import SelectionStore from "../../../stores/SelectionStore"
-import Entity from "../../../../engine-core/instances/Entity"
-import PickingAPI from "../../../../engine-core/lib/utils/PickingAPI"
+import Entity from "../../../../engine-core/core/instances/Entity"
+import PickingAPI from "../../../../engine-core/core/lib/utils/PickingAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
-import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
+import QueryAPI from "../../../../engine-core/core/lib/utils/QueryAPI"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import SelectionTargets from "../../../../shared/enums/SelectionTargets"
 import SelectionStoreUtil from "../../util/SelectionStoreUtil"
+import GizmoUtil from "../../../../engine-core/tools/gizmo/util/GizmoUtil"
 
 
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -68,7 +68,7 @@ export default class EngineStateService {
     	EntityAPI.addGroup(block)
     	EntityNamingService.renameInBlock(block)
     	for (let i = 0; i < block.length; i++)
-    		getPivotPointMatrix(block[i])
+    		GizmoUtil.createTransformationCache(block[i])
     	EditorActionHistory.save(block)
     	EngineStateService.#updateStructure()
     }
@@ -104,7 +104,7 @@ export default class EngineStateService {
     	EditorActionHistory.save(entity)
 
     	EntityNamingService.renameEntity(entity.name, entity)
-    	getPivotPointMatrix(entity)
+    	GizmoUtil.createTransformationCache(entity)
     	EntityAPI.addEntity(entity)
     	SelectionStore.updateStore({
     		TARGET: SelectionTargets.ENGINE,

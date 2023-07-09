@@ -1,4 +1,5 @@
 export default {
+	NONE: -1,
 	SCREEN_SPACE: 1,
 	X: 2,
 	Y: 3,

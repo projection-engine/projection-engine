@@ -1,8 +1,8 @@
 <script>
-    import CameraTracker from "../../../../../../engine-core/tools/lib/CameraTracker"
+    import CameraTracker from "../../../../../../engine-core/tools/utils/CameraTracker"
     import SettingsStore from "../../../../../stores/SettingsStore"
     import Layout from "./dynamic-form/Layout.svelte"
-    import CAMERA_PROPS from "../../../../../../engine-core/static/component-props/CAMERA_PROPS"
+    import CAMERA_PROPS from "../../../../../../engine-core/core/static/component-props/CAMERA_PROPS"
     import ContentField from "../../../../../preferences/components/content/ContentField.svelte"
     import {onDestroy, onMount} from "svelte"
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"

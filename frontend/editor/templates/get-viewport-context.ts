@@ -1,6 +1,6 @@
 import getViewportHotkeys from "./get-viewport-hotkeys"
 import EntityFactoryService from "../services/engine/EntityFactoryService"
-import QueryAPI from "../../../engine-core/lib/utils/QueryAPI"
+import QueryAPI from "../../../engine-core/core/lib/utils/QueryAPI"
 import getEntityCreationOptions from "./get-entity-creation-options"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import SelectionStoreUtil from "../util/SelectionStoreUtil"

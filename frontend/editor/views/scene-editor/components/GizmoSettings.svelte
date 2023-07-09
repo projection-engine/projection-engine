@@ -1,9 +1,8 @@
 <script>
-    import TRANSFORMATION_TYPE from "../../../static/TRANSFORMATION_TYPE.ts"
+    import GizmoTransformationType from "../../../../../shared/enums/GizmoTransformationType.ts"
 
     import SettingsStore from "../../../../stores/SettingsStore"
-    import GizmoSystem from "../../../../../engine-core/tools/runtime/GizmoSystem"
-    import GIZMOS from "../../../static/GIZMOS.ts"
+    import Gizmos from "../../../../../shared/enums/Gizmos.ts"
     import ROTATION_GRID from "../static/ROTATION_GRID"
     import SCALE_GRID from "../static/SCALE_GRID"
     import TRANSLATION_GRID from "../static/TRANSLATION_GRID"
@@ -27,8 +26,6 @@
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
     		transformationType = data.transformationType
     		gizmoGrid = data.gizmoGrid
-    		GizmoSystem.transformationType = transformationType
-    		GizmoSystem.sensitivity = gizmoGrid.sensitivity / 100 || .001
     		gizmo = data.gizmo
     	}, ["transformationType", "gizmoGrid", "gizmo"])
     })
@@ -37,10 +34,10 @@
 
 <div class="wrapper">
     <button data-sveltebuttondefault="-"
-            on:click={() => SettingsStore.updateStore({transformationType: transformationType === TRANSFORMATION_TYPE.RELATIVE ? TRANSFORMATION_TYPE.GLOBAL : TRANSFORMATION_TYPE.RELATIVE})}
+            on:click={() => SettingsStore.updateStore({transformationType: transformationType === GizmoTransformationType.RELATIVE ? GizmoTransformationType.GLOBAL : GizmoTransformationType.RELATIVE})}
             class="button viewport"
     >
-        {#if transformationType === TRANSFORMATION_TYPE.RELATIVE}
+        {#if transformationType === GizmoTransformationType.RELATIVE}
             <Icon styles="font-size: .9rem">place</Icon>
             {LocalizationEN.LOCAL}
         {:else}
@@ -124,8 +121,8 @@
     <button data-sveltebuttondefault="-"
             class="button viewport"
             style="margin-left: 8px"
-            data-sveltehighlight={gizmo === GIZMOS.NONE ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({gizmo: GIZMOS.NONE})}>
+            data-sveltehighlight={gizmo === Gizmos.NONE ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({gizmo: Gizmos.NONE})}>
         <Icon styles="font-size: 1rem; color: #FFC757">highlight_alt</Icon>
 
         {LocalizationEN.SELECTION}
@@ -134,8 +131,8 @@
     </button>
     <button data-sveltebuttondefault="-"
             class="button viewport"
-            data-sveltehighlight={gizmo === GIZMOS.TRANSLATION ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({gizmo: GIZMOS.TRANSLATION})}>
+            data-sveltehighlight={gizmo === Gizmos.TRANSLATION ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({gizmo: Gizmos.TRANSLATION})}>
         <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_with</Icon>
         {LocalizationEN.T_GIZMO}
 
@@ -145,8 +142,8 @@
     <button data-sveltebuttondefault="-"
 
             class="button viewport"
-            data-sveltehighlight={gizmo === GIZMOS.SCALE ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({gizmo: GIZMOS.SCALE})}>
+            data-sveltehighlight={gizmo === Gizmos.SCALE ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({gizmo: Gizmos.SCALE})}>
         <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">open_in_full</Icon>
         {LocalizationEN.S_GIZMO}
         <ToolTip content={LocalizationEN.S_GIZMO}/>
@@ -154,8 +151,8 @@
     <button data-sveltebuttondefault="-"
 
             class="button viewport"
-            data-sveltehighlight={gizmo === GIZMOS.ROTATION ? "-" : undefined}
-            on:click={() => SettingsStore.updateStore({gizmo: GIZMOS.ROTATION})}>
+            data-sveltehighlight={gizmo === Gizmos.ROTATION ? "-" : undefined}
+            on:click={() => SettingsStore.updateStore({gizmo: Gizmos.ROTATION})}>
         <Icon styles="font-size: 1rem; color: var(--pj-color-quaternary)">360</Icon>
         {LocalizationEN.R_GIZMO}
 

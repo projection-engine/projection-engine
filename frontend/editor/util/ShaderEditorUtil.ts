@@ -11,7 +11,7 @@ import DraggableNodeUtils from "../views/shader-editor/libs/DraggableNodeUtils"
 import {Output} from "../views/shader-editor/static/Output"
 import {Input} from "../views/shader-editor/static/Input"
 import CanvasRenderer from "../views/shader-editor/libs/CanvasRenderer"
-import DATA_TYPES from "../../../engine-core/static/DATA_TYPES"
+import DATA_TYPES from "../../../engine-core/core/static/DATA_TYPES"
 import Draggable from "../views/shader-editor/templates/Draggable"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
 

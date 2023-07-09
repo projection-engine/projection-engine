@@ -1,7 +1,7 @@
 <script>
 
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
-    import MetricsController from "../../../../engine-core/lib/utils/MetricsController"
+    import MetricsController from "../../../../engine-core/core/lib/utils/MetricsController"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../shared/enums/LocalizationEN"

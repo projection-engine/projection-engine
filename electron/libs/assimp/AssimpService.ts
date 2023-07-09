@@ -1,5 +1,5 @@
 import AssimpJS from "./Assimp.js"
-import PrimitiveProcessor from "../../../engine-core/lib/math/PrimitiveProcessor"
+import PrimitiveProcessor from "../../../engine-core/core/lib/math/PrimitiveProcessor"
 import ElectronWindowService from "../../ElectronWindowService"
 
 import {mat4} from "gl-matrix"

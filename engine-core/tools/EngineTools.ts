@@ -1,17 +1,18 @@
-import GridSystem from "./runtime/GridSystem"
-import IconsSystem from "./runtime/IconsSystem"
-import GizmoSystem from "./runtime/GizmoSystem"
-import SelectedSystem from "./runtime/SelectedSystem"
-import Engine from "../Engine"
-import CameraTracker from "./lib/CameraTracker"
-import WireframeRenderer from "./runtime/WireframeRenderer"
-import ENVIRONMENT from "../static/ENVIRONMENT"
-import LineRenderer from "./runtime/LineRenderer"
-import Entity from "../instances/Entity"
-import GPU from "../GPU"
-import StaticEditorMeshes from "./lib/StaticEditorMeshes"
-import StaticEditorShaders from "./lib/StaticEditorShaders"
-import StaticFBO from "../lib/StaticFBO"
+import GridSystem from "./icons/GridSystem"
+import IconsSystem from "./icons/IconsSystem"
+import GizmoSystem from "./gizmo/GizmoSystem"
+import SelectedSystem from "./outline/SelectedSystem"
+import Engine from "../core/Engine"
+import CameraTracker from "./utils/CameraTracker"
+import WireframeRenderer from "./outline/WireframeRenderer"
+import ENVIRONMENT from "../core/static/ENVIRONMENT"
+import LineRenderer from "./icons/LineRenderer"
+import Entity from "../core/instances/Entity"
+import GPU from "../core/GPU"
+import StaticEditorMeshes from "./utils/StaticEditorMeshes"
+import StaticEditorShaders from "./utils/StaticEditorShaders"
+import StaticFBO from "../core/lib/StaticFBO"
+import GizmoState from "./gizmo/util/GizmoState"
 
 export default class EngineTools {
 	static selected: Entity[] = []
@@ -26,7 +27,6 @@ export default class EngineTools {
 		await StaticEditorMeshes.initialize()
 
 		Engine.environment = ENVIRONMENT.DEV
-		GizmoSystem.initialize()
 		LineRenderer.initialize()
 	}
 
@@ -47,14 +47,7 @@ export default class EngineTools {
 			}
 		}
 
-		const main = selected[0]
-		if (main)
-			GizmoSystem.linkEntityToGizmo(main)
-		else {
-			GizmoSystem.targetRotation = undefined
-			GizmoSystem.mainEntity = undefined
-			GizmoSystem.hasStarted = false
-		}
+		GizmoState.mainEntity = selected[0]
 	}
 
 	static drawIconsToBuffer() {

@@ -4,8 +4,8 @@
     import EntityFactoryService from "../../../services/engine/EntityFactoryService";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Entity from "../../../../../engine-core/instances/Entity";
-    import QueryAPI from "../../../../../engine-core/lib/utils/QueryAPI";
+    import Entity from "../../../../../engine-core/core/instances/Entity";
+    import QueryAPI from "../../../../../engine-core/core/lib/utils/QueryAPI";
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
 
     export let testSearch: Function

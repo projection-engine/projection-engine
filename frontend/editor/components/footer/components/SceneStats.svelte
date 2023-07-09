@@ -1,7 +1,7 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import GPU from "../../../../../engine-core/GPU"
-    import Engine from "../../../../../engine-core/Engine"
+    import GPU from "../../../../../engine-core/core/GPU"
+    import Engine from "../../../../../engine-core/core/Engine"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 

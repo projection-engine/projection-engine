@@ -3,11 +3,11 @@
     import {onMount} from "svelte"
     import EngineToolsService from "../services/EngineToolsService"
     import VisualsStore from "../../stores/VisualsStore"
-    import Engine from "../../../engine-core/Engine"
+    import Engine from "../../../engine-core/core/Engine"
     import EngineTools from "../../../engine-core/tools/EngineTools"
     import LevelService from "../services/engine/LevelService"
-    import UIAPI from "../../../engine-core/lib/rendering/UIAPI"
-    import GPU from "../../../engine-core/GPU"
+    import UIAPI from "../../../engine-core/core/lib/rendering/UIAPI"
+    import GPU from "../../../engine-core/core/GPU"
     import EditorFSUtil from "../util/EditorFSUtil"
 
     export let initializeEditor

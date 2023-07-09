@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Engine from "../../../../../../engine-core/Engine";
+    import Engine from "../../../../../../engine-core/core/Engine";
     import EntityNamingService from "../../../../services/engine/EntityNamingService";
 
     import Selector from "../../../../components/selector/Selector.svelte";
@@ -9,7 +9,7 @@
 
     import Input from "../../../../../shared/components/input/Input.svelte";
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Entity from "../../../../../../engine-core/instances/Entity";
+    import Entity from "../../../../../../engine-core/core/instances/Entity";
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte";
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
     import TransformationForm from "./TransformationForm.svelte";

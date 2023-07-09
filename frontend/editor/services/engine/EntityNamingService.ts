@@ -1,5 +1,5 @@
-import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
-import Entity from "../../../../engine-core/instances/Entity"
+import QueryAPI from "../../../../engine-core/core/lib/utils/QueryAPI"
+import Entity from "../../../../engine-core/core/instances/Entity"
 import EntityUpdateService from "./EntityUpdateService"
 
 export default class EntityNamingService {

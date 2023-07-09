@@ -3,8 +3,8 @@
     import {onDestroy, onMount} from "svelte"
     import SelectionStore from "../../../stores/SelectionStore"
     import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte"
-    import Entity from "../../../../engine-core/instances/Entity"
-    import QueryAPI from "../../../../engine-core/lib/utils/QueryAPI"
+    import Entity from "../../../../engine-core/core/instances/Entity"
+    import QueryAPI from "../../../../engine-core/core/lib/utils/QueryAPI"
     import EntityInspector from "./components/engine/EntityAttributes.svelte"
 
     import Icon from "../../../shared/components/icon/Icon.svelte"

@@ -5,7 +5,7 @@
     import Range from "../../../shared/components/range/Range.svelte"
     import VisualsStore from "../../../stores/VisualsStore"
     import SettingsStore from "../../../stores/SettingsStore"
-    import Component from "../../../../engine-core/instances/components/Component"
+    import Component from "../../../../engine-core/core/instances/components/Component"
 
     export let toRender
     export let settings

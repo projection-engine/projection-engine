@@ -1,5 +1,5 @@
-import Engine from "../../../../engine-core/Engine"
-import Entity from "../../../../engine-core/instances/Entity"
+import Engine from "../../../../engine-core/core/Engine"
+import Entity from "../../../../engine-core/core/instances/Entity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
