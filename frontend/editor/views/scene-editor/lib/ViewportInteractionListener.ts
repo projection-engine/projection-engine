@@ -14,15 +14,13 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 
 	constructor() {
 		super()
-		const parentElement = GPU.canvas
-		parentElement.addEventListener("mousedown", this.#onMouseDown.bind(this))
-		parentElement.addEventListener("mouseup", this.#onMouseUp.bind(this))
+		GPU.canvas.addEventListener("mousedown", this.#onMouseDown.bind(this))
+		document.addEventListener("mouseup", this.#onMouseUp.bind(this))
 	}
 
 	onDestroy() {
-		const parentElement = GPU.canvas
-		parentElement.removeEventListener("mousedown", this.#onMouseDown.bind(this))
-		parentElement.removeEventListener("mouseup", this.#onMouseUp.bind(this))
+		GPU.canvas.removeEventListener("mousedown", this.#onMouseDown.bind(this))
+		document.removeEventListener("mouseup", this.#onMouseUp.bind(this))
 	}
 
 
@@ -37,8 +35,8 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 	}
 
 	#onMouseUp(event) {
-		GizmoMouseUtil.onMouseUp()
 		document.removeEventListener("mousemove", GizmoMouseUtil.onMouseMove)
+		GizmoMouseUtil.onMouseUp()
 
 		if (!Engine.isReady)
 			return

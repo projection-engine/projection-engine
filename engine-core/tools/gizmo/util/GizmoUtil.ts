@@ -7,9 +7,20 @@ import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GPU from "../../../core/GPU"
 import CameraAPI from "../../../core/lib/utils/CameraAPI"
 import GizmoState from "./GizmoState"
+import AXIS from "../../static/AXIS"
+import ConversionAPI from "../../../core/lib/math/ConversionAPI"
 
 
 export default class GizmoUtil {
+	static updateGizmosTransformation(clearState = false) {
+		for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
+			const gizmo = GizmoState.targetGizmos[i]
+			if (clearState)
+				gizmo.clearState()
+			gizmo.transformGizmo()
+		}
+	}
+
 	static createTransformationCache(entity) {
 		if (entity.__changedBuffer[1] || !entity.__cacheCenterMatrix || entity.__pivotChanged) {
 			const m = !entity.__cacheCenterMatrix ? mat4.create() : entity.__cacheCenterMatrix
@@ -25,13 +36,7 @@ export default class GizmoUtil {
 			entity.__cacheIconMatrix[13] = entity.absoluteTranslation[1]
 			entity.__cacheIconMatrix[14] = entity.absoluteTranslation[2]
 
-			if (GizmoState.mainEntity) {
-				for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
-					const gizmo = GizmoState.targetGizmos[i]
-					gizmo.transformGizmo()
-				}
-				GizmoSystem.updateGizmoToolTip()
-			}
+			if (GizmoState.mainEntity) GizmoSystem.callListeners()
 			entity.__pivotChanged = false
 		}
 	}
@@ -74,8 +79,6 @@ export default class GizmoUtil {
 
 
 	static translateMatrix(entity: Entity) {
-		if (!GizmoState.mainEntity)
-			return
 		GizmoUtil.applyTransformation(entity.matrix, entity.rotationQuaternion, entity.translation, entity.scaling)
 	}
 
@@ -108,5 +111,68 @@ export default class GizmoUtil {
 			matrix[14] += mainEntity.__pivotOffset[2]
 		}
 	}
+
+	static nearestX(num, x) {
+
+		return num === 0 ? 0 : Math.round(num / x) * x
+	}
+
+	static assignValueToVector(vecValue: vec3, target: vec3) {
+		if (vecValue[0] !== 0) {
+			target[0] = vecValue[0]
+		}
+		if (vecValue[1] !== 0) {
+			target[1] = vecValue[1]
+		}
+		if (vecValue[2] !== 0) {
+			target[2] = vecValue[2]
+		}
+	}
+
+	static mapToScreenMovement(event: MouseEvent, scaleVec=false): vec3 {
+		if (GizmoState.clickedAxis === AXIS.NONE)
+			return [0, 0, 0]
+		const distanceFrom = <vec3>CameraAPI.position
+		const scale = vec3.len(distanceFrom)
+		const worldCoordinates = ConversionAPI.toWorldCoordinates(event.clientX, event.clientY)
+		if(scaleVec){
+			vec3.scale(worldCoordinates, worldCoordinates, scale)
+			vec3.add(worldCoordinates, worldCoordinates, distanceFrom)
+		}
+		GizmoUtil.#mapToAxis(worldCoordinates)
+		return worldCoordinates
+	}
+
+	static #mapToAxis(vec: vec3 | Float32Array) {
+		switch (GizmoState.clickedAxis) {
+		case AXIS.X:
+			vec[1] = 0
+			vec[2] = 0
+			break
+		case AXIS.Y:
+			vec[0] = 0
+			vec[2] = 0
+			break
+		case AXIS.Z:
+			vec[0] = 0
+			vec[1] = 0
+			break
+		case AXIS.XZ:
+			vec[1] = 0
+			break
+		case AXIS.XY:
+			vec[2] = 0
+			break
+		case AXIS.ZY:
+			vec[0] = 0
+			break
+		case AXIS.NONE:
+			vec[0] = 0
+			vec[1] = 0
+			vec[2] = 0
+			break
+		}
+	}
+
 
 }

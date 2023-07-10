@@ -45,7 +45,7 @@
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
     		isSelectBoxDisabled = data.gizmo !== GIZMOS.NONE
     		shadingModel = data.shadingModel
-    	}, ["gizmo"])
+    	}, ["gizmo", "shadingModel"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
     		executingAnimation = data.executingAnimation
     		focusedCamera = data.focusedCamera ? Engine.entities.get(data.focusedCamera) : null
@@ -68,11 +68,8 @@
 
 {#if !executingAnimation}
     <ViewHeader>
-        {#if isOnGizmo}
-            <EntityInformation/>
-        {:else}
-            <SceneOptions/>
-        {/if}
+        <EntityInformation {isOnGizmo}/>
+        <SceneOptions {isOnGizmo}/>
     </ViewHeader>
     <SelectBox
             targetElement={GPU.canvas}

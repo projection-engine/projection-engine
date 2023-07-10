@@ -1,13 +1,18 @@
 <script>
     import {onDestroy, onMount} from "svelte"
     import GIZMOS from "../../../../../shared/enums/Gizmos.ts"
+    import Gizmos from "../../../../../shared/enums/Gizmos.ts"
 
     import GizmoSystem from "../../../../../engine-core/tools/gizmo/GizmoSystem"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../../stores/SettingsStore"
     import SelectionStore from "../../../../stores/SelectionStore"
     import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+    import GizmoState from "../../../../../engine-core/tools/gizmo/util/GizmoState"
+    import SceneEditorUtil from "../../../util/SceneEditorUtil"
 
+    /** @type boolean */
+    export let isOnGizmo
     const COMPONENT_ID = crypto.randomUUID()
 
     let selectedSize
@@ -19,25 +24,41 @@
     let isValidScaling = false
 
     onMount(() => {
+    	GizmoSystem.addListener(COMPONENT_ID, () => {
+    		const mainEntity = GizmoState.mainEntity
+    		switch (GizmoState.gizmoType) {
+    		case Gizmos.TRANSLATION: {
+    			translationRef.textContent = `X ${mainEntity.translation[0].toFixed(2)} | Y ${mainEntity.translation[1].toFixed(2)} | Z ${mainEntity.translation[2].toFixed(2)}`
+    			break
+    		}
+    		case Gizmos.ROTATION: {
+    			const {roll, pitch, yaw} = SceneEditorUtil.quaternionToEulerAngles(mainEntity.rotationQuaternion)
+    			rotationRef.textContent = `X ${roll.toFixed(2)} | Y ${yaw.toFixed(2)} | Z ${pitch.toFixed(2)}`
+    			break
+    		}
+    		case Gizmos.SCALE: {
+    			scaleRef.textContent = `X ${mainEntity.translation[0].toFixed(2)} | Y ${mainEntity.translation[1].toFixed(2)} | Z ${mainEntity.translation[2].toFixed(2)}`
+    			break
+    		}
+    		}
+    	})
     	SelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedSize = SelectionStoreUtil.getEntitiesSelected().length)
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
     		gizmo = data.gizmo
     		isValidPivot = gizmo === GIZMOS.TRANSLATION && selectedSize === 1
     		isValidScaling = gizmo === GIZMOS.SCALE
     	}, ["gizmo"])
-    	GizmoSystem.translationRef = translationRef
-    	GizmoSystem.rotationRef = rotationRef
     	GizmoSystem.scaleRef = scaleRef
     })
 
     onDestroy(() => {
     	SelectionStore.getInstance().removeListener(COMPONENT_ID)
     	SettingsStore.getInstance().removeListener(COMPONENT_ID)
-    	GizmoSystem.translationRef = GizmoSystem.rotationRef = GizmoSystem.scaleRef = undefined
+    	GizmoSystem.removeListener(COMPONENT_ID)
     })
 </script>
 
-<div class="left-content">
+<div class="left-content" style={isOnGizmo ? undefined : "display: none"}>
     <div data-svelteinline="-" style={gizmo !== GIZMOS.TRANSLATION ? "display: none" : undefined }>
         <strong>{LocalizationEN.TRANSLATION}</strong>
         <small bind:this={translationRef}></small>
@@ -53,7 +74,7 @@
         <small bind:this={rotationRef}></small>
     </div>
 </div>
-<div class="right-content">
+<div class="right-content" style={isOnGizmo ? undefined : "display: none"}>
     {#if isValidScaling}
         <div class="row">ALT - {LocalizationEN.ALT_FOR_FIXED}</div>
     {/if}

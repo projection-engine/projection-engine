@@ -4,7 +4,6 @@ import GizmoSystem from "../GizmoSystem"
 import AXIS from "../../static/AXIS"
 import GizmoTransformationType from "../../../../shared/enums/GizmoTransformationType"
 import EngineTools from "../../EngineTools"
-import {glMatrix} from "gl-matrix"
 import IGizmo from "../IGizmo"
 import Gizmos from "../../../../shared/enums/Gizmos"
 import TranslationGizmo from "../transformation/TranslationGizmo"
@@ -12,6 +11,7 @@ import DualAxisGizmo from "../transformation/DualAxisGizmo"
 import ScreenSpaceGizmo from "../transformation/ScreenSpaceGizmo"
 import ScalingGizmo from "../transformation/ScalingGizmo"
 import RotationGizmo from "../transformation/RotationGizmo"
+import {vec3} from "gl-matrix"
 
 export default class GizmoState {
 	static #mainEntity?: Entity
@@ -21,14 +21,19 @@ export default class GizmoState {
 	static clickedAxis = AXIS.NONE
 	static transformationType = GizmoTransformationType.GLOBAL
 	static sensitivity = .001
-	static #wasOnGizmo = false
-	static rotationGridSize = glMatrix.toRadian(1)
+	static wasOnGizmo = false
+	static rotationGridSize = 1
 	static translationGridSize = 1
 	static scalingGridSize = 1
 	static #gizmoType = Gizmos.NONE
+	static initialEntityPosition = vec3.create()
 
 	static get targetGizmos() {
 		return GizmoState.#targetGizmos
+	}
+
+	static get gizmoType() {
+		return GizmoState.#gizmoType
 	}
 
 	static set gizmoType(data: Gizmos) {
@@ -45,18 +50,7 @@ export default class GizmoState {
 			GizmoState.#targetGizmos.push(ScalingGizmo.get(), DualAxisGizmo.get(), ScreenSpaceGizmo.get())
 			break
 		}
-	}
-
-	static get wasOnGizmo() {
-		return GizmoState.#wasOnGizmo
-	}
-
-	static set wasOnGizmo(data) {
-		GizmoState.#wasOnGizmo = data
-		if (data)
-			GizmoSystem.onStart?.()
-		else
-			GizmoSystem.onStop?.()
+		GizmoUtil.updateGizmosTransformation(true)
 	}
 
 	static get mainEntity() {
@@ -75,11 +69,8 @@ export default class GizmoState {
 		mainEntity.__pivotChanged = true
 		GizmoState.#mainEntity = mainEntity
 		GizmoState.targetRotation = mainEntity.rotationQuaternionFinal
-		for (let i = 0; i < GizmoState.#targetGizmos.length; i++) {
-			const gizmo = GizmoState.#targetGizmos[i]
-			gizmo.transformGizmo()
-			gizmo.clearState()
-		}
+		GizmoUtil.updateGizmosTransformation(true)
+		GizmoSystem.callListeners()
 	}
 
 	static get isGlobal() {

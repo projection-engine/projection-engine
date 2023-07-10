@@ -114,9 +114,10 @@ export default class EngineToolsService extends AbstractSingleton {
 
 	static #updateWithSettings() {
 		const settings = SettingsStore.getData()
-		GizmoState.rotationGridSize = settings.gizmoGrid.rotationGizmo || .001
-		GizmoState.translationGridSize = settings.gizmoGrid.translationGizmo || .001
-		GizmoState.scalingGridSize = settings.gizmoGrid.scaleGizmo || .001
+		EngineState.debugShadingModel = settings.shadingModel
+		GizmoState.rotationGridSize = settings.gizmoGrid.rotationGizmo || 1
+		GizmoState.translationGridSize = settings.gizmoGrid.translationGizmo || 1
+		GizmoState.scalingGridSize = settings.gizmoGrid.scaleGizmo || 1
 		GizmoState.transformationType = settings.transformationType
 		GizmoState.sensitivity =settings?.gizmoGrid?.sensitivity / 100 || .001
 		GizmoState.gizmoType =settings.gizmo

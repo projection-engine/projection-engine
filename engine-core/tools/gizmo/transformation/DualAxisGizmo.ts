@@ -1,6 +1,6 @@
 import AXIS from "../../static/AXIS"
 import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
-import {mat4, vec3} from "gl-matrix"
+import {vec3} from "gl-matrix"
 import GizmoUtil from "../util/GizmoUtil"
 import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import IGizmo from "../IGizmo"
@@ -65,9 +65,6 @@ export default class DualAxisGizmo extends AbstractSingleton implements IGizmo {
 	onMouseMove(){}
 
 	transformGizmo(){
-		mat4.copy(this.xGizmo.matrix, this.xGizmo.__cacheMatrix)
-		mat4.copy(this.zGizmo.matrix, this.zGizmo.__cacheMatrix)
-		mat4.copy(this.yGizmo.matrix, this.yGizmo.__cacheMatrix)
 		GizmoUtil.translateMatrix(this.xGizmo)
 		GizmoUtil.translateMatrix(this.zGizmo)
 		GizmoUtil.translateMatrix(this.yGizmo)
