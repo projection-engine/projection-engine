@@ -60,28 +60,6 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 		GizmoMouseUtil.drawToDepth(data, this.mesh, this.zGizmo.matrix, this.zGizmo.pickID)
 	}
 
-	onMouseMove(event: MouseEvent) {
-		const grid = event.ctrlKey ? 1 : GizmoState.rotationGridSize
-		const movement = GizmoUtil.mapToScreenMovement(event)
-		this.#currentIncrement -= movement[0] + movement[1] + movement[2]
-		if (Math.abs(this.#currentIncrement) < grid)
-			return
-		const mappedValue = glMatrix.toRadian(GizmoUtil.nearestX(this.#currentIncrement, grid))
-		this.#currentIncrement = 0
-		switch (GizmoState.clickedAxis) {
-		case AXIS.X:
-			this.#gizmoRotateEntity([mappedValue, 0, 0])
-			break
-		case AXIS.Y:
-			this.#gizmoRotateEntity([0, mappedValue, 0])
-			break
-		case AXIS.Z:
-			this.#gizmoRotateEntity([0, 0, mappedValue])
-			break
-		}
-		GizmoState.hasTransformationStarted = true
-	}
-
 
 	transformGizmo() {
 
@@ -99,7 +77,7 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 	}
 
 	#draw(transformMatrix, axis) {
-		if (GizmoState.wasOnGizmo && GizmoState.clickedAxis === axis || !GizmoState.wasOnGizmo) {
+		if (GizmoState.clickedAxis === axis || GizmoState.clickedAxis === AXIS.NONE) {
 			StaticEditorShaders.rotation.bind()
 			const uniforms = StaticEditorShaders.rotationUniforms
 			const context = GPU.context
@@ -111,11 +89,32 @@ export default class RotationGizmo extends AbstractSingleton implements IGizmo {
 			uniformCache[0] = axis
 			uniformCache[1] = GizmoState.clickedAxis
 			uniformCache[2] = this.#currentRotation[axis - 2]
-			uniformCache[3] = GizmoState.rotationGridSize
+			uniformCache[3] = glMatrix.toRadian(GizmoState.rotationGridSize)
 			context.uniform4fv(uniforms.metadata, uniformCache)
 
 			this.mesh.draw()
 		}
+	}
+
+	onMouseMove(event: MouseEvent) {
+		const grid = event.ctrlKey ? 1 : GizmoState.rotationGridSize
+		this.#currentIncrement -= event.movementX
+		if (Math.abs(this.#currentIncrement) < grid)
+			return
+		const mappedValue = glMatrix.toRadian(GizmoUtil.nearestX(this.#currentIncrement, grid))
+		this.#currentIncrement = 0
+		switch (GizmoState.clickedAxis) {
+		case AXIS.X:
+			this.#gizmoRotateEntity([mappedValue, 0, 0])
+			break
+		case AXIS.Y:
+			this.#gizmoRotateEntity([0, mappedValue, 0])
+			break
+		case AXIS.Z:
+			this.#gizmoRotateEntity([0, 0, mappedValue])
+			break
+		}
+		GizmoState.hasTransformationStarted = true
 	}
 
 	#gizmoRotateEntity(vec: [number, number, number] | Float32Array, screenSpace?: boolean) {

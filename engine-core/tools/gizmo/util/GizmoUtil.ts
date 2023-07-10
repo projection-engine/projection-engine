@@ -113,27 +113,32 @@ export default class GizmoUtil {
 	}
 
 	static nearestX(num, x) {
-		return Math.round(num / x) * x
+
+		return num === 0 ? 0 : Math.round(num / x) * x
 	}
 
-	static assignValueToVector(vecValue:vec3, target:vec3){
-		if(vecValue[0] !== 0){
+	static assignValueToVector(vecValue: vec3, target: vec3) {
+		if (vecValue[0] !== 0) {
 			target[0] = vecValue[0]
 		}
-		if(vecValue[1] !== 0){
+		if (vecValue[1] !== 0) {
 			target[1] = vecValue[1]
 		}
-		if(vecValue[2] !== 0){
+		if (vecValue[2] !== 0) {
 			target[2] = vecValue[2]
 		}
 	}
-	static mapToScreenMovement(event: MouseEvent): vec3 {
+
+	static mapToScreenMovement(event: MouseEvent, scaleVec=false): vec3 {
 		if (GizmoState.clickedAxis === AXIS.NONE)
 			return [0, 0, 0]
-
-		const x = event.clientX
-		const y = event.clientY
-		const worldCoordinates = ConversionAPI.toWorldCoordinates(x, y)
+		const distanceFrom = <vec3>CameraAPI.position
+		const scale = vec3.len(distanceFrom)
+		const worldCoordinates = ConversionAPI.toWorldCoordinates(event.clientX, event.clientY)
+		if(scaleVec){
+			vec3.scale(worldCoordinates, worldCoordinates, scale)
+			vec3.add(worldCoordinates, worldCoordinates, distanceFrom)
+		}
 		GizmoUtil.#mapToAxis(worldCoordinates)
 		return worldCoordinates
 	}

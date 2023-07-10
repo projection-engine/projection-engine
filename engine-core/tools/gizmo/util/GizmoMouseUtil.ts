@@ -8,6 +8,7 @@ import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GizmoState from "./GizmoState"
 import GizmoSystem from "../GizmoSystem"
 import GizmoUtil from "./GizmoUtil"
+import {vec3} from "gl-matrix"
 
 export default class GizmoMouseUtil {
 
@@ -20,6 +21,9 @@ export default class GizmoMouseUtil {
 		GizmoUtil.updateGizmosTransformation(true)
 		GizmoSystem.callListeners()
 		GizmoSystem.onStop?.()
+		GizmoState.initialEntityPosition[0] = 0
+		GizmoState.initialEntityPosition[1] = 0
+		GizmoState.initialEntityPosition[2] = 0
 	}
 
 	static onMouseDown(event: MouseEvent) {
@@ -30,8 +34,8 @@ export default class GizmoMouseUtil {
 		const axis = PickingAPI.readEntityID(event.clientX, event.clientY)
 		if (axis === 0)
 			return
+		vec3.copy(GizmoState.initialEntityPosition, GizmoState.mainEntity.__pivotOffset)
 		GizmoSystem.callListeners(false)
-		// document.body.requestPointerLock()
 		GizmoState.wasOnGizmo = true
 		GizmoState.clickedAxis = axis
 		GizmoSystem.onStart?.()

@@ -79,7 +79,7 @@ export default class TranslationGizmo extends AbstractSingleton implements IGizm
 		if (!firstEntity)
 			return
 		const grid = event.ctrlKey ? 1 : GizmoState.translationGridSize
-		const vec = GizmoUtil.mapToScreenMovement(event)
+		const vec = GizmoUtil.mapToScreenMovement(event, true)
 
 		if (!GizmoState.isGlobal)
 			vec3.transformQuat(vec, vec, firstEntity.rotationQuaternionFinal)

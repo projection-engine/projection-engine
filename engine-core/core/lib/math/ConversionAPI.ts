@@ -22,17 +22,20 @@ export default class ConversionAPI {
 		}
 	}
 
-	static toWorldCoordinates(x, y): vec3 {
-		const cameraDistance = vec3.len(<vec3>CameraAPI.position)
-		const bBox = ConversionAPI.canvasBBox
-		const normalizedX = ((x  -bBox.x) / bBox.width) * 2 - 1
-		const normalizedY = 1 - ((y - bBox.y) / bBox.height) * 2
-		const homogeneousCoordinates = vec4.fromValues(normalizedX * cameraDistance, normalizedY * cameraDistance, 1, 1)
+	static toWorldCoordinates(x, y, scale = 1): vec3 {
 
-		const invMat = mat4.mul(mat4.create(), CameraAPI.invViewMatrix, CameraAPI.invProjectionMatrix)
-		const transformedVector = vec4.create()
-		vec4.transformMat4(transformedVector, homogeneousCoordinates, invMat)
-		return [transformedVector[0], transformedVector[1], transformedVector[2]]
+		// NORMALIZED DEVICE SPACE
+		const bBox = ConversionAPI.canvasBBox
+		const xNormalized = ((x  - bBox.x) / bBox.width) * 2 - 1
+		const yNormalized = -((y - bBox.y) / bBox.height) * 2 + 1
+		// HOMOGENEOUS CLIP SPACE
+		const homogeneousCoords = vec4.fromValues(xNormalized * scale, yNormalized * scale, 0, 0)
+
+		// EYE SPACE
+		const eyeCoords = vec4.transformMat4(homogeneousCoords, homogeneousCoords, CameraAPI.invProjectionMatrix)
+
+		// WORLD SPACE
+		return vec3.transformMat4(<vec3>eyeCoords, <vec3>eyeCoords, mat4.invert(mat4.create(), CameraAPI.staticViewMatrix))
 	}
 
 	static toLinearWorldCoordinates(x, y): vec4 {

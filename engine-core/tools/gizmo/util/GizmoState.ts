@@ -11,6 +11,7 @@ import DualAxisGizmo from "../transformation/DualAxisGizmo"
 import ScreenSpaceGizmo from "../transformation/ScreenSpaceGizmo"
 import ScalingGizmo from "../transformation/ScalingGizmo"
 import RotationGizmo from "../transformation/RotationGizmo"
+import {vec3} from "gl-matrix"
 
 export default class GizmoState {
 	static #mainEntity?: Entity
@@ -25,6 +26,7 @@ export default class GizmoState {
 	static translationGridSize = 1
 	static scalingGridSize = 1
 	static #gizmoType = Gizmos.NONE
+	static initialEntityPosition = vec3.create()
 
 	static get targetGizmos() {
 		return GizmoState.#targetGizmos
