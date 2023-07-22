@@ -40,7 +40,7 @@ function frontend(fileName, outputName) {
 	return {
 		...COMMON,
 		platform: "browser",
-		entryPoints: ["./frontend/" + fileName],
+		entryPoints: ["./src/renderer/window" + fileName],
 		format: "iife",
 		outfile: "./build/" + outputName + ".js",
 		plugins: [
@@ -53,32 +53,11 @@ function frontend(fileName, outputName) {
 	}
 }
 
-const electron = {
-	...COMMON,
-	platform: "node",
-	entryPoints: ["./electron/index.ts"],
-	format: "cjs",
-	external: ["electron", "sharp"],
-	outfile: "./build/index.js",
-	plugins: [
-		copy({
-			assets: [
-				{
-					from: [
-						"./static/*"
-					],
-					to: ["./"]
-				}
-			]
-		})
-	]
-}
-
 const workers = [
-	worker("engine-core/core/workers/entity-worker.ts", "build/entity-worker.js"),
-	worker("engine-core/core/workers/camera-worker.ts", "build/camera-worker.js"),
-	worker("engine-core/core/workers/terrain-worker.ts", "build/terrain-worker.js"),
-	worker("engine-core/core/workers/image-worker.ts", "build/image-worker.js"),
+	worker("src/renderer/engine/core/workers/entity-worker.ts", "build/entity-worker.js"),
+	worker("src/renderer/engine/core/workers/camera-worker.ts", "build/camera-worker.js"),
+	worker("src/renderer/engine/core/workers/terrain-worker.ts", "build/terrain-worker.js"),
+	worker("src/renderer/engine/core/workers/image-worker.ts", "build/image-worker.js"),
 ]
 
 workers.forEach((worker, i) => {
@@ -86,20 +65,30 @@ workers.forEach((worker, i) => {
 		.then(() => console.log("SUCCESS - WORKER - " + i))
 		.catch((err) => console.error(err))
 })
-esbuild.build(frontend("editor-window.ts", "editor-window"))
+esbuild.build(frontend("/editor/editor-window.ts", "editor-window"))
 	.then(() => console.log("SUCCESS - EDITOR"))
 	.catch((err) => console.error(err))
 
-esbuild.build(frontend("project-window.ts", "project-window"))
+esbuild.build(frontend("/projects/project-window.ts", "project-window"))
 	.then(() => console.log("SUCCESS - PROJECTS"))
 	.catch((err) => console.error(err))
 
-esbuild.build(frontend("preferences-window.ts", "preferences-window"))
+esbuild.build(frontend("/preferences/preferences-window.ts", "preferences-window"))
 	.then(() => console.log("SUCCESS - PREFERENCES"))
 	.catch((err) => console.error(err))
 
 
-esbuild.build(electron)
+esbuild.build( {
+	...COMMON,
+	platform: "node",
+	entryPoints: ["./src/main/index.ts"],
+	format: "cjs",
+	external: ["electron", "sharp"],
+	outfile: "./build/index.js",
+	plugins: [
+		copy({assets: [{from: ["./src/static/*"], to: ["./"]}]})
+	]
+})
 	.then(() => console.log("SUCCESS - BACKEND"))
 	.catch((err) => console.error(err))
 
