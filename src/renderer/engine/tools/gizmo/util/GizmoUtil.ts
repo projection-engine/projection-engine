@@ -12,6 +12,7 @@ import ConversionAPI from "../../../core/lib/math/ConversionAPI"
 import Mesh from "../../../core/instances/Mesh";
 import StaticEditorFBO from "../../utils/StaticEditorFBO";
 import GPUUtil from "../../../core/utils/GPUUtil";
+import EngineToolsState from "../../EngineToolsState";
 
 
 export default class GizmoUtil {
@@ -73,7 +74,7 @@ export default class GizmoUtil {
 		StaticEditorShaders.gizmo.bind()
 		const uniforms = StaticEditorShaders.gizmoUniforms
 		GPUUtil.bind2DTextureForDrawing(uniforms.gizmoIDS, 0, StaticEditorFBO.gizmo.colors[0])
-		GPU.context.uniform2fv(uniforms.mouseCoordinates, GizmoState.mouseCoordinates)
+		GPU.context.uniform2fv(uniforms.mouseCoordinates, EngineToolsState.mouseCoordinates)
 
 		GPU.context.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
 		GPU.context.uniform3fv(uniforms.translation, GizmoState.mainEntity.__pivotOffset)

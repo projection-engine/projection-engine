@@ -1,9 +1,7 @@
 import PickingAPI from "../../../core/lib/utils/PickingAPI"
 import GPU from "../../../core/GPU"
-import CameraAPI from "../../../core/lib/utils/CameraAPI"
 import AXIS from "../../static/AXIS"
-import VisibilityRenderer from "../../../core/runtime/VisibilityRenderer"
-import StaticEditorShaders from "../../utils/StaticEditorShaders"
+import Axis from "../../static/AXIS"
 import GizmoState from "./GizmoState"
 import GizmoSystem from "../GizmoSystem"
 import GizmoUtil from "./GizmoUtil"
@@ -43,11 +41,8 @@ export default class GizmoMouseUtil {
 
 
     static onMouseMove(event: MouseEvent) {
-        if (GizmoState.targetGizmos.length === 0)
-            return
-        const coords = ConversionAPI.toQuadCoordinates(event.clientX, event.clientY, GPU.internalResolution.w, GPU.internalResolution.h)
-        GizmoState.mouseCoordinates[0] = coords.x
-        GizmoState.mouseCoordinates[1] = coords.y
+        if(GizmoState.clickedAxis == Axis.NONE)
+            return;
         for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
             GizmoState.targetGizmos[i].onMouseMove(event)
         }

@@ -6,6 +6,8 @@ import ViewportUtil from "../../../util/ViewportUtil"
 import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
 import GizmoState from "../../../../../engine/tools/gizmo/util/GizmoState"
 import GizmoMouseUtil from "../../../../../engine/tools/gizmo/util/GizmoMouseUtil"
+import EngineToolsState from "../../../../../engine/tools/EngineToolsState";
+import EngineTools from "../../../../../engine/tools/EngineTools";
 
 
 export default class ViewportInteractionListener extends AbstractSingleton {
@@ -16,13 +18,13 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 		super()
 		GPU.canvas.addEventListener("mousedown", this.#onMouseDown.bind(this))
 		document.addEventListener("mouseup", this.#onMouseUp.bind(this))
-		document.addEventListener("mousemove", GizmoMouseUtil.onMouseMove)
+		document.addEventListener("mousemove", EngineTools.onMouseMove)
 	}
 
 	onDestroy() {
 		GPU.canvas.removeEventListener("mousedown", this.#onMouseDown.bind(this))
 		document.removeEventListener("mouseup", this.#onMouseUp.bind(this))
-		document.removeEventListener("mousemove", GizmoMouseUtil.onMouseMove)
+		document.removeEventListener("mousemove", EngineTools.onMouseMove)
 	}
 
 

@@ -27,8 +27,6 @@ export default class GizmoState {
 	static scalingGridSize = 1
 	static #gizmoType = Gizmos.NONE
 	static initialEntityPosition = vec3.create()
-	static mouseCoordinates = vec2.create()
-
 	static get targetGizmos() {
 		return GizmoState.#targetGizmos
 	}
