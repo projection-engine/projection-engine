@@ -13,6 +13,7 @@ import GizmoSystem from "../GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
 import GPUUtil from "../../../core/utils/GPUUtil";
 import StaticEditorFBO from "../../utils/StaticEditorFBO";
+import EngineToolsState from "../../EngineToolsState";
 
 const toDeg = 180 / Math.PI
 const uniformCache = new Float32Array(4)
@@ -66,7 +67,7 @@ export default class RotationGizmo extends AbstractXYZGizmo{
 			context.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
 
 			GPUUtil.bind2DTextureForDrawing(uniforms.gizmoIDS, 0, StaticEditorFBO.gizmo.colors[0])
-			GPU.context.uniform2fv(uniforms.mouseCoordinates, GizmoState.mouseCoordinates)
+			GPU.context.uniform2fv(uniforms.mouseCoordinates, EngineToolsState.mouseCoordinates)
 
 			uniformCache[0] = axis
 			uniformCache[1] = GizmoState.clickedAxis
