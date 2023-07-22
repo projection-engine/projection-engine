@@ -13,6 +13,9 @@
     import {SORTS, SORTS_KEYS} from "./static/SORT_INFO"
     import FileSystemUtil from "../../../shared/FileSystemUtil"
 
+    /** @type string */
+    export default viewMetadata
+
     const COMPONENT_ID = crypto.randomUUID()
     export let viewID
     export let viewIndex

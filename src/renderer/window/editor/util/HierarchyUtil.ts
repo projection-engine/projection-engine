@@ -6,6 +6,8 @@ import Engine from "../../../engine/core/Engine"
 import EngineStateService from "../services/engine/EngineStateService"
 import EditorUtil from "./EditorUtil"
 import SelectionStoreUtil from "./SelectionStoreUtil"
+import HotKeysController from "../../shared/lib/HotKeysController";
+import getViewportHotkeys from "../templates/get-viewport-hotkeys";
 
 export default class HierarchyUtil {
 	static buildTree(openTree: { [key: string]: boolean }, search: string, filteredComponent: string): HierarchyToRenderElement[] {
@@ -165,5 +167,28 @@ export default class HierarchyUtil {
 				SelectionStoreUtil.setEntitiesSelected(entitiesSelected.filter(e => e !== entityID))
 		} else
 			SelectionStoreUtil.setEntitiesSelected(entityID)
+	}
+
+	static initializeView(draggable, ref:HTMLElement){
+		HotKeysController.bindAction(
+			ref,
+			Object.values(getViewportHotkeys()),
+			"public",
+			LocalizationEN.VIEWPORT
+		)
+		draggable.onMount({
+			targetElement: ref,
+			onDrop: (entityDragged, event) => {
+				const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
+				HierarchyUtil.handleDrop(event, entityDragged, node ? Engine.entities.get(node) : undefined)
+			},
+			onDragOver: (_, ev) => {
+				if (ev.ctrlKey)
+					return "Link entities"
+				if (ev.shiftKey)
+					return "Copy into"
+				return "Drop on collection (CTRL to link, SHIFT to copy and link)"
+			}
+		})
 	}
 }

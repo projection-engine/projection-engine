@@ -10,53 +10,37 @@
     import Header from "./components/Header.svelte"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import HierarchyUtil from "../../util/HierarchyUtil"
+    import ViewStateStore from "../../../shared/stores/ViewStateStore";
 
-    let search = ""
-    let filteredComponent = undefined
-    let ref
-    let openTree = {}
-    let isOnSearch = false
+    /** @type string */
+    export default viewMetadata
+
     let toRender = []
-
     const ID = crypto.randomUUID()
     const draggable = dragDrop()
+    let componentState = {search: "", filteredComponent: undefined, ref, openTree: {}, isOnSearch: false}
 
     function updateHierarchy(op) {
-    	const openLocal = op ?? openTree
-    	if (op !== openTree && op !== undefined)
+    	if (op !== componentState.openTree && op !== undefined){
+            ViewStateStore.updateViewStateByProperty(viewMetadata, "openTree", op)
     		EntityHierarchyService.updateHierarchy()
-    	openTree = openLocal
-    	toRender = HierarchyUtil.buildTree(openTree, search, filteredComponent)
+        }
+        toRender = HierarchyUtil.buildTree(componentState.openTree, componentState.search, componentState.filteredComponent)
     }
 
-    $: {
-    	isOnSearch = search || filteredComponent
-    	updateHierarchy()
+    function onUpdate(data){
+        updateHierarchy()
+        componentState = data
     }
 
     onMount(() => {
-    	HotKeysController.bindAction(
-    		ref,
-    		Object.values(getViewportHotkeys()),
-    		"public",
-    		LocalizationEN.VIEWPORT
-    	)
-    	draggable.onMount({
-    		targetElement: ref,
-    		onDrop: (entityDragged, event) => {
-    			const node = event.composedPath().find(n => n?.getAttribute?.("data-sveltenode") != null)?.getAttribute?.("data-sveltenode")
-    			HierarchyUtil.handleDrop(event, entityDragged, node ? Engine.entities.get(node) : undefined)
-    		},
-    		onDragOver: (_, ev) => {
-    			if (ev.ctrlKey)
-    				return "Link entities"
-    			if (ev.shiftKey)
-    				return "Copy into"
-    			return "Drop on collection (CTRL to link, SHIFT to copy and link)"
-    		}
-    	})
-
+        HierarchyUtil.initializeView(draggable, ref)
     	EntityHierarchyService.registerListener(ID, updateHierarchy)
+        ViewStateStore.initializeView(
+            viewMetadata,
+            {...componentState},
+            onUpdate
+        )
     })
 
     onDestroy(() => {
@@ -66,10 +50,10 @@
 </script>
 
 <Header
-        setFilteredComponent={v => filteredComponent =v}
-        setSearch={v => search = v}
-        {filteredComponent}
-        {search}
+        setFilteredComponent={v => ViewStateStore.updateViewStateByProperty(viewMetadata, "filteredComponent", v)}
+        setSearch={v => ViewStateStore.updateViewStateByProperty(viewMetadata, "search", v)}
+        filteredComponent={componentState.filteredComponent}
+        search={componentState.search}
 />
 
 <div
@@ -80,13 +64,13 @@
 >
     <div class="content" style={toRender.length === 0 ? "background: var(--pj-background-quaternary)" : undefined}>
         <Tree
-                {isOnSearch}
-                updateOpen={_ => updateHierarchy(openTree)}
-                {openTree}
-                {toRender}
-                {filteredComponent}
+                isOnSearch={componentState.search || componentState.filteredComponent}
+                updateOpen={_ => updateHierarchy(componentState.openTree)}
+                openTree={componentState.openTree}
+                toRender={toRender}
+                filteredComponent={componentState.filteredComponent}
                 {ID}
-                testSearch={node => HierarchyUtil.testSearch(filteredComponent, search, node)}
+                testSearch={node => HierarchyUtil.testSearch(componentState.filteredComponent, componentState.search, node)}
         />
     </div>
 </div>

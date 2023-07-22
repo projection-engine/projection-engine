@@ -16,6 +16,9 @@
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import ShaderEditorUtil from "../../util/ShaderEditorUtil"
 
+    /** @type string */
+    export default viewMetadata
+
     const COMPONENT_ID = crypto.randomUUID()
 
     /** @type {string} */

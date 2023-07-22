@@ -22,6 +22,9 @@
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
 
+    /** @type string */
+    export default viewMetadata
+
     const COMPONENT_ID = crypto.randomUUID()
     const draggable = dragDrop(false)
 

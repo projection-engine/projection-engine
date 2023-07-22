@@ -11,6 +11,10 @@
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
+    /** @type string */
+    export default viewMetadata
+
+
     const COMPONENT_ID = crypto.randomUUID()
 
     let ref
