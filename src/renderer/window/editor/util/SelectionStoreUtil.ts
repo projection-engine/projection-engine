@@ -7,24 +7,14 @@ export default class SelectionStoreUtil{
 		return SelectionStore.getData().TARGET
 	}
 
-	static getSelectionList():string[] {
-		return SelectionStore.getData().array
-	}
 	static setEntitiesSelected(data) {
 		SelectionStore.updateStore({TARGET: SelectionTargets.ENGINE, array: data})
 	}
 
 	static getEntitiesSelected() {
-		return SelectionStoreUtil.getSelectionTarget() === SelectionTargets.ENGINE ? SelectionStoreUtil.getSelectionList() : []
+		return SelectionStoreUtil.getSelectionTarget() === SelectionTargets.ENGINE ? SelectionStore.getData().array : []
 	}
 
-	static setContentBrowserSelected(data) {
-		SelectionStore.updateStore({TARGET: SelectionTargets.CONTENT_BROWSER, array: data})
-	}
-
-	static getContentBrowserSelected() {
-		return SelectionStoreUtil.getSelectionTarget() === SelectionTargets.CONTENT_BROWSER ? SelectionStoreUtil.getSelectionList() : []
-	}
 
 	static getMainEntity() {
 		const l = SelectionStoreUtil.getLockedEntity()

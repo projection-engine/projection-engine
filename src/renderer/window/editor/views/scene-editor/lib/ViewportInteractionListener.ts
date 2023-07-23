@@ -6,7 +6,6 @@ import ViewportUtil from "../../../util/ViewportUtil"
 import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
 import GizmoState from "../../../../../engine/tools/gizmo/util/GizmoState"
 import GizmoMouseUtil from "../../../../../engine/tools/gizmo/util/GizmoMouseUtil"
-import EngineToolsState from "../../../../../engine/tools/EngineToolsState";
 import EngineTools from "../../../../../engine/tools/EngineTools";
 
 

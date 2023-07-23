@@ -2,9 +2,6 @@
 
 
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
-
-    export let sort
-
 </script>
 
 <div class="wrapper">

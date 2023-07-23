@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte"
     import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
     import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
-    import Header from "./Header.svelte"
+    import Header from "./components/Header.svelte"
 
 
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"

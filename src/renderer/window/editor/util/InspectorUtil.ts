@@ -1,5 +1,5 @@
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
-import FilesStore from "../../shared/stores/FilesStore"
+import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import COMPONENTS from "../../../engine/core/static/COMPONENTS"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
@@ -125,7 +125,7 @@ export default class InspectorUtil {
 	}
 
 	static #getItemFound(id) {
-		const filesStoreData = FilesStore.getData()
+		const filesStoreData = ContentBrowserStore.getData()
 		let type = "SCRIPT"
 		let itemFound = filesStoreData.components.find(s => s.registryID === id)
 		if (!itemFound) {
@@ -154,7 +154,7 @@ export default class InspectorUtil {
 		if (selectionData.array[0]) {
 			switch (selectionData.TARGET) {
 			case SelectionTargets.CONTENT_BROWSER:
-				selectedItem = FilesStore.getData().items.find(i => i.id === selectionData.array[0])
+				selectedItem = ContentBrowserStore.getData().items.find(i => i.id === selectionData.array[0])
 				break
 			case SelectionTargets.ENGINE:
 				selectedItem = QueryAPI.getEntityByID(selectionData.array[0])

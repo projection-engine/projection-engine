@@ -5,10 +5,7 @@
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
-    import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
-    import Engine from "../../../../engine/core/Engine"
     import Header from "./components/Header.svelte"
-    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import HierarchyUtil from "../../util/HierarchyUtil"
     import ViewStateStore from "../../../shared/stores/ViewStateStore";
 

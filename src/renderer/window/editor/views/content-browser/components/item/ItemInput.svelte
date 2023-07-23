@@ -27,12 +27,12 @@
         padding: 0 2px;
         border-radius: 3px;
         background: none;
-text-align: center;
+        text-align: center;
         outline: none;
         font-size: .7rem;
         color: var(--pj-color-primary);
         border: var(--pj-border-primary) 1px solid;
-        background: rgba(0,0,0,.5);
+        background: rgba(0, 0, 0, .5);
         height: 23px;
     }
 

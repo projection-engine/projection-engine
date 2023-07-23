@@ -11,9 +11,6 @@
     import EngineStore from "../../../shared/stores/EngineStore"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
 
-    /** @type string */
-    export default viewMetadata
-
     const COMPONENT_ID = crypto.randomUUID()
     const TYPES = ConsoleAPI.TYPES
     const portal = new SveltePortal(999)

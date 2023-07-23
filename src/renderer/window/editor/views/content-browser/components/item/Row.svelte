@@ -5,20 +5,14 @@
     import FileTypes from "../../../../../../../shared/enums/FileTypes"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
 
-    export let currentDirectory
-    export let items
     export let data
     export let setCurrentDirectory
-    export let setSelected
     export let reset
-    export let type
-    export let isMaterial
     export let isOnRename
     export let isSelected
     export let metadata
     export let submitRename
     export let icon
-    export let draggable
     export let isToBeCut
 
 </script>
@@ -26,12 +20,9 @@
 <div
         data-svelteisitem="-"
         data-svelteid={data.id}
-        data-sveltematerial={isMaterial ? data.id : undefined}
-        data-sveltefile={type === 0 ? undefined : data.id}
         data-sveltename={data.name}
-        data-sveltefolder={type !== 0 ? undefined : data.id}
-        on:dblclick={() => ContentBrowserUtil.openItem(data, setCurrentDirectory, setSelected, reset, type)}
-        on:click={setSelected}
+        on:dblclick={() => ContentBrowserUtil.openItem(data, setCurrentDirectory, reset)}
+        on:click={e => ContentBrowserUtil.handleSelection(e, data)}
         style={(isSelected && !isOnRename? "background: var(--pj-accent-color-light);" : (isOnRename ? "background: transparent; box-shadow: none;" : "")) +  (isToBeCut  ? "opacity: .5;" : "")}
         class="file"
 >

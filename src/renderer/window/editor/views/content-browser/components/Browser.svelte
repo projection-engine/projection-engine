@@ -7,13 +7,12 @@
     import SelectionStore from "../../../../shared/stores/SelectionStore"
 
     import ITEM_TYPES from "../static/ITEM_TYPES"
-    import RowsHeader from "./BrowserHeader.svelte"
+    import BrowserHeader from "./BrowserHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
-    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
-    import FilesStore from "../../../../shared/stores/FilesStore"
+    import ContentBrowserStore from "../../../../shared/stores/ContentBrowserStore"
 
     const COMPONENT_ID = crypto.randomUUID()
     const CARD_SIZE = 115
@@ -32,7 +31,6 @@
     let currentItem
     let elementsPerRow = 0
     let resizeOBS
-    let selectionList
     let onDrag = false
     let timeout
     let store = {}
@@ -41,7 +39,7 @@
     let toRender
 
     function resetItem() {
-    	SelectionStoreUtil.setContentBrowserSelected([])
+    	ContentBrowserStore.setContentBrowserSelected([])
     	onChange("")
     	setFileType(undefined)
     }
@@ -61,8 +59,7 @@
 
     onMount(() => {
     	ContentBrowserUtil.buildContextMenuAndHotKeys(COMPONENT_ID, ref, navigationHistory, () => currentDirectory, setCurrentDirectory, v => currentItem = v)
-    	FilesStore.getInstance().addListener(COMPONENT_ID, v => store = v)
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => selectionList = data.array, ["array"])
+    	ContentBrowserStore.getInstance().addListener(COMPONENT_ID, v => store = v)
     	resizeOBS = new ResizeObserver(() => {
     		if (isRowType)
     			return
@@ -75,7 +72,7 @@
     })
 
     onDestroy(() => {
-    	FilesStore.getInstance().removeListener(COMPONENT_ID)
+    	ContentBrowserStore.getInstance().removeListener(COMPONENT_ID)
     	SelectionStore.getInstance().removeListener(COMPONENT_ID)
     	HotKeysController.unbindAction(ref)
     	ContextMenuService.getInstance().destroy(COMPONENT_ID)
@@ -91,7 +88,7 @@
         on:mousedown={e => {
             const key = "data-svelteisitem"
             if(e.composedPath().find(element => element.getAttribute?.(key) != null) == null)
-                SelectionStoreUtil.setContentBrowserSelected([])
+                ContentBrowserStore.setContentBrowserSelected([])
         }}
         style={isRowType && toRender.length > 0? "padding: 0;": undefined}
         class="content"
@@ -99,34 +96,28 @@
     <SelectBox
             allowAll={true}
             nodes={toRender.flat()}
-            getSelected={SelectionStoreUtil.getContentBrowserSelected}
-            setSelected={SelectionStoreUtil.setContentBrowserSelected}
+            getSelected={ContentBrowserStore.getContentBrowserSelected}
+            setSelected={ContentBrowserStore.setContentBrowserSelected}
     />
     {#if toRender.length > 0}
         {#if isRowType}
-            <RowsHeader sort={sortKey}/>
+            <BrowserHeader/>
         {/if}
         <VirtualList items={toRender} let:item>
             <div class="line"
                  style={ "height:" + lineHeight + "px;" + (viewType === ITEM_TYPES.CARD ? "margin-bottom: 3px;" : "")}>
                 {#each item as child, index}
                     <Item
-                            selectionList={selectionList}
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
                             toCut={store.toCut}
-                            currentDirectory={currentDirectory}
                             reset={resetItem}
-                            type={child.isFolder ? 0 : 1}
                             data={child}
-                            childQuantity={child.children}
                             setCurrentDirectory={setCurrentDirectory}
-                            items={store.items}
-                            setSelected={e => ContentBrowserUtil.handleSelection(e, child)}
                             isOnRename={currentItem === child.id}
                             isCardViewType={viewType === ITEM_TYPES.CARD}
                             submitRename={async name => {
-                                await ContentBrowserUtil.handleRename(child, name, currentDirectory, setCurrentDirectory )
+                                await ContentBrowserUtil.handleRename(child, name, currentDirectory, setCurrentDirectory)
                                 currentItem = undefined
                             }}
                     />

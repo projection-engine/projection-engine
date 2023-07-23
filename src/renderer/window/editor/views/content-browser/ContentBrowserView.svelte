@@ -88,10 +88,9 @@
                 currentDirectory={currentDirectory}
                 setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
                 navigationHistory={navigationHistory}
-                onChange={v => inputValue = v}
                 fileType={fileType}
-
                 setFileType={v => fileType = v}
+                onChange={v => inputValue = v}
                 inputValue={inputValue}
 
         />

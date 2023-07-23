@@ -1,5 +1,5 @@
 import Engine from "../../../engine/core/Engine"
-import FilesStore from "../../shared/stores/FilesStore"
+import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 
 export default class SelectorUtil{
 	static getIcon(type){
@@ -24,7 +24,7 @@ export default class SelectorUtil{
 	}
 
 	static getType(type, mergeMaterials, terrainMaterials) {
-		const store = FilesStore.getData()
+		const store = ContentBrowserStore.getData()
 		switch (type) {
 		case "image":
 			return store.textures

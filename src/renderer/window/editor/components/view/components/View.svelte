@@ -1,14 +1,14 @@
 <script lang="ts">
-    import Hierarchy from "../../../views/hierarchy/Hierarchy.svelte"
-    import ContentBrowser from "../../../views/content-browser/ContentBrowser.svelte"
-    import Inspector from "../../../views/inspector/Inspector.svelte"
+    import Hierarchy from "../../../views/hierarchy/HierarchyView.svelte"
+    import ContentBrowser from "../../../views/content-browser/ContentBrowserView.svelte"
+    import Inspector from "../../../views/inspector/InspectorView.svelte"
     import VIEWS from "../static/VIEWS"
-    import ShaderEditor from "../../../views/shader-editor/ShaderEditor.svelte"
-    import UIEditor from "../../../views/ui/UIEditor.svelte"
+    import ShaderEditor from "../../../views/shader-editor/ShaderEditorView.svelte"
+    import UIEditor from "../../../views/ui/UIEditorView.svelte"
     import VIEWPORT_TABS from "../../../static/VIEWPORT_TABS.ts"
-    import SceneEditor from "../../../views/scene-editor/SceneEditor.svelte"
-    import Metrics from "../../../views/metrics/Metrics.svelte"
-    import Console from "../../../views/console/Console.svelte"
+    import SceneEditor from "../../../views/scene-editor/SceneEditorView.svelte"
+    import Metrics from "../../../views/metrics/MetricsView.svelte"
+    import Console from "../../../views/console/ConsoleView.svelte"
     import ViewStateStore from "../../../../shared/stores/ViewStateStore";
     import {onDestroy} from "svelte";
 

@@ -1,5 +1,5 @@
 <script>
-    import FilesStore from "../../../../../shared/stores/FilesStore"
+    import ContentBrowserStore from "../../../../../shared/stores/ContentBrowserStore"
     import {onDestroy, onMount} from "svelte"
 
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
@@ -12,8 +12,8 @@
     export let entity
 
     let components = []
-    onMount(() => FilesStore.getInstance().addListener(COMPONENT_ID, data => components = data.components, ["components"]))
-    onDestroy(() => FilesStore.getInstance().removeListener(COMPONENT_ID))
+    onMount(() => ContentBrowserStore.getInstance().addListener(COMPONENT_ID, data => components = data.components, ["components"]))
+    onDestroy(() => ContentBrowserStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
 

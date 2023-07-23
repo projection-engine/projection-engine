@@ -1,15 +1,15 @@
 <script>
-    import Engine from "../../../../engine/core/Engine"
-    import COMPONENTS from "../../../../engine/core/static/COMPONENTS"
-    import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
-    import ViewHeader from "../../components/view/components/ViewHeader.svelte"
-    import Icon from "../../../shared/components/icon/Icon.svelte"
-    import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import EngineStateService from "../../services/engine/EngineStateService"
-    import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
-    import EntityAPI from "../../../../engine/core/lib/utils/EntityAPI"
-    import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
-    import SelectionStoreUtil from "../../util/SelectionStoreUtil"
+    import Engine from "../../../../../engine/core/Engine"
+    import COMPONENTS from "../../../../../engine/core/static/COMPONENTS"
+    import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
+    import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
+    import EngineStateService from "../../../services/engine/EngineStateService"
+    import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
+    import EntityAPI from "../../../../../engine/core/lib/utils/EntityAPI"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
 
     /** @type {boolean} */
     export let isOnSelection

@@ -6,7 +6,7 @@
     import GizmoSystem from "../../../../engine/tools/gizmo/GizmoSystem"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import CameraSettings from "./components/CameraSettings.svelte"
-    import SceneOptions from "./SceneOptions.svelte"
+    import SceneOptions from "./components/SceneOptions.svelte"
     import EngineStore from "../../../shared/stores/EngineStore"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
