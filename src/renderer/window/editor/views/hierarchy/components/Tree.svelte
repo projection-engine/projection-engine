@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte"
     import EntityTreeBranch from "./EntityTreeBranch.svelte"
     import ComponentTreeBranch from "./ComponentTreeBranch.svelte"
-    import SelectionStore from "../../../../shared/stores/SelectionStore"
+    import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
     import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
 
     import getViewportContext from "../../../templates/get-viewport-context"
@@ -10,8 +10,6 @@
     import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
-    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
-    import EngineStore from "../../../../shared/stores/EngineStore"
 
     const COMPONENT_ID = crypto.randomUUID()
     /** @type { string }*/
@@ -32,13 +30,15 @@
 
     onMount(() => {
     	ContextMenuService.getInstance().mount(getViewportContext(), ID)
-    	EngineStore.getInstance().addListener(COMPONENT_ID, data => lockedEntity = data.lockedEntity, ["lockedEntity"])
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedList = SelectionStoreUtil.getEntitiesSelected())
+
+    	EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
+            selectedList = data.array
+            lockedEntity = data.lockedEntity
+        })
     })
 
     onDestroy(() => {
-    	EngineStore.getInstance().removeListener(COMPONENT_ID)
-    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+    	EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
     	EntityHierarchyService.removeListener(COMPONENT_ID)
     	ContextMenuService.getInstance().destroy(ID)
     })
@@ -50,7 +50,6 @@
             <ComponentTreeBranch
                     component={item.component}
                     depth={item.depth }
-                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
             />
         {:else}
             <EntityTreeBranch
@@ -60,7 +59,6 @@
                     depth={item.depth}
                     {selectedList}
                     {lockedEntity}
-                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
                     open={openTree}
                     {updateOpen}
             />

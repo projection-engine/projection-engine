@@ -7,12 +7,12 @@ import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
 import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
 import VisibilityRenderer from "../../../engine/core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine/tools/EngineTools"
-import SelectionStoreUtil from "./SelectionStoreUtil"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import VIEWS from "../components/view/static/VIEWS"
 import StaticFBO from "../../../engine/core/lib/StaticFBO";
+import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 
 export default class ViewportUtil{
 	static updateViewport(currentView:ViewTabItem) {
@@ -53,7 +53,7 @@ export default class ViewportUtil{
 		const deltaY = Math.abs(mouseDelta.y - event.clientY)
 		if (deltaX >= MAX_DELTA || deltaY >= MAX_DELTA)
 			return
-		const selected = SelectionStoreUtil.getEntitiesSelected()
+		const selected = EntitySelectionStore.getEntitiesSelected()
 		EngineTools.drawIconsToBuffer()
 
 		const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY, 1, StaticFBO.visibility.FBO)

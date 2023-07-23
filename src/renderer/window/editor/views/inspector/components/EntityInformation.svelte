@@ -1,23 +1,23 @@
 <script lang="ts">
-    import Engine from "../../../../../../engine/core/Engine";
-    import EntityNamingService from "../../../../services/engine/EntityNamingService";
+    import Engine from "../../../../../engine/core/Engine";
+    import EntityNamingService from "../../../services/engine/EntityNamingService";
 
-    import Selector from "../../../../components/selector/Selector.svelte";
-    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import EntityFactoryService from "../../../../services/engine/EntityFactoryService";
-    import EntityHierarchyService from "../../../../services/engine/EntityHierarchyService";
+    import Selector from "../../../components/selector/Selector.svelte";
+    import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte";
+    import EntityFactoryService from "../../../services/engine/EntityFactoryService";
+    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService";
 
-    import Input from "../../../../../shared/components/input/Input.svelte";
-    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Entity from "../../../../../../engine/core/instances/Entity";
-    import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte";
-    import Accordion from "../../../../../shared/components/accordion/Accordion.svelte";
+    import Input from "../../../../shared/components/input/Input.svelte";
+    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
+    import Entity from "../../../../../engine/core/instances/Entity";
+    import PropertyHeader from "../../../../shared/components/PropertyHeader.svelte";
+    import Accordion from "../../../../shared/components/accordion/Accordion.svelte";
     import TransformationForm from "./TransformationForm.svelte";
-    import EntityUpdateService from "../../../../services/engine/EntityUpdateService";
+    import EntityUpdateService from "../../../services/engine/EntityUpdateService";
     import {onDestroy} from "svelte";
     import AddComponent from "./AddComponent.svelte";
-    import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem";
-    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN";
+    import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem";
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
 
     export let entity: Entity
 

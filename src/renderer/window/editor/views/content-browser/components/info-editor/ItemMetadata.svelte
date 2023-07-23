@@ -1,6 +1,6 @@
 <script>
 
-    import GlobalContentBrowserController from "../../../content-browser/libs/GlobalContentBrowserController"
+    import GlobalContentBrowserController from "../../libs/GlobalContentBrowserController"
     import ToolTip from "../../../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"

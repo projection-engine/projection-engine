@@ -1,6 +1,10 @@
-import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
+import AbstractStore from "./AbstractStore"
 
-export default class SelectionStoreUtil{
+export default class EntitySelectionStore extends AbstractStore{
+	constructor() {
+		super({lockedEntity: undefined, array: []})
+	}
+
 	static setEntitiesSelected(data) {
 		EntitySelectionStore.updateStore({array: data})
 	}
@@ -10,8 +14,8 @@ export default class SelectionStoreUtil{
 	}
 
 	static getMainEntity() {
-		const lockedEntity = SelectionStoreUtil.getLockedEntity()
-		const firstSelected = SelectionStoreUtil.getEntitiesSelected()[0]
+		const lockedEntity = EntitySelectionStore.getLockedEntity()
+		const firstSelected = EntitySelectionStore.getEntitiesSelected()[0]
 		return firstSelected ? firstSelected : lockedEntity
 	}
 
@@ -22,5 +26,4 @@ export default class SelectionStoreUtil{
 	static setLockedEntity(data:string) {
 		EntitySelectionStore.updateStore({lockedEntity: data})
 	}
-
 }

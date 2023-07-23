@@ -4,7 +4,7 @@ import EntityAPI from "../../../../engine/core/lib/utils/EntityAPI"
 import EntityHierarchyService from "./EntityHierarchyService"
 import EditorActionHistory from "../EditorActionHistory"
 import EntityNamingService from "./EntityNamingService"
-import SelectionStore from "../../../shared/stores/SelectionStore"
+import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
 import Entity from "../../../../engine/core/instances/Entity"
 import PickingAPI from "../../../../engine/core/lib/utils/PickingAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
@@ -12,7 +12,6 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import SelectionTargets from "../../../../../shared/enums/SelectionTargets"
-import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 import GizmoUtil from "../../../../engine/tools/gizmo/util/GizmoUtil"
 
 
@@ -90,11 +89,11 @@ export default class EngineStateService {
 
     	EntityAPI.removeGroup(entities, false)
 
-    	SelectionStore.updateStore({
+    	EntitySelectionStore.updateStore({
     		TARGET: SelectionTargets.ENGINE,
     		array: []
     	})
-    	SelectionStoreUtil.setLockedEntity(Engine.entities.array[0]?.id)
+    	EntitySelectionStore.setLockedEntity(Engine.entities.array[0]?.id)
     	EngineStateService.#updateStructure()
     }
 
@@ -106,11 +105,11 @@ export default class EngineStateService {
     	EntityNamingService.renameEntity(entity.name, entity)
     	GizmoUtil.createTransformationCache(entity)
     	EntityAPI.addEntity(entity)
-    	SelectionStore.updateStore({
+    	EntitySelectionStore.updateStore({
     		TARGET: SelectionTargets.ENGINE,
     		array: [entity.id]
     	})
-    	SelectionStoreUtil.setLockedEntity(entity.id)
+    	EntitySelectionStore.setLockedEntity(entity.id)
     	EngineStateService.#updateStructure()
     }
 

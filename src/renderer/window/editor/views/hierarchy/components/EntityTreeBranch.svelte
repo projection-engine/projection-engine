@@ -16,7 +16,6 @@
     export let updateOpen: Function
     export let selectedList:string[]
     export let lockedEntity: string
-    export let setLockedEntity: Function
 
     const onExpand = () => {
         if (!open[entity.id]) {
@@ -67,7 +66,7 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <TreeBranchContent {isOpen} {entity} {lockedEntity} {setLockedEntity} {isOnSearch}/>
+    <TreeBranchContent {isOpen} {entity} {lockedEntity} {isOnSearch}/>
     <button
             data-sveltebuttondefault="-"
             class="button-visibility"

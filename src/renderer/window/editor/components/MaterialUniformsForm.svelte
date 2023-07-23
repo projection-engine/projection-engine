@@ -1,9 +1,9 @@
 <script>
-    import DATA_TYPES from "../../../../../engine/core/static/DATA_TYPES"
-    import Selector from "../../../components/selector/Selector.svelte"
-    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte"
-    import Range from "../../../../shared/components/range/Range.svelte"
-    import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
+    import DATA_TYPES from "../../../engine/core/static/DATA_TYPES"
+    import Selector from "./selector/Selector.svelte"
+    import ColorPicker from "../../shared/components/color-picker/ColorPicker.svelte"
+    import Range from "../../shared/components/range/Range.svelte"
+    import ShaderEditorUtil from "../util/ShaderEditorUtil"
 
     export let uniforms
     export let update

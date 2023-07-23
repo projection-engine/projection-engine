@@ -9,7 +9,7 @@
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
     import EntityAPI from "../../../../../engine/core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
-    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+    import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
 
     /** @type {boolean} */
     export let isOnSelection
@@ -29,7 +29,7 @@
     		if (e.uiComponent)
     			m.push(e.id)
     	}
-    	SelectionStoreUtil.setEntitiesSelected(m)
+    	EntitySelectionStore.setEntitiesSelected(m)
     }
 
 

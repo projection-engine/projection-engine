@@ -139,7 +139,6 @@ export default class GizmoUtil {
 	}
 
 	static nearestX(num, x) {
-
 		return num === 0 ? 0 : Math.round(num / x) * x
 	}
 

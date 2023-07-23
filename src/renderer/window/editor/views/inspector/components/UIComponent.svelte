@@ -1,16 +1,16 @@
 <script>
     import StyleField from "./UIStyles.svelte"
-    import COMPONENTS from "../../../../../../engine/core/static/COMPONENTS.ts"
+    import COMPONENTS from "../../../../../engine/core/static/COMPONENTS.ts"
 
-    import Selector from "../../../../components/selector/Selector.svelte"
-    import EditorFSUtil from "../../../../util/EditorFSUtil"
-    import FileSystemUtil from "../../../../../shared/FileSystemUtil"
-    import UIAPI from "../../../../../../engine/core/lib/rendering/UIAPI"
-    import Engine from "../../../../../../engine/core/Engine"
-    import Input from "../../../../../shared/components/input/Input.svelte"
-    import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
-    import InspectorUtil from "../../../../util/InspectorUtil"
+    import Selector from "../../../components/selector/Selector.svelte"
+    import EditorFSUtil from "../../../util/EditorFSUtil"
+    import FileSystemUtil from "../../../../shared/FileSystemUtil"
+    import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
+    import Engine from "../../../../../engine/core/Engine"
+    import Input from "../../../../shared/components/input/Input.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import InspectorUtil from "../../../util/InspectorUtil"
 
     export let entity
     export let submit

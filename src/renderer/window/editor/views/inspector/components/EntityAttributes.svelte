@@ -2,17 +2,17 @@
     import EntityInformation from "./EntityInformation.svelte"
     import Layout from "./dynamic-form/Layout.svelte"
     import {onDestroy, onMount} from "svelte"
-    import COMPONENTS from "../../../../../../engine/core/static/COMPONENTS"
+    import COMPONENTS from "../../../../../engine/core/static/COMPONENTS"
 
-    import dragDrop from "../../../../../shared/components/drag-drop/drag-drop"
+    import dragDrop from "../../../../shared/components/drag-drop/drag-drop"
     import UIComponent from "./UIComponent.svelte"
-    import MaterialUniforms from "../MaterialUniforms.svelte"
-    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import MeshComponent from "../../../../../../engine/core/instances/components/MeshComponent"
-    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
-    import InspectorUtil from "../../../../util/InspectorUtil"
-    import INSPECTOR_TABS from "../../static/INSPECTOR_TABS"
+    import MaterialUniforms from "../../../components/MaterialUniformsForm.svelte"
+    import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import MeshComponent from "../../../../../engine/core/instances/components/MeshComponent"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import InspectorUtil from "../../../util/InspectorUtil"
+    import INSPECTOR_TABS from "../static/INSPECTOR_TABS"
 
     /** @type {Entity} */
     export let entity

@@ -7,7 +7,6 @@ import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
 import Engine from "../../../engine/core/Engine"
 import VisibilityRenderer from "../../../engine/core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine/tools/EngineTools"
-import SelectionStoreUtil from "./SelectionStoreUtil"
 import {glMatrix, quat} from "gl-matrix"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import CameraTracker from "../../../engine/tools/utils/CameraTracker"
@@ -17,6 +16,7 @@ import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService
 import getViewportContext from "../templates/get-viewport-context"
 import RENDER_TARGET from "../static/RENDER_TARGET"
 import SETTINGS from "../static/SETTINGS"
+import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
@@ -92,7 +92,7 @@ export default class SceneEditorUtil {
 					entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})),
 					data
 				}, [data.buffer])
-				worker.onmessage = ({data: selected}) => SelectionStoreUtil.setEntitiesSelected(selected)
+				worker.onmessage = ({data: selected}) => EntitySelectionStore.setEntitiesSelected(selected)
 
 			} catch (err) {
 				console.error(err, startCoords, nStart)

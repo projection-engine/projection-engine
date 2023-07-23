@@ -3,7 +3,7 @@ import EditorActionHistory from "../EditorActionHistory"
 import Engine from "../../../../engine/core/Engine"
 import EditorFSUtil from "../../util/EditorFSUtil"
 import EngineStore from "../../../shared/stores/EngineStore"
-import SelectionStore from "../../../shared/stores/SelectionStore"
+import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
 import SettingsStore from "../../../shared/stores/SettingsStore"
 import VisualsStore from "../../../shared/stores/VisualsStore"
 import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
@@ -26,7 +26,6 @@ import AbstractSingleton from "../../../../../shared/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import SelectionTargets from "../../../../../shared/enums/SelectionTargets"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
-import SelectionStoreUtil from "../../util/SelectionStoreUtil"
 
 
 export default class LevelService extends AbstractSingleton {
@@ -94,25 +93,22 @@ export default class LevelService extends AbstractSingleton {
 
 		await EditorFSUtil.readRegistry()
 		EntityNamingService.clear()
-		SelectionStore.updateStore({
+		EntitySelectionStore.updateStore({
 			TARGET: SelectionTargets.ENGINE,
 			array: []
 		})
-		SelectionStoreUtil.setLockedEntity(undefined)
+		EntitySelectionStore.setLockedEntity(undefined)
 		EditorActionHistory.clear()
 
 
 		await Engine.loadLevel(levelID, false)
-		Engine.entities.array.forEach((entity, i) => {
+		const entities =Engine.entities.array
+		for (let i = 0; i < entities.length; i++){
+			const entity = entities[i];
 			entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
-		})
+		}
 		if (Engine.loadedLevel)
-			SelectionStore.updateStore({
-				TARGET: SelectionTargets.ENGINE,
-				array: [Engine.loadedLevel.id],
-				lockedEntity: Engine.loadedLevel.id
-			})
-		SelectionStoreUtil.setLockedEntity(Engine.loadedLevel.id)
+			EntitySelectionStore.setLockedEntity(Engine.loadedLevel.id)
 		EntityHierarchyService.updateHierarchy()
 	}
 

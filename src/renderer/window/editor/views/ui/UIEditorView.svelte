@@ -9,7 +9,7 @@
     import GPU from "../../../../engine/core/GPU"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
-    import SelectionStoreUtil from "../../util/SelectionStoreUtil"
+    import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
 
     /** @type string */
     export default viewMetadata
@@ -41,9 +41,9 @@
     	tooltip.style.opacity = "1"
 
     	if (e.ctrl)
-    		SelectionStoreUtil.setEntitiesSelected([...SelectionStoreUtil.getEntitiesSelected(), tooltip.hovered.id])
+    		EntitySelectionStore.setEntitiesSelected([...EntitySelectionStore.getEntitiesSelected(), tooltip.hovered.id])
     	else
-    		SelectionStoreUtil.setEntitiesSelected(entity.id)
+    		EntitySelectionStore.setEntitiesSelected(entity.id)
     	selectedEntity = entity
     }
     $: if (!isOnSelection && tooltip) tooltip.style.zIndex = "-1"

@@ -1,18 +1,16 @@
 <script>
 
     import {onDestroy, onMount} from "svelte"
-    import SelectionStore from "../../../shared/stores/SelectionStore"
-    import ContentBrowserItem from "./components/content-browser/ContentBrowserItem.svelte"
+    import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
+    import ContentBrowserItem from "../content-browser/components/info-editor/ContentBrowserItem.svelte"
     import Entity from "../../../../engine/core/instances/Entity"
     import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
-    import EntityInspector from "./components/engine/EntityAttributes.svelte"
+    import EntityInspector from "./components/EntityAttributes.svelte"
 
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
-    import CameraPreferences from "./components/engine/CameraPreferences.svelte"
+    import CameraPreferences from "./components/CameraPreferences.svelte"
     import ContentWrapper from "../../../preferences/components/content/ContentWrapper.svelte"
-    import SelectionTargets from "../../../../../shared/enums/SelectionTargets"
-    import EngineStore from "../../../shared/stores/EngineStore"
     import InspectorUtil from "../../util/InspectorUtil"
     import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
 
@@ -21,39 +19,33 @@
     let tabIndex = 0
     let tabs = []
     let lockedEntity
-    let isEntity
     let isOnDynamicTab
 
-
     onMount(() => {
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, data => {
-    		selectedItem = InspectorUtil.getSelectionTarget(data)
-    		tabIndex = SelectionTargets.ENGINE === SelectionStore.getData().TARGET ? 3 : 0
-    	})
-    	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
-    		lockedEntity = data.lockedEntity ? QueryAPI.getEntityByID(data.lockedEntity) : undefined
-    	}, ["lockedEntity"])
+        EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
+            selectedItem = InspectorUtil.getSelectionTarget(data)
+            tabIndex = 3
+            lockedEntity = QueryAPI.getEntityByID(data.lockedEntity)
+        })
     })
 
     onDestroy(() => {
-    	EngineStore.getInstance().removeListener(COMPONENT_ID)
-    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+        EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
     })
 
     function setTabs(data) {
-    	const TABS = [...INSPECTOR_TABS]
-    	if (!selectedItem)
-    		TABS.pop()
-    	tabs = [...TABS, ...data]
+        const TABS = [...INSPECTOR_TABS]
+        if (!selectedItem)
+            TABS.pop()
+        tabs = [...TABS, ...data]
     }
 
     $: {
-    	if (!selectedItem)
-    		selectedItem = lockedEntity
-    	if (!selectedItem)
-    		setTabs([])
-    	isOnDynamicTab = tabIndex > 2 && selectedItem !== undefined
-    	isEntity = selectedItem instanceof Entity
+        if (!selectedItem)
+            selectedItem = lockedEntity
+        if (!selectedItem)
+            setTabs([])
+        isOnDynamicTab = tabIndex > 2 && selectedItem !== undefined
     }
 
 </script>
@@ -76,18 +68,14 @@
             {/if}
         {/each}
     </div>
-    <div class="content" style={!isEntity && isOnDynamicTab ? "padding: 4px" : ""}>
+    <div class="content">
         {#if isOnDynamicTab}
-            {#if isEntity}
-                <EntityInspector
-                        setTabIndex={i => tabIndex = i}
-                        setTabs={setTabs}
-                        entity={selectedItem}
-                        tabIndex={tabIndex}
-                />
-            {:else}
-                <ContentBrowserItem setTabs={setTabs} item={selectedItem} tabIndex={tabIndex}/>
-            {/if}
+            <EntityInspector
+                    setTabIndex={i => tabIndex = i}
+                    setTabs={setTabs}
+                    entity={selectedItem}
+                    tabIndex={tabIndex}
+            />
         {:else if tabIndex === 2}
             <CameraPreferences/>
         {:else}

@@ -12,6 +12,7 @@
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
     import {SORTS, SORTS_KEYS} from "./static/SORT_INFO"
     import FileSystemUtil from "../../../shared/FileSystemUtil"
+    import ContentBrowserItem from "./components/info-editor/ContentBrowserItem.svelte";
 
     /** @type string */
     export default viewMetadata
@@ -95,6 +96,8 @@
 
         />
     </div>
+    <ResizableBar type={"width"}/>
+    <ContentBrowserItem/>
 </div>
 
 <style>

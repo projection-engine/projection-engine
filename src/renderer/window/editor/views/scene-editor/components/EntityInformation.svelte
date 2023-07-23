@@ -6,8 +6,7 @@
     import GizmoSystem from "../../../../../engine/tools/gizmo/GizmoSystem"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
-    import SelectionStore from "../../../../shared/stores/SelectionStore"
-    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
+    import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
     import GizmoState from "../../../../../engine/tools/gizmo/util/GizmoState"
     import SceneEditorUtil from "../../../util/SceneEditorUtil"
 
@@ -42,7 +41,7 @@
     		}
     		}
     	})
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedSize = SelectionStoreUtil.getEntitiesSelected().length)
+    	EntitySelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedSize = EntitySelectionStore.getEntitiesSelected().length)
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
     		gizmo = data.gizmo
     		isValidPivot = gizmo === GIZMOS.TRANSLATION && selectedSize === 1
@@ -52,7 +51,7 @@
     })
 
     onDestroy(() => {
-    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+    	EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
     	SettingsStore.getInstance().removeListener(COMPONENT_ID)
     	GizmoSystem.removeListener(COMPONENT_ID)
     })

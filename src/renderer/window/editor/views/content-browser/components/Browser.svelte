@@ -4,7 +4,7 @@
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import {onDestroy, onMount} from "svelte"
     import HotKeysController from "../../../../shared/lib/HotKeysController"
-    import SelectionStore from "../../../../shared/stores/SelectionStore"
+    import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
 
     import ITEM_TYPES from "../static/ITEM_TYPES"
     import BrowserHeader from "./BrowserHeader.svelte"
@@ -73,7 +73,7 @@
 
     onDestroy(() => {
     	ContentBrowserStore.getInstance().removeListener(COMPONENT_ID)
-    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
+    	EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
     	HotKeysController.unbindAction(ref)
     	ContextMenuService.getInstance().destroy(COMPONENT_ID)
     	clearTimeout(timeout)

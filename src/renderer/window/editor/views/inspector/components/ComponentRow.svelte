@@ -1,7 +1,7 @@
 <script>
-    import NATIVE_COMPONENTS from "../../static/NATIVE_COMPONENTS"
-    import EditorActionHistory from "../../../../services/EditorActionHistory"
-    import Icon from "../../../../../shared/components/icon/Icon.svelte"
+    import NATIVE_COMPONENTS from "../static/NATIVE_COMPONENTS"
+    import EditorActionHistory from "../../../services/EditorActionHistory"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
 
     export let offset
     export let entity

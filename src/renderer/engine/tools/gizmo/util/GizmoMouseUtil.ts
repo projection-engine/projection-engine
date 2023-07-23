@@ -1,12 +1,10 @@
 import PickingAPI from "../../../core/lib/utils/PickingAPI"
-import GPU from "../../../core/GPU"
 import AXIS from "../../static/AXIS"
 import Axis from "../../static/AXIS"
 import GizmoState from "./GizmoState"
 import GizmoSystem from "../GizmoSystem"
 import GizmoUtil from "./GizmoUtil"
 import {vec3} from "gl-matrix"
-import ConversionAPI from "../../../core/lib/math/ConversionAPI";
 import StaticEditorFBO from "../../utils/StaticEditorFBO";
 
 export default class GizmoMouseUtil {

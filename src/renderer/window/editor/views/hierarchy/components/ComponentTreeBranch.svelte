@@ -8,7 +8,6 @@
 
     export let depth: number
     export let component: Component
-    export let setLockedEntity: Function
 
     $: icon = EditorUtil.getComponentIcon(component.componentKey)
     $: label = EditorUtil.getComponentLabel(component.componentKey)
@@ -22,7 +21,6 @@
         data-svelteentity={entity.id}
         style={"padding-left:" +  (depth * 18 + "px;") + (component.entity.active ? "" : "opacity: .5") }
 >
-    <!--suppress JSUnresolvedReference -->
     <div class="info hierarchy-branch" data-sveltenode={entity.id}
          on:click={e => HierarchyUtil.updateSelection(entity.id, e.ctrlKey)}>
         {#each {length: depth} as _, i}
@@ -32,7 +30,7 @@
         <div class="button-small hierarchy-branch"></div>
         <button
                 class="button-icon hierarchy-branch"
-                on:click={() => setLockedEntity(entity.id)}
+                on:click={() => SelectionStoreUtil.setLockedEntity(entity.id)}
         >
             <Icon styles="font-size: 1rem; color: var(--pj-accent-color-tertiary)">{icon}</Icon>
         </button>

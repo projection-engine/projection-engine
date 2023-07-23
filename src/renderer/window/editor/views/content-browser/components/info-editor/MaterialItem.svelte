@@ -4,7 +4,7 @@
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
     import GPUAPI from "../../../../../../engine/core/lib/rendering/GPUAPI"
-    import MaterialUniforms from "../MaterialUniforms.svelte"
+    import MaterialUniforms from "../../../../components/MaterialUniformsForm.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"

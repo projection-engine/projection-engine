@@ -1,19 +1,18 @@
 <script>
-    import SelectionStore from "../../../../../shared/stores/SelectionStore"
-    import Engine from "../../../../../../engine/core/Engine"
+    import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
+    import Engine from "../../../../../engine/core/Engine"
 
     import {onDestroy, onMount} from "svelte"
-    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import EditorActionHistory from "../../../../services/EditorActionHistory"
-    import Range from "../../../../../shared/components/range/Range.svelte"
-    import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
-    import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
-    import ROTATION_TYPES from "../../static/ROTATION_TYPES"
-    import Movable from "../../../../../../engine/core/instances/components/Movable"
-    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
-    import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte"
-    import SelectionStoreUtil from "../../../../util/SelectionStoreUtil"
+    import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
+    import EditorActionHistory from "../../../services/EditorActionHistory"
+    import Range from "../../../../shared/components/range/Range.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import Accordion from "../../../../shared/components/accordion/Accordion.svelte"
+    import ROTATION_TYPES from "../static/ROTATION_TYPES"
+    import Movable from "../../../../../engine/core/instances/components/Movable"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     const COMPONENT_ID = crypto.randomUUID()
     let targets = []
@@ -30,9 +29,9 @@
     let lockedCache = [false, false, false]
 
     onMount(() => {
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, () => {
+    	EntitySelectionStore.getInstance().addListener(COMPONENT_ID, () => {
     		const cache = []
-    		const entitiesSelected = SelectionStoreUtil.getEntitiesSelected()
+    		const entitiesSelected = EntitySelectionStore.getEntitiesSelected()
     		for (let i = 0; i < entitiesSelected.length; i++) {
     			const e = entitiesSelected[i]
     			const c = Engine.entities.get(e)
@@ -45,7 +44,7 @@
     			}
     		}
     		if (cache.length === 0) {
-    			const fallback = Engine.entities.get(SelectionStoreUtil.getMainEntity())
+    			const fallback = Engine.entities.get(EntitySelectionStore.getMainEntity())
     			if (fallback)
     				fallback.__originalQuat = undefined
     			fallback && cache.push(fallback)
@@ -65,7 +64,7 @@
     	})
     })
 
-    onDestroy(() => SelectionStore.getInstance().removeListener(COMPONENT_ID))
+    onDestroy(() => EntitySelectionStore.getInstance().removeListener(COMPONENT_ID))
 
     $: {
     	mainEntity = targets[0]
