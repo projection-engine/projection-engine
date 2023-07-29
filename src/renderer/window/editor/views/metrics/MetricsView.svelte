@@ -6,9 +6,6 @@
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 
-    /** @type string */
-    export default viewMetadata
-
     let isRecording = false
     let isSampling = false
     let toShow = []
@@ -23,8 +20,6 @@
     		isRecording = isSampling = true
     	}
     }
-
-
 </script>
 
 <ViewHeader>

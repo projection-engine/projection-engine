@@ -21,28 +21,16 @@
     import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
-
-    /** @type string */
-    export default viewMetadata
+    import SerializedState from "../../components/view/SerializedState.svelte";
 
     const COMPONENT_ID = crypto.randomUUID()
     const draggable = dragDrop(false)
 
-    export let viewMetadata
-
-    let previousMetadata
     let isOnGizmo = false
     let isSelectBoxDisabled
     let executingAnimation = false
     let shadingModel
     let focusedCamera
-
-    $: {
-    	if (previousMetadata !== viewMetadata) {
-    		SceneEditorUtil.restoreCameraState(viewMetadata)
-    		previousMetadata = viewMetadata
-    	}
-    }
 
     onMount(() => {
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
@@ -55,20 +43,23 @@
     	}, ["focusedCamera", "executingAnimation"])
     	GizmoSystem.onStart = () => isOnGizmo = true
     	GizmoSystem.onStop = () => isOnGizmo = false
-    	SceneEditorUtil.onSceneEditorMount(draggable, viewMetadata)
+        SceneEditorUtil.onSceneEditorMount(draggable)
     })
 
     onDestroy(() => {
     	SettingsStore.getInstance().removeListener(COMPONENT_ID)
     	EngineStore.getInstance().removeListener(COMPONENT_ID)
     	GizmoSystem.onStop = GizmoSystem.onStart = undefined
-    	viewMetadata.cameraMetadata = CameraAPI.serializeState()
     	ContextMenuService.getInstance().destroy(RENDER_TARGET)
     	draggable.onDestroy()
     	ViewportInteractionListener.destroy()
     })
 </script>
 
+<SerializedState
+        onBeforeDestroy={CameraAPI.serializeState}
+        onStateInitialize={SceneEditorUtil.restoreCameraState}
+/>
 {#if !executingAnimation}
     <ViewHeader>
         <EntityInformation {isOnGizmo}/>
@@ -139,20 +130,6 @@
         font-size: .7rem;
         z-index: 999;
         box-shadow: var(--pj-boxshadow);
-    }
-
-    .stop-button {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        height: 35px;
-        width: 35px;
-        background: var(--pj-background-primary);
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
     }
 
     .top-bar {

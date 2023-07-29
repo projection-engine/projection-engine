@@ -15,24 +15,15 @@
     import NODE_MAP from "./static/NODE_MAP"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import ShaderEditorUtil from "../../util/ShaderEditorUtil"
-
-    /** @type string */
-    export default viewMetadata
+    import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI";
+    import SceneEditorUtil from "../../util/SceneEditorUtil";
+    import SerializedState from "../../components/view/SerializedState.svelte";
 
     const COMPONENT_ID = crypto.randomUUID()
-
-    /** @type {string} */
-    export let viewID
-    /** @type {number} */
-    export let viewIndex
-    /** @type {number} */
-    export let groupIndex
-
 
     const canvas = new Canvas()
     let openFile
     let ref
-    let wasInitialized = false
     let canvasElement
 
     onMount(() => {
@@ -72,19 +63,24 @@
     	initializeStructure()
     }
 
-    $: {
-    	if (wasInitialized)
-    		ViewStateController.updateState(viewID, viewIndex, groupIndex, {
+    const openSourceCode = async () => {
+    	const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
+    	const newFile = FileSystemUtil.TEMP + FileSystemUtil.sep + openFile.registryID + ".log"
+    	await FileSystemUtil.writeFile(newFile, shader, true)
+    	ElectronResources.shell.openPath(newFile).catch(console.error)
+    }
+</script>
+
+<SerializedState
+        state={{
     			openFile,
     			comments: canvas.comments,
     			selection: Array.from(canvas.selectionMap.keys()),
     			nodes: canvas.nodes,
     			links: canvas.links
-    		})
-    	else {
-    		const state = ViewStateController.getState(viewID, viewIndex, groupIndex)
+    		}}
+        onStateInitialize={state => {
     		const newFile = ShaderEditorTools.toOpenFile || state?.openFile
-
     		initializeFromFile(newFile)
     		ShaderEditorTools.toOpenFile = undefined
     		if (state != null && newFile) {
@@ -99,18 +95,8 @@
     			})
     			canvas.clear()
     		}
-    		wasInitialized = true
-    	}
-    }
-
-    const openSourceCode = async () => {
-    	const [{shader}] = await materialCompiler(canvas.nodes, canvas.links)
-    	const newFile = FileSystemUtil.TEMP + FileSystemUtil.sep + openFile.registryID + ".log"
-    	await FileSystemUtil.writeFile(newFile, shader, true)
-    	ElectronResources.shell.openPath(newFile).catch(console.error)
-    }
-</script>
-
+        }}
+/>
 <HeaderOptions
 
         openFile={openFile}

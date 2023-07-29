@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import Tree from "./components/Tree.svelte"
     import {onDestroy, onMount} from "svelte"
@@ -7,52 +7,64 @@
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
     import Header from "./components/Header.svelte"
     import HierarchyUtil from "../../util/HierarchyUtil"
-    import ViewStateStore from "../../../shared/stores/ViewStateStore";
+    import SerializedState from "../../components/view/SerializedState.svelte";
+    import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService";
+    import getViewportContext from "../../templates/get-viewport-context";
+    import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
+    import HierarchyToRenderElement from "./template/ToRenderElement";
 
-    /** @type string */
-    export default viewMetadata
-
-    let toRender = []
     const ID = crypto.randomUUID()
     const draggable = dragDrop()
-    let componentState = {search: "", filteredComponent: undefined, ref, openTree: {}, isOnSearch: false}
+    let ref: HTMLElement
+    let search = ""
+    let filteredComponent = undefined
+    let openTree = {}
+    let toRender: HierarchyToRenderElement[] = []
+    let selectedList: string[] = []
+    let lockedEntity
 
-    function updateHierarchy(op) {
-    	if (op !== componentState.openTree && op !== undefined){
-            ViewStateStore.updateViewStateByProperty(viewMetadata, "openTree", op)
-    		EntityHierarchyService.updateHierarchy()
-        }
-        toRender = HierarchyUtil.buildTree(componentState.openTree, componentState.search, componentState.filteredComponent)
-    }
-
-    function onUpdate(data){
-        updateHierarchy()
-        componentState = data
+    function updateHierarchy(op?: MutableObject) {
+        const openLocal = op ?? openTree
+        if (op !== openTree && op !== undefined)
+            EntityHierarchyService.updateHierarchy()
+        openTree = openLocal
+        toRender = HierarchyUtil.buildTree(openTree, search, filteredComponent)
     }
 
     onMount(() => {
         HierarchyUtil.initializeView(draggable, ref)
-    	EntityHierarchyService.registerListener(ID, updateHierarchy)
-        ViewStateStore.initializeView(
-            viewMetadata,
-            {...componentState},
-            onUpdate
-        )
+        EntityHierarchyService.registerListener(ID, updateHierarchy)
+        ContextMenuService.getInstance().mount(getViewportContext(), ID)
+        EntitySelectionStore.getInstance().addListener(ID, data => {
+            selectedList = data.array
+            lockedEntity = data.lockedEntity
+        })
     })
 
     onDestroy(() => {
-    	HotKeysController.unbindAction(ref)
-    	draggable.onDestroy()
+        HotKeysController.unbindAction(ref)
+        draggable.onDestroy()
+        EntitySelectionStore.getInstance().removeListener(ID)
+        EntityHierarchyService.removeListener(ID)
+        ContextMenuService.getInstance().destroy(ID)
     })
 </script>
 
-<Header
-        setFilteredComponent={v => ViewStateStore.updateViewStateByProperty(viewMetadata, "filteredComponent", v)}
-        setSearch={v => ViewStateStore.updateViewStateByProperty(viewMetadata, "search", v)}
-        filteredComponent={componentState.filteredComponent}
-        search={componentState.search}
+<SerializedState
+        state={{search, filteredComponent, openTree}}
+        onStateInitialize={ state => {
+             search = state.search
+             filteredComponent = state.filteredComponent
+             openTree  = state.openTree
+             updateHierarchy()
+        }}
 />
-
+<Header
+        setFilteredComponent={v => {filteredComponent = v; updateHierarchy()}}
+        setSearch={v => {search = v; updateHierarchy()}}
+        {filteredComponent}
+        {search}
+/>
 <div
         data-svelteself={"-"}
         class="wrapper"
@@ -61,13 +73,13 @@
 >
     <div class="content" style={toRender.length === 0 ? "background: var(--pj-background-quaternary)" : undefined}>
         <Tree
-                isOnSearch={componentState.search || componentState.filteredComponent}
-                updateOpen={_ => updateHierarchy(componentState.openTree)}
-                openTree={componentState.openTree}
-                toRender={toRender}
-                filteredComponent={componentState.filteredComponent}
+                isOnSearch={search || filteredComponent}
+                updateOpen={() => updateHierarchy(openTree)}
+                {openTree}
+                {toRender}
+                {filteredComponent}
                 {ID}
-                testSearch={node => HierarchyUtil.testSearch(componentState.filteredComponent, componentState.search, node)}
+                testSearch={node => HierarchyUtil.testSearch(filteredComponent, search, node)}
         />
     </div>
 </div>

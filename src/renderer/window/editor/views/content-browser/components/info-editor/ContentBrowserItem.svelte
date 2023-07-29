@@ -9,7 +9,6 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import FileTypes from "../../../../../../../shared/enums/FileTypes"
-    import InspectorUtil from "../../../../util/InspectorUtil"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil";
 
     const VALID = [FileTypes.TEXTURE, FileTypes.COLLECTION, FileTypes.MATERIAL]

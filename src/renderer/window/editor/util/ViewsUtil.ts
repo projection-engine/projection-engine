@@ -1,7 +1,18 @@
 import VIEWS from "../components/view/static/VIEWS"
 import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
+import ViewTabItem from "../static/ViewTabItem";
 
 export default class ViewsUtil {
+
+	static getViewId(type:string, index:number,groupIndex: number, id:string){
+		return  JSON.stringify({
+			type,
+			index,
+			groupIndex,
+			id
+		})
+	}
+
 	static switchView(newView, groupIndex, tabs, index, setTabs,) {
 		if (!newView) {
 			const copy = [...tabs]
@@ -18,14 +29,14 @@ export default class ViewsUtil {
 
 	}
 
-	static removeTab(i, tabs, groupIndex, setTabs, currentTab, cb) {
+	static removeTab(indexToRemove:number, tabs:ViewTabItem[][], groupIndex:number, setTabs:Function, currentTab:number, onBeforeDelete:Function) {
 		const clone = [...tabs]
-		clone[groupIndex].splice(i, 1)
+		clone[groupIndex].splice(indexToRemove, 1)
 		if (clone[groupIndex].length === 0)
 			clone.splice(groupIndex, 1)
 
-		if (i === currentTab || i < currentTab)
-			cb(currentTab === 0 ? 0 : currentTab - 1)
+		if (indexToRemove === currentTab || indexToRemove < currentTab)
+			onBeforeDelete(currentTab === 0 ? 0 : currentTab - 1)
 
 		setTabs(clone)
 	}

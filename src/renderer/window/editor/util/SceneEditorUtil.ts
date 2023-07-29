@@ -17,6 +17,7 @@ import getViewportContext from "../templates/get-viewport-context"
 import RENDER_TARGET from "../static/RENDER_TARGET"
 import SETTINGS from "../static/SETTINGS"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
+import CameraSerialization from "../../../engine/core/static/CameraSerialization";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
@@ -135,29 +136,25 @@ export default class SceneEditorUtil {
 		SettingsStore.updateStore({gizmoGrid: {...SettingsStore.getData().gizmoGrid, [key]: value}})
 	}
 
-	static restoreCameraState(viewMetadata) {
-		if (!viewMetadata.cameraMetadata) {
+	static restoreCameraState(cameraMetadata:CameraSerialization) {
+		if (!cameraMetadata) {
 			const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
 			const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
 			CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
 			CameraTracker.xRotation = glMatrix.toRadian(45)
 			CameraTracker.yRotation = -glMatrix.toRadian(45)
 		} else {
-			CameraAPI.restoreState(viewMetadata.cameraMetadata)
-			CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
-			CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
+			CameraAPI.restoreState(cameraMetadata)
+			CameraTracker.xRotation = cameraMetadata.prevX
+			CameraTracker.yRotation = cameraMetadata.prevY
 		}
-
-		viewMetadata.cameraMetadata = CameraAPI.serializeState()
-		viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
-		viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+		cameraMetadata = CameraAPI.serializeState()
+		cameraMetadata.prevX = CameraTracker.xRotation
+		cameraMetadata.prevY = CameraTracker.yRotation
 	}
 
-	static onSceneEditorMount(draggable, viewMetadata) {
+	static onSceneEditorMount(draggable) {
 		ContextMenuService.getInstance().mount(getViewportContext(), RENDER_TARGET)
-		if (viewMetadata.cameraMetadata)
-			CameraAPI.restoreState(viewMetadata.cameraMetadata)
-
 		CameraTracker.startTracking()
 		ViewportInteractionListener.get()
 		draggable.onMount({

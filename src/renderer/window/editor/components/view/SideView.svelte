@@ -73,40 +73,24 @@
                 let:index
                 switchView={(newView, index) =>  ViewsUtil.switchView(newView, groupIndex, tabs, index, setTabs)}
                 addNewTab={item => ViewsUtil.addTab(tabs, setTabs, groupIndex, item)}
-                removeTab={(i, cb, currentTab) =>  ViewsUtil.removeTab(i, tabs, groupIndex, setTabs, currentTab, cb)}
-                removeMultipleTabs={_ => {
+                removeTab={(indexToRemove, onBeforeDelete, currentTab) =>  ViewsUtil.removeTab(indexToRemove, tabs, groupIndex, setTabs, currentTab, onBeforeDelete)}
+                removeMultipleTabs={() => {
                     const clone = [...tabs]
                     clone.splice(groupIndex, 1)
                     setTabs(clone)
                 }}
-        >
-            {#if view}
-                <View
-
-                        instance={view}
-                        id={id}
-                        index={index}
-                        groupIndex={groupIndex}
-                        switchView={newView =>  ViewsUtil.switchView(newView, groupIndex, tabs, index, setTabs )}
-
-                />
-            {/if}
-        </ViewGroup>
+        />
         {#if groupIndex < tabs.length - 1 && tabs.length > 1}
             <ResizableBar
                     type={invOrientation}
                     resetWhen={tabs}
                     onResizeEnd={(next, prev) => ViewsUtil.onResizeEndSplitter(next, prev, invOrientation, setTabs, tabs, groupIndex)}
-            >
-            </ResizableBar>
+            />
         {/if}
     {/each}
 </div>
 {#if resizePosition !== "top" && (orientation === "vertical" && tabs.length > 1 || orientation === "horizontal" && tabs.length > 0) || resizePosition === "left" && tabs.length > 0}
-    <ResizableBar
-            type={orientationName}
-            onResizeStart={onResizeStart}
-    />
+    <ResizableBar type={orientationName} onResizeStart={onResizeStart}/>
 {/if}
 
 

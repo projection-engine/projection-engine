@@ -26,3 +26,8 @@ interface RegistryFile {
     path: string
     id: string
 }
+
+type GenericVoidFunctionWithP<T> = (state: T) => void
+type GenericVoidFunction = () => void
+type GenericNonVoidFunctionWithP<T, R> = (state: T) => R
+type GenericNonVoidFunction<R> = () => R

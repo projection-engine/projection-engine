@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Engine from "../../../../../engine/core/Engine"
     import COMPONENTS from "../../../../../engine/core/static/COMPONENTS"
     import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
@@ -10,17 +10,13 @@
     import EntityAPI from "../../../../../engine/core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
+    import type Entity from "../../../../../engine/core/instances/Entity";
 
-    /** @type {boolean} */
-    export let isOnSelection
-    /** @type {function} */
-    export let toggleOnSelection
-    /** @type {object} */
-    export let selected
-    /** @type {boolean} */
-    export let updateEnabled
-    /** @type {function} */
-    export let toggleAutoUpdate
+    export let isOnSelection:boolean
+    export let toggleOnSelection:GenericVoidFunction
+    export let selected:Entity
+    export let isAutoUpdateEnabled:boolean
+    export let toggleAutoUpdate:GenericVoidFunction
 
     function selectAll() {
     	const m = [], size = Engine.entities.array.length
@@ -32,15 +28,12 @@
     	EntitySelectionStore.setEntitiesSelected(m)
     }
 
-
     function addUI() {
     	const e = EntityAPI.getNewEntityInstance()
     	e.name = "UI-ShaderNode"
     	e.addComponent(COMPONENTS.UI)
     	EngineStateService.add(e)
     }
-
-
 </script>
 
 <ViewHeader>
@@ -69,7 +62,7 @@
         <button data-sveltebuttondefault="-" on:click={toggleAutoUpdate} data-svelteview-header-button="-"
                 style="max-width: unset">
             <Icon styles="font-size: .9rem">
-                {#if updateEnabled}
+                {#if isAutoUpdateEnabled}
                     update
                 {:else}
                     update_disabled

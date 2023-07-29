@@ -10,6 +10,9 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";
     import TabsStoreUtil from "../../../util/TabsStoreUtil";
+    import View from "./View.svelte";
+    import ViewTemplates from "../static/ViewTemplates";
+    import ViewStateStore from "../../../../shared/stores/ViewStateStore";
 
     const COMPONENT_ID = crypto.randomUUID()
 
@@ -32,17 +35,21 @@
 
     $: localTabViews = views.map(v => {
         v.name = LocalizationEN[v.type]
-        v.icon =  ViewsUtil.getViewIcon(v.type)
+        v.icon = ViewsUtil.getViewIcon(v.type)
         v.id = v.type
         return v
     })
-    $: viewTemplates = Object.values(VIEWS).map(value => ({
-        name: LocalizationEN[value],
-        id: value
-    }))
 
     function closeTarget(i) {
-        removeTab(i, n => TabsStoreUtil.updateByAttributes(id, groupIndex, n), TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex))
+        const viewToDelete = ViewsUtil.getViewId(views[i].type, i, groupIndex, id)
+        removeTab(
+            i,
+            n => {
+                TabsStoreUtil.updateByAttributes(id, groupIndex, n)
+                ViewStateStore.removeState(viewToDelete)
+            },
+            TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex)
+        )
     }
 
     function removeView(i: number) {
@@ -54,11 +61,12 @@
             targetDialogElement = ref.querySelector(`[data-svelteclosebuttontab="${i}"]`)
         else
             closeTarget(i)
+
     }
 
     onMount(() => {
         TabsStore.getInstance().addListener(COMPONENT_ID, data => focused = data.focused === ref, ["focused"])
-        SettingsStore.getInstance().addListener(COMPONENT_ID,         update, ["currentView"])
+        SettingsStore.getInstance().addListener(COMPONENT_ID, update, ["currentView"])
     })
     onDestroy(() => {
         TabsStore.getInstance().removeListener(COMPONENT_ID)
@@ -74,7 +82,7 @@
                 removeMultipleTabs={removeMultipleTabs}
                 focused={focused}
                 updateView={switchView}
-                templates={viewTemplates}
+                templates={ViewTemplates}
                 allowDeletion={true}
                 addNewTab={addNewTab}
                 removeTab={removeView}
@@ -105,7 +113,14 @@
             </div>
         </Dialog>
     </div>
-    <slot view={views[currentTab]} index={currentTab}/>
+    {#if views[currentTab]}
+        <View
+                instance={views[currentTab]}
+                id={id}
+                index={currentTab}
+                groupIndex={groupIndex}
+        />
+    {/if}
 </div>
 
 <style>

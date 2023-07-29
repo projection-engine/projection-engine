@@ -3,7 +3,7 @@
     import Viewport from "./components/view/CentralView.svelte"
     import Footer from "./components/footer/Footer.svelte"
     import EngineStore from "../shared/stores/EngineStore"
-    import ViewsContainer from "./components/view/SideViews.svelte"
+    import ViewsContainer from "./components/view/SideView.svelte"
     import SettingsStore from "../shared/stores/SettingsStore"
     import FileSystemUtil from "../shared/FileSystemUtil"
     import LevelService from "./services/engine/LevelService"

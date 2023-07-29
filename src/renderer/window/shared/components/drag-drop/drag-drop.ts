@@ -11,7 +11,7 @@ interface DragDropAttributes {
     onDragEnd?: Function
 }
 
-export default function dragDrop(draggable) {
+export default function dragDrop(draggable?:boolean) {
 	let dragImageElement,
 		noTargetTransformation,
 		onDragStartEvent,

@@ -2,8 +2,6 @@
 
     import {onDestroy, onMount} from "svelte"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
-    import ContentBrowserItem from "../content-browser/components/info-editor/ContentBrowserItem.svelte"
-    import Entity from "../../../../engine/core/instances/Entity"
     import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
     import EntityInspector from "./components/EntityAttributes.svelte"
 
@@ -13,6 +11,7 @@
     import ContentWrapper from "../../../preferences/components/content/ContentWrapper.svelte"
     import InspectorUtil from "../../util/InspectorUtil"
     import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
+    import SerializedState from "../../components/view/SerializedState.svelte";
 
     const COMPONENT_ID = crypto.randomUUID()
     let selectedItem
@@ -24,7 +23,6 @@
     onMount(() => {
         EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
             selectedItem = InspectorUtil.getSelectionTarget(data)
-            tabIndex = 3
             lockedEntity = QueryAPI.getEntityByID(data.lockedEntity)
         })
     })
@@ -47,9 +45,18 @@
             setTabs([])
         isOnDynamicTab = tabIndex > 2 && selectedItem !== undefined
     }
-
 </script>
 
+<SerializedState
+        state={{selectedItem, tabIndex, tabs, lockedEntity, isOnDynamicTab}}
+        onStateInitialize={state => {
+            selectedItem = state.selectedItem
+            tabIndex = state.tabIndex
+            tabs = state.tabs
+            lockedEntity = state.lockedEntity
+            isOnDynamicTab = state.isOnDynamicTab
+        }}
+/>
 <div class="wrapper">
     <div class="tabs">
         {#each tabs as button, index}

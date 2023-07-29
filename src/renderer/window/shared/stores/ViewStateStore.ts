@@ -9,28 +9,26 @@ export default class ViewStateStore extends AbstractStore {
         return super.get<ViewStateStore>()
     }
 
-    static updateViewStateByProperty(viewMetadata: string, key: string, value: any) {
-        ViewStateStore.getInstance().updateStore({[viewMetadata]: {...ViewStateStore.getData()[viewMetadata], [key]: value}})
+    static updateViewState(viewMetadata: string, newState: MutableObject) {
+        const previousData = ViewStateStore.getData()[viewMetadata] ?? {}
+        ViewStateStore.getInstance().updateStore({[viewMetadata]: {...previousData, ...newState}})
     }
 
-    static getState(viewMetadata: string):MutableObject|undefined {
-        return ViewStateStore.getData()[viewMetadata]
+    static removeState(viewMetadata: string) {
+        delete ViewStateStore.getData()[viewMetadata]
     }
 
-    static updateViewState(viewMetadata: string, newState:MutableObject) {
-        ViewStateStore.getInstance().updateStore({[viewMetadata]: {...ViewStateStore.getData()[viewMetadata], ...newState}})
+    static onViewMount(viewMetadata: string, onIfExists: GenericVoidFunctionWithP<MutableObject>) {
+        const previousData = ViewStateStore.getData()[viewMetadata]?.state
+        ViewStateStore.getInstance().updateStore({[viewMetadata]: previousData})
+        if (previousData)
+            onIfExists(previousData)
     }
 
-    removeState(viewMetadata: string) {
-        delete this.data[viewMetadata]
-    }
-
-    static initializeView(viewMetadata: string, initialViewState: MutableObject, updateCallback: Function) {
-        const previousState = ViewStateStore.getData()[viewMetadata]
-
+    static onViewDestroy(viewMetadata: string, latestState: MutableObject | undefined) {
+        const previousData = ViewStateStore.getData()[viewMetadata].state ?? {}
         ViewStateStore.getInstance().updateStore({
-            [viewMetadata]: previousState || initialViewState
+            [viewMetadata]: {...previousData, ...latestState}
         })
-        ViewStateStore.getInstance().addListener(viewMetadata, data => updateCallback(data[viewMetadata]), [viewMetadata])
     }
 }

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import {onDestroy, onMount} from "svelte"
     import ConsoleAPI from "../../../../engine/core/lib/utils/ConsoleAPI"
@@ -15,8 +15,7 @@
     const TYPES = ConsoleAPI.TYPES
     const portal = new SveltePortal(999)
 
-    /** @type {{type: TYPES, object?: Object, message: string, src?: string}[]} */
-    let toRender = []
+    let toRender:{type: string, object?: Object, message: string, src?: string}[] = []
     let newMessages = false
     let modal
     let objectOpen
@@ -27,7 +26,6 @@
     }
 
     onMount(() => {
-    	window.consoleAPI = ConsoleAPI
     	EngineStore.getInstance().addListener(COMPONENT_ID, () => ConsoleAPI.clear(), ["executingAnimation"])
     	ConsoleAPI.addListener(COMPONENT_ID, (md, messages) => {
     		toRender = messages

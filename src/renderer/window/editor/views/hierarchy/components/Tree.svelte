@@ -1,47 +1,21 @@
-<script>
-    import {onDestroy, onMount} from "svelte"
+<script lang="ts">
     import EntityTreeBranch from "./EntityTreeBranch.svelte"
     import ComponentTreeBranch from "./ComponentTreeBranch.svelte"
-    import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
-    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
-
-    import getViewportContext from "../../../templates/get-viewport-context"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import HierarchyToRenderElement from "../template/ToRenderElement";
 
     const COMPONENT_ID = crypto.randomUUID()
-    /** @type { string }*/
-    export let ID
-    /** @type { function }*/
-    export let testSearch
-    /** @type { boolean }*/
-    export let isOnSearch
-    /** @type { {[key: string]: boolean} }*/
-    export let openTree
-    /** @type { function }*/
-    export let updateOpen
-    /** @type {HierarchyToRenderElement[]}*/
-    export let toRender
+    export let ID:string
+    export let testSearch:GenericVoidFunctionWithP<MutableObject>
+    export let isOnSearch:boolean
+    export let selectedList:string[]
+    export let lockedEntity:string|undefined
+    export let openTree:{[key: string]: boolean}
+    export let updateOpen:GenericVoidFunction
+    export let toRender:HierarchyToRenderElement[]
 
-    let selectedList
-    let lockedEntity
-
-    onMount(() => {
-    	ContextMenuService.getInstance().mount(getViewportContext(), ID)
-
-    	EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
-            selectedList = data.array
-            lockedEntity = data.lockedEntity
-        })
-    })
-
-    onDestroy(() => {
-    	EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
-    	EntityHierarchyService.removeListener(COMPONENT_ID)
-    	ContextMenuService.getInstance().destroy(ID)
-    })
 </script>
 
 {#if toRender.length > 0}

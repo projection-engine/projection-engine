@@ -9,22 +9,17 @@
     import SceneEditor from "../../../views/scene-editor/SceneEditorView.svelte"
     import Metrics from "../../../views/metrics/MetricsView.svelte"
     import Console from "../../../views/console/ConsoleView.svelte"
-    import ViewStateStore from "../../../../shared/stores/ViewStateStore";
-    import {onDestroy} from "svelte";
+    import {onDestroy, setContext} from "svelte";
+    import ViewsUtil from "../../../util/ViewsUtil";
+    import ViewMetadataContext from "../static/ViewMetadataContext";
 
-    /** @type {string} */
-    export let styles
-    /** @type {{[key:string]:any, type: string, color: number[]}} */
-    export let instance
-    /** @type {string} */
-    export let id
-    /** @type {number} */
-    export let groupIndex
-    /** @type {number} */
-    export let index
-    let viewMetadata
+    export let styles:string
+    export let instance: {[key:string]:any, type: string, color: number[]}
+    export let id:string
+    export let groupIndex:number
+    export let index:number
+
     let component
-    const existingStates = []
     $:  {
         switch (instance.type) {
             case VIEWS.SHADER_EDITOR:
@@ -54,26 +49,13 @@
             default:
                 component = undefined
         }
-        viewMetadata = JSON.stringify({
-            type: instance.type,
-            index,
-            groupIndex,
-            id
-        })
-        existingStates.push(viewMetadata)
+        setContext(ViewMetadataContext, ViewsUtil.getViewId(instance.type, index, groupIndex, id))
     }
-
-    onDestroy(() => {
-        existingStates.forEach(ViewStateStore.getInstance().removeState)
-    })
 </script>
 
 {#if component !== undefined}
     <div class="view" style={styles}>
-        <svelte:component
-                this={component}
-                viewMetadata={viewMetadata}
-        />
+        <svelte:component this={component}/>
     </div>
 {/if}
 
