@@ -18,11 +18,13 @@
     export let onDrag
     export let isOnRename
     export let isCardViewType
+    export let selectedItems
     export let toCut
 
     const COMPONENT_ID = crypto.randomUUID()
     let isFolder = data.isFolder
     let isSelected = false
+    $: isSelected = selectedItems.includes(data)
     const draggable = dragDrop(true)
 
     $: isFolder = data.isFolder
@@ -56,7 +58,6 @@
     }
 
     onMount(() => {
-        ContentBrowserStore.getInstance().addListener(COMPONENT_ID, data => isSelected = data.selectedItems.includes(data.id), ["selectedItems"])
     	draggable.onMount({
     		targetElement: document.getElementById(COMPONENT_ID),
     		onDrop: (event) => ContentBrowserUtil.handleDropFolder(event, data.id)

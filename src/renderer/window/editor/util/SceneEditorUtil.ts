@@ -136,21 +136,22 @@ export default class SceneEditorUtil {
 		SettingsStore.updateStore({gizmoGrid: {...SettingsStore.getData().gizmoGrid, [key]: value}})
 	}
 
-	static restoreCameraState(cameraMetadata:CameraSerialization) {
-		if (!cameraMetadata) {
-			const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
-			const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
-			CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
-			CameraTracker.xRotation = glMatrix.toRadian(45)
-			CameraTracker.yRotation = -glMatrix.toRadian(45)
-		} else {
-			CameraAPI.restoreState(cameraMetadata)
-			CameraTracker.xRotation = cameraMetadata.prevX
-			CameraTracker.yRotation = cameraMetadata.prevY
+	static restoreCameraState(cameraMetadata:CameraSerialization|undefined) {
+		try{
+			if (!cameraMetadata) {
+				const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
+				const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
+				CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
+				CameraTracker.xRotation = glMatrix.toRadian(45)
+				CameraTracker.yRotation = -glMatrix.toRadian(45)
+			} else {
+				CameraAPI.restoreState(cameraMetadata)
+				CameraTracker.xRotation = cameraMetadata.prevX
+				CameraTracker.yRotation = cameraMetadata.prevY
+			}
+		}catch (err){
+			console.error(err)
 		}
-		cameraMetadata = CameraAPI.serializeState()
-		cameraMetadata.prevX = CameraTracker.xRotation
-		cameraMetadata.prevY = CameraTracker.yRotation
 	}
 
 	static onSceneEditorMount(draggable) {

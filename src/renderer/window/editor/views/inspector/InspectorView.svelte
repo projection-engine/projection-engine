@@ -50,14 +50,7 @@
     }
 </script>
 
-<SerializedState
-        state={{selectedItem, tabIndex, tabs}}
-        onStateInitialize={state => {
-            selectedItem = state.selectedItem
-            tabIndex = state.tabIndex
-            tabs = state.tabs
-        }}
-/>
+<SerializedState state={{tabIndex}} onStateInitialize={state => tabIndex = state.tabIndex}/>
 <div class="wrapper">
     <div class="tabs">
         {#each tabs as button, index}

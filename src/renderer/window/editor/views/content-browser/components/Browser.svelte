@@ -69,9 +69,11 @@
     		}, 250)
     	})
     	resizeOBS.observe(ref)
+
     })
 
     onDestroy(() => {
+
     	ContentBrowserStore.getInstance().removeListener(COMPONENT_ID)
     	EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
     	HotKeysController.unbindAction(ref)
@@ -109,6 +111,7 @@
                     <Item
                             setOnDrag={v => onDrag = v}
                             onDrag={onDrag}
+                            selectedItems={store.selectedItems}
                             toCut={store.toCut}
                             reset={resetItem}
                             data={child}

@@ -50,8 +50,11 @@
             default:
                 component = undefined
         }
-        viewMetadata = ViewsUtil.getViewId(instance.type, index, groupIndex, id, currentViewIndex)
-        setContext(ViewMetadataContext, viewMetadata)
+        const temp = ViewsUtil.getViewId(instance.type, index, groupIndex, id, currentViewIndex)
+        if(temp !== viewMetadata) {
+            viewMetadata = temp
+            setContext(ViewMetadataContext, viewMetadata)
+        }
     }
 </script>
 
