@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {onDestroy} from "svelte"
 
     const MIN_BOX_SIZE = 50, LEFT_BUTTON = 0
@@ -7,7 +7,6 @@
     export let setSelected
     export let getSelected
     export let nodes
-    export let allowAll
     export let targetElement
     export let returnRefs
     let ref
@@ -57,19 +56,15 @@
     		document.removeEventListener("mousemove", handleMouseMove)
     }
 
-    function checkFocus(target, event) {
-    	let hasDraggable = !allowAll
-    	event.path.forEach(el => {
-    		hasDraggable = hasDraggable || el.draggable === true
-    	})
+    function checkFocus(target:HTMLElement) {
     	if (ref)
-    		return (ref.parentElement === target || target.id === targetElementID || !hasDraggable) && target.tagName !== "INPUT" && target.tagName !== "BUTTON"
+    		return  target.tagName !== "INPUT" && target.tagName !== "BUTTON"
     	return false
     }
 
-    const handleMouseDown = (event) => {
-    	const target = event.target
-    	if (event.button === LEFT_BUTTON && checkFocus(target, event)) {
+    const handleMouseDown = (event:MouseEvent) => {
+    	const target = <HTMLElement>event.target
+    	if (event.button === LEFT_BUTTON && checkFocus(target)) {
     		if (!event.ctrlKey)
     			setSelected([])
     		ref.startingPosition = {x: event.clientX, y: event.clientY}

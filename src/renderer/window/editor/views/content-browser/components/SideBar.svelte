@@ -1,7 +1,7 @@
 <script>
     import SideBarItem from "./SideBarItem.svelte"
     import VirtualList from "@sveltejs/svelte-virtual-list"
-    import FilesHierarchyStore from "../../../../shared/stores/FilesHierarchyStore"
+    import ContentBrowserHierarchyStore from "../../../../shared/stores/ContentBrowserHierarchyStore"
     import {onDestroy, onMount} from "svelte"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
 
@@ -13,15 +13,15 @@
     export let currentDirectory
 
     let hierarchy = {items: []}
-    onMount(() => FilesHierarchyStore.getInstance().addListener(COMPONENT_ID, v => hierarchy = v))
-    onDestroy(() => FilesHierarchyStore.getInstance().removeListener(COMPONENT_ID))
+    onMount(() => ContentBrowserHierarchyStore.getInstance().addListener(COMPONENT_ID, v => hierarchy = v))
+    onDestroy(() => ContentBrowserHierarchyStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
 <div class="wrapper">
     <VirtualList items={hierarchy.items} let:item>
         <SideBarItem
                 triggerOpen={() => {
-                    let open = FilesHierarchyStore.getData().open
+                    let open = ContentBrowserHierarchyStore.getData().open
                     const inv = !open[item.item.id]
                     if(item.item.id === FileSystemUtil.sep && !inv)
                         open = {}
@@ -30,7 +30,7 @@
                             delete open[item.children[i]]
                     }
                     open[item.item.id] = inv
-                    FilesHierarchyStore.updateStore({open})
+                    ContentBrowserHierarchyStore.updateStore({open})
                 }}
                 open={hierarchy.open}
                 childQuantity={item.childQuantity}

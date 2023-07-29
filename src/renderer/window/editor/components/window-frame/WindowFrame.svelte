@@ -26,22 +26,23 @@
     let hasChanges = false
 
     onMount(() => {
-    	EngineStore.getInstance().addListener(COMPONENT_ID, v => executingAnimation = v.executingAnimation, ["executingAnimation"])
-    	ChangesTrackerStore.getInstance().addListener(COMPONENT_ID, v => hasChanges = v.changed)
-    	SettingsStore.getInstance().addListener(COMPONENT_ID, v => settings = v, ["views", "currentView"])
+        EngineStore.getInstance().addListener(COMPONENT_ID, v => executingAnimation = v.executingAnimation, ["executingAnimation"])
+        ChangesTrackerStore.getInstance().addListener(COMPONENT_ID, v => hasChanges = v.changed)
+        SettingsStore.getInstance().addListener(COMPONENT_ID, v => settings = v, ["views", "currentView"])
     })
-    
+
     onDestroy(() => {
-    	EngineStore.getInstance().removeListener(COMPONENT_ID)
-    	ChangesTrackerStore.getInstance().removeListener(COMPONENT_ID)
-    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
+        EngineStore.getInstance().removeListener(COMPONENT_ID)
+        ChangesTrackerStore.getInstance().removeListener(COMPONENT_ID)
+        SettingsStore.getInstance().removeListener(COMPONENT_ID)
     })
+
     function removeTab(i) {
-    	let currentView = settings.currentView
-    	if (i === currentView || i < currentView)
-    		currentView = currentView === 0 ? 0 : currentView - 1
-    	const views = settings.views.filter((_, index) => i !== index)
-    	SettingsStore.updateStore({views, currentView})
+        let currentView = settings.currentView
+        if (i === currentView || i < currentView)
+            currentView = currentView === 0 ? 0 : currentView - 1
+        const views = settings.views.filter((_, index) => i !== index)
+        SettingsStore.updateStore({views, currentView})
     }
 </script>
 
@@ -50,7 +51,7 @@
     <div class="wrapper footer-header" style="height: 22px">
         <button
                 data-sveltebuttondefault="-"
-                disabled={executingAnimation || !hasChanges}
+                disabled={executingAnimation}
                 on:click={() => LevelService.getInstance().save()}
         >
             <Icon styles="font-size: 1rem">save</Icon>

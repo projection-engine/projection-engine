@@ -7,7 +7,6 @@ import IGizmo from "../IGizmo"
 import Mesh from "../../../core/instances/Mesh"
 import Entity from "../../../core/instances/Entity"
 import PickingAPI from "../../../core/lib/utils/PickingAPI"
-import GizmoMouseUtil from "../util/GizmoMouseUtil"
 
 export default class ScreenSpaceGizmo extends AbstractSingleton implements IGizmo {
 	mesh: Mesh

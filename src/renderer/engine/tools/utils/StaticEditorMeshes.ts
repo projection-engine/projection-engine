@@ -23,7 +23,6 @@ export default class StaticEditorMeshes {
 
 			const {TRANSLATION_MESH, ROTATION_MESH, SCALE_MESH, DUAL_AXIS_MESH} = await res.json()
 			StaticEditorMeshes.dualAxisGizmo = new Mesh(DUAL_AXIS_MESH)
-			console.trace(ROTATION_MESH)
 			StaticEditorMeshes.rotationGizmo = new Mesh(ROTATION_MESH)
 			StaticEditorMeshes.scaleGizmo = new Mesh(SCALE_MESH)
 			StaticEditorMeshes.translationGizmo = new Mesh(TRANSLATION_MESH)

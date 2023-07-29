@@ -6,7 +6,6 @@ import AbstractSingleton from "../../../../../shared/AbstractSingleton"
 import IGizmo from "../IGizmo"
 import Mesh from "../../../core/instances/Mesh"
 import Entity from "../../../core/instances/Entity"
-import GizmoMouseUtil from "../util/GizmoMouseUtil"
 
 export default class DualAxisGizmo extends AbstractSingleton implements IGizmo {
 	mesh: Mesh

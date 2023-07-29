@@ -8,10 +8,9 @@ import AbstractSingleton from "../../../../shared/AbstractSingleton"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import VisualsStore from "../../shared/stores/VisualsStore"
-import SelectionStore from "../../shared/stores/SelectionStore"
+import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import UIAPI from "../../../engine/core/lib/rendering/UIAPI"
 import GPU from "../../../engine/core/GPU"
-import SelectionStoreUtil from "../util/SelectionStoreUtil"
 import EngineToolsState from "../../../engine/tools/EngineToolsState"
 import EngineState from "../../../engine/core/EngineState"
 import SETTINGS from "../static/SETTINGS"
@@ -21,7 +20,7 @@ export default class EngineToolsService extends AbstractSingleton {
 
 	constructor() {
 		super()
-		SelectionStore.getInstance()
+		EntitySelectionStore.getInstance()
 			.addListener("EngineToolsService", EngineToolsService.#updateSelection)
 		EngineStore.getInstance()
 			.addListener("EngineToolsService", EngineToolsService.#updateCameraTracker)
@@ -32,7 +31,7 @@ export default class EngineToolsService extends AbstractSingleton {
 	}
 
 	static #updateSelection() {
-		EngineTools.updateSelectionData(SelectionStoreUtil.getEntitiesSelected())
+		EngineTools.updateSelectionData(EntitySelectionStore.getEntitiesSelected())
 	}
 
 	static #updateEngineState() {

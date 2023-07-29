@@ -8,83 +8,74 @@
     import Folders from "../../../../../../../shared/enums/Folders"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
+    import ContentBrowserStore from "../../../../../shared/stores/ContentBrowserStore";
 
-    export let childQuantity
     export let reset
-    export let type
     export let data
-    export let selectionList
-    export let setSelected
     export let submitRename
-    export let items
     export let setCurrentDirectory
-    export let currentDirectory
     export let setOnDrag
     export let onDrag
     export let isOnRename
     export let isCardViewType
+    export let selectedItems
     export let toCut
 
-    let ref
-
+    const COMPONENT_ID = crypto.randomUUID()
+    let isFolder = data.isFolder
+    let isSelected = false
+    $: isSelected = selectedItems.includes(data)
     const draggable = dragDrop(true)
 
+    $: isFolder = data.isFolder
     $: itemMetadata = {
     	path: FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS + FileSystemUtil.sep + data.registryID + FileTypes.PREVIEW,
     	type: data.type ? "." + data.type : "folder",
-    	childQuantity,
+    	childQuantity:data.children,
     	typeName: ContentBrowserUtil.getTypeName(data.type)
     }
-    $: itemIcon = ContentBrowserUtil.getItemIcon(itemMetadata, type)
     $: {
-    	const dragDropData = ContentBrowserUtil.getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
+    	const dragDropData = ContentBrowserUtil.getItemDragData(data, setOnDrag)
     	draggable.dragImage = dragDropData.dragImage
     	draggable.onDragOver = dragDropData.onDragOver
     	draggable.onDragStart = dragDropData.onDragStart
-    	draggable.disabled = onDrag && type !== 0 || isOnRename
+    	draggable.disabled = (onDrag && !isFolder) || isOnRename
     	if (isOnRename) ContentBrowserUtil.cutFiles([])
     }
 
     $: props = {
     	data,
-    	isNotDraggable: onDrag && type !== 0,
+    	isNotDraggable: onDrag && !isFolder,
     	setCurrentDirectory,
-    	setSelected,
     	reset,
-    	type,
-    	isMaterial: itemMetadata.type === FileTypes.MATERIAL,
     	isOnRename,
     	metadata: itemMetadata,
     	submitRename,
-    	draggable,
-    	icon: itemIcon,
-    	childQuantity,
-    	currentDirectory,
-    	items,
+    	icon: ContentBrowserUtil.getItemIcon(data),
     	setOnDrag,
-    	isSelected: selectionList != null && selectionList.includes(data.id),
+    	isSelected,
     	isToBeCut: toCut != null && toCut.includes(data.id)
     }
 
     onMount(() => {
-    	const dragDropData = ContentBrowserUtil.getItemDragData(itemIcon, childQuantity, data, items, setOnDrag, type, itemMetadata)
     	draggable.onMount({
-    		targetElement: ref,
-    		onDrop: (event) => ContentBrowserUtil.handleDropFolder(event, data.id, currentDirectory, setCurrentDirectory),
-    		...dragDropData
+    		targetElement: document.getElementById(COMPONENT_ID),
+    		onDrop: (event) => ContentBrowserUtil.handleDropFolder(event, data.id)
     	})
     })
 
-    onDestroy(() => draggable.onDestroy())
+    onDestroy(() => {
+        draggable.onDestroy()
+        ContentBrowserStore.getInstance().removeListener(COMPONENT_ID)
+    })
 </script>
 
-<span bind:this={ref} style={isCardViewType ? undefined : "width: 100%"}>
+<span id={COMPONENT_ID} style={isCardViewType ? undefined : "width: 100%"}>
     {#if isCardViewType}
         <Card {...props}/>
         {:else}
         <Row {...props}/>
     {/if}
-    <ToolTip content={ContentBrowserUtil.getItemDragImage(data, type, itemMetadata)}/>
+    <ToolTip content={ContentBrowserUtil.getItemDragImage(data)}/>
 </span>
 
- 

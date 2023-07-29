@@ -8,15 +8,14 @@
     import QueryAPI from "../../../../../engine/core/lib/utils/QueryAPI";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
 
-    export let testSearch: Function
+    export let testSearch: GenericVoidFunctionWithP<MutableObject>
     export let depth: number
     export let isOnSearch: boolean
     export let entity: Entity
     export let open: { [key: string]: boolean }
-    export let updateOpen: Function
+    export let updateOpen: GenericVoidFunction
     export let selectedList:string[]
     export let lockedEntity: string
-    export let setLockedEntity: Function
 
     const onExpand = () => {
         if (!open[entity.id]) {
@@ -48,13 +47,9 @@
 >
 
     {#if hasChildren}
-
-
         {#each {length: depth} as _, i}
-            <div data-sveltevertdivider="-"
-                 style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
+            <div data-sveltevertdivider="-" style={`border-left-style: ${i === 0 ? "solid" : "dashed"}; left: ${i * 18}px`} class="divider"></div>
         {/each}
-
         <button
                 data-sveltebuttondefault="-"
                 data-svelteopen={isOpen ? "-" : ""}
@@ -67,7 +62,7 @@
     {:else}
         <div class="button-small hierarchy-branch"></div>
     {/if}
-    <TreeBranchContent {isOpen} {entity} {lockedEntity} {setLockedEntity} {isOnSearch}/>
+    <TreeBranchContent {isOpen} {entity} {lockedEntity} {isOnSearch}/>
     <button
             data-sveltebuttondefault="-"
             class="button-visibility"

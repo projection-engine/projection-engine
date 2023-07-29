@@ -13,7 +13,7 @@ import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EditorUtil from "../util/EditorUtil"
-import SelectionStoreUtil from "../util/SelectionStoreUtil"
+import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 
 
 export default function getViewportHotkeys(): { [key: string]: ContextMenuOption } {
@@ -22,7 +22,7 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 		DUPLICATE: {
 			label: "Duplicate active",
 			callback: () => {
-				const t = SelectionStoreUtil.getMainEntity()
+				const t = EntitySelectionStore.getMainEntity()
 				if (!t)
 					return
 				const entity = QueryAPI.getEntityByID(t)
@@ -61,7 +61,7 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 		SELECT_NONE: {
 			label: "Select none",
 			require: viewportHotkeys.SELECT_NONE,
-			callback: () => SelectionStoreUtil.setEntitiesSelected([])
+			callback: () => EntitySelectionStore.setEntitiesSelected([])
 		},
 		TRANSLATION_GIZMO: {
 
@@ -74,18 +74,18 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 			require: viewportHotkeys.SELECT_HIERARCHY,
 			label: "Select hierarchy",
 			callback: () => {
-				const t = SelectionStoreUtil.getMainEntity()
+				const t = EntitySelectionStore.getMainEntity()
 				if (!t)
 					return
 				const toSelect = [t, ...EditorUtil.selectEntityHierarchy(QueryAPI.getEntityByID(t))]
-				SelectionStoreUtil.setEntitiesSelected([...SelectionStoreUtil.getEntitiesSelected(), ...toSelect])
+				EntitySelectionStore.setEntitiesSelected([...EntitySelectionStore.getEntitiesSelected(), ...toSelect])
 			},
 
 		},
 		HIDE_ACTIVE: {
 			label: "Hide active",
 			callback: () => {
-				const selected = SelectionStoreUtil.getEntitiesSelected()
+				const selected = EntitySelectionStore.getEntitiesSelected()
 				for (let i = 0; i < selected.length; i++)
 					EntityFactoryService.toggleEntityVisibility(selected[i], true)
 				EntityHierarchyService.updateHierarchy()
@@ -95,7 +95,7 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 		SNAP_TO_ORIGIN: {
 			label: "Snap to origin",
 			callback: () => {
-				const selected = SelectionStoreUtil.getEntitiesSelected()
+				const selected = EntitySelectionStore.getEntitiesSelected()
 				for (let i = 0; i < selected.length; i++) {
 					const entity = QueryAPI.getEntityByID(selected[i])
 					entity._translation[0] = 0

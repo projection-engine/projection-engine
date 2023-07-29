@@ -7,7 +7,6 @@ import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
 import Engine from "../../../engine/core/Engine"
 import VisibilityRenderer from "../../../engine/core/runtime/VisibilityRenderer"
 import EngineTools from "../../../engine/tools/EngineTools"
-import SelectionStoreUtil from "./SelectionStoreUtil"
 import {glMatrix, quat} from "gl-matrix"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import CameraTracker from "../../../engine/tools/utils/CameraTracker"
@@ -17,6 +16,8 @@ import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService
 import getViewportContext from "../templates/get-viewport-context"
 import RENDER_TARGET from "../static/RENDER_TARGET"
 import SETTINGS from "../static/SETTINGS"
+import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
+import CameraSerialization from "../../../engine/core/static/CameraSerialization";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
@@ -92,7 +93,7 @@ export default class SceneEditorUtil {
 					entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})),
 					data
 				}, [data.buffer])
-				worker.onmessage = ({data: selected}) => SelectionStoreUtil.setEntitiesSelected(selected)
+				worker.onmessage = ({data: selected}) => EntitySelectionStore.setEntitiesSelected(selected)
 
 			} catch (err) {
 				console.error(err, startCoords, nStart)
@@ -135,29 +136,26 @@ export default class SceneEditorUtil {
 		SettingsStore.updateStore({gizmoGrid: {...SettingsStore.getData().gizmoGrid, [key]: value}})
 	}
 
-	static restoreCameraState(viewMetadata) {
-		if (!viewMetadata.cameraMetadata) {
-			const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
-			const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
-			CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
-			CameraTracker.xRotation = glMatrix.toRadian(45)
-			CameraTracker.yRotation = -glMatrix.toRadian(45)
-		} else {
-			CameraAPI.restoreState(viewMetadata.cameraMetadata)
-			CameraTracker.xRotation = viewMetadata.cameraMetadata.prevX
-			CameraTracker.yRotation = viewMetadata.cameraMetadata.prevY
+	static restoreCameraState(cameraMetadata:CameraSerialization|undefined) {
+		try{
+			if (!cameraMetadata) {
+				const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
+				const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
+				CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
+				CameraTracker.xRotation = glMatrix.toRadian(45)
+				CameraTracker.yRotation = -glMatrix.toRadian(45)
+			} else {
+				CameraAPI.restoreState(cameraMetadata)
+				CameraTracker.xRotation = cameraMetadata.prevX
+				CameraTracker.yRotation = cameraMetadata.prevY
+			}
+		}catch (err){
+			console.error(err)
 		}
-
-		viewMetadata.cameraMetadata = CameraAPI.serializeState()
-		viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
-		viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
 	}
 
-	static onSceneEditorMount(draggable, viewMetadata) {
+	static onSceneEditorMount(draggable) {
 		ContextMenuService.getInstance().mount(getViewportContext(), RENDER_TARGET)
-		if (viewMetadata.cameraMetadata)
-			CameraAPI.restoreState(viewMetadata.cameraMetadata)
-
 		CameraTracker.startTracking()
 		ViewportInteractionListener.get()
 		draggable.onMount({

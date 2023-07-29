@@ -1,5 +1,3 @@
-import EngineStore from "../../shared/stores/EngineStore"
-
 import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
 import {vec3, vec4} from "gl-matrix"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
@@ -7,14 +5,14 @@ import CameraTracker from "../../../engine/tools/utils/CameraTracker"
 import Engine from "../../../engine/core/Engine"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import EngineStateService from "./engine/EngineStateService"
-import SelectionStoreUtil from "../util/SelectionStoreUtil"
+import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 
 
 export default class ViewportActionUtil {
 	static toCopy = []
 
 	static copy(single?: boolean, target?: string) {
-		const selected = SelectionStoreUtil.getEntitiesSelected()
+		const selected = EntitySelectionStore.getEntitiesSelected()
 		if (target)
 			ViewportActionUtil.toCopy = [target]
 		else if (single && selected[0])
@@ -24,7 +22,7 @@ export default class ViewportActionUtil {
 	}
 
 	static focus() {
-		const entity = QueryAPI.getEntityByID(SelectionStoreUtil.getMainEntity())
+		const entity = QueryAPI.getEntityByID(EntitySelectionStore.getMainEntity())
 		if (!entity)
 			return
 
@@ -38,13 +36,13 @@ export default class ViewportActionUtil {
 	}
 
 	static deleteSelected() {
-		EngineStateService.removeBlock(SelectionStoreUtil.getEntitiesSelected())
+		EngineStateService.removeBlock(EntitySelectionStore.getEntitiesSelected())
 	}
 
 	static invertSelection() {
 		const newArr = []
 		const notValid = {}
-		const oldSelected = SelectionStoreUtil.getEntitiesSelected()
+		const oldSelected = EntitySelectionStore.getEntitiesSelected()
 		for (let i = 0; i < oldSelected.length; i++)
 			notValid[oldSelected[i]] = true
 		const entities = Engine.entities.array
@@ -53,7 +51,7 @@ export default class ViewportActionUtil {
 				newArr.push(entities[i].id)
 		}
 
-		SelectionStoreUtil.setEntitiesSelected(newArr)
+		EntitySelectionStore.setEntitiesSelected(newArr)
 	}
 
 	static paste(parent?: string) {
@@ -80,19 +78,19 @@ export default class ViewportActionUtil {
 	}
 
 	static group() {
-		const selected = SelectionStoreUtil.getEntitiesSelected()
+		const selected = EntitySelectionStore.getEntitiesSelected()
 		ViewportActionUtil.toCopy = selected
 		if (selected.length > 1)
 			EngineStateService.linkMultiple(selected)
 	}
 
 	static selectAll() {
-		SelectionStoreUtil.setEntitiesSelected(Array.from(Engine.entities.keys()))
+		EntitySelectionStore.setEntitiesSelected(Array.from(Engine.entities.keys()))
 	}
 
 	static fixateActive() {
-		const selected = SelectionStoreUtil.getEntitiesSelected()
+		const selected = EntitySelectionStore.getEntitiesSelected()
 		if (selected[0])
-			EngineStore.updateStore({lockedEntity: selected[0]})
+			EntitySelectionStore.setLockedEntity(selected[0])
 	}
 }

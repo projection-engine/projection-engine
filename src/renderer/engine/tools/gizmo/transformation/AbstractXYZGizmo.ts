@@ -1,5 +1,4 @@
 import IGizmo from "../IGizmo";
-import GizmoMouseUtil from "../util/GizmoMouseUtil";
 import GizmoUtil from "../util/GizmoUtil";
 import AXIS from "../../static/AXIS";
 import Mesh from "../../../core/instances/Mesh";

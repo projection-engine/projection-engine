@@ -3,7 +3,7 @@ import SettingsStore from "../../shared/stores/SettingsStore"
 import TabsStore from "../../shared/stores/TabsStore"
 
 export default class TabsStoreUtil {
-	static updateByAttributes(direction, group, value) {
+	static updateByAttributes(direction:"left"|"right"|"top"|"bottom"|"viewport", group:number, value:number) {
 		ChangesTrackerStore.updateStore({changed: true})
 		const settingsData = SettingsStore.getData()
 		const clone = {...TabsStore.getData()}
@@ -29,7 +29,7 @@ export default class TabsStoreUtil {
 		TabsStore.updateStore({focused: data})
 	}
 
-	static getCurrentTabByCurrentView(direction, group?: string): number {
+	static getCurrentTabByCurrentView(direction:"left"|"right"|"top"|"bottom"|"viewport", group?: number): number {
 		let value
 		const settingsData =SettingsStore.getData()
 		const tabsData =TabsStore.getData()

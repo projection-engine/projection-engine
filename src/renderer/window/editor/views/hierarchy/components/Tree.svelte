@@ -1,47 +1,21 @@
-<script>
-    import {onDestroy, onMount} from "svelte"
+<script lang="ts">
     import EntityTreeBranch from "./EntityTreeBranch.svelte"
     import ComponentTreeBranch from "./ComponentTreeBranch.svelte"
-    import SelectionStore from "../../../../shared/stores/SelectionStore"
-    import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
-
-    import getViewportContext from "../../../templates/get-viewport-context"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
-    import ContextMenuService from "../../../../shared/lib/context-menu/ContextMenuService"
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
-    import SelectionStoreUtil from "../../../util/SelectionStoreUtil"
-    import EngineStore from "../../../../shared/stores/EngineStore"
+    import HierarchyToRenderElement from "../template/ToRenderElement";
 
     const COMPONENT_ID = crypto.randomUUID()
-    /** @type { string }*/
-    export let ID
-    /** @type { function }*/
-    export let testSearch
-    /** @type { boolean }*/
-    export let isOnSearch
-    /** @type { {[key: string]: boolean} }*/
-    export let openTree
-    /** @type { function }*/
-    export let updateOpen
-    /** @type {HierarchyToRenderElement[]}*/
-    export let toRender
+    export let ID:string
+    export let testSearch:GenericVoidFunctionWithP<MutableObject>
+    export let isOnSearch:boolean
+    export let selectedList:string[]
+    export let lockedEntity:string|undefined
+    export let openTree:{[key: string]: boolean}
+    export let updateOpen:GenericVoidFunction
+    export let toRender:HierarchyToRenderElement[]
 
-    let selectedList
-    let lockedEntity
-
-    onMount(() => {
-    	ContextMenuService.getInstance().mount(getViewportContext(), ID)
-    	EngineStore.getInstance().addListener(COMPONENT_ID, data => lockedEntity = data.lockedEntity, ["lockedEntity"])
-    	SelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedList = SelectionStoreUtil.getEntitiesSelected())
-    })
-
-    onDestroy(() => {
-    	EngineStore.getInstance().removeListener(COMPONENT_ID)
-    	SelectionStore.getInstance().removeListener(COMPONENT_ID)
-    	EntityHierarchyService.removeListener(COMPONENT_ID)
-    	ContextMenuService.getInstance().destroy(ID)
-    })
 </script>
 
 {#if toRender.length > 0}
@@ -50,7 +24,6 @@
             <ComponentTreeBranch
                     component={item.component}
                     depth={item.depth }
-                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
             />
         {:else}
             <EntityTreeBranch
@@ -60,7 +33,6 @@
                     depth={item.depth}
                     {selectedList}
                     {lockedEntity}
-                    setLockedEntity={v => SelectionStoreUtil.setLockedEntity(v)}
                     open={openTree}
                     {updateOpen}
             />

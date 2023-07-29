@@ -10,16 +10,20 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";
     import TabsStoreUtil from "../../../util/TabsStoreUtil";
+    import View from "./View.svelte";
+    import ViewTemplates from "../static/ViewTemplates";
+    import ViewStateStore from "../../../../shared/stores/ViewStateStore";
 
     const COMPONENT_ID = crypto.randomUUID()
 
-    export let groupIndex
+    export let groupIndex: number
     export let views: ViewTabItem[]
-    export let addNewTab
-    export let removeTab
-    export let removeMultipleTabs
-    export let switchView
-    export let id
+    export let addNewTab: GenericVoidFunctionWithP<string>
+    export let removeTab: GenericVoidFunctionWith3P<number, Function, number>
+    export let removeMultipleTabs: GenericVoidFunction
+    export let switchView: GenericVoidFunctionWith2P<string, number>
+    export let id: "left" | "right" | "top" | "bottom"
+    export let currentViewIndex: number
 
     let currentTab = 0
     let ref: HTMLElement
@@ -32,17 +36,21 @@
 
     $: localTabViews = views.map(v => {
         v.name = LocalizationEN[v.type]
-        v.icon =  ViewsUtil.getViewIcon(v.type)
+        v.icon = ViewsUtil.getViewIcon(v.type)
         v.id = v.type
         return v
     })
-    $: viewTemplates = Object.values(VIEWS).map(value => ({
-        name: LocalizationEN[value],
-        id: value
-    }))
 
     function closeTarget(i) {
-        removeTab(i, n => TabsStoreUtil.updateByAttributes(id, groupIndex, n), TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex))
+        const viewToDelete = ViewsUtil.getViewId(views[i].type, i, groupIndex, id, currentViewIndex)
+        removeTab(
+            i,
+            n => {
+                TabsStoreUtil.updateByAttributes(id, groupIndex, n)
+                ViewStateStore.removeState(viewToDelete)
+            },
+            TabsStoreUtil.getCurrentTabByCurrentView(id, groupIndex)
+        )
     }
 
     function removeView(i: number) {
@@ -54,11 +62,12 @@
             targetDialogElement = ref.querySelector(`[data-svelteclosebuttontab="${i}"]`)
         else
             closeTarget(i)
+
     }
 
     onMount(() => {
         TabsStore.getInstance().addListener(COMPONENT_ID, data => focused = data.focused === ref, ["focused"])
-        SettingsStore.getInstance().addListener(COMPONENT_ID,         update, ["currentView"])
+        SettingsStore.getInstance().addListener(COMPONENT_ID, update, ["currentView"])
     })
     onDestroy(() => {
         TabsStore.getInstance().removeListener(COMPONENT_ID)
@@ -71,16 +80,19 @@
     <div></div>
     <div class="tabs">
         <Tabs
-                removeMultipleTabs={removeMultipleTabs}
-                focused={focused}
+                {removeMultipleTabs}
+                {focused}
                 updateView={switchView}
-                templates={viewTemplates}
+                templates={ViewTemplates}
                 allowDeletion={true}
-                addNewTab={addNewTab}
+                {addNewTab}
                 removeTab={removeView}
                 tabs={localTabViews}
-                currentTab={currentTab}
-                setCurrentView={v => TabsStoreUtil.updateByAttributes(id, groupIndex, v)}
+                {currentTab}
+                setCurrentView={v => {
+                    TabsStoreUtil.updateByAttributes(id, groupIndex, v)
+                    currentTab = v
+                }}
         />
         <Dialog
                 targetBinding={targetDialogElement}
@@ -105,7 +117,15 @@
             </div>
         </Dialog>
     </div>
-    <slot view={views[currentTab]} index={currentTab}/>
+    {#if views[currentTab]}
+        <View
+                {currentViewIndex}
+                instance={views[currentTab]}
+                id}
+                index={currentTab}
+                {groupIndex}
+        />
+    {/if}
 </div>
 
 <style>

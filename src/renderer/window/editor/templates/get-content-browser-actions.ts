@@ -5,9 +5,9 @@ import ElectronResources from "../../shared/lib/ElectronResources"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import ContentBrowserUtil from "../util/ContentBrowserUtil"
 import EditorUtil from "../util/EditorUtil"
-import SelectionStoreUtil from "../util/SelectionStoreUtil"
 import FileSystemUtil from "../../shared/FileSystemUtil"
 import SettingsStore from "../../shared/stores/SettingsStore"
+import ContentBrowserStore from "../../shared/stores/ContentBrowserStore";
 
 export default function getContentBrowserActions(navigationHistory, getCurrentDirectory, setCurrentDirectory, setCurrentItem) {
 	const contentBrowserHotkeys = SettingsStore.getData().contentBrowserHotkeys
@@ -68,24 +68,24 @@ export default function getContentBrowserActions(navigationHistory, getCurrentDi
 			label: "Rename",
 			require: contentBrowserHotkeys.RENAME,
 			callback: () => {
-				setCurrentItem(SelectionStoreUtil.getContentBrowserSelected()[0])
+				setCurrentItem(ContentBrowserStore.getContentBrowserSelected()[0]?.id)
 			},
 		},
 		DELETE: {
 			label: LocalizationEN.DELETE,
 			require: contentBrowserHotkeys.DELETE,
 			callback: () => {
-				const s = [...SelectionStoreUtil.getContentBrowserSelected()]
-				if (s.length > 0) {
-					SelectionStoreUtil.setContentBrowserSelected([])
-					ContentBrowserUtil.handleDelete(s, getCurrentDirectory(), setCurrentDirectory).catch(console.error)
+				const selectionList = ContentBrowserStore.getContentBrowserSelected().map(s => s?.id)
+				if (selectionList.length > 0) {
+					ContentBrowserStore.setContentBrowserSelected([])
+					ContentBrowserUtil.handleDelete(selectionList, getCurrentDirectory(), setCurrentDirectory).catch(console.error)
 				}
 			}
 		},
 		CUT: {
 			label: LocalizationEN.CUT,
 			require: contentBrowserHotkeys.CUT,
-			callback: () => ContentBrowserUtil.cutFiles([...SelectionStoreUtil.getContentBrowserSelected()])
+			callback: () => ContentBrowserUtil.cutFiles([...ContentBrowserStore.getContentBrowserSelected().map(s => s?.id)])
 		},
 		PASTE: {
 			label: LocalizationEN.PASTE,
@@ -100,7 +100,7 @@ export default function getContentBrowserActions(navigationHistory, getCurrentDi
 			{
 				label: LocalizationEN.COPY_ID,
 				onClick: () => {
-					const ID = EditorFSUtil.getByPath(SelectionStoreUtil.getContentBrowserSelected()[0])
+					const ID = EditorFSUtil.getByPath(ContentBrowserStore.getContentBrowserSelected()[0]?.id)
 					if (ID) {
 						ToastNotificationSystem.getInstance().success(LocalizationEN.COPIED)
 						ElectronResources.clipboard.writeText(ID)
