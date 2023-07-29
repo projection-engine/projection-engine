@@ -19,14 +19,14 @@ export default class ViewStateStore extends AbstractStore {
     }
 
     static onViewMount(viewMetadata: string, onIfExists: GenericVoidFunctionWithP<MutableObject>) {
-        const previousData = ViewStateStore.getData()[viewMetadata]?.state
+        const previousData = ViewStateStore.getData()[viewMetadata]
         ViewStateStore.getInstance().updateStore({[viewMetadata]: previousData})
         if (previousData)
             onIfExists(previousData)
     }
 
     static onViewDestroy(viewMetadata: string, latestState: MutableObject | undefined) {
-        const previousData = ViewStateStore.getData()[viewMetadata].state ?? {}
+        const previousData = ViewStateStore.getData()[viewMetadata] ?? {}
         ViewStateStore.getInstance().updateStore({
             [viewMetadata]: {...previousData, ...latestState}
         })

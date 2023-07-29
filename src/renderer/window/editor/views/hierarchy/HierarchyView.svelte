@@ -77,6 +77,8 @@
                 updateOpen={() => updateHierarchy(openTree)}
                 {openTree}
                 {toRender}
+                {selectedList}
+                {lockedEntity}
                 {filteredComponent}
                 {ID}
                 testSearch={node => HierarchyUtil.testSearch(filteredComponent, search, node)}

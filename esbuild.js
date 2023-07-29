@@ -4,93 +4,67 @@ const sveltePlugin = require("esbuild-svelte")
 const {copy} = require("esbuild-plugin-copy")
 
 const production = process.argv[2] === "prod"
-let watch = false
-if (process.argv[2] === "watch")
-	watch = {
-		onRebuild(error) {
-			if (error) console.error((new Date()).toDateString() + " FAILED: ", error)
-			else console.log((new Date()).toLocaleTimeString() + " SUCCEEDED")
-		}
-	}
-
 const COMMON = {
-	tsconfig: "tsconfig.json",
-	bundle: true,
-	watch,
-	target: ["es2022"],
-	minify: production,
-	sourcemap: !production,
-	ignoreAnnotations: true,
-	loader: {".glsl": "text", ".frag": "text", ".vert": "text", ".svg": "text"}
+    tsconfig: "tsconfig.json",
+    bundle: true,
+    target: ["es2022"],
+    minify: production,
+    sourcemap: !production,
+    ignoreAnnotations: true,
+    loader: {".glsl": "text", ".frag": "text", ".vert": "text", ".svg": "text"}
 }
 
-
-function worker(fileName, output) {
-	return {
-		...COMMON,
-		platform: "browser",
-		entryPoints: [fileName],
-		format: "iife",
-		outfile: output,
-		plugins: []
-	}
-}
-
-function frontend(fileName, outputName) {
-	return {
-		...COMMON,
-		platform: "browser",
-		entryPoints: ["./src/renderer/window" + fileName],
-		format: "iife",
-		outfile: "./build/" + outputName + ".js",
-		plugins: [
-			sveltePlugin({
-				preprocess: sveltePreprocess({typescript: {tsconfigFile: "tsconfig.json"}}),
-				filterWarnings: () => false
-			})
-		],
-
-	}
-}
-
-const workers = [
-	worker("src/renderer/engine/core/workers/entity-worker.ts", "build/entity-worker.js"),
-	worker("src/renderer/engine/core/workers/camera-worker.ts", "build/camera-worker.js"),
-	worker("src/renderer/engine/core/workers/terrain-worker.ts", "build/terrain-worker.js"),
-	worker("src/renderer/engine/core/workers/image-worker.ts", "build/image-worker.js"),
-]
-
-workers.forEach((worker, i) => {
-	esbuild.build(worker)
-		.then(() => console.log("SUCCESS - WORKER - " + i))
-		.catch((err) => console.error(err))
+const worker = (fileName, output) => ({
+    ...COMMON,
+    platform: "browser",
+    entryPoints: [fileName],
+    format: "iife",
+    outfile: output,
+    plugins: []
 })
-esbuild.build(frontend("/editor/editor-window.ts", "editor-window"))
-	.then(() => console.log("SUCCESS - EDITOR"))
-	.catch((err) => console.error(err))
 
-esbuild.build(frontend("/projects/project-window.ts", "project-window"))
-	.then(() => console.log("SUCCESS - PROJECTS"))
-	.catch((err) => console.error(err))
-
-esbuild.build(frontend("/preferences/preferences-window.ts", "preferences-window"))
-	.then(() => console.log("SUCCESS - PREFERENCES"))
-	.catch((err) => console.error(err))
-
-
-esbuild.build( {
-	...COMMON,
-	platform: "node",
-	entryPoints: ["./src/main/index.ts"],
-	format: "cjs",
-	external: ["electron", "sharp"],
-	outfile: "./build/index.js",
-	plugins: [
-		copy({assets: [{from: ["./src/static/*"], to: ["./"]}]})
-	]
+const frontend = (fileName, outputName) => ({
+    ...COMMON,
+    platform: "browser",
+    entryPoints: ["./src/renderer/window" + fileName],
+    format: "iife",
+    outfile: "./build/" + outputName + ".js",
+    plugins: [
+        sveltePlugin({
+            preprocess: sveltePreprocess({typescript: {tsconfigFile: "tsconfig.json"}}),
+            filterWarnings: () => false
+        })
+    ],
 })
-	.then(() => console.log("SUCCESS - BACKEND"))
-	.catch((err) => console.error(err))
 
+start().catch(console.error)
 
+async function start(){
+    const contexts = []
+    contexts.push(esbuild.context(worker("src/renderer/engine/core/workers/entity-worker.ts", "build/entity-worker.js")))
+    contexts.push(esbuild.context(worker("src/renderer/engine/core/workers/camera-worker.ts", "build/camera-worker.js")))
+    contexts.push(esbuild.context(worker("src/renderer/engine/core/workers/terrain-worker.ts", "build/terrain-worker.js")))
+    contexts.push(esbuild.context(worker("src/renderer/engine/core/workers/image-worker.ts", "build/image-worker.js")))
+    contexts.push(esbuild.context(frontend("/editor/editor-window.ts", "editor-window")))
+    contexts.push(esbuild.context(frontend("/projects/project-window.ts", "project-window")))
+    contexts.push(esbuild.context(frontend("/preferences/preferences-window.ts", "preferences-window")))
+    contexts.push(esbuild.context({
+        ...COMMON,
+        platform: "node",
+        entryPoints: ["./src/main/index.ts"],
+        format: "cjs",
+        external: ["electron", "sharp"],
+        outfile: "./build/index.js",
+        plugins: [copy({assets: [{from: ["./src/static/*"], to: ["./"]}]})]
+    }))
 
+    const resolvedContexts = await Promise.all(contexts)
+    if (process.argv[2] === "watch")
+        resolvedContexts.forEach((context, i) => {
+            console.log("WATCHING CONTEXT " + i)
+            context.watch()
+        })
+    else
+        resolvedContexts.forEach(context => context.dispose())
+
+}

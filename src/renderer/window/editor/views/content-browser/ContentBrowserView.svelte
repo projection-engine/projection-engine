@@ -9,7 +9,7 @@
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
     import {SORTS, SORTS_KEYS} from "./static/SORT_INFO"
     import FileSystemUtil from "../../../shared/FileSystemUtil"
-    import ContentBrowserItem from "./components/info-editor/ContentBrowserItem.svelte";
+    import Properties from "./components/info-editor/Properties.svelte";
     import SerializedState from "../../components/view/SerializedState.svelte";
 
     const COMPONENT_ID = crypto.randomUUID()
@@ -80,7 +80,7 @@
         />
     </div>
     <ResizableBar type={"width"}/>
-    <ContentBrowserItem/>
+    <Properties/>
 </div>
 
 <style>

@@ -56,7 +56,7 @@
     }
 
     onMount(() => {
-        ContentBrowserStore.getInstance().addListener(COMPONENT_ID, store => isSelected = store.selectionList.includes(data.id), ["selectionList"])
+        ContentBrowserStore.getInstance().addListener(COMPONENT_ID, data => isSelected = data.selectedItems.includes(data.id), ["selectedItems"])
     	draggable.onMount({
     		targetElement: document.getElementById(COMPONENT_ID),
     		onDrop: (event) => ContentBrowserUtil.handleDropFolder(event, data.id)

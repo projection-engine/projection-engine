@@ -2,7 +2,6 @@
     import FileSystemUtil from "../../../shared/FileSystemUtil"
     import {onDestroy, onMount} from "svelte"
     import ShaderEditorTools from "./libs/ShaderEditorTools"
-    import ViewStateController from "../../components/view/libs/ViewStateController"
     import materialCompiler from "./libs/material-compiler/material-compiler"
     import HeaderOptions from "./components/HeaderOptions.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
