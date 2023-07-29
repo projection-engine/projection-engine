@@ -61,7 +61,6 @@
 <SerializedState
         onBeforeDestroy={CameraAPI.serializeState}
         onStateInitialize={state => {
-            console.trace("RESTORING CAMERA")
             SceneEditorUtil.restoreCameraState(state)
         }}
 />

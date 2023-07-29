@@ -16,13 +16,11 @@
     }
 
     onMount(() => {
-        console.trace(context)
         ViewStateStore.onViewMount(context, onStateInitialize)
         isInitialized = true
     })
     onDestroy(() => {
         if(onBeforeDestroy) {
-            console.trace("ON DESTROY")
             ViewStateStore.onViewDestroy(context, onBeforeDestroy())
         }
     })
