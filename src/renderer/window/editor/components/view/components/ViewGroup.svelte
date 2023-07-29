@@ -16,13 +16,14 @@
 
     const COMPONENT_ID = crypto.randomUUID()
 
-    export let groupIndex
+    export let groupIndex: number
     export let views: ViewTabItem[]
-    export let addNewTab
-    export let removeTab
-    export let removeMultipleTabs
-    export let switchView
-    export let id
+    export let addNewTab: GenericVoidFunctionWithP<string>
+    export let removeTab: GenericVoidFunctionWith3P<number, Function, number>
+    export let removeMultipleTabs: GenericVoidFunction
+    export let switchView: GenericVoidFunctionWith2P<string, number>
+    export let id: "left" | "right" | "top" | "bottom"
+    export let currentViewIndex: number
 
     let currentTab = 0
     let ref: HTMLElement
@@ -41,7 +42,7 @@
     })
 
     function closeTarget(i) {
-        const viewToDelete = ViewsUtil.getViewId(views[i].type, i, groupIndex, id)
+        const viewToDelete = ViewsUtil.getViewId(views[i].type, i, groupIndex, id, currentViewIndex)
         removeTab(
             i,
             n => {
@@ -79,16 +80,19 @@
     <div></div>
     <div class="tabs">
         <Tabs
-                removeMultipleTabs={removeMultipleTabs}
-                focused={focused}
+                {removeMultipleTabs}
+                {focused}
                 updateView={switchView}
                 templates={ViewTemplates}
                 allowDeletion={true}
-                addNewTab={addNewTab}
+                {addNewTab}
                 removeTab={removeView}
                 tabs={localTabViews}
-                currentTab={currentTab}
-                setCurrentView={v => TabsStoreUtil.updateByAttributes(id, groupIndex, v)}
+                {currentTab}
+                setCurrentView={v => {
+                    TabsStoreUtil.updateByAttributes(id, groupIndex, v)
+                    currentTab = v
+                }}
         />
         <Dialog
                 targetBinding={targetDialogElement}
@@ -115,10 +119,11 @@
     </div>
     {#if views[currentTab]}
         <View
+                {currentViewIndex}
                 instance={views[currentTab]}
-                id={id}
+                id}
                 index={currentTab}
-                groupIndex={groupIndex}
+                {groupIndex}
         />
     {/if}
 </div>

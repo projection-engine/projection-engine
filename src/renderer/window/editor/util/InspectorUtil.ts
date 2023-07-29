@@ -8,14 +8,12 @@ import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import LightComponent from "../../../engine/core/instances/components/LightComponent"
 import LightsAPI from "../../../engine/core/lib/utils/LightsAPI"
-import EditorActionHistory from "../services/EditorActionHistory"
 import CameraComponent from "../../../engine/core/instances/components/CameraComponent"
 import EngineStore from "../../shared/stores/EngineStore"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
-import SelectionTargets from "../../../../shared/enums/SelectionTargets"
-import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
-import FileTypes from "../../../../shared/enums/FileTypes"
+import type Entity from "../../../engine/core/instances/Entity";
+import type Component from "../../../engine/core/instances/components/Component";
 
 export default class InspectorUtil {
     static compareObjects(obj1, obj2) {
@@ -33,21 +31,19 @@ export default class InspectorUtil {
         return isValid
     }
 
-    static getEntityTabs(components) {
-        return [
-
+    static getEntityTabs(components, isCollection: boolean) {
+        const result = [
             {
                 icon: "settings",
                 label: LocalizationEN.ENTITY_PROPERTIES,
                 index: -1,
                 color: "var(--pj-accent-color-secondary)"
-            },
-            {
-                icon: "code",
-                label: LocalizationEN.CUSTOM_COMPONENTS,
-                index: -2,
-                color: "var(--pj-accent-color-secondary)"
-            },
+            }
+        ]
+        if (isCollection)
+            return result
+        return [
+            ...result,
             {divider: true},
             ...components.map((c, i) => ({
                 icon: EditorUtil.getComponentIcon(c.componentKey),
@@ -57,14 +53,10 @@ export default class InspectorUtil {
         ]
     }
 
-    static updateEntityComponent(savedState, setSaved, entity, key, value, save, component) {
+    static updateEntityComponent(entity:Entity, key:string, value:any, component:typeof Component) {
         if (component instanceof LightComponent) {
             entity.needsLightUpdate = true
             LightsAPI.packageLights(true)
-        }
-        if (!savedState) {
-            EditorActionHistory.save(entity)
-            setSaved(true)
         }
         if (component instanceof CameraComponent) {
             entity.__cameraNeedsUpdate = true
@@ -72,11 +64,6 @@ export default class InspectorUtil {
         component[key] = value
         if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.getData().focusedCamera)
             CameraAPI.updateViewTarget(entity)
-        if (save) {
-            const selectionStoreInstance = EntitySelectionStore.getInstance()
-            selectionStoreInstance.updateStore({array: selectionStoreInstance.data.array})
-            EditorActionHistory.save(entity)
-        }
     }
 
     static removeComponent(entity, index, key) {
@@ -148,20 +135,5 @@ export default class InspectorUtil {
         return type
     }
 
-
-    static getSelectionTarget(selectionData) {
-        let selectedItem
-        if (selectionData.array[0]) {
-            switch (selectionData.TARGET) {
-                case SelectionTargets.CONTENT_BROWSER:
-                    selectedItem = ContentBrowserStore.getData().items.find(i => i.id === selectionData.array[0])
-                    break
-                case SelectionTargets.ENGINE:
-                    selectedItem = QueryAPI.getEntityByID(selectionData.array[0])
-                    break
-            }
-        }
-        return selectedItem
-    }
 
 }

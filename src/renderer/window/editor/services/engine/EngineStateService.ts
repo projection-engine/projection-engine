@@ -11,7 +11,6 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 
 import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
-import SelectionTargets from "../../../../../shared/enums/SelectionTargets"
 import GizmoUtil from "../../../../engine/tools/gizmo/util/GizmoUtil"
 
 
@@ -90,7 +89,6 @@ export default class EngineStateService {
     	EntityAPI.removeGroup(entities, false)
 
     	EntitySelectionStore.updateStore({
-    		TARGET: SelectionTargets.ENGINE,
     		array: []
     	})
     	EntitySelectionStore.setLockedEntity(Engine.entities.array[0]?.id)
@@ -106,7 +104,6 @@ export default class EngineStateService {
     	GizmoUtil.createTransformationCache(entity)
     	EntityAPI.addEntity(entity)
     	EntitySelectionStore.updateStore({
-    		TARGET: SelectionTargets.ENGINE,
     		array: [entity.id]
     	})
     	EntitySelectionStore.setLockedEntity(entity.id)

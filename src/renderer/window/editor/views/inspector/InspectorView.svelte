@@ -17,14 +17,21 @@
     let selectedItem
     let tabIndex = 0
     let tabs = []
-    let lockedEntity
-    let isOnDynamicTab
+    let isOnDynamicTab = false
 
     onMount(() => {
         EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
-            selectedItem = InspectorUtil.getSelectionTarget(data)
-            lockedEntity = QueryAPI.getEntityByID(data.lockedEntity)
-        })
+            const temp = QueryAPI.getEntityByID(data.array[0] || data.lockedEntity)
+            if (temp === selectedItem)
+                return
+            selectedItem = temp
+            tabIndex = INSPECTOR_TABS.length
+            if (selectedItem) {
+                const entityTabs = InspectorUtil.getEntityTabs(selectedItem.allComponents, selectedItem.isCollection)
+                setTabs(entityTabs)
+            } else
+                setTabs([])
+        }, ["array", "lockedEntity"])
     })
 
     onDestroy(() => {
@@ -39,22 +46,16 @@
     }
 
     $: {
-        if (!selectedItem)
-            selectedItem = lockedEntity
-        if (!selectedItem)
-            setTabs([])
         isOnDynamicTab = tabIndex > 2 && selectedItem !== undefined
     }
 </script>
 
 <SerializedState
-        state={{selectedItem, tabIndex, tabs, lockedEntity, isOnDynamicTab}}
+        state={{selectedItem, tabIndex, tabs}}
         onStateInitialize={state => {
             selectedItem = state.selectedItem
             tabIndex = state.tabIndex
             tabs = state.tabs
-            lockedEntity = state.lockedEntity
-            isOnDynamicTab = state.isOnDynamicTab
         }}
 />
 <div class="wrapper">
@@ -79,7 +80,6 @@
         {#if isOnDynamicTab}
             <EntityInspector
                     setTabIndex={i => tabIndex = i}
-                    setTabs={setTabs}
                     entity={selectedItem}
                     tabIndex={tabIndex}
             />

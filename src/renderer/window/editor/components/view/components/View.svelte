@@ -9,7 +9,7 @@
     import SceneEditor from "../../../views/scene-editor/SceneEditorView.svelte"
     import Metrics from "../../../views/metrics/MetricsView.svelte"
     import Console from "../../../views/console/ConsoleView.svelte"
-    import {onDestroy, setContext} from "svelte";
+    import {setContext} from "svelte";
     import ViewsUtil from "../../../util/ViewsUtil";
     import ViewMetadataContext from "../static/ViewMetadataContext";
 
@@ -18,7 +18,8 @@
     export let id:string
     export let groupIndex:number
     export let index:number
-
+    export let currentViewIndex:number
+    let viewMetadata
     let component
     $:  {
         switch (instance.type) {
@@ -49,13 +50,16 @@
             default:
                 component = undefined
         }
-        setContext(ViewMetadataContext, ViewsUtil.getViewId(instance.type, index, groupIndex, id))
+        viewMetadata = ViewsUtil.getViewId(instance.type, index, groupIndex, id, currentViewIndex)
+        setContext(ViewMetadataContext, viewMetadata)
     }
 </script>
 
 {#if component !== undefined}
     <div class="view" style={styles}>
-        <svelte:component this={component}/>
+        {#key viewMetadata}
+            <svelte:component this={component}/>
+        {/key}
     </div>
 {/if}
 

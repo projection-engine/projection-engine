@@ -14,8 +14,6 @@
     import NODE_MAP from "./static/NODE_MAP"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import ShaderEditorUtil from "../../util/ShaderEditorUtil"
-    import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI";
-    import SceneEditorUtil from "../../util/SceneEditorUtil";
     import SerializedState from "../../components/view/SerializedState.svelte";
 
     const COMPONENT_ID = crypto.randomUUID()

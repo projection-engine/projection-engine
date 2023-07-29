@@ -18,10 +18,10 @@ export default class ViewStateStore extends AbstractStore {
         delete ViewStateStore.getData()[viewMetadata]
     }
 
-    static onViewMount(viewMetadata: string, onIfExists: GenericVoidFunctionWithP<MutableObject>) {
+    static onViewMount(viewMetadata: string, onIfExists: GenericVoidFunctionWithP<MutableObject>|undefined) {
         const previousData = ViewStateStore.getData()[viewMetadata]
         ViewStateStore.getInstance().updateStore({[viewMetadata]: previousData})
-        if (previousData)
+        if (previousData && onIfExists)
             onIfExists(previousData)
     }
 

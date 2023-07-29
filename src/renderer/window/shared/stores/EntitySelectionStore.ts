@@ -5,8 +5,8 @@ export default class EntitySelectionStore extends AbstractStore{
 		super({lockedEntity: undefined, array: []})
 	}
 
-	static setEntitiesSelected(data) {
-		EntitySelectionStore.updateStore({array: data})
+	static setEntitiesSelected(data:string[]|string)	 {
+		EntitySelectionStore.updateStore({array: Array.isArray(data) ? data : [data]})
 	}
 
 	static getEntitiesSelected() {

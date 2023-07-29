@@ -23,10 +23,12 @@
     let isContextInitialized = false
     let view
     let cameraGizmoSize
+    let currentViewIndex = 0
 
     onMount(() => {
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
     		view = data.views?.[data.currentView]
+            currentViewIndex = data.currentView
     		cameraGizmoSize = data.cameraGizmoSize
     	}, ["views", "currentView", "cameraGizmoSize"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => HotKeysController.blockActions = data.executingAnimation, ["executingAnimation"])
@@ -59,6 +61,7 @@
                     setTabs={(tabs) => EditorUtil.updateView("left", tabs)}
                     tabs={view.left}
                     leftOffset={"8px"}
+                    {currentViewIndex}
                     orientation={"vertical"}
                     resizePosition={"left"}
             />
@@ -67,14 +70,17 @@
                         id="bottom"
                         setTabs={(tabs) => EditorUtil.updateView("top", tabs)}
                         tabs={view.top}
+                        {currentViewIndex}
                         resizePosition={"bottom"}
                         orientation={"horizontal"}
                 />
                 <Viewport
+                        {currentViewIndex}
                         viewTab={view.viewport}
                         updateView={(viewTab) => EditorUtil.updateView("viewport", viewTab)}
                 />
                 <ViewsContainer
+                        {currentViewIndex}
                         id="bottom"
                         setTabs={(tabs) => EditorUtil.updateView("bottom", tabs)}
                         tabs={view.bottom}
@@ -84,6 +90,7 @@
             </div>
             <ViewsContainer
                     id="right"
+                    {currentViewIndex}
                     setTabs={(tabs) => EditorUtil.updateView("right", tabs)}
                     tabs={view.right}
                     orientation={"vertical"}

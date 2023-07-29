@@ -24,7 +24,6 @@ import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import FileTypes from "../../../../../shared/enums/FileTypes"
 import AbstractSingleton from "../../../../../shared/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
-import SelectionTargets from "../../../../../shared/enums/SelectionTargets"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
 
 
@@ -94,7 +93,6 @@ export default class LevelService extends AbstractSingleton {
 		await EditorFSUtil.readRegistry()
 		EntityNamingService.clear()
 		EntitySelectionStore.updateStore({
-			TARGET: SelectionTargets.ENGINE,
 			array: []
 		})
 		EntitySelectionStore.setLockedEntity(undefined)

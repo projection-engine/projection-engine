@@ -27,7 +27,9 @@ interface RegistryFile {
     id: string
 }
 
-type GenericVoidFunctionWithP<T> = (state: T) => void
+type GenericVoidFunctionWith3P<T, R, V> = (param1: T, param2: R, param3: V) => void
+type GenericVoidFunctionWith2P<T, R> = (param1: T, param2: R) => void
+type GenericVoidFunctionWithP<T> = (param1: T) => void
 type GenericVoidFunction = () => void
 type GenericNonVoidFunctionWithP<T, R> = (state: T) => R
 type GenericNonVoidFunction<R> = () => R

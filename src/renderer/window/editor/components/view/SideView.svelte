@@ -1,5 +1,4 @@
 <script>
-    import View from "./components/View.svelte"
     import ViewGroup from "./components/ViewGroup.svelte"
     import ResizableBar from "../../../shared/components/resizable/ResizableBar.svelte"
     import ViewsUtil from "../../util/ViewsUtil"
@@ -13,6 +12,7 @@
     export let tabs
     export let setTabs
     export let id
+    export let currentViewIndex
 
     let ref
     let reducedOpacity = false
@@ -66,8 +66,9 @@
 >
     {#each tabs as views, groupIndex}
         <ViewGroup
-                views={views}
-                groupIndex={groupIndex}
+                {currentViewIndex}
+                {views}
+                {groupIndex}
                 id={id}
                 let:view
                 let:index

@@ -23,6 +23,7 @@
     export let updateView
     /** @type {object[]} */
     export let viewTab
+    export let currentViewIndex
 
     let currentTab = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
     let isReady = false
@@ -110,6 +111,7 @@
     <div class="wrapper">
         {#if isReady}
             <View
+                    {currentViewIndex}
                     instance={viewTab[currentTab]}
                     id={"VIEWPORT"}
                     index={currentTab}

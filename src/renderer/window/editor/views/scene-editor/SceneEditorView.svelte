@@ -22,6 +22,7 @@
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
     import SerializedState from "../../components/view/SerializedState.svelte";
+    import ViewStateStore from "../../../shared/stores/ViewStateStore";
 
     const COMPONENT_ID = crypto.randomUUID()
     const draggable = dragDrop(false)
@@ -44,6 +45,7 @@
     	GizmoSystem.onStart = () => isOnGizmo = true
     	GizmoSystem.onStop = () => isOnGizmo = false
         SceneEditorUtil.onSceneEditorMount(draggable)
+        window.store = ViewStateStore
     })
 
     onDestroy(() => {
@@ -58,7 +60,10 @@
 
 <SerializedState
         onBeforeDestroy={CameraAPI.serializeState}
-        onStateInitialize={SceneEditorUtil.restoreCameraState}
+        onStateInitialize={state => {
+            console.trace("RESTORING CAMERA")
+            SceneEditorUtil.restoreCameraState(state)
+        }}
 />
 {#if !executingAnimation}
     <ViewHeader>
@@ -67,7 +72,6 @@
     </ViewHeader>
     <SelectBox
             targetElement={GPU.canvas}
-            allowAll={true}
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}
             setSelected={SceneEditorUtil.getUnderSelectionBox}

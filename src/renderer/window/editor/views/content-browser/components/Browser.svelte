@@ -94,7 +94,6 @@
         class="content"
 >
     <SelectBox
-            allowAll={true}
             nodes={toRender.flat()}
             getSelected={ContentBrowserStore.getContentBrowserSelected}
             setSelected={ContentBrowserStore.setContentBrowserSelected}
