@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import ContentBrowserStore from "../../../../shared/stores/ContentBrowserStore"
     import {onDestroy, onMount} from "svelte"
 
@@ -7,83 +7,81 @@
     import ComponentRow from "./ComponentRow.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorUtil from "../../../util/EditorUtil"
+    import NATIVE_COMPONENTS from "../static/NATIVE_COMPONENTS";
+    import Entity from "../../../../../engine/core/instances/Entity";
+    import EditorActionHistory from "../../../services/EditorActionHistory";
 
     const COMPONENT_ID = crypto.randomUUID()
-    export let entity
+    export let entity: Entity
 
     let components = []
-    onMount(() => ContentBrowserStore.getInstance().addListener(COMPONENT_ID, data => components = data.components, ["components"]))
+    let scripts = []
+
+    onMount(() => ContentBrowserStore.getInstance().addListener(COMPONENT_ID, data => scripts = data.components, ["components"]))
     onDestroy(() => ContentBrowserStore.getInstance().removeListener(COMPONENT_ID))
+
+    $:components = [
+        ...scripts.map(s => ({type: "script", data: s})),
+        ...NATIVE_COMPONENTS
+            .filter(native => !entity.components.has(native[0]))
+            .map(n => ({
+                type: "native",
+                data: n
+            }))
+    ]
+
 </script>
 
 
-<Dropdown styles={"width: 20vw; padding: 4px;  overflow: hidden"}
-          buttonStyles="border-radius: 3px; background: transparent; overflow: hidden;">
-    <button data-sveltebuttondefault="-"
+<Dropdown
+        styles="width: 20vw; padding: 4px;  overflow: hidden"
+        buttonStyles="min-height: 22px, max-height: 22px; "
+>
+    <button
+            data-sveltebuttondefault="-"
+            data-svelteinline="-"
             slot="button"
-            class="add-button"
-            data-svelteoverflow="-"
     >
-        <slot/>
+        <Icon styles="font-size: 1rem">add</Icon>
+        {LocalizationEN.ADD_COMPONENT}
     </button>
-    {#if !entity.isCollection}
-        <fieldset>
-            <legend>{LocalizationEN.COMPONENTS}</legend>
-            <div data-sveltebuttongroup="-">
-                <ComponentRow entity={entity} offset={0}/>
-                <ComponentRow entity={entity} offset={3}/>
-                <ComponentRow entity={entity} offset={6}/>
-                <ComponentRow entity={entity} offset={9}/>
-            </div>
-        </fieldset>
-
-    {:else if components.length === 0}
-        <div class="empty-wrapper">
-            <div data-svelteempty="-">
-                <Icon styles="font-size: 75px">texture</Icon>
-                {LocalizationEN.NO_CUSTOM_COMPONENTS_FOUND}
-            </div>
-        </div>
-    {/if}
-    {#if components.length > 0}
-        {#if !entity.isCollection}
-            <div data-sveltedivider="-"></div>
+    {#each components as component}
+        {#if component.type === "native"}
+            <button
+                    data-sveltebuttondefault="-"
+                    data-svelteinline="-"
+                    on:click={(e) =>{
+                        EditorActionHistory.save(entity)
+                        entity.addComponent(component.data[0])
+                        EditorActionHistory.save(entity)
+                        e.target.closeDropdown()
+                    }}
+            >
+                <Icon styles="font-size: 1rem">{component.data[2]}</Icon>
+                <small data-svelteoverflow="-">{component.data[1]}</small>
+            </button>
+        {:else}
+            <button
+                    data-sveltebuttondefault="-"
+                    data-svelteinline="-"
+                    on:click={(e) => {
+                        EditorUtil.componentConstructor(entity, component.data.registryID).catch(console.error)
+                        e.target.closeDropdown()
+                    }}>
+                <Icon styles="font-size: 1rem">add</Icon>
+                {component.data.name}
+            </button>
         {/if}
-        <fieldset>
-            <legend>{LocalizationEN.CUSTOM_COMPONENTS}</legend>
-            {#each components as script}
-                <button
-                        data-sveltebuttondefault="-"
-                        data-svelteinline="-"
-                        style="justify-content: flex-start; gap: 4px; border: none; background: var(--pj-background-secondary)"
-                        on:click={(e) => {
-                            EditorUtil.componentConstructor(entity, script.registryID).catch(console.error)
-                            e.target.closeDropdown()
-                        }}>
-                    <Icon styles="font-size: 1rem">add</Icon>
-                    {script.name}
-                </button>
-
-            {/each}
-        </fieldset>
-    {/if}
-
+    {/each}
 </Dropdown>
 
 <style>
-    .add-button {
-        border: none;
-        display: flex;
-        align-items: center;
+    button {
+        justify-content: flex-start;
         gap: 4px;
         max-height: 22px;
         min-height: 22px;
-        padding: 0 !important;
-    }
-
-    .empty-wrapper {
+        border: none;
         width: 100%;
-        height: 105px;
-        position: relative;
     }
 </style>

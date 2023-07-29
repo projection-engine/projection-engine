@@ -51,9 +51,6 @@ export default class LevelService extends AbstractSingleton {
                 TabsStore.updateStore({layout: meta.layout})
             if (meta.visualSettings)
                 VisualsStore.updateStore(meta.visualSettings)
-            console.trace(meta.viewStates)
-            if (meta.viewStates)
-                ViewStateStore.updateStore(meta.viewStates)
             SettingsStore.updateStore(newSettings)
         }
         EngineStore.updateStore({
@@ -138,7 +135,6 @@ export default class LevelService extends AbstractSingleton {
                 JSON.stringify({
                     ...metadata,
                     settings,
-                    viewStates: ViewStateStore.getData(),
                     layout: TabsStore.getData(),
                     visualSettings: VisualsStore.getData(),
                     level: Engine.loadedLevel?.id

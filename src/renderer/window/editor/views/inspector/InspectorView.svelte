@@ -14,7 +14,7 @@
     import SerializedState from "../../components/view/SerializedState.svelte";
 
     const COMPONENT_ID = crypto.randomUUID()
-    let selectedItem
+    let selectedEntity
     let tabIndex = 0
     let tabs = []
     let isOnDynamicTab = false
@@ -22,12 +22,12 @@
     onMount(() => {
         EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
             const temp = QueryAPI.getEntityByID(data.array[0] || data.lockedEntity)
-            if (temp === selectedItem)
+            if (temp === selectedEntity)
                 return
-            selectedItem = temp
+            selectedEntity = temp
             tabIndex = INSPECTOR_TABS.length
-            if (selectedItem) {
-                const entityTabs = InspectorUtil.getEntityTabs(selectedItem.allComponents, selectedItem.isCollection)
+            if (selectedEntity) {
+                const entityTabs = InspectorUtil.getEntityTabs(selectedEntity.allComponents, selectedEntity.isCollection)
                 setTabs(entityTabs)
             } else
                 setTabs([])
@@ -40,14 +40,12 @@
 
     function setTabs(data) {
         const TABS = [...INSPECTOR_TABS]
-        if (!selectedItem)
+        if (!selectedEntity)
             TABS.pop()
         tabs = [...TABS, ...data]
     }
 
-    $: {
-        isOnDynamicTab = tabIndex > 2 && selectedItem !== undefined
-    }
+    $: isOnDynamicTab = tabIndex > 2 && selectedEntity !== undefined
 </script>
 
 <SerializedState state={{tabIndex}} onStateInitialize={state => tabIndex = state.tabIndex}/>
@@ -70,10 +68,10 @@
         {/each}
     </div>
     <div class="content">
-        {#if isOnDynamicTab}
+        {#if isOnDynamicTab && selectedEntity != null}
             <EntityInspector
                     setTabIndex={i => tabIndex = i}
-                    entity={selectedItem}
+                    entity={selectedEntity}
                     tabIndex={tabIndex}
             />
         {:else if tabIndex === 2}

@@ -30,7 +30,11 @@
     })
     onDestroy(() => draggable.onDestroy())
 
-
+    const submit = (k, v) => {
+        InspectorUtil.updateEntityComponent(entity, k, v, form.data)
+        entity = entity
+    }
+    $: console.trace("UPDATED ENTITY", entity)
 </script>
 
 <span style="display: none" bind:this={ref}></span>
@@ -50,7 +54,7 @@
                 key={form.data.componentKey}
                 component={form.data}
                 updateTabs={() => entity = entity}
-                submit={(k, v) => InspectorUtil.updateEntityComponent(entity, k, v, form.data)}
+                submit={submit}
         />
     {/if}
 {/if}

@@ -42,16 +42,11 @@
 </script>
 
 
-<div data-svelteinline="-" style="overflow: hidden; min-height: 22px">
-    <AddComponent entity={entity}>
-        <PropertyHeader title={entityName}/>
-    </AddComponent>
-</div>
-
+<PropertyHeader title={entityName}/>
+<AddComponent entity={entity}/>
 {#if !entity.isCollection}
     <TransformationForm/>
 {/if}
-
 <Accordion title={LocalizationEN.BASIC} startOpen={entity.isCollection}>
     <div data-svelteform="-">
         <Input
@@ -122,7 +117,6 @@
         />
     </div>
 </Accordion>
-
 
 <style>
     fieldset {

@@ -24,7 +24,8 @@
         border-bottom: var(--pj-border-primary) 1px solid;
         justify-content: space-between;
         width: 100%;
-        height: 30px;
+        min-height: 30px;
+        max-height: 30px;
         padding: 4px 8px;
     }
 
