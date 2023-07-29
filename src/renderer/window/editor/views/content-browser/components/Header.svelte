@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import ITEM_TYPES from "../static/ITEM_TYPES"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
@@ -14,19 +14,22 @@
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import EditorUtil from "../../../util/EditorUtil"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
+    import NavigationHistory from "../libs/NavigationHistory";
 
-    export let currentDirectory
-    export let fileType
-    export let onChange
-    export let inputValue
-    export let navigationHistory
-    export let viewType
-    export let setViewType
-    export let setFileType
-    export let setSortKey
-    export let setSortDirection
-    export let sortDirection
-    export let sortKey
+    export let currentDirectory: { id: string }
+    export let fileType: string
+    export let onChange: GenericVoidFunctionWithP<string>
+    export let inputValue: string
+    export let navigationHistory: typeof NavigationHistory
+    export let viewType: string
+    export let showDetails: boolean
+    export let setViewType: GenericVoidFunctionWithP<string>
+    export let setFileType: GenericVoidFunctionWithP<string>
+    export let setSortKey: GenericVoidFunctionWithP<string>
+    export let setShowDetails: GenericVoidFunctionWithP<boolean>
+    export let setSortDirection: GenericVoidFunctionWithP<string>
+    export let sortDirection: string
+    export let sortKey: string
 
 </script>
 
@@ -111,6 +114,16 @@
         />
     </div>
     <div data-svelteinline="-" style="width: 100%; justify-content: flex-end">
+        <button data-sveltebuttondefault="-"
+                data-sveltehighlight={showDetails ? "-" : ""}
+                on:click={() => setShowDetails(!showDetails)}
+                data-svelteview-header-button="-"
+                style="max-width: unset"
+        >
+            <Icon>settings</Icon>
+            {LocalizationEN.SHOW_DETAILS}
+        </button>
+        <div data-sveltevertdivider="-"></div>
         <button data-sveltebuttondefault="-"
                 data-sveltehighlight={viewType === ITEM_TYPES.ROW ? "-" : ""}
                 on:click={() => setViewType(ITEM_TYPES.ROW)}

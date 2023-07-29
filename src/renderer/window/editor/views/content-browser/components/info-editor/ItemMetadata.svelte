@@ -90,7 +90,6 @@
         min-height: 30px;
         height: 30px;
         padding: 0 4px;
-        background: var(--pj-background-primary);
         border-radius: 3px;
         width: 100%;
         font-size: .7rem;

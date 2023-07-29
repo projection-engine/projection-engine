@@ -17,7 +17,6 @@
     const COMPONENT_ID = crypto.randomUUID()
 
     let selectedFile
-    let currentTab = 0
     let data
     let fileType
 
@@ -30,7 +29,6 @@
                 FileSystemUtil.readFile(FileSystemUtil.ASSETS_PATH + selectedFile.id, fType)
                     .then(res => data = res)
             }
-            ContentBrowserUtil.setInspectorTabs(fileType, v => currentTab = v)
         }
     }
 
@@ -40,10 +38,9 @@
     onDestroy(() => ContentBrowserStore.getInstance().removeListener(COMPONENT_ID))
 </script>
 
-{#if selectedFile}
-    {#if currentTab === 3}
+<div class="wrapper">
+    {#if selectedFile}
         <ItemMetadata item={selectedFile}/>
-    {:else}
         {#if fileType === FileTypes.TEXTURE && data != null}
             <TextureItem data={data} item={selectedFile}/>
         {:else if fileType === FileTypes.COMPONENT || fileType === FileTypes.UI_LAYOUT}
@@ -52,27 +49,28 @@
             <MaterialItem data={data} item={selectedFile}/>
         {:else if fileType === FileTypes.PRIMITIVE}
             <MeshItem item={selectedFile}/>
-        {:else}
-            <div class="empty-wrapper">
-                <div data-svelteempty="-" style="position: relative">
-                    <Icon styles="font-size: 75px">category</Icon>
-                    {LocalizationEN.CONTENT_BROWSER}
-                </div>
-            </div>
         {/if}
-    {/if}
-{:else}
-    <div class="empty-wrapper">
-        <div data-svelteempty="-" style="position: relative">
-            <Icon styles="font-size: 75px">category</Icon>
-            {LocalizationEN.CONTENT_BROWSER}
+    {:else}
+        <div class="empty-wrapper">
+            <div data-svelteempty="-" style="position: relative">
+                <Icon styles="font-size: 75px">category</Icon>
+                {LocalizationEN.CONTENT_BROWSER}
+            </div>
         </div>
-    </div>
-{/if}
+    {/if}
+</div>
 
 <style>
     .empty-wrapper {
         position: relative;
         height: 100%;
+    }
+
+    .wrapper {
+        width: 300px;
+        height: 100%;
+        padding: 4px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 </style>

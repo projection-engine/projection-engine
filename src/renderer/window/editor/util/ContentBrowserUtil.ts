@@ -623,32 +623,4 @@ export default class ContentBrowserUtil {
         return result
     }
 
-    static setInspectorTabs(fileType: FileTypes, setTabs: Function) {
-        const VALID_TYPES = [FileTypes.COMPONENT, FileTypes.UI_LAYOUT, FileTypes.MATERIAL, FileTypes.PRIMITIVE]
-        if (VALID_TYPES.includes(fileType)) {
-            setTabs([
-                {
-                    label: LocalizationEN.METADATA,
-                    icon: "info",
-                    index: 0,
-                    color: "var(--pj-accent-color-secondary)"
-                },
-                {divider: true},
-                {
-                    label: LocalizationEN.ASSET_PROPERTIES,
-                    icon: "description",
-                    index: 1,
-                    color: "var(--pj-accent-color-tertiary)"
-                }
-            ])
-        } else
-            setTabs([
-                {
-                    label: LocalizationEN.METADATA,
-                    icon: "info",
-                    index: 2,
-                    color: "var(--pj-accent-color-secondary)"
-                }
-            ])
-    }
 }

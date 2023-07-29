@@ -14,13 +14,14 @@
 
     const COMPONENT_ID = crypto.randomUUID()
 
+    const navigationHistory = new NavigationHistory(v => currentDirectory = v)
     let sortKey = SORTS_KEYS[0]
     let sortDirection = SORTS[0]
     let currentDirectory = {id: FileSystemUtil.sep}
     let fileType = undefined
     let inputValue = ""
-    let navigationHistory = new NavigationHistory(v => currentDirectory = v)
     let viewType = ITEM_TYPES.ROW
+    let showDetails = false
 
     onMount(() => GlobalContentBrowserController.subscribe(COMPONENT_ID, newDir => {
         navigationHistory.updateCurrentDirectory({id: newDir}, currentDirectory)
@@ -30,32 +31,34 @@
 </script>
 
 <SerializedState
-        state={{sortKey,sortDirection,currentDirectory,fileType ,inputValue ,navigationHistory,viewType       }}
+        state={{sortKey, showDetails, sortDirection,currentDirectory,fileType ,inputValue , viewType}}
         onStateInitialize={state => {
             sortKey = state.sortKey
             sortDirection = state.sortDirection
             currentDirectory = state.currentDirectory
             fileType = state.fileType
             inputValue  = state.inputValue
-            navigationHistory = state.navigationHistory
             viewType = state.viewType
+            showDetails = state.showDetails
         }}
 />
 <Header
         setSortKey={v => sortKey = v}
         setSortDirection={v => sortDirection = v}
-        sortDirection={sortDirection}
-        sortKey={sortKey}
-        fileType={fileType}
+        {sortDirection}
+        {sortKey}
+        {fileType}
         setFileType={v => fileType = v}
         setViewType={v => viewType = v}
-        viewType={viewType}
+        setShowDetails={v => showDetails = v}
+        {viewType}
+        {showDetails}
 
-        inputValue={inputValue}
+        {inputValue}
         onChange={v => inputValue = v}
-        currentDirectory={currentDirectory}
+        {currentDirectory}
         setCurrentDirectory={v => navigationHistory.updateCurrentDirectory(v, currentDirectory)}
-        navigationHistory={navigationHistory}
+        {navigationHistory}
 />
 <div class="wrapper">
     <SideBar
@@ -79,8 +82,10 @@
 
         />
     </div>
-    <ResizableBar type={"width"}/>
-    <Properties/>
+    {#if showDetails}
+        <ResizableBar type={"width"}/>
+        <Properties/>
+    {/if}
 </div>
 
 <style>
