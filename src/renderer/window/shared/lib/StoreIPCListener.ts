@@ -3,7 +3,7 @@ import VisualsStore from "../stores/VisualsStore"
 import SettingsStore from "../stores/SettingsStore"
 import UIDataStores from "../../../../shared/enums/UIDataStores"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
-import AbstractSingleton from "../../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../engine/core/AbstractSingleton"
 
 export default class StoreIPCListener extends AbstractSingleton {
 

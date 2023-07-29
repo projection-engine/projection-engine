@@ -1,6 +1,6 @@
 import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
 import Entity from "../../../../engine/core/instances/Entity"
-import EntityUpdateService from "./EntityUpdateService"
+import EntityManager from "../../../../engine/core/EntityManager"
 
 export default class EntityNamingService {
 	static #byName = new Map<string, string>()
@@ -21,7 +21,7 @@ export default class EntityNamingService {
 		if (found !== entity.id)
 			validName = !QueryAPI.getEntityByID(found)
 		if (validName) {
-			EntityUpdateService.updateEntity(entity,  newName, "name")
+			EntityManager.updateEntity(entity,  newName, "name")
 			EntityNamingService.#byName.set(newName, entity.id)
 		} else{
 			{

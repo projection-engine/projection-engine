@@ -7,7 +7,7 @@ import * as fs from "fs"
 import * as path from "path"
 import * as crypto from "node:crypto"
 import FileTypes from "../../../shared/enums/FileTypes"
-import AbstractSingleton from "../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../renderer/engine/core/AbstractSingleton"
 import FileSystemUtil from "../FileSystemUtil"
 
 const CACHE_MATRIX = new Float32Array(16)
@@ -97,7 +97,7 @@ export default class AssimpService extends AbstractSingleton {
 			console.error(err)
 		}
 	}
- 
+
 	async #createMesh(dir, meshes, index, data, collectionName): Promise<void> {
 		const PRIMITIVE_PATH = path.resolve(dir + path.sep + collectionName + path.sep + "primitives")
 		const mesh = data[index]

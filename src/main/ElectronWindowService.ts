@@ -9,7 +9,7 @@ import Folders from "../shared/enums/Folders"
 import WindowTypes from "../shared/enums/WindowTypes"
 import FileSystemListener from "./libs/FileSystemListener"
 import IPCListener from "./libs/IPCListener"
-import AbstractSingleton from "../shared/AbstractSingleton"
+import AbstractSingleton from "../renderer/engine/core/AbstractSingleton"
 import FileSystemUtil from "./libs/FileSystemUtil"
 import MainLogger from "../shared/logger/MainLogger"
 

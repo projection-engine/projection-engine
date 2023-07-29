@@ -22,7 +22,7 @@ import WindowChangeStore from "../../../shared/stores/WindowChangeStore"
 import IPCRoutes from "../../../../../shared/enums/IPCRoutes"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import FileTypes from "../../../../../shared/enums/FileTypes"
-import AbstractSingleton from "../../../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
 import ViewStateStore from "../../../shared/stores/ViewStateStore";

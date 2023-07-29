@@ -1,5 +1,5 @@
 import SveltePortal from "../../lib/SveltePortal"
-import AbstractSingleton from "../../../../../shared/AbstractSingleton";
+import AbstractSingleton from "../../../../engine/core/AbstractSingleton";
 
 export default class ToolTipService extends AbstractSingleton {
 	portal = new SveltePortal(999, false)

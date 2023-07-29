@@ -7,7 +7,7 @@
     import ElectronResources from "../../../shared/lib/ElectronResources"
     import Engine from "../../../../engine/core/Engine"
     import {onDestroy, onMount} from "svelte"
-    import EntityUpdateService from "../../services/engine/EntityUpdateService"
+    import EntityManager from "../../../../engine/core/EntityManager"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import LoggerConfig from "./components/LoggerConfig.svelte"
@@ -23,11 +23,11 @@
     	entityID = Engine.loadedLevel?.id
 
     	if (entityID)
-    		EntityUpdateService.removeListener(entityID, COMPONENT_ID)
+    		EntityManager.removeListener(entityID, COMPONENT_ID)
 
     	if (!loadedLevel)
     		return
-    	EntityUpdateService.addListener(entityID, COMPONENT_ID, () => {
+    	EntityManager.addListener(entityID, COMPONENT_ID, () => {
     		loadedLevel = Engine.loadedLevel.name
     	})
     }

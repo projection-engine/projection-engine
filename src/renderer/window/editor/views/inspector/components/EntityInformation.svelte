@@ -13,7 +13,7 @@
     import PropertyHeader from "../../../../shared/components/PropertyHeader.svelte";
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte";
     import TransformationForm from "./TransformationForm.svelte";
-    import EntityUpdateService from "../../../services/engine/EntityUpdateService";
+    import EntityManager from "../../../../../engine/core/EntityManager";
     import {onDestroy} from "svelte";
     import AddComponent from "./AddComponent.svelte";
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem";
@@ -27,8 +27,8 @@
     $: {
         if (entityID !== entity.id) {
             if (entityID)
-                EntityUpdateService.removeListener(entityID, ID)
-            EntityUpdateService.addListener(entity.id, ID, () => {
+                EntityManager.removeListener(entityID, ID)
+            EntityManager.addListener(entity.id, ID, () => {
                 entityName = entity.name
             })
             entityName = entity.name
@@ -37,7 +37,7 @@
     }
 
     onDestroy(() => {
-        EntityUpdateService.removeListener(entityID, ID)
+        EntityManager.removeListener(entityID, ID)
     })
 </script>
 

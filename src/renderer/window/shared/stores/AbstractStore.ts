@@ -1,5 +1,5 @@
 import DynamicMap from "../../../engine/core/resource-libs/DynamicMap"
-import AbstractSingleton from "../../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../engine/core/AbstractSingleton"
 
 export default class AbstractStore extends AbstractSingleton {
 	#data: MutableObject = {}
@@ -52,7 +52,7 @@ export default class AbstractStore extends AbstractSingleton {
 	static getData() {
 		return this.get<AbstractStore>().data
 	}
-	
+
 	static updateStore(data) {
 		return this.get<AbstractStore>().updateStore(data)
 	}

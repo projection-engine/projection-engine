@@ -6,7 +6,7 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import Entity from "../../../../../engine/core/instances/Entity";
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
-    import EntityUpdateService from "../../../services/engine/EntityUpdateService";
+    import EntityManager from "../../../../../engine/core/EntityManager";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import HierarchyUtil from "../../../util/HierarchyUtil";
@@ -34,8 +34,8 @@
     $: {
         if (entityID !== entity.id) {
             if (entityID)
-                EntityUpdateService.removeListener(entityID, ID)
-            EntityUpdateService.addListener(entity.id, ID, () => {
+                EntityManager.removeListener(entityID, ID)
+            EntityManager.addListener(entity.id, ID, () => {
                 entityName = entity.name
                 components = HierarchyUtil.mapComponents(entity)
                 children = entity.children.array.length
@@ -62,7 +62,7 @@
     })
     onDestroy(() => {
         draggable.onDestroy()
-        EntityUpdateService.removeListener(entityID, ID)
+        EntityManager.removeListener(entityID, ID)
     })
 
     $: isLocked = lockedEntity === entity.id
