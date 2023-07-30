@@ -3,7 +3,7 @@ import CAMERA_PROPS from "../../static/component-props/CAMERA_PROPS"
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class CameraComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.CAMERA
 	}
 	get componentKey(): string {

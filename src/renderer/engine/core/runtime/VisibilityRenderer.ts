@@ -1,6 +1,6 @@
 import GPU from "../GPU"
 import CameraAPI from "../lib/utils/CameraAPI"
-import EntityWorkerAPI from "../lib/utils/EntityWorkerAPI"
+import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI"
 import SSAO from "./SSAO"
 import {mat4} from "gl-matrix"
 import StaticShaders from "../lib/StaticShaders"
@@ -88,7 +88,7 @@ export default class VisibilityRenderer {
 	}
 
 	static execute() {
-		if (!VisibilityRenderer.needsUpdate && !EntityWorkerAPI.hasChangeBuffer[0])
+		if (!VisibilityRenderer.needsUpdate && !TransformationWorkerAPI.hasChangeBuffer[0])
 			return
 
 		context = GPU.context

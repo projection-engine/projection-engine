@@ -2,7 +2,7 @@ import LineAPI from "./lib/rendering/LineAPI"
 import ImageProcessor from "./lib/math/ImageProcessor"
 import TerrainGenerator from "./lib/math/TerrainGenerator"
 import CameraAPI from "./lib/utils/CameraAPI"
-import EntityWorkerAPI from "./lib/utils/EntityWorkerAPI"
+import TransformationWorkerAPI from "./lib/utils/TransformationWorkerAPI"
 import CubeMapAPI from "./lib/rendering/CubeMapAPI"
 import QUAD_VERT from "./shaders/post-processing/QUAD.vert"
 import BRDF_FRAG from "./shaders/post-processing/BRDF_GEN.frag"
@@ -68,7 +68,7 @@ export default class GPU {
 		await StaticMeshes.initialize()
 		StaticShaders.initialize()
 		StaticFBO.initialize()
-		EntityWorkerAPI.initialize()
+		TransformationWorkerAPI.initialize()
 		TerrainGenerator.initialize()
 		ImageProcessor.initialize()
 

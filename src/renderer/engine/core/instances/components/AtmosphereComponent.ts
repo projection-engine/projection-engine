@@ -7,7 +7,7 @@ import COMPONENTS from "../../static/COMPONENTS"
 
 
 export default class AtmosphereComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.ATMOSPHERE
 	}
 

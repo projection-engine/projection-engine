@@ -2,7 +2,7 @@ import Component from "./Component"
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class UIComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.UI
 	}
 	get componentKey(): string {

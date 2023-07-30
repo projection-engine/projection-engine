@@ -31,19 +31,17 @@ export default class InspectorUtil {
         return isValid
     }
 
-    static getEntityTabs(components, isCollection: boolean) {
+    static getEntityTabs(components) {
         const result = [
+
+        ]
+        return [
             {
                 icon: "settings",
                 label: LocalizationEN.ENTITY_PROPERTIES,
                 index: -1,
                 color: "var(--pj-accent-color-secondary)"
-            }
-        ]
-        if (isCollection)
-            return result
-        return [
-            ...result,
+            },
             {divider: true},
             ...components.map((c, i) => ({
                 icon: EditorUtil.getComponentIcon(c.componentKey),

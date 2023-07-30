@@ -8,7 +8,7 @@ import COMPONENTS from "../../static/COMPONENTS"
 
 
 export default class LightComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.LIGHT
 	}
 

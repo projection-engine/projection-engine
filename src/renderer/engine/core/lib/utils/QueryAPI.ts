@@ -1,5 +1,6 @@
 import Engine from "../../Engine"
 import Entity from "../../instances/Entity"
+import COMPONENTS from "../../static/COMPONENTS";
 
 export default class QueryAPI {
 	static getEntityByQueryID(id: string): Entity | undefined {
@@ -21,19 +22,19 @@ export default class QueryAPI {
 	}
 
 	static getClosestEntityParent(entity: Entity): Entity | undefined {
+		// TODO - CLOSEST WITH TRANSFORM COMPONENT
 		let currentEntity = entity
 		while (currentEntity?.parent) {
 			currentEntity = currentEntity.parent
-			if (!currentEntity.isCollection)
-				return currentEntity
+			return currentEntity
 		}
 	}
 
-	static getClosestCollectionParent(entity: Entity): Entity | undefined {
+	static getClosestParentWithComponent(entity: Entity, component: COMPONENTS): Entity | undefined {
 		let currentEntity = entity
 		while (currentEntity?.parent) {
 			currentEntity = currentEntity.parent
-			if (currentEntity.isCollection)
+			if (currentEntity.components.has(component))
 				return currentEntity
 		}
 	}

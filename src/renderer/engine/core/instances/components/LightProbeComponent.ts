@@ -3,7 +3,7 @@ import LIGHT_PROBE_PROPS from "../../static/component-props/LIGHT_PROBE_PROPS"
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class LightProbeComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.LIGHT_PROBE
 	}
 	get componentKey(): string {

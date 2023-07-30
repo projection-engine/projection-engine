@@ -9,7 +9,7 @@ import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class DecalComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.DECAL
 	}
 	get componentKey(): string {

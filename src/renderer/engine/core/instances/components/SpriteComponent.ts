@@ -3,7 +3,7 @@ import Component from "./Component"
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class SpriteComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.SPRITE
 	}
 	get componentKey(): string {

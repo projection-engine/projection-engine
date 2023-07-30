@@ -19,6 +19,9 @@ import EntityAPI from "./lib/utils/EntityAPI"
 import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
 import ResourceManager from "./runtime/ResourceManager"
 import LightsAPI from "./lib/utils/LightsAPI"
+import {UUID} from "crypto";
+import SystemManager from "./SystemManager";
+import EntityManager from "./EntityManager";
 
 
 export default class Engine {
@@ -31,7 +34,6 @@ export default class Engine {
 	static #initializationWasTried = false
 	static #initialized = false
 	static #loadedLevel: Entity
-	static #executionQueue = new DynamicMap<string, Function>()
 	static #frameID: number = undefined
 
 	static get isExecuting() {
@@ -46,8 +48,8 @@ export default class Engine {
 		Engine.#onLevelLoadListeners.set(id, callback)
 	}
 
-	static get entities(): DynamicMap<string, Entity> {
-		return ResourceEntityMapper.entities
+	static get entities(): DynamicMap<UUID, Entity> {
+		return EntityManager.getInstance().getEntities()
 	}
 
 	static get queryMap(): Map<string, Entity> {
@@ -105,7 +107,7 @@ export default class Engine {
 		OBS.observe(GPU.canvas)
 		Engine.#isReady = true
 		GPU.skylightProbe = new LightProbe(128)
-		Engine.addSystem("start", Renderer.loop)
+		// Engine.addSystem("start", Renderer.loop)
 		Engine.start()
 	}
 
@@ -131,11 +133,11 @@ export default class Engine {
 	}
 
 	static #loop(c){
-		const queue = Engine.#executionQueue.array
+		const queue = SystemManager.getExecutionQueue().array
 		const queueLength = queue.length
 		Renderer.currentTimeStamp = c
 		for (let i = 0; i < queueLength; i++){
-			queue[i]()
+			queue[i].execute()
 		}
 		Engine.#frameID = requestAnimationFrame(Engine.#loop)
 	}
@@ -147,7 +149,7 @@ export default class Engine {
 		Physics.stop()
 	}
 
-	static async loadLevel(levelID: string, cleanEngine?: boolean) {
+	static async loadLevel(levelID: UUID, cleanEngine?: boolean) {
 		if (!levelID || Engine.#loadedLevel?.id === levelID && !cleanEngine)
 			return []
 		try {
@@ -162,9 +164,9 @@ export default class Engine {
 			const {entities, entity} = JSON.parse(asset)
 			let levelEntity
 			if (!entity)
-				levelEntity = EntityAPI.getNewEntityInstance(levelID, true)
+				levelEntity = EntityAPI.getNewEntityInstance(levelID)
 			else
-				levelEntity = EntityAPI.parseEntityObject({...entity, isCollection: true})
+				levelEntity = EntityAPI.parseEntityObject({...entity})
 			if (!levelEntity.name)
 				levelEntity.name = "New level"
 			levelEntity.parentID = undefined
@@ -208,13 +210,5 @@ export default class Engine {
 		}
 		if (newLevel)
 			EntityAPI.addEntity(newLevel)
-	}
-
-	static addSystem(id: string, callback: Function) {
-		Engine.#executionQueue.set(id, callback)
-	}
-
-	static removeSystem(id: string) {
-		Engine.#executionQueue.delete(id)
 	}
 }

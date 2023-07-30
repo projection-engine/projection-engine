@@ -6,7 +6,7 @@ import QueryAPI from "./QueryAPI"
 
 let maxWorkers
 let currentActiveWorker = 0
-export default class EntityWorkerAPI {
+export default class TransformationWorkerAPI {
 	static hasChangeBuffer = new Uint8Array(new SharedArrayBuffer(1))
 
 	static linkedEntities = new Map()
@@ -15,20 +15,20 @@ export default class EntityWorkerAPI {
 
 
 	static updateEntityReference(entity:Entity) {
-		EntityWorkerAPI.removeEntity(entity)
-		EntityWorkerAPI.registerEntity(entity)
+		TransformationWorkerAPI.removeEntity(entity)
+		TransformationWorkerAPI.registerEntity(entity)
 	}
 
 
 	static initialize() {
-		if (EntityWorkerAPI.#initialized)
+		if (TransformationWorkerAPI.#initialized)
 			return
-		EntityWorkerAPI.#initialized = true
+		TransformationWorkerAPI.#initialized = true
 		maxWorkers = Math.max(navigator.hardwareConcurrency - 2, 1)
 		for (let i = 0; i < maxWorkers; i++) {
 			const currentWorker = new Worker("./entity-worker.js")
-			currentWorker.postMessage({type: WORKER_MESSAGES.INITIALIZE, payload: [EntityWorkerAPI.hasChangeBuffer, CameraAPI.notificationBuffers, CameraAPI.position, i, maxWorkers]})
-			EntityWorkerAPI.#workers.push(currentWorker)
+			currentWorker.postMessage({type: WORKER_MESSAGES.INITIALIZE, payload: [TransformationWorkerAPI.hasChangeBuffer, CameraAPI.notificationBuffers, CameraAPI.position, i, maxWorkers]})
+			TransformationWorkerAPI.#workers.push(currentWorker)
 		}
 	}
 
@@ -36,11 +36,11 @@ export default class EntityWorkerAPI {
 	static removeEntity(entity:Entity) {
 		if (!entity.hasWorkerBound)
 			return
-		EntityWorkerAPI.#workers.forEach(worker => {
+		TransformationWorkerAPI.#workers.forEach(worker => {
 			worker.postMessage({type: WORKER_MESSAGES.REMOVE_ENTITY, payload: entity.id})
 		})
 
-		EntityWorkerAPI.linkedEntities.delete(entity.id)
+		TransformationWorkerAPI.linkedEntities.delete(entity.id)
 		entity.hasWorkerBound = false
 	}
 
@@ -51,12 +51,12 @@ export default class EntityWorkerAPI {
 			const entity = entities[i]
 			if(entity.hasWorkerBound) {
 				toRemove.push(entity.id)
-				EntityWorkerAPI.linkedEntities.delete(entity.id)
+				TransformationWorkerAPI.linkedEntities.delete(entity.id)
 				entity.hasWorkerBound = false
 			}
 		}
 
-		EntityWorkerAPI.#workers.forEach(worker => {
+		TransformationWorkerAPI.#workers.forEach(worker => {
 			worker.postMessage({type: WORKER_MESSAGES.REMOVE_ENTITY_BLOCK, payload: toRemove})
 		})
 	}
@@ -86,30 +86,31 @@ export default class EntityWorkerAPI {
 		return newEntity
 	}
 	static registerEntity(entity:Entity) {
-		if (entity.isCollection || !EntityWorkerAPI.#initialized || (entity.hasWorkerBound && EntityWorkerAPI.linkedEntities.get(entity.id)))
+		if (!TransformationWorkerAPI.#initialized || (entity.hasWorkerBound && TransformationWorkerAPI.linkedEntities.get(entity.id)))
 			return
-		EntityWorkerAPI.linkedEntities.set(entity.id, entity)
-		EntityWorkerAPI.#workers.forEach(worker => {
+		TransformationWorkerAPI.linkedEntities.set(entity.id, entity)
+		TransformationWorkerAPI.#workers.forEach(worker => {
 			worker.postMessage({
 				type: WORKER_MESSAGES.REGISTER_ENTITY,
-				payload: EntityWorkerAPI.#getEntityInfo(entity)
+				payload: TransformationWorkerAPI.#getEntityInfo(entity)
 			})
 		})
 	}
 
 	static registerBlock(entities:Entity[]) {
-		if (!EntityWorkerAPI.#initialized)
+		if (!TransformationWorkerAPI.#initialized)
 			return
 		console.time("BUILDING")
 		for (let i = 0; i < entities.length; i++){
 			const e = entities[i]
-			if(e.hasWorkerBound || e.isCollection)
+			// TODO - CHECK FOR TRANSFORMATION COMPONENT
+			if(e.hasWorkerBound )
 				continue
-			EntityWorkerAPI.linkedEntities.set(e.id, e)
-			EntityWorkerAPI.#workers.forEach(worker => {
+			TransformationWorkerAPI.linkedEntities.set(e.id, e)
+			TransformationWorkerAPI.#workers.forEach(worker => {
 				worker.postMessage({
 					type: WORKER_MESSAGES.REGISTER_ENTITY,
-					payload: EntityWorkerAPI.#getEntityInfo(e)
+					payload: TransformationWorkerAPI.#getEntityInfo(e)
 				})
 			})
 		}
@@ -119,7 +120,7 @@ export default class EntityWorkerAPI {
 	static syncThreads() {
 		if (currentActiveWorker >= maxWorkers)
 			currentActiveWorker = 0
-		const worker = EntityWorkerAPI.#workers[currentActiveWorker]
+		const worker = TransformationWorkerAPI.#workers[currentActiveWorker]
 		worker.postMessage(0)
 		currentActiveWorker++
 	}

@@ -4,7 +4,7 @@ import PHYSICS_COLLIDER_PROPS from "../../static/component-props/PHYSICS_COLLIDE
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class PhysicsColliderComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.PHYSICS_COLLIDER
 	}
 	get componentKey(): string {

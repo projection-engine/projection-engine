@@ -68,19 +68,16 @@
     $: isLocked = lockedEntity === entity.id
 </script>
 
-<div class="info hierarchy-branch" data-sveltenode={entity.id} on:click={e => HierarchyUtil.updateSelection(entity.id, e.ctrlKey)}>
+<div class="info hierarchy-branch" data-sveltenode={entity.id}
+     on:click={e => HierarchyUtil.updateSelection(entity.id, e.ctrlKey)}>
     <button
 
             data-sveltelocked={isLocked ? "-" : ""}
             class="button-icon hierarchy-branch"
-            style={`--button-color: ${entity.isCollection ? "rgb(" + entity.colorIdentifier + ")" : !isLocked ? "var(--folder-color-darker)" : "var(--folder-color)" }`}
+            style={`--button-color: ${"rgb(" + entity.colorIdentifier + ")"}`}
             on:click={() => EntitySelectionStore.setLockedEntity(entity.id)}
     >
-        {#if entity.isCollection}
-            <Icon styles="font-size: 1rem">inventory_2</Icon>
-        {:else}
-            <Icon styles="font-size: 1rem">view_in_ar</Icon>
-        {/if}
+        <Icon styles="font-size: 1rem">inventory_2</Icon>
     </button>
 
     <div bind:this={ref} on:dblclick={() => isOnEdit = true}>

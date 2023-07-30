@@ -3,7 +3,7 @@ import RIGID_BODY_PROPS from "../../static/component-props/RIGID_BODY_PROPS"
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class RigidBodyComponent extends Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.RIGID_BODY
 	}
 	get componentKey(): string {

@@ -28,7 +28,7 @@ export default class EntityFactoryService {
 	}
 
 	static createEmpty(collection?:boolean) {
-		const entity = EntityAPI.getNewEntityInstance(undefined, collection)
+		const entity = EntityAPI.getNewEntityInstance(undefined)
 		entity.name = collection ? LocalizationEN.NEW_COLLECTION : LocalizationEN.NEW_ENTITY
 		EngineStateService.add(entity)
 	}

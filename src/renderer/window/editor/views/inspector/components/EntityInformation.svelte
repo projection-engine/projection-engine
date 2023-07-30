@@ -44,10 +44,8 @@
 
 <PropertyHeader title={entityName}/>
 <AddComponent entity={entity}/>
-{#if !entity.isCollection}
-    <TransformationForm/>
-{/if}
-<Accordion title={LocalizationEN.BASIC} startOpen={entity.isCollection}>
+<TransformationForm/>
+<Accordion title={LocalizationEN.BASIC} startOpen={true}>
     <div data-svelteform="-">
         <Input
                 width="100%"

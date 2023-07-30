@@ -111,7 +111,7 @@ export default class HierarchyUtil {
 			const currentEntity = <Entity>toSave[i]
 			if (currentEntity === Engine.loadedLevel)
 				continue
-			if (event.ctrlKey || dropTargetEntity?.isCollection) {
+			if (event.ctrlKey) {
 				if (!dropTargetEntity) {
 					currentEntity.removeParent()
 					currentEntity.addParent(Engine.loadedLevel)

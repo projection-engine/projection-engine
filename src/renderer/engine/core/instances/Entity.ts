@@ -3,9 +3,11 @@ import getComponentInstance from "../utils/get-component-instance"
 import serializeStructure from "../utils/serialize-structure"
 import Component from "./components/Component"
 import ComponentResources from "./components/ComponentResources"
-import EntityWorkerAPI from "../lib/utils/EntityWorkerAPI"
+import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI"
 import QueryAPI from "../lib/utils/QueryAPI"
 import DynamicMap from "../resource-libs/DynamicMap"
+import * as crypto from "crypto";
+import COMPONENTS from "../static/COMPONENTS";
 
 
 export default class Entity extends ComponentResources {
@@ -14,11 +16,6 @@ export default class Entity extends ComponentResources {
     #id = crypto.randomUUID()
     get id() {
     	return this.#id
-    }
-
-    #isCollection = false
-    get isCollection() {
-    	return this.#isCollection
     }
 
     #colorIdentifier = [255, 255, 255]
@@ -42,11 +39,9 @@ export default class Entity extends ComponentResources {
     }
 
 
-    constructor(id?: string, isCollection?: boolean) {
+    constructor(id?: crypto.UUID) {
     	super()
     	this.#id = id ?? this.#id
-    	this.#isCollection = isCollection ?? false
-
     }
 
     get allComponents() {
@@ -66,24 +61,20 @@ export default class Entity extends ComponentResources {
     	return this.#pickIndex
     }
 
-    addComponent<T>(KEY): T {
+    addComponent<T>(KEY:COMPONENTS): T {
     	const instance = getComponentInstance(KEY)
     	if (instance != null) {
     		instance.entity = this
     		this.components.set(KEY, instance)
     		this.updateInternalComponentRef(KEY, instance)
-    		EntityAPI.registerEntityComponents(this)
-
     		return <T>instance
     	}
     }
 
-    removeComponent(KEY) {
+    removeComponent(KEY:COMPONENTS) {
     	const hasComponent = this.components.get(KEY) != null
     	this.components.delete(KEY)
-
     	if (hasComponent) {
-    		EntityAPI.registerEntityComponents(this, KEY)
     		this.updateInternalComponentRef(KEY, undefined)
     	}
     }
@@ -93,7 +84,6 @@ export default class Entity extends ComponentResources {
     	const parsedComponents: { components: Component[] } = {components: []}
 
     	temp.id = this.#id
-    	temp.isCollection = this.#isCollection
     	temp.parent = this.parent?.id
     	temp.parentID = this.parent?.id
     	temp.colorIdentifier = this.#colorIdentifier
@@ -142,7 +132,7 @@ export default class Entity extends ComponentResources {
     	this.#parent = parent
     	parent.addChild(this)
     	if (EntityAPI.isRegistered(this)) {
-    		EntityWorkerAPI.updateEntityReference(this)
+    		TransformationWorkerAPI.updateEntityReference(this)
     		this.changed = true
     	}
     }

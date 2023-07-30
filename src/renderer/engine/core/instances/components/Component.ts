@@ -11,7 +11,7 @@ interface ComponentValueGeneric {
 
 
 export default class Component {
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return ""
 	}
 	get componentKey(): string {

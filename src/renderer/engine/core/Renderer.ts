@@ -4,7 +4,7 @@ import LensPostProcessing from "./runtime/LensPostProcessing"
 import FrameComposition from "./runtime/FrameComposition"
 
 import Engine from "./Engine"
-import EntityWorkerAPI from "./lib/utils/EntityWorkerAPI"
+import TransformationWorkerAPI from "./lib/utils/TransformationWorkerAPI"
 import OmnidirectionalShadows from "./runtime/OmnidirectionalShadows"
 import CameraAPI from "./lib/utils/CameraAPI"
 import MetricsController from "./lib/utils/MetricsController"
@@ -50,7 +50,7 @@ export default class Renderer {
 		previous = current
 		CameraAPI.updateUBOs()
 		GPU.context.clear(GPU.context.COLOR_BUFFER_BIT | GPU.context.DEPTH_BUFFER_BIT)
-		if (EntityWorkerAPI.hasChangeBuffer[0] === 1)
+		if (TransformationWorkerAPI.hasChangeBuffer[0] === 1)
 			LightsAPI.packageLights(false, true)
 	}
 
@@ -75,9 +75,9 @@ export default class Renderer {
 	}
 
 	static #sync() {
-		EntityWorkerAPI.hasChangeBuffer[0] = 0
+		TransformationWorkerAPI.hasChangeBuffer[0] = 0
 		CameraAPI.syncThreads()
-		EntityWorkerAPI.syncThreads()
+		TransformationWorkerAPI.syncThreads()
 	}
 
 }

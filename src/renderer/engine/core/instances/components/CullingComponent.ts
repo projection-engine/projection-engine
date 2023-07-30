@@ -3,7 +3,7 @@ import CULLING_COMPONENT_PROPS from "../../static/component-props/CULLING_COMPON
 import COMPONENTS from "../../static/COMPONENTS"
 
 export default class CullingComponent extends Component{
-	static get componentKey(): string {
+	static get componentKey(): COMPONENTS {
 		return COMPONENTS.CULLING
 	}
 	get componentKey(): string {

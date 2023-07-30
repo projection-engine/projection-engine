@@ -17,7 +17,7 @@ import LightProbeComponent from "./LightProbeComponent"
 import DynamicMap from "../../resource-libs/DynamicMap"
 
 export default class ComponentResources extends Movable {
-	#components = new DynamicMap<string, Component>()
+	#components = new DynamicMap<COMPONENTS, Component>()
 	#lightComponent?: LightComponent
 	#cullingComponent?: CullingComponent
 	#rigidBodyComponent?: RigidBodyComponent
@@ -55,6 +55,7 @@ export default class ComponentResources extends Movable {
 	get lightComponent(): LightComponent | undefined {
 		return this.#lightComponent
 	}
+
 	get decalComponent(): DecalComponent | undefined {
 		return this.#decalComponent
 	}
@@ -82,8 +83,6 @@ export default class ComponentResources extends Movable {
 	get cameraComponent(): CameraComponent | undefined {
 		return this.#cameraComponent
 	}
-
-
 
 	get physicsColliderComponent(): PhysicsColliderComponent | undefined {
 		return this.#physicsColliderComponent
@@ -134,4 +133,4 @@ export default class ComponentResources extends Movable {
 		}
 	}
 
-} 
+}

@@ -1,6 +1,6 @@
 import COMPONENTS from "../../static/COMPONENTS"
 import Engine from "../../Engine"
-import EntityWorkerAPI from "./EntityWorkerAPI"
+import TransformationWorkerAPI from "./TransformationWorkerAPI"
 import UIAPI from "../rendering/UIAPI"
 import PhysicsAPI from "../rendering/PhysicsAPI"
 import Entity from "../../instances/Entity"
@@ -11,6 +11,7 @@ import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import MeshResourceMapper from "../MeshResourceMapper"
 import MaterialResourceMapper from "../MaterialResourceMapper"
 import QueryAPI from "./QueryAPI"
+import * as crypto from "crypto";
 
 const COMPONENT_TRIGGER_UPDATE = [COMPONENTS.LIGHT, COMPONENTS.MESH]
 const excludedKeys = [
@@ -19,12 +20,11 @@ const excludedKeys = [
 	"parent",
 	"matrix",
 	"_props",
-	"isCollection",
 	"id"
 ]
 export default class EntityAPI {
-	static getNewEntityInstance(id?: string, isCollection?: boolean): Entity {
-		return new Entity(id, isCollection)
+	static getNewEntityInstance(id?: crypto.UUID): Entity {
+		return new Entity(id)
 	}
 
 	static isRegistered(entity) {
@@ -56,7 +56,7 @@ export default class EntityAPI {
 			entity.parentID = undefined
 		}
 		Engine.entities.addBlock(entities, e => e.id)
-		EntityWorkerAPI.registerBlock(entities)
+		TransformationWorkerAPI.registerBlock(entities)
 		ResourceEntityMapper.addBlock(entities)
 	}
 
@@ -69,7 +69,7 @@ export default class EntityAPI {
 		if (!entity.parent && !entity.parentID)
 			entity.addParent(Engine.loadedLevel)
 		Engine.entities.set(target.id, target)
-		EntityWorkerAPI.registerEntity(target)
+		TransformationWorkerAPI.registerEntity(target)
 		EntityAPI.registerEntityComponents(target)
 		return entity
 	}
@@ -124,7 +124,7 @@ export default class EntityAPI {
 		MeshResourceMapper.removeBlock(entities)
 		MaterialResourceMapper.removeBlock(entities)
 		ResourceEntityMapper.removeBlock(entities)
-		EntityWorkerAPI.removeBlock(entities)
+		TransformationWorkerAPI.removeBlock(entities)
 
 		let didLightsChange
 		for (let i = 0; i < entities.length; i++) {
@@ -152,7 +152,7 @@ export default class EntityAPI {
 	}
 
 	static parseEntityObject(entity: MutableObject, asNew?: boolean): Entity {
-		const parsedEntity = EntityAPI.getNewEntityInstance(asNew ? crypto.randomUUID() : entity.id, entity.isCollection)
+		const parsedEntity = EntityAPI.getNewEntityInstance(asNew ? crypto.randomUUID() : entity.id)
 
 		const keys = Object.keys(entity)
 

@@ -27,7 +27,7 @@
             selectedEntity = temp
             tabIndex = INSPECTOR_TABS.length
             if (selectedEntity) {
-                const entityTabs = InspectorUtil.getEntityTabs(selectedEntity.allComponents, selectedEntity.isCollection)
+                const entityTabs = InspectorUtil.getEntityTabs(selectedEntity.allComponents)
                 setTabs(entityTabs)
             } else
                 setTabs([])
