@@ -6,7 +6,7 @@ import PhysicsAPI from "../rendering/PhysicsAPI"
 import Entity from "../../instances/Entity"
 import ENTITY_TYPED_ATTRIBUTES from "../../static/ENTITY_TYPED_ATTRIBUTES"
 import LightsAPI from "./LightsAPI"
-import VisibilityRenderer from "../../runtime/VisibilityRenderer"
+import VisibilityRendererSystem from "../../system/VisibilityRendererSystem"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import MeshResourceMapper from "../MeshResourceMapper"
 import MaterialResourceMapper from "../MaterialResourceMapper"
@@ -88,7 +88,7 @@ export default class EntityAPI {
 
 		if (needsLightUpdate)
 			LightsAPI.packageLights(false, true)
-		VisibilityRenderer.needsUpdate = needsVisibilityUpdate
+		VisibilityRendererSystem.needsUpdate = needsVisibilityUpdate
 	}
 
 	static registerEntityComponents(entity: Entity, previouslyRemoved?: string): void {
@@ -99,7 +99,7 @@ export default class EntityAPI {
 		ResourceEntityMapper.addEntity(entity)
 		if (COMPONENT_TRIGGER_UPDATE.indexOf(<COMPONENTS | undefined>previouslyRemoved) || !!COMPONENT_TRIGGER_UPDATE.find(v => entity.components.get(v) != null))
 			LightsAPI.packageLights(false, true)
-		VisibilityRenderer.needsUpdate = true
+		VisibilityRendererSystem.needsUpdate = true
 	}
 
 	static removeEntity(entityToRemove: string | Entity) {

@@ -2,19 +2,17 @@ import GPU from "../GPU"
 import GPUAPI from "../lib/rendering/GPUAPI"
 import MeshResourceMapper from "../lib/MeshResourceMapper"
 
-const THRESHOLD = 120000
-const INTERVAL = 120000
-export default class ResourceManager {
+export default class ResourceGarbageCollector {
 	static #interval = null
-
+	static #INTERVAL = 120000
 	static start() {
-		clearInterval(ResourceManager.#interval)
-		ResourceManager.#interval = setInterval(ResourceManager.execute, INTERVAL)
+		clearInterval(ResourceGarbageCollector.#interval)
+		ResourceGarbageCollector.#interval = setInterval(ResourceGarbageCollector.execute, ResourceGarbageCollector.#INTERVAL)
 	}
 
 	static stop() {
-		clearInterval(ResourceManager.#interval)
-		ResourceManager.#interval = null
+		clearInterval(ResourceGarbageCollector.#interval)
+		ResourceGarbageCollector.#interval = null
 	}
 
 	static execute() {

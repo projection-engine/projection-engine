@@ -5,7 +5,7 @@ import ConversionAPI from "../../../engine/core/lib/math/ConversionAPI"
 import GPU from "../../../engine/core/GPU"
 import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
 import Engine from "../../../engine/core/Engine"
-import VisibilityRenderer from "../../../engine/core/runtime/VisibilityRenderer"
+import VisibilityRendererSystem from "../../../engine/core/system/VisibilityRendererSystem"
 import EngineTools from "../../../engine/tools/EngineTools"
 import {glMatrix, quat} from "gl-matrix"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
@@ -99,7 +99,7 @@ export default class SceneEditorUtil {
 				console.error(err, startCoords, nStart)
 			}
 
-			VisibilityRenderer.needsUpdate = true
+			VisibilityRendererSystem.needsUpdate = true
 		}
 	}
 

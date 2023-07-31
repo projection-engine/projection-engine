@@ -3,8 +3,8 @@ import Engine from "../../Engine"
 import ENVIRONMENT from "../../static/ENVIRONMENT"
 import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../math/ConversionAPI"
-import MotionBlur from "../../runtime/MotionBlur"
-import VisibilityRenderer from "../../runtime/VisibilityRenderer"
+import MotionBlurSystem from "../../system/MotionBlurSystem"
+import VisibilityRendererSystem from "../../system/VisibilityRendererSystem"
 
 import GPU from "../../GPU"
 import StaticUBOs from "../StaticUBOs"
@@ -73,7 +73,7 @@ export default class CameraAPI extends CameraResources {
 			UBO.updateBuffer(CameraAPI.projectionUBOBuffer)
 			UBO.unbind()
 
-			VisibilityRenderer.needsUpdate = true
+			VisibilityRendererSystem.needsUpdate = true
 		}
 
 		if (CameraNotificationDecoder.hasChangedView === 1) {
@@ -82,7 +82,7 @@ export default class CameraAPI extends CameraResources {
 			UBO.updateBuffer(CameraAPI.viewUBOBuffer)
 			UBO.unbind()
 
-			VisibilityRenderer.needsUpdate = true
+			VisibilityRendererSystem.needsUpdate = true
 		}
 	}
 
@@ -169,10 +169,10 @@ export default class CameraAPI extends CameraResources {
 
 		cameraObj = {...TEMPLATE_CAMERA, ...cameraObj}
 
-		MotionBlur.enabled = cameraObj.motionBlurEnabled === true || cameraObj.cameraMotionBlur === true
+		MotionBlurSystem.enabled = cameraObj.motionBlurEnabled === true || cameraObj.cameraMotionBlur === true
 
-		MotionBlur.velocityScale = cameraObj.mbVelocityScale
-		MotionBlur.maxSamples = cameraObj.mbSamples
+		MotionBlurSystem.velocityScale = cameraObj.mbVelocityScale
+		MotionBlurSystem.maxSamples = cameraObj.mbSamples
 
 		CameraAPI.zFar = cameraObj.zFar
 		CameraAPI.zNear = cameraObj.zNear

@@ -4,17 +4,17 @@ import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import EngineState from "../EngineState"
 
-export default class Physics {
+export default class PhysicsSystem  {
 	static #interval = null
 
 	static start() {
-		clearInterval(Physics.#interval)
-		Physics.#interval = setInterval(Physics.#execute, EngineState.physicsSimulationStep)
+		clearInterval(PhysicsSystem.#interval)
+		PhysicsSystem.#interval = setInterval(PhysicsSystem.#execute, EngineState.physicsSimulationStep)
 	}
 
 	static stop() {
-		clearInterval(Physics.#interval)
-		Physics.#interval = null
+		clearInterval(PhysicsSystem.#interval)
+		PhysicsSystem.#interval = null
 	}
 
 	static #execute() {

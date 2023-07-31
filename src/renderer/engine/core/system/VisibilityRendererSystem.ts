@@ -1,7 +1,7 @@
 import GPU from "../GPU"
 import CameraAPI from "../lib/utils/CameraAPI"
 import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI"
-import SSAO from "./SSAO"
+import AmbientOcclusionSystem from "./AmbientOcclusionSystem"
 import {mat4} from "gl-matrix"
 import StaticShaders from "../lib/StaticShaders"
 import StaticFBO from "../lib/StaticFBO"
@@ -10,14 +10,14 @@ import StaticMeshes from "../lib/StaticMeshes"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import MotionBlur from "./MotionBlur"
+import MotionBlurSystem from "./MotionBlurSystem"
 import loopMeshes from "./loop-meshes"
 import Entity from "../instances/Entity"
 import Mesh from "../instances/Mesh"
 
 const entityMetadata = new Float32Array(16)
 let context: WebGL2RenderingContext, uniforms, VP
-export default class VisibilityRenderer {
+export default class VisibilityRendererSystem {
 	static needsUpdate = true
 	static #isSecondPass = false
 
@@ -81,36 +81,36 @@ export default class VisibilityRenderer {
 
 		context.uniformMatrix4fv(uniforms.metadata, false, entityMetadata)
 		context.uniformMatrix4fv(uniforms.modelMatrix, false, entity.matrix)
-		if (MotionBlur.enabled)
+		if (MotionBlurSystem.enabled)
 			context.uniformMatrix4fv(uniforms.previousModelMatrix, false, entity.previousModelMatrix)
 
 		mesh.simplifiedDraw()
 	}
 
 	static execute() {
-		if (!VisibilityRenderer.needsUpdate && !TransformationWorkerAPI.hasChangeBuffer[0])
+		if (!VisibilityRendererSystem.needsUpdate && !TransformationWorkerAPI.hasChangeBuffer[0])
 			return
 
 		context = GPU.context
-		if (!VisibilityRenderer.#isSecondPass) {
-			VisibilityRenderer.#isSecondPass = true
-			VisibilityRenderer.needsUpdate = true
+		if (!VisibilityRendererSystem.#isSecondPass) {
+			VisibilityRendererSystem.#isSecondPass = true
+			VisibilityRendererSystem.needsUpdate = true
 		} else {
-			VisibilityRenderer.needsUpdate = false
-			VisibilityRenderer.#isSecondPass = false
+			VisibilityRendererSystem.needsUpdate = false
+			VisibilityRendererSystem.#isSecondPass = false
 		}
 
 		StaticShaders.visibility.bind()
 		StaticFBO.visibility.startMapping()
-		VisibilityRenderer.#bindUniforms()
+		VisibilityRendererSystem.#bindUniforms()
 		entityMetadata[5] = 0
-		loopMeshes(VisibilityRenderer.#drawMesh)
+		loopMeshes(VisibilityRendererSystem.#drawMesh)
 
-		VisibilityRenderer.#drawSprites()
+		VisibilityRendererSystem.#drawSprites()
 		StaticFBO.visibility.stopMapping()
 		MetricsController.currentState = METRICS_FLAGS.VISIBILITY
 
 
-		SSAO.execute()
+		AmbientOcclusionSystem.execute()
 	}
 }

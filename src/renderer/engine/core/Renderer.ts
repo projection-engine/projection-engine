@@ -1,17 +1,17 @@
-import SSGI from "./runtime/SSGI"
-import DirectionalShadows from "./runtime/DirectionalShadows"
-import LensPostProcessing from "./runtime/LensPostProcessing"
-import FrameComposition from "./runtime/FrameComposition"
+import GlobalIlluminationSystem from "./system/GlobalIlluminationSystem"
+import DShadowsSystem from "./system/DShadowsSystem"
+import PostProcessingSystem from "./system/PostProcessingSystem"
+import CompositionSystem from "./system/CompositionSystem"
 
 import Engine from "./Engine"
 import TransformationWorkerAPI from "./lib/utils/TransformationWorkerAPI"
-import OmnidirectionalShadows from "./runtime/OmnidirectionalShadows"
+import OShadowsSystem from "./system/OShadowsSystem"
 import CameraAPI from "./lib/utils/CameraAPI"
 import MetricsController from "./lib/utils/MetricsController"
 
-import VisibilityRenderer from "./runtime/VisibilityRenderer"
+import VisibilityRendererSystem from "./system/VisibilityRendererSystem"
 import LightsAPI from "./lib/utils/LightsAPI"
-import SceneComposition from "./runtime/SceneComposition"
+import SceneComposition from "./system/SceneComposition"
 import GPU from "./GPU"
 import GPUAPI from "./lib/rendering/GPUAPI"
 import StaticFBO from "./lib/StaticFBO"
@@ -32,14 +32,14 @@ export default class Renderer {
 		Renderer.#prepareLoop()
 		MetricsController.init()
 		Renderer.#executeScripts()
-		DirectionalShadows.execute()
-		OmnidirectionalShadows.execute()
-		VisibilityRenderer.execute()
+		DShadowsSystem.execute()
+		OShadowsSystem.execute()
+		VisibilityRendererSystem.execute()
 		SceneComposition.execute()
 		Renderer.copyToCurrentFrame()
-		SSGI.execute()
-		LensPostProcessing.execute()
-		FrameComposition.execute()
+		GlobalIlluminationSystem.execute()
+		PostProcessingSystem.execute()
+		CompositionSystem.execute()
 		Renderer.#sync()
 		MetricsController.end()
 	}

@@ -1,0 +1,81 @@
+import GPU from "../GPU"
+import MetricsController from "../lib/utils/MetricsController"
+import METRICS_FLAGS from "../static/METRICS_FLAGS"
+import SceneRenderingUtil from "./SceneRenderingUtil"
+import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGroup";
+import UberShader from "../resource-libs/UberShader";
+import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper";
+import StaticMeshes from "../lib/StaticMeshes";
+import GPUUtil from "../utils/GPUUtil";
+import Entity from "../instances/Entity";
+
+export default class DecalRendererSystem {
+    execute() {
+        const context = GPU.context
+        context.disable(context.DEPTH_TEST)
+        context.disable(context.CULL_FACE)
+        this.#drawDecals()
+        MetricsController.currentState = METRICS_FLAGS.DECAL
+        context.enable(context.DEPTH_TEST)
+    }
+
+    #drawDecals() {
+        UberMaterialAttributeGroup.clear()
+        const uniforms = UberShader.uberUniforms
+        const context = GPU.context
+        const toRender = ResourceEntityMapper.decals.array
+        const size = toRender.length
+        if (size === 0)
+            return
+        context.uniform1i(uniforms.isDecalPass, 1)
+        StaticMeshes.cube.bindAllResources()
+        for (let i = 0; i < size; i++) {
+            const entity = toRender[i]
+            if (!entity.active || entity.isCulled)
+                continue
+
+            const culling = entity.cullingComponent
+            UberMaterialAttributeGroup.screenDoorEffect = culling && culling.screenDoorEffect ? entity.__cullingMetadata[5] : 0
+            UberMaterialAttributeGroup.entityID = entity.pickID
+
+            this.#bindDecalUniforms(uniforms, entity)
+
+            context.uniformMatrix4fv(uniforms.materialAttributes, false, UberMaterialAttributeGroup.data)
+            context.uniformMatrix4fv(uniforms.modelMatrix, false, entity.matrix)
+
+            StaticMeshes.cube.draw()
+        }
+    }
+
+    #bindDecalUniforms(uniforms: UniformMap, entity: Entity) {
+        const component = entity.decalComponent
+        const albedoSampler = component.albedo?.texture
+        const metallicSampler = component.metallic?.texture
+        const roughnessSampler = component.roughness?.texture
+        const normalSampler = component.normal?.texture
+        const aoSampler = component.occlusion?.texture
+        let texOffset = 7
+        if (albedoSampler !== undefined)
+            GPUUtil.bind2DTextureForDrawing(uniforms.sampler1, texOffset, albedoSampler)
+        if (metallicSampler !== undefined)
+            GPUUtil.bind2DTextureForDrawing(uniforms.sampler2, texOffset + 1, metallicSampler)
+        if (roughnessSampler !== undefined)
+            GPUUtil.bind2DTextureForDrawing(uniforms.sampler3, texOffset + 2, roughnessSampler)
+        if (normalSampler !== undefined)
+            GPUUtil.bind2DTextureForDrawing(uniforms.sampler4, texOffset + 3, normalSampler)
+        if (aoSampler !== undefined)
+            GPUUtil.bind2DTextureForDrawing(uniforms.sampler5, texOffset + 4, aoSampler)
+        UberMaterialAttributeGroup.useAlbedoDecal = albedoSampler !== undefined ? 1 : 0
+        UberMaterialAttributeGroup.useMetallicDecal = metallicSampler !== undefined ? 1 : 0
+        UberMaterialAttributeGroup.useRoughnessDecal = roughnessSampler !== undefined ? 1 : 0
+        UberMaterialAttributeGroup.useNormalDecal = normalSampler !== undefined ? 1 : 0
+        UberMaterialAttributeGroup.useOcclusionDecal = aoSampler !== undefined ? 1 : 0
+        UberMaterialAttributeGroup.ssrEnabled = component.useSSR ? 1 : 0
+        UberMaterialAttributeGroup.renderingMode = component.renderingMode
+        UberMaterialAttributeGroup.anisotropicRotation = component.anisotropicRotation
+        UberMaterialAttributeGroup.anisotropy = component.anisotropy
+        UberMaterialAttributeGroup.clearCoat = component.clearCoat
+        UberMaterialAttributeGroup.sheen = component.sheen
+        UberMaterialAttributeGroup.sheenTint = component.sheenTint
+    }
+}

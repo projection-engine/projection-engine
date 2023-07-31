@@ -7,12 +7,23 @@ import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import EngineState from "../EngineState"
 import GPUUtil from "../utils/GPUUtil";
+import AbstractSystem from "../AbstractSystem";
 
 let cleared = false
-export default class SSGI {
-    static uniformSettings = new Float32Array(3)
+export default class GlobalIlluminationSystem extends AbstractSystem{
+     #uniformSettings = new Float32Array(3)
 
-    static execute() {
+    static getInstance(){
+         return super.get<GlobalIlluminationSystem>()
+    }
+
+    updateUniforms(){
+        this.#uniformSettings[0] = EngineState.ssgiStepSize
+        this.#uniformSettings[1] = EngineState.ssgiMaxSteps
+        this.#uniformSettings[2] = EngineState.ssgiStrength
+    }
+
+     execute() {
         if (!EngineState.ssgiEnabled) {
             if (!cleared) {
                 StaticFBO.ssgi.clear()
@@ -31,18 +42,17 @@ export default class SSGI {
 
         GPUUtil.bind2DTextureForDrawing(uniforms.previousFrame, 1, StaticFBO.postProcessing2Sampler)
 
-        context.uniform3fv(uniforms.rayMarchSettings, SSGI.uniformSettings)
+        context.uniform3fv(uniforms.rayMarchSettings, this.#uniformSettings)
 
         StaticMeshes.drawQuad()
-        SSGI.#applyBlur(context, StaticFBO.ssgiFallback, StaticFBO.ssgiSampler, true)
-        SSGI.#applyBlur(context, StaticFBO.ssgi, StaticFBO.ssgiFallbackSampler, false)
+        this.#applyBlur(context, StaticFBO.ssgiFallback, StaticFBO.ssgiSampler, true)
+         this.#applyBlur(context, StaticFBO.ssgi, StaticFBO.ssgiFallbackSampler, false)
 
         MetricsController.currentState = METRICS_FLAGS.SSGI
     }
 
-    static #applyBlur(context: WebGL2RenderingContext, FBO: Framebuffer, color: WebGLTexture, first: boolean) {
+     #applyBlur(context: WebGL2RenderingContext, FBO: Framebuffer, color: WebGLTexture, first: boolean) {
         const uniforms = StaticShaders.bilateralBlurUniforms
-
 
         if (first) {
             StaticShaders.bilateralBlur.bind()

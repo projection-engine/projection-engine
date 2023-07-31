@@ -4,7 +4,7 @@ import EditorActionHistory from "../services/EditorActionHistory"
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import GPU from "../../../engine/core/GPU"
-import ResourceManager from "../../../engine/core/runtime/ResourceManager"
+import ResourceGarbageCollector from "../../../engine/core/resource-libs/ResourceGarbageCollector"
 import WindowChangeStore from "../../shared/stores/WindowChangeStore"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
@@ -53,7 +53,7 @@ export default class WindowFrameUtil {
 			},
 			{
 				label: "Clear unused resources",
-				onClick: ResourceManager.execute
+				onClick: ResourceGarbageCollector.execute
 			},
 			{divider: true, label: "Utils"},
 			{

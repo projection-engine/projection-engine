@@ -5,48 +5,49 @@ import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
+import AbstractSystem from "../AbstractSystem";
 
 
-export default class DirectionalShadows {
-	static changed = false
-	static resolutionPerTexture = 1024
-	static maxResolution = 4096
-	static lightsToUpdate = []
-	static atlasRatio = 0
+export default class DShadowsSystem extends AbstractSystem {
+	changed = false
+	resolutionPerTexture = 1024
+	maxResolution = 4096
+	lightsToUpdate = []
+	atlasRatio = 0
 
 
-	static execute() {
-		const lightsToUpdate = DirectionalShadows.lightsToUpdate
-		if (!DirectionalShadows.changed && lightsToUpdate.length === 0)
+	execute() {
+		const lightsToUpdate = this.lightsToUpdate
+		if (!this.changed && lightsToUpdate.length === 0)
 			return
 		GPU.context.cullFace(GPU.context.FRONT)
 		let currentColumn = 0, currentRow = 0
 
 		StaticFBO.shadows.startMapping()
 		GPU.context.enable(GPU.context.SCISSOR_TEST)
-		const size = DirectionalShadows.atlasRatio ** 2
+		const size = this.atlasRatio ** 2
 		for (let face = 0; face < size; face++) {
 			if (face < lightsToUpdate.length) {
 				const currentLight = lightsToUpdate[face]
 
 				GPU.context.viewport(
-					currentColumn * DirectionalShadows.resolutionPerTexture,
-					currentRow * DirectionalShadows.resolutionPerTexture,
-					DirectionalShadows.resolutionPerTexture,
-					DirectionalShadows.resolutionPerTexture
+					currentColumn * this.resolutionPerTexture,
+					currentRow * this.resolutionPerTexture,
+					this.resolutionPerTexture,
+					this.resolutionPerTexture
 				)
 				GPU.context.scissor(
-					currentColumn * DirectionalShadows.resolutionPerTexture,
-					currentRow * DirectionalShadows.resolutionPerTexture,
-					DirectionalShadows.resolutionPerTexture,
-					DirectionalShadows.resolutionPerTexture
+					currentColumn * this.resolutionPerTexture,
+					currentRow * this.resolutionPerTexture,
+					this.resolutionPerTexture,
+					this.resolutionPerTexture
 				)
 
 
 				currentLight.atlasFace = [currentColumn, 0]
-				DirectionalShadows.loopMeshes(currentLight)
+				this.#loopMeshes(currentLight)
 			}
-			if (currentColumn > DirectionalShadows.atlasRatio) {
+			if (currentColumn > this.atlasRatio) {
 				currentColumn = 0
 				currentRow += 1
 			} else
@@ -55,12 +56,12 @@ export default class DirectionalShadows {
 		GPU.context.disable(GPU.context.SCISSOR_TEST)
 		StaticFBO.shadows.stopMapping()
 		GPU.context.cullFace(GPU.context.BACK)
-		DirectionalShadows.changed = false
+		this.changed = false
 		lightsToUpdate.length = 0
 		MetricsController.currentState = METRICS_FLAGS.DIRECTIONAL_SHADOWS
 	}
 
-	static loopMeshes(light) {
+	#loopMeshes(light) {
 		if (!light.entity)
 			return
 		const toRender = ResourceEntityMapper.meshes.array

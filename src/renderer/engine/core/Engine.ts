@@ -1,12 +1,12 @@
 import CameraAPI from "./lib/utils/CameraAPI"
 import ENVIRONMENT from "./static/ENVIRONMENT"
 import Renderer from "./Renderer"
-import SSAO from "./runtime/SSAO"
+import AmbientOcclusionSystem from "./system/AmbientOcclusionSystem"
 import ConversionAPI from "./lib/math/ConversionAPI"
-import Physics from "./runtime/Physics"
-import FrameComposition from "./runtime/FrameComposition"
+import PhysicsSystem from "./system/PhysicsSystem"
+import CompositionSystem from "./system/CompositionSystem"
 import GPU from "./GPU"
-import OmnidirectionalShadows from "./runtime/OmnidirectionalShadows"
+import OShadowsSystem from "./system/OShadowsSystem"
 import PhysicsAPI from "./lib/rendering/PhysicsAPI"
 import FileSystemAPI from "./lib/utils/FileSystemAPI"
 import ScriptsAPI from "./lib/utils/ScriptsAPI"
@@ -17,7 +17,7 @@ import DynamicMap from "./resource-libs/DynamicMap"
 import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
 import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
-import ResourceManager from "./runtime/ResourceManager"
+import ResourceGarbageCollector from "./resource-libs/ResourceGarbageCollector"
 import LightsAPI from "./lib/utils/LightsAPI"
 import {UUID} from "crypto";
 import SystemManager from "./SystemManager";
@@ -90,9 +90,9 @@ export default class Engine {
 		Engine.#development = devAmbient
 		await GPU.initializeContext(canvas, mainResolution)
 		FileSystemAPI.initialize(readAsset)
-		FrameComposition.initialize()
-		await SSAO.initialize()
-		OmnidirectionalShadows.initialize()
+		CompositionSystem.initialize()
+		await AmbientOcclusionSystem.initialize()
+		OShadowsSystem.initialize()
 		await PhysicsAPI.initialize()
 		LightsAPI.initialize()
 
@@ -125,8 +125,8 @@ export default class Engine {
 	static start() {
 
 		if (!Engine.isExecuting && Engine.#isReady) {
-			Physics.start()
-			ResourceManager.start()
+			PhysicsSystem.start()
+			ResourceGarbageCollector.start()
 			Engine.#frameID = requestAnimationFrame(Engine.#loop)
 		} else
 			Engine.#initializationWasTried = true
@@ -145,8 +145,8 @@ export default class Engine {
 	static stop() {
 		cancelAnimationFrame(Engine.#frameID)
 		Engine.#frameID = undefined
-		ResourceManager.stop()
-		Physics.stop()
+		ResourceGarbageCollector.stop()
+		PhysicsSystem.stop()
 	}
 
 	static async loadLevel(levelID: UUID, cleanEngine?: boolean) {

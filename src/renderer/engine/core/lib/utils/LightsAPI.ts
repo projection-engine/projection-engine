@@ -1,8 +1,8 @@
 import ArrayBufferAPI from "./ArrayBufferAPI"
 import LIGHT_TYPES from "../../static/LIGHT_TYPES"
 import {glMatrix, mat4, vec3} from "gl-matrix"
-import DirectionalShadows from "../../runtime/DirectionalShadows"
-import OmnidirectionalShadows from "../../runtime/OmnidirectionalShadows"
+import DShadowsSystem from "../../system/DShadowsSystem"
+import OShadowsSystem from "../../system/OShadowsSystem"
 import type Entity from "../../instances/Entity"
 import UberShader from "../../resource-libs/UberShader"
 import StaticUBOs from "../StaticUBOs"
@@ -19,7 +19,7 @@ const quantity = new Uint8Array(1)
 const cache1Mat4 = mat4.create()
 const cache2Mat4 = mat4.create()
 export default class LightsAPI {
-    
+
 	static primaryBuffer?: Float32Array
 	static secondaryBuffer?: Float32Array
 	static lightsQuantity = 0
@@ -143,7 +143,7 @@ export default class LightsAPI {
 				for (let i = 0; i < 16; i++)
 					secondaryBuffer[offset + i] = lightViewProjection[i]
 
-				DirectionalShadows.lightsToUpdate.push(component)
+				DShadowsSystem.lightsToUpdate.push(component)
 			}
 			break
 		}
@@ -160,7 +160,7 @@ export default class LightsAPI {
 
 			secondaryBuffer[0] = component.shadowBias
 			if (component.shadowMap)
-				OmnidirectionalShadows.lightsToUpdate.push(component)
+				OShadowsSystem.lightsToUpdate.push(component)
 			break
 		}
 		case LIGHT_TYPES.SPOT: {

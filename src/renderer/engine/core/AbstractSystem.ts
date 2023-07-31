@@ -1,13 +1,13 @@
 import AbstractSingleton from "./AbstractSingleton";
 import Components from "./static/COMPONENTS";
-import MeshComponent from "./instances/components/MeshComponent";
-import SystemManager from "./SystemManager";
 import {UUID} from "crypto";
 import EntityManager from "./EntityManager";
 import type Entity from "./instances/Entity";
 import DynamicMap from "./resource-libs/DynamicMap";
 
 export default abstract class AbstractSystem extends AbstractSingleton {
+    readonly #id: UUID
+
     static injectComponents<T>(component: Components): GenericVoidFunctionWith2P<AbstractSystem, string> {
         return (target: AbstractSystem, propertyKey: string) => {
             const targetField = new DynamicMap<UUID, Entity>()
@@ -39,7 +39,6 @@ export default abstract class AbstractSystem extends AbstractSingleton {
         }
     }
 
-    readonly #id: UUID
     protected constructor() {
         super();
         this.#id = crypto.randomUUID()

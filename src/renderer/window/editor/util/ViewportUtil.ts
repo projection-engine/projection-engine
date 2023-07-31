@@ -5,7 +5,7 @@ import Engine from "../../../engine/core/Engine"
 import GPU from "../../../engine/core/GPU"
 import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
 import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
-import VisibilityRenderer from "../../../engine/core/runtime/VisibilityRenderer"
+import VisibilityRendererSystem from "../../../engine/core/system/VisibilityRendererSystem"
 import EngineTools from "../../../engine/tools/EngineTools"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
@@ -63,7 +63,7 @@ export default class ViewportUtil {
         } else
             setContext([entity.id])
 
-        VisibilityRenderer.needsUpdate = true
+        VisibilityRendererSystem.needsUpdate = true
     }
 
     static addNewTab() {

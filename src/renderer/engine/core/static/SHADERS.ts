@@ -11,7 +11,7 @@ import CUBEMAP from "../shaders/forward-rendering/CUBEMAP.vert"
 import PREFILTERED_MAP from "../shaders/post-processing/PREFILTERED_MAP.frag"
 import IRRADIANCE_MAP from "../shaders/post-processing/IRRADIANCE_MAP.frag"
 import MOTION_BLUR_FRAG from "../shaders/post-processing/MOTION_BLUR.frag"
-import SceneRenderer from "../runtime/renderers/SceneRenderer"
+import SceneRenderingUtil from "../system/SceneRenderingUtil"
 import GAUSSIAN_FRAG from "../shaders/post-processing/GAUSSIAN.frag"
 import UPSAMPLING_TEND_FRAG from "../shaders/post-processing/UPSAMPLE_TENT.glsl"
 import BOKEH_FRAG from "../shaders/post-processing/BOKEH.frag"
@@ -39,7 +39,7 @@ export default {
 	PREFILTERED_MAP,
 	IRRADIANCE_MAP,
 	MOTION_BLUR_FRAG,
-	SpriteRenderer: SceneRenderer,
+	SpriteRenderer: SceneRenderingUtil,
 	GAUSSIAN_FRAG,
 	UPSAMPLING_TEND_FRAG,
 	BOKEH_FRAG,

@@ -6,7 +6,7 @@ import Mesh, {MeshProps} from "../../instances/Mesh"
 import Shader from "../../instances/Shader"
 import GPU from "../../GPU"
 import MaterialAPI from "./MaterialAPI"
-import VisibilityRenderer from "../../runtime/VisibilityRenderer"
+import VisibilityRendererSystem from "../../system/VisibilityRendererSystem"
 import UberShader from "../../resource-libs/UberShader"
 import StaticMeshes from "../StaticMeshes"
 import TextureParams from "../../static/TextureParams"
@@ -68,7 +68,7 @@ export default class GPUAPI {
 		GPU.materials.set(id, material)
 
 		UberShader.compile()
-		VisibilityRenderer.needsUpdate = true
+		VisibilityRendererSystem.needsUpdate = true
 		return material
 	}
 
@@ -144,7 +144,7 @@ export default class GPUAPI {
 			GPUAPI.destroyMesh(GPU.meshes.get(id))
 		const instance = new Mesh({...bufferData, id})
 		GPU.meshes.set(id, instance)
-		VisibilityRenderer.needsUpdate = true
+		VisibilityRendererSystem.needsUpdate = true
 		return instance
 	}
 
@@ -163,7 +163,7 @@ export default class GPUAPI {
 				mesh.normalVBO.delete()
 			GPU.meshes.delete(mesh.id)
 		}
-		VisibilityRenderer.needsUpdate = true
+		VisibilityRendererSystem.needsUpdate = true
 	}
 
 	static allocateShader(id, vertex, fragment) {
