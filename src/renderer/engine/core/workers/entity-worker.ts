@@ -20,8 +20,7 @@ self.onmessage = (event) => {
 			TransformationPass.updateThreadInfo()
 			break
 		case WORKER_MESSAGES.REMOVE_ENTITY_BLOCK:
-
-			TransformationPass.targets.removeBlock(payload, data => data)
+			TransformationPass.targets.removeBlock(payload, data => data.id)
 			TransformationPass.updateThreadInfo()
 			break
 

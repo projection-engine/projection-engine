@@ -2,7 +2,7 @@ import VertexBuffer from "./VertexBuffer"
 
 import GPU from "../GPU"
 import GPUAPI from "../lib/rendering/GPUAPI"
-import Renderer from "../Renderer"
+import EngineState from "../EngineState";
 
 export interface MeshProps {
     id?: string,
@@ -118,43 +118,43 @@ export default class Mesh {
 
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = Renderer.elapsed
+		this.#lastUsedElapsed = EngineState.elapsed
 	}
 
 	draw() {
 		this.bindAllResources()
 		GPU.context.drawElements(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = Renderer.elapsed
+		this.#lastUsedElapsed = EngineState.elapsed
 	}
 
 	drawInstanced(quantity) {
 		this.bindAllResources()
 		GPU.context.drawElementsInstanced(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0, quantity)
-		this.#lastUsedElapsed = Renderer.elapsed
+		this.#lastUsedElapsed = EngineState.elapsed
 	}
 
 	drawLineLoop() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.LINE_LOOP, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = Renderer.elapsed
+		this.#lastUsedElapsed = EngineState.elapsed
 	}
 
 	drawTriangleStrip() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.TRIANGLE_STRIP, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = Renderer.elapsed
+		this.#lastUsedElapsed = EngineState.elapsed
 	}
 
 	drawTriangleFan() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.TRIANGLE_FAN, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = Renderer.elapsed
+		this.#lastUsedElapsed = EngineState.elapsed
 	}
 
 	drawLines() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.LINES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = Renderer.elapsed
+		this.#lastUsedElapsed = EngineState.elapsed
 	}
 
 }

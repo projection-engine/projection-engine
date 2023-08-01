@@ -12,7 +12,7 @@ export default abstract class AbstractSystem extends AbstractSingleton {
         return (target: AbstractSystem, propertyKey: string) => {
             const targetField = new DynamicMap<UUID, Entity>()
             EntityManager.getInstance().addEventListener("hard-change", (event) => {
-                switch (event.type){
+                switch (event.type) {
                     case "delete": {
                         const withComponent = event.all.filter(e => e.components.has(component))
                         targetField.removeBlock(withComponent, e => e.id)
@@ -24,12 +24,12 @@ export default abstract class AbstractSystem extends AbstractSingleton {
                         break
                     }
                     case "component-add":
-                        if(event.targetComponents.includes(component)) {
+                        if (event.targetComponents.includes(component)) {
                             targetField.set(event.target.id, event.target)
                         }
                         break
                     case "component-remove":
-                        if(event.targetComponents.includes(component)) {
+                        if (event.targetComponents.includes(component)) {
                             targetField.delete(event.target.id)
                         }
                         break
@@ -45,6 +45,10 @@ export default abstract class AbstractSystem extends AbstractSingleton {
     }
 
     abstract execute()
+
+    shouldExecute(){
+        return true
+    }
 
     getSystemId() {
         return this.#id

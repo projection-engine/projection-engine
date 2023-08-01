@@ -7,13 +7,15 @@ import Framebuffer from "../instances/Framebuffer"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
+import AbstractSystem from "../AbstractSystem";
 
-export default class BloomSystem {
+export default class BloomSystem extends AbstractSystem{
+
+    shouldExecute(): boolean {
+        return CameraAPI.bloom;
+    }
 
     execute() {
-        if (!CameraAPI.bloom)
-            return
-
         const context = GPU.context
         StaticFBO.lens.startMapping()
         StaticShaders.bloom.bind()

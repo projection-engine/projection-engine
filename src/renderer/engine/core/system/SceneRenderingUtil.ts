@@ -1,20 +1,12 @@
 import GPU from "../GPU"
-import StaticMeshes from "../lib/StaticMeshes"
 import type Entity from "../instances/Entity"
 import Shader from "../instances/Shader"
 import Engine from "../Engine"
 import CameraAPI from "../lib/utils/CameraAPI"
 import StaticFBO from "../lib/StaticFBO"
 import OShadowsSystem from "./OShadowsSystem"
-import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGroup"
-import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import Material from "../instances/Material"
 import UberShader from "../resource-libs/UberShader"
-import MaterialResourceMapper from "../lib/MaterialResourceMapper"
-import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper"
-import Renderer from "../Renderer"
-import Mesh from "../instances/Mesh"
-import loopMeshes from "./loop-meshes"
 import EngineState from "../EngineState"
 
 
@@ -37,7 +29,7 @@ export default class SceneRenderingUtil {
 
 
 		context.uniformMatrix4fv(uniforms.skyProjectionMatrix, false, CameraAPI.skyboxProjectionMatrix)
-		context.uniform1f(uniforms.elapsedTime, Renderer.elapsed)
+		context.uniform1f(uniforms.elapsedTime, EngineState.elapsed)
 		context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraAPI.viewMatrix)
 		context.uniformMatrix4fv(uniforms.invViewMatrix, false, CameraAPI.invViewMatrix)
 		context.uniformMatrix4fv(uniforms.viewProjection, false, CameraAPI.viewProjectionMatrix)
@@ -50,7 +42,7 @@ export default class SceneRenderingUtil {
 
 		SceneRenderingUtil.#bindTexture(context, uniforms.previousFrame, 4, StaticFBO.lensSampler, false)
 		SceneRenderingUtil.#bindTexture(context, uniforms.shadow_atlas, 5, StaticFBO.shadowsSampler, false)
-		SceneRenderingUtil.#bindTexture(context, uniforms.shadow_cube, 6, OShadowsSystem.sampler, true)
+		SceneRenderingUtil.#bindTexture(context, uniforms.shadow_cube, 6, OShadowsSystem.getSampler(), true)
 
 		context.enable(context.CULL_FACE)
 	}

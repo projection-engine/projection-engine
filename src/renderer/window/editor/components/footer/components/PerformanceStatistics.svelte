@@ -1,7 +1,9 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import Renderer from "../../../../../engine/core/Renderer"
     import Engine from "../../../../../engine/core/Engine"
+    import EngineState from "../../../../../engine/core/EngineState";
+    import PerformanceMetricsSystem from "../PerformanceMetricsSystem";
+    import SystemManager from "../../../../../engine/core/SystemManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     const MEMORY_UPDATE_INTERVAL = 2000
@@ -9,20 +11,24 @@
     let frameRate
     let memory
     onMount(() => {
-    	let startMemoryCheck = MEMORY_UPDATE_INTERVAL + 1
-    	Engine.addSystem(COMPONENT_ID, () => {
-    		const el = Renderer.elapsed
-    		frameRate.textContent = Math.round(1000 / el) + "FPS"
-    		frameTime.textContent = el.toFixed(2) + "ms"
-    		if(startMemoryCheck > MEMORY_UPDATE_INTERVAL) {
-    			const data = window.performance.memory.usedJSHeapSize / 1e+6
-    			memory.textContent = data.toFixed(2) + "mb"
-    			startMemoryCheck = 0
-    		}
-    		startMemoryCheck += el
-    	})
+        let startMemoryCheck = MEMORY_UPDATE_INTERVAL + 1
+        PerformanceMetricsSystem.get().execute = () => {
+            const el = EngineState.elapsed
+            frameRate.textContent = Math.round(1000 / el) + "FPS"
+            frameTime.textContent = el.toFixed(2) + "ms"
+            if (startMemoryCheck > MEMORY_UPDATE_INTERVAL) {
+                const data = window.performance.memory.usedJSHeapSize / 1e+6
+                memory.textContent = data.toFixed(2) + "mb"
+                startMemoryCheck = 0
+            }
+            startMemoryCheck += el
+        }
+        SystemManager.getInstance().enableSystem(PerformanceMetricsSystem)
     })
-    onDestroy(() => Engine.removeSystem(COMPONENT_ID))
+    onDestroy(() => {
+        PerformanceMetricsSystem.get().execute = undefined
+        SystemManager.getInstance().disableSystem(PerformanceMetricsSystem)
+    })
 </script>
 
 <div class="wrapper footer-header">

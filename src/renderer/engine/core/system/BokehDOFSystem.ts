@@ -9,9 +9,12 @@ import AbstractSystem from "../AbstractSystem";
 
 
 export default class BokehDOFSystem extends AbstractSystem {
+
+    shouldExecute(): boolean {
+        return CameraAPI.DOF;
+    }
+
     execute() {
-        if (!CameraAPI.DOF)
-            return
         StaticShaders.bokeh.bind()
         StaticFBO.postProcessing2.startMapping()
 

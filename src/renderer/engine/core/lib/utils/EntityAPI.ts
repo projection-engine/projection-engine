@@ -12,6 +12,8 @@ import MeshResourceMapper from "../MeshResourceMapper"
 import MaterialResourceMapper from "../MaterialResourceMapper"
 import QueryAPI from "./QueryAPI"
 import * as crypto from "crypto";
+import EngineState from "../../EngineState";
+import {UUID} from "crypto";
 
 const COMPONENT_TRIGGER_UPDATE = [COMPONENTS.LIGHT, COMPONENTS.MESH]
 const excludedKeys = [
@@ -88,7 +90,7 @@ export default class EntityAPI {
 
 		if (needsLightUpdate)
 			LightsAPI.packageLights(false, true)
-		VisibilityRendererSystem.needsUpdate = needsVisibilityUpdate
+		EngineState.visibilityNeedsUpdate = needsVisibilityUpdate
 	}
 
 	static registerEntityComponents(entity: Entity, previouslyRemoved?: string): void {
@@ -99,10 +101,10 @@ export default class EntityAPI {
 		ResourceEntityMapper.addEntity(entity)
 		if (COMPONENT_TRIGGER_UPDATE.indexOf(<COMPONENTS | undefined>previouslyRemoved) || !!COMPONENT_TRIGGER_UPDATE.find(v => entity.components.get(v) != null))
 			LightsAPI.packageLights(false, true)
-		VisibilityRendererSystem.needsUpdate = true
+		EngineState.visibilityNeedsUpdate = true
 	}
 
-	static removeEntity(entityToRemove: string | Entity) {
+	static removeEntity(entityToRemove: UUID | Entity) {
 		const entity = entityToRemove instanceof Entity ? entityToRemove : Engine.entities.get(entityToRemove)
 		if (!entity || entity === Engine.loadedLevel)
 			return

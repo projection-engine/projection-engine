@@ -29,4 +29,18 @@ export default class EngineState{
 	static shadowAtlasQuantity = 4
 	static shadowMapResolution = 4096
 	static debugShadingModel = 0
+	static motionBlurEnabled  = false
+	static motionBlurVelocityScale = 1
+	static motionBlurMaxSamples = 50
+	static shouldAOExecute = false
+
+	static elapsed = 0
+	static currentTimeStamp = 0
+
+	static visibilityNeedsUpdate = false
+
+	static directionalLightsChanged = false
+	static directionalLightsResolutionPerTexture = 1024
+	static directionalLightsMaxResolution = 4096
+	static directionalLightsAtlasRatio = 0
 }

@@ -9,49 +9,46 @@ import EngineState from "../EngineState"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 
-let cleared = false
-export default class GlobalIlluminationSystem extends AbstractSystem{
-     #uniformSettings = new Float32Array(3)
+export default class GlobalIlluminationSystem extends AbstractSystem {
+    #uniformSettings = new Float32Array(3)
+    #cleared = false
 
-    static getInstance(){
-         return super.get<GlobalIlluminationSystem>()
+    static getInstance() {
+        return super.get<GlobalIlluminationSystem>()
     }
 
-    updateUniforms(){
+    updateUniforms() {
         this.#uniformSettings[0] = EngineState.ssgiStepSize
         this.#uniformSettings[1] = EngineState.ssgiMaxSteps
         this.#uniformSettings[2] = EngineState.ssgiStrength
     }
 
-     execute() {
-        if (!EngineState.ssgiEnabled) {
-            if (!cleared) {
-                StaticFBO.ssgi.clear()
-                cleared = true
-            }
-            return
+    shouldExecute(): boolean {
+        if (!EngineState.ssgiEnabled && !this.#cleared) {
+            StaticFBO.ssgi.clear()
+            this.#cleared = true
         }
-        cleared = false
+        return EngineState.ssgiEnabled;
+    }
+
+    execute() {
+        this.#cleared = false
         const context = GPU.context
         const uniforms = StaticShaders.ssgiUniforms
         StaticFBO.ssgi.startMapping()
         StaticShaders.ssgi.bind()
 
-
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 0, StaticFBO.sceneDepthVelocity)
-
         GPUUtil.bind2DTextureForDrawing(uniforms.previousFrame, 1, StaticFBO.postProcessing2Sampler)
-
         context.uniform3fv(uniforms.rayMarchSettings, this.#uniformSettings)
-
         StaticMeshes.drawQuad()
         this.#applyBlur(context, StaticFBO.ssgiFallback, StaticFBO.ssgiSampler, true)
-         this.#applyBlur(context, StaticFBO.ssgi, StaticFBO.ssgiFallbackSampler, false)
+        this.#applyBlur(context, StaticFBO.ssgi, StaticFBO.ssgiFallbackSampler, false)
 
         MetricsController.currentState = METRICS_FLAGS.SSGI
     }
 
-     #applyBlur(context: WebGL2RenderingContext, FBO: Framebuffer, color: WebGLTexture, first: boolean) {
+    #applyBlur(context: WebGL2RenderingContext, FBO: Framebuffer, color: WebGLTexture, first: boolean) {
         const uniforms = StaticShaders.bilateralBlurUniforms
 
         if (first) {

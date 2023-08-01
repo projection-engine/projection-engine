@@ -14,6 +14,7 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
     noiseScale = new Float32Array(2)
     #ready = false
 
+
     constructor() {
         super();
         const RESOLUTION = 4
@@ -28,15 +29,16 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
         StaticFBO.generateSSAONoise().then(() => this.#ready = true)
     }
 
+    shouldExecute(): boolean {
+        return EngineState.ssaoEnabled && this.#ready && EngineState.shouldAOExecute;
+    }
 
     execute() {
-        if (!EngineState.ssaoEnabled || !this.#ready)
-            return
-
         this.#draw()
         this.#blur()
 
         MetricsController.currentState = METRICS_FLAGS.SSAO
+        EngineState.shouldAOExecute = false
     }
 
     #draw() {

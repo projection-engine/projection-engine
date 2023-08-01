@@ -13,6 +13,7 @@ import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import VIEWS from "../components/view/static/VIEWS"
 import StaticFBO from "../../../engine/core/lib/StaticFBO";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
+import EngineState from "../../../engine/core/EngineState";
 
 export default class ViewportUtil {
     static updateViewport(currentView: ViewTabItem) {
@@ -63,7 +64,7 @@ export default class ViewportUtil {
         } else
             setContext([entity.id])
 
-        VisibilityRendererSystem.needsUpdate = true
+        EngineState.visibilityNeedsUpdate = true
     }
 
     static addNewTab() {

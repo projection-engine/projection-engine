@@ -12,32 +12,35 @@ import AbstractSystem from "../AbstractSystem";
 
 const resources = mat4.create().fill(0)
 export default class AtmosphereRendererSystem extends AbstractSystem {
-	execute() {
-		const context = GPU.context
-		const entities = ResourceEntityMapper.atmosphere.array
-		const size = entities.length
-		if (size > 0) {
-			StaticShaders.atmosphere.bind()
-			context.disable(context.DEPTH_TEST)
-			context.uniformMatrix4fv(StaticShaders.atmosphereUniforms.invSkyProjectionMatrix, false, CameraAPI.invSkyboxProjectionMatrix)
-			for (let i = 0; i < size; i++) {
-				this.#render(entities[i])
-			}
-			context.enable(context.DEPTH_TEST)
-			MetricsController.currentState = METRICS_FLAGS.ATMOSPHERE
-		}
-	}
 
-	#render(entity:Entity){
-		const uniforms = StaticShaders.atmosphereUniforms
-		const context = GPU.context
-		const component = entity.atmosphereComponent
-		if (!entity.active)
-			return
-		AtmosphereComponent.bindResources(resources, component)
-		context.uniform1i(uniforms.type, component.renderingType)
-		context.uniformMatrix4fv(uniforms.information, false, resources)
+    shouldExecute(): boolean {
+        return ResourceEntityMapper.atmosphere.size > 0;
+    }
 
-		StaticMeshes.drawQuad()
-	}
+    execute() {
+        const entities = ResourceEntityMapper.atmosphere.array
+        const size = entities.length
+        const context = GPU.context
+        StaticShaders.atmosphere.bind()
+        context.disable(context.DEPTH_TEST)
+        context.uniformMatrix4fv(StaticShaders.atmosphereUniforms.invSkyProjectionMatrix, false, CameraAPI.invSkyboxProjectionMatrix)
+        for (let i = 0; i < size; i++) {
+            this.#render(entities[i])
+        }
+        context.enable(context.DEPTH_TEST)
+        MetricsController.currentState = METRICS_FLAGS.ATMOSPHERE
+    }
+
+    #render(entity: Entity) {
+        const uniforms = StaticShaders.atmosphereUniforms
+        const context = GPU.context
+        const component = entity.atmosphereComponent
+        if (!entity.active)
+            return
+        AtmosphereComponent.bindResources(resources, component)
+        context.uniform1i(uniforms.type, component.renderingType)
+        context.uniformMatrix4fv(uniforms.information, false, resources)
+
+        StaticMeshes.drawQuad()
+    }
 }

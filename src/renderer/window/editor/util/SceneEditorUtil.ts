@@ -18,6 +18,7 @@ import RENDER_TARGET from "../static/RENDER_TARGET"
 import SETTINGS from "../static/SETTINGS"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import CameraSerialization from "../../../engine/core/static/CameraSerialization";
+import EngineState from "../../../engine/core/EngineState";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
@@ -99,7 +100,7 @@ export default class SceneEditorUtil {
 				console.error(err, startCoords, nStart)
 			}
 
-			VisibilityRendererSystem.needsUpdate = true
+			EngineState.visibilityNeedsUpdate = true
 		}
 	}
 

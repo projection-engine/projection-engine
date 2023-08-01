@@ -6,8 +6,9 @@ import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
 import Entity from "../instances/Entity";
+import AbstractSystem from "../AbstractSystem";
 
-export default class SpriteRenderer {
+export default class SpriteRenderer extends AbstractSystem{
     execute() {
         const sprites = ResourceEntityMapper.sprites.array
         const size = sprites.length

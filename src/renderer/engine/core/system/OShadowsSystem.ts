@@ -31,9 +31,15 @@ export default class OShadowsSystem extends AbstractSystem {
         lightsToUpdate = this.lightsToUpdate
     }
 
+    static getSampler(): WebGLTexture {
+        return this.get<OShadowsSystem>().sampler
+    }
+
+    shouldExecute(): boolean {
+        return this.changed || lightsToUpdate.length > 0;
+    }
+
     execute() {
-        if (!this.changed && lightsToUpdate.length === 0)
-            return
         GPU.context.cullFace(GPU.context.BACK)
         GPU.context.viewport(0, 0, 512, 512)
         for (let i = 0; i < this.maxCubeMaps; i++) {

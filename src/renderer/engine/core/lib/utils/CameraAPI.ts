@@ -3,7 +3,6 @@ import Engine from "../../Engine"
 import ENVIRONMENT from "../../static/ENVIRONMENT"
 import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../math/ConversionAPI"
-import MotionBlurSystem from "../../system/MotionBlurSystem"
 import VisibilityRendererSystem from "../../system/VisibilityRendererSystem"
 
 import GPU from "../../GPU"
@@ -13,7 +12,7 @@ import CameraComponent from "../../instances/components/CameraComponent"
 import CameraResources from "../../resource-libs/CameraResources"
 import CameraSerialization from "../../static/CameraSerialization"
 import CameraNotificationDecoder from "../CameraNotificationDecoder"
-import Renderer from "../../Renderer"
+import EngineState from "../../EngineState";
 
 
 const TEMPLATE_CAMERA = new CameraComponent()
@@ -53,7 +52,7 @@ export default class CameraAPI extends CameraResources {
 	}
 
 	static syncThreads() {
-		CameraNotificationDecoder.elapsed = Renderer.elapsed
+		CameraNotificationDecoder.elapsed = EngineState.elapsed
 		CameraAPI.#worker.postMessage(0)
 	}
 
@@ -73,7 +72,7 @@ export default class CameraAPI extends CameraResources {
 			UBO.updateBuffer(CameraAPI.projectionUBOBuffer)
 			UBO.unbind()
 
-			VisibilityRendererSystem.needsUpdate = true
+			EngineState.visibilityNeedsUpdate= true
 		}
 
 		if (CameraNotificationDecoder.hasChangedView === 1) {
@@ -82,7 +81,7 @@ export default class CameraAPI extends CameraResources {
 			UBO.updateBuffer(CameraAPI.viewUBOBuffer)
 			UBO.unbind()
 
-			VisibilityRendererSystem.needsUpdate = true
+			EngineState.visibilityNeedsUpdate = true
 		}
 	}
 
@@ -169,10 +168,9 @@ export default class CameraAPI extends CameraResources {
 
 		cameraObj = {...TEMPLATE_CAMERA, ...cameraObj}
 
-		MotionBlurSystem.enabled = cameraObj.motionBlurEnabled === true || cameraObj.cameraMotionBlur === true
-
-		MotionBlurSystem.velocityScale = cameraObj.mbVelocityScale
-		MotionBlurSystem.maxSamples = cameraObj.mbSamples
+		EngineState.motionBlurEnabled =cameraObj.motionBlurEnabled === true || cameraObj.cameraMotionBlur === true
+		EngineState.motionBlurVelocityScale =cameraObj.mbVelocityScale
+		EngineState.motionBlurMaxSamples =cameraObj.mbSamples
 
 		CameraAPI.zFar = cameraObj.zFar
 		CameraAPI.zNear = cameraObj.zNear

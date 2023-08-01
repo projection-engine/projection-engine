@@ -9,7 +9,7 @@ import MaterialResourceMapper from "../../lib/MaterialResourceMapper"
 import MaterialUniform from "../../static/MaterialUniform"
 import EntityAPI from "../../lib/utils/EntityAPI"
 import COMPONENTS from "../../static/COMPONENTS"
-import Components from "../../static/COMPONENTS";
+import Components from "../../static/COMPONENTS"
 
 export default class MeshComponent extends Component {
 	static get componentKey(): Components {

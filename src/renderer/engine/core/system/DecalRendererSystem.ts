@@ -1,32 +1,29 @@
 import GPU from "../GPU"
-import MetricsController from "../lib/utils/MetricsController"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import SceneRenderingUtil from "./SceneRenderingUtil"
 import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGroup";
 import UberShader from "../resource-libs/UberShader";
 import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper";
 import StaticMeshes from "../lib/StaticMeshes";
 import GPUUtil from "../utils/GPUUtil";
 import Entity from "../instances/Entity";
+import AbstractSystem from "../AbstractSystem";
+import SceneRenderingUtil from "./SceneRenderingUtil";
 
-export default class DecalRendererSystem {
-    execute() {
-        const context = GPU.context
-        context.disable(context.DEPTH_TEST)
-        context.disable(context.CULL_FACE)
-        this.#drawDecals()
-        MetricsController.currentState = METRICS_FLAGS.DECAL
-        context.enable(context.DEPTH_TEST)
+export default class DecalRendererSystem extends AbstractSystem{
+
+    shouldExecute(): boolean {
+        return ResourceEntityMapper.decals.size > 0;
     }
 
-    #drawDecals() {
-        UberMaterialAttributeGroup.clear()
-        const uniforms = UberShader.uberUniforms
-        const context = GPU.context
+    execute() {
+        SceneRenderingUtil.bindGlobalResources()
         const toRender = ResourceEntityMapper.decals.array
         const size = toRender.length
-        if (size === 0)
-            return
+        const context = GPU.context
+        const uniforms = UberShader.uberUniforms
+
+        context.disable(context.DEPTH_TEST)
+        context.disable(context.CULL_FACE)
+        UberMaterialAttributeGroup.clear()
         context.uniform1i(uniforms.isDecalPass, 1)
         StaticMeshes.cube.bindAllResources()
         for (let i = 0; i < size; i++) {
@@ -45,6 +42,7 @@ export default class DecalRendererSystem {
 
             StaticMeshes.cube.draw()
         }
+        context.enable(context.DEPTH_TEST)
     }
 
     #bindDecalUniforms(uniforms: UniformMap, entity: Entity) {

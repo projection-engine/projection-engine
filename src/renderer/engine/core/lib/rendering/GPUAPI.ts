@@ -13,6 +13,7 @@ import TextureParams from "../../static/TextureParams"
 import MaterialInformation from "../../static/MaterialInformation"
 import MeshResourceMapper from "../MeshResourceMapper"
 import MaterialResourceMapper from "../MaterialResourceMapper"
+import EngineState from "../../EngineState";
 
 export default class GPUAPI {
 	static async allocateTexture(imageData: string | TextureParams, id: string) {
@@ -68,7 +69,7 @@ export default class GPUAPI {
 		GPU.materials.set(id, material)
 
 		UberShader.compile()
-		VisibilityRendererSystem.needsUpdate = true
+		EngineState.visibilityNeedsUpdate = true
 		return material
 	}
 
@@ -101,7 +102,7 @@ export default class GPUAPI {
 		})
 	}
 
-	static copyTexture(target: Framebuffer, source: Framebuffer, type = GPU.context.DEPTH_BUFFER_BIT, blitType = GPU.context.NEAREST) {
+	static copyTexture(target: Framebuffer, source: Framebuffer, type:number = GPU.context.DEPTH_BUFFER_BIT, blitType = GPU.context.NEAREST) {
 		const context = GPU.context
 		context.bindFramebuffer(context.READ_FRAMEBUFFER, source.FBO)
 		context.bindFramebuffer(context.DRAW_FRAMEBUFFER, target.FBO)
@@ -144,7 +145,7 @@ export default class GPUAPI {
 			GPUAPI.destroyMesh(GPU.meshes.get(id))
 		const instance = new Mesh({...bufferData, id})
 		GPU.meshes.set(id, instance)
-		VisibilityRendererSystem.needsUpdate = true
+		EngineState.visibilityNeedsUpdate = true
 		return instance
 	}
 
@@ -163,7 +164,7 @@ export default class GPUAPI {
 				mesh.normalVBO.delete()
 			GPU.meshes.delete(mesh.id)
 		}
-		VisibilityRendererSystem.needsUpdate = true
+		EngineState.visibilityNeedsUpdate = true
 	}
 
 	static allocateShader(id, vertex, fragment) {

@@ -63,11 +63,11 @@ export default class EngineResources {
 		StaticUBOs.frameCompositionUBO.updateData("FXAAReduceMul", EngineResources.#FLOAT_BUFFER)
 		StaticUBOs.frameCompositionUBO.unbind()
 
-		VisibilityRendererSystem.needsUpdate = true
+		EngineState.visibilityNeedsUpdate = true
 		EngineResources.#allocateDirectionalShadowsBuffers()
 
-		DShadowsSystem.resolutionPerTexture = DShadowsSystem.maxResolution / (EngineState.shadowAtlasQuantity || 1)
-		DShadowsSystem.atlasRatio = DShadowsSystem.maxResolution / DShadowsSystem.resolutionPerTexture
+		EngineState.directionalLightsResolutionPerTexture = EngineState.directionalLightsMaxResolution / (EngineState.shadowAtlasQuantity || 1)
+		EngineState.directionalLightsAtlasRatio = EngineState.directionalLightsMaxResolution / EngineState.directionalLightsResolutionPerTexture
 		StaticUBOs.uberUBO.bind()
 		StaticUBOs.uberUBO.updateData("shadowMapsQuantity", new Float32Array([EngineState.shadowAtlasQuantity]))
 		StaticUBOs.uberUBO.updateData("shadowMapResolution", new Float32Array([EngineState.shadowMapResolution]))
@@ -75,11 +75,11 @@ export default class EngineResources {
 	}
 
 	static #allocateDirectionalShadowsBuffers() {
-		if (DShadowsSystem.maxResolution === EngineState.shadowMapResolution || EngineState.shadowMapResolution < 1024)
+		if (EngineState.directionalLightsMaxResolution === EngineState.shadowMapResolution || EngineState.shadowMapResolution < 1024)
 			return
-		DShadowsSystem.maxResolution = EngineState.shadowMapResolution
+		EngineState.directionalLightsMaxResolution = EngineState.shadowMapResolution
 		StaticFBO.updateDirectionalShadowsFBO()
-		DShadowsSystem.changed = true
+		EngineState.directionalLightsChanged = true
 	}
 
 }
