@@ -11,24 +11,21 @@ import loopMeshes from "./loop-meshes"
 import Entity from "../instances/Entity"
 import Mesh from "../instances/Mesh"
 import AbstractSystem from "../AbstractSystem";
+import EngineState from "../EngineState";
 
 const cacheVec3 = vec3.create()
 const cacheViewMatrix = mat4.create()
 let cacheProjection
 let currentEntity
-let lightsToUpdate: LightComponent[]
 export default class OShadowsSystem extends AbstractSystem {
-    changed = false
-    maxCubeMaps = 2
+    static #MAX_CUBEMAPS = 2
     shadowMap?: ShadowProbe
     sampler?: WebGLTexture
-    lightsToUpdate: LightComponent[] = []
 
     constructor() {
         super()
         this.shadowMap = new ShadowProbe(512)
         this.sampler = this.shadowMap.texture
-        lightsToUpdate = this.lightsToUpdate
     }
 
     static getSampler(): WebGLTexture {
@@ -36,14 +33,14 @@ export default class OShadowsSystem extends AbstractSystem {
     }
 
     shouldExecute(): boolean {
-        return this.changed || lightsToUpdate.length > 0;
+        return EngineState.omnidirectionalLightsToUpdate.length > 0;
     }
 
     execute() {
         GPU.context.cullFace(GPU.context.BACK)
         GPU.context.viewport(0, 0, 512, 512)
-        for (let i = 0; i < this.maxCubeMaps; i++) {
-            const current = lightsToUpdate[i]
+        for (let i = 0; i < OShadowsSystem.#MAX_CUBEMAPS; i++) {
+            const current = EngineState.omnidirectionalLightsToUpdate[i]
             if (!current)
                 continue
             currentEntity = current.entity
@@ -58,8 +55,7 @@ export default class OShadowsSystem extends AbstractSystem {
                     current.zNear
                 )
         }
-        this.changed = false
-        lightsToUpdate.length = 0
+        EngineState.omnidirectionalLightsToUpdate.length = 0
         MetricsController.currentState = METRICS_FLAGS.OMNIDIRECTIONAL_SHADOWS
     }
 

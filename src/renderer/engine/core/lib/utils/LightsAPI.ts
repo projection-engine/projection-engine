@@ -7,6 +7,7 @@ import type Entity from "../../instances/Entity"
 import UberShader from "../../resource-libs/UberShader"
 import StaticUBOs from "../StaticUBOs"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
+import EngineState from "../../EngineState";
 
 
 let lightTimeout
@@ -143,7 +144,7 @@ export default class LightsAPI {
 				for (let i = 0; i < 16; i++)
 					secondaryBuffer[offset + i] = lightViewProjection[i]
 
-				DShadowsSystem.lightsToUpdate.push(component)
+				EngineState.directionalLightsToUpdate.push(component)
 			}
 			break
 		}
@@ -160,7 +161,7 @@ export default class LightsAPI {
 
 			secondaryBuffer[0] = component.shadowBias
 			if (component.shadowMap)
-				OShadowsSystem.lightsToUpdate.push(component)
+				EngineState.omnidirectionalLightsToUpdate.push(component)
 			break
 		}
 		case LIGHT_TYPES.SPOT: {

@@ -1,3 +1,5 @@
+import LightComponent from "./instances/components/LightComponent";
+
 export default class EngineState{
 	static fxaaEnabled = false
 	static fxaaSpanMax = 8
@@ -43,4 +45,6 @@ export default class EngineState{
 	static directionalLightsResolutionPerTexture = 1024
 	static directionalLightsMaxResolution = 4096
 	static directionalLightsAtlasRatio = 0
+	static directionalLightsToUpdate:LightComponent[] = []
+	static omnidirectionalLightsToUpdate:LightComponent[] = []
 }

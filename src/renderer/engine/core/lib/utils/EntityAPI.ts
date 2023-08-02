@@ -51,7 +51,7 @@ export default class EntityAPI {
 				entity.addParent(levelEntity)
 			else if (!entity.parent && entity.parentID) {
 				if(Engine.entities.has(entity.parentID))
-					entity.addParent(Engine.entities.get(entity.parentID))
+					entity.addParent(Engine.entities.get(entity.parentID as UUID))
 				else
 					entity.addParent(map[entity.parentID])
 			}
@@ -183,7 +183,7 @@ export default class EntityAPI {
 		parsedEntity.parentID = entity.parent ?? Engine.loadedLevel?.id
 
 		for (const k in entity.components) {
-			const component = parsedEntity.addComponent(k)
+			const component = parsedEntity.addComponent(k as COMPONENTS)
 			if (!component)
 				continue
 			const keys = Object.keys(entity.components[k])

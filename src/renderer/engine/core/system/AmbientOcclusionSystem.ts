@@ -11,19 +11,17 @@ import AbstractSystem from "../AbstractSystem";
 
 
 export default class AmbientOcclusionSystem extends AbstractSystem {
-    noiseScale = new Float32Array(2)
+    #noiseScale = new Float32Array(2)
     #ready = false
-
 
     constructor() {
         super();
-        const RESOLUTION = 4
-        this.noiseScale[0] = GPU.internalResolution.w / RESOLUTION
-        this.noiseScale[1] = GPU.internalResolution.h / RESOLUTION
+        this.#noiseScale[0] = GPU.internalResolution.w / 4
+        this.#noiseScale[1] = GPU.internalResolution.h / 4
 
         StaticUBOs.ssaoUBO.bind()
         StaticUBOs.ssaoUBO.updateData("settings", new Float32Array([.5, .7, -.1, 1000]))
-        StaticUBOs.ssaoUBO.updateData("noiseScale", this.noiseScale)
+        StaticUBOs.ssaoUBO.updateData("noiseScale", this.#noiseScale)
         StaticUBOs.ssaoUBO.unbind()
 
         StaticFBO.generateSSAONoise().then(() => this.#ready = true)

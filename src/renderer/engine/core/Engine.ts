@@ -47,22 +47,8 @@ export default class Engine {
     static isDev = true
     static #environment: number = ENVIRONMENT.DEV
     static #isReady = false
-    static #initializationWasTried = false
     static #initialized = false
     static #loadedLevel: Entity
-    static #frameID: number = undefined
-
-    static get isExecuting() {
-        return Engine.#frameID !== undefined
-    }
-
-    static removeLevelLoaderListener(id: string) {
-        Engine.#onLevelLoadListeners.delete(id)
-    }
-
-    static addLevelLoaderListener(id: string, callback: Function) {
-        Engine.#onLevelLoadListeners.set(id, callback)
-    }
 
     static get entities(): DynamicMap<UUID, Entity> {
         return EntityManager.getInstance().getEntities()
@@ -151,41 +137,34 @@ export default class Engine {
     }
 
     static async startSimulation() {
-        Engine.environment = ENVIRONMENT.EXECUTION
         UIAPI.buildUI(GPU.canvas.parentElement)
         const entities = Engine.entities.array
-        for (let i = 0; i < entities.length; i++) {
+        const size = entities.length
+        for (let i = 0; i < size; i++) {
             const current = entities[i]
             PhysicsAPI.registerRigidBody(current)
         }
         await ScriptsAPI.updateAllScripts()
+        Engine.environment = ENVIRONMENT.EXECUTION
     }
+
 
     static start() {
-
-        if (!Engine.isExecuting && Engine.#isReady) {
-            PhysicsSystem.start()
-            ResourceGarbageCollector.start()
-            Engine.#frameID = requestAnimationFrame(Engine.#loop)
-        } else
-            Engine.#initializationWasTried = true
-    }
-
-    static #loop(c) {
-        const queue = SystemManager.getExecutionQueue().array
-        const queueLength = queue.length
-        EngineState.currentTimeStamp = c
-        for (let i = 0; i < queueLength; i++) {
-            queue[i].execute()
-        }
-        Engine.#frameID = requestAnimationFrame(Engine.#loop)
+        if (!SystemManager.getInstance().isRunning && Engine.#isReady)
+            SystemManager.getInstance().start()
     }
 
     static stop() {
-        cancelAnimationFrame(Engine.#frameID)
-        Engine.#frameID = undefined
-        ResourceGarbageCollector.stop()
-        PhysicsSystem.stop()
+        SystemManager.getInstance().stop()
+    }
+
+
+    static removeLevelLoaderListener(id: string) {
+        Engine.#onLevelLoadListeners.delete(id)
+    }
+
+    static addLevelLoaderListener(id: string, callback: Function) {
+        Engine.#onLevelLoadListeners.set(id, callback)
     }
 
     static async loadLevel(levelID: UUID, cleanEngine?: boolean) {

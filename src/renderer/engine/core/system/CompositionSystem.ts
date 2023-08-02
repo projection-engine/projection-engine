@@ -10,9 +10,9 @@ import AbstractSystem from "../AbstractSystem";
 
 
 export default class CompositionSystem extends AbstractSystem {
-    lookUpRandom = new Float32Array(2e+3)
-    lookUpIndex = 0
-    currentNoise = 0
+    #lookUpRandom = new Float32Array(2e+3)
+    #lookUpIndex = 0
+    #currentNoise = 0
 
     constructor() {
         super()
@@ -23,25 +23,25 @@ export default class CompositionSystem extends AbstractSystem {
         StaticUBOs.frameCompositionUBO.updateData("inverseFilterTextureSize", new Float32Array([1 / GPU.internalResolution.w, 1 / GPU.internalResolution.h]))
         StaticUBOs.frameCompositionUBO.unbind()
 
-        for (let i = 0; i < this.lookUpRandom.length; i++) {
-            this.lookUpRandom[i] = Math.random()
+        for (let i = 0; i < this.#lookUpRandom.length; i++) {
+            this.#lookUpRandom[i] = Math.random()
         }
     }
 
     #lookup() {
-        return ++this.lookUpIndex >= this.lookUpRandom.length ? this.lookUpRandom[this.lookUpIndex = 0] : this.lookUpRandom[this.lookUpIndex]
+        return ++this.#lookUpIndex >= this.#lookUpRandom.length ? this.#lookUpRandom[this.#lookUpIndex = 0] : this.#lookUpRandom[this.#lookUpIndex]
     }
 
     execute() {
         const context = GPU.context
         const shader = StaticShaders.composition, uniforms = StaticShaders.compositionUniforms
 
-        this.currentNoise = this.#lookup()
+        this.#currentNoise = this.#lookup()
 
         shader.bind()
         GPUUtil.bind2DTextureForDrawing(uniforms.currentFrame, 0, StaticFBO.lensSampler)
 
-        context.uniform1f(uniforms.filmGrainSeed, this.currentNoise)
+        context.uniform1f(uniforms.filmGrainSeed, this.#currentNoise)
         StaticMeshes.drawQuad()
         MetricsController.currentState = METRICS_FLAGS.FRAME_COMPOSITION
     }

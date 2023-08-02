@@ -10,10 +10,8 @@ import EngineState from "../EngineState";
 
 
 export default class DShadowsSystem extends AbstractSystem {
-    lightsToUpdate = []
-
     shouldExecute(): boolean {
-        return EngineState.directionalLightsChanged || this.lightsToUpdate.length > 0;
+        return EngineState.directionalLightsChanged || EngineState.directionalLightsToUpdate.length > 0;
     }
 
     execute() {
@@ -24,8 +22,8 @@ export default class DShadowsSystem extends AbstractSystem {
         const size = EngineState.directionalLightsAtlasRatio ** 2
         const resPr = EngineState.directionalLightsResolutionPerTexture
         for (let face = 0; face < size; face++) {
-            if (face < this.lightsToUpdate.length) {
-                const currentLight = this.lightsToUpdate[face]
+            if (face < EngineState.directionalLightsToUpdate.length) {
+                const currentLight = EngineState.directionalLightsToUpdate[face]
 
                 GPU.context.viewport(
                     currentColumn * resPr,
@@ -53,7 +51,7 @@ export default class DShadowsSystem extends AbstractSystem {
         StaticFBO.shadows.stopMapping()
         GPU.context.cullFace(GPU.context.BACK)
         EngineState.directionalLightsChanged = false
-        this.lightsToUpdate.length = 0
+        EngineState.directionalLightsToUpdate.length = 0
         MetricsController.currentState = METRICS_FLAGS.DIRECTIONAL_SHADOWS
     }
 

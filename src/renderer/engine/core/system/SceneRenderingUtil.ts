@@ -9,8 +9,6 @@ import Material from "../instances/Material"
 import UberShader from "../resource-libs/UberShader"
 import EngineState from "../EngineState"
 
-
-let context, uniforms
 export default class SceneRenderingUtil {
 	static #bindTexture(context: WebGL2RenderingContext, location: WebGLUniformLocation, index: number, sampler: WebGLTexture, cubeMap: boolean) {
 		context.activeTexture(context.TEXTURE0 + index)
@@ -26,7 +24,6 @@ export default class SceneRenderingUtil {
 		UberShader.uber.bind()
 		if (Engine.developmentMode)
 			context.uniform1i(uniforms.shadingModel, EngineState.debugShadingModel)
-
 
 		context.uniformMatrix4fv(uniforms.skyProjectionMatrix, false, CameraAPI.skyboxProjectionMatrix)
 		context.uniform1f(uniforms.elapsedTime, EngineState.elapsed)

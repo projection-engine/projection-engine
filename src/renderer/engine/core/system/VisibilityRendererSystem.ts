@@ -1,7 +1,6 @@
 import GPU from "../GPU"
 import CameraAPI from "../lib/utils/CameraAPI"
 import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI"
-import AmbientOcclusionSystem from "./AmbientOcclusionSystem"
 import {mat4} from "gl-matrix"
 import StaticShaders from "../lib/StaticShaders"
 import StaticFBO from "../lib/StaticFBO"
