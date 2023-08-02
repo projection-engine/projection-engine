@@ -1,7 +1,7 @@
 import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
 import {vec3, vec4} from "gl-matrix"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import Engine from "../../../engine/core/Engine"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import EngineStateService from "./engine/EngineStateService"
@@ -32,7 +32,7 @@ export default class ViewportActionUtil {
 		vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
 		vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, <vec3>position)
 
-		CameraTracker.forceUpdate = true
+		EditorCameraSystem.forceUpdate = true
 	}
 
 	static deleteSelected() {

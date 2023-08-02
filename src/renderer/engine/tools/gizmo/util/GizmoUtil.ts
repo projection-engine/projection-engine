@@ -1,5 +1,5 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import GizmoSystem from "../GizmoSystem"
+import GizmoSystem from "../../systems/GizmoSystem"
 import Entity from "../../../core/instances/Entity"
 import PickingAPI from "../../../core/lib/utils/PickingAPI"
 import EntityAPI from "../../../core/lib/utils/EntityAPI"

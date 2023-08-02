@@ -7,7 +7,7 @@ import Entity from "../../../engine/core/instances/Entity"
 import Engine from "../../../engine/core/Engine"
 import ExecutionService from "../services/engine/ExecutionService"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import COMPONENTS from "../../../engine/core/static/COMPONENTS"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
 import SettingsStore from "../../shared/stores/SettingsStore"
@@ -35,13 +35,13 @@ export default class EditorUtil {
             const current = isCamera ? cameraTarget : Engine.entities.get(EntitySelectionStore.getMainEntity())
             if (current && current.cameraComponent) {
                 ExecutionService.cameraSerialization = CameraAPI.serializeState()
-                CameraTracker.stopTracking()
+                EditorCameraSystem.stopTracking()
                 CameraAPI.updateViewTarget(current)
                 engineInstance.updateStore({focusedCamera: current.id})
             }
         } else {
             CameraAPI.restoreState(ExecutionService.cameraSerialization)
-            CameraTracker.startTracking()
+            EditorCameraSystem.startTracking()
             engineInstance.updateStore({focusedCamera: undefined})
         }
     }

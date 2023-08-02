@@ -1,7 +1,7 @@
 import ENVIRONMENT from "../../../../engine/core/static/ENVIRONMENT"
 
 import EngineStore from "../../../shared/stores/EngineStore"
-import CameraTracker from "../../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../../engine/tools/systems/EditorCameraSystem"
 import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
 import Engine from "../../../../engine/core/Engine"
 import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
@@ -26,7 +26,7 @@ export default class ExecutionService {
 
 		ExecutionService.cameraSerialization = CameraAPI.serializeState()
 		ExecutionService.#isPlaying = true
-		CameraTracker.stopTracking()
+		EditorCameraSystem.stopTracking()
 		await LevelService.getInstance().saveCurrentLevel().catch(console.error)
 		ExecutionService.#currentLevelID = Engine.loadedLevel.id
 		await Engine.startSimulation()
@@ -50,7 +50,7 @@ export default class ExecutionService {
 		await ScriptsAPI.updateAllScripts()
 
 		CameraAPI.trackingEntity = undefined
-		CameraTracker.startTracking()
+		EditorCameraSystem.startTracking()
 		EngineStore.updateStore({executingAnimation: false})
 		CameraAPI.restoreState(ExecutionService.cameraSerialization)
 	}

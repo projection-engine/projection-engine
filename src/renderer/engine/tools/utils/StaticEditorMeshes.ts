@@ -1,7 +1,7 @@
 import Mesh from "../../core/instances/Mesh"
 
 import Texture from "../../core/instances/Texture"
-import IconsSystem from "../icons/IconsSystem"
+import IconsSystem from "../systems/IconsSystem"
 
 export default class StaticEditorMeshes {
 	static #initialized = false

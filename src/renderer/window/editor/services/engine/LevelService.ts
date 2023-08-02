@@ -8,7 +8,7 @@ import SettingsStore from "../../../shared/stores/SettingsStore"
 import VisualsStore from "../../../shared/stores/VisualsStore"
 import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
 import TabsStore from "../../../shared/stores/TabsStore"
-import CameraTracker from "../../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../../engine/tools/systems/EditorCameraSystem"
 import serializeStructure from "../../../../engine/core/utils/serialize-structure"
 import ElectronResources from "../../../shared/lib/ElectronResources"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
@@ -126,8 +126,8 @@ export default class LevelService extends AbstractSingleton {
             const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
             if (viewMetadata !== undefined) {
                 viewMetadata.cameraMetadata = CameraAPI.serializeState()
-                viewMetadata.cameraMetadata.prevX = CameraTracker.xRotation
-                viewMetadata.cameraMetadata.prevY = CameraTracker.yRotation
+                viewMetadata.cameraMetadata.prevX = EditorCameraSystem.xRotation
+                viewMetadata.cameraMetadata.prevY = EditorCameraSystem.yRotation
             }
 
             await FileSystemUtil.writeFile(

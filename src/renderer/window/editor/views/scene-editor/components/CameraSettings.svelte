@@ -6,7 +6,7 @@
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
-    import CameraTracker from "../../../../../engine/tools/utils/CameraTracker"
+    import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
     import {onDestroy, onMount} from "svelte"
     import EntityHierarchyService from "../../../services/engine/EntityHierarchyService"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
@@ -23,7 +23,7 @@
 
     onMount(() => {
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
-    		CameraTracker.screenSpaceMovement = screenSpaceMovement = data.screenSpaceMovement
+    		EditorCameraSystem.screenSpaceMovement = screenSpaceMovement = data.screenSpaceMovement
     		camera = data.camera
     	}, ["screenSpaceMovement", "camera"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => focusedCamera = data.focusedCamera, ["focusedCamera"])
@@ -38,7 +38,7 @@
     	EngineStore.getInstance().removeListener(COMPONENT_ID)
     	EntityHierarchyService.removeListener(COMPONENT_ID)
     })
-    
+
     const toggleProjection = () => {
     	SettingsStore.updateStore({camera: {...camera, ortho: !camera.ortho}})
     }

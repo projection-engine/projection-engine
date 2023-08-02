@@ -1,6 +1,6 @@
 import Component from "../../../../../engine/core/instances/components/Component"
 import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
-import CameraTracker from "../../../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
 
 export default [
 	{
@@ -11,7 +11,7 @@ export default [
 		min: .01,
 		increment: .1,
 		onChange: v => {
-			CameraTracker.screenSpaceMovementSpeed = v
+			EditorCameraSystem.screenSpaceMovementSpeed = v
 			return v
 		}
 	},
@@ -23,7 +23,7 @@ export default [
 		min: .01,
 		increment: .1,
 		onChange: v => {
-			CameraTracker.movementSpeed = v
+			EditorCameraSystem.movementSpeed = v
 			return v
 		}
 	},
@@ -35,7 +35,7 @@ export default [
 		min: .01,
 		increment: .001,
 		onChange: v => {
-			CameraTracker.turnSpeed = v
+			EditorCameraSystem.turnSpeed = v
 			return v
 		}
 	},

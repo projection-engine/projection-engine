@@ -4,12 +4,13 @@ import GPU from "../../core/GPU"
 import {mat4} from "gl-matrix"
 import Entity from "../../core/instances/Entity"
 import EngineToolsState from "../EngineToolsState"
+import AbstractSystem from "../../core/AbstractSystem";
 
 
 const invView = mat4.create()
 const projection = mat4.create()
 const view = mat4.create()
-export default class CameraIconRenderer {
+export default class CameraIconRenderer extends AbstractSystem{
 	static #createFrustumMatrix(entity: Entity) {
 		if (entity.changesApplied || !entity.__cameraIconMatrix || entity.__cameraNeedsUpdate) {
 			entity.__cameraNeedsUpdate = false

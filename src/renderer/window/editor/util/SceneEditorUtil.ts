@@ -9,7 +9,7 @@ import VisibilityRendererSystem from "../../../engine/core/system/VisibilityRend
 import EngineTools from "../../../engine/tools/EngineTools"
 import {glMatrix, quat} from "gl-matrix"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import ViewportInteractionListener from "../views/scene-editor/lib/ViewportInteractionListener"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
@@ -143,12 +143,12 @@ export default class SceneEditorUtil {
 				const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
 				const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
 				CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
-				CameraTracker.xRotation = glMatrix.toRadian(45)
-				CameraTracker.yRotation = -glMatrix.toRadian(45)
+				EditorCameraSystem.xRotation = glMatrix.toRadian(45)
+				EditorCameraSystem.yRotation = -glMatrix.toRadian(45)
 			} else {
 				CameraAPI.restoreState(cameraMetadata)
-				CameraTracker.xRotation = cameraMetadata.prevX
-				CameraTracker.yRotation = cameraMetadata.prevY
+				EditorCameraSystem.xRotation = cameraMetadata.prevX
+				EditorCameraSystem.yRotation = cameraMetadata.prevY
 			}
 		}catch (err){
 			console.error(err)
@@ -157,7 +157,7 @@ export default class SceneEditorUtil {
 
 	static onSceneEditorMount(draggable) {
 		ContextMenuService.getInstance().mount(getViewportContext(), RENDER_TARGET)
-		CameraTracker.startTracking()
+		EditorCameraSystem.startTracking()
 		ViewportInteractionListener.get()
 		draggable.onMount({
 			targetElement: GPU.canvas,

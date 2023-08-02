@@ -1,6 +1,6 @@
 import ViewTabItem from "../static/ViewTabItem"
 import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import Engine from "../../../engine/core/Engine"
 import GPU from "../../../engine/core/GPU"
 import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
@@ -20,10 +20,10 @@ export default class ViewportUtil {
         if (EngineStore.getData().focusedCamera)
             return
         if (currentView.type === VIEWPORT_TABS.EDITOR) {
-            CameraTracker.startTracking()
+            EditorCameraSystem.startTracking()
             Engine.start()
         } else {
-            CameraTracker.stopTracking()
+            EditorCameraSystem.stopTracking()
             Engine.stop()
         }
     }

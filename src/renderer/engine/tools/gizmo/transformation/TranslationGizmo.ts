@@ -4,7 +4,7 @@ import EngineStateService from "../../../../window/editor/services/engine/Engine
 import {vec3} from "gl-matrix"
 import GizmoUtil from "../util/GizmoUtil"
 import GizmoState from "../util/GizmoState"
-import GizmoSystem from "../GizmoSystem"
+import GizmoSystem from "../../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
 
 export default class TranslationGizmo extends AbstractXYZGizmo {

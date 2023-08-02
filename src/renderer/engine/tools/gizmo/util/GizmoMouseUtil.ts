@@ -2,7 +2,7 @@ import PickingAPI from "../../../core/lib/utils/PickingAPI"
 import AXIS from "../../static/AXIS"
 import Axis from "../../static/AXIS"
 import GizmoState from "./GizmoState"
-import GizmoSystem from "../GizmoSystem"
+import GizmoSystem from "../../systems/GizmoSystem"
 import GizmoUtil from "./GizmoUtil"
 import {vec3} from "gl-matrix"
 import StaticEditorFBO from "../../utils/StaticEditorFBO";

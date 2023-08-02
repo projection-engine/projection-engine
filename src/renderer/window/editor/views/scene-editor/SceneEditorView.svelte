@@ -3,7 +3,7 @@
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import SelectBox from "../../../shared/components/select-box/SelectBox.svelte"
     import GIZMOS from "../../../../../shared/enums/Gizmos.ts"
-    import GizmoSystem from "../../../../engine/tools/gizmo/GizmoSystem"
+    import GizmoSystem from "../../../../engine/tools/systems/GizmoSystem"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import CameraSettings from "./components/CameraSettings.svelte"
     import SceneOptions from "./components/SceneOptions.svelte"

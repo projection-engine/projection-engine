@@ -1,12 +1,12 @@
-import GridSystem from "./icons/GridSystem"
-import IconsSystem from "./icons/IconsSystem"
-import GizmoSystem from "./gizmo/GizmoSystem"
-import SelectedSystem from "./outline/SelectedSystem"
+import GridSystem from "./systems/GridSystem"
+import IconsSystem from "./systems/IconsSystem"
+import GizmoSystem from "./systems/GizmoSystem"
+import SelectedSystem from "./systems/SelectedSystem"
 import Engine from "../core/Engine"
-import CameraTracker from "./utils/CameraTracker"
-import WireframeRenderer from "./outline/WireframeRenderer"
+import EditorCameraSystem from "./systems/EditorCameraSystem"
+import WireframeSystem from "./systems/WireframeSystem"
 import ENVIRONMENT from "../core/static/ENVIRONMENT"
-import LineRenderer from "./icons/LineRenderer"
+import LineRenderer from "./systems/LineRenderer"
 import Entity from "../core/instances/Entity"
 import GPU from "../core/GPU"
 import StaticEditorMeshes from "./utils/StaticEditorMeshes"
@@ -17,6 +17,11 @@ import StaticEditorFBO from "./utils/StaticEditorFBO";
 import GPUUtil from "../core/utils/GPUUtil";
 import ConversionAPI from "../core/lib/math/ConversionAPI";
 import EngineToolsState from "./EngineToolsState";
+import SystemManager from "../core/SystemManager";
+import SilhouetteSystem from "./systems/SilhouetteSystem";
+import MouseCoordinateSystem from "./systems/MouseCoordinateSystem";
+import ClearContextSystem from "./systems/ClearContextSystem";
+import GizmoLineSystem from "./systems/GizmoLineSystem";
 
 export default class EngineTools {
     static selected: Entity[] = []
@@ -71,31 +76,41 @@ export default class EngineTools {
     }
 
     static #loop() {
-        const coords = ConversionAPI.toQuadCoordinates(EngineToolsState.unconvertedMouseCoordinates[0], EngineToolsState.unconvertedMouseCoordinates[1], GPU.internalResolution.w, GPU.internalResolution.h)
-        EngineToolsState.mouseCoordinates[0] = coords.x
-        EngineToolsState.mouseCoordinates[1] = coords.y
-        CameraTracker.updateFrame()
+
+        EditorCameraSystem.updateFrame()
         SelectedSystem.drawToBuffer()
         EngineTools.#setContextState()
         GridSystem.execute()
-        WireframeRenderer.execute()
+        WireframeSystem.execute()
         SelectedSystem.drawSilhouette()
         IconsSystem.execute()
         GizmoSystem.execute()
     }
 
     static bindSystems() {
-        Engine.addSystem("ENGINE_TOOLS_RENDERER", EngineTools.#loop)
+        const manager = SystemManager.getInstance()
+        manager.enableSystem(MouseCoordinateSystem)
+        manager.enableSystem(EditorCameraSystem)
+        manager.enableSystem(SelectedSystem)
+        manager.enableSystem(ClearContextSystem)
+        manager.enableSystem(GridSystem)
+        manager.enableSystem(WireframeSystem)
+        manager.enableSystem(SilhouetteSystem)
+        manager.enableSystem(IconsSystem)
+        manager.enableSystem(GizmoSystem)
+        manager.enableSystem(GizmoLineSystem)
     }
 
     static unbindSystems() {
-        Engine.removeSystem("ENGINE_TOOLS_RENDERER")
+        const manager = SystemManager.getInstance()
+        manager.disableSystem(EditorCameraSystem)
+        manager.disableSystem(SelectedSystem)
+        manager.disableSystem(EngineTools)
+        manager.disableSystem(GridSystem)
+        manager.disableSystem(WireframeSystem)
+        manager.disableSystem(SelectedSystem)
+        manager.disableSystem(IconsSystem)
+        manager.disableSystem(GizmoSystem)
     }
 
-    static #setContextState() {
-        const context = GPU.context
-        context.clear(context.DEPTH_BUFFER_BIT)
-        context.disable(context.CULL_FACE)
-        context.disable(context.DEPTH_TEST)
-    }
 }

@@ -7,7 +7,7 @@ import GizmoTransformationType from "../../../../shared/enums/GizmoTransformatio
 import EntityFactoryService from "../services/engine/EntityFactoryService"
 import CAMERA_ROTATIONS from "../../../engine/tools/static/CAMERA_ROTATIONS"
 import LevelService from "../services/engine/LevelService"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EngineStateService from "../services/engine/EngineStateService"
@@ -203,30 +203,30 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 		CAMERA_TOP: {
 
 			require: viewportHotkeys.CAMERA_TOP,
-			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.TOP)
+			callback: () => EditorCameraSystem.rotate(CAMERA_ROTATIONS.TOP)
 		},
 		CAMERA_BOTTOM: {
 
 			require: viewportHotkeys.CAMERA_BOTTOM,
-			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.BOTTOM)
+			callback: () => EditorCameraSystem.rotate(CAMERA_ROTATIONS.BOTTOM)
 		},
 		CAMERA_LEFT: {
 
 			require: viewportHotkeys.CAMERA_LEFT,
-			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.LEFT)
+			callback: () => EditorCameraSystem.rotate(CAMERA_ROTATIONS.LEFT)
 		},
 		CAMERA_RIGHT: {
 
 			require: viewportHotkeys.CAMERA_RIGHT,
-			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.RIGHT)
+			callback: () => EditorCameraSystem.rotate(CAMERA_ROTATIONS.RIGHT)
 		},
 		CAMERA_FRONT: {
 			require: viewportHotkeys.CAMERA_FRONT,
-			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.FRONT)
+			callback: () => EditorCameraSystem.rotate(CAMERA_ROTATIONS.FRONT)
 		},
 		CAMERA_BACK: {
 			require: viewportHotkeys.CAMERA_BACK,
-			callback: () => CameraTracker.rotate(CAMERA_ROTATIONS.BACK)
+			callback: () => EditorCameraSystem.rotate(CAMERA_ROTATIONS.BACK)
 		}
 
 	}

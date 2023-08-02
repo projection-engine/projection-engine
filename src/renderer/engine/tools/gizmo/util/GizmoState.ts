@@ -1,6 +1,6 @@
 import Entity from "../../../core/instances/Entity"
 import GizmoUtil from "./GizmoUtil"
-import GizmoSystem from "../GizmoSystem"
+import GizmoSystem from "../../systems/GizmoSystem"
 import AXIS from "../../static/AXIS"
 import GizmoTransformationType from "../../../../../shared/enums/GizmoTransformationType"
 import EngineTools from "../../EngineTools"

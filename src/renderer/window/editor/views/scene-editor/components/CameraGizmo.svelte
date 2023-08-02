@@ -1,17 +1,17 @@
 <script>
 
     import {onMount} from "svelte"
-    import CameraTracker from "../../../../../engine/tools/utils/CameraTracker"
+    import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
     import CAMERA_ROTATIONS from "../../../../../engine/tools/static/CAMERA_ROTATIONS"
 
     let ref
     let cameraRef
-    onMount(() => CameraTracker.gizmoReference = cameraRef)
+    onMount(() => EditorCameraSystem.gizmoReference = cameraRef)
 
     function onGizmoClick(e) {
     	const face = parseInt(e.target.getAttribute("data-svelteface"))
     	if (!isNaN(face))
-    		CameraTracker.rotate(face)
+    		EditorCameraSystem.rotate(face)
     }
 </script>
 
@@ -20,7 +20,7 @@
         class="gizmo-wrapper"
         bind:this={ref}
         on:mousedown={onGizmoClick}
-        on:mouseup={_ => ref.removeEventListener("mousemove", CameraTracker.forceRotationTracking)}
+        on:mouseup={_ => ref.removeEventListener("mousemove", EditorCameraSystem.forceRotationTracking)}
 >
     <div class="camera-view">
         <div

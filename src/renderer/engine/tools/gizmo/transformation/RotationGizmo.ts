@@ -9,7 +9,7 @@ import GizmoUtil from "../util/GizmoUtil"
 import GizmoTransformationType from "../../../../../shared/enums/GizmoTransformationType"
 import Movable from "../../../core/instances/components/Movable"
 import GizmoState from "../util/GizmoState"
-import GizmoSystem from "../GizmoSystem"
+import GizmoSystem from "../../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
 import GPUUtil from "../../../core/utils/GPUUtil";
 import StaticEditorFBO from "../../utils/StaticEditorFBO";

@@ -1,5 +1,5 @@
 <script>
-    import CameraTracker from "../../../../../engine/tools/utils/CameraTracker"
+    import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
     import Layout from "./dynamic-form/Layout.svelte"
     import CAMERA_PROPS from "../../../../../engine/core/static/component-props/CAMERA_PROPS"
@@ -28,8 +28,8 @@
     const updateCamera = (key, value, full) => {
     	if (full)
     		SettingsStore.updateStore({camera: {...camera, [key]: value}})
-    	if (CameraTracker[key] !== undefined)
-    		CameraTracker[key] = value
+    	if (EditorCameraSystem[key] !== undefined)
+    		EditorCameraSystem[key] = value
     }
 </script>
 

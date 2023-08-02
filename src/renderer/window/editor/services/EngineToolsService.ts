@@ -1,5 +1,5 @@
 import Engine from "../../../engine/core/Engine"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import EngineTools from "../../../engine/tools/EngineTools"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import ENVIRONMENT from "../../../engine/core/static/ENVIRONMENT"
@@ -86,9 +86,9 @@ export default class EngineToolsService extends AbstractSingleton {
 		if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
 			CameraAPI.trackingEntity = undefined
 			if (settings.camera !== undefined) {
-				CameraTracker.screenSpaceMovementSpeed = settings.camera.screenSpaceMovementSpeed || 1
-				CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
-				CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
+				EditorCameraSystem.screenSpaceMovementSpeed = settings.camera.screenSpaceMovementSpeed || 1
+				EditorCameraSystem.movementSpeed = settings.camera.movementSpeed * .1
+				EditorCameraSystem.turnSpeed = settings.camera.turnSpeed * .01
 				if (settings.camera.smoothing != null)
 					CameraAPI.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
 				CameraAPI.updateViewTarget(settings.camera)
