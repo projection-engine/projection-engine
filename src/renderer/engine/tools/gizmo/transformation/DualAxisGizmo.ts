@@ -5,22 +5,22 @@ import GizmoUtil from "../util/GizmoUtil"
 import AbstractSingleton from "../../../core/AbstractSingleton"
 import IGizmo from "../IGizmo"
 import Mesh from "../../../core/instances/Mesh"
-import Entity from "../../../core/instances/Entity"
+import EditorEntity from "../../EditorEntity"
 
 export default class DualAxisGizmo extends AbstractSingleton implements IGizmo {
 	mesh: Mesh
 	/**
      * XY gizmo
      */
-	xGizmo: Entity
+	xGizmo: EditorEntity
 	/**
      * ZY gizmo
      */
-	yGizmo: Entity
+	yGizmo: EditorEntity
 	/**
      * XZ gizmo
      */
-	zGizmo: Entity
+	zGizmo: EditorEntity
 
 	constructor() {
 		super()

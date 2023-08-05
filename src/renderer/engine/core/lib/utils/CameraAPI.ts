@@ -5,14 +5,12 @@ import ConversionAPI from "../math/ConversionAPI"
 
 import GPU from "../../GPU"
 import StaticUBOs from "../StaticUBOs"
-import Entity from "../../instances/Entity"
-import CameraComponent from "../../components/CameraComponent"
+import EditorEntity from "../../../tools/EditorEntity"
 import CameraResources from "../../resource-libs/CameraResources"
 import CameraNotificationDecoder from "../CameraNotificationDecoder"
 import EngineState from "../../EngineState";
+import {Environment,} from "@engine-core/engine.enum";
 
-
-const TEMPLATE_CAMERA = new CameraComponent()
 export default class CameraAPI extends CameraResources {
 	static #dynamicAspectRatio = false
 	static metadata = new CameraEffects()
@@ -85,7 +83,7 @@ export default class CameraAPI extends CameraResources {
 	static updateAspectRatio() {
 		const bBox = GPU.canvas.getBoundingClientRect()
 		ConversionAPI.canvasBBox = bBox
-		if (Engine.environment === Enviroment.DEV || CameraAPI.#dynamicAspectRatio) {
+		if (Engine.environment === Environment.DEV || CameraAPI.#dynamicAspectRatio) {
 			CameraAPI.aspectRatio = bBox.width / bBox.height
 			CameraAPI.updateProjection()
 		}
@@ -149,12 +147,12 @@ export default class CameraAPI extends CameraResources {
 		CameraAPI.updateView()
 	}
 
-	static updateViewTarget(data: Entity | Object) {
+	static updateViewTarget(data: EditorEntity | Object) {
 		if (!data)
 			CameraAPI.trackingEntity = undefined
 
 		let cameraObj
-		if (data instanceof Entity) {
+		if (data instanceof EditorEntity) {
 			CameraAPI.trackingEntity = data
 			cameraObj = data.cameraComponent
 		} else
@@ -163,7 +161,7 @@ export default class CameraAPI extends CameraResources {
 		if (!data)
 			return
 
-		cameraObj = {...TEMPLATE_CAMERA, ...cameraObj}
+		cameraObj = {...cameraObj}
 
 		EngineState.motionBlurEnabled =cameraObj.motionBlurEnabled === true || cameraObj.cameraMotionBlur === true
 		EngineState.motionBlurVelocityScale =cameraObj.mbVelocityScale
@@ -198,7 +196,7 @@ export default class CameraAPI extends CameraResources {
 		else
 			CameraAPI.updateAspectRatio()
 
-		if (data instanceof Entity)
+		if (data instanceof EditorEntity)
 			CameraAPI.update(data.translation, data.rotationQuaternionFinal)
 		CameraAPI.updateProjection()
 	}

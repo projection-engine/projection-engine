@@ -1,11 +1,12 @@
 import Component from "./Component"
 import CULLING_COMPONENT_PROPS from "../static/component-props/CULLING_COMPONENT_PROPS"
+import {Components,} from "@engine-core/engine.enum";
 
 export default class CullingComponent extends Component{
 	static get componentKey(): Components {
 		return Components.CULLING
 	}
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return CullingComponent.componentKey
 	}
 	_props = CULLING_COMPONENT_PROPS
@@ -13,6 +14,7 @@ export default class CullingComponent extends Component{
 	_screenDoorEffectDistanceMultiplier = .5
 	_distance = 100
 	_distanceCulling = false
+	occlusionCulling:boolean
 
 	get screenDoorEffectDistanceMultiplier(){
 		return this._screenDoorEffectDistanceMultiplier
@@ -25,6 +27,7 @@ export default class CullingComponent extends Component{
 	get distanceCulling(){
 		return this._distanceCulling
 	}
+
 	set distanceCulling(data){
 		this._distanceCulling = data
 		this.entity.__cullingMetadata[2] = data ? 1 : 0
@@ -35,13 +38,14 @@ export default class CullingComponent extends Component{
 	get distance(){
 		return this._distance
 	}
+
 	set distance(data){
 		this._distance = data
 		this.entity.__cullingMetadata[1] = data
-
 	}
+
 	get screenDoorEnabled(){
 		return this.entity.__cullingMetadata[5] === 1
 	}
-	occlusionCulling:boolean
+
 }

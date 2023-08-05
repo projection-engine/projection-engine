@@ -5,7 +5,7 @@ import StaticMeshes from "../lib/StaticMeshes"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
-import Entity from "../instances/Entity";
+import EditorEntity from "../../tools/EditorEntity";
 import AbstractSystem from "../AbstractSystem";
 
 export default class SpriteRenderer extends AbstractSystem{
@@ -24,7 +24,7 @@ export default class SpriteRenderer extends AbstractSystem{
         }
     }
 
-    #render(entity: Entity) {
+    #render(entity: EditorEntity) {
         const context = GPU.context
         const component = entity.spriteComponent
         const uniforms = StaticShaders.spriteUniforms

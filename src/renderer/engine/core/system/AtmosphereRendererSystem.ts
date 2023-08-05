@@ -7,7 +7,7 @@ import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import AtmosphereComponent from "../components/AtmosphereComponent"
 import {mat4} from "gl-matrix"
 import CameraAPI from "../lib/utils/CameraAPI"
-import Entity from "../instances/Entity";
+import EditorEntity from "../../tools/EditorEntity";
 import AbstractSystem from "../AbstractSystem";
 
 const resources = mat4.create().fill(0)
@@ -31,7 +31,7 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
         MetricsController.currentState = METRICS_FLAGS.ATMOSPHERE
     }
 
-    #render(entity: Entity) {
+    #render(entity: EditorEntity) {
         const uniforms = StaticShaders.atmosphereUniforms
         const context = GPU.context
         const component = entity.atmosphereComponent

@@ -6,7 +6,7 @@ import Engine from "../core/Engine"
 import EditorCameraSystem from "./systems/EditorCameraSystem"
 import WireframeSystem from "./systems/WireframeSystem"
 import LineRenderer from "./systems/LineRenderer"
-import Entity from "../core/instances/Entity"
+import EditorEntity from "./EditorEntity"
 import GPU from "../core/GPU"
 import StaticEditorMeshes from "./utils/StaticEditorMeshes"
 import StaticEditorShaders from "./utils/StaticEditorShaders"
@@ -23,9 +23,10 @@ import GizmoLineSystem from "./systems/GizmoLineSystem";
 import EditorCameraGizmoSystem from "./systems/EditorCameraGizmoSystem";
 import {UUID} from "crypto";
 import CameraIconSystem from "./systems/CameraIconSystem";
+import {Environment,} from "@engine-core/engine.enum";
 
 export default class EngineTools {
-    static selected: Entity[] = []
+    static selected: EditorEntity[] = []
     static #initialized = false
 
     static async initialize() {
@@ -36,7 +37,7 @@ export default class EngineTools {
         StaticEditorShaders.initialize()
         await StaticEditorMeshes.initialize()
 
-        Engine.environment = Enviroment.DEV
+        Engine.environment = Environment.DEV
         LineRenderer.initialize()
         StaticEditorFBO.initialize()
     }

@@ -1,13 +1,14 @@
 import Engine from "../../Engine"
-import Entity from "../../instances/Entity"
+import EditorEntity from "../../../tools/EditorEntity"
 import {UUID} from "crypto";
+import {Components,} from "@engine-core/engine.enum";
 
 export default class QueryAPI {
-	static getEntityByID(id: UUID|string): Entity | undefined {
+	static getEntityByID(id: UUID|string): EditorEntity | undefined {
 		return Engine.entities.get(id as UUID)
 	}
 
-	static getEntitiesWithNativeComponent(componentKey: Components): Entity[] {
+	static getEntitiesWithNativeComponent(componentKey: Components): EditorEntity[] {
 		const newArr = []
 		for (let i = 0; i < Engine.entities.array.length; i++) {
 			const entity = Engine.entities.array[i]
@@ -17,7 +18,7 @@ export default class QueryAPI {
 		return newArr
 	}
 
-	static getClosestEntityParent(entity: Entity): Entity | undefined {
+	static getClosestEntityParent(entity: EditorEntity): EditorEntity | undefined {
 		// TODO - CLOSEST WITH TRANSFORM COMPONENT
 		let currentEntity = entity
 		while (currentEntity?.parent) {
@@ -26,7 +27,7 @@ export default class QueryAPI {
 		}
 	}
 
-	static getClosestParentWithComponent(entity: Entity, component: Components): Entity | undefined {
+	static getClosestParentWithComponent(entity: EditorEntity, component: Components): EditorEntity | undefined {
 		let currentEntity = entity
 		while (currentEntity?.parent) {
 			currentEntity = currentEntity.parent
@@ -35,7 +36,7 @@ export default class QueryAPI {
 		}
 	}
 
-	static getEntityDepth(entity: Entity) {
+	static getEntityDepth(entity: EditorEntity) {
 		let depth = 0
 		let currentEntity = entity
 		while (currentEntity?.parent) {
@@ -45,7 +46,7 @@ export default class QueryAPI {
 		return depth
 	}
 
-	static isChildOf(entity: Entity, toFind: string): boolean {
+	static isChildOf(entity: EditorEntity, toFind: string): boolean {
 		let currentEntity = entity
 		while (currentEntity?.parent) {
 			if (currentEntity.parent.id === toFind)
@@ -55,14 +56,14 @@ export default class QueryAPI {
 		return false
 	}
 
-	static getHierarchyToObject(root: Entity, obj:MutableObject){
+	static getHierarchyToObject(root: EditorEntity, obj:MutableObject){
 		const children = root.children.array
 		for (let i = 0; i < children.length; i++) {
 			QueryAPI.getHierarchyToObject(children[i], obj)
 			obj[children[i].id] = children[i]
 		}
 	}
-	static getHierarchy(root: Entity, array?: Entity[]): Entity[] {
+	static getHierarchy(root: EditorEntity, array?: EditorEntity[]): EditorEntity[] {
 		const hierarchy =array ?? []
 		const children = root.children.array
 		for (let i = 0; i < children.length; i++) {
@@ -71,7 +72,7 @@ export default class QueryAPI {
 		}
 		return hierarchy
 	}
-	static loopHierarchy(entity: Entity, callback: Function) {
+	static loopHierarchy(entity: EditorEntity, callback: Function) {
 		const children = entity.children.array
 		callback(entity)
 		for (let i = 0; i < children.length; i++) {
@@ -80,7 +81,7 @@ export default class QueryAPI {
 		}
 	}
 
-	static getEntityByPickerID(id: number): Entity | undefined {
+	static getEntityByPickerID(id: number): EditorEntity | undefined {
 		if (id === 0)
 			return
 		const entities = Engine.entities.array

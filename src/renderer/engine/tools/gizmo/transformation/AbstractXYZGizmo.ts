@@ -2,14 +2,14 @@ import IGizmo from "../IGizmo";
 import GizmoUtil from "../util/GizmoUtil";
 import AXIS from "../../static/AXIS";
 import Mesh from "../../../core/instances/Mesh";
-import Entity from "../../../core/instances/Entity";
+import EditorEntity from "../../EditorEntity";
 import AbstractSingleton from "../../../core/AbstractSingleton";
 
 export default abstract class AbstractXYZGizmo extends AbstractSingleton implements IGizmo {
     declare mesh: Mesh;
-    declare xGizmo: Entity;
-    declare yGizmo: Entity;
-    declare zGizmo: Entity;
+    declare xGizmo: EditorEntity;
+    declare yGizmo: EditorEntity;
+    declare zGizmo: EditorEntity;
 
     drawToDepth(data) {
         GizmoUtil.drawToDepth(data, this.mesh, this.xGizmo.matrix, this.xGizmo.pickID)

@@ -6,13 +6,13 @@ import StaticMeshes from "../../core/lib/StaticMeshes"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import {mat4} from "gl-matrix"
 import MATERIAL_RENDERING_TYPES from "../../core/static/MATERIAL_RENDERING_TYPES"
-import Entity from "../../core/instances/Entity"
+import EditorEntity from "../EditorEntity"
 import StaticFBO from "../../core/lib/StaticFBO"
 import EngineToolsState from "../EngineToolsState"
 import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
-
+import {LightTypes,} from "@engine-core/engine.enum";
 
 const iconAttributes = mat4.create()
 export default class IconsSystem extends AbstractSystem {
@@ -47,7 +47,7 @@ export default class IconsSystem extends AbstractSystem {
     }
 
     static drawIcon(
-        entity: Entity,
+        entity: EditorEntity,
         U
     ) {
         const uniforms = U || StaticEditorShaders.iconUniforms
@@ -122,7 +122,7 @@ export default class IconsSystem extends AbstractSystem {
         StaticMeshes.drawQuad()
     }
 
-    static #drawVisualizations(entity: Entity) {
+    static #drawVisualizations(entity: EditorEntity) {
         const hasLight = entity.lightComponent
         const hasCamera = entity.cameraComponent
         if (!hasCamera && !hasLight)

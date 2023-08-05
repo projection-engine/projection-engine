@@ -9,7 +9,7 @@ import FileSystemAPI from "./lib/utils/FileSystemAPI"
 import ScriptsAPI from "./lib/utils/ScriptsAPI"
 import UIAPI from "./lib/rendering/UIAPI"
 import LightProbe from "./instances/LightProbe"
-import Entity from "./instances/Entity"
+import EditorEntity from "../tools/EditorEntity"
 import DynamicMap from "./resource-libs/DynamicMap"
 import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
@@ -33,19 +33,19 @@ import BokehDOFSystem from "./system/BokehDOFSystem";
 import MotionBlurSystem from "./system/MotionBlurSystem";
 import BloomSystem from "./system/BloomSystem";
 import PostProcessingSystem from "./system/PostProcessingSystem";
-
+import {Environment,} from "@engine-core/engine.enum";
 
 export default class Engine {
     static #development = false
     static #onLevelLoadListeners = new DynamicMap<string, Function>()
     static UILayouts = new Map()
     static isDev = true
-    static #environment: number = Enviroment.DEV
+    static #environment: number = Environment.DEV
     static #isReady = false
     static #initialized = false
-    static #loadedLevel: Entity
+    static #loadedLevel: EditorEntity
 
-    static get entities(): DynamicMap<UUID, Entity> {
+    static get entities(): DynamicMap<UUID, EditorEntity> {
         return EntityManager.getInstance().getEntities()
     }
 
@@ -53,7 +53,7 @@ export default class Engine {
         return Engine.#isReady
     }
 
-    static get loadedLevel(): Entity {
+    static get loadedLevel(): EditorEntity {
         return Engine.#loadedLevel
     }
 
@@ -66,7 +66,7 @@ export default class Engine {
     }
 
     static set environment(data: number) {
-        Engine.isDev = data === Enviroment.DEV
+        Engine.isDev = data === Environment.DEV
         Engine.#environment = data
         if (Engine.isDev)
             CameraAPI.updateAspectRatio()
@@ -136,7 +136,7 @@ export default class Engine {
             PhysicsAPI.registerRigidBody(current)
         }
         await ScriptsAPI.updateAllScripts()
-        Engine.environment = Enviroment.EXECUTION
+        Engine.environment = Environment.EXECUTION
     }
 
 
@@ -211,7 +211,7 @@ export default class Engine {
         Engine.#onLevelLoadListeners.array.forEach(callback => callback())
     }
 
-    static #replaceLevel(newLevel?: Entity) {
+    static #replaceLevel(newLevel?: EditorEntity) {
         const oldLevel = Engine.#loadedLevel
         Engine.#loadedLevel = newLevel
         if (oldLevel) {

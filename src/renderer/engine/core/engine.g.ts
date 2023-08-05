@@ -1,3 +1,5 @@
+type EngineEntity = `${string}-${string}-${string}-${string}-${string}`
+
 interface EntityListenerOptions {
     once?: boolean,
     targetEntityId?: string,
@@ -22,6 +24,14 @@ interface UniformMap {
     [key: string]: WebGLUniformLocation
 }
 
+interface ComponentValueGeneric {
+    [key: string]: any
+
+    type: string
+    label?: string
+    key?: string
+    disabledIf?: string | Function
+}
 
 interface CameraEffectsSerialization {
     zNear: number

@@ -1,10 +1,10 @@
 import Material from "../instances/Material"
-import Entity from "../instances/Entity"
+import EditorEntity from "../../tools/EditorEntity"
 import GPU from "../GPU"
 import ResourceMapper from "./ResourceMapper"
 
 
-type Resource = { material: Material, entities: Entity[], entitiesMap: Map<string, Entity> }[]
+type Resource = { material: Material, entities: EditorEntity[], entitiesMap: Map<string, EditorEntity> }[]
 export default class MaterialResourceMapper {
 	static #mapper = new ResourceMapper("material")
 
@@ -12,7 +12,7 @@ export default class MaterialResourceMapper {
 		return <Resource>MaterialResourceMapper.#mapper.dataMap
 	}
 
-	static removeBlock(entities: Entity[]) {
+	static removeBlock(entities: EditorEntity[]) {
 		MaterialResourceMapper.#mapper.removeBlock(entities)
 	}
 
@@ -27,7 +27,7 @@ export default class MaterialResourceMapper {
 		})
 	}
 
-	static linkEntityMaterial(entity: Entity, materialID: string) {
+	static linkEntityMaterial(entity: EditorEntity, materialID: string) {
 		let index = MaterialResourceMapper.materialsArray.findIndex(m => m.material.id === materialID)
 		if (index < 0 && !GPU.materials.has(materialID))
 			return

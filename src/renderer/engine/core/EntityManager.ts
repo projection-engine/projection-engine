@@ -1,17 +1,16 @@
-import Entity from "./instances/Entity"
 import AbstractSingleton from "./AbstractSingleton";
 import DynamicMap from "./resource-libs/DynamicMap";
-import {UUID} from "crypto";
 import Component from "./components/Component";
+import getComponentInstance from "./utils/get-component-instance";
+import serializeStructure from "./utils/serialize-structure";
+import {Components} from "./engine.enum";
 
 export default class EntityManager extends AbstractSingleton {
-    #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<Entity, Components>[]>
-    #entities = new DynamicMap<UUID, Entity>()
-    #lockingKey = crypto.randomUUID()
+    #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<EngineEntity, Components>[]>
+    #entities: DynamicMap<EngineEntity, DynamicMap<Components, Component>> = new DynamicMap()
 
     constructor() {
         super();
-        this.#entities.lock(this.#lockingKey)
         this.#listeners.set("component-add", [])
         this.#listeners.set("component-remove", [])
         this.#listeners.set("create", [])
@@ -31,7 +30,7 @@ export default class EntityManager extends AbstractSingleton {
      * OBS: hard-change type will be triggered only for "component-add", "component-remove", "create" and "delete" event types
      * @returns removeListener method
      */
-    addEventListener(type: EntityEventTypes, callback: GenericVoidFunctionWithP<EntityListenerEvent<Entity, Components>>, options?: EntityListenerOptions): GenericVoidFunction {
+    addEventListener(type: EntityEventTypes, callback: GenericVoidFunctionWithP<EntityListenerEvent<EngineEntity, Components>>, options?: EntityListenerOptions): GenericVoidFunction {
         if (type === "hard-change") {
             const toRemove = [
                 this.addEventListener("component-add", callback, options),
@@ -42,8 +41,8 @@ export default class EntityManager extends AbstractSingleton {
             return () => toRemove.forEach(f => f())
         } else {
             let remove: VoidFunction
-            const targets: EntityManagerListener<Entity, Components>[] = this.#listeners.get(type)
-            const onceCallback = (e: EntityListenerEvent<Entity, Components>) => {
+            const targets: EntityManagerListener<EngineEntity, Components>[] = this.#listeners.get(type)
+            const onceCallback = (e: EntityListenerEvent<EngineEntity, Components>) => {
                 callback(e)
                 remove()
             }
@@ -53,66 +52,157 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    updateEntity(entity: Entity, value: any, ...keys: string[]) {
+    getComponent(entity: EngineEntity, component: Components): Component | undefined {
+        return this.#entities.get(entity)?.get?.(component)
+    }
 
-        let currentObject = entity
-        for (let i = 0; i < keys.length - 1; i++) {
-            const key = keys[i]
-            currentObject = currentObject?.[key]
+    clone(entity: EngineEntity) {
+        const id = crypto.randomUUID()
+        const str = serializeStructure({id, components: Array.from(this.#entities.get(entity).entries())})
+        this.#parseEntity(JSON.parse(str))
+        return id
+    }
+
+    updateProperty(entity: EngineEntity, component: Components, key: string, value: any) {
+        this.#entities.get(entity).get(component)[key] = value
+        this.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
+    }
+
+    updateProperties(entity: EngineEntity, component: Components, properties: MutableObject) {
+        const entries = Object.entries(properties)
+        const componentInstance = this.#entities.get(entity).get(component)
+        for (let i = 0; i < entries.length; i++) {
+            const [key, value] = entries[i];
+            componentInstance[key] = value
         }
-        if (currentObject) {
-            currentObject[keys[keys.length - 1]] = value
-        }
-        this.#callListeners({target: entity, all: [entity], type: "update"})
+        this.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
     }
 
-    deleteEntities(...entities: Entity[]) {
-        this.#entities.unlock(this.#lockingKey)
-        this.#entities.removeBlock(entities, e => e.id)
-        this.#callListeners({all: entities, type: "delete"})
-    }
-
-    createEntity(id?: UUID, ...components: Components[]): Entity {
-        this.#entities.unlock(this.#lockingKey)
-        const entity = new Entity(id || crypto.randomUUID())
-        this.#entities.set(entity.id, entity)
-        Components.forEach(entity.addComponent)
-        this.#callListeners({all: [entity], type: "create", targetComponents: components})
-        return entity
-    }
-
-    createEntities(ids: UUID[]): Entity[] {
-        this.#entities.unlock(this.#lockingKey)
+    createEntities(quantity: number): EngineEntity[] {
         const entities = []
-        for(let i =0; i < ids.length; i++){
-            const entity = new Entity(ids[i])
-            entities.push(entity)
+        for (let i = 0; i < quantity; i++) {
+            const newEntity: EngineEntity = crypto.randomUUID()
+            entities.push(newEntity)
+            this.#entities.set(newEntity, new DynamicMap<Components, Component>())
         }
-        this.#entities.addBlock(entities, (entity) => entity.id)
         this.#callListeners({all: entities, type: "create"})
         return entities
     }
 
-    addComponent(target:UUID|Entity, componentType:Components):Component {
-        const entity = target instanceof Entity ? target : this.#entities.get(target)
-        const component = entity.addComponent<Component>(componentType)
-        this.#callListeners({target: entity, all: [entity], type: "component-add", targetComponents: [componentType]})
-        return component
+    removeEntities(entities: EngineEntity[]) {
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+            this.#entities.delete(entity);
+        }
+        this.#callListeners({all: entities, type: "delete"})
     }
 
-    removeComponent(target:UUID|Entity, componentType:Components) {
-        const entity = target instanceof Entity ? target : this.#entities.get(target)
-        entity.removeComponent(componentType)
-        this.#callListeners({target: entity, all: [entity], type: "component-remove", targetComponents: [componentType]})
+    addComponent(target: EngineEntity, componentType: Components): Component {
+        const targetMap = this.#entities.get(target)
+        const newInstance = getComponentInstance(target, componentType)
+        targetMap.set(componentType, newInstance)
+        this.#callListeners({target, all: [target], type: "component-add", targetComponents: [componentType]})
+        return newInstance
     }
 
-    #callListeners(event: EntityListenerEvent<Entity, Components>) {
-        this.#entities.lock(this.#lockingKey)
+    removeComponent(target: EngineEntity, componentType: Components) {
+        const targetMap = this.#entities.get(target)
+        targetMap.delete(componentType)
+        this.#callListeners({
+            target: target,
+            all: [target],
+            type: "component-remove",
+            targetComponents: [componentType]
+        })
+    }
+
+    #callListeners(event: EntityListenerEvent<EngineEntity, Components>) {
         const listeners = this.#listeners.get(event.type)
         Object.freeze(event)
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i]
             listener.callback(event)
         }
+    }
+
+    restoreState(data: string) {
+        try {
+            const previousAll = Array.from(this.#entities.keys())
+            this.#entities.clear()
+            const json: { id: EngineEntity, components: [Components, Object][] }[] = JSON.parse(data)
+            for (let i = 0; i < json.length; i++) {
+                this.#parseEntity(json[i]);
+            }
+            this.#callListeners({all: previousAll, type: "delete"})
+            this.#callListeners({all: json.map(e => e.id), type: "create"})
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    #parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
+        const components = new DynamicMap<Components, Component>()
+        this.#entities.set(entityData.id, components)
+        for (let i1 = 0; i1 < entityData.components.length; i1++) {
+            const componentObject = entityData.components[i1];
+            try {
+                const instance = this.#parseComponent(entityData.id, componentObject[1], componentObject[0])
+                components.set(componentObject[0], instance)
+            } catch (err) {
+                console.error(err)
+            }
+        }
+    }
+
+    #parseComponent(entity: EngineEntity, data: Object, key: Components): Component | undefined {
+        const component = getComponentInstance(entity, key)
+        const keys = Object.keys(data)
+        for (let i = 0; i < keys.length; i++) {
+            try {
+                const componentKey = keys[i]
+                const value = data[componentKey]
+                if (componentKey.includes("__") || componentKey.includes("#") || componentKey === "_props" || componentKey === "_name")
+                    continue
+                switch (key) {
+                    case Components.MESH: {
+                        if (componentKey === "_meshID" || componentKey === "_materialID")
+                            component[componentKey.replace("_", "")] = value
+                        else
+                            component[componentKey] = value
+                        break
+                    }
+                    case Components.ATMOSPHERE:
+                    case Components.DECAL: {
+                        if (componentKey.charAt(0) === "_")
+                            component[componentKey.substring(1, componentKey.length)] = value
+                        else
+                            component[componentKey] = value
+                        break
+                    }
+                    default:
+                        component[componentKey] = value
+                }
+
+
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        return component
+    }
+
+    serializeState(): string {
+        const data = []
+        this.#entities.forEach((value, key) => {
+            data.push({
+                id: key,
+                components: Array.from(value.entries())
+            })
+        })
+        return serializeStructure(data)
+    }
+
+    getAllComponents(entity: EngineEntity) {
+        return this.#entities.get(entity).array
     }
 }

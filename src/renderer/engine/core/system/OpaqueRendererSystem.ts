@@ -5,7 +5,7 @@ import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGr
 import UberShader from "../resource-libs/UberShader";
 import GPU from "../GPU";
 import loopMeshes from "./loop-meshes";
-import Entity from "../instances/Entity";
+import EditorEntity from "../../tools/EditorEntity";
 import Mesh from "../instances/Mesh";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import AbstractSystem from "../AbstractSystem";
@@ -25,7 +25,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         MetricsController.currentState = METRICS_FLAGS.OPAQUE
     }
 
-    #opaqueCallback(entity: Entity, mesh: Mesh) {
+    #opaqueCallback(entity: EditorEntity, mesh: Mesh) {
         const uniforms = UberShader.uberUniforms
         const material = entity.materialRef
         const context = GPU.context
@@ -51,7 +51,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         mesh.draw()
     }
 
-    #withMaterial(entity: Entity, material: Material) {
+    #withMaterial(entity: EditorEntity, material: Material) {
         const context = GPU.context
         if (material.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY)
             return

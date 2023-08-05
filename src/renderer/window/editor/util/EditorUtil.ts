@@ -3,7 +3,7 @@ import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EngineStore from "../../shared/stores/EngineStore"
-import Entity from "../../../engine/core/instances/Entity"
+import EditorEntity from "../../../engine/tools/EditorEntity"
 import Engine from "../../../engine/core/Engine"
 import ExecutionService from "../services/engine/ExecutionService"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
@@ -29,7 +29,7 @@ export default class EditorUtil {
     static focusOnCamera(cameraTarget) {
         const engineInstance = EngineStore.getInstance()
         const focused = engineInstance.data.focusedCamera
-        const isCamera = cameraTarget instanceof Entity
+        const isCamera = cameraTarget instanceof EditorEntity
         if (!focused || isCamera && cameraTarget.id !== focused) {
             const current = isCamera ? cameraTarget : Engine.entities.get(EntitySelectionStore.getMainEntity())
             if (current && current.cameraComponent) {
@@ -134,7 +134,7 @@ export default class EditorUtil {
         return await EditorUtil.getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
     }
 
-    static selectEntityHierarchy(start: Entity): string[] {
+    static selectEntityHierarchy(start: EditorEntity): string[] {
         const result: string[] = []
         const direct = start.children.array
         direct.forEach(d => result.push(...EditorUtil.selectEntityHierarchy(d)))

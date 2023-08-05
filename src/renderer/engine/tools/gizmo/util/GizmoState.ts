@@ -1,4 +1,4 @@
-import Entity from "../../../core/instances/Entity"
+import EditorEntity from "../../EditorEntity"
 import GizmoUtil from "./GizmoUtil"
 import GizmoSystem from "../../systems/GizmoSystem"
 import AXIS from "../../static/AXIS"
@@ -14,7 +14,7 @@ import RotationGizmo from "../transformation/RotationGizmo"
 import {vec3} from "gl-matrix"
 
 export default class GizmoState {
-    static #mainEntity?: Entity
+    static #mainEntity?: EditorEntity
     static targetRotation?: Float32Array
     static #targetGizmos: IGizmo[] = []
     static hasTransformationStarted = false

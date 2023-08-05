@@ -7,20 +7,12 @@ import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import EngineToolsState from "../EngineToolsState"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
-import CameraComponent from "../../core/components/CameraComponent";
-import DynamicMap from "../../core/resource-libs/DynamicMap";
-import {UUID} from "crypto";
-import Entity from "../../core/instances/Entity";
 import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
+import {ColliderTypes,} from "@engine-core/engine.enum";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
 export default class WireframeSystem extends AbstractSystem {
-
-
-    @AbstractSystem.injectComponents(CameraComponent.componentKey)
-    colliders: DynamicMap<UUID, Entity>
-
     shouldExecute(): boolean {
         return EngineToolsState.showOutline;
     }

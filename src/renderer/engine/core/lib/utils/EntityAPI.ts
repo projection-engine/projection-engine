@@ -2,7 +2,7 @@ import Engine from "../../Engine"
 import TransformationWorkerAPI from "./TransformationWorkerAPI"
 import UIAPI from "../rendering/UIAPI"
 import PhysicsAPI from "../rendering/PhysicsAPI"
-import Entity from "../../instances/Entity"
+import EditorEntity from "../../../tools/EditorEntity"
 import LightsAPI from "./LightsAPI"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import MeshResourceMapper from "../MeshResourceMapper"
@@ -11,6 +11,7 @@ import QueryAPI from "./QueryAPI"
 import * as crypto from "crypto";
 import {UUID} from "crypto";
 import EngineState from "../../EngineState";
+import {Components,} from "@engine-core/engine.enum";
 
 const COMPONENT_TRIGGER_UPDATE = [Components.LIGHT, Components.MESH]
 const ENTITY_TYPED_ATTRIBUTES = [
@@ -38,15 +39,12 @@ const excludedKeys = [
 	"id"
 ]
 export default class EntityAPI {
-	static getNewEntityInstance(id?: crypto.UUID): Entity {
-		return new Entity(id)
+	static getNewEntityInstance(id?: crypto.UUID): EditorEntity {
+		return new EditorEntity(id)
 	}
 
-	static isRegistered(entity) {
-		return Engine.entities.has(entity.id)
-	}
 
-	static addGroup(entities: Entity[]) {
+	static addGroup(entities: EditorEntity[]) {
 		const levelEntity = Engine.loadedLevel
 		if(!levelEntity)
 			return
@@ -75,7 +73,7 @@ export default class EntityAPI {
 		ResourceEntityMapper.addBlock(entities)
 	}
 
-	static addEntity(entity?: Entity): Entity {
+	static addEntity(entity?: EditorEntity): EditorEntity {
 		if (!entity)
 			return
 		if (entity && Engine.entities.has(entity.id))
@@ -89,7 +87,7 @@ export default class EntityAPI {
 		return entity
 	}
 
-	static toggleVisibility(entity: Entity): void {
+	static toggleVisibility(entity: EditorEntity): void {
 		const newValue = !entity.active
 		entity.active = newValue
 		let needsLightUpdate = entity.meshComponent !== undefined || entity.lightComponent !== undefined
@@ -106,7 +104,7 @@ export default class EntityAPI {
 		EngineState.visibilityNeedsUpdate = needsVisibilityUpdate
 	}
 
-	static registerEntityComponents(entity: Entity, previouslyRemoved?: string): void {
+	static registerEntityComponents(entity: EditorEntity, previouslyRemoved?: string): void {
 		if (!EntityAPI.isRegistered(entity))
 			return
 
@@ -116,16 +114,16 @@ export default class EntityAPI {
 		EngineState.visibilityNeedsUpdate = true
 	}
 
-	static removeEntity(entityToRemove: UUID | Entity) {
-		const entity = entityToRemove instanceof Entity ? entityToRemove : Engine.entities.get(entityToRemove)
+	static removeEntity(entityToRemove: UUID | EditorEntity) {
+		const entity = entityToRemove instanceof EditorEntity ? entityToRemove : Engine.entities.get(entityToRemove)
 		if (!entity || entity === Engine.loadedLevel)
 			return
 		entity.removeParent()
 		EntityAPI.removeGroup([entity], true)
 	}
 
-	static removeGroup(toRemove: Entity[], searchHierarchy: boolean) {
-		const hierarchy: { [key: string]: Entity } = {}
+	static removeGroup(toRemove: EditorEntity[], searchHierarchy: boolean) {
+		const hierarchy: { [key: string]: EditorEntity } = {}
 		for (let i = 0; i < toRemove.length; i++) {
 			const entity = toRemove[i]
 			if (entity !== Engine.loadedLevel)
@@ -164,9 +162,8 @@ export default class EntityAPI {
 			LightsAPI.packageLights(false, true)
 	}
 
-	static parseEntityObject(entity: MutableObject, asNew?: boolean): Entity {
+	static parseEntityObject(entity: MutableObject, asNew?: boolean): EditorEntity {
 		const parsedEntity = EntityAPI.getNewEntityInstance(asNew ? crypto.randomUUID() : entity.id)
-
 		const keys = Object.keys(entity)
 
 		for (let i = 0; i < keys.length; i++) {

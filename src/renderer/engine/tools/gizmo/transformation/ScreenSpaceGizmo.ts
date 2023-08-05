@@ -5,14 +5,14 @@ import GizmoUtil from "../util/GizmoUtil"
 import AbstractSingleton from "../../../core/AbstractSingleton"
 import IGizmo from "../IGizmo"
 import Mesh from "../../../core/instances/Mesh"
-import Entity from "../../../core/instances/Entity"
+import EditorEntity from "../../EditorEntity"
 import PickingAPI from "../../../core/lib/utils/PickingAPI"
 
 export default class ScreenSpaceGizmo extends AbstractSingleton implements IGizmo {
 	mesh: Mesh
-	xGizmo: Entity
-	yGizmo: Entity
-	zGizmo: Entity
+	xGizmo: EditorEntity
+	yGizmo: EditorEntity
+	zGizmo: EditorEntity
 
 
 	drawGizmo() {

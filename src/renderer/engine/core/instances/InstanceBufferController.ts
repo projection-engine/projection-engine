@@ -1,10 +1,10 @@
-import Entity from "./Entity"
+import EditorEntity from "../../tools/EditorEntity"
 import GPU from "../GPU"
 
 export default class InstanceBufferController {
 	id?:string
 	bufferSize = 0
-	entities = new Map<string,Entity>()
+	entities = new Map<string,EditorEntity>()
 	transformVBO?:WebGLBuffer
 
 	constructor(materialID) {

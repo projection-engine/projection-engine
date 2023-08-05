@@ -1,5 +1,5 @@
 import Engine from "../../../../engine/core/Engine"
-import Entity from "../../../../engine/core/instances/Entity"
+import EditorEntity from "../../../../engine/tools/EditorEntity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
 
@@ -13,7 +13,7 @@ export default class EntityHierarchyService {
 		if(!root)
 			return
 
-		const callback = (node: Entity, depth: number) => {
+		const callback = (node: EditorEntity, depth: number) => {
 			if(!node)
 				return
 			data.push({node, depth})

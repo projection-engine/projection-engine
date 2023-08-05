@@ -1,7 +1,7 @@
 <script>
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
     import Engine from "../../../../../engine/core/Engine"
-
+    import {TransformationRotationTypes,} from "@engine-core/engine.enum";
     import {onDestroy, onMount} from "svelte"
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
     import EditorActionHistory from "../../../services/EditorActionHistory"
@@ -10,13 +10,12 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte"
     import ROTATION_TYPES from "../static/ROTATION_TYPES"
-    import Movable from "../../../../../engine/core/components/Movable"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
 
     const COMPONENT_ID = crypto.randomUUID()
     let targets = []
-    let rotationType = Movable.ROTATION_QUATERNION
+    let rotationType = TransformationRotationTypes.ROTATION_QUATERNION
     let totalTranslated = [0, 0, 0]
     let totalScaled = [0, 0, 0]
     let totalPivot = [0, 0, 0]
@@ -81,7 +80,7 @@
     		EditorActionHistory.save(targets)
     	}
 
-    	if (rotationType === Movable.ROTATION_QUATERNION)
+    	if (rotationType === TransformationRotationTypes.ROTATION_QUATERNION)
     		mainEntity.rotationQuaternion[axis] = value
     	else
     		mainEntity.rotationEuler[axis] = value
@@ -273,7 +272,7 @@
                           lockedCache[2] = !lockedCache[2]
                     }}
                     />
-                    {#if rotationType === Movable.ROTATION_QUATERNION}
+                    {#if rotationType === TransformationRotationTypes.ROTATION_QUATERNION}
                         <Range
                                 onFinish={onFinish}
                                 disabled={lockedRotation}

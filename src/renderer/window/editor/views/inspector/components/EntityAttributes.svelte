@@ -2,14 +2,14 @@
     import EntityInformation from "./EntityInformation.svelte"
     import Layout from "./dynamic-form/Layout.svelte"
     import {onDestroy, onMount} from "svelte"
-
     import dragDrop from "../../../../shared/components/drag-drop/drag-drop"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import InspectorUtil from "../../../util/InspectorUtil"
     import INSPECTOR_TABS from "../static/INSPECTOR_TABS"
-    import type Entity from "../../../../../engine/core/instances/Entity";
+    import type EditorEntity from "../../../../../engine/tools/EditorEntity";
 
-    export let entity: Entity
+
+    export let entity: EditorEntity
     export let tabIndex: number
 
     const TAB_OFFSET = INSPECTOR_TABS.length
@@ -51,7 +51,7 @@
     {:else}
         <Layout
                 {entity}
-                key={form.data.componentKey}
+                key={form.data.getComponentKey()}
                 component={form.data}
                 updateTabs={() => entity = entity}
                 submit={submit}

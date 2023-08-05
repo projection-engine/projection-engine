@@ -1,8 +1,8 @@
 import Mesh from "../instances/Mesh"
-import Entity from "../instances/Entity"
+import EditorEntity from "../../tools/EditorEntity"
 import Material from "../instances/Material"
 
-interface Data { mesh?: Mesh, material?: Material, entities: Entity[], entitiesMap: Map<string, Entity> }
+interface Data { mesh?: Mesh, material?: Material, entities: EditorEntity[], entitiesMap: Map<string, EditorEntity> }
 export default class ResourceMapper {
 	key: string
 	dataMap: Data[] = []
@@ -11,7 +11,7 @@ export default class ResourceMapper {
 		this.key = key
 	}
 
-	removeBlock(entities: Entity[]):Data[] {
+	removeBlock(entities: EditorEntity[]):Data[] {
 		const mapToRemove = {}
 		for (let i = 0; i < entities.length; i++) {
 			const meshID = entities[i].meshRef?.id

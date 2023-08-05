@@ -7,7 +7,7 @@ import EntityNamingService from "./engine/EntityNamingService"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ChangesTrackerStore from "../../shared/stores/ChangesTrackerStore"
 import EngineStateService from "./engine/EngineStateService"
-import Entity from "../../../engine/core/instances/Entity"
+import EditorEntity from "../../../engine/tools/EditorEntity"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
 interface Action {
@@ -24,7 +24,7 @@ export default class EditorActionHistory {
 		EditorActionHistory.#cache.history = [null]
 	}
 
-	static save(value: Entity[] | Entity, isRemoval?: boolean) {
+	static save(value: EditorEntity[] | EditorEntity, isRemoval?: boolean) {
 		ChangesTrackerStore.updateStore({changed: true})
 
 		const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
@@ -55,7 +55,7 @@ export default class EditorActionHistory {
 	static #apply(currentAction: Action) {
 		const nameCache = currentAction.nameCache
 		const toRemove = currentAction.toRemove
-		const toAdd: Entity[] = []
+		const toAdd: EditorEntity[] = []
 		const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
 
 		EntityNamingService.byName = nameCache

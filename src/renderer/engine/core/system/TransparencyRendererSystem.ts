@@ -3,7 +3,7 @@ import StaticFBO from "../lib/StaticFBO"
 import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGroup";
 import UberShader from "../resource-libs/UberShader";
 import GPU from "../GPU";
-import Entity from "../instances/Entity";
+import EditorEntity from "../../tools/EditorEntity";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import MaterialResourceMapper from "../lib/MaterialResourceMapper";
 import GPUUtil from "../utils/GPUUtil";
@@ -41,7 +41,7 @@ export default class TransparencyRendererSystem extends AbstractSystem {
         StaticFBO.postProcessing2.stopMapping()
     }
 
-    #renderEntity(entity: Entity,) {
+    #renderEntity(entity: EditorEntity,) {
         const mesh = entity.meshRef
         const uniforms = UberShader.uberUniforms
         const context = GPU.context

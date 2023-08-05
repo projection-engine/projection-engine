@@ -3,26 +3,20 @@ import ATMOSPHERE_PROPS from "../static/component-props/ATMOSPHERE_PROPS"
 import ATMOSPHERE_TYPES from "../static/ATMOSPHERE_TYPES"
 import {mat4, vec3} from "gl-matrix"
 import LightsAPI from "../lib/utils/LightsAPI"
-
+import {Components,} from "@engine-core/engine.enum";
 
 export default class AtmosphereComponent extends Component {
 	static get componentKey(): Components {
 		return Components.ATMOSPHERE
 	}
 
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return AtmosphereComponent.componentKey
 	}
 
 	_props = ATMOSPHERE_PROPS
-
-	constructor() {
-		super()
-		this.elapsedTime = 0
-	}
-
 	_elapsedTime = 0
-	#sunDirection = <vec3>[0, 1, 1]
+	#sunDirection = vec3.normalize(<vec3>[0, 1, 1], [Math.sin(this._elapsedTime), Math.cos(this._elapsedTime), 1.0])
 	maxSamples = 10
 	mieHeight = 1000
 	rayleighHeight = 8000
@@ -41,10 +35,7 @@ export default class AtmosphereComponent extends Component {
 	set elapsedTime(data) {
 		this._elapsedTime = data
 		vec3.normalize(this.#sunDirection, [Math.sin(this._elapsedTime), Math.cos(this._elapsedTime), 1.0])
-		if (this.entity?.active) {
-			this.entity.needsLightUpdate = true
-			LightsAPI.packageLights(true, true)
-		}
+		LightsAPI.packageLights(true, true)
 	}
 
 	get elapsedTime() {

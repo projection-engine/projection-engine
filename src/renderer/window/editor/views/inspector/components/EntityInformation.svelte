@@ -8,7 +8,7 @@
 
     import Input from "../../../../shared/components/input/Input.svelte";
     import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte";
-    import Entity from "../../../../../engine/core/instances/Entity";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import PropertyHeader from "../../../../shared/components/PropertyHeader.svelte";
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte";
     import TransformationForm from "./TransformationForm.svelte";
@@ -18,7 +18,7 @@
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
 
-    export let entity: Entity
+    export let entity: EditorEntity
 
     const ID = crypto.randomUUID()
     let entityName = entity.name

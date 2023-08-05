@@ -2,7 +2,7 @@ import Component from "./Component"
 import LIGHT_PROPS from "../static/component-props/LIGHT_PROPS"
 import LightsAPI from "../lib/utils/LightsAPI"
 import {mat4} from "gl-matrix"
-import EntityAPI from "../lib/utils/EntityAPI"
+import {Components, LightTypes,} from "@engine-core/engine.enum";
 
 
 export default class LightComponent extends Component {
@@ -10,7 +10,7 @@ export default class LightComponent extends Component {
 		return Components.LIGHT
 	}
 
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return LightComponent.componentKey
 	}
 
@@ -20,17 +20,6 @@ export default class LightComponent extends Component {
 	_color = [255, 255, 255]
 	fixedColor = [1, 1, 1]
 	_type = LightTypes.DIRECTIONAL
-	get type() {
-		return this._type
-	}
-
-	set type(data) {
-		const isDifferent = data !== this._type
-		this._type = data
-		if (isDifferent && EntityAPI.isRegistered(this.entity))
-			LightsAPI.packageLights(false, true)
-	}
-
 	hasSSS = false
 	shadowBias = .0001
 	shadowSamples = 3
@@ -66,8 +55,16 @@ export default class LightComponent extends Component {
 		this._intensity = data
 		this.fixedColor = [this._color[0] * this.intensity / 255, this._color[1] * this.intensity / 255, this._color[2] * this.intensity / 255]
 	}
+	get type() {
+		return this._type
+	}
 
-
+	set type(data) {
+		const isDifferent = data !== this._type
+		this._type = data
+		if (isDifferent)
+			LightsAPI.packageLights(false, true)
+	}
 	get color() {
 		return this._color
 	}

@@ -1,6 +1,6 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import DynamicMap from "../resource-libs/DynamicMap"
-import Movable from "../components/Movable"
+import {TransformationRotationTypes,} from "@engine-core/engine.enum";
 
 /**
  * @field controlBuffer {Uint8Array [hasUpdatedItem]} - Transferred array from MovementWorker, will be written to in case of changes to linked entities.
@@ -103,39 +103,39 @@ export default class TransformationPass {
 
 		mat4.copy(entity.previousModelMatrix, entity.matrix)
 		entity.needsCacheUpdate = true
-		if (entity.rotationType[0] === Movable.ROTATION_QUATERNION)
+		if (entity.rotationType[0] === TransformationRotationTypes.ROTATION_QUATERNION)
 			quat.normalize(entity.rotationQuaternionFinal, entity.rotationQuaternion)
 
 		else {
 			quat.copy(entity.rotationQuaternionFinal, EMPTY_QUATERNION)
 			switch (entity.rotationType[0]) {
-			case Movable.ROTATION_EULER_XZY:
+			case TransformationRotationTypes.ROTATION_EULER_XZY:
 				quat.rotateX(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[0])
 				quat.rotateY(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[1])
 				quat.rotateZ(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[2])
 				break
-			case Movable.ROTATION_EULER_XYZ:
+			case TransformationRotationTypes.ROTATION_EULER_XYZ:
 				quat.rotateX(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[0])
 				quat.rotateZ(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[2])
 				quat.rotateY(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[1])
 				break
-			case Movable.ROTATION_EULER_YZX:
+			case TransformationRotationTypes.ROTATION_EULER_YZX:
 				quat.rotateY(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[1])
 				quat.rotateZ(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[2])
 				quat.rotateX(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[0])
 				break
-			case Movable.ROTATION_EULER_YXZ:
+			case TransformationRotationTypes.ROTATION_EULER_YXZ:
 				quat.rotateY(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[1])
 				quat.rotateX(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[0])
 				quat.rotateZ(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[2])
 				break
-			case Movable.ROTATION_EULER_ZXY:
+			case TransformationRotationTypes.ROTATION_EULER_ZXY:
 				quat.rotateZ(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[2])
 				quat.rotateX(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[0])
 				quat.rotateY(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[1])
 
 				break
-			case Movable.ROTATION_EULER_ZYX:
+			case TransformationRotationTypes.ROTATION_EULER_ZYX:
 				quat.rotateZ(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[2])
 				quat.rotateY(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[1])
 				quat.rotateX(entity.rotationQuaternionFinal, entity.rotationQuaternionFinal, entity.rotationEuler[0])

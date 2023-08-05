@@ -1,5 +1,5 @@
 import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
-import Entity from "../../../../engine/core/instances/Entity"
+import EditorEntity from "../../../../engine/tools/EditorEntity"
 import EntityManager from "../../../../engine/core/EntityManager"
 
 export default class EntityNamingService {
@@ -15,7 +15,7 @@ export default class EntityNamingService {
 		if(data instanceof Map)
 			EntityNamingService.#byName = data
 	}
-	static renameEntity(newName:string, entity:Entity) {
+	static renameEntity(newName:string, entity:EditorEntity) {
 		const found = EntityNamingService.#byName.get(newName)
 		let validName = true
 		if (found !== entity.id)
@@ -36,7 +36,7 @@ export default class EntityNamingService {
 			}
 		}
 	}
-	static renameInBlock(entities:Entity[]){
+	static renameInBlock(entities:EditorEntity[]){
 		const groupID = crypto.randomUUID().substring(0, 3)
 		for (let i = 0; i < entities.length; i++){
 			const entity = entities[i]

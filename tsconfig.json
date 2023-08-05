@@ -15,7 +15,18 @@
       "./src/renderer/engine/tools/engine-tools.g.ts",
       "./src/renderer/engine/core/engine.d.ts",
       "node_modules/@types"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@engine-core/*": [
+        "./src/renderer/engine/core/*"
+      ]
+    },
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules"

@@ -7,11 +7,11 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorUtil from "../../../util/EditorUtil"
     import NATIVE_COMPONENTS from "../static/NATIVE_COMPONENTS";
-    import Entity from "../../../../../engine/core/instances/Entity";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EditorActionHistory from "../../../services/EditorActionHistory";
 
     const COMPONENT_ID = crypto.randomUUID()
-    export let entity: Entity
+    export let entity: EditorEntity
 
     let components = []
     let scripts = []

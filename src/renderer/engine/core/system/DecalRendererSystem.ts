@@ -4,7 +4,7 @@ import UberShader from "../resource-libs/UberShader";
 import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper";
 import StaticMeshes from "../lib/StaticMeshes";
 import GPUUtil from "../utils/GPUUtil";
-import Entity from "../instances/Entity";
+import EditorEntity from "../../tools/EditorEntity";
 import AbstractSystem from "../AbstractSystem";
 import SceneRenderingUtil from "./SceneRenderingUtil";
 
@@ -45,7 +45,7 @@ export default class DecalRendererSystem extends AbstractSystem{
         context.enable(context.DEPTH_TEST)
     }
 
-    #bindDecalUniforms(uniforms: UniformMap, entity: Entity) {
+    #bindDecalUniforms(uniforms: UniformMap, entity: EditorEntity) {
         const component = entity.decalComponent
         const albedoSampler = component.albedo?.texture
         const metallicSampler = component.metallic?.texture

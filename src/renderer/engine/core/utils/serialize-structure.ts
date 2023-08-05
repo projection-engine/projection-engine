@@ -19,7 +19,7 @@ export default function serializeStructure(obj:any):string {
                 value instanceof Uint32Array ||
                 value instanceof Float32Array ||
                 value instanceof Float64Array)
-				return Array.from(value)
+				return {type: value.constructor.name, value: Array.from(value)}
 			return value
 		},
 		4)

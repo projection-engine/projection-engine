@@ -5,7 +5,7 @@ import EntityHierarchyService from "./EntityHierarchyService"
 import EditorActionHistory from "../EditorActionHistory"
 import EntityNamingService from "./EntityNamingService"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
-import Entity from "../../../../engine/core/instances/Entity"
+import EditorEntity from "../../../../engine/tools/EditorEntity"
 import PickingAPI from "../../../../engine/core/lib/utils/PickingAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 
@@ -47,7 +47,7 @@ export default class EngineStateService {
 	}
 
     @checkLevel
-	static replaceBlock(toRemove: string[], toAdd: Entity[]) {
+	static replaceBlock(toRemove: string[], toAdd: EditorEntity[]) {
 
 		const replacedMap = {}
 		EngineStateService.removeBlock(toRemove)
@@ -61,7 +61,7 @@ export default class EngineStateService {
 	}
 
     @checkLevel
-    static appendBlock(block: Entity[]) {
+    static appendBlock(block: EditorEntity[]) {
     	EditorActionHistory.save(block, true)
     	EntityAPI.addGroup(block)
     	EntityNamingService.renameInBlock(block)
@@ -73,7 +73,7 @@ export default class EngineStateService {
 
     @checkLevel
     static removeBlock(payload: string[]) {
-    	const hierarchy: { [key: string]: Entity } = {}
+    	const hierarchy: { [key: string]: EditorEntity } = {}
     	for (let i = 0; i < payload.length; i++) {
     		const entity = Engine.entities.get(payload[i])
     		if (!entity)
@@ -96,7 +96,7 @@ export default class EngineStateService {
     }
 
     @checkLevel
-    static add(entity: Entity) {
+    static add(entity: EditorEntity) {
     	EditorActionHistory.save(entity, true)
     	EditorActionHistory.save(entity)
 

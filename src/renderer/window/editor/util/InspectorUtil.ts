@@ -11,8 +11,9 @@ import CameraComponent from "../../../engine/core/components/CameraComponent"
 import EngineStore from "../../shared/stores/EngineStore"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
-import type Entity from "../../../engine/core/instances/Entity";
+import type EditorEntity from "../../../engine/tools/EditorEntity";
 import type Component from "../../../engine/core/components/Component";
+import {Components,} from "@engine-core/engine.enum";
 
 export default class InspectorUtil {
     static compareObjects(obj1, obj2) {
@@ -30,10 +31,7 @@ export default class InspectorUtil {
         return isValid
     }
 
-    static getEntityTabs(components) {
-        const result = [
-
-        ]
+    static getEntityTabs(components: Component[]) {
         return [
             {
                 icon: "settings",
@@ -42,15 +40,15 @@ export default class InspectorUtil {
                 color: "var(--pj-accent-color-secondary)"
             },
             {divider: true},
-            ...Components.map((c, i) => ({
-                icon: EditorUtil.getComponentIcon(c.componentKey),
-                label: EditorUtil.getComponentLabel(c.componentKey),
+            ...components.map((c, i) => ({
+                icon: EditorUtil.getComponentIcon(c.getComponentKey()),
+                label: EditorUtil.getComponentLabel(c.getComponentKey()),
                 index: i, color: "var(--pj-accent-color-tertiary)"
             }))
         ]
     }
 
-    static updateEntityComponent(entity:Entity, key:string, value:any, component:typeof Component) {
+    static updateEntityComponent(entity:EditorEntity, key:string, value:any, component:Component) {
         if (component instanceof LightComponent) {
             entity.needsLightUpdate = true
             LightsAPI.packageLights(true)
@@ -59,7 +57,7 @@ export default class InspectorUtil {
             entity.__cameraNeedsUpdate = true
         }
         component[key] = value
-        if (component.componentKey === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera)
+        if (component.getComponentKey() === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera)
             CameraAPI.updateViewTarget(entity)
     }
 

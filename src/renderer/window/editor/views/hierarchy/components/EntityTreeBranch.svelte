@@ -4,14 +4,14 @@
     import EntityFactoryService from "../../../services/engine/EntityFactoryService";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
-    import Entity from "../../../../../engine/core/instances/Entity";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import QueryAPI from "../../../../../engine/core/lib/utils/QueryAPI";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
 
     export let testSearch: GenericVoidFunctionWithP<MutableObject>
     export let depth: number
     export let isOnSearch: boolean
-    export let entity: Entity
+    export let entity: EditorEntity
     export let open: { [key: string]: boolean }
     export let updateOpen: GenericVoidFunction
     export let selectedList:string[]

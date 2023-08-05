@@ -16,12 +16,12 @@ import EngineStateService from "./EngineStateService"
 import EntityAPI from "../../../../engine/core/lib/utils/EntityAPI"
 import FileTypes from "../../../../../shared/enums/FileTypes"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
-import Entity from "../../../../engine/core/instances/Entity"
+import EditorEntity from "../../../../engine/tools/EditorEntity"
 import StaticFBO from "../../../../engine/core/lib/StaticFBO";
 
 
 export default class EngineResourceLoaderService {
-	static #initializeEntity(data: MutableObject, meshID: string, parent?: Entity, index?: number) {
+	static #initializeEntity(data: MutableObject, meshID: string, parent?: EditorEntity, index?: number) {
 		const entity = EntityAPI.getNewEntityInstance(data?.id)
 		entity.name = data.name ? data.name : "primitive-" + (index || 0)
 		try {

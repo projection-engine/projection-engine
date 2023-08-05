@@ -1,5 +1,5 @@
 import GPU from "../GPU"
-import type Entity from "../instances/Entity"
+import type EditorEntity from "../../tools/EditorEntity"
 import Shader from "../instances/Shader"
 import Engine from "../Engine"
 import CameraAPI from "../lib/utils/CameraAPI"
@@ -44,7 +44,7 @@ export default class SceneRenderingUtil {
 		context.enable(context.CULL_FACE)
 	}
 
-	static bindComponentUniforms(entity: Entity, material: Material, uniforms: { [key: string]: WebGLUniformLocation }) {
+	static bindComponentUniforms(entity: EditorEntity, material: Material, uniforms: { [key: string]: WebGLUniformLocation }) {
 		const component = entity.meshComponent
 		const overrideUniforms = component.overrideMaterialUniforms
 		const data = overrideUniforms ? component.mappedUniforms : material.uniformValues

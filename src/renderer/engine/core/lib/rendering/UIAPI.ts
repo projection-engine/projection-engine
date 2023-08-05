@@ -3,7 +3,7 @@ import InputEventsAPI from "../utils/InputEventsAPI"
 import FileSystemAPI from "../utils/FileSystemAPI"
 import UIComponent from "../../components/UIComponent"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
-import Entity from "../../instances/Entity"
+import EditorEntity from "../../../tools/EditorEntity"
 
 const STYLES = {
 	position: "absolute",
@@ -60,7 +60,7 @@ export default class UIAPI {
 			p.removeChild(UI.__element)
 	}
 
-	static createUIEntity(entity:Entity) {
+	static createUIEntity(entity:EditorEntity) {
 		if (!UIAPI.document?.parentElement || !entity.active || entity.uiComponent?.__element)
 			return
 

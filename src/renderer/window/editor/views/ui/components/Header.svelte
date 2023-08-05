@@ -9,11 +9,11 @@
     import EntityAPI from "../../../../../engine/core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
-    import type Entity from "../../../../../engine/core/instances/Entity";
+    import type EditorEntity from "../../../../../engine/tools/EditorEntity";
 
     export let isOnSelection:boolean
     export let toggleOnSelection:GenericVoidFunction
-    export let selected:Entity
+    export let selected:EditorEntity
     export let isAutoUpdateEnabled:boolean
     export let toggleAutoUpdate:GenericVoidFunction
 

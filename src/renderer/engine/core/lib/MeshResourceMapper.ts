@@ -1,9 +1,9 @@
 import Mesh from "../instances/Mesh"
-import Entity from "../instances/Entity"
+import EditorEntity from "../../tools/EditorEntity"
 import GPU from "../GPU"
 import ResourceMapper from "./ResourceMapper"
 
-type Resource = { mesh: Mesh, entities: Entity[], entitiesMap: Map<string, Entity> }[]
+type Resource = { mesh: Mesh, entities: EditorEntity[], entitiesMap: Map<string, EditorEntity> }[]
 export default class MeshResourceMapper {
 	static #mapper = new ResourceMapper("mesh")
 
@@ -13,7 +13,7 @@ export default class MeshResourceMapper {
 		return <Resource>MeshResourceMapper.#mapper.dataMap
 	}
 
-	static removeBlock(entities: Entity[]) {
+	static removeBlock(entities: EditorEntity[]) {
 		const found = MeshResourceMapper.#mapper.removeBlock(entities)
 		for (let i = 0; i < found.length; i++) {
 			const f = found[i]
@@ -29,7 +29,7 @@ export default class MeshResourceMapper {
 		}
 	}
 
-	static linkEntityMesh(entity: Entity, meshID: string) {
+	static linkEntityMesh(entity: EditorEntity, meshID: string) {
 		let index = MeshResourceMapper.meshesArray.findIndex(m => m.mesh.id === meshID)
 		if (index < 0 && !GPU.meshes.has(meshID))
 			return

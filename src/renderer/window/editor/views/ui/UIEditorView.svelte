@@ -10,7 +10,7 @@
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
-    import type Entity from "../../../../engine/core/instances/Entity";
+    import type EditorEntity from "../../../../engine/tools/EditorEntity";
     import SerializedState from "../../components/view/SerializedState.svelte";
 
     const COMPONENT_ID = crypto.randomUUID()
@@ -19,7 +19,7 @@
     let tooltipRef: HTMLElement
     let isOnSelection = false
     let isAutoUpdateEnabled = true
-    let selectedEntity: Entity
+    let selectedEntity: EditorEntity
 
 
     const resizeObserver = new ResizeObserver(() => UIAPI.document.style.height = ref.offsetHeight + "px")

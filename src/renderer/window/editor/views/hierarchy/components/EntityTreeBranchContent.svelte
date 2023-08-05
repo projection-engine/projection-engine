@@ -4,7 +4,7 @@
     import EntityNamingService from "../../../services/engine/EntityNamingService";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Entity from "../../../../../engine/core/instances/Entity";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
     import EntityManager from "../../../../../engine/core/EntityManager";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
@@ -12,7 +12,7 @@
     import HierarchyUtil from "../../../util/HierarchyUtil";
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
 
-    export let entity: Entity
+    export let entity: EditorEntity
     export let lockedEntity: string
     export let isOpen: boolean
     export let isOnSearch: boolean

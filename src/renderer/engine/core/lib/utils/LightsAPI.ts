@@ -1,11 +1,11 @@
 import ArrayBufferAPI from "./ArrayBufferAPI"
 import {glMatrix, mat4, vec3} from "gl-matrix"
-import type Entity from "../../instances/Entity"
+import type EditorEntity from "../../../tools/EditorEntity"
 import UberShader from "../../resource-libs/UberShader"
 import StaticUBOs from "../StaticUBOs"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import EngineState from "../../EngineState";
-
+import {LightTypes,} from "@engine-core/engine.enum";
 
 let lightTimeout
 const transformedNormalCache = vec3.create()
@@ -89,7 +89,7 @@ export default class LightsAPI {
 		}
 	}
 
-	static #updateAtmosphereLight(entity: Entity, primaryBuffer: Float32Array, offset: number) {
+	static #updateAtmosphereLight(entity: EditorEntity, primaryBuffer: Float32Array, offset: number) {
 		const component = entity.atmosphereComponent
 		const position = component.sunDirection
 		primaryBuffer[offset + 1] = component.intensity / 10
@@ -108,7 +108,7 @@ export default class LightsAPI {
 		primaryBuffer[offset + 14] = 0
 	}
 
-	static #updateBuffer(entity: Entity, primaryBuffer: Float32Array, secondaryBuffer: Float32Array, offset: number) {
+	static #updateBuffer(entity: EditorEntity, primaryBuffer: Float32Array, secondaryBuffer: Float32Array, offset: number) {
 		const component = entity.lightComponent
 		const color = component.fixedColor
 		const position = entity.absoluteTranslation

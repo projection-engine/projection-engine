@@ -1,7 +1,7 @@
 import CameraAPI from "./CameraAPI"
-import Entity from "../../instances/Entity"
+import EditorEntity from "../../../tools/EditorEntity"
 import QueryAPI from "./QueryAPI"
-
+import {WorkerMessages,} from "@engine-core/engine.enum";
 
 let maxWorkers
 let currentActiveWorker = 0
@@ -13,7 +13,7 @@ export default class TransformationWorkerAPI {
 	static #workers = []
 
 
-	static updateEntityReference(entity:Entity) {
+	static updateEntityReference(entity:EditorEntity) {
 		TransformationWorkerAPI.removeEntity(entity)
 		TransformationWorkerAPI.registerEntity(entity)
 	}
@@ -32,7 +32,7 @@ export default class TransformationWorkerAPI {
 	}
 
 
-	static removeEntity(entity:Entity) {
+	static removeEntity(entity:EditorEntity) {
 		if (!entity.hasWorkerBound)
 			return
 		TransformationWorkerAPI.#workers.forEach(worker => {
@@ -44,7 +44,7 @@ export default class TransformationWorkerAPI {
 	}
 
 
-	static removeBlock(entities:Entity[]) {
+	static removeBlock(entities:EditorEntity[]) {
 		const toRemove = []
 		for(let i = 0; i < entities.length; i++){
 			const entity = entities[i]
@@ -59,7 +59,7 @@ export default class TransformationWorkerAPI {
 			worker.postMessage({type: WorkerMessages.REMOVE_ENTITY_BLOCK, payload: toRemove})
 		})
 	}
-	static #getEntityInfo(entity:Entity): WorkerEntity{
+	static #getEntityInfo(entity:EditorEntity): WorkerEntity{
 		const parent = QueryAPI.getClosestEntityParent(entity)
 		const newEntity = <WorkerEntity> {
 			id: entity.id,
@@ -84,7 +84,7 @@ export default class TransformationWorkerAPI {
 		entity.hasWorkerBound = true
 		return newEntity
 	}
-	static registerEntity(entity:Entity) {
+	static registerEntity(entity:EditorEntity) {
 		if (!TransformationWorkerAPI.#initialized || (entity.hasWorkerBound && TransformationWorkerAPI.linkedEntities.get(entity.id)))
 			return
 		TransformationWorkerAPI.linkedEntities.set(entity.id, entity)
@@ -96,7 +96,7 @@ export default class TransformationWorkerAPI {
 		})
 	}
 
-	static registerBlock(entities:Entity[]) {
+	static registerBlock(entities:EditorEntity[]) {
 		if (!TransformationWorkerAPI.#initialized)
 			return
 		console.time("BUILDING")

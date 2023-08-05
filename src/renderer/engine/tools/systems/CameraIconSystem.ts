@@ -2,7 +2,7 @@ import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import GPU from "../../core/GPU"
 import {mat4} from "gl-matrix"
-import Entity from "../../core/instances/Entity"
+import EditorEntity from "../EditorEntity"
 import EngineToolsState from "../EngineToolsState"
 import AbstractSystem from "../../core/AbstractSystem";
 import GPUUtil from "../../core/utils/GPUUtil";
@@ -14,7 +14,7 @@ export default class CameraIconSystem extends AbstractSystem {
     static #projection = mat4.create()
     static #view = mat4.create()
 
-    #createFrustumMatrix(entity: Entity) {
+    #createFrustumMatrix(entity: EditorEntity) {
         if (entity.changesApplied || !entity.__cameraIconMatrix || entity.__cameraNeedsUpdate) {
             entity.__cameraNeedsUpdate = false
             const t = entity._translation

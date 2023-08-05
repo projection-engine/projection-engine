@@ -1,5 +1,6 @@
 import Ammo from "../Ammo.js"
-import Entity from "../../instances/Entity"
+import EditorEntity from "../../../tools/EditorEntity"
+import {ColliderTypes,} from "@engine-core/engine.enum";
 
 const COLLISION = "COLLISION",
 	DISPATCHER = "DISPATCHER",
@@ -13,7 +14,7 @@ export default class PhysicsAPI {
 	static ammo?: TAmmoJS
 	static worldSettings = new Map()
 	static world?: btDiscreteDynamicsWorld
-	static rigidBodies: Entity [] = []
+	static rigidBodies: EditorEntity [] = []
 	static rigidBodiesMap = new Map()
 	static tempTransformation?: btTransform
 
@@ -70,7 +71,7 @@ export default class PhysicsAPI {
 		PhysicsAPI.worldSettings.set(GRAVITY, data)
 	}
 
-	static registerRigidBody(entity: Entity) {
+	static registerRigidBody(entity: EditorEntity) {
 		const ammo = PhysicsAPI.ammo
 		const rigidBodyComponent = entity.rigidBodyComponent
 		const pColliderComponent = entity.physicsColliderComponent
@@ -111,7 +112,7 @@ export default class PhysicsAPI {
 		PhysicsAPI.rigidBodiesMap.set(entity.id, entity)
 	}
 
-	static removeRigidBody(entity: Entity) {
+	static removeRigidBody(entity: EditorEntity) {
 		const ammo = PhysicsAPI.ammo
 		const rigidBodyComponent = entity.rigidBodyComponent
 		if (!ammo || !rigidBodyComponent?.motionState)

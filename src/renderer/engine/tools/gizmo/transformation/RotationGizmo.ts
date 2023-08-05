@@ -7,15 +7,14 @@ import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GizmoUtil from "../util/GizmoUtil"
 import GizmoTransformationType from "../../../../../shared/enums/GizmoTransformationType"
-import Movable from "../../../core/components/Movable"
 import GizmoState from "../util/GizmoState"
 import GizmoSystem from "../../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
 import GPUUtil from "../../../core/utils/GPUUtil";
 import StaticEditorFBO from "../../utils/StaticEditorFBO";
 import EngineToolsState from "../../EngineToolsState";
+import {TransformationRotationTypes,} from "@engine-core/engine.enum";
 
-const toDeg = 180 / Math.PI
 const uniformCache = new Float32Array(4)
 export default class RotationGizmo extends AbstractXYZGizmo{
 	#currentRotation = vec3.create()
@@ -129,7 +128,7 @@ export default class RotationGizmo extends AbstractXYZGizmo{
 				continue
 			}
 
-			const isQuaternionRotation = target.rotationType[0] === Movable.ROTATION_QUATERNION
+			const isQuaternionRotation = target.rotationType[0] === TransformationRotationTypes.ROTATION_QUATERNION
 			if (isQuaternionRotation) {
 				if (isGlobalRotation)
 					quat.multiply(target.rotationQuaternion, quatA, target.rotationQuaternion)

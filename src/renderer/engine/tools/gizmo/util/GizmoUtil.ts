@@ -1,6 +1,6 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import GizmoSystem from "../../systems/GizmoSystem"
-import Entity from "../../../core/instances/Entity"
+import EditorEntity from "../../EditorEntity"
 import PickingAPI from "../../../core/lib/utils/PickingAPI"
 import EntityAPI from "../../../core/lib/utils/EntityAPI"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
@@ -45,7 +45,7 @@ export default class GizmoUtil {
 		}
 	}
 
-	static #getPivotPointTranslation(entity: Entity) {
+	static #getPivotPointTranslation(entity: EditorEntity) {
 		const p = entity.pivotPoint
 		const a = entity.absoluteTranslation
 		if (!entity.__pivotOffset)
@@ -104,7 +104,7 @@ export default class GizmoUtil {
 		mesh.draw()
 	}
 
-	static translateMatrix(entity: Entity) {
+	static translateMatrix(entity: EditorEntity) {
 		GizmoUtil.applyTransformation(entity.matrix, entity.rotationQuaternion, entity.translation, entity.scaling)
 	}
 

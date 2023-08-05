@@ -10,7 +10,7 @@ import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import loopMeshes from "./loop-meshes"
-import Entity from "../instances/Entity"
+import EditorEntity from "../../tools/EditorEntity"
 import Mesh from "../instances/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../EngineState";
@@ -68,7 +68,7 @@ export default class VisibilityRendererSystem extends AbstractSystem {
         context.enable(context.CULL_FACE)
     }
 
-    #drawMesh(entity: Entity, mesh: Mesh) {
+    #drawMesh(entity: EditorEntity, mesh: Mesh) {
 
         const culling = entity.cullingComponent
         const hasScreenDoor = culling && culling.screenDoorEnabled && culling.screenDoorEffect

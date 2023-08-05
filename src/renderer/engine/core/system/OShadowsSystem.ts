@@ -6,7 +6,7 @@ import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import loopMeshes from "./loop-meshes"
-import Entity from "../instances/Entity"
+import EditorEntity from "../../tools/EditorEntity"
 import Mesh from "../instances/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../EngineState";
@@ -75,7 +75,7 @@ export default class OShadowsSystem extends AbstractSystem {
         MetricsController.currentState = METRICS_FLAGS.OMNIDIRECTIONAL_SHADOWS
     }
 
-    #loopCallback(entity: Entity, mesh: Mesh) {
+    #loopCallback(entity: EditorEntity, mesh: Mesh) {
         const meshComponent = entity.meshComponent
         if (!meshComponent.castsShadows || !entity.active || entity.materialRef?.renderingMode === MATERIAL_RENDERING_TYPES.SKY)
             return

@@ -1,13 +1,14 @@
 import HierarchyToRenderElement from "../views/hierarchy/template/ToRenderElement"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
-import Entity from "../../../engine/core/instances/Entity"
+import EditorEntity from "../../../engine/tools/EditorEntity"
 import Engine from "../../../engine/core/Engine"
 import EngineStateService from "../services/engine/EngineStateService"
 import EditorUtil from "./EditorUtil"
 import HotKeysController from "../../shared/lib/HotKeysController";
 import getViewportHotkeys from "../templates/get-viewport-hotkeys";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class HierarchyUtil {
 	static buildTree(openTree: { [key: string]: boolean }, search: string, filteredComponent: string): HierarchyToRenderElement[] {
@@ -101,14 +102,14 @@ export default class HierarchyUtil {
 		return icons
 	}
 
-	static handleDrop(event, entityDragged: Entity | Entity[], dropTargetEntity: Entity | undefined) {
+	static handleDrop(event, entityDragged: EditorEntity | EditorEntity[], dropTargetEntity: EditorEntity | undefined) {
 
 		const toSave = Array.isArray(entityDragged) ? entityDragged : [entityDragged]
 
 		const toAdd = [], newSelection = []
 
 		for (let i = 0; i < toSave.length; i++) {
-			const currentEntity = <Entity>toSave[i]
+			const currentEntity = <EditorEntity>toSave[i]
 			if (currentEntity === Engine.loadedLevel)
 				continue
 			if (event.ctrlKey) {
@@ -134,10 +135,10 @@ export default class HierarchyUtil {
 		}
 	}
 
-	static mapComponents(entity: Entity) {
-		return entity.allComponents.map(e => ({
-			icon: EditorUtil.getComponentIcon(e.componentKey),
-			label: EditorUtil.getComponentLabel(e.componentKey)
+	static mapComponents(entity: EditorEntity) {
+		return EntityManager.getInstance().getAllComponents(entity.id).map(e => ({
+			icon: EditorUtil.getComponentIcon(e.getComponentKey()),
+			label: EditorUtil.getComponentLabel(e.getComponentKey())
 		}))
 	}
 
