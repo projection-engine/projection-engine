@@ -1,10 +1,11 @@
 import Component from "./Component"
+import {Components,} from "@engine-core/engine.enum";
 
 export default class UIComponent extends Component {
 	static get componentKey(): Components {
 		return Components.UI
 	}
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return UIComponent.componentKey
 	}
 	__element?: HTMLElement

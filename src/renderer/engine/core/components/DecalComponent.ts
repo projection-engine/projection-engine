@@ -5,13 +5,14 @@ import GPU from "../GPU"
 import FileSystemAPI from "../lib/utils/FileSystemAPI"
 import GPUAPI from "../lib/rendering/GPUAPI"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
+import {Components,} from "@engine-core/engine.enum";
 
 export default class DecalComponent extends Component {
 	static get componentKey(): Components {
 		return Components.DECAL
 	}
 
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return DecalComponent.componentKey
 	}
 

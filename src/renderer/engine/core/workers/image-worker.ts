@@ -1,3 +1,4 @@
+import {ImageWorkerActions,} from "@engine-core/engine.enum";
 
 self.onmessage = async ({data: {type, data, id}}) => {
 	try {

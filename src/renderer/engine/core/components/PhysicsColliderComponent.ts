@@ -1,11 +1,12 @@
 import Component from "./Component"
 import PHYSICS_COLLIDER_PROPS from "../static/component-props/PHYSICS_COLLIDER_PROPS"
+import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 
 export default class PhysicsColliderComponent extends Component {
 	static get componentKey(): Components {
 		return Components.PHYSICS_COLLIDER
 	}
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return PhysicsColliderComponent.componentKey
 	}
 

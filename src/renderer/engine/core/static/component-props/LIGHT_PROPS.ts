@@ -1,4 +1,5 @@
 import Component from "../../components/Component"
+import {LightTypes,} from "@engine-core/engine.enum";
 
 function checkShadows(comp){
 	return  !comp.shadowMap || comp.type !== LightTypes.DIRECTIONAL && comp.type !== LightTypes.POINT

@@ -9,6 +9,7 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 import ResourceEntityMapper from "../../../../engine/core/resource-libs/ResourceEntityMapper"
 import LevelService from "./LevelService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
+import {Environment,} from "@engine-core/engine.enum";
 
 export default class ExecutionService {
 	static #currentLevelID
@@ -40,7 +41,7 @@ export default class ExecutionService {
 
 		ToastNotificationSystem.getInstance().log(LocalizationEN.RESTORING_STATE)
 		ExecutionService.#isPlaying = false
-		Engine.environment = Enviroment.DEV
+		Engine.environment = Environment.DEV
 
 		UIAPI.destroyUI()
 		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)

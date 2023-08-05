@@ -1,11 +1,12 @@
 import SPRITE_PROPS from "../static/component-props/SPRITE_PROPS"
 import Component from "./Component"
+import {Components,} from "@engine-core/engine.enum";
 
 export default class SpriteComponent extends Component {
 	static get componentKey(): Components {
 		return Components.SPRITE
 	}
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return SpriteComponent.componentKey
 	}
 	_props = SPRITE_PROPS

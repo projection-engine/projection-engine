@@ -1,4 +1,5 @@
 import Component from "../../components/Component"
+import {ColliderTypes,} from "@engine-core/engine.enum";
 
 export default [
 	Component.group("COLLISION_TYPE", [

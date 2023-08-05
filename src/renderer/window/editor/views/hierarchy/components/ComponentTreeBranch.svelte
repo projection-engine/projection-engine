@@ -9,8 +9,8 @@
     export let depth: number
     export let component: Component
 
-    $: icon = EditorUtil.getComponentIcon(component.componentKey)
-    $: label = EditorUtil.getComponentLabel(component.componentKey)
+    $: icon = EditorUtil.getComponentIcon(component.getComponentKey())
+    $: label = EditorUtil.getComponentLabel(component.getComponentKey())
     $: entity = component.entity
 </script>
 

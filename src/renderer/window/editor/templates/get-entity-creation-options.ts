@@ -1,6 +1,5 @@
 import EntityFactoryService from "../services/engine/EntityFactoryService"
-
-import EmbeddedMeshes from "../../../engine/core/static/EmbeddedMeshes"
+import {EmbeddedMeshes, LightTypes,} from "@engine-core/engine.enum";
 import LocalizationEN from "../../../../shared/enums/LocalizationEN";
 
 export default function getEntityCreationOptions() {

@@ -1,5 +1,5 @@
 import TransformationPass from "./TransformationPass"
-
+import {WorkerMessages,} from "@engine-core/engine.enum";
 
 self.onmessage = (event) => {
 	if (event.data) {

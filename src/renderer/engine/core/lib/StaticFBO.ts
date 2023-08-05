@@ -3,6 +3,7 @@ import Framebuffer from "../instances/Framebuffer"
 import ImageProcessor from "./math/ImageProcessor"
 import StaticUBOs from "./StaticUBOs"
 import EngineState from "../EngineState"
+import {ImageWorkerActions,} from "@engine-core/engine.enum";
 
 const RESOLUTION = 4
 

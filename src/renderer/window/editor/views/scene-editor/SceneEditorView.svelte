@@ -22,6 +22,7 @@
     import SceneEditorUtil from "../../util/SceneEditorUtil"
     import SerializedState from "../../components/view/SerializedState.svelte";
     import ViewStateStore from "../../../shared/stores/ViewStateStore";
+    import {ShadingModels,} from "@engine-core/engine.enum";
 
     const COMPONENT_ID = crypto.randomUUID()
     const draggable = dragDrop(false)

@@ -1,6 +1,6 @@
 <script>
     import Property from "./Property.svelte"
-
+    import {Components,} from "@engine-core/engine.enum";
     import Component from "../../../../../../engine/core/components/Component"
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte"
@@ -10,6 +10,7 @@
     import UIComponent from "../UIComponent.svelte";
     import MaterialUniforms from "../../../../components/MaterialUniformsForm.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
+    import TransformationForm from "../TransformationForm.svelte";
 
     export let key
     export let index
@@ -35,9 +36,11 @@
     }
 </script>
 
-{#if component.componentKey === Components.UI}
+{#if component.getComponentKey() === Components.UI}
     <UIComponent {entity} {submit}/>
-{:else if component.componentKey === Components.MESH && component.hasMaterial}
+{:else if component.getComponentKey() === Components.UI}
+    <TransformationForm/>
+{:else if component.getComponentKey() === Components.MESH && component.hasMaterial}
     <fieldset>
         <legend>{LocalizationEN.MATERIAL_VALUES}</legend>
         <Checkbox

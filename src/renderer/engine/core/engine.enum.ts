@@ -1,4 +1,4 @@
-declare enum Components {
+enum Components {
     MESH,
     CAMERA,
     ATMOSPHERE,
@@ -10,38 +10,25 @@ declare enum Components {
     UI,
     TERRAIN,
     LIGHT,
-    LIGHT_PROBE
+    LIGHT_PROBE,
+    TRANSFORMATION
 }
 
-declare enum GLSLTypes {
-    vec2 = "uniform2fv",
-    vec3 = "uniform3fv",
-    vec4 = "uniform4fv",
-    mat3 = "uniformMatrix3fv",
-    mat4 = "uniformMatrix4fv",
-    float = "uniform1f",
-    int = "uniform1i",
-    sampler2D = "sampler2D",
-    samplerCube = "cubemap",
-    ivec2 = "uniform2iv",
-    ivec3 = "uniform3iv",
-    bool = "uniform1i"
-}
 
-declare enum AtmosphereTypes {
+enum AtmosphereTypes {
     MIE,
     RAYLEIGH,
     COMBINED
 }
 
-declare enum ColliderTypes {
+enum ColliderTypes {
     CAPSULE = "CAPSULE",
     SPHERE = "SPHERE",
     BOX = "BOX"
 }
 
 
-declare enum MaterialDataTypes {
+enum MaterialDataTypes {
     OPTIONS = "OPTIONS",
     CHECKBOX = "CHECKBOX",
     TEXTURE = "sampler2D",
@@ -63,20 +50,20 @@ declare enum MaterialDataTypes {
     UNDEFINED = "-1"
 }
 
-declare enum EmbeddedMeshes {
+enum EmbeddedMeshes {
     CUBE = "CUBE",
     SPHERE = "SPHERE",
     PLANE = "PLANE",
     CYLINDER = "CYLINDER"
 }
 
-declare enum Enviroment {
+enum Environment {
     EXECUTION,
     PRODUCTION,
     DEV
 }
 
-declare enum GLSLTypes {
+enum GLSLTypes {
     vec2 = "uniform2fv",
     vec3 = "uniform3fv",
     vec4 = "uniform4fv",
@@ -91,7 +78,7 @@ declare enum GLSLTypes {
     bool = "uniform1i"
 }
 
-declare enum ImageWorkerActions {
+enum ImageWorkerActions {
     IMAGE_BITMAP = "0",
     COLOR_TO_IMAGE = "1",
     RESIZE_IMAGE = "2",
@@ -99,7 +86,7 @@ declare enum ImageWorkerActions {
     TARGET_ICON = "DEV"
 }
 
-declare enum LightTypes {
+enum LightTypes {
     DIRECTIONAL,
     SPOT,
     POINT,
@@ -108,7 +95,7 @@ declare enum LightTypes {
     PLANE,
 }
 
-declare enum MaterialRenderingTypes {
+enum MaterialRenderingTypes {
     UNLIT,
     ISOTROPIC,
     ANISOTROPIC,
@@ -118,7 +105,7 @@ declare enum MaterialRenderingTypes {
     SKY
 }
 
-declare enum ShadingModels {
+enum ShadingModels {
     ALBEDO,
     NORMAL,
     DEPTH,
@@ -137,10 +124,36 @@ declare enum ShadingModels {
     LIGHT_QUANTITY,
 }
 
-declare enum WorkerMessages {
+enum WorkerMessages {
     REMOVE_ENTITY_BLOCK,
     INITIALIZE,
     REGISTER_ENTITY,
     REMOVE_ENTITY,
     ADD_BLOCK
+}
+
+enum TransformationRotationTypes {
+    ROTATION_QUATERNION,
+    ROTATION_EULER_XYZ,
+    ROTATION_EULER_XZY,
+    ROTATION_EULER_YXZ,
+    ROTATION_EULER_YZX,
+    ROTATION_EULER_ZXY,
+    ROTATION_EULER_ZYX,
+}
+
+export {
+    Components,
+    AtmosphereTypes,
+    ColliderTypes,
+    MaterialDataTypes,
+    EmbeddedMeshes,
+    Environment,
+    GLSLTypes,
+    ImageWorkerActions,
+    LightTypes,
+    MaterialRenderingTypes,
+    ShadingModels,
+    WorkerMessages,
+    TransformationRotationTypes,
 }

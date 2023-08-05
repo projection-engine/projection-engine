@@ -4,6 +4,7 @@ import Signature from "../Signature"
 import Material from "./Material"
 import ShaderEditorUtil from "../../../../util/ShaderEditorUtil"
 
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class ParallaxOcclusionMapping extends ShaderNode implements Signature{
 	static signature = "ParallaxOcclusionMapping"

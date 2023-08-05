@@ -5,6 +5,7 @@ import {Input} from "../static/Input"
 import {Output} from "../static/Output"
 import type ShaderNode from "../templates/ShaderNode"
 import CanvasResources from "./CanvasResources"
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 const types = {
 	vec2: 0,

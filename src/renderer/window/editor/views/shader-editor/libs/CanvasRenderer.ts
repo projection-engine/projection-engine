@@ -8,6 +8,7 @@ import {Input} from "../static/Input"
 import {Output} from "../static/Output"
 import DraggableNodeUtils from "./DraggableNodeUtils"
 import CanvasResources from "./CanvasResources"
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 const INVERSE_MATERIAL_RENDERING_TYPES = {
 	0: "Unlit",

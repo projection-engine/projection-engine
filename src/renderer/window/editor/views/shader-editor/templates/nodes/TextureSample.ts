@@ -2,7 +2,7 @@ import ShaderNode from "../ShaderNode"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import EditorFSUtil from "../../../../util/EditorFSUtil"
 import Signature from "../Signature"
-
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class TextureSample extends ShaderNode implements Signature {
 	static signature = "TextureSample"

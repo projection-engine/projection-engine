@@ -1,11 +1,12 @@
 import Component from "./Component"
 import CAMERA_PROPS from "../static/component-props/CAMERA_PROPS"
+import {Components,} from "@engine-core/engine.enum";
 
 export default class CameraComponent extends Component {
 	static get componentKey(): Components {
 		return Components.CAMERA
 	}
-	get componentKey(): Components {
+	getComponentKey(): Components {
 		return CameraComponent.componentKey
 	}
 

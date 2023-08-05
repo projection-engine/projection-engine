@@ -3,6 +3,7 @@ import GizmoTransformationType from "../../../../shared/enums/GizmoTransformatio
 import KEYS from "./KEYS"
 import INITIAL_LAYOUT from "./INITIAL_LAYOUT"
 import {glMatrix} from "gl-matrix"
+import {ShadingModels,} from "@engine-core/engine.enum";
 
 export default {
 	spawnOnOrigin: false,

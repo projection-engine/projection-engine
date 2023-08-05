@@ -3,7 +3,7 @@ import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import MATERIAL_RENDERING_TYPES from "../../../../../../engine/core/static/MATERIAL_RENDERING_TYPES"
 import Signature from "../Signature"
 import ShaderEditorUtil from "../../../../util/ShaderEditorUtil"
-
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 function arrayToGlsl(a) {
 	const arr = Array.isArray(a) ? a : [0, 0, 0]

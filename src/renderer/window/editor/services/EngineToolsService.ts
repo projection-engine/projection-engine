@@ -14,6 +14,7 @@ import EngineToolsState from "../../../engine/tools/EngineToolsState"
 import EngineState from "../../../engine/core/EngineState"
 import SETTINGS from "../static/SETTINGS"
 import GizmoState from "../../../engine/tools/gizmo/util/GizmoState"
+import {Environment,} from "@engine-core/engine.enum";
 
 export default class EngineToolsService extends AbstractSingleton {
 
@@ -70,7 +71,7 @@ export default class EngineToolsService extends AbstractSingleton {
 		GPU.canvas.width = visualSettings.resolutionX
 		GPU.canvas.height = visualSettings.resolutionY
 
-		if (Engine.environment === Enviroment.DEV)
+		if (Engine.environment === Environment.DEV)
 			EngineTools.bindSystems()
 		else
 			EngineTools.unbindSystems()
@@ -82,7 +83,7 @@ export default class EngineToolsService extends AbstractSingleton {
 		const settings = SettingsStore.getData()
 		if (engine.executingAnimation)
 			UIAPI.showUI()
-		if (Engine.environment === Enviroment.DEV && !engine.focusedCamera) {
+		if (Engine.environment === Environment.DEV && !engine.focusedCamera) {
 			CameraAPI.trackingEntity = undefined
 			if (settings.camera !== undefined) {
 				EditorCameraSystem.updateProperties({

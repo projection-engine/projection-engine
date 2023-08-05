@@ -13,6 +13,7 @@ import {Input} from "../views/shader-editor/static/Input"
 import CanvasRenderer from "../views/shader-editor/libs/CanvasRenderer"
 import Draggable from "../views/shader-editor/templates/Draggable"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class ShaderEditorUtil{
 	static  addComment(canvasAPI: Canvas) {

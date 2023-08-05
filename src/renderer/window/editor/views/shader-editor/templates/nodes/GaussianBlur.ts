@@ -1,6 +1,7 @@
 import ShaderNode from "../ShaderNode"
 import NODE_TYPES from "../../static/NODE_TYPES"
 import Signature from "../Signature"
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class GaussianBlur extends ShaderNode implements Signature{
 	static signature = "GaussianBlur"

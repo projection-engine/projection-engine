@@ -16,6 +16,7 @@ import RENDER_TARGET from "../static/RENDER_TARGET"
 import SETTINGS from "../static/SETTINGS"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EngineState from "../../../engine/core/EngineState";
+import {ShadingModels,} from "@engine-core/engine.enum";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
