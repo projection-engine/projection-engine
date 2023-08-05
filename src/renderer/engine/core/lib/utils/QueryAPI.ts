@@ -1,21 +1,17 @@
 import Engine from "../../Engine"
 import Entity from "../../instances/Entity"
-import COMPONENTS from "../../static/COMPONENTS";
+import {UUID} from "crypto";
 
 export default class QueryAPI {
-	static getEntityByQueryID(id: string): Entity | undefined {
-		return Engine.queryMap.get(id)
+	static getEntityByID(id: UUID|string): Entity | undefined {
+		return Engine.entities.get(id as UUID)
 	}
 
-	static getEntityByID(id: string): Entity | undefined {
-		return Engine.entities.get(id)
-	}
-
-	static getEntitiesWithNativeComponent(componentKey: string): Entity[] {
+	static getEntitiesWithNativeComponent(componentKey: Components): Entity[] {
 		const newArr = []
 		for (let i = 0; i < Engine.entities.array.length; i++) {
 			const entity = Engine.entities.array[i]
-			if (entity.components.get(componentKey) != null)
+			if (entity.Components.get(componentKey) != null)
 				newArr.push(entity)
 		}
 		return newArr
@@ -30,11 +26,11 @@ export default class QueryAPI {
 		}
 	}
 
-	static getClosestParentWithComponent(entity: Entity, component: COMPONENTS): Entity | undefined {
+	static getClosestParentWithComponent(entity: Entity, component: Components): Entity | undefined {
 		let currentEntity = entity
 		while (currentEntity?.parent) {
 			currentEntity = currentEntity.parent
-			if (currentEntity.components.has(component))
+			if (currentEntity.Components.has(component))
 				return currentEntity
 		}
 	}

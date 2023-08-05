@@ -1,19 +1,18 @@
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
-import COMPONENTS from "../../../engine/core/static/COMPONENTS"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import FileSystemAPI from "../../../engine/core/lib/utils/FileSystemAPI"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
-import LightComponent from "../../../engine/core/instances/components/LightComponent"
+import LightComponent from "../../../engine/core/components/LightComponent"
 import LightsAPI from "../../../engine/core/lib/utils/LightsAPI"
-import CameraComponent from "../../../engine/core/instances/components/CameraComponent"
+import CameraComponent from "../../../engine/core/components/CameraComponent"
 import EngineStore from "../../shared/stores/EngineStore"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
 import type Entity from "../../../engine/core/instances/Entity";
-import type Component from "../../../engine/core/instances/components/Component";
+import type Component from "../../../engine/core/components/Component";
 
 export default class InspectorUtil {
     static compareObjects(obj1, obj2) {
@@ -43,7 +42,7 @@ export default class InspectorUtil {
                 color: "var(--pj-accent-color-secondary)"
             },
             {divider: true},
-            ...components.map((c, i) => ({
+            ...Components.map((c, i) => ({
                 icon: EditorUtil.getComponentIcon(c.componentKey),
                 label: EditorUtil.getComponentLabel(c.componentKey),
                 index: i, color: "var(--pj-accent-color-tertiary)"
@@ -60,7 +59,7 @@ export default class InspectorUtil {
             entity.__cameraNeedsUpdate = true
         }
         component[key] = value
-        if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.getData().focusedCamera)
+        if (component.componentKey === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera)
             CameraAPI.updateViewTarget(entity)
     }
 
@@ -90,8 +89,8 @@ export default class InspectorUtil {
                     break
                 case "MESH":
                     if (!entity.meshComponent) {
-                        entity.addComponent(COMPONENTS.MESH)
-                        entity.addComponent(COMPONENTS.CULLING)
+                        entity.addComponent(Components.MESH)
+                        entity.addComponent(Components.CULLING)
                     }
                     await EngineResourceLoaderService.load(id, true)
                     entity.meshComponent.meshID = id
@@ -100,7 +99,7 @@ export default class InspectorUtil {
                     entity.meshComponent.materialID = id
                     break
                 case "IMAGE":
-                    (entity.addComponent(COMPONENTS.SPRITE)).imageID = await FileSystemAPI.loadTexture(id)
+                    (entity.addComponent(Components.SPRITE)).imageID = await FileSystemAPI.loadTexture(id)
                     break
             }
         } catch (err) {
@@ -112,7 +111,7 @@ export default class InspectorUtil {
     static #getItemFound(id) {
         const filesStoreData = ContentBrowserStore.getData()
         let type = "SCRIPT"
-        let itemFound = filesStoreData.components.find(s => s.registryID === id)
+        let itemFound = filesStoreData.Components.find(s => s.registryID === id)
         if (!itemFound) {
             itemFound = filesStoreData.meshes.find(s => s.registryID === id)
             type = "MESH"

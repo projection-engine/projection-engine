@@ -1,12 +1,11 @@
 import Component from "./Component"
-import CULLING_COMPONENT_PROPS from "../../static/component-props/CULLING_COMPONENT_PROPS"
-import COMPONENTS from "../../static/COMPONENTS"
+import CULLING_COMPONENT_PROPS from "../static/component-props/CULLING_COMPONENT_PROPS"
 
 export default class CullingComponent extends Component{
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.CULLING
+	static get componentKey(): Components {
+		return Components.CULLING
 	}
-	get componentKey(): string {
+	get componentKey(): Components {
 		return CullingComponent.componentKey
 	}
 	_props = CULLING_COMPONENT_PROPS

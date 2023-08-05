@@ -1,5 +1,4 @@
 import ShaderNode from "../ShaderNode"
-import DATA_TYPES from "../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../Signature"
 import ShaderEditorUtil from "../../../../util/ShaderEditorUtil";
@@ -18,11 +17,11 @@ export default class RGB extends ShaderNode implements Signature{
 			{
 				label: "Dynamic",
 				key: "uniform",
-				type: DATA_TYPES.CHECKBOX
+				type: MaterialDataTypes.CHECKBOX
 			},
-			{label: "Color", key: "rgb", type: DATA_TYPES.COLOR},
+			{label: "Color", key: "rgb", type: MaterialDataTypes.COLOR},
 		], [
-			{label: "Value", key: "COLOR_RGB", type: DATA_TYPES.VEC3},
+			{label: "Value", key: "COLOR_RGB", type: MaterialDataTypes.VEC3},
 		])
 		this.name = "RGB"
 	}
@@ -39,7 +38,7 @@ export default class RGB extends ShaderNode implements Signature{
 			uniformValues.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.VEC3,
+				type: MaterialDataTypes.VEC3,
 				data: v,
 				isColor: true,
 				internalKey: "rgb"
@@ -47,7 +46,7 @@ export default class RGB extends ShaderNode implements Signature{
 			uniforms.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.VEC3,
+				type: MaterialDataTypes.VEC3,
 			})
 
 			return `uniform vec3 ${this.uniformName};`

@@ -1,4 +1,4 @@
-import LightComponent from "./instances/components/LightComponent";
+import LightComponent from "./components/LightComponent";
 
 export default class EngineState{
 	static fxaaEnabled = false

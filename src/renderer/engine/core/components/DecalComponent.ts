@@ -1,18 +1,17 @@
 import Component from "./Component"
-import DECAL_PROPS from "../../static/component-props/DECAL_PROPS"
-import Texture from "../Texture"
-import GPU from "../../GPU"
-import FileSystemAPI from "../../lib/utils/FileSystemAPI"
-import TextureParams from "../../static/TextureParams"
-import GPUAPI from "../../lib/rendering/GPUAPI"
-import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
-import COMPONENTS from "../../static/COMPONENTS"
+import DECAL_PROPS from "../static/component-props/DECAL_PROPS"
+import Texture from "../instances/Texture"
+import GPU from "../GPU"
+import FileSystemAPI from "../lib/utils/FileSystemAPI"
+import GPUAPI from "../lib/rendering/GPUAPI"
+import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 
 export default class DecalComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.DECAL
+	static get componentKey(): Components {
+		return Components.DECAL
 	}
-	get componentKey(): string {
+
+	get componentKey(): Components {
 		return DecalComponent.componentKey
 	}
 

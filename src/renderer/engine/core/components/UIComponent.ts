@@ -1,11 +1,10 @@
 import Component from "./Component"
-import COMPONENTS from "../../static/COMPONENTS"
 
 export default class UIComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.UI
+	static get componentKey(): Components {
+		return Components.UI
 	}
-	get componentKey(): string {
+	get componentKey(): Components {
 		return UIComponent.componentKey
 	}
 	__element?: HTMLElement

@@ -4,9 +4,7 @@ import compileFragmentShader from "./utils/compile-fragment-shader"
 import MATERIAL_OUTPUT_FORMAT from "../../../../../../engine/core/static/MATERIAL_OUTPUT_FORMAT"
 import type ShaderLink from "../../templates/ShaderLink"
 import type ShaderNode from "../../templates/ShaderNode"
-import MaterialUniform from "../../../../../../engine/core/static/MaterialUniform"
 import type Material from "../../templates/nodes/Material"
-import MaterialInformation from "../../../../../../engine/core/static/MaterialInformation"
 
 function hash(str:string):number {
 	let hash = 0, i, chr

@@ -7,7 +7,7 @@ import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GizmoUtil from "../util/GizmoUtil"
 import GizmoTransformationType from "../../../../../shared/enums/GizmoTransformationType"
-import Movable from "../../../core/instances/components/Movable"
+import Movable from "../../../core/components/Movable"
 import GizmoState from "../util/GizmoState"
 import GizmoSystem from "../../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";

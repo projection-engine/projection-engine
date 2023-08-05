@@ -1,18 +1,16 @@
 import Component from "./Component"
-import COLLISION_TYPES from "../../static/COLLISION_TYPES"
-import PHYSICS_COLLIDER_PROPS from "../../static/component-props/PHYSICS_COLLIDER_PROPS"
-import COMPONENTS from "../../static/COMPONENTS"
+import PHYSICS_COLLIDER_PROPS from "../static/component-props/PHYSICS_COLLIDER_PROPS"
 
 export default class PhysicsColliderComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.PHYSICS_COLLIDER
+	static get componentKey(): Components {
+		return Components.PHYSICS_COLLIDER
 	}
-	get componentKey(): string {
+	get componentKey(): Components {
 		return PhysicsColliderComponent.componentKey
 	}
 
 	_props = PHYSICS_COLLIDER_PROPS
-	collisionType = COLLISION_TYPES.BOX
+	collisionType = ColliderTypes.BOX
 	direction = "Y"
 	_center = [0, 0, 0]
 	_size = [1, 1, 1]

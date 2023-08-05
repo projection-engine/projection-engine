@@ -1,5 +1,4 @@
 import ShaderNode from "../ShaderNode"
-import DATA_TYPES from "../../static/DATA_TYPES"
 import NODE_TYPES from "../../static/NODE_TYPES"
 import Signature from "../Signature"
 
@@ -15,30 +14,30 @@ export default class GaussianBlur extends ShaderNode implements Signature{
 			{
 				label: "Sampler",
 				key: "sampler",
-				accept: [DATA_TYPES.TEXTURE]
+				accept: [MaterialDataTypes.TEXTURE]
 			},
 			{
 				label: "Texture coords",
 				key: "texCoords",
-				accept: [DATA_TYPES.VEC2]
+				accept: [MaterialDataTypes.VEC2]
 			},
 			{
 				label: "Blur radius",
 				key: "blurRadius",
-				accept: [DATA_TYPES.FLOAT]
+				accept: [MaterialDataTypes.FLOAT]
 			},
 			{
 				label: "Samples",
 				key: "samples",
-				accept: [DATA_TYPES.FLOAT]
+				accept: [MaterialDataTypes.FLOAT]
 			},
 			{
 				label: "Use default texel",
 				key: "useDefaultTexel",
-				type: DATA_TYPES.CHECKBOX
+				type: MaterialDataTypes.CHECKBOX
 			}
 		], [
-			{label: "Blurred", key: "blurredResult", type: DATA_TYPES.VEC3}
+			{label: "Blurred", key: "blurredResult", type: MaterialDataTypes.VEC3}
 		])
 		this.name = "GaussianBlur"
 	}

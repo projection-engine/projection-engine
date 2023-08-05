@@ -1,6 +1,5 @@
 import EntityFactoryService from "../services/engine/EntityFactoryService"
 
-import LIGHT_TYPES from "../../../engine/core/static/LIGHT_TYPES"
 import EmbeddedMeshes from "../../../engine/core/static/EmbeddedMeshes"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN";
 
@@ -36,34 +35,34 @@ export default function getEntityCreationOptions() {
 		{
 			icon: "wb_iridescent",
 			label: LocalizationEN.SPHERE_AREA,
-			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.SPHERE)
+			onClick: () => EntityFactoryService.createLight(LightTypes.SPHERE)
 		},
 		{
 			icon: "wb_iridescent",
 			label: LocalizationEN.DISK_AREA,
-			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.DISK)
+			onClick: () => EntityFactoryService.createLight(LightTypes.DISK)
 		},
 		{
 			icon: "wb_iridescent",
 			label: LocalizationEN.PLANE_AREA,
-			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.PLANE)
+			onClick: () => EntityFactoryService.createLight(LightTypes.PLANE)
 		},
 
 
 		{
 			icon: "lightbulb",
 			label: LocalizationEN.POINT_LIGHT,
-			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.POINT)
+			onClick: () => EntityFactoryService.createLight(LightTypes.POINT)
 		},
 		{
 			icon: "light_mode",
 			label: LocalizationEN.DIRECTIONAL_LIGHT,
-			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.DIRECTIONAL)
+			onClick: () => EntityFactoryService.createLight(LightTypes.DIRECTIONAL)
 		},
 		{
 			icon: "highlight",
 			label: LocalizationEN.SPOTLIGHT,
-			onClick: () => EntityFactoryService.createLight(LIGHT_TYPES.SPOT)
+			onClick: () => EntityFactoryService.createLight(LightTypes.SPOT)
 		},
 		{
 			icon: "wb_twilight",

@@ -1,5 +1,4 @@
 import ShaderNode from "../ShaderNode"
-import DATA_TYPES from "../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import MATERIAL_RENDERING_TYPES from "../../../../../../engine/core/static/MATERIAL_RENDERING_TYPES"
 import Signature from "../Signature"
@@ -38,39 +37,39 @@ export default class Material extends ShaderNode implements Signature{
 	}
 
 	constructor() {
-		const allTypes = [DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2, DATA_TYPES.FLOAT, DATA_TYPES.INT]
+		const allTypes = [MaterialDataTypes.VEC4, MaterialDataTypes.VEC3, MaterialDataTypes.VEC2, MaterialDataTypes.FLOAT, MaterialDataTypes.INT]
 		super([
-			{label: "Albedo", key: "al", accept: allTypes, type: DATA_TYPES.COLOR},
+			{label: "Albedo", key: "al", accept: allTypes, type: MaterialDataTypes.COLOR},
 			{label: "Normal", key: "normal", accept: allTypes},
 			{label: "Ambient Occlusion", key: "ao", accept: allTypes},
-			{label: "Roughness", key: "roughness", accept: allTypes, type: DATA_TYPES.FLOAT, max: 1, min: 0},
-			{label: "Metallic", key: "metallic", accept: allTypes, type: DATA_TYPES.FLOAT, max: 1, min: 0},
-			{label: "Emission", key: "emission", accept: allTypes, type: DATA_TYPES.COLOR},
+			{label: "Roughness", key: "roughness", accept: allTypes, type: MaterialDataTypes.FLOAT, max: 1, min: 0},
+			{label: "Metallic", key: "metallic", accept: allTypes, type: MaterialDataTypes.FLOAT, max: 1, min: 0},
+			{label: "Emission", key: "emission", accept: allTypes, type: MaterialDataTypes.COLOR},
 			{
 				label: "Opacity",
 				key: "opacity",
 				accept: allTypes,
 				disabled: true,
-				type: DATA_TYPES.FLOAT,
+				type: MaterialDataTypes.FLOAT,
 				max: 1,
 				min: 0
 			},
-			{label: "Refraction index", key: "refraction", accept: allTypes, type: DATA_TYPES.FLOAT, disabled: true},
+			{label: "Refraction index", key: "refraction", accept: allTypes, type: MaterialDataTypes.FLOAT, disabled: true},
 
-			{label: "Anisotropic rotation", key: "anisotropicRotation", accept: allTypes, type: DATA_TYPES.FLOAT},
-			{label: "Anisotropy", key: "anisotropy", accept: allTypes, type: DATA_TYPES.FLOAT},
+			{label: "Anisotropic rotation", key: "anisotropicRotation", accept: allTypes, type: MaterialDataTypes.FLOAT},
+			{label: "Anisotropy", key: "anisotropy", accept: allTypes, type: MaterialDataTypes.FLOAT},
 
-			{label: "Clear coat", key: "clearCoat", accept: allTypes, type: DATA_TYPES.FLOAT},
+			{label: "Clear coat", key: "clearCoat", accept: allTypes, type: MaterialDataTypes.FLOAT},
 
-			{label: "Sheen", key: "sheen", accept: allTypes, type: DATA_TYPES.FLOAT},
-			{label: "Sheen tint", key: "sheenTint", accept: allTypes, type: DATA_TYPES.FLOAT},
+			{label: "Sheen", key: "sheen", accept: allTypes, type: MaterialDataTypes.FLOAT},
+			{label: "Sheen tint", key: "sheenTint", accept: allTypes, type: MaterialDataTypes.FLOAT},
 
-			{label: "Screen-space reflections", key: "ssrEnabled", type: DATA_TYPES.CHECKBOX},
-			{label: "Double sided", key: "doubleSided", type: DATA_TYPES.CHECKBOX},
+			{label: "Screen-space reflections", key: "ssrEnabled", type: MaterialDataTypes.CHECKBOX},
+			{label: "Double sided", key: "doubleSided", type: MaterialDataTypes.CHECKBOX},
 			{
 				label: "Rendering type",
 				key: "renderingMode",
-				type: DATA_TYPES.OPTIONS,
+				type: MaterialDataTypes.OPTIONS,
 				options: [
 					{label: "Isotropic", data: MATERIAL_RENDERING_TYPES.ISOTROPIC},
 					{label: "Anisotropic", data: MATERIAL_RENDERING_TYPES.ANISOTROPIC},
@@ -219,13 +218,13 @@ export default class Material extends ShaderNode implements Signature{
 
 	getData(field) {
 		switch (field.type) {
-		case DATA_TYPES.VEC2:
+		case MaterialDataTypes.VEC2:
 			return `vec3(${field.name}, 0.)`
-		case DATA_TYPES.VEC4:
+		case MaterialDataTypes.VEC4:
 			return `vec3(${field.name})`
-		case DATA_TYPES.FLOAT:
+		case MaterialDataTypes.FLOAT:
 			return `vec3(${field.name}, ${field.name}, ${field.name})`
-		case DATA_TYPES.INT:
+		case MaterialDataTypes.INT:
 			return `vec3(float(${field.name}), float(${field.name}), float(${field.name}))`
 		default:
 			return field.name
@@ -234,11 +233,11 @@ export default class Material extends ShaderNode implements Signature{
 
 	static getDataBehaviour(field) {
 		switch (field.type) {
-		case DATA_TYPES.VEC2:
-		case DATA_TYPES.VEC4:
-		case DATA_TYPES.VEC3:
+		case MaterialDataTypes.VEC2:
+		case MaterialDataTypes.VEC4:
+		case MaterialDataTypes.VEC3:
 			return `${field.name}.x`
-		case DATA_TYPES.INT:
+		case MaterialDataTypes.INT:
 			return `float(${field.name})`
 
 		default:
@@ -250,54 +249,54 @@ export default class Material extends ShaderNode implements Signature{
 	getFunctionCall({
 		al = {
 			name: arrayToGlsl(this.al),
-			type: DATA_TYPES.VEC3
+			type: MaterialDataTypes.VEC3
 		},
 		normal,
 		ao = {
 			name: ShaderEditorUtil.checkGlslFloat(1),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		roughness = {
 			name: ShaderEditorUtil.checkGlslFloat(this.roughness),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		metallic = {
 			name: ShaderEditorUtil.checkGlslFloat(this.metallic),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		opacity = {
 			name: ShaderEditorUtil.checkGlslFloat(this.opacity),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		emission = {
 			name: arrayToGlsl(this.emission),
-			type: DATA_TYPES.VEC3
+			type: MaterialDataTypes.VEC3
 		},
 
 		refraction = {
 			name: ShaderEditorUtil.checkGlslFloat(this.refraction),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		anisotropicRotation = {
 			name: ShaderEditorUtil.checkGlslFloat(this.anisotropicRotation),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		anisotropy = {
 			name: ShaderEditorUtil.checkGlslFloat(this.anisotropy),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		clearCoat = {
 			name: ShaderEditorUtil.checkGlslFloat(this.clearCoat),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 
 		sheen = {
 			name: ShaderEditorUtil.checkGlslFloat(this.sheen),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		sheenTint = {
 			name: ShaderEditorUtil.checkGlslFloat(this.sheenTint),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 
 	}) {

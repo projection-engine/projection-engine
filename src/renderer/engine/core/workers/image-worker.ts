@@ -1,9 +1,8 @@
-import IMAGE_WORKER_ACTIONS from "../static/IMAGE_WORKER_ACTIONS"
 
 self.onmessage = async ({data: {type, data, id}}) => {
 	try {
 		switch (type) {
-		case IMAGE_WORKER_ACTIONS.RESIZE_IMAGE: {
+		case ImageWorkerActions.RESIZE_IMAGE: {
 			const {image, width, height} = data
 			const imageToLoad = await createImageBitmap(await (await fetch(image)).blob())
 			const widthF = width ? width : imageToLoad.width
@@ -28,7 +27,7 @@ self.onmessage = async ({data: {type, data, id}}) => {
 			break
 		}
 
-		case IMAGE_WORKER_ACTIONS.IMAGE_BITMAP: {
+		case ImageWorkerActions.IMAGE_BITMAP: {
 			const compressionRatio = data.compressionRatio || 1
 			const base64 = data.base64
 			const resolutionScale = data.resolutionScale || 1
@@ -54,7 +53,7 @@ self.onmessage = async ({data: {type, data, id}}) => {
 			self.postMessage({data: bitmap, id})
 			break
 		}
-		case IMAGE_WORKER_ACTIONS.COLOR_TO_IMAGE: {
+		case ImageWorkerActions.COLOR_TO_IMAGE: {
 			const {
 				color,
 				resolution
@@ -73,7 +72,7 @@ self.onmessage = async ({data: {type, data, id}}) => {
 
 			break
 		}
-		case IMAGE_WORKER_ACTIONS.NOISE_DATA: {
+		case ImageWorkerActions.NOISE_DATA: {
 			const {w, h} = data
 
 			const KERNEL_SIZE = 64

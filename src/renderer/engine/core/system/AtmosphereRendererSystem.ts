@@ -4,7 +4,7 @@ import StaticShaders from "../lib/StaticShaders"
 import StaticMeshes from "../lib/StaticMeshes"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import AtmosphereComponent from "../instances/components/AtmosphereComponent"
+import AtmosphereComponent from "../components/AtmosphereComponent"
 import {mat4} from "gl-matrix"
 import CameraAPI from "../lib/utils/CameraAPI"
 import Entity from "../instances/Entity";

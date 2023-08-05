@@ -1,17 +1,16 @@
 import Component from "./Component"
-import ATMOSPHERE_PROPS from "../../static/component-props/ATMOSPHERE_PROPS"
-import ATMOSPHERE_TYPES from "../../static/ATMOSPHERE_TYPES"
+import ATMOSPHERE_PROPS from "../static/component-props/ATMOSPHERE_PROPS"
+import ATMOSPHERE_TYPES from "../static/ATMOSPHERE_TYPES"
 import {mat4, vec3} from "gl-matrix"
-import LightsAPI from "../../lib/utils/LightsAPI"
-import COMPONENTS from "../../static/COMPONENTS"
+import LightsAPI from "../lib/utils/LightsAPI"
 
 
 export default class AtmosphereComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.ATMOSPHERE
+	static get componentKey(): Components {
+		return Components.ATMOSPHERE
 	}
 
-	get componentKey(): string {
+	get componentKey(): Components {
 		return AtmosphereComponent.componentKey
 	}
 

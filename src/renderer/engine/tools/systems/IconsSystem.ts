@@ -1,7 +1,6 @@
 import Engine from "../../core/Engine"
 import GPU from "../../core/GPU"
 import CameraAPI from "../../core/lib/utils/CameraAPI"
-import LIGHT_TYPES from "../../core/static/LIGHT_TYPES"
 import LineRenderer from "./LineRenderer"
 import StaticMeshes from "../../core/lib/StaticMeshes"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -64,22 +63,22 @@ export default class IconsSystem extends AbstractSystem {
             color = entity.colorIdentifier
 
         switch (lightType) {
-            case LIGHT_TYPES.DIRECTIONAL:
+            case LightTypes.DIRECTIONAL:
                 imageIndex = 1
                 break
-            case LIGHT_TYPES.POINT:
+            case LightTypes.POINT:
                 imageIndex = 2
                 break
-            case LIGHT_TYPES.SPOT:
+            case LightTypes.SPOT:
                 imageIndex = 4
                 break
-            case LIGHT_TYPES.SPHERE:
+            case LightTypes.SPHERE:
                 imageIndex = -1
                 drawSphere = 1
                 scale = lightComponent.areaRadius
                 removeSphereCenter = 0
                 break
-            case LIGHT_TYPES.DISK:
+            case LightTypes.DISK:
                 imageIndex = -1
                 doNotFaceCamera = 1
                 drawSphere = 1
@@ -133,19 +132,19 @@ export default class IconsSystem extends AbstractSystem {
         let lineSize = -50
         if (!hasCamera)
             switch (component.type) {
-                case LIGHT_TYPES.DISK:
-                case LIGHT_TYPES.SPOT:
+                case LightTypes.DISK:
+                case LightTypes.SPOT:
                     lineSize = component.cutoff * 4
                     break
-                case LIGHT_TYPES.SPHERE:
-                case LIGHT_TYPES.POINT:
+                case LightTypes.SPHERE:
+                case LightTypes.POINT:
                     lineSize = -component.cutoff * 4
                     break
             }
 
         LineRenderer.setState(!entity.__isSelected, true, lineSize)
         if (hasLight) {
-            if (component.type === LIGHT_TYPES.SPOT)
+            if (component.type === LightTypes.SPOT)
                 LineRenderer.drawZ(entity.__cacheIconMatrix)
             else
                 LineRenderer.drawY(entity.__cacheIconMatrix)

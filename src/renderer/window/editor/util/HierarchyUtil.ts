@@ -155,7 +155,7 @@ export default class HierarchyUtil {
 	}
 
 	static testSearch(filteredComponent, search, node) {
-		return (!search || search && node.name.includes(search)) && (!filteredComponent || filteredComponent && node.components.has(filteredComponent))
+		return (!search || search && node.name.includes(search)) && (!filteredComponent || filteredComponent && node.Components.has(filteredComponent))
 	}
 
 	static updateSelection(entityID: string, ctrlKey?: boolean) {

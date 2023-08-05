@@ -1,4 +1,3 @@
-import SHADING_MODELS from "../../../engine/core/static/SHADING_MODELS"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import ConversionAPI from "../../../engine/core/lib/math/ConversionAPI"
@@ -16,7 +15,6 @@ import getViewportContext from "../templates/get-viewport-context"
 import RENDER_TARGET from "../static/RENDER_TARGET"
 import SETTINGS from "../static/SETTINGS"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
-import CameraSerialization from "../../../engine/core/static/CameraSerialization";
 import EngineState from "../../../engine/core/EngineState";
 
 export default class SceneEditorUtil {
@@ -24,34 +22,34 @@ export default class SceneEditorUtil {
 
 	static getLabel(shadingModel): string {
 		switch (shadingModel) {
-		case SHADING_MODELS.LIGHT_ONLY:
+		case ShadingModels.LIGHT_ONLY:
 			return "SHADING_LIGHT"
-		case SHADING_MODELS.ALBEDO:
+		case ShadingModels.ALBEDO:
 			return "SHADING_UNLIT"
-		case SHADING_MODELS.NORMAL:
+		case ShadingModels.NORMAL:
 			return "SHADING_NORMAL"
-		case SHADING_MODELS.DEPTH:
+		case ShadingModels.DEPTH:
 			return "SHADING_DEPTH"
-		case SHADING_MODELS.G_AO:
-		case SHADING_MODELS.AO:
+		case ShadingModels.G_AO:
+		case ShadingModels.AO:
 			return "SHADING_AO"
-		case SHADING_MODELS.RANDOM:
+		case ShadingModels.RANDOM:
 			return "SHADING_RANDOM"
-		case SHADING_MODELS.POSITION:
+		case ShadingModels.POSITION:
 			return "POSITION"
-		case SHADING_MODELS.DETAIL:
+		case ShadingModels.DETAIL:
 			return "SHADING_DETAIL"
-		case SHADING_MODELS.ROUGHNESS:
+		case ShadingModels.ROUGHNESS:
 			return "SHADING_ROUGHNESS"
-		case SHADING_MODELS.METALLIC:
+		case ShadingModels.METALLIC:
 			return "SHADING_METALLIC"
-		case SHADING_MODELS.LIGHT_COMPLEXITY:
+		case ShadingModels.LIGHT_COMPLEXITY:
 			return "LIGHT_COMPLEXITY"
-		case SHADING_MODELS.UV:
+		case ShadingModels.UV:
 			return "SHADING_UV"
-		case SHADING_MODELS.OVERDRAW:
+		case ShadingModels.OVERDRAW:
 			return "OVERDRAW"
-		case SHADING_MODELS.LIGHT_QUANTITY:
+		case ShadingModels.LIGHT_QUANTITY:
 			return "LIGHT_QUANTITY"
 		default:
 			return ""
@@ -61,19 +59,19 @@ export default class SceneEditorUtil {
 	static getShadingModels() {
 		return [
 			{divider: true, label: LocalizationEN.MISC},
-			{label: LocalizationEN.SHADING_DETAIL, id: SHADING_MODELS.DETAIL},
-			{label: LocalizationEN.LIGHT_QUANTITY, id: SHADING_MODELS.LIGHT_QUANTITY},
+			{label: LocalizationEN.SHADING_DETAIL, id: ShadingModels.DETAIL},
+			{label: LocalizationEN.LIGHT_QUANTITY, id: ShadingModels.LIGHT_QUANTITY},
 			{divider: true, label: LocalizationEN.DEBUG_SHADING},
-			{label: LocalizationEN.SHADING_DEPTH, id: SHADING_MODELS.DEPTH},
-			{label: LocalizationEN.SHADING_RANDOM, id: SHADING_MODELS.RANDOM},
-			{label: LocalizationEN.LIGHT_COMPLEXITY, id: SHADING_MODELS.LIGHT_COMPLEXITY},
-			{label: LocalizationEN.POSITION, id: SHADING_MODELS.POSITION},
-			{label: LocalizationEN.SHADING_DYNAMIC_AO, id: SHADING_MODELS.AO,},
-			{label: LocalizationEN.OVERDRAW, id: SHADING_MODELS.OVERDRAW},
+			{label: LocalizationEN.SHADING_DEPTH, id: ShadingModels.DEPTH},
+			{label: LocalizationEN.SHADING_RANDOM, id: ShadingModels.RANDOM},
+			{label: LocalizationEN.LIGHT_COMPLEXITY, id: ShadingModels.LIGHT_COMPLEXITY},
+			{label: LocalizationEN.POSITION, id: ShadingModels.POSITION},
+			{label: LocalizationEN.SHADING_DYNAMIC_AO, id: ShadingModels.AO,},
+			{label: LocalizationEN.OVERDRAW, id: ShadingModels.OVERDRAW},
 			{divider: true, label: LocalizationEN.MATERIAL},
-			{label: LocalizationEN.SHADING_UNLIT, id: SHADING_MODELS.ALBEDO},
-			{label: LocalizationEN.SHADING_ROUGHNESS, id: SHADING_MODELS.ROUGHNESS},
-			{label: LocalizationEN.LIGHT_ONLY, id: SHADING_MODELS.LIGHT_ONLY}
+			{label: LocalizationEN.SHADING_UNLIT, id: ShadingModels.ALBEDO},
+			{label: LocalizationEN.SHADING_ROUGHNESS, id: ShadingModels.ROUGHNESS},
+			{label: LocalizationEN.LIGHT_ONLY, id: ShadingModels.LIGHT_ONLY}
 		].map(e => e.divider ? e : ({
 			...e,
 			onClick: () => SettingsStore.updateStore({shadingModel: e.id})

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Engine from "../../../../../engine/core/Engine";
     import EntityNamingService from "../../../services/engine/EntityNamingService";
 
     import Selector from "../../../components/selector/Selector.svelte";
@@ -57,21 +56,6 @@
                 placeholder={LocalizationEN.MY_ENTITY}
         >
             <small slot="label">{LocalizationEN.NAME}</small>
-        </Input>
-
-        <Input
-                width="100%"
-                hasBorder={true}
-                onChange={v => {
-                    Engine.queryMap.delete(entity.queryKey)
-                    Engine.queryMap.set(v, entity)
-                    entity.queryKey = v
-                }}
-                height="23px"
-                inputValue={entity.queryKey}
-                placeholder={LocalizationEN.QUERY_KEY}
-        >
-            <small slot="label">{LocalizationEN.QUERY_KEY}</small>
         </Input>
         {#if entity.parent}
             <Selector

@@ -22,7 +22,7 @@
     $:components = [
         ...scripts.map(s => ({type: "script", data: s})),
         ...NATIVE_COMPONENTS
-            .filter(native => !entity.components.has(native[0]))
+            .filter(native => !entity.Components.has(native[0]))
             .map(n => ({
                 type: "native",
                 data: n

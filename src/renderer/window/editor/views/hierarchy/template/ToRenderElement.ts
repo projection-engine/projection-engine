@@ -1,5 +1,5 @@
 import Entity from "../../../../../engine/core/instances/Entity"
-import Component from "../../../../../engine/core/instances/components/Component"
+import Component from "../../../../../engine/core/components/Component"
 
 export default interface HierarchyToRenderElement{
     node:Entity

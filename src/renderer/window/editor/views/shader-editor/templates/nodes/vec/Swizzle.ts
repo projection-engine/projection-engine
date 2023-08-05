@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 
@@ -19,11 +18,11 @@ export default class Swizzle extends ShaderNode implements Signature{
 
 	constructor() {
 		super([
-			{label: "Vector", key: "v", accept: [DATA_TYPES.VEC2]},
+			{label: "Vector", key: "v", accept: [MaterialDataTypes.VEC2]},
 			{
 				label: "Vector length",
 				key: "typeVector",
-				type: DATA_TYPES.OPTIONS,
+				type: MaterialDataTypes.OPTIONS,
 				options: [
 					{label: "vec2", data: "vec2"},
 					{label: "vec3", data: "vec3"},
@@ -33,25 +32,25 @@ export default class Swizzle extends ShaderNode implements Signature{
 			{
 				label: "Combination",
 				key: "combination",
-				type: DATA_TYPES.STRING,
+				type: MaterialDataTypes.STRING,
 				bundled: true
 			},
 		], [
-			{label: "X", key: "x", type: DATA_TYPES.FLOAT, color: "red"},
-			{label: "Y", key: "y", type: DATA_TYPES.FLOAT, color: "green"},
-			{label: "Z", key: "z", type: DATA_TYPES.FLOAT, color: "blue", disabled: true},
-			{label: "W", key: "w", type: DATA_TYPES.FLOAT, color: "white", disabled: true},
+			{label: "X", key: "x", type: MaterialDataTypes.FLOAT, color: "red"},
+			{label: "Y", key: "y", type: MaterialDataTypes.FLOAT, color: "green"},
+			{label: "Z", key: "z", type: MaterialDataTypes.FLOAT, color: "blue", disabled: true},
+			{label: "W", key: "w", type: MaterialDataTypes.FLOAT, color: "white", disabled: true},
 		])
 		this.inputs.find(i => i.key === "typeVector").onChange = (v) => {
 			this.output = [
-				{label: "X", key: "x", type: DATA_TYPES.FLOAT, color: "red"},
-				{label: "Y", key: "y", type: DATA_TYPES.FLOAT, color: "green"},
-				{label: "Z", key: "z", type: DATA_TYPES.FLOAT, color: "blue", disabled: v === "vec2"},
-				{label: "W", key: "w", type: DATA_TYPES.FLOAT, color: "white", disabled: v === "vec2" || v === "vec3"},
+				{label: "X", key: "x", type: MaterialDataTypes.FLOAT, color: "red"},
+				{label: "Y", key: "y", type: MaterialDataTypes.FLOAT, color: "green"},
+				{label: "Z", key: "z", type: MaterialDataTypes.FLOAT, color: "blue", disabled: v === "vec2"},
+				{label: "W", key: "w", type: MaterialDataTypes.FLOAT, color: "white", disabled: v === "vec2" || v === "vec3"},
 			]
 		}
 		this.name = "Swizzle"
-        
+
 	}
 
 	get type() {
@@ -59,9 +58,9 @@ export default class Swizzle extends ShaderNode implements Signature{
 	}
 
 
-     
 
-     
+
+
 
 	getFunctionCall({v}, index, outputs) {
 		const response = []

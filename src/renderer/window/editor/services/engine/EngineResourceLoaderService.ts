@@ -1,7 +1,6 @@
 import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorFSUtil from "../../util/EditorFSUtil"
 
-import COMPONENTS from "../../../../engine/core/static/COMPONENTS"
 import PickingAPI from "../../../../engine/core/lib/utils/PickingAPI"
 import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
 import EditorActionHistory from "../EditorActionHistory"
@@ -10,8 +9,8 @@ import GPU from "../../../../engine/core/GPU"
 import GPUAPI from "../../../../engine/core/lib/rendering/GPUAPI"
 
 import FileSystemAPI from "../../../../engine/core/lib/utils/FileSystemAPI"
-import MeshComponent from "../../../../engine/core/instances/components/MeshComponent"
-import SpriteComponent from "../../../../engine/core/instances/components/SpriteComponent"
+import MeshComponent from "../../../../engine/core/components/MeshComponent"
+import SpriteComponent from "../../../../engine/core/components/SpriteComponent"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import EngineStateService from "./EngineStateService"
 import EntityAPI from "../../../../engine/core/lib/utils/EntityAPI"
@@ -32,8 +31,8 @@ export default class EngineResourceLoaderService {
 			for (let i = 0; i < 16; i++)
 				entity.baseTransformationMatrix[i] = data.baseTransformationMatrix[i]
 
-			const comp = <MeshComponent>entity.addComponent(COMPONENTS.MESH)
-			entity.addComponent(COMPONENTS.CULLING)
+			const comp = <MeshComponent>entity.addComponent(Components.MESH)
+			entity.addComponent(Components.CULLING)
 			comp.materialID = data.material
 			comp.meshID = meshID
 			return entity
@@ -106,8 +105,8 @@ export default class EngineResourceLoaderService {
 				const materialID = await EngineResourceLoaderService.mesh(file, data)
 				const entity = EntityAPI.getNewEntityInstance()
 				entity.name = "New primitive"
-				const instance = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
-				entity.addComponent(COMPONENTS.CULLING)
+				const instance = entity.addComponent<MeshComponent>(Components.MESH)
+				entity.addComponent(Components.CULLING)
 				instance.materialID = materialID
 				instance.meshID = data
 				EntityFactoryService.translateEntity(entity)
@@ -124,7 +123,7 @@ export default class EngineResourceLoaderService {
 				const sprite = EntityAPI.getNewEntityInstance()
 				sprite.name = LocalizationEN.SPRITE_RENDERER
 				EntityFactoryService.translateEntity(sprite)
-				sprite.addComponent<SpriteComponent>(COMPONENTS.SPRITE).imageID = data
+				sprite.addComponent<SpriteComponent>(Components.SPRITE).imageID = data
 				EngineStateService.add(sprite)
 				break
 			}

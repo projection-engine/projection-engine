@@ -4,9 +4,8 @@ import CullingComponent from "./CullingComponent"
 import RigidBodyComponent from "./RigidBodyComponent"
 import MeshComponent from "./MeshComponent"
 import SpriteComponent from "./SpriteComponent"
-import Material from "../Material"
-import Mesh from "../Mesh"
-import COMPONENTS from "../../static/COMPONENTS"
+import Material from "../instances/Material"
+import Mesh from "../instances/Mesh"
 import Component from "./Component"
 import AtmosphereComponent from "./AtmosphereComponent"
 import PhysicsColliderComponent from "./PhysicsColliderComponent"
@@ -14,10 +13,10 @@ import UIComponent from "./UIComponent"
 import CameraComponent from "./CameraComponent"
 import DecalComponent from "./DecalComponent"
 import LightProbeComponent from "./LightProbeComponent"
-import DynamicMap from "../../resource-libs/DynamicMap"
+import DynamicMap from "../resource-libs/DynamicMap"
 
 export default class ComponentResources extends Movable {
-	#components = new DynamicMap<COMPONENTS, Component>()
+	#components = new DynamicMap<Components, Component>()
 	#lightComponent?: LightComponent
 	#cullingComponent?: CullingComponent
 	#rigidBodyComponent?: RigidBodyComponent
@@ -95,39 +94,39 @@ export default class ComponentResources extends Movable {
 		return this.#atmosphereComponent
 	}
 
-	protected updateInternalComponentRef(KEY: string, instance?: Component) {
+	protected updateInternalComponentRef(KEY: Components, instance?: Component) {
 		switch (KEY) {
-		case COMPONENTS.LIGHT:
+		case Components.LIGHT:
 			this.#lightComponent = !instance ? undefined : <LightComponent>instance
 			break
-		case COMPONENTS.DECAL:
+		case Components.DECAL:
 			this.#decalComponent = !instance ? undefined : <DecalComponent>instance
 			break
-		case COMPONENTS.MESH:
+		case Components.MESH:
 			this.#meshComponent = !instance ? undefined : <MeshComponent>instance
 			break
-		case COMPONENTS.CAMERA:
+		case Components.CAMERA:
 			this.#cameraComponent = !instance ? undefined : <CameraComponent>instance
 			break
-		case COMPONENTS.LIGHT_PROBE:
+		case Components.LIGHT_PROBE:
 			this.#lightProbeComponent = !instance ? undefined : <LightProbeComponent>instance
 			break
-		case COMPONENTS.SPRITE:
+		case Components.SPRITE:
 			this.#spriteComponent = !instance ? undefined : <SpriteComponent>instance
 			break
-		case COMPONENTS.PHYSICS_COLLIDER:
+		case Components.PHYSICS_COLLIDER:
 			this.#physicsColliderComponent = !instance ? undefined : <PhysicsColliderComponent>instance
 			break
-		case COMPONENTS.RIGID_BODY:
+		case Components.RIGID_BODY:
 			this.#rigidBodyComponent = !instance ? undefined : <RigidBodyComponent>instance
 			break
-		case COMPONENTS.CULLING:
+		case Components.CULLING:
 			this.#cullingComponent = !instance ? undefined : <CullingComponent>instance
 			break
-		case COMPONENTS.UI:
+		case Components.UI:
 			this.#uiComponent = !instance ? undefined : <UIComponent>instance
 			break
-		case COMPONENTS.ATMOSPHERE:
+		case Components.ATMOSPHERE:
 			this.#atmosphereComponent = !instance ? undefined : <AtmosphereComponent>instance
 			break
 		}

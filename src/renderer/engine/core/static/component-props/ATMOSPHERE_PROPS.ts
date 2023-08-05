@@ -1,4 +1,4 @@
-import Component from "../../instances/components/Component"
+import Component from "../../components/Component"
 import ATMOSPHERE_TYPES from "../ATMOSPHERE_TYPES"
 
 export default [

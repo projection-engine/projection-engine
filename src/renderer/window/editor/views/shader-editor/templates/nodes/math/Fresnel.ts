@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../static/DATA_TYPES"
 import NODE_TYPES from "../../../static/NODE_TYPES"
 import Signature from "../../Signature"
 
@@ -13,15 +12,15 @@ export default class Fresnel extends ShaderNode implements Signature{
 			{
 				label: "F0",
 				key: "F0",
-				accept: [DATA_TYPES.VEC3]
+				accept: [MaterialDataTypes.VEC3]
 			},
 			{
 				label: "Cosine Theta",
 				key: "cosTheta",
-				accept: [DATA_TYPES.FLOAT]
+				accept: [MaterialDataTypes.FLOAT]
 			}
 		], [
-			{label: "Value", key: "valueFresnel", type: DATA_TYPES.VEC3}
+			{label: "Value", key: "valueFresnel", type: MaterialDataTypes.VEC3}
 		])
 		this.name = "Fresnel"
 

@@ -1,5 +1,4 @@
 import parseMessage from "./parse-console-message"
-import MessageInterface from "../../static/MessageInterface"
 
 export enum Types {
     ERROR = "ERROR",
@@ -8,7 +7,7 @@ export enum Types {
 
 export default class ConsoleAPI {
 	static #registeredConsoles = []
-	static #messages: MessageInterface[] = []
+	static #messages: ConsoleMessage[] = []
 	static #metadata = {errors: 0, logs: 0}
 
 	static #updateConsoles() {

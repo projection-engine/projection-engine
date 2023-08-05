@@ -1,13 +1,11 @@
-import IMAGE_WORKER_ACTIONS from "../static/IMAGE_WORKER_ACTIONS"
 import TEXTURE_WRAPPING from "../static/texture/TEXTURE_WRAPPING"
 import TEXTURE_FILTERING from "../static/texture/TEXTURE_FILTERING"
 import TEXTURE_FORMATS from "../static/texture/TEXTURE_FORMATS"
 import ImageProcessor from "../lib/math/ImageProcessor"
 import GPU from "../GPU"
-import TextureParams from "../static/TextureParams"
 
 
-export default class Texture {
+export default class Texture implements ITexture{
 	loaded = false
 	texture?: WebGLTexture
 	attributes: TextureParams = {}
@@ -27,7 +25,7 @@ export default class Texture {
 		this.attributes = attributes
 		if (typeof img === "string") {
 			if (img.includes("data:image/")) {
-				this.#image = <ImageBitmap | undefined>await ImageProcessor.request(IMAGE_WORKER_ACTIONS.IMAGE_BITMAP, {
+				this.#image = <ImageBitmap | undefined>await ImageProcessor.request(ImageWorkerActions.IMAGE_BITMAP, {
 					base64: img,
 					compressionRatio: attributes.compressionRatio,
 					resolutionScale: attributes.resolutionScale

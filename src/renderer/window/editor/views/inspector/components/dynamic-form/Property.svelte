@@ -1,6 +1,6 @@
 <script>
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import Component from "../../../../../../engine/core/instances/components/Component"
+    import Component from "../../../../../../engine/core/components/Component"
     import Selector from "../../../../components/selector/Selector.svelte"
 
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte"

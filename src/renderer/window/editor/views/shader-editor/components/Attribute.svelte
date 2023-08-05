@@ -1,5 +1,4 @@
 <script>
-    import DATA_TYPES from "../../../../../engine/core/static/DATA_TYPES"
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
     import Selector from "../../../components/selector/Selector.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
@@ -26,20 +25,20 @@
 
 </script>
 
-{#if type === DATA_TYPES.INT || type === DATA_TYPES.FLOAT}
+{#if type === MaterialDataTypes.INT || type === MaterialDataTypes.FLOAT}
     <Range
             precision={3}
             variant={"embedded"} minLabelWidth={"50%"}
-            integer={type === DATA_TYPES.INT}
+            integer={type === MaterialDataTypes.INT}
             maxValue={attribute.max}
             incrementPercentage={.001}
             minValue={attribute.min}
             value={value}
-            onFinish={v => handleChange(type === DATA_TYPES.FLOAT ? v : parseInt(v), attribute)}
+            onFinish={v => handleChange(type === MaterialDataTypes.FLOAT ? v : parseInt(v), attribute)}
             label={label}
             disabled={attribute.disabled}
     />
-{:else if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 || type === DATA_TYPES.VEC2}
+{:else if type === MaterialDataTypes.VEC4 || type === MaterialDataTypes.VEC3 || type === MaterialDataTypes.VEC2}
     <div data-svelteinline="-">
         <Range
                 disabled={attribute.disabled}
@@ -57,7 +56,7 @@
                 label={label}
                 onFinish={v => handleChange(ShaderEditorUtil.getNewVector(value, v, 1, type))}
         />
-        {#if type === DATA_TYPES.VEC4 || type === DATA_TYPES.VEC3 }
+        {#if type === MaterialDataTypes.VEC4 || type === MaterialDataTypes.VEC3 }
             <Range
                     disabled={attribute.disabled}
                     maxValue={attribute.max}
@@ -67,7 +66,7 @@
                     onFinish={v => handleChange(ShaderEditorUtil.getNewVector(value, v, 2, type))}
             />
         {/if}
-        {#if type === DATA_TYPES.VEC4}
+        {#if type === MaterialDataTypes.VEC4}
             <Range
                     disabled={attribute.disabled}
                     maxValue={attribute.max}
@@ -78,7 +77,7 @@
             />
         {/if}
     </div>
-{:else if type === DATA_TYPES.COLOR}
+{:else if type === MaterialDataTypes.COLOR}
     <ColorPicker
             disabled={attribute.disabled}
             label={label}
@@ -87,7 +86,7 @@
             height="25px"
     />
 
-{:else if type === DATA_TYPES.TEXTURE}
+{:else if type === MaterialDataTypes.TEXTURE}
 
     <Selector
             disabled={attribute.disabled}
@@ -96,7 +95,7 @@
             selected={value}
     />
 
-{:else if type === DATA_TYPES.OPTIONS && Array.isArray(attribute.options)}
+{:else if type === MaterialDataTypes.OPTIONS && Array.isArray(attribute.options)}
 
     <Dropdown buttonStyles={getDropdownHeaderStyles() + "width: 100%;"}>
         <button data-sveltebuttondefault="-"  slot="button" data-svelteview-header-dropdown="-">
@@ -113,7 +112,7 @@
             </button>
         {/each}
     </Dropdown>
-{:else if type === DATA_TYPES.CHECKBOX}
+{:else if type === MaterialDataTypes.CHECKBOX}
     <Checkbox
             checked={value}
             handleCheck={() => handleChange(!value)}

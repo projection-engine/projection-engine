@@ -5,19 +5,14 @@ import {mat4} from "gl-matrix"
 import Entity from "../../core/instances/Entity"
 import EngineToolsState from "../EngineToolsState"
 import AbstractSystem from "../../core/AbstractSystem";
-import DynamicMap from "../../core/resource-libs/DynamicMap";
-import {UUID} from "crypto";
-import CameraComponent from "../../core/instances/components/CameraComponent";
 import GPUUtil from "../../core/utils/GPUUtil";
 import StaticFBO from "../../core/lib/StaticFBO";
+import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
 
 export default class CameraIconSystem extends AbstractSystem {
     static #invView = mat4.create()
     static #projection = mat4.create()
     static #view = mat4.create()
-
-    @AbstractSystem.injectComponents(CameraComponent.componentKey)
-    cameras: DynamicMap<UUID, Entity>
 
     #createFrustumMatrix(entity: Entity) {
         if (entity.changesApplied || !entity.__cameraIconMatrix || entity.__cameraNeedsUpdate) {
@@ -37,14 +32,14 @@ export default class CameraIconSystem extends AbstractSystem {
     }
 
     shouldExecute(): boolean {
-        return this.cameras.size > 0;
+        return ResourceEntityMapper.cameras.size > 0;
     }
 
     execute() {
         const uniforms = StaticEditorShaders.wireframeUniforms
         const context = GPU.context
-        const size = this.cameras.size
-        const arr = this.cameras.array
+        const size = ResourceEntityMapper.cameras.size
+        const arr = ResourceEntityMapper.cameras.array
         StaticEditorShaders.wireframe.bind()
         GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBO.sceneDepthVelocity)
         for (let i = 0; i < size; i++) {

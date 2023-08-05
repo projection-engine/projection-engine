@@ -1,4 +1,4 @@
-import ArrayBufferAPI from "../../lib/utils/ArrayBufferAPI"
+import ArrayBufferAPI from "../lib/utils/ArrayBufferAPI"
 
 
 /**

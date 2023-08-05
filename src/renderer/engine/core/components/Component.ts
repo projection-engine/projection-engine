@@ -1,5 +1,4 @@
-import Entity from "../Entity"
-import COMPONENTS from "../../static/COMPONENTS";
+import Entity from "../instances/Entity"
 
 interface ComponentValueGeneric {
     [key: string]: any
@@ -12,12 +11,6 @@ interface ComponentValueGeneric {
 
 
 export default class Component {
-	static get componentKey(): COMPONENTS {
-		return ""
-	}
-	get componentKey(): string {
-		return Component.componentKey
-	}
 
 	_props: ComponentValueGeneric[] = []
 	_name = ""

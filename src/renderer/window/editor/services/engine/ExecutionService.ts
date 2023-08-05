@@ -1,5 +1,3 @@
-import ENVIRONMENT from "../../../../engine/core/static/ENVIRONMENT"
-
 import EngineStore from "../../../shared/stores/EngineStore"
 import EditorCameraSystem from "../../../../engine/tools/systems/EditorCameraSystem"
 import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
@@ -39,11 +37,10 @@ export default class ExecutionService {
 		ResourceEntityMapper.clear()
 
 		Engine.entities.clear()
-		Engine.queryMap.clear()
 
 		ToastNotificationSystem.getInstance().log(LocalizationEN.RESTORING_STATE)
 		ExecutionService.#isPlaying = false
-		Engine.environment = ENVIRONMENT.DEV
+		Engine.environment = Enviroment.DEV
 
 		UIAPI.destroyUI()
 		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)

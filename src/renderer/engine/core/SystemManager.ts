@@ -5,43 +5,8 @@ import {UUID} from "crypto";
 import PhysicsSystem from "./system/PhysicsSystem";
 import ResourceGarbageCollector from "./resource-libs/ResourceGarbageCollector";
 import EngineState from "./EngineState";
-import Components from "./static/COMPONENTS";
-import Entity from "./instances/Entity";
-import EntityManager from "./EntityManager";
 
 export default class SystemManager extends AbstractSingleton {
-
-    static injectEntities<T>(component: Components): GenericVoidFunctionWith2P<AbstractSystem, string> {
-        return (target: AbstractSystem, propertyKey: string) => {
-            const targetField = new DynamicMap<UUID, Entity>()
-            EntityManager.getInstance().addEventListener("hard-change", (event) => {
-                switch (event.type) {
-                    case "delete": {
-                        const withComponent = event.all.filter(e => e.components.has(component))
-                        targetField.removeBlock(withComponent, e => e.id)
-                        break
-                    }
-                    case "create": {
-                        const withComponent = event.all.filter(e => e.components.has(component))
-                        targetField.addBlock(withComponent, e => e.id)
-                        break
-                    }
-                    case "component-add":
-                        if (event.targetComponents.includes(component)) {
-                            targetField.set(event.target.id, event.target)
-                        }
-                        break
-                    case "component-remove":
-                        if (event.targetComponents.includes(component)) {
-                            targetField.delete(event.target.id)
-                        }
-                        break
-                }
-                target[propertyKey] = targetField
-            }, {targetComponent: component})
-        }
-    }
-
     #executionQueue = new DynamicMap<UUID, AbstractSystem>()
     #systems = new Map<UUID, boolean>
     #frameId:number = null
@@ -66,7 +31,7 @@ export default class SystemManager extends AbstractSingleton {
 
     disableSystem(system: typeof AbstractSystem) {
         const ref = system.get<AbstractSystem>()
-        this.#systems.set(ref.getSystemId(), false) 
+        this.#systems.set(ref.getSystemId(), false)
     }
 
     isRunning(){

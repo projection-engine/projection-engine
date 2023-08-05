@@ -1,4 +1,4 @@
-import Component from "../../instances/components/Component"
+import Component from "../../components/Component"
 
 export default [
 	Component.group("RENDERING", [

@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 
@@ -11,14 +10,14 @@ export default class MakeVector extends ShaderNode implements Signature{
 	}
 	constructor() {
 		super([
-			{label: "X", key: "x", accept: [DATA_TYPES.FLOAT], color: "red"},
-			{label: "Y", key: "y", accept: [DATA_TYPES.FLOAT], color: "green"},
-			{label: "Z", key: "z", accept: [DATA_TYPES.FLOAT], color: "blue"},
-			{label: "W", key: "w", accept: [DATA_TYPES.FLOAT], color: "white"}
+			{label: "X", key: "x", accept: [MaterialDataTypes.FLOAT], color: "red"},
+			{label: "Y", key: "y", accept: [MaterialDataTypes.FLOAT], color: "green"},
+			{label: "Z", key: "z", accept: [MaterialDataTypes.FLOAT], color: "blue"},
+			{label: "W", key: "w", accept: [MaterialDataTypes.FLOAT], color: "white"}
 		], [
-			{label: "Vec2", key: "vec2MakerRes", type: DATA_TYPES.VEC2, color: "red"},
-			{label: "Vec3", key: "vec3MakerRes", type: DATA_TYPES.VEC3, color: "green"},
-			{label: "Vec4", key: "vec4MakerRes", type: DATA_TYPES.VEC4, color: "blue"}
+			{label: "Vec2", key: "vec2MakerRes", type: MaterialDataTypes.VEC2, color: "red"},
+			{label: "Vec3", key: "vec3MakerRes", type: MaterialDataTypes.VEC3, color: "green"},
+			{label: "Vec4", key: "vec4MakerRes", type: MaterialDataTypes.VEC4, color: "blue"}
 		])
 		this.name = "MakeVector"
 	}

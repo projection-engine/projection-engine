@@ -1,12 +1,11 @@
-import SPRITE_PROPS from "../../static/component-props/SPRITE_PROPS"
+import SPRITE_PROPS from "../static/component-props/SPRITE_PROPS"
 import Component from "./Component"
-import COMPONENTS from "../../static/COMPONENTS"
 
 export default class SpriteComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.SPRITE
+	static get componentKey(): Components {
+		return Components.SPRITE
 	}
-	get componentKey(): string {
+	get componentKey(): Components {
 		return SpriteComponent.componentKey
 	}
 	_props = SPRITE_PROPS

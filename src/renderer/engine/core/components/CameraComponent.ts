@@ -1,12 +1,11 @@
 import Component from "./Component"
-import CAMERA_PROPS from "../../static/component-props/CAMERA_PROPS"
-import COMPONENTS from "../../static/COMPONENTS"
+import CAMERA_PROPS from "../static/component-props/CAMERA_PROPS"
 
 export default class CameraComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.CAMERA
+	static get componentKey(): Components {
+		return Components.CAMERA
 	}
-	get componentKey(): string {
+	get componentKey(): Components {
 		return CameraComponent.componentKey
 	}
 

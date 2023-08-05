@@ -1,7 +1,6 @@
 import GPU from "../GPU"
 import Framebuffer from "../instances/Framebuffer"
 import ImageProcessor from "./math/ImageProcessor"
-import IMAGE_WORKER_ACTIONS from "../static/IMAGE_WORKER_ACTIONS"
 import StaticUBOs from "./StaticUBOs"
 import EngineState from "../EngineState"
 
@@ -110,7 +109,7 @@ export default class StaticFBO {
 		StaticFBO.ssgiSampler = StaticFBO.ssgi.colors[0]
 		StaticFBO.ssgiFallbackSampler = StaticFBO.ssgiFallback.colors[0]
 		StaticFBO.sceneDepthVelocity = StaticFBO.visibility.colors[0]
-		StaticFBO.entityIDSampler = StaticFBO.visibility.colors[1] 
+		StaticFBO.entityIDSampler = StaticFBO.visibility.colors[1]
 		StaticFBO.postProcessing1Sampler = StaticFBO.postProcessing1.colors[0]
 		StaticFBO.postProcessing2Sampler = StaticFBO.postProcessing2.colors[0]
 		StaticFBO.lensSampler = StaticFBO.lens.colors[0]
@@ -129,7 +128,7 @@ export default class StaticFBO {
 	static async generateSSAONoise() {
 		const context = GPU.context
 		const {kernels, noise} = await ImageProcessor.request(
-			IMAGE_WORKER_ACTIONS.NOISE_DATA,
+			ImageWorkerActions.NOISE_DATA,
 			{w: RESOLUTION, h: RESOLUTION}
 		)
 

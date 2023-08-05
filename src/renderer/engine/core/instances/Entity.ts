@@ -1,13 +1,12 @@
 import EntityAPI from "../lib/utils/EntityAPI"
 import getComponentInstance from "../utils/get-component-instance"
 import serializeStructure from "../utils/serialize-structure"
-import Component from "./components/Component"
-import ComponentResources from "./components/ComponentResources"
+import Component from "../components/Component"
+import ComponentResources from "../components/ComponentResources"
 import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI"
 import QueryAPI from "../lib/utils/QueryAPI"
 import DynamicMap from "../resource-libs/DynamicMap"
 import * as crypto from "crypto";
-import COMPONENTS from "../static/COMPONENTS";
 
 
 export default class Entity extends ComponentResources {
@@ -45,7 +44,7 @@ export default class Entity extends ComponentResources {
     }
 
     get allComponents() {
-    	return this.components.array
+    	return this.Components.array
     }
 
     setPickID(data: number[]) {
@@ -61,19 +60,19 @@ export default class Entity extends ComponentResources {
     	return this.#pickIndex
     }
 
-    addComponent<T>(KEY:COMPONENTS): T {
+    addComponent<T>(KEY:Components): T {
     	const instance = getComponentInstance(KEY)
     	if (instance != null) {
     		instance.entity = this
-    		this.components.set(KEY, instance)
+    		this.Components.set(KEY, instance)
     		this.updateInternalComponentRef(KEY, instance)
     		return <T>instance
     	}
     }
 
-    removeComponent(KEY:COMPONENTS) {
-    	const hasComponent = this.components.get(KEY) != null
-    	this.components.delete(KEY)
+    removeComponent(KEY:Components) {
+    	const hasComponent = this.Components.get(KEY) != null
+    	this.Components.delete(KEY)
     	if (hasComponent) {
     		this.updateInternalComponentRef(KEY, undefined)
     	}
@@ -88,7 +87,7 @@ export default class Entity extends ComponentResources {
     	temp.parentID = this.parent?.id
     	temp.colorIdentifier = this.#colorIdentifier
 
-    	this.components.array.forEach(component => {
+    	this.Components.array.forEach(component => {
     		parsedComponents[component.componentKey] = component
     	})
     	temp.components = parsedComponents

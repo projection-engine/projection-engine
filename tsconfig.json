@@ -12,6 +12,8 @@
     "typeRoots": [
       "./global.d.ts",
       "./src/renderer/engine/core/engine.g.ts",
+      "./src/renderer/engine/tools/engine-tools.g.ts",
+      "./src/renderer/engine/core/engine.d.ts",
       "node_modules/@types"
     ]
   },

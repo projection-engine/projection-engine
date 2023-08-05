@@ -8,7 +8,6 @@ import Engine from "../../../engine/core/Engine"
 import ExecutionService from "../services/engine/ExecutionService"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
-import COMPONENTS from "../../../engine/core/static/COMPONENTS"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
@@ -48,29 +47,29 @@ export default class EditorUtil {
 
     static getComponentIcon(key) {
         switch (key) {
-            case COMPONENTS.MESH:
+            case Components.MESH:
                 return "category"
-            case COMPONENTS.LIGHT:
+            case Components.LIGHT:
                 return "light_mode"
-            case COMPONENTS.CAMERA:
+            case Components.CAMERA:
                 return "videocam"
-            case COMPONENTS.ATMOSPHERE:
+            case Components.ATMOSPHERE:
                 return "wb_twilight"
-            case COMPONENTS.LIGHT_PROBE:
+            case Components.LIGHT_PROBE:
                 return "lens_blur"
             case "TRANSFORMATION":
                 return "transform"
-            case COMPONENTS.DECAL:
+            case Components.DECAL:
                 return "layers"
-            case COMPONENTS.SPRITE:
+            case Components.SPRITE:
                 return "image"
-            case COMPONENTS.PHYSICS_COLLIDER:
+            case Components.PHYSICS_COLLIDER:
                 return "compare_arrows"
-            case COMPONENTS.RIGID_BODY:
+            case Components.RIGID_BODY:
                 return "language"
-            case COMPONENTS.CULLING:
+            case Components.CULLING:
                 return "disabled_visible"
-            case COMPONENTS.UI:
+            case Components.UI:
                 return "widgets"
             default:
                 return "code"
@@ -79,27 +78,27 @@ export default class EditorUtil {
 
     static getComponentLabel(component) {
         switch (component) {
-            case COMPONENTS.MESH:
+            case Components.MESH:
                 return LocalizationEN.MESH
-            case COMPONENTS.CAMERA:
+            case Components.CAMERA:
                 return LocalizationEN.CAMERA
-            case COMPONENTS.SPRITE:
+            case Components.SPRITE:
                 return LocalizationEN.SPRITE
-            case COMPONENTS.DECAL:
+            case Components.DECAL:
                 return LocalizationEN.DECAL
-            case COMPONENTS.LIGHT:
+            case Components.LIGHT:
                 return LocalizationEN.LIGHT
-            case COMPONENTS.ATMOSPHERE:
+            case Components.ATMOSPHERE:
                 return LocalizationEN.ATMOSPHERE_RENDERER
-            case COMPONENTS.LIGHT_PROBE:
+            case Components.LIGHT_PROBE:
                 return LocalizationEN.LIGHT_PROBE
-            case COMPONENTS.PHYSICS_COLLIDER:
+            case Components.PHYSICS_COLLIDER:
                 return LocalizationEN.PHYSICS_COLLIDER
-            case COMPONENTS.RIGID_BODY:
+            case Components.RIGID_BODY:
                 return LocalizationEN.RIGID_BODY
-            case COMPONENTS.CULLING:
+            case Components.CULLING:
                 return LocalizationEN.CULLING
-            case COMPONENTS.UI:
+            case Components.UI:
                 return LocalizationEN.UI_WRAPPER
         }
     }

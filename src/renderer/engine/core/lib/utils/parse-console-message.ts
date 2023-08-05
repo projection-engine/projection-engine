@@ -1,10 +1,9 @@
-import MessageInterface from "../../static/MessageInterface"
 import serializeStructure from "../../utils/serialize-structure"
 
 const isPlainObject = value => value?.constructor === Object
 
-export default function parseMessage(messages: any[], type, src):MessageInterface[] {
-	const parts:MessageInterface[] = []
+export default function parseMessage(messages: any[], type, src):ConsoleMessage[] {
+	const parts:ConsoleMessage[] = []
 	for (let i = 0; i < messages.length; i++) {
 		const blockID =crypto.randomUUID()
 		if (typeof messages[i] === "object") {

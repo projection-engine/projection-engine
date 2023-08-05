@@ -1,4 +1,3 @@
-import SHADING_MODELS from "../../../engine/core/static/SHADING_MODELS"
 import GIZMOS from "../../../../shared/enums/Gizmos"
 import GizmoTransformationType from "../../../../shared/enums/GizmoTransformationType"
 import KEYS from "./KEYS"
@@ -26,7 +25,7 @@ export default {
 	gridThreshold: 100,
 	iconScale: 1,
 	spawnDistanceFromCamera: 10,
-	shadingModel: SHADING_MODELS.DETAIL,
+	shadingModel: ShadingModels.DETAIL,
 	gizmo: GIZMOS.TRANSLATION,
 	transformationType: GizmoTransformationType.GLOBAL,
 	backgroundColor: [.2, .2, .2],

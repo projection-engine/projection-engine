@@ -1,5 +1,4 @@
 import ArrayBufferAPI from "./ArrayBufferAPI"
-import LIGHT_TYPES from "../../static/LIGHT_TYPES"
 import {glMatrix, mat4, vec3} from "gl-matrix"
 import type Entity from "../../instances/Entity"
 import UberShader from "../../resource-libs/UberShader"
@@ -125,7 +124,7 @@ export default class LightsAPI {
 		primaryBuffer[offset + 6] = position[2]
 
 		switch (component.type) {
-		case LIGHT_TYPES.DIRECTIONAL: {
+		case LightTypes.DIRECTIONAL: {
 
 			primaryBuffer[offset + 8] = component.atlasFace[0]
 			primaryBuffer[offset + 9] = component.atlasFace[1]
@@ -146,7 +145,7 @@ export default class LightsAPI {
 			}
 			break
 		}
-		case LIGHT_TYPES.POINT: {
+		case LightTypes.POINT: {
 			primaryBuffer[7 + offset] = component.shadowSamples
 			primaryBuffer[8 + offset] = attenuation[0]
 			primaryBuffer[9 + offset] = attenuation[1]
@@ -162,7 +161,7 @@ export default class LightsAPI {
 				EngineState.omnidirectionalLightsToUpdate.push(component)
 			break
 		}
-		case LIGHT_TYPES.SPOT: {
+		case LightTypes.SPOT: {
 			mat4.lookAt(cache1Mat4, position, position, [0, 1, 0])
 			mat4.fromQuat(cache2Mat4, entity.rotationQuaternionFinal)
 			mat4.multiply(cache1Mat4, cache1Mat4, cache2Mat4)
@@ -182,7 +181,7 @@ export default class LightsAPI {
 
 			break
 		}
-		case LIGHT_TYPES.SPHERE: {
+		case LightTypes.SPHERE: {
 			primaryBuffer[8 + offset] = component.areaRadius
 			primaryBuffer[9 + offset] = 0
 			primaryBuffer[10 + offset] = 0
@@ -196,7 +195,7 @@ export default class LightsAPI {
 			primaryBuffer[15 + offset] = component.hasSSS ? 1 : 0
 			break
 		}
-		case LIGHT_TYPES.DISK: {
+		case LightTypes.DISK: {
 			primaryBuffer[8 + offset] = component.areaRadius
 			primaryBuffer[9 + offset] = attenuation[0]
 			primaryBuffer[10 + offset] = attenuation[1]

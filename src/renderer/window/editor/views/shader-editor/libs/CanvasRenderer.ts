@@ -1,5 +1,4 @@
 import type ShaderNode from "../templates/ShaderNode"
-import DATA_TYPES from "../static/DATA_TYPES"
 import IO_RADIUS from "../static/IO_RADIUS"
 import type ShaderLink from "../templates/ShaderLink"
 import HEADER_HEIGHT from "../static/HEADER_HEIGHT"
@@ -7,10 +6,18 @@ import type ShaderComment from "../templates/ShaderComment"
 import NODE_TYPES from "../static/NODE_TYPES"
 import {Input} from "../static/Input"
 import {Output} from "../static/Output"
-import {INVERSE_MATERIAL_RENDERING_TYPES} from "../../../../../engine/core/static/MATERIAL_RENDERING_TYPES"
 import DraggableNodeUtils from "./DraggableNodeUtils"
 import CanvasResources from "./CanvasResources"
 
+const INVERSE_MATERIAL_RENDERING_TYPES = {
+	0: "Unlit",
+	1: "Isotropic",
+	2: "Anisotropic",
+	3: "Sheen",
+	4: "Clear coat",
+	5: "Transparency",
+	6: "Sky"
+}
 export default class CanvasRenderer {
 
 
@@ -29,8 +36,8 @@ export default class CanvasRenderer {
 		ctx.font = "8px Roboto"
 		ctx.strokeStyle = CanvasResources.borderColor
 
-		const isColor = attribute.type === DATA_TYPES.COLOR
-		const isTexture = attribute.type === DATA_TYPES.TEXTURE
+		const isColor = attribute.type === MaterialDataTypes.COLOR
+		const isTexture = attribute.type === MaterialDataTypes.TEXTURE
 
 		const isDisabled = attribute.disabled
 		let label = attribute.label

@@ -1,5 +1,4 @@
 import Ammo from "../Ammo.js"
-import COLLISION_TYPES from "../../static/COLLISION_TYPES"
 import Entity from "../../instances/Entity"
 
 const COLLISION = "COLLISION",
@@ -11,7 +10,7 @@ const COLLISION = "COLLISION",
 
 export default class PhysicsAPI {
 	static #gravity: [number, number, number] = [0, 0, 0]
-	static ammo?: AmmoJS
+	static ammo?: TAmmoJS
 	static worldSettings = new Map()
 	static world?: btDiscreteDynamicsWorld
 	static rigidBodies: Entity [] = []
@@ -19,7 +18,7 @@ export default class PhysicsAPI {
 	static tempTransformation?: btTransform
 
 	static async initialize() {
-		const ammo = <AmmoJS>await Ammo()
+		const ammo = <TAmmoJS>await Ammo()
 		const wS = PhysicsAPI.worldSettings
 		PhysicsAPI.ammo = ammo
 		wS.set(COLLISION, new ammo.btDefaultCollisionConfiguration())
@@ -41,17 +40,17 @@ export default class PhysicsAPI {
 		const pColliderComponent = entity.physicsColliderComponent
 
 		switch (pColliderComponent.collisionType) {
-		case COLLISION_TYPES.BOX: {
+		case ColliderTypes.BOX: {
 			const boxSize = <btVector3>new ammo.btVector3(pColliderComponent.size[0], pColliderComponent.size[1], pColliderComponent.size[2])
 			pColliderComponent.shape = <btBoxShape>new ammo.btBoxShape(boxSize)
 			pColliderComponent.shape.setMargin(0.05)
 			break
 		}
-		case COLLISION_TYPES.SPHERE:
+		case ColliderTypes.SPHERE:
 			pColliderComponent.shape = <btSphereShape>new ammo.btSphereShape(pColliderComponent.radius)
 			pColliderComponent.shape.setMargin(0.05)
 			break
-		case COLLISION_TYPES.CAPSULE:
+		case ColliderTypes.CAPSULE:
 			// TODO
 			break
 		default:
@@ -124,7 +123,7 @@ export default class PhysicsAPI {
 	}
 
 	static initializeTerrainCollision(entity, heightMap, heightScale, dimensions) {
-		// const pColliderComponent = entity.components.get(COMPONENTS.PHYSICS_COLLIDER)
+		// const pColliderComponent = entity.Components.get(Components.PHYSICS_COLLIDER)
 		//
 		// const {imageData, imageToLoad, canvas} = getImageData(heightMap)
 		// const vertexCount = imageToLoad.width

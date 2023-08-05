@@ -1,5 +1,4 @@
 import GPU from "../../core/GPU"
-import COLLISION_TYPES from "../../core/static/COLLISION_TYPES"
 import {mat4, vec3} from "gl-matrix"
 import StaticMeshes from "../../core/lib/StaticMeshes"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -8,17 +7,16 @@ import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import EngineToolsState from "../EngineToolsState"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
-import CameraComponent from "../../core/instances/components/CameraComponent";
+import CameraComponent from "../../core/components/CameraComponent";
 import DynamicMap from "../../core/resource-libs/DynamicMap";
 import {UUID} from "crypto";
 import Entity from "../../core/instances/Entity";
+import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
 export default class WireframeSystem extends AbstractSystem {
 
-    @AbstractSystem.injectComponents(CameraComponent.componentKey)
-    decals: DynamicMap<UUID, Entity>
 
     @AbstractSystem.injectComponents(CameraComponent.componentKey)
     colliders: DynamicMap<UUID, Entity>
@@ -34,8 +32,8 @@ export default class WireframeSystem extends AbstractSystem {
         StaticEditorShaders.wireframe.bind()
         GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBO.sceneDepthVelocity)
 
-        let size = this.decals.size
-        let arr = this.decals.array
+        let size = ResourceEntityMapper.decals.size
+        let arr = ResourceEntityMapper.decals.array
         for(let i = 0; i < size; i++){
             const entity = arr[i]
             if (!entity.active || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
@@ -60,7 +58,7 @@ export default class WireframeSystem extends AbstractSystem {
                 vec3.add(translationCache, <vec3>collision.center, entity.absoluteTranslation)
                 let scale
                 const rotation = entity._rotationQuaternion
-                if (collision.collisionType === COLLISION_TYPES.BOX)
+                if (collision.collisionType === ColliderTypes.BOX)
                     scale = collision.size
                 else {
                     const r = collision.radius
@@ -72,10 +70,10 @@ export default class WireframeSystem extends AbstractSystem {
 
             context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.__collisionTransformationMatrix)
             switch (collision.collisionType) {
-                case COLLISION_TYPES.SPHERE:
+                case ColliderTypes.SPHERE:
                     StaticMeshes.sphere.draw()
                     break
-                case COLLISION_TYPES.BOX:
+                case ColliderTypes.BOX:
                     StaticEditorMeshes.clipSpaceCamera.drawLines()
                     break
             }

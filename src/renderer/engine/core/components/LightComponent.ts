@@ -1,18 +1,16 @@
 import Component from "./Component"
-import LIGHT_PROPS from "../../static/component-props/LIGHT_PROPS"
-import LIGHT_TYPES from "../../static/LIGHT_TYPES"
-import LightsAPI from "../../lib/utils/LightsAPI"
+import LIGHT_PROPS from "../static/component-props/LIGHT_PROPS"
+import LightsAPI from "../lib/utils/LightsAPI"
 import {mat4} from "gl-matrix"
-import EntityAPI from "../../lib/utils/EntityAPI"
-import COMPONENTS from "../../static/COMPONENTS"
+import EntityAPI from "../lib/utils/EntityAPI"
 
 
 export default class LightComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.LIGHT
+	static get componentKey(): Components {
+		return Components.LIGHT
 	}
 
-	get componentKey(): string {
+	get componentKey(): Components {
 		return LightComponent.componentKey
 	}
 
@@ -21,7 +19,7 @@ export default class LightComponent extends Component {
 	// -------------- GLOBAL --------------
 	_color = [255, 255, 255]
 	fixedColor = [1, 1, 1]
-	_type = LIGHT_TYPES.DIRECTIONAL
+	_type = LightTypes.DIRECTIONAL
 	get type() {
 		return this._type
 	}

@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
@@ -17,16 +16,16 @@ export default class BreakVector extends ShaderNode implements Signature{
 
 	constructor() {
 		super([
-			{label: "Vector", key: "v", accept: [DATA_TYPES.VEC2, DATA_TYPES.VEC3, DATA_TYPES.VEC4]}
+			{label: "Vector", key: "v", accept: [MaterialDataTypes.VEC2, MaterialDataTypes.VEC3, MaterialDataTypes.VEC4]}
 		], [
-			{label: "X", key: "xV", type: DATA_TYPES.FLOAT},
-			{label: "Y", key: "yV", type: DATA_TYPES.FLOAT},
-			{label: "Z", key: "zV", type: DATA_TYPES.FLOAT},
-			{label: "W", key: "wV", type: DATA_TYPES.FLOAT}
+			{label: "X", key: "xV", type: MaterialDataTypes.FLOAT},
+			{label: "Y", key: "yV", type: MaterialDataTypes.FLOAT},
+			{label: "Z", key: "zV", type: MaterialDataTypes.FLOAT},
+			{label: "W", key: "wV", type: MaterialDataTypes.FLOAT}
 		])
 
 		this.name = "BreakVector"
-        
+
 	}
 
 	get type() {
@@ -40,9 +39,9 @@ export default class BreakVector extends ShaderNode implements Signature{
 			if (!this[o]) {
 				this[o] = o + `${index}`
 
-				if ((v.type === DATA_TYPES.VEC2 || v.type === DATA_TYPES.VEC3) && o === "wV")
+				if ((v.type === MaterialDataTypes.VEC2 || v.type === MaterialDataTypes.VEC3) && o === "wV")
 					response.push(`float ${this[o]} = 0.;`)
-				else if (v.type === DATA_TYPES.VEC2 && o === "zV")
+				else if (v.type === MaterialDataTypes.VEC2 && o === "zV")
 					response.push(`float ${this[o]} = 0.;`)
 				else
 					response.push(`float ${this[o]} = ${v.name}.${o.charAt(0)};`)

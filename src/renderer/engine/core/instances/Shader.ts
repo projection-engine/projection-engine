@@ -1,6 +1,5 @@
 import GPU from "../GPU"
 import applyShaderMethods from "../utils/apply-shader-methods"
-import GLSL_TYPES from "../static/GLSL_TYPES"
 import StaticUBOs, {StaticUBONames} from "../lib/StaticUBOs"
 import GPUUtil from "../utils/GPUUtil";
 
@@ -116,7 +115,7 @@ export default class Shader {
 				const type = match[4]
 				const name: string = match[6].replace(" ", "").trim()
 
-				if (GLSL_TYPES[type] != null) {
+				if (GLSLTypes[type] != null) {
 					this.uniforms.push({
 						type,
 						name,
@@ -129,7 +128,7 @@ export default class Shader {
 				const reg = /^(\s*)(\w+)(\s*)((\w|_)+)/m
 				if (struct === null)
 					return []
-				const partial: string[] = struct[0].split("\n").filter(e => Object.keys(GLSL_TYPES).some(v => e.includes(v)))
+				const partial: string[] = struct[0].split("\n").filter(e => Object.keys(GLSLTypes).some(v => e.includes(v)))
 				this.uniforms.push(
 					...partial.map((s): Uniform | undefined => {
 						const current = s.match(reg)
@@ -158,7 +157,7 @@ export default class Shader {
 
 				if (!define) return
 				const arraySize = parseInt(define[5])
-				if (GLSL_TYPES[type] !== undefined) {
+				if (GLSLTypes[type] !== undefined) {
 					this.uniforms.push({
 						type,
 						name,
@@ -172,7 +171,7 @@ export default class Shader {
 
 				if (!struct)
 					return
-				const partial = struct[0].split("\n").filter(e => Object.keys(GLSL_TYPES).some(v => e.includes(v)))
+				const partial = struct[0].split("\n").filter(e => Object.keys(GLSLTypes).some(v => e.includes(v)))
 				this.uniforms.push(
 					...partial.map((s): Uniform | undefined => {
 						const current: string[] | null = s.match(reg)
@@ -237,7 +236,7 @@ export default class Shader {
 		case "bool":
 			if (data == null)
 				return
-			GPU.context[GLSL_TYPES[type]](uLocation, data)
+			GPU.context[GLSLTypes[type]](uLocation, data)
 			break
 		case "mat3":
 			if (data == null)

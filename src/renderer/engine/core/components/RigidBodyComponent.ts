@@ -1,12 +1,11 @@
 import Component from "./Component"
-import RIGID_BODY_PROPS from "../../static/component-props/RIGID_BODY_PROPS"
-import COMPONENTS from "../../static/COMPONENTS"
+import RIGID_BODY_PROPS from "../static/component-props/RIGID_BODY_PROPS"
 
 export default class RigidBodyComponent extends Component {
-	static get componentKey(): COMPONENTS {
-		return COMPONENTS.RIGID_BODY
+	static get componentKey(): Components {
+		return Components.RIGID_BODY
 	}
-	get componentKey(): string {
+	get componentKey(): Components {
 		return RigidBodyComponent.componentKey
 	}
 

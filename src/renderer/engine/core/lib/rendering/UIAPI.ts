@@ -1,8 +1,7 @@
 import Engine from "../../Engine"
 import InputEventsAPI from "../utils/InputEventsAPI"
-import QueryAPI from "../utils/QueryAPI"
 import FileSystemAPI from "../utils/FileSystemAPI"
-import UIComponent from "../../instances/components/UIComponent"
+import UIComponent from "../../components/UIComponent"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import Entity from "../../instances/Entity"
 
@@ -75,7 +74,7 @@ export default class UIAPI {
 
 		mapToObject(el, UI)
 
-		el.id = entity.queryKey
+		el.id = entity.id
 		el.innerHTML =Engine.UILayouts.get(UI.uiLayoutID)||""
 
 		const children = el.children
@@ -122,7 +121,7 @@ export default class UIAPI {
 		for (let i = 0; i < entities.length; i++) {
 			const entity = entities[i]
 			const UI = entity.uiComponent
-			if (!entity.active || !UI || QueryAPI.getEntityByQueryID(entity.queryKey) !== entity)
+			if (!entity.active || !UI )
 				continue
 			UI.__element = undefined
 		}
@@ -133,14 +132,14 @@ export default class UIAPI {
 
 		const UI = entity?.uiComponent
 
-		if (!entity.active || !UI || QueryAPI.getEntityByQueryID(entity.queryKey) !== entity || !UI.__element)
+		if (!entity.active || !UI || !UI.__element)
 			return
 		const el = UI.__element
 		if (!el)
 			return
 		el.removeAttribute("style")
 		mapToObject(el, UI)
-		el.id = entity.queryKey
+		el.id = entity.id
 		const html = Engine.UILayouts.get(UI.uiLayoutID)
 		el.innerHTML = html ? html : ""
 	}

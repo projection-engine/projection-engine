@@ -1,6 +1,5 @@
 <script lang="ts">
     import Engine from "../../../../../engine/core/Engine"
-    import COMPONENTS from "../../../../../engine/core/static/COMPONENTS"
     import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
@@ -31,7 +30,7 @@
     function addUI() {
     	const e = EntityAPI.getNewEntityInstance()
     	e.name = "UI-ShaderNode"
-    	e.addComponent(COMPONENTS.UI)
+    	e.addComponent(Components.UI)
     	EngineStateService.add(e)
     }
 </script>

@@ -8,8 +8,6 @@ import GPU from "../../GPU"
 import MaterialAPI from "./MaterialAPI"
 import UberShader from "../../resource-libs/UberShader"
 import StaticMeshes from "../StaticMeshes"
-import TextureParams from "../../static/TextureParams"
-import MaterialInformation from "../../static/MaterialInformation"
 import MeshResourceMapper from "../MeshResourceMapper"
 import MaterialResourceMapper from "../MaterialResourceMapper"
 import EngineState from "../../EngineState";

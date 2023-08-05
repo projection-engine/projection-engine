@@ -1,12 +1,8 @@
 import GPU from "../../GPU"
-import DATA_TYPES from "../../static/DATA_TYPES"
 import GPUAPI from "./GPUAPI"
 
 import FileSystemAPI from "../utils/FileSystemAPI"
 import Material from "../../instances/Material"
-import MaterialUniform from "../../static/MaterialUniform"
-import TextureParams from "../../static/TextureParams"
-import TextureInUse from "../../static/TextureInUse"
 
 export default class MaterialAPI {
 	static #generator?: Generator<number>
@@ -43,7 +39,7 @@ export default class MaterialAPI {
 
 		for (let i = 0; i < data.length; i++) {
 			const currentUniform = data[i]
-			if (currentUniform.type === DATA_TYPES.TEXTURE) {
+			if (currentUniform.type === MaterialDataTypes.TEXTURE) {
 				const textureID = currentUniform.data
 				if (texturesInUse[textureID] || !FileSystemAPI.isReady)
 					continue

@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 
@@ -12,13 +11,13 @@ export default class Divide extends ShaderNode implements Signature{
 
 	constructor() {
 		super([
-			{label: "A", key: "a", accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2 ]},
-			{label: "B", key: "b", accept: [DATA_TYPES.FLOAT, DATA_TYPES.INT, DATA_TYPES.VEC4, DATA_TYPES.VEC3, DATA_TYPES.VEC2 ] }
+			{label: "A", key: "a", accept: [MaterialDataTypes.FLOAT, MaterialDataTypes.INT, MaterialDataTypes.VEC4, MaterialDataTypes.VEC3, MaterialDataTypes.VEC2 ]},
+			{label: "B", key: "b", accept: [MaterialDataTypes.FLOAT, MaterialDataTypes.INT, MaterialDataTypes.VEC4, MaterialDataTypes.VEC3, MaterialDataTypes.VEC2 ] }
 		], [
-			{label: "Result", key: "divideRes", type: DATA_TYPES.UNDEFINED}
+			{label: "Result", key: "divideRes", type: MaterialDataTypes.UNDEFINED}
 		])
 		this.name = "Divide"
-        
+
 	}
 
 	get type() {

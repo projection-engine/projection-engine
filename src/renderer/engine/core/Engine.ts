@@ -1,5 +1,4 @@
 import CameraAPI from "./lib/utils/CameraAPI"
-import ENVIRONMENT from "./static/ENVIRONMENT"
 import AmbientOcclusionSystem from "./system/AmbientOcclusionSystem"
 import ConversionAPI from "./lib/math/ConversionAPI"
 import CompositionSystem from "./system/CompositionSystem"
@@ -14,7 +13,6 @@ import Entity from "./instances/Entity"
 import DynamicMap from "./resource-libs/DynamicMap"
 import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
-import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
 import LightsAPI from "./lib/utils/LightsAPI"
 import {UUID} from "crypto";
 import SystemManager from "./SystemManager";
@@ -42,17 +40,13 @@ export default class Engine {
     static #onLevelLoadListeners = new DynamicMap<string, Function>()
     static UILayouts = new Map()
     static isDev = true
-    static #environment: number = ENVIRONMENT.DEV
+    static #environment: number = Enviroment.DEV
     static #isReady = false
     static #initialized = false
     static #loadedLevel: Entity
 
     static get entities(): DynamicMap<UUID, Entity> {
         return EntityManager.getInstance().getEntities()
-    }
-
-    static get queryMap(): Map<string, Entity> {
-        return ResourceEntityMapper.queryMap
     }
 
     static get isReady() {
@@ -72,7 +66,7 @@ export default class Engine {
     }
 
     static set environment(data: number) {
-        Engine.isDev = data === ENVIRONMENT.DEV
+        Engine.isDev = data === Enviroment.DEV
         Engine.#environment = data
         if (Engine.isDev)
             CameraAPI.updateAspectRatio()
@@ -142,7 +136,7 @@ export default class Engine {
             PhysicsAPI.registerRigidBody(current)
         }
         await ScriptsAPI.updateAllScripts()
-        Engine.environment = ENVIRONMENT.EXECUTION
+        Engine.environment = Enviroment.EXECUTION
     }
 
 

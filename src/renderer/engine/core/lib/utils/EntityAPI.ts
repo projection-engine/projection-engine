@@ -1,10 +1,8 @@
-import COMPONENTS from "../../static/COMPONENTS"
 import Engine from "../../Engine"
 import TransformationWorkerAPI from "./TransformationWorkerAPI"
 import UIAPI from "../rendering/UIAPI"
 import PhysicsAPI from "../rendering/PhysicsAPI"
 import Entity from "../../instances/Entity"
-import ENTITY_TYPED_ATTRIBUTES from "../../static/ENTITY_TYPED_ATTRIBUTES"
 import LightsAPI from "./LightsAPI"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import MeshResourceMapper from "../MeshResourceMapper"
@@ -14,7 +12,23 @@ import * as crypto from "crypto";
 import {UUID} from "crypto";
 import EngineState from "../../EngineState";
 
-const COMPONENT_TRIGGER_UPDATE = [COMPONENTS.LIGHT, COMPONENTS.MESH]
+const COMPONENT_TRIGGER_UPDATE = [Components.LIGHT, Components.MESH]
+const ENTITY_TYPED_ATTRIBUTES = [
+    "_translation",
+    "__changedBuffer",
+    "_rotationQuaternion",
+    "_rotationType",
+    "_rotationEuler",
+    "_rotationQuaternionFinal",
+    "matrix",
+    "absoluteTranslation",
+    "_scaling",
+    "baseTransformationMatrix",
+    "pivotPoint",
+    "previousModelMatrix",
+    "distanceFromCamera",
+    "__cullingMetadata",
+]
 const excludedKeys = [
 	...ENTITY_TYPED_ATTRIBUTES,
 	"components",
@@ -96,9 +110,8 @@ export default class EntityAPI {
 		if (!EntityAPI.isRegistered(entity))
 			return
 
-		Engine.queryMap.set(entity.queryKey, entity)
 		ResourceEntityMapper.addEntity(entity)
-		if (COMPONENT_TRIGGER_UPDATE.indexOf(<COMPONENTS | undefined>previouslyRemoved) || !!COMPONENT_TRIGGER_UPDATE.find(v => entity.components.get(v) != null))
+		if (COMPONENT_TRIGGER_UPDATE.indexOf(<Components | undefined>previouslyRemoved) || !!COMPONENT_TRIGGER_UPDATE.find(v => entity.Components.get(v) != null))
 			LightsAPI.packageLights(false, true)
 		EngineState.visibilityNeedsUpdate = true
 	}
@@ -141,7 +154,6 @@ export default class EntityAPI {
 					if (scr && scr.onDestruction)
 						scr.onDestruction()
 				}
-			Engine.queryMap.delete(entity.queryKey)
 			PhysicsAPI.removeRigidBody(entity)
 			UIAPI.deleteUIEntity(entity)
 			if (entity.lightComponent !== undefined || entity.meshComponent !== undefined)
@@ -182,7 +194,7 @@ export default class EntityAPI {
 		parsedEntity.parentID = entity.parent ?? Engine.loadedLevel?.id
 
 		for (const k in entity.components) {
-			const component = parsedEntity.addComponent(k as COMPONENTS)
+			const component = parsedEntity.addComponent(k as Components)
 			if (!component)
 				continue
 			const keys = Object.keys(entity.components[k])
@@ -192,15 +204,15 @@ export default class EntityAPI {
 					if (componentValue.includes("__") || componentValue.includes("#") || componentValue === "_props" || componentValue === "_name")
 						continue
 					switch (k) {
-					case COMPONENTS.MESH: {
+					case Components.MESH: {
 						if (componentValue === "_meshID" || componentValue === "_materialID")
 							component[componentValue.replace("_", "")] = entity.components[k][componentValue]
 						else
 							component[componentValue] = entity.components[k][componentValue]
 						break
 					}
-					case COMPONENTS.ATMOSPHERE:
-					case COMPONENTS.DECAL: {
+					case Components.ATMOSPHERE:
+					case Components.DECAL: {
 						if (componentValue.charAt(0) === "_")
 							component[componentValue.substring(1, componentValue.length)] = entity.components[k][componentValue]
 						else

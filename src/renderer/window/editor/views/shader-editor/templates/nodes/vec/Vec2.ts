@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 import ShaderEditorUtil from "../../../../../util/ShaderEditorUtil";
@@ -18,15 +17,15 @@ export default class Vec2 extends ShaderNode implements Signature{
 			{
 				label: "Dynamic",
 				key: "uniform",
-				type: DATA_TYPES.CHECKBOX,
+				type: MaterialDataTypes.CHECKBOX,
 			},
-			{label: "Vector", key: "v", type: DATA_TYPES.VEC2},
+			{label: "Vector", key: "v", type: MaterialDataTypes.VEC2},
 		], [
-			{label: "Value", key: "VEC2_VAR", type: DATA_TYPES.VEC2},
+			{label: "Value", key: "VEC2_VAR", type: MaterialDataTypes.VEC2},
 		])
 
 		this.name = "Vec2"
-        
+
 	}
 
 	get type() {
@@ -43,14 +42,14 @@ export default class Vec2 extends ShaderNode implements Signature{
 			uniformValues.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.VEC2,
+				type: MaterialDataTypes.VEC2,
 				data: this.v,
 				internalKey: "v"
 			})
 			uniforms.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.VEC2
+				type: MaterialDataTypes.VEC2
 			})
 
 			return `uniform vec2 ${this.uniformName};`

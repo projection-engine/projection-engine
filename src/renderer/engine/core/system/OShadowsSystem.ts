@@ -1,5 +1,4 @@
 import {mat4, vec3} from "gl-matrix"
-import CUBE_MAP_VIEWS from "../static/CUBE_MAP_VIEWS"
 import ShadowProbe from "../instances/ShadowProbe"
 import GPU from "../GPU"
 import StaticShaders from "../lib/StaticShaders"
@@ -20,6 +19,24 @@ export default class OShadowsSystem extends AbstractSystem {
     static #MAX_CUBEMAPS = 2
     shadowMap?: ShadowProbe
     sampler?: WebGLTexture
+    static #CUBE_MAP_VIEWS = {
+        target: [
+            [1., 0., 0.],
+            [-1., 0., 0.],
+            [0., 1., 0.],
+            [0., -1., 0.],
+            [0., 0., 1.],
+            [0., 0., -1.],
+        ],
+        up: [
+            [0., -1., 0.],
+            [0., -1., 0.],
+            [0., 0., 1.],
+            [0., 0., -1.],
+            [0., -1., 0.],
+            [0., -1., 0.],
+        ]
+    }
 
     constructor() {
         super()
@@ -45,8 +62,8 @@ export default class OShadowsSystem extends AbstractSystem {
             currentEntity = current.entity
             this.shadowMap
                 .draw((yaw, pitch, perspective, index) => {
-                        vec3.add(cacheVec3, currentEntity._translation, <vec3>CUBE_MAP_VIEWS.target[index])
-                        mat4.lookAt(cacheViewMatrix, currentEntity._translation, cacheVec3, <vec3>CUBE_MAP_VIEWS.up[index])
+                        vec3.add(cacheVec3, currentEntity._translation, <vec3>OShadowsSystem.#CUBE_MAP_VIEWS.target[index])
+                        mat4.lookAt(cacheViewMatrix, currentEntity._translation, cacheVec3, <vec3>OShadowsSystem.#CUBE_MAP_VIEWS.up[index])
                         cacheProjection = perspective
                         loopMeshes(this.#loopCallback)
                     },

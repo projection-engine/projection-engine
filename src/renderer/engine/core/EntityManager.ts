@@ -1,12 +1,11 @@
 import Entity from "./instances/Entity"
 import AbstractSingleton from "./AbstractSingleton";
 import DynamicMap from "./resource-libs/DynamicMap";
-import COMPONENTS from "./static/COMPONENTS";
 import {UUID} from "crypto";
-import Component from "./instances/components/Component";
+import Component from "./components/Component";
 
 export default class EntityManager extends AbstractSingleton {
-    #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<Entity, COMPONENTS>[]>
+    #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<Entity, Components>[]>
     #entities = new DynamicMap<UUID, Entity>()
     #lockingKey = crypto.randomUUID()
 
@@ -32,7 +31,7 @@ export default class EntityManager extends AbstractSingleton {
      * OBS: hard-change type will be triggered only for "component-add", "component-remove", "create" and "delete" event types
      * @returns removeListener method
      */
-    addEventListener(type: EntityEventTypes, callback: GenericVoidFunctionWithP<EntityListenerEvent<Entity, COMPONENTS>>, options?: EntityListenerOptions): GenericVoidFunction {
+    addEventListener(type: EntityEventTypes, callback: GenericVoidFunctionWithP<EntityListenerEvent<Entity, Components>>, options?: EntityListenerOptions): GenericVoidFunction {
         if (type === "hard-change") {
             const toRemove = [
                 this.addEventListener("component-add", callback, options),
@@ -43,8 +42,8 @@ export default class EntityManager extends AbstractSingleton {
             return () => toRemove.forEach(f => f())
         } else {
             let remove: VoidFunction
-            const targets: EntityManagerListener<Entity, COMPONENTS>[] = this.#listeners.get(type)
-            const onceCallback = (e: EntityListenerEvent<Entity, COMPONENTS>) => {
+            const targets: EntityManagerListener<Entity, Components>[] = this.#listeners.get(type)
+            const onceCallback = (e: EntityListenerEvent<Entity, Components>) => {
                 callback(e)
                 remove()
             }
@@ -73,11 +72,11 @@ export default class EntityManager extends AbstractSingleton {
         this.#callListeners({all: entities, type: "delete"})
     }
 
-    createEntity(id?: UUID, ...components: COMPONENTS[]): Entity {
+    createEntity(id?: UUID, ...components: Components[]): Entity {
         this.#entities.unlock(this.#lockingKey)
         const entity = new Entity(id || crypto.randomUUID())
         this.#entities.set(entity.id, entity)
-        components.forEach(entity.addComponent)
+        Components.forEach(entity.addComponent)
         this.#callListeners({all: [entity], type: "create", targetComponents: components})
         return entity
     }
@@ -94,20 +93,20 @@ export default class EntityManager extends AbstractSingleton {
         return entities
     }
 
-    addComponent(target:UUID|Entity, componentType:COMPONENTS):Component {
+    addComponent(target:UUID|Entity, componentType:Components):Component {
         const entity = target instanceof Entity ? target : this.#entities.get(target)
         const component = entity.addComponent<Component>(componentType)
         this.#callListeners({target: entity, all: [entity], type: "component-add", targetComponents: [componentType]})
         return component
     }
 
-    removeComponent(target:UUID|Entity, componentType:COMPONENTS) {
+    removeComponent(target:UUID|Entity, componentType:Components) {
         const entity = target instanceof Entity ? target : this.#entities.get(target)
         entity.removeComponent(componentType)
         this.#callListeners({target: entity, all: [entity], type: "component-remove", targetComponents: [componentType]})
     }
 
-    #callListeners(event: EntityListenerEvent<Entity, COMPONENTS>) {
+    #callListeners(event: EntityListenerEvent<Entity, Components>) {
         this.#entities.lock(this.#lockingKey)
         const listeners = this.#listeners.get(event.type)
         Object.freeze(event)

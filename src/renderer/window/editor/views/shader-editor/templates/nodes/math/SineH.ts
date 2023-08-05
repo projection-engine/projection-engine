@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 
@@ -12,12 +11,12 @@ export default class SineH extends ShaderNode implements Signature{
 	a = 0
 	constructor() {
 		super([
-			{label: "A", key: "a", accept: [DATA_TYPES.FLOAT], type: DATA_TYPES.FLOAT}
+			{label: "A", key: "a", accept: [MaterialDataTypes.FLOAT], type: MaterialDataTypes.FLOAT}
 		], [
-			{label: "Result", key: "sineHRes", type: DATA_TYPES.FLOAT}
+			{label: "Result", key: "sineHRes", type: MaterialDataTypes.FLOAT}
 		])
 		this.name = "SineH"
-        
+
 	}
 
 	get type() {

@@ -2,7 +2,6 @@ import Engine from "../../../engine/core/Engine"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import EngineTools from "../../../engine/tools/EngineTools"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
-import ENVIRONMENT from "../../../engine/core/static/ENVIRONMENT"
 import EngineResources from "../../../engine/core/lib/EngineResources"
 import AbstractSingleton from "../../../engine/core/AbstractSingleton"
 import EngineStore from "../../shared/stores/EngineStore"
@@ -71,7 +70,7 @@ export default class EngineToolsService extends AbstractSingleton {
 		GPU.canvas.width = visualSettings.resolutionX
 		GPU.canvas.height = visualSettings.resolutionY
 
-		if (Engine.environment === ENVIRONMENT.DEV)
+		if (Engine.environment === Enviroment.DEV)
 			EngineTools.bindSystems()
 		else
 			EngineTools.unbindSystems()
@@ -83,7 +82,7 @@ export default class EngineToolsService extends AbstractSingleton {
 		const settings = SettingsStore.getData()
 		if (engine.executingAnimation)
 			UIAPI.showUI()
-		if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
+		if (Engine.environment === Enviroment.DEV && !engine.focusedCamera) {
 			CameraAPI.trackingEntity = undefined
 			if (settings.camera !== undefined) {
 				EditorCameraSystem.updateProperties({

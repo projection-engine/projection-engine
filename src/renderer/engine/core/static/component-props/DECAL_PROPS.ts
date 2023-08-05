@@ -1,4 +1,4 @@
-import Component from "../../instances/components/Component"
+import Component from "../../components/Component"
 import MATERIAL_RENDERING_TYPES from "../MATERIAL_RENDERING_TYPES"
 
 export default [

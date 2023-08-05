@@ -11,7 +11,6 @@ import DraggableNodeUtils from "../views/shader-editor/libs/DraggableNodeUtils"
 import {Output} from "../views/shader-editor/static/Output"
 import {Input} from "../views/shader-editor/static/Input"
 import CanvasRenderer from "../views/shader-editor/libs/CanvasRenderer"
-import DATA_TYPES from "../../../engine/core/static/DATA_TYPES"
 import Draggable from "../views/shader-editor/templates/Draggable"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
 
@@ -143,15 +142,15 @@ export default class ShaderEditorUtil{
 
 	static getNewVector(value, v, index, type) {
 		switch (type) {
-		case  DATA_TYPES.VEC2:
+		case  MaterialDataTypes.VEC2:
 			return [index === 0 ? v : value[0], index === 1 ? v : value[1]]
-		case  DATA_TYPES.VEC3:
+		case  MaterialDataTypes.VEC3:
 			return [
 				index === 0 ? v : value[0],
 				index === 1 ? v : value[1],
 				index === 2 ? v : value[2]
 			]
-		case  DATA_TYPES.VEC4:
+		case  MaterialDataTypes.VEC4:
 			return [
 				index === 0 ? v : value[0],
 				index === 1 ? v : value[1],

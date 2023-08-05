@@ -1,15 +1,13 @@
 import CameraEffects from "../../resource-libs/CameraEffects"
 import Engine from "../../Engine"
-import ENVIRONMENT from "../../static/ENVIRONMENT"
 import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../math/ConversionAPI"
 
 import GPU from "../../GPU"
 import StaticUBOs from "../StaticUBOs"
 import Entity from "../../instances/Entity"
-import CameraComponent from "../../instances/components/CameraComponent"
+import CameraComponent from "../../components/CameraComponent"
 import CameraResources from "../../resource-libs/CameraResources"
-import CameraSerialization from "../../static/CameraSerialization"
 import CameraNotificationDecoder from "../CameraNotificationDecoder"
 import EngineState from "../../EngineState";
 
@@ -87,7 +85,7 @@ export default class CameraAPI extends CameraResources {
 	static updateAspectRatio() {
 		const bBox = GPU.canvas.getBoundingClientRect()
 		ConversionAPI.canvasBBox = bBox
-		if (Engine.environment === ENVIRONMENT.DEV || CameraAPI.#dynamicAspectRatio) {
+		if (Engine.environment === Enviroment.DEV || CameraAPI.#dynamicAspectRatio) {
 			CameraAPI.aspectRatio = bBox.width / bBox.height
 			CameraAPI.updateProjection()
 		}

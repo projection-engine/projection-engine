@@ -1,5 +1,4 @@
-import Component from "../../instances/components/Component"
-import COLLISION_TYPES from "../COLLISION_TYPES"
+import Component from "../../components/Component"
 
 export default [
 	Component.group("COLLISION_TYPE", [
@@ -7,16 +6,16 @@ export default [
 			"collisionType",
 			[
 				{
-					label: COLLISION_TYPES.BOX,
-					value: COLLISION_TYPES.BOX
+					label: ColliderTypes.BOX,
+					value: ColliderTypes.BOX
 				},
 				{
-					label: COLLISION_TYPES.SPHERE,
-					value: COLLISION_TYPES.SPHERE,
+					label: ColliderTypes.SPHERE,
+					value: ColliderTypes.SPHERE,
 				},
 				{
-					label: COLLISION_TYPES.CAPSULE,
-					value: COLLISION_TYPES.CAPSULE,
+					label: ColliderTypes.CAPSULE,
+					value: ColliderTypes.CAPSULE,
 				}
 			]
 		),
@@ -27,11 +26,11 @@ export default [
 		Component.array(["X", "Y", "Z"], "center", .001, undefined, undefined)
 	]),
 	Component.group("SIZE", [
-		Component.array(["X", "Y", "Z"], "size", .001, undefined, 0, false, (comp) => comp.collisionType !== COLLISION_TYPES.BOX)
+		Component.array(["X", "Y", "Z"], "size", .001, undefined, 0, false, (comp) => comp.collisionType !== ColliderTypes.BOX)
 	]),
 	Component.group("SIZE", [
-		Component.number("RADIUS", "radius", undefined, .0001, .001, undefined, true, (comp) => comp.collisionType === COLLISION_TYPES.BOX),
-		Component.number("HEIGHT", "height", undefined, .0001, .001, undefined, true, (comp) => comp.collisionType !== COLLISION_TYPES.CAPSULE),
+		Component.number("RADIUS", "radius", undefined, .0001, .001, undefined, true, (comp) => comp.collisionType === ColliderTypes.BOX),
+		Component.number("HEIGHT", "height", undefined, .0001, .001, undefined, true, (comp) => comp.collisionType !== ColliderTypes.CAPSULE),
 	]),
 
 
@@ -52,7 +51,7 @@ export default [
 					value: "Z"
 				}
 			],
-			(comp) => comp.collisionType !== COLLISION_TYPES.CAPSULE
+			(comp) => comp.collisionType !== ColliderTypes.CAPSULE
 		)
 	])
 ]

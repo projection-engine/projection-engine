@@ -1,13 +1,12 @@
 <script>
     import Property from "./Property.svelte"
 
-    import Component from "../../../../../../engine/core/instances/components/Component"
+    import Component from "../../../../../../engine/core/components/Component"
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import InspectorUtil from "../../../../util/InspectorUtil"
     import EditorUtil from "../../../../util/EditorUtil";
-    import COMPONENTS from "../../../../../../engine/core/static/COMPONENTS";
     import UIComponent from "../UIComponent.svelte";
     import MaterialUniforms from "../../../../components/MaterialUniformsForm.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
@@ -36,9 +35,9 @@
     }
 </script>
 
-{#if component.componentKey === COMPONENTS.UI}
+{#if component.componentKey === Components.UI}
     <UIComponent {entity} {submit}/>
-{:else if component.componentKey === COMPONENTS.MESH && component.hasMaterial}
+{:else if component.componentKey === Components.MESH && component.hasMaterial}
     <fieldset>
         <legend>{LocalizationEN.MATERIAL_VALUES}</legend>
         <Checkbox

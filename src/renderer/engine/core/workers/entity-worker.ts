@@ -1,4 +1,3 @@
-import WORKER_MESSAGES from "../static/WORKER_MESSAGES"
 import TransformationPass from "./TransformationPass"
 
 
@@ -6,25 +5,25 @@ self.onmessage = (event) => {
 	if (event.data) {
 		const {type, payload} = event.data
 		switch (type) {
-		case WORKER_MESSAGES.INITIALIZE:
+		case WorkerMessages.INITIALIZE:
 			TransformationPass.initialize(payload)
 			break
-		case WORKER_MESSAGES.REGISTER_ENTITY:
+		case WorkerMessages.REGISTER_ENTITY:
 			if (TransformationPass.targets.has(payload.id))
 				TransformationPass.targets.delete(payload.id)
 			TransformationPass.targets.set(payload.id, payload)
 			TransformationPass.updateThreadInfo()
 			break
-		case WORKER_MESSAGES.REMOVE_ENTITY:
+		case WorkerMessages.REMOVE_ENTITY:
 			TransformationPass.targets.delete(payload)
 			TransformationPass.updateThreadInfo()
 			break
-		case WORKER_MESSAGES.REMOVE_ENTITY_BLOCK:
+		case WorkerMessages.REMOVE_ENTITY_BLOCK:
 			TransformationPass.targets.removeBlock(payload, data => data.id)
 			TransformationPass.updateThreadInfo()
 			break
 
-		case WORKER_MESSAGES.ADD_BLOCK:
+		case WorkerMessages.ADD_BLOCK:
 
 			TransformationPass.targets.addBlock(payload, data => data.id)
 			TransformationPass.updateThreadInfo()

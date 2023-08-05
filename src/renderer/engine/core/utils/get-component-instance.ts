@@ -1,41 +1,40 @@
-import COMPONENTS from "../static/COMPONENTS"
-import MeshComponent from "../instances/components/MeshComponent"
-import AtmosphereComponent from "../instances/components/AtmosphereComponent"
-import CameraComponent from "../instances/components/CameraComponent"
-import SpriteComponent from "../instances/components/SpriteComponent"
-import PhysicsColliderComponent from "../instances/components/PhysicsColliderComponent"
-import RigidBodyComponent from "../instances/components/RigidBodyComponent"
-import CullingComponent from "../instances/components/CullingComponent"
-import UIComponent from "../instances/components/UIComponent"
-import LightComponent from "../instances/components/LightComponent"
-import Component from "../instances/components/Component"
-import DecalComponent from "../instances/components/DecalComponent"
-import LightProbeComponent from "../instances/components/LightProbeComponent"
+import MeshComponent from "../components/MeshComponent"
+import AtmosphereComponent from "../components/AtmosphereComponent"
+import CameraComponent from "../components/CameraComponent"
+import SpriteComponent from "../components/SpriteComponent"
+import PhysicsColliderComponent from "../components/PhysicsColliderComponent"
+import RigidBodyComponent from "../components/RigidBodyComponent"
+import CullingComponent from "../components/CullingComponent"
+import UIComponent from "../components/UIComponent"
+import LightComponent from "../components/LightComponent"
+import Component from "../components/Component"
+import DecalComponent from "../components/DecalComponent"
+import LightProbeComponent from "../components/LightProbeComponent"
 
 
-export default function getComponentInstance(key: string): Component | undefined {
+export default function getComponentInstance(key: Components): Component | undefined {
 	switch (key) {
-	case  COMPONENTS.LIGHT:
+	case  Components.LIGHT:
 		return new LightComponent()
-	case  COMPONENTS.MESH:
+	case  Components.MESH:
 		return new MeshComponent()
-	case  COMPONENTS.ATMOSPHERE:
+	case  Components.ATMOSPHERE:
 		return new AtmosphereComponent()
-	case  COMPONENTS.LIGHT_PROBE:
+	case  Components.LIGHT_PROBE:
 		return new LightProbeComponent()
-	case  COMPONENTS.CAMERA:
+	case  Components.CAMERA:
 		return new CameraComponent()
-	case  COMPONENTS.SPRITE:
+	case  Components.SPRITE:
 		return new SpriteComponent()
-	case  COMPONENTS.DECAL:
+	case  Components.DECAL:
 		return new DecalComponent()
-	case  COMPONENTS.PHYSICS_COLLIDER:
+	case  Components.PHYSICS_COLLIDER:
 		return new PhysicsColliderComponent()
-	case  COMPONENTS.RIGID_BODY:
+	case  Components.RIGID_BODY:
 		return new RigidBodyComponent()
-	case  COMPONENTS.CULLING:
+	case  Components.CULLING:
 		return new CullingComponent()
-	case  COMPONENTS.UI:
+	case  Components.UI:
 		return new UIComponent()
 
 	}

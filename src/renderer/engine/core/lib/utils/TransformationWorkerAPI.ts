@@ -1,4 +1,3 @@
-import WORKER_MESSAGES from "../../static/WORKER_MESSAGES"
 import CameraAPI from "./CameraAPI"
 import Entity from "../../instances/Entity"
 import QueryAPI from "./QueryAPI"
@@ -27,7 +26,7 @@ export default class TransformationWorkerAPI {
 		maxWorkers = Math.max(navigator.hardwareConcurrency - 2, 1)
 		for (let i = 0; i < maxWorkers; i++) {
 			const currentWorker = new Worker("./entity-worker.js")
-			currentWorker.postMessage({type: WORKER_MESSAGES.INITIALIZE, payload: [TransformationWorkerAPI.hasChangeBuffer, CameraAPI.notificationBuffers, CameraAPI.position, i, maxWorkers]})
+			currentWorker.postMessage({type: WorkerMessages.INITIALIZE, payload: [TransformationWorkerAPI.hasChangeBuffer, CameraAPI.notificationBuffers, CameraAPI.position, i, maxWorkers]})
 			TransformationWorkerAPI.#workers.push(currentWorker)
 		}
 	}
@@ -37,7 +36,7 @@ export default class TransformationWorkerAPI {
 		if (!entity.hasWorkerBound)
 			return
 		TransformationWorkerAPI.#workers.forEach(worker => {
-			worker.postMessage({type: WORKER_MESSAGES.REMOVE_ENTITY, payload: entity.id})
+			worker.postMessage({type: WorkerMessages.REMOVE_ENTITY, payload: entity.id})
 		})
 
 		TransformationWorkerAPI.linkedEntities.delete(entity.id)
@@ -57,7 +56,7 @@ export default class TransformationWorkerAPI {
 		}
 
 		TransformationWorkerAPI.#workers.forEach(worker => {
-			worker.postMessage({type: WORKER_MESSAGES.REMOVE_ENTITY_BLOCK, payload: toRemove})
+			worker.postMessage({type: WorkerMessages.REMOVE_ENTITY_BLOCK, payload: toRemove})
 		})
 	}
 	static #getEntityInfo(entity:Entity): WorkerEntity{
@@ -91,7 +90,7 @@ export default class TransformationWorkerAPI {
 		TransformationWorkerAPI.linkedEntities.set(entity.id, entity)
 		TransformationWorkerAPI.#workers.forEach(worker => {
 			worker.postMessage({
-				type: WORKER_MESSAGES.REGISTER_ENTITY,
+				type: WorkerMessages.REGISTER_ENTITY,
 				payload: TransformationWorkerAPI.#getEntityInfo(entity)
 			})
 		})
@@ -109,7 +108,7 @@ export default class TransformationWorkerAPI {
 			TransformationWorkerAPI.linkedEntities.set(e.id, e)
 			TransformationWorkerAPI.#workers.forEach(worker => {
 				worker.postMessage({
-					type: WORKER_MESSAGES.REGISTER_ENTITY,
+					type: WorkerMessages.REGISTER_ENTITY,
 					payload: TransformationWorkerAPI.#getEntityInfo(e)
 				})
 			})

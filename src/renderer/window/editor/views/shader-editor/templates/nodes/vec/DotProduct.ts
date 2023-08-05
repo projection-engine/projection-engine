@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import DraggableNodeUtils from "../../../libs/DraggableNodeUtils"
 import Signature from "../../Signature"
@@ -13,14 +12,14 @@ export default class DotProduct extends ShaderNode implements Signature{
 
 	constructor() {
 		super([
-			{label: "A", key: "a", accept: [DATA_TYPES.VEC2,DATA_TYPES.VEC3,DATA_TYPES.VEC4]},
-			{label: "B", key: "b", accept: [DATA_TYPES.VEC2,DATA_TYPES.VEC3,DATA_TYPES.VEC4]},
+			{label: "A", key: "a", accept: [MaterialDataTypes.VEC2,MaterialDataTypes.VEC3,MaterialDataTypes.VEC4]},
+			{label: "B", key: "b", accept: [MaterialDataTypes.VEC2,MaterialDataTypes.VEC3,MaterialDataTypes.VEC4]},
 		], [
-			{label: "Result", key: "DOT_PRODUCT", type: DATA_TYPES.FLOAT}
+			{label: "Result", key: "DOT_PRODUCT", type: MaterialDataTypes.FLOAT}
 		])
 
 		this.name = "DotProduct"
-        
+
 	}
 
 	get type() {

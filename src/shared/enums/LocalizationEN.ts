@@ -37,7 +37,7 @@ export default {
     EDGE_FALLOFF: "Edge falloff",
     MAX_LIGHTS: "Max lights",
     SHOW_DETAILS:"Show details",
-    COMPONENTS: "Components",
+    Components: "Components",
     LICENSE: "Projection Engine is licensed under the GNU General Public License, Version 3.\n Some files may have other compatible licenses.",
     RELEASE_NOTES: "Release notes",
     CREATE_COLLECTION: "Create new collection",

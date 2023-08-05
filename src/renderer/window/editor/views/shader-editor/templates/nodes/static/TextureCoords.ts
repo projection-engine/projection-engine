@@ -1,5 +1,4 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 
@@ -13,11 +12,11 @@ export default class TextureCoords extends ShaderNode implements Signature{
 
 	constructor() {
 		super([], [
-			{label: "Coordinates", key: "texCoords", type: DATA_TYPES.VEC2}
+			{label: "Coordinates", key: "texCoords", type: MaterialDataTypes.VEC2}
 		])
 
 		this.name = "TextureCoords"
-        
+
 	}
 
 	get type() {

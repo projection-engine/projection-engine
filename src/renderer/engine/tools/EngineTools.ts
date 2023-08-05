@@ -5,7 +5,6 @@ import SelectedSystem from "./systems/SelectedSystem"
 import Engine from "../core/Engine"
 import EditorCameraSystem from "./systems/EditorCameraSystem"
 import WireframeSystem from "./systems/WireframeSystem"
-import ENVIRONMENT from "../core/static/ENVIRONMENT"
 import LineRenderer from "./systems/LineRenderer"
 import Entity from "../core/instances/Entity"
 import GPU from "../core/GPU"
@@ -37,7 +36,7 @@ export default class EngineTools {
         StaticEditorShaders.initialize()
         await StaticEditorMeshes.initialize()
 
-        Engine.environment = ENVIRONMENT.DEV
+        Engine.environment = Enviroment.DEV
         LineRenderer.initialize()
         StaticEditorFBO.initialize()
     }

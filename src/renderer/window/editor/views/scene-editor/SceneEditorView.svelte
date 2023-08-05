@@ -14,7 +14,6 @@
     import Engine from "../../../../engine/core/Engine"
     import ViewportInteractionListener from "./lib/ViewportInteractionListener"
     import GizmoSettings from "./components/GizmoSettings.svelte"
-    import SHADING_MODELS from "../../../../engine/core/static/SHADING_MODELS"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import GPU from "../../../../engine/core/GPU"
@@ -87,12 +86,12 @@
             {focusedCamera.name}
         </div>
     {/if}
-    {#if shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
+    {#if shadingModel === ShadingModels.LIGHT_QUANTITY}
         <div class="complexity-gradient">
             <small>{LocalizationEN.NO_CONTRIBUTION}</small>
             <small>{LocalizationEN.ALL_SCENE_LIGHTS}</small>
         </div>
-    {:else if shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
+    {:else if shadingModel === ShadingModels.LIGHT_COMPLEXITY}
         <div class="complexity-gradient">
             <small>{LocalizationEN.NO_CONTRIBUTION}</small>
             <small>{LocalizationEN.MAXIMUM_NUMBER_OF_LIGHTS}</small>
