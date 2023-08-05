@@ -1,7 +1,6 @@
 import {mat4, vec3} from "gl-matrix"
 import CUBE_MAP_VIEWS from "../static/CUBE_MAP_VIEWS"
 import ShadowProbe from "../instances/ShadowProbe"
-import LightComponent from "../instances/components/LightComponent"
 import GPU from "../GPU"
 import StaticShaders from "../lib/StaticShaders"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"

@@ -4,328 +4,352 @@ import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS"
 import GPU from "../../core/GPU"
 import AbstractSystem from "../../core/AbstractSystem";
 
-let holding = false
 
-const toDeg = 180 / Math.PI, halfPI = Math.PI / 2
-const MOUSE_RIGHT = 2, MOUSE_LEFT = 0
-const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
-const toApplyTranslation = vec4.create()
-const cacheRotation = quat.create()
-const cachePitch = quat.create()
-const cacheYaw = quat.create()
+export default class EditorCameraSystem extends AbstractSystem {
+    #isHoldingCanvas = false
+    #TO_DEG = 180 / Math.PI
+    #HALF_PI = Math.PI / 2
+    #MOUSE_RIGHT = 2
+    #MOUSE_LEFT = 0
+    #clamp = (num, min, max) => Math.min(Math.max(num, min), max)
+    #toApplyTranslation = vec4.create()
+    #cacheRotation = quat.create()
+    #cachePitch = quat.create()
+    #cacheYaw = quat.create()
+    #isTracking = false
+    #hasInitializedEvents = false
+    #yawAngle = 0
+    #pitchAngle = 0
+    #screenSpaceMovementSpeed = 1
+    #movementSpeed = 0.1
+    #turnSpeed = .1
+    #screenSpaceMovement = false
+    #isRotationChanged = false
+    #forceUpdate = false
+    #movementKeys: EditorCameraKeys = {
+        forward: "KeyW",
+        backward: "KeyS",
+        left: "KeyA",
+        right: "KeyD",
+        invertDirection: false,
+        fasterJonny: "ShiftLeft",
+        mouseLeft: false,
+        mouseRight: false,
+    }
+    #keysOnHold: EditorCameraActionMap = {
+        forward: false,
+        backward: false,
+        left: false,
+        right: false,
+        mouseLeft: false,
+        mouseRight: false,
+        fasterJonny: false
+    }
 
-export default class EditorCameraSystem extends AbstractSystem{
-	static #isTracking = false
-	static #hasInitializedEvents = false
-	static #xRotation = 0
-	static #yRotation = 0
+    execute() {
+        const map = this.#keysOnHold
+        let changed = this.#forceUpdate
 
-	static set xRotation(data: number) {
-		if (isNaN(data))
-			return
-		EditorCameraSystem.#xRotation = data
-	}
+        if (!changed) {
+            this.#toApplyTranslation[0] = 0
+            this.#toApplyTranslation[1] = 0
+            this.#toApplyTranslation[2] = 0
+            this.#toApplyTranslation[3] = 1
+        }
 
-	static set yRotation(data: number) {
-		if (isNaN(data))
-			return
-		EditorCameraSystem.#yRotation = data
-	}
+        const multiplier = map.fasterJonny ? 10 * this.#movementSpeed : this.#movementSpeed
+        if (map.left) {
+            this.#toApplyTranslation[0] -= multiplier
+            changed = true
+        }
+        if (map.right) {
+            this.#toApplyTranslation[0] += multiplier
+            changed = true
+        }
+        if (map.backward) {
+            if (CameraAPI.isOrthographic)
+                CameraAPI.orthographicProjectionSize += multiplier
+            else
+                this.#toApplyTranslation[2] += multiplier
+            changed = true
+        }
+        if (map.forward) {
+            if (CameraAPI.isOrthographic)
+                CameraAPI.orthographicProjectionSize -= multiplier
+            else
+                this.#toApplyTranslation[2] -= multiplier
+            changed = true
+        }
 
-	static get xRotation() {
-		return EditorCameraSystem.#xRotation
-	}
+        if (this.#isRotationChanged) {
+            this.#isRotationChanged = false
 
-	static get yRotation() {
-		return EditorCameraSystem.#yRotation
-	}
+            const pitch = quat.fromEuler(this.#cachePitch, this.#pitchAngle * this.#TO_DEG, 0, 0)
+            const yaw = quat.fromEuler(this.#cacheYaw, 0, this.#yawAngle * this.#TO_DEG, 0)
+            quat.copy(this.#cacheRotation, pitch)
+            quat.multiply(this.#cacheRotation, yaw, this.#cacheRotation)
+            CameraAPI.updateRotation(this.#cacheRotation)
+            changed = true
+        }
 
-	static screenSpaceMovementSpeed = 1
-	static movementSpeed = 0.1
-	static turnSpeed = .1
-	static gizmoReference:HTMLElement
-	static screenSpaceMovement = false
-	static rotationChanged = false
-	static forceUpdate = false
-	static movementKeys = {
-		forward: "KeyW",
-		backward: "KeyS",
-		left: "KeyA",
-		right: "KeyD",
-		invertDirection: false,
-		fasterJonny: "ShiftLeft",
-		mouseLeft: false,
-		mouseRight: false,
-	}
-	static #keysOnHold = {
-		forward: false,
-		backward: false,
-		left: false,
-		right: false,
+        if (changed)
+            this.#transform()
+    }
 
-		mouseLeft: false,
-		mouseRight: false,
-		fasterJonny: false
-	}
-
-	execute() {
-		if (CameraAPI.hasChangedView && EditorCameraSystem.gizmoReference)
-			EditorCameraSystem.gizmoReference.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${CameraAPI.staticViewMatrix})`
-
-		const map = EditorCameraSystem.#keysOnHold
-		let changed = EditorCameraSystem.forceUpdate
-
-		if (!changed) {
-			toApplyTranslation[0] = 0
-			toApplyTranslation[1] = 0
-			toApplyTranslation[2] = 0
-			toApplyTranslation[3] = 1
-		}
-
-		const multiplier = map.fasterJonny ? 10 * EditorCameraSystem.movementSpeed : EditorCameraSystem.movementSpeed
-		if (map.left) {
-			toApplyTranslation[0] -= multiplier
-			changed = true
-		}
-		if (map.right) {
-			toApplyTranslation[0] += multiplier
-			changed = true
-		}
-		if (map.backward) {
-			if (CameraAPI.isOrthographic)
-				CameraAPI.orthographicProjectionSize += multiplier
-			else
-				toApplyTranslation[2] += multiplier
-			changed = true
-		}
-		if (map.forward) {
-			if (CameraAPI.isOrthographic)
-				CameraAPI.orthographicProjectionSize -= multiplier
-			else
-				toApplyTranslation[2] -= multiplier
-			changed = true
-		}
-
-		if (EditorCameraSystem.rotationChanged) {
-			EditorCameraSystem.rotationChanged = false
-
-			const pitch = quat.fromEuler(cachePitch, EditorCameraSystem.yRotation * toDeg, 0, 0)
-			const yaw = quat.fromEuler(cacheYaw, 0, EditorCameraSystem.xRotation * toDeg, 0)
-			quat.copy(cacheRotation, pitch)
-			quat.multiply(cacheRotation, yaw, cacheRotation)
-			CameraAPI.updateRotation(cacheRotation)
-			changed = true
-		}
-
-		if (changed)
-			EditorCameraSystem.#transform()
-	}
-
-	static #transform() {
-		EditorCameraSystem.forceUpdate = false
-		vec4.transformQuat(toApplyTranslation, toApplyTranslation, CameraAPI.rotationBuffer)
-
-		CameraAPI.addTranslation(toApplyTranslation)
-		CameraAPI.updateView()
-	}
-
-	static forceRotationTracking() {
-		if (!holding) {
-			GPU.canvas.requestPointerLock()
-			document.addEventListener("mousemove", EditorCameraSystem.#handleInput)
-			holding = true
-		}
-		EditorCameraSystem.#keysOnHold.mouseLeft = true
-	}
+    static forceRotationTracking() {
+        const instance = this.get<EditorCameraSystem>()
+        if (!instance.#isHoldingCanvas) {
+            GPU.canvas.requestPointerLock()
+            document.addEventListener("mousemove", EditorCameraSystem.#handleInput)
+            instance.#isHoldingCanvas = true
+        }
+        instance.#keysOnHold.mouseLeft = true
+    }
 
 
-	static #handleInput(event) {
-		if (!EditorCameraSystem.#isTracking)
-			return
+    static #handleInput(event) {
+        const instance = this.get<EditorCameraSystem>()
+        if (!instance.#isTracking)
+            return
+        const keys = instance.#movementKeys
+        const map = instance.#keysOnHold
+        try {
+            switch (event.type) {
+                case "mousemove": {
+                    instance.#onMouseMove(event, map);
+                    break
+                }
+                case "mousedown":
+                    instance.#onMouseDown(event, map);
+                    break
+                case "mouseup":
+                    instance.#onMouseUp(event, map, keys);
+                    break
+                case "keyup":
+                    instance.#onKeyUp(event, keys, map);
+                    break
+                case "keydown":
+                    instance.#onKeyDown(event, keys, map);
+                    break
+                case "pointerlockchange":
+                    instance.#onPointerLockChange();
+                    break
+                case "wheel":
+                    instance.#onWheel(event);
+                    break
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
-		const keys = EditorCameraSystem.movementKeys
-		const map = EditorCameraSystem.#keysOnHold
-		try {
-			switch (event.type) {
-			case "mousemove": {
-				if (!document.pointerLockElement)
-					GPU.canvas.requestPointerLock()
-				if (EditorCameraSystem.screenSpaceMovement) {
-					toApplyTranslation[0] = -event.movementX * EditorCameraSystem.screenSpaceMovementSpeed / 2
-					toApplyTranslation[1] = event.movementY * EditorCameraSystem.screenSpaceMovementSpeed / 2
-					toApplyTranslation[2] = 0
-					toApplyTranslation[3] = 1
-					EditorCameraSystem.forceUpdate = true
-				} else {
+    #onMouseMove(event, map: EditorCameraActionMap) {
+        if (!document.pointerLockElement)
+            GPU.canvas.requestPointerLock()
+        if (this.#screenSpaceMovement) {
+            this.#toApplyTranslation[0] = -event.movementX * this.#screenSpaceMovementSpeed / 2
+            this.#toApplyTranslation[1] = event.movementY * this.#screenSpaceMovementSpeed / 2
+            this.#toApplyTranslation[2] = 0
+            this.#toApplyTranslation[3] = 1
+            this.#forceUpdate = true
+        } else {
+            if (map.mouseLeft && map.mouseRight || event.ctrlKey) {
+                const multiplier = this.#keysOnHold.fasterJonny ? 10 * this.#movementSpeed : this.#movementSpeed
+                this.#toApplyTranslation[0] = -event.movementX * multiplier
+                this.#toApplyTranslation[1] = event.movementY * multiplier
+                this.#toApplyTranslation[2] = 0
+                this.#toApplyTranslation[3] = 1
+                this.#forceUpdate = true
+            } else {
+                this.#isRotationChanged = true
+                let multiplier = -1
+                if (this.#movementKeys.invertDirection)
+                    multiplier = 1
+                this.#yawAngle += multiplier * event.movementX * this.#turnSpeed
+                this.#pitchAngle += multiplier * event.movementY * this.#turnSpeed
+                this.#pitchAngle = this.#clamp(this.#pitchAngle, -this.#HALF_PI, this.#HALF_PI)
+            }
+        }
+    }
 
-					if (map.mouseLeft && map.mouseRight || event.ctrlKey) {
-						const multiplier = EditorCameraSystem.#keysOnHold.fasterJonny ? 10 * EditorCameraSystem.movementSpeed : EditorCameraSystem.movementSpeed
-						toApplyTranslation[0] = -event.movementX * multiplier
-						toApplyTranslation[1] = event.movementY * multiplier
-						toApplyTranslation[2] = 0
-						toApplyTranslation[3] = 1
-						EditorCameraSystem.forceUpdate = true
-					} else {
-						EditorCameraSystem.rotationChanged = true
-						let multiplier = -1
-						if (EditorCameraSystem.movementKeys.invertDirection)
-							multiplier = 1
-						EditorCameraSystem.xRotation += multiplier * event.movementX * EditorCameraSystem.turnSpeed
-						EditorCameraSystem.yRotation += multiplier * event.movementY * EditorCameraSystem.turnSpeed
-						EditorCameraSystem.yRotation = clamp(EditorCameraSystem.yRotation, -halfPI, halfPI)
-					}
-				}
-				break
-			}
-			case "mousedown":
-				if (event.button === MOUSE_LEFT)
-					map.mouseLeft = true
-				if (event.button === MOUSE_RIGHT)
-					map.mouseRight = true
+    #onMouseDown(event, map: EditorCameraActionMap) {
+        if (event.button === this.#MOUSE_LEFT)
+            map.mouseLeft = true
+        if (event.button === this.#MOUSE_RIGHT)
+            map.mouseRight = true
 
-				if (!holding && map.mouseRight === true) {
-					if (EditorCameraSystem.screenSpaceMovement)
-						GPU.canvas.style.cursor = "grabbing"
-					document.addEventListener("mousemove", EditorCameraSystem.#handleInput)
-					holding = true
-				}
+        if (!this.#isHoldingCanvas && map.mouseRight === true) {
+            if (this.#screenSpaceMovement)
+                GPU.canvas.style.cursor = "grabbing"
+            document.addEventListener("mousemove", EditorCameraSystem.#handleInput)
+            this.#isHoldingCanvas = true
+        }
+    }
+
+    #onMouseUp(event, map: EditorCameraActionMap, keys: EditorCameraKeys) {
+        document.exitPointerLock()
+        if (event.button === this.#MOUSE_LEFT)
+            map.mouseLeft = false
+        if (event.button === this.#MOUSE_RIGHT)
+            map.mouseRight = false
+        if (!keys.mouseRight && !keys.mouseLeft) {
+            if (this.#screenSpaceMovement)
+                GPU.canvas.style.cursor = "default"
+            document.removeEventListener("mousemove", EditorCameraSystem.#handleInput)
+            this.#isHoldingCanvas = false
+        }
+    }
+
+    #onKeyUp(event, keys: EditorCameraKeys, map: EditorCameraActionMap) {
+        switch (event.code) {
+            case keys.forward:
+                map.forward = false
+                break
+            case keys.backward:
+                map.backward = false
+                break
+            case keys.left:
+                map.left = false
+                break
+            case keys.right:
+                map.right = false
+                break
+            case keys.fasterJonny:
+                map.fasterJonny = false
+        }
+    }
+
+    #onKeyDown(event, keys: EditorCameraKeys, map: EditorCameraActionMap) {
+        if (document.pointerLockElement)
+            switch (event.code) {
+                case keys.forward:
+                    map.forward = true
+                    break
+                case keys.backward:
+                    map.backward = true
+                    break
+                case keys.left:
+                    map.left = true
+                    break
+                case keys.right:
+                    map.right = true
+                    break
+                case keys.fasterJonny:
+                    map.fasterJonny = true
+                    break
+            }
+    }
+
+    #onPointerLockChange() {
+        if (!document.pointerLockElement) {
+            const map = this.#keysOnHold
+            map.forward = false
+            map.backward = false
+            map.left = false
+            map.right = false
+            map.fasterJonny = false
+        }
+    }
+
+    #onWheel(event) {
+        event.preventDefault()
+        const multiplier = event.ctrlKey ? 10 * 2 : 2
+        if (CameraAPI.isOrthographic)
+            CameraAPI.orthographicProjectionSize += multiplier * Math.sign(event.deltaY)
+        else {
+            this.#toApplyTranslation[0] = this.#toApplyTranslation[1] = 0
+            this.#toApplyTranslation[2] += multiplier * Math.sign(event.deltaY)
+            this.#toApplyTranslation[3] = 1
+        }
+        this.#transform()
+    }
+
+    #transform() {
+        this.#forceUpdate = false
+        vec4.transformQuat(this.#toApplyTranslation, this.#toApplyTranslation, CameraAPI.rotationBuffer)
+
+        CameraAPI.addTranslation(this.#toApplyTranslation)
+        CameraAPI.updateView()
+    }
+
+    static startTracking() {
+        const instance = this.get<EditorCameraSystem>()
+        if (instance.#isTracking)
+            return
+        instance.#isTracking = true
+        if (!instance.#hasInitializedEvents) {
+            document.addEventListener("pointerlockchange", EditorCameraSystem.#handleInput)
+            document.addEventListener("keydown", EditorCameraSystem.#handleInput)
+            document.addEventListener("keyup", EditorCameraSystem.#handleInput)
+            document.addEventListener("mouseup", EditorCameraSystem.#handleInput)
+            GPU.canvas.addEventListener("mousedown", EditorCameraSystem.#handleInput)
+            GPU.canvas.addEventListener("wheel", EditorCameraSystem.#handleInput)
+            instance.#hasInitializedEvents = true
+        }
+    }
+
+    static stopTracking() {
+        const instance = this.get<EditorCameraSystem>()
+        instance.#isTracking = false
+    }
+
+    static #updateCameraPlacement(yaw, pitch) {
+        const instance = this.get<EditorCameraSystem>()
+        CameraAPI.updateProjection()
+        instance.#pitchAngle = pitch
+        instance.#yawAngle = yaw
+        instance.#isRotationChanged = true
+    }
+
+    static rotate(direction) {
+        vec4.copy(CameraAPI.rotationBuffer, [0, 0, 0, 1])
+
+        switch (direction) {
+            case CAMERA_ROTATIONS.TOP:
+                EditorCameraSystem.#updateCameraPlacement(0, -Math.PI / 2 - .001)
+                break
+            case CAMERA_ROTATIONS.BOTTOM:
+                EditorCameraSystem.#updateCameraPlacement(0, Math.PI / 2 - .001)
+                break
+            case CAMERA_ROTATIONS.BACK:
+                EditorCameraSystem.#updateCameraPlacement(Math.PI, 0)
+                break
+            case CAMERA_ROTATIONS.FRONT:
+                EditorCameraSystem.#updateCameraPlacement(0, 0)
+                break
+            case CAMERA_ROTATIONS.RIGHT:
+                EditorCameraSystem.#updateCameraPlacement(Math.PI / 2, 0)
+                break
+            case CAMERA_ROTATIONS.LEFT:
+                EditorCameraSystem.#updateCameraPlacement(Math.PI * 1.5, 0)
+                break
+        }
+    }
 
 
-				break
-			case "mouseup":
-				document.exitPointerLock()
-				if (event.button === MOUSE_LEFT)
-					map.mouseLeft = false
-				if (event.button === MOUSE_RIGHT)
-					map.mouseRight = false
+    static setYawPitch(yaw: number, pitch: number) {
+        const instance = this.get<EditorCameraSystem>()
+        instance.#yawAngle = yaw !== undefined ? yaw : instance.#yawAngle
+        instance.#pitchAngle = pitch !== undefined ? pitch : instance.#pitchAngle
+    }
 
+    static getYawPitch(): { yaw: number, pitch: number } {
+        const instance = this.get<EditorCameraSystem>()
+        return {yaw: instance.#yawAngle, pitch: instance.#pitchAngle}
+    }
 
-				if (!keys.mouseRight && !keys.mouseLeft) {
-					if (EditorCameraSystem.screenSpaceMovement)
-						GPU.canvas.style.cursor = "default"
-					document.removeEventListener("mousemove", EditorCameraSystem.#handleInput)
-					holding = false
-				}
-				break
-			case "keyup":
-				switch (event.code) {
-				case keys.forward:
-					map.forward = false
-					break
-				case keys.backward:
-					map.backward = false
-					break
-				case keys.left:
-					map.left = false
-					break
-				case keys.right:
-					map.right = false
-					break
-				case keys.fasterJonny:
-					map.fasterJonny = false
-				}
-				break
-			case "keydown":
-				if (!document.pointerLockElement)
-					return
-				switch (event.code) {
-				case keys.forward:
-					map.forward = true
-					break
-				case keys.backward:
-					map.backward = true
-					break
-				case keys.left:
-					map.left = true
-					break
-				case keys.right:
-					map.right = true
-					break
-				case keys.fasterJonny:
-					map.fasterJonny = true
-					break
-				}
-				break
-			case "pointerlockchange":
-				if (!document.pointerLockElement) {
-					const map = EditorCameraSystem.#keysOnHold
-					map.forward = false
-					map.backward = false
-					map.left = false
-					map.right = false
-					map.fasterJonny = false
-				}
-				break
-			case "wheel":
-
-				event.preventDefault()
-				const multiplier = event.ctrlKey ? 10 * 2 : 2
-				if (CameraAPI.isOrthographic)
-					CameraAPI.orthographicProjectionSize += multiplier * Math.sign(event.deltaY)
-				else {
-					toApplyTranslation[0] = toApplyTranslation[1] = 0
-					toApplyTranslation[2] += multiplier * Math.sign(event.deltaY)
-					toApplyTranslation[3] = 1
-				}
-				EditorCameraSystem.#transform()
-				break
-			default:
-				break
-			}
-		} catch (err) {
-			console.error(err)
-		}
-	}
-
-	static startTracking() {
-		if (EditorCameraSystem.#isTracking)
-			return
-		EditorCameraSystem.#isTracking = true
-		if (!EditorCameraSystem.#hasInitializedEvents) {
-			document.addEventListener("pointerlockchange", EditorCameraSystem.#handleInput)
-			document.addEventListener("keydown", EditorCameraSystem.#handleInput)
-			document.addEventListener("keyup", EditorCameraSystem.#handleInput)
-			document.addEventListener("mouseup", EditorCameraSystem.#handleInput)
-			GPU.canvas.addEventListener("mousedown", EditorCameraSystem.#handleInput)
-			GPU.canvas.addEventListener("wheel", EditorCameraSystem.#handleInput)
-			EditorCameraSystem.#hasInitializedEvents = true
-		}
-	}
-
-	static stopTracking() {
-		EditorCameraSystem.#isTracking = false
-	}
-
-
-	static rotate(direction) {
-		function updateCameraPlacement(yaw, pitch) {
-			CameraAPI.updateProjection()
-			EditorCameraSystem.yRotation = pitch
-			EditorCameraSystem.xRotation = yaw
-			EditorCameraSystem.rotationChanged = true
-		}
-
-		vec4.copy(CameraAPI.rotationBuffer, [0, 0, 0, 1])
-
-		switch (direction) {
-		case CAMERA_ROTATIONS.TOP:
-			updateCameraPlacement(0, -Math.PI / 2 - .001)
-			break
-		case CAMERA_ROTATIONS.BOTTOM:
-			updateCameraPlacement(0, Math.PI / 2 - .001)
-			break
-		case CAMERA_ROTATIONS.BACK:
-			updateCameraPlacement(Math.PI, 0)
-			break
-		case CAMERA_ROTATIONS.FRONT:
-			updateCameraPlacement(0, 0)
-			break
-		case CAMERA_ROTATIONS.RIGHT:
-			updateCameraPlacement(Math.PI / 2, 0)
-			break
-		case CAMERA_ROTATIONS.LEFT:
-			updateCameraPlacement(Math.PI * 1.5, 0)
-			break
-		}
-	}
+    static updateProperties(param: {
+        screenSpaceMovementSpeed?: number,
+        movementSpeed?: number,
+        turnSpeed?: number,
+        forceUpdate?: boolean,
+        screenSpaceMovement?: boolean
+    }) {
+        const instance = this.get<EditorCameraSystem>()
+        instance.#screenSpaceMovementSpeed = Object.hasOwn(param, "screenSpaceMovementSpeed") ? param.screenSpaceMovementSpeed : instance.#screenSpaceMovementSpeed
+        instance.#movementSpeed = Object.hasOwn(param, "movementSpeed") ? param.movementSpeed : instance.#movementSpeed
+        instance.#turnSpeed = Object.hasOwn(param, "turnSpeed") ? param.turnSpeed : instance.#turnSpeed
+        instance.#screenSpaceMovement = Object.hasOwn(param, "screenSpaceMovement") ? param.screenSpaceMovement : instance.#screenSpaceMovement
+        instance.#forceUpdate = Object.hasOwn(param, "forceUpdate") ? param.forceUpdate : instance.#forceUpdate
+    }
 }

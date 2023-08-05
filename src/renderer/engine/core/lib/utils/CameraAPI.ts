@@ -3,7 +3,6 @@ import Engine from "../../Engine"
 import ENVIRONMENT from "../../static/ENVIRONMENT"
 import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../math/ConversionAPI"
-import VisibilityRendererSystem from "../../system/VisibilityRendererSystem"
 
 import GPU from "../../GPU"
 import StaticUBOs from "../StaticUBOs"

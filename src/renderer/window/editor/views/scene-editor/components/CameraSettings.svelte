@@ -23,7 +23,8 @@
 
     onMount(() => {
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
-    		EditorCameraSystem.screenSpaceMovement = screenSpaceMovement = data.screenSpaceMovement
+            EditorCameraSystem.updateProperties({screenSpaceMovement: data})
+    		screenSpaceMovement = data.screenSpaceMovement
     		camera = data.camera
     	}, ["screenSpaceMovement", "camera"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => focusedCamera = data.focusedCamera, ["focusedCamera"])

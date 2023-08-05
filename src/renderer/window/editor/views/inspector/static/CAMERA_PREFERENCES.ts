@@ -11,7 +11,7 @@ export default [
 		min: .01,
 		increment: .1,
 		onChange: v => {
-			EditorCameraSystem.screenSpaceMovementSpeed = v
+			EditorCameraSystem.updateProperties({screenSpaceMovementSpeed: v})
 			return v
 		}
 	},
@@ -23,7 +23,7 @@ export default [
 		min: .01,
 		increment: .1,
 		onChange: v => {
-			EditorCameraSystem.movementSpeed = v
+			EditorCameraSystem.updateProperties({movementSpeed: v})
 			return v
 		}
 	},
@@ -35,7 +35,7 @@ export default [
 		min: .01,
 		increment: .001,
 		onChange: v => {
-			EditorCameraSystem.turnSpeed = v
+			EditorCameraSystem.updateProperties({turnSpeed: v})
 			return v
 		}
 	},

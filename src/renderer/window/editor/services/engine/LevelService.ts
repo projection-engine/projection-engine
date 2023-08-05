@@ -25,7 +25,7 @@ import FileTypes from "../../../../../shared/enums/FileTypes"
 import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
-import ViewStateStore from "../../../shared/stores/ViewStateStore";
+import {UUID} from "crypto";
 
 
 export default class LevelService extends AbstractSingleton {
@@ -98,7 +98,7 @@ export default class LevelService extends AbstractSingleton {
         EditorActionHistory.clear()
 
 
-        await Engine.loadLevel(levelID, false)
+        await Engine.loadLevel(levelID as UUID, false)
         const entities = Engine.entities.array
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
@@ -126,8 +126,9 @@ export default class LevelService extends AbstractSingleton {
             const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
             if (viewMetadata !== undefined) {
                 viewMetadata.cameraMetadata = CameraAPI.serializeState()
-                viewMetadata.cameraMetadata.prevX = EditorCameraSystem.xRotation
-                viewMetadata.cameraMetadata.prevY = EditorCameraSystem.yRotation
+                const {yaw, pitch} = EditorCameraSystem.getYawPitch()
+                viewMetadata.cameraMetadata.prevX = yaw
+                viewMetadata.cameraMetadata.prevY = pitch
             }
 
             await FileSystemUtil.writeFile(

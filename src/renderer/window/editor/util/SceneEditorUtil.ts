@@ -5,7 +5,6 @@ import ConversionAPI from "../../../engine/core/lib/math/ConversionAPI"
 import GPU from "../../../engine/core/GPU"
 import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
 import Engine from "../../../engine/core/Engine"
-import VisibilityRendererSystem from "../../../engine/core/system/VisibilityRendererSystem"
 import EngineTools from "../../../engine/tools/EngineTools"
 import {glMatrix, quat} from "gl-matrix"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
@@ -143,12 +142,10 @@ export default class SceneEditorUtil {
 				const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
 				const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
 				CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
-				EditorCameraSystem.xRotation = glMatrix.toRadian(45)
-				EditorCameraSystem.yRotation = -glMatrix.toRadian(45)
+				EditorCameraSystem.setYawPitch(glMatrix.toRadian(45), -glMatrix.toRadian(45))
 			} else {
 				CameraAPI.restoreState(cameraMetadata)
-				EditorCameraSystem.xRotation = cameraMetadata.prevX
-				EditorCameraSystem.yRotation = cameraMetadata.prevY
+				EditorCameraSystem.setYawPitch(cameraMetadata.prevX, cameraMetadata.prevY)
 			}
 		}catch (err){
 			console.error(err)

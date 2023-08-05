@@ -4,8 +4,6 @@ import StaticMeshes from "../../core/lib/StaticMeshes"
 import StaticFBO from "../../core/lib/StaticFBO"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import EngineTools from "../EngineTools"
-import EngineToolsState from "../EngineToolsState"
-import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 
 export default class SelectedSystem extends AbstractSystem {

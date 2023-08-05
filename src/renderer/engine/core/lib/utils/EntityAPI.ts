@@ -6,14 +6,13 @@ import PhysicsAPI from "../rendering/PhysicsAPI"
 import Entity from "../../instances/Entity"
 import ENTITY_TYPED_ATTRIBUTES from "../../static/ENTITY_TYPED_ATTRIBUTES"
 import LightsAPI from "./LightsAPI"
-import VisibilityRendererSystem from "../../system/VisibilityRendererSystem"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import MeshResourceMapper from "../MeshResourceMapper"
 import MaterialResourceMapper from "../MaterialResourceMapper"
 import QueryAPI from "./QueryAPI"
 import * as crypto from "crypto";
-import EngineState from "../../EngineState";
 import {UUID} from "crypto";
+import EngineState from "../../EngineState";
 
 const COMPONENT_TRIGGER_UPDATE = [COMPONENTS.LIGHT, COMPONENTS.MESH]
 const excludedKeys = [

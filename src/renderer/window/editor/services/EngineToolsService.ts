@@ -86,9 +86,12 @@ export default class EngineToolsService extends AbstractSingleton {
 		if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
 			CameraAPI.trackingEntity = undefined
 			if (settings.camera !== undefined) {
-				EditorCameraSystem.screenSpaceMovementSpeed = settings.camera.screenSpaceMovementSpeed || 1
-				EditorCameraSystem.movementSpeed = settings.camera.movementSpeed * .1
-				EditorCameraSystem.turnSpeed = settings.camera.turnSpeed * .01
+				EditorCameraSystem.updateProperties({
+					screenSpaceMovementSpeed: settings.camera.screenSpaceMovementSpeed || 1,
+					movementSpeed: settings.camera.movementSpeed * .1,
+					turnSpeed: settings.camera.turnSpeed * .01
+				})
+
 				if (settings.camera.smoothing != null)
 					CameraAPI.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
 				CameraAPI.updateViewTarget(settings.camera)

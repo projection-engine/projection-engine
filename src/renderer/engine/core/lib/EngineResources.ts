@@ -1,10 +1,8 @@
 import PhysicsSystem from "../system/PhysicsSystem"
 import StaticUBOs from "./StaticUBOs"
-import VisibilityRendererSystem from "../system/VisibilityRendererSystem"
 import EngineState from "../EngineState"
 import GlobalIlluminationSystem from "../system/GlobalIlluminationSystem"
 import StaticFBO from "./StaticFBO"
-import DShadowsSystem from "../system/DShadowsSystem"
 
 
 export default class EngineResources {

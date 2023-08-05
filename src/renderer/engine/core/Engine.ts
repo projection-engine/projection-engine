@@ -2,7 +2,6 @@ import CameraAPI from "./lib/utils/CameraAPI"
 import ENVIRONMENT from "./static/ENVIRONMENT"
 import AmbientOcclusionSystem from "./system/AmbientOcclusionSystem"
 import ConversionAPI from "./lib/math/ConversionAPI"
-import PhysicsSystem from "./system/PhysicsSystem"
 import CompositionSystem from "./system/CompositionSystem"
 import GPU from "./GPU"
 import OShadowsSystem from "./system/OShadowsSystem"
@@ -16,7 +15,6 @@ import DynamicMap from "./resource-libs/DynamicMap"
 import GPUAPI from "./lib/rendering/GPUAPI"
 import EntityAPI from "./lib/utils/EntityAPI"
 import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
-import ResourceGarbageCollector from "./resource-libs/ResourceGarbageCollector"
 import LightsAPI from "./lib/utils/LightsAPI"
 import {UUID} from "crypto";
 import SystemManager from "./SystemManager";
@@ -37,7 +35,6 @@ import BokehDOFSystem from "./system/BokehDOFSystem";
 import MotionBlurSystem from "./system/MotionBlurSystem";
 import BloomSystem from "./system/BloomSystem";
 import PostProcessingSystem from "./system/PostProcessingSystem";
-import EngineState from "./EngineState";
 
 
 export default class Engine {

@@ -15,13 +15,15 @@ import StaticFBO from "../core/lib/StaticFBO"
 import GizmoState from "./gizmo/util/GizmoState"
 import StaticEditorFBO from "./utils/StaticEditorFBO";
 import GPUUtil from "../core/utils/GPUUtil";
-import ConversionAPI from "../core/lib/math/ConversionAPI";
 import EngineToolsState from "./EngineToolsState";
 import SystemManager from "../core/SystemManager";
 import SilhouetteSystem from "./systems/SilhouetteSystem";
 import MouseCoordinateSystem from "./systems/MouseCoordinateSystem";
 import ClearContextSystem from "./systems/ClearContextSystem";
 import GizmoLineSystem from "./systems/GizmoLineSystem";
+import EditorCameraGizmoSystem from "./systems/EditorCameraGizmoSystem";
+import {UUID} from "crypto";
+import CameraIconSystem from "./systems/CameraIconSystem";
 
 export default class EngineTools {
     static selected: Entity[] = []
@@ -54,7 +56,7 @@ export default class EngineTools {
 
         selected.length = 0
         for (let i = 0; i < data.length; i++) {
-            const d = data[i]
+            const d = data[i] as UUID
             const entity = Engine.entities.get(d)
             if (entity !== undefined) {
                 selected.push(entity)
@@ -75,18 +77,6 @@ export default class EngineTools {
         GPU.context.enable(GPU.context.DEPTH_TEST)
     }
 
-    static #loop() {
-
-        EditorCameraSystem.updateFrame()
-        SelectedSystem.drawToBuffer()
-        EngineTools.#setContextState()
-        GridSystem.execute()
-        WireframeSystem.execute()
-        SelectedSystem.drawSilhouette()
-        IconsSystem.execute()
-        GizmoSystem.execute()
-    }
-
     static bindSystems() {
         const manager = SystemManager.getInstance()
         manager.enableSystem(MouseCoordinateSystem)
@@ -95,22 +85,29 @@ export default class EngineTools {
         manager.enableSystem(ClearContextSystem)
         manager.enableSystem(GridSystem)
         manager.enableSystem(WireframeSystem)
+        manager.enableSystem(CameraIconSystem)
         manager.enableSystem(SilhouetteSystem)
         manager.enableSystem(IconsSystem)
         manager.enableSystem(GizmoSystem)
         manager.enableSystem(GizmoLineSystem)
+        manager.enableSystem(EditorCameraGizmoSystem)
+
     }
 
     static unbindSystems() {
         const manager = SystemManager.getInstance()
+        manager.disableSystem(MouseCoordinateSystem)
         manager.disableSystem(EditorCameraSystem)
         manager.disableSystem(SelectedSystem)
-        manager.disableSystem(EngineTools)
+        manager.disableSystem(ClearContextSystem)
         manager.disableSystem(GridSystem)
         manager.disableSystem(WireframeSystem)
-        manager.disableSystem(SelectedSystem)
+        manager.disableSystem(CameraIconSystem)
+        manager.disableSystem(SilhouetteSystem)
         manager.disableSystem(IconsSystem)
         manager.disableSystem(GizmoSystem)
+        manager.disableSystem(GizmoLineSystem)
+        manager.disableSystem(EditorCameraGizmoSystem)
     }
 
 }

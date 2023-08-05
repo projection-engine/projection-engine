@@ -4,7 +4,6 @@
 
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
-    import ComponentRow from "./ComponentRow.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorUtil from "../../../util/EditorUtil"
     import NATIVE_COMPONENTS from "../static/NATIVE_COMPONENTS";

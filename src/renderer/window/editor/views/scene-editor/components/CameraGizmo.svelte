@@ -3,10 +3,13 @@
     import {onMount} from "svelte"
     import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
     import CAMERA_ROTATIONS from "../../../../../engine/tools/static/CAMERA_ROTATIONS"
+    import EditorCameraGizmoSystem from "../../../../../engine/tools/systems/EditorCameraGizmoSystem";
 
     let ref
     let cameraRef
-    onMount(() => EditorCameraSystem.gizmoReference = cameraRef)
+    onMount(() => {
+        EditorCameraGizmoSystem.gizmoRef = cameraRef
+    })
 
     function onGizmoClick(e) {
     	const face = parseInt(e.target.getAttribute("data-svelteface"))

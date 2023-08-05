@@ -32,7 +32,7 @@ export default class ViewportActionUtil {
 		vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
 		vec3.add(CameraAPI.translationBuffer, CameraAPI.translationBuffer, <vec3>position)
 
-		EditorCameraSystem.forceUpdate = true
+		EditorCameraSystem.updateProperties({forceUpdate: true})
 	}
 
 	static deleteSelected() {

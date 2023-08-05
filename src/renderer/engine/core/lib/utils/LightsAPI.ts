@@ -1,8 +1,6 @@
 import ArrayBufferAPI from "./ArrayBufferAPI"
 import LIGHT_TYPES from "../../static/LIGHT_TYPES"
 import {glMatrix, mat4, vec3} from "gl-matrix"
-import DShadowsSystem from "../../system/DShadowsSystem"
-import OShadowsSystem from "../../system/OShadowsSystem"
 import type Entity from "../../instances/Entity"
 import UberShader from "../../resource-libs/UberShader"
 import StaticUBOs from "../StaticUBOs"
