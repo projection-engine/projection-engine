@@ -65,7 +65,7 @@ export default class ScalingGizmo extends AbstractXYZGizmo {
 			GizmoUtil.assignValueToVector(vec, target._scaling)
 			if (hasToTranslate)
 				vec3.add(target._translation, target._translation, this.#INVERSE_CACHE)
-			target.__changedBuffer[0] = 1
+			target.changed = true
 		}
 		GizmoSystem.callListeners()
 	}

@@ -77,6 +77,7 @@ export default class PhysicsAPI {
     }
 
     static registerRigidBody(entity: EngineEntity) {
+        // TODO - ADD LISTENER FOR COLLECTING RIGID BODIES
         if (this.registered.has(entity))
             return
         const components = EntityManager.getAllComponentsMap(entity)

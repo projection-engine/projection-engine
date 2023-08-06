@@ -2,6 +2,9 @@ import Engine from "../../../../engine/core/Engine"
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
+import LevelService from "./LevelService";
+import EntityManager from "@engine-core/EntityManager";
+import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
 
 export default class EntityHierarchyService {
@@ -9,7 +12,7 @@ export default class EntityHierarchyService {
 	static #listening: { [key: string]: Function } = {}
 
 	static updateHierarchy() {
-		const data = [], root = Engine.loadedLevel
+		const data = [], root = LevelService.getInstance().loadedLevel
 		if(!root)
 			return
 
@@ -19,9 +22,9 @@ export default class EntityHierarchyService {
 			data.push({node, depth})
 			node.allComponents.forEach(component => data.push({component, depth: depth + 1}))
 
-			const children = node.children.array
+			const children = node.children
 			for (let i = 0; i < children.length; i++)
-				callback(children[i], depth + 1)
+				callback(EditorEntityManager.getEntity(children[i]), depth + 1)
 		}
 		callback(root, 0)
 		EntityHierarchyService.hierarchy = data
@@ -38,7 +41,7 @@ export default class EntityHierarchyService {
 	}
 
 	static openTree() {
-		const node = Engine.entities.get(EntitySelectionStore.getMainEntity())
+		const node = EditorEntityManager.getEntity(EntitySelectionStore.getMainEntity())
 		if (!node)
 			return {}
 		const open = {}
@@ -48,7 +51,7 @@ export default class EntityHierarchyService {
 			if (open[target.id])
 				break
 			open[target.id] = true
-			target = target.parent
+			target = EditorEntityManager.getEntity(target.parent)
 		}
 		Object.values(EntityHierarchyService.#listening).forEach(v => v({...open}))
 	}

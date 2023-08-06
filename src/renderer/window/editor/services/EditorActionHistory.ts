@@ -53,18 +53,19 @@ export default class EditorActionHistory {
 	}
 
 	static #apply(currentAction: Action) {
-		const nameCache = currentAction.nameCache
-		const toRemove = currentAction.toRemove
-		const toAdd: EditorEntity[] = []
-		const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
-
-		EntityNamingService.byName = nameCache
-		for (let i = 0; i < parsedToAdd.length; i++) {
-			if (!parsedToAdd[i])
-				continue
-			toAdd.push(EntityAPI.parseEntityObject(parsedToAdd[i]))
-		}
-		EngineStateService.replaceBlock(toRemove, toAdd)
+		// TODO
+		// const nameCache = currentAction.nameCache
+		// const toRemove = currentAction.toRemove
+		// const toAdd: EditorEntity[] = []
+		// const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
+		//
+		// EntityNamingService.byName = nameCache
+		// for (let i = 0; i < parsedToAdd.length; i++) {
+		// 	if (!parsedToAdd[i])
+		// 		continue
+			// toAdd.push(EntityAPI.parseEntityObject(parsedToAdd[i]))
+		// }
+		// EngineStateService.replaceBlock(toRemove, toAdd)
 
 	}
 }

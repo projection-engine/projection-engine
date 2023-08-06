@@ -135,8 +135,8 @@ export default class GPUAPI {
 	}
 
 	static allocateMesh(id: string, bufferData: MeshProps) {
-		if (GPU.meshes.get(id) != null)
-			GPUAPI.destroyMesh(GPU.meshes.get(id))
+		if (GPU.meshes.has(id))
+			return GPU.meshes.get(id)
 		const instance = new Mesh({...bufferData, id})
 		GPU.meshes.set(id, instance)
 		EngineState.visibilityNeedsUpdate = true

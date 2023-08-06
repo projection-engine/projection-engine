@@ -15,11 +15,9 @@ export default class EditorEntityManager extends AbstractSingleton {
     }
 
     static serialize() {
-        Engine.loadedLevel.id
     }
 
     static getEntity(id: EngineEntity){
-        const instance = EditorEntityManager.getInstance()
-        return instance.#entities.get(id)
+        return EditorEntityManager.getInstance().#entities.get(id)
     }
 }

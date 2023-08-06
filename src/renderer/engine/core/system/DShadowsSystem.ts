@@ -69,8 +69,8 @@ export default class DShadowsSystem extends AbstractSystem {
             const current = toRender[m]
             const components = EntityManager.getAllComponentsMap(current)
             const meshComponent = components.get(Components.MESH) as MeshComponent
-            const mesh = !meshComponent.meshID ? undefined : GPU.meshes.get(meshComponent.meshID)
-            const material = !meshComponent.materialID ? undefined : GPU.materials.get(meshComponent.materialID)
+            const mesh = meshComponent.getMeshInstance()
+            const material = meshComponent.getMaterialInstance()
             if (!mesh || !meshComponent.castsShadows || !EntityManager.isEntityEnabled(current) || material && material.renderingMode === MATERIAL_RENDERING_TYPES.SKY)
                 continue
             const transformation = components.get(Components.TRANSFORMATION) as TransformationComponent

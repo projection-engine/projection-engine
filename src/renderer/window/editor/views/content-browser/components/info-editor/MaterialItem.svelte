@@ -19,7 +19,7 @@
     let originalMat
     let timeout
     let wasUpdated = false
-
+    let uniforms
     async function load(ID) {
     	if (wasUpdated)
     		return

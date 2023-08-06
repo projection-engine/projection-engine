@@ -27,11 +27,16 @@ import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
 import {UUID} from "crypto";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+import EditorEntity from "../../../../engine/tools/EditorEntity";
 
 
 export default class LevelService extends AbstractSingleton {
     #levelToLoad
-     // #loadedLevel: EditorEntity
+    #loadedLevel: EditorEntity
+
+    get loadedLevel() {
+        return this.#levelToLoad
+    }
 
     constructor(resolvePromise: Function) {
         super()

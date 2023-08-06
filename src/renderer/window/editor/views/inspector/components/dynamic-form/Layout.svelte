@@ -30,9 +30,8 @@
     }
 
     function updateMaterialUniform(index, value) {
-        const ref = component
-        const uniforms = ref.materialUniforms
-        ref.updateMaterialUniformValue(uniforms[index].key, value)
+        const uniforms = component.materialUniforms
+        component.updateMaterialUniformValue(uniforms[index].key, value)
     }
 </script>
 
@@ -40,7 +39,7 @@
     <UIComponent {entity} {submit}/>
 {:else if component.getComponentKey() === Components.UI}
     <TransformationForm/>
-{:else if component.getComponentKey() === Components.MESH && component.hasMaterial}
+{:else if component.getComponentKey() === Components.MESH && component.materialID}
     <fieldset>
         <legend>{LocalizationEN.MATERIAL_VALUES}</legend>
         <Checkbox
@@ -50,8 +49,10 @@
         />
         {#if component.overrideMaterialUniforms}
             <MaterialUniforms
+                    {component}
                     uniforms={component.materialUniforms}
                     update={updateMaterialUniform}
+
             />
         {/if}
     </fieldset>

@@ -5,6 +5,8 @@ import MaterialAPI from "../lib/rendering/MaterialAPI"
 import GPU from "../GPU"
 import FileSystemAPI from "../lib/utils/FileSystemAPI"
 import {Components,} from "@engine-core/engine.enum";
+import Mesh from "@engine-core/instances/Mesh";
+import Material from "@engine-core/instances/Material";
 
 export default class MeshComponent extends Component {
     static get componentKey(): Components {
@@ -18,10 +20,9 @@ export default class MeshComponent extends Component {
     _props = MESH_PROPS
 
     castsShadows = true
-    _meshID?: string
+    meshID?: string
     _materialID?: string
 
-    #texturesInUse = {}
     _mappedUniforms = {}
     #materialUniforms: MaterialUniform[] = []
 
@@ -36,80 +37,45 @@ export default class MeshComponent extends Component {
     contributeToProbes = true
     overrideMaterialUniforms = false
 
-    #bindMesh(meshID: string) {
-        let found = GPU.meshes.get(meshID)
-        if (!found)
-            FileSystemAPI.loadMesh(meshID).then(_ => {
-                found = GPU.meshes.get(meshID)
-                if (!found) {
-                    console.error("Mesh not found")
-                    return
-                }
-                this._meshID = meshID
-            })
-        else
-            this._meshID = meshID
-    }
-
-    set meshID(meshID) {
-        this._meshID = meshID
-        if (meshID)
-            this.#bindMesh(meshID)
-        else
-            this._meshID = undefined
-    }
-
-    get meshID() {
-        return this._meshID
-    }
-
-    #bindMaterial(materialID: string) {
-        let found = GPU.materials.get(materialID)
-        if (!found)
-            FileSystemAPI.loadMaterial(materialID).then(_ => {
-                found = GPU.materials.get(materialID)
-                if (!found) {
-                    console.error("Material not found")
-                    return
-                }
-                this._materialID = materialID
-                this.#materialUniforms = found.uniforms
-                this._mappedUniforms = {}
-                MaterialAPI.mapUniforms(this.#materialUniforms, this.#texturesInUse, this._mappedUniforms).catch(console.error)
-            })
-        else {
-            this._materialID = materialID
-            this.#materialUniforms = found.uniforms
-            this._mappedUniforms = {}
-            MaterialAPI.mapUniforms(this.#materialUniforms, this.#texturesInUse, this._mappedUniforms).catch(console.error)
-        }
+    resetUniforms() {
+        if (!this.materialID)
+            return
+        const mat = GPU.materials.get(this.materialID)
+        this.#materialUniforms = mat.uniforms
+        this._mappedUniforms = {}
+        MaterialAPI.mapUniforms(this.#materialUniforms, this._mappedUniforms).catch(console.error)
     }
 
     set materialID(materialID) {
-        if (materialID)
-            this.#bindMaterial(materialID)
-        else
-            this._materialID = materialID
+        this._mappedUniforms = {}
+        this.#materialUniforms = null
+        this._materialID = materialID
     }
 
     get materialUniforms(): MaterialUniform[] {
         return this.#materialUniforms
     }
 
-    get hasMesh(): boolean {
-        return this._meshID !== undefined
-    }
-
-    get texturesInUse() {
-        return this.#texturesInUse
-    }
-
-    get hasMaterial(): boolean {
-        return this._materialID !== undefined
-    }
-
     get materialID() {
         return this._materialID
     }
 
+
+    getMeshInstance(): Mesh | undefined {
+        if (!this.meshID)
+            return null
+        if (GPU.meshes.has(this.meshID))
+            return GPU.meshes.get(this.meshID)
+        FileSystemAPI.loadMesh(this.meshID).catch(console.error)
+        return null
+    }
+
+    getMaterialInstance(): Material | null {
+        if (!this._materialID)
+            return null
+        if (GPU.materials.has(this._materialID))
+            return GPU.materials.get(this._materialID)
+        FileSystemAPI.loadMaterial(this._materialID).catch(console.error)
+        return null
+    }
 }

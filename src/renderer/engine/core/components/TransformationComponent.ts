@@ -27,6 +27,7 @@ export default class TransformationComponent extends Component {
 	lockedTranslation = false
 	lockedScaling = false
 	absoluteTranslation = <Float32Array>ArrayBufferAPI.allocateVector(3, 0, false, true, false)
+
 	get hasWorkerBound() {
 		return this.__hasWorkerBound
 	}

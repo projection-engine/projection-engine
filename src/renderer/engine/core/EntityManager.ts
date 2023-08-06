@@ -14,6 +14,8 @@ export default class EntityManager extends AbstractSingleton {
     #activeEntities = new Map<EngineEntity, boolean>()
     #pickingIDs = new Map<EngineEntity, vec3>
 
+    static preventDefaultTrigger = false
+
     constructor() {
         super();
         this.#listeners.set("component-add", [])
@@ -55,6 +57,10 @@ export default class EntityManager extends AbstractSingleton {
 
     static getEntities() {
         return this.getInstance().#entities
+    }
+
+    static getEntityKeys():EngineEntity [] {
+        return Array.from(this.getInstance().#entities.keys())
     }
 
     static getEntityPickId(entity: EngineEntity): vec3{
@@ -202,6 +208,8 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static #callListeners(event: EntityListenerEvent<EngineEntity, Components>) {
+        if(this.preventDefaultTrigger)
+            return
         const listeners = EntityManager.getInstance().#listeners.get(event.type)
         Object.freeze(event)
         for (let i = 0; i < listeners.length; i++) {

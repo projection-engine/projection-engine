@@ -13,6 +13,9 @@ import Mesh from "../../../core/instances/Mesh";
 import StaticEditorFBO from "../../utils/StaticEditorFBO";
 import GPUUtil from "../../../core/utils/GPUUtil";
 import EngineToolsState from "../../EngineToolsState";
+import {Components} from "@engine-core/engine.enum";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import EntityManager from "@engine-core/EntityManager";
 
 
 export default class GizmoUtil {
@@ -25,20 +28,21 @@ export default class GizmoUtil {
 		}
 	}
 
-	static createTransformationCache(entity) {
-		if (entity.__changedBuffer[1] || !entity.__cacheCenterMatrix || entity.__pivotChanged) {
+	static createTransformationCache(entity: EditorEntity) {
+		const component = EntityManager.getComponent(entity.id, Components.TRANSFORMATION) as TransformationComponent
+		if (component && (component.changesApplied || !entity.__cacheCenterMatrix || entity.__pivotChanged)) {
 			const m = !entity.__cacheCenterMatrix ? mat4.create() : entity.__cacheCenterMatrix
 			GizmoUtil.#getPivotPointTranslation(entity)
 
-			mat4.fromRotationTranslationScale(m, entity.rotationQuaternionFinal, entity.__pivotOffset, [.25, .25, .25])
+			mat4.fromRotationTranslationScale(m, component.rotationQuaternionFinal, entity.__pivotOffset, [.25, .25, .25])
 			entity.__cacheCenterMatrix = m
 			if (!entity.__cacheIconMatrix)
 				entity.__cacheIconMatrix = mat4.create()
 			mat4.copy(entity.__cacheIconMatrix, entity.__cacheCenterMatrix)
 
-			entity.__cacheIconMatrix[12] = entity.absoluteTranslation[0]
-			entity.__cacheIconMatrix[13] = entity.absoluteTranslation[1]
-			entity.__cacheIconMatrix[14] = entity.absoluteTranslation[2]
+			entity.__cacheIconMatrix[12] = component.absoluteTranslation[0]
+			entity.__cacheIconMatrix[13] = component.absoluteTranslation[1]
+			entity.__cacheIconMatrix[14] = component.absoluteTranslation[2]
 
 			if (GizmoState.mainEntity) GizmoSystem.callListeners()
 			entity.__pivotChanged = false
@@ -46,8 +50,11 @@ export default class GizmoUtil {
 	}
 
 	static #getPivotPointTranslation(entity: EditorEntity) {
-		const p = entity.pivotPoint
-		const a = entity.absoluteTranslation
+		const component = EntityManager.getComponent(entity.id, Components.TRANSFORMATION) as TransformationComponent
+		if(!component)
+			return
+		const p = component.pivotPoint
+		const a = component.absoluteTranslation
 		if (!entity.__pivotOffset)
 			entity.__pivotOffset = new Float32Array([0, 0, 0])
 		vec3.add(<Float32Array>entity.__pivotOffset, a, p)
@@ -55,6 +62,7 @@ export default class GizmoUtil {
 	}
 
 	static getGizmoEntity(index: number, rotation: vec3, scaling: vec3) {
+
 		const TO_DEG = 57.29
 		const entity = EntityAPI.getNewEntityInstance()
 		const pickID = PickingAPI.getPickerId(index)

@@ -18,6 +18,8 @@ import FileTypes from "../../../../../shared/enums/FileTypes"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import StaticFBO from "../../../../engine/core/lib/StaticFBO";
+import {Components} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/EntityManager";
 
 
 export default class EngineResourceLoaderService {

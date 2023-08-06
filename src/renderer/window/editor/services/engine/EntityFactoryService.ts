@@ -10,6 +10,7 @@ import EntityHierarchyService from "./EntityHierarchyService"
 import EngineStateService from "./EngineStateService"
 import Engine from "../../../../engine/core/Engine"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
+import {Components} from "@engine-core/engine.enum";
 
 
 export default class EntityFactoryService {

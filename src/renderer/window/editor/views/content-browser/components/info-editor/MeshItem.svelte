@@ -21,10 +21,8 @@
 
 
     	await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(data))
-    	if (GPU.meshes.get(item.registryID) != null) {
+    	if (GPU.meshes.get(item.registryID) != null)
     		GPUAPI.destroyMesh(item.registryID)
-    		GPUAPI.allocateMesh(item.registryID, data)
-    	}
     	ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_ASSET)
     }
 </script>

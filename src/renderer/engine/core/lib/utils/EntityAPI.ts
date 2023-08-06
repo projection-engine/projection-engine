@@ -102,23 +102,7 @@ export default class EntityAPI {
 		EngineState.visibilityNeedsUpdate = needsVisibilityUpdate
 	}
 
-	static registerEntityComponents(entity: EditorEntity, previouslyRemoved?: string): void {
-		if (!EntityAPI.isRegistered(entity))
-			return
 
-		ResourceEntityMapper.addEntity(entity)
-		if (COMPONENT_TRIGGER_UPDATE.indexOf(<Components | undefined>previouslyRemoved) || !!COMPONENT_TRIGGER_UPDATE.find(v => entity.Components.get(v) != null))
-			LightsAPI.packageLights(false, true)
-		EngineState.visibilityNeedsUpdate = true
-	}
-
-	static removeEntity(entityToRemove: UUID | EditorEntity) {
-		const entity = entityToRemove instanceof EditorEntity ? entityToRemove : Engine.entities.get(entityToRemove)
-		if (!entity || entity === Engine.loadedLevel)
-			return
-		entity.removeParent()
-		EntityAPI.removeGroup([entity], true)
-	}
 
 	static removeGroup(toRemove: EditorEntity[], searchHierarchy: boolean) {
 		const hierarchy: { [key: string]: EditorEntity } = {}
@@ -156,75 +140,5 @@ export default class EntityAPI {
 
 		if (didLightsChange)
 			LightsAPI.packageLights(false, true)
-	}
-
-	static parseEntityObject(entity: MutableObject, asNew?: boolean): EditorEntity {
-		const parsedEntity = EntityAPI.getNewEntityInstance(asNew ? crypto.randomUUID() : entity.id)
-		const keys = Object.keys(entity)
-
-		for (let i = 0; i < keys.length; i++) {
-			try {
-				const k = keys[i]
-				if (!excludedKeys.includes(k))
-					parsedEntity[k] = entity[k]
-			} catch (err) {
-				console.error(err)
-			}
-		}
-
-		for (let i = 0; i < ENTITY_TYPED_ATTRIBUTES.length; i++) {
-			try {
-				const key = ENTITY_TYPED_ATTRIBUTES[i]
-				if (!entity[key])
-					continue
-				for (let j = 0; j < parsedEntity[key].length; j++)
-					parsedEntity[key][j] = entity[key][j]
-			} catch (err) {
-				console.error(err)
-			}
-		}
-
-		parsedEntity.parentID = entity.parent ?? Engine.loadedLevel?.id
-
-		for (const k in entity.components) {
-			const component = parsedEntity.addComponent(k as Components)
-			if (!component)
-				continue
-			const keys = Object.keys(entity.components[k])
-			for (let i = 0; i < keys.length; i++) {
-				try {
-					const componentValue = keys[i]
-					if (componentValue.includes("__") || componentValue.includes("#") || componentValue === "_props" || componentValue === "_name")
-						continue
-					switch (k) {
-					case Components.MESH: {
-						if (componentValue === "_meshID" || componentValue === "_materialID")
-							component[componentValue.replace("_", "")] = entity.components[k][componentValue]
-						else
-							component[componentValue] = entity.components[k][componentValue]
-						break
-					}
-					case Components.ATMOSPHERE:
-					case Components.DECAL: {
-						if (componentValue.charAt(0) === "_")
-							component[componentValue.substring(1, componentValue.length)] = entity.components[k][componentValue]
-						else
-							component[componentValue] = entity.components[k][componentValue]
-						break
-					}
-					default:
-						component[componentValue] = entity.components[k][componentValue]
-					}
-
-
-				} catch (err) {
-					console.error(err)
-				}
-			}
-		}
-		parsedEntity.changed = true
-		parsedEntity.name = entity.name
-		parsedEntity.active = entity.active
-		return parsedEntity
 	}
 }

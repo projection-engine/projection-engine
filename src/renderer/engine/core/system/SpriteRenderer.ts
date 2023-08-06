@@ -38,12 +38,12 @@ export default class SpriteRenderer extends AbstractSystem{
         const transform = components.get(Components.TRANSFORMATION) as TransformationComponent
         if (!transform || culling.isDistanceCulled || !EntityManager.isEntityEnabled(entity) || culling?.isScreenDoorEnabled)
             return
-        const context = GPU.context
         const uniforms = StaticShaders.spriteUniforms
         const texture = GPU.textures.get(sprite.imageID)
         if (!texture)
             return
 
+        const context = GPU.context
         context.uniformMatrix4fv(uniforms.transformationMatrix, false, transform.matrix)
         context.uniform3fv(uniforms.scale, transform.scaling)
         context.uniform2fv(uniforms.attributes, sprite.attributes)

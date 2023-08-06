@@ -21,6 +21,6 @@ export default function loopMeshes(callback: (param1: EngineEntity, param2: Mesh
         const cullingComponent = components.get(Components.CULLING) as CullingComponent
         if (!transformComponent || !meshComponent.meshID || !EntityManager.isEntityEnabled(entity) || cullingComponent && cullingComponent.isDistanceCulled)
             continue
-        callback(entity, GPU.meshes.get(meshComponent.meshID), meshComponent.materialID ? GPU.materials.get(meshComponent.materialID) : undefined, transformComponent, cullingComponent, meshIndex)
+        callback(entity, meshComponent.getMeshInstance(), meshComponent.getMaterialInstance(), transformComponent, cullingComponent, meshIndex)
     }
 }
