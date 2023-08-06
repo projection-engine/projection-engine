@@ -16,7 +16,7 @@ export interface MeshProps {
 
 }
 
-export default class Mesh {
+export default class Mesh implements IGPUResource{
 	readonly verticesQuantity:number
 	readonly trianglesQuantity:number
 	readonly id: string
@@ -27,10 +27,9 @@ export default class Mesh {
 	readonly vertexVBO?:VertexBuffer
 	readonly normalVBO?:VertexBuffer
 	readonly uvVBO?:VertexBuffer
-	#lastUsedElapsed = 0
-	get lastUsedElapsed(){
-		return this.#lastUsedElapsed
-	}
+
+	lastUsed = 0
+	loaded = false
 
 	constructor(attributes:MeshProps) {
 		const {
@@ -64,7 +63,8 @@ export default class Mesh {
 
 		GPU.context.bindVertexArray(null)
 		GPU.context.bindBuffer(GPU.context.ELEMENT_ARRAY_BUFFER, null)
-
+		this.loaded = true
+		this.lastUsed = EngineState.elapsed
 	}
 
 	static finishIfUsed() {
@@ -118,43 +118,43 @@ export default class Mesh {
 
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = EngineState.elapsed
+		this.lastUsed = EngineState.elapsed
 	}
 
 	draw() {
 		this.bindAllResources()
 		GPU.context.drawElements(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = EngineState.elapsed
+		this.lastUsed = EngineState.elapsed
 	}
 
 	drawInstanced(quantity) {
 		this.bindAllResources()
 		GPU.context.drawElementsInstanced(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0, quantity)
-		this.#lastUsedElapsed = EngineState.elapsed
+		this.lastUsed = EngineState.elapsed
 	}
 
 	drawLineLoop() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.LINE_LOOP, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = EngineState.elapsed
+		this.lastUsed = EngineState.elapsed
 	}
 
 	drawTriangleStrip() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.TRIANGLE_STRIP, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = EngineState.elapsed
+		this.lastUsed = EngineState.elapsed
 	}
 
 	drawTriangleFan() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.TRIANGLE_FAN, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = EngineState.elapsed
+		this.lastUsed = EngineState.elapsed
 	}
 
 	drawLines() {
 		this.bindEssentialResources()
 		GPU.context.drawElements(GPU.context.LINES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		this.#lastUsedElapsed = EngineState.elapsed
+		this.lastUsed = EngineState.elapsed
 	}
 
 }

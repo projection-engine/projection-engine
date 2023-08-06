@@ -8,8 +8,6 @@ import GPU from "../../GPU"
 import MaterialAPI from "./MaterialAPI"
 import UberShader from "../../resource-libs/UberShader"
 import StaticMeshes from "../StaticMeshes"
-import MeshResourceMapper from "../MeshResourceMapper"
-import MaterialResourceMapper from "../MaterialResourceMapper"
 import EngineState from "../../EngineState";
 
 export default class GPUAPI {
@@ -28,20 +26,19 @@ export default class GPUAPI {
 		}
 	}
 
-	static destroyTexture(imageID) {
-		const found = GPU.textures.get(imageID)
+	static destroyTexture(textureId: string) {
+		const found = GPU.textures.get(textureId)
 		if (!found)
 			return
 		if (found.texture instanceof WebGLTexture)
 			GPU.context.deleteTexture(found.texture)
-		GPU.textures.delete(imageID)
+		GPU.textures.delete(textureId)
 	}
 
 	static destroyMaterial(id: string) {
 		const mat = GPU.materials.get(id)
 		if (!mat)
 			return
-		MaterialResourceMapper.deleteMaterial(id)
 		delete UberShader.uberSignature[mat.signature]
 		GPU.materials.delete(id)
 	}
@@ -151,7 +148,6 @@ export default class GPUAPI {
 		if ([StaticMeshes.cube, StaticMeshes.plane, StaticMeshes.cylinder, StaticMeshes.sphere].includes(mesh))
 			return
 
-		MeshResourceMapper.deleteMesh(mesh.id)
 		if (mesh instanceof Mesh) {
 			GPU.context.deleteVertexArray(mesh.VAO)
 			GPU.context.deleteBuffer(mesh.indexVBO)

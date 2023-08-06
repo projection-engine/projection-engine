@@ -8,124 +8,93 @@ import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class DecalComponent extends Component {
-	static get componentKey(): Components {
-		return Components.DECAL
-	}
+    static get componentKey(): Components {
+        return Components.DECAL
+    }
 
-	getComponentKey(): Components {
-		return DecalComponent.componentKey
-	}
+    getComponentKey(): Components {
+        return DecalComponent.componentKey
+    }
 
-	_albedoID?: string
-	_roughnessID?: string
-	_metallicID?: string
-	_normalID?: string
-	_occlusionID?: string
+    _albedoID?: string
+    _roughnessID?: string
+    _metallicID?: string
+    _normalID?: string
+    _occlusionID?: string
 
-	#albedo?: Texture
-	#roughness?: Texture
-	#metallic?: Texture
-	#normal?: Texture
-	#occlusion?: Texture
-	useSSR = false
-	renderingMode = MATERIAL_RENDERING_TYPES.ISOTROPIC
+    useSSR = false
+    renderingMode = MATERIAL_RENDERING_TYPES.ISOTROPIC
 
-	anisotropicRotation = 0
-	anisotropy = 0
-	clearCoat = 0
-	sheen = 0
-	sheenTint = 0
+    anisotropicRotation = 0
+    anisotropy = 0
+    clearCoat = 0
+    sheen = 0
+    sheenTint = 0
 
-	get albedo(): Texture {
-		return this.#albedo
-	}
+    static async #fetchIfNotFound(id: string): Promise<Texture | undefined> {
+        try {
+            const asset = await FileSystemAPI.readAsset(id)
+            if (!asset)
+                return
+            const textureData = <TextureParams>(typeof asset === "string" ? JSON.parse(asset) : asset)
+            return await GPUAPI.allocateTexture({
+                ...textureData,
+                img: textureData.base64
+            }, id)
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
-	get roughness(): Texture {
-		return this.#roughness
-	}
+    set albedoID(value: string) {
+        if (value && !GPU.textures.has(value))
+            DecalComponent.#fetchIfNotFound(value).catch()
+        this._albedoID = value
+    }
 
-	get metallic(): Texture {
-		return this.#metallic
-	}
+    set roughnessID(value: string) {
+        if (value && !GPU.textures.has(value))
+            DecalComponent.#fetchIfNotFound(value).catch()
+        this._roughnessID = value
+    }
 
-	get normal(): Texture {
-		return this.#normal
-	}
+    set metallicID(value: string) {
+        if (value && !GPU.textures.has(value))
+            DecalComponent.#fetchIfNotFound(value).catch()
+        this._metallicID = value
+    }
 
-	get occlusion(): Texture {
-		return this.#occlusion
-	}
+    set normalID(value: string) {
+        if (value && !GPU.textures.has(value))
+            DecalComponent.#fetchIfNotFound(value).catch()
+        this._normalID = value
+    }
 
+    set occlusionID(value: string) {
+        if (value && !GPU.textures.has(value))
+            DecalComponent.#fetchIfNotFound(value).catch()
+        this._occlusionID = value
+    }
 
-	static async #fetchIfNotFound(id: string): Promise<Texture | undefined> {
-		try {
-			const asset = await FileSystemAPI.readAsset(id)
-			if (!asset)
-				return
-			const textureData = <TextureParams>(typeof asset === "string" ? JSON.parse(asset) : asset)
-			return await GPUAPI.allocateTexture({
-				...textureData,
-				img: textureData.base64
-			}, id)
-		} catch (err) {
-			console.error(err)
-		}
-	}
+    get albedoID(): string {
+        return this._albedoID
+    }
 
-	set albedoID(value: string) {
-		this.#albedo = GPU.textures.get(value)
-		if (value && !this.albedo)
-			DecalComponent.#fetchIfNotFound(value).then(res => this.#albedo = res)
-		this._albedoID = value
-	}
+    get roughnessID(): string {
+        return this._roughnessID
+    }
 
-	set roughnessID(value: string) {
-		this.#roughness = GPU.textures.get(value)
-		if (value && !this.roughness)
-			DecalComponent.#fetchIfNotFound(value).then(res => this.#roughness = res)
-		this._roughnessID = value
-	}
+    get metallicID(): string {
+        return this._metallicID
+    }
 
-	set metallicID(value: string) {
-		this.#metallic = GPU.textures.get(value)
-		if (value && !this.metallic)
-			DecalComponent.#fetchIfNotFound(value).then(res => this.#metallic = res)
-		this._metallicID = value
-	}
+    get normalID(): string {
+        return this._normalID
+    }
 
-	set normalID(value: string) {
-		this.#normal = GPU.textures.get(value)
-		if (value && !this.normal)
-			DecalComponent.#fetchIfNotFound(value).then(res => this.#normal = res)
-		this._normalID = value
-	}
+    get occlusionID(): string {
+        return this._occlusionID
+    }
 
-	set occlusionID(value: string) {
-		this.#occlusion = GPU.textures.get(value)
-		if (value && !this.occlusion)
-			DecalComponent.#fetchIfNotFound(value).then(res => this.#occlusion = res)
-		this._occlusionID = value
-	}
-
-	get albedoID(): string {
-		return this._albedoID
-	}
-
-	get roughnessID(): string {
-		return this._roughnessID
-	}
-
-	get metallicID(): string {
-		return this._metallicID
-	}
-
-	get normalID(): string {
-		return this._normalID
-	}
-
-	get occlusionID(): string {
-		return this._occlusionID
-	}
-
-	_props = DECAL_PROPS
+    _props = DECAL_PROPS
 }

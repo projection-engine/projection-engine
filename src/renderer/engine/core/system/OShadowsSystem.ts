@@ -10,6 +10,9 @@ import EditorEntity from "../../tools/EditorEntity"
 import Mesh from "../instances/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../EngineState";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import CullingComponent from "@engine-core/components/CullingComponent";
+import Material from "@engine-core/instances/Material";
 
 const cacheVec3 = vec3.create()
 const cacheViewMatrix = mat4.create()
@@ -65,7 +68,7 @@ export default class OShadowsSystem extends AbstractSystem {
                         vec3.add(cacheVec3, currentEntity._translation, <vec3>OShadowsSystem.#CUBE_MAP_VIEWS.target[index])
                         mat4.lookAt(cacheViewMatrix, currentEntity._translation, cacheVec3, <vec3>OShadowsSystem.#CUBE_MAP_VIEWS.up[index])
                         cacheProjection = perspective
-                        loopMeshes(this.#loopCallback)
+                        loopMeshes(this.#loop)
                     },
                     current.zFar,
                     current.zNear
@@ -75,20 +78,19 @@ export default class OShadowsSystem extends AbstractSystem {
         MetricsController.currentState = METRICS_FLAGS.OMNIDIRECTIONAL_SHADOWS
     }
 
-    #loopCallback(entity: EditorEntity, mesh: Mesh) {
-        const meshComponent = entity.meshComponent
-        if (!meshComponent.castsShadows || !entity.active || entity.materialRef?.renderingMode === MATERIAL_RENDERING_TYPES.SKY)
+    #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {
+        if (material?.renderingMode === MATERIAL_RENDERING_TYPES.SKY)
             return
-        vec3.sub(cacheVec3, entity.absoluteTranslation, entity.absoluteTranslation)
+        vec3.sub(cacheVec3, transformComponent.absoluteTranslation, transformComponent.absoluteTranslation)
         const distanceFromLight = vec3.length(cacheVec3)
         if (distanceFromLight > currentEntity.lightComponent.cutoff)
             return
         StaticShaders.omniDirectShadows.bindForUse({
             farPlane: currentEntity.lightComponent.zFar,
             viewMatrix: cacheViewMatrix,
-            transformMatrix: entity.matrix,
+            transformMatrix: transformComponent.matrix,
             projectionMatrix: cacheProjection,
-            lightPosition: entity.absoluteTranslation
+            lightPosition: transformComponent.absoluteTranslation
         })
         mesh.draw()
     }

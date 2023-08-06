@@ -2,13 +2,12 @@ import Component from "../../components/Component"
 
 export default [
 	Component.group("DISTANCE_CULLING", [
-		Component.boolean("ENABLED", "distanceCulling"),
-		Component.number("MAX_DISTANCE", "distance", undefined, 0, 1, undefined, undefined, comp => !comp.distanceCulling),
+		Component.boolean("ENABLED", "hasDistanceCullingEnabled"),
+		Component.number("MAX_DISTANCE", "cullingDistance", undefined, 0, 1, undefined, undefined, comp => !comp.distanceCulling),
 	]),
 
 	Component.group("SCREEN_DOOR", [
-		Component.boolean("ENABLED", "screenDoorEffect"),
-		Component.number("DISTANCE_MULTIPLIER", "screenDoorEffectDistanceMultiplier", undefined, 0),
+		Component.boolean("ENABLED", "screenDoorEffect")
 	]),
 
 

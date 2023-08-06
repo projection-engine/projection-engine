@@ -10,6 +10,8 @@ import Mesh from "../instances/Mesh";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import AbstractSystem from "../AbstractSystem";
 import Material from "../instances/Material";
+import CullingComponent from "@engine-core/components/CullingComponent";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
 
 export default class OpaqueRendererSystem extends AbstractSystem {
     #stateWasCleared = false
@@ -21,17 +23,16 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         const context = GPU.context
         UberMaterialAttributeGroup.clear()
         context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)
-        loopMeshes(this.#opaqueCallback)
+        loopMeshes(this.#loop)
         MetricsController.currentState = METRICS_FLAGS.OPAQUE
     }
 
-    #opaqueCallback(entity: EditorEntity, mesh: Mesh) {
+    #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {
+
         const uniforms = UberShader.uberUniforms
-        const material = entity.materialRef
         const context = GPU.context
-        const culling = entity?.cullingComponent
-        UberMaterialAttributeGroup.screenDoorEffect = culling && culling.screenDoorEffect ? entity.__cullingMetadata[5] : 0
-        UberMaterialAttributeGroup.entityID = entity.pickID
+        UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
+        // UberMaterialAttributeGroup.entityID = entity.pickID
 
         if (this.#isSky) {
             this.#isSky = false
@@ -46,12 +47,12 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         }
 
         context.uniformMatrix4fv(uniforms.materialAttributes, false, UberMaterialAttributeGroup.data)
-        context.uniformMatrix4fv(uniforms.modelMatrix, false, entity.matrix)
+        context.uniformMatrix4fv(uniforms.modelMatrix, false, transformComponent.matrix)
 
         mesh.draw()
     }
 
-    #withMaterial(entity: EditorEntity, material: Material) {
+    #withMaterial(entity: EngineEntity, material: Material) {
         const context = GPU.context
         if (material.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY)
             return

@@ -1,9 +1,10 @@
 import MaterialAPI from "../lib/rendering/MaterialAPI"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
+import {UUID} from "crypto";
 
 
 export default class Material {
-	readonly #id = crypto.randomUUID()
+	#id: UUID
 	#uniformValues: MutableObject = {}
 	#uniforms: MaterialUniform[] = []
 	#functionDeclaration?: string
@@ -16,9 +17,7 @@ export default class Material {
 	signature?: string
 
 	constructor(id?: string, signature?: string) {
-		if (!id)
-			return
-		this.#id = id
+		this.#id = id as UUID || crypto.randomUUID()
 		this.signature = signature
 	}
 

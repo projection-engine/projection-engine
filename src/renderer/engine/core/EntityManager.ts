@@ -4,10 +4,15 @@ import Component from "./components/Component";
 import getComponentInstance from "./utils/get-component-instance";
 import serializeStructure from "./utils/serialize-structure";
 import {Components} from "./engine.enum";
+import {vec3} from "gl-matrix";
 
 export default class EntityManager extends AbstractSingleton {
     #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<EngineEntity, Components>[]>
-    #entities: DynamicMap<EngineEntity, DynamicMap<Components, Component>> = new DynamicMap()
+    #entities = new DynamicMap<EngineEntity, DynamicMap<Components, Component>>()
+    #childParent = new Map<EngineEntity, EngineEntity>()
+    #parentChildren = new Map<EngineEntity, EngineEntity[]>()
+    #activeEntities = new Map<EngineEntity, boolean>()
+    #pickingIDs = new Map<EngineEntity, vec3>
 
     constructor() {
         super();
@@ -22,15 +27,11 @@ export default class EntityManager extends AbstractSingleton {
         return super.get<EntityManager>()
     }
 
-    getEntities() {
-        return this.#entities
-    }
-
     /**
      * OBS: hard-change type will be triggered only for "component-add", "component-remove", "create" and "delete" event types
      * @returns removeListener method
      */
-    addEventListener(type: EntityEventTypes, callback: GenericVoidFunctionWithP<EntityListenerEvent<EngineEntity, Components>>, options?: EntityListenerOptions): GenericVoidFunction {
+    static addEventListener(type: EntityEventTypes, callback: GenericVoidFunctionWithP<EntityListenerEvent<EngineEntity, Components>>, options?: EntityListenerOptions): GenericVoidFunction {
         if (type === "hard-change") {
             const toRemove = [
                 this.addEventListener("component-add", callback, options),
@@ -41,7 +42,7 @@ export default class EntityManager extends AbstractSingleton {
             return () => toRemove.forEach(f => f())
         } else {
             let remove: VoidFunction
-            const targets: EntityManagerListener<EngineEntity, Components>[] = this.#listeners.get(type)
+            const targets: EntityManagerListener<EngineEntity, Components>[] = EntityManager.getInstance().#listeners.get(type)
             const onceCallback = (e: EntityListenerEvent<EngineEntity, Components>) => {
                 callback(e)
                 remove()
@@ -52,25 +53,83 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    getComponent(entity: EngineEntity, component: Components): Component | undefined {
-        return this.#entities.get(entity)?.get?.(component)
+    static getEntities() {
+        return this.getInstance().#entities
     }
 
-    clone(entity: EngineEntity) {
+    static getEntityPickId(entity: EngineEntity): vec3{
+        const instance = this.getInstance()
+        if(!instance.#pickingIDs.get(entity) && instance.#entities.has(entity)) {
+            const newValue = vec3.create()
+            instance.#pickingIDs.set(entity, newValue)
+            // TODO - FIND PICK ID
+            // instance.#entities..indexOf(entity)
+        }
+        return instance.#pickingIDs.get(entity)
+    }
+
+    static getState() {
+        return {
+            entities: this.getEntities(),
+            childParent: EntityManager.getInstance().#childParent,
+            parentChildren: EntityManager.getInstance().#parentChildren
+        }
+    }
+
+    static enableDisableEntity(entity: EngineEntity, state: boolean){
+        this.getActiveEntities().set(entity, state)
+    }
+
+    static isEntityEnabled(entity: EngineEntity): boolean{
+       return this.getActiveEntities().get(entity)
+    }
+
+    static getChildren(entity: EngineEntity): EngineEntity[] {
+        return EntityManager.getInstance().#parentChildren.get(entity) || []
+    }
+
+    static getParent(entity: EngineEntity): EngineEntity | undefined {
+        return EntityManager.getInstance().#childParent.get(entity)
+    }
+
+    static addParent(child: EngineEntity, parent: EngineEntity | undefined) {
+        EntityManager.getInstance().#childParent.set(child, parent)
+        if (parent) {
+            const parentArr = EntityManager.getInstance().#parentChildren.get(parent) || []
+            if (!parentArr.includes(child))
+                parentArr.push(child)
+            EntityManager.getInstance().#parentChildren.set(parent, parentArr)
+        }
+    }
+
+    static addChildren(parent: EngineEntity, children: EngineEntity[]) {
+        const parentArr = EntityManager.getInstance().#parentChildren.get(parent) || []
+        for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+            EntityManager.getInstance().#childParent.set(child, parent)
+        }
+        EntityManager.getInstance().#parentChildren.set(parent, Array.from(new Set([...parentArr, ...children])))
+    }
+
+    static getComponent<T>(entity: EngineEntity, component: Components): T | undefined {
+        return this.getEntities().get(entity)?.get?.(component) as T
+    }
+
+    static clone(entity: EngineEntity) {
         const id = crypto.randomUUID()
-        const str = serializeStructure({id, components: Array.from(this.#entities.get(entity).entries())})
+        const str = serializeStructure({id, components: Array.from(this.getEntities().get(entity).entries())})
         this.#parseEntity(JSON.parse(str))
         return id
     }
 
-    updateProperty(entity: EngineEntity, component: Components, key: string, value: any) {
-        this.#entities.get(entity).get(component)[key] = value
+    static updateProperty(entity: EngineEntity, component: Components, key: string, value: any) {
+        this.getEntities().get(entity).get(component)[key] = value
         this.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
     }
 
-    updateProperties(entity: EngineEntity, component: Components, properties: MutableObject) {
+    static updateProperties(entity: EngineEntity, component: Components, properties: MutableObject) {
         const entries = Object.entries(properties)
-        const componentInstance = this.#entities.get(entity).get(component)
+        const componentInstance = this.getEntities().get(entity).get(component)
         for (let i = 0; i < entries.length; i++) {
             const [key, value] = entries[i];
             componentInstance[key] = value
@@ -78,35 +137,61 @@ export default class EntityManager extends AbstractSingleton {
         this.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
     }
 
-    createEntities(quantity: number): EngineEntity[] {
+    static createEntities(quantity: number): EngineEntity[] {
         const entities = []
+        const activeEntities = this.getActiveEntities()
         for (let i = 0; i < quantity; i++) {
             const newEntity: EngineEntity = crypto.randomUUID()
             entities.push(newEntity)
-            this.#entities.set(newEntity, new DynamicMap<Components, Component>())
+            activeEntities.set(newEntity, true)
+            this.getEntities().set(newEntity, new DynamicMap<Components, Component>())
         }
         this.#callListeners({all: entities, type: "create"})
         return entities
     }
 
-    removeEntities(entities: EngineEntity[]) {
-        for (let i = 0; i < entities.length; i++) {
-            const entity = entities[i];
-            this.#entities.delete(entity);
-        }
-        this.#callListeners({all: entities, type: "delete"})
+    static removeEntities(entities: EngineEntity[]) {
+        const removed = {}
+        const allRemoved = []
+        this.#removeEntitiesInternal(entities, removed, allRemoved)
+        this.#callListeners({all: allRemoved, type: "delete"})
     }
 
-    addComponent(target: EngineEntity, componentType: Components): Component {
-        const targetMap = this.#entities.get(target)
+    static #removeEntitiesInternal(entities: EngineEntity[], removed: {
+        [key: string]: boolean
+    }, allRemoved: EngineEntity[]) {
+        const collected: EngineEntity[] = []
+        const activeEntities = this.getActiveEntities()
+        for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+            this.getEntities().delete(entity);
+            activeEntities.delete(entity)
+            if (!removed[entity]) {
+                const parentEntity = EntityManager.getInstance().#childParent.get(entity)
+                const parentDeps = EntityManager.getInstance().#parentChildren.get(parentEntity)
+                if (parentDeps) {
+                    removed[entity] = true
+                    EntityManager.getInstance().#parentChildren.set(parentEntity, parentDeps.filter(e => e !== entity))
+                }
+            }
+            collected.push(...this.getChildren(entity))
+            allRemoved.push(entity)
+        }
+        if (collected.length > 0) {
+            this.#removeEntitiesInternal(collected, removed, allRemoved)
+        }
+    }
+
+    static addComponent(target: EngineEntity, componentType: Components): Component {
+        const targetMap = this.getEntities().get(target)
         const newInstance = getComponentInstance(target, componentType)
         targetMap.set(componentType, newInstance)
         this.#callListeners({target, all: [target], type: "component-add", targetComponents: [componentType]})
         return newInstance
     }
 
-    removeComponent(target: EngineEntity, componentType: Components) {
-        const targetMap = this.#entities.get(target)
+    static removeComponent(target: EngineEntity, componentType: Components) {
+        const targetMap = this.getEntities().get(target)
         targetMap.delete(componentType)
         this.#callListeners({
             target: target,
@@ -116,8 +201,8 @@ export default class EntityManager extends AbstractSingleton {
         })
     }
 
-    #callListeners(event: EntityListenerEvent<EngineEntity, Components>) {
-        const listeners = this.#listeners.get(event.type)
+    static #callListeners(event: EntityListenerEvent<EngineEntity, Components>) {
+        const listeners = EntityManager.getInstance().#listeners.get(event.type)
         Object.freeze(event)
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i]
@@ -125,10 +210,10 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    restoreState(data: string) {
+    static restoreState(data: string) {
         try {
-            const previousAll = Array.from(this.#entities.keys())
-            this.#entities.clear()
+            const previousAll = Array.from(this.getEntities().keys())
+            this.getEntities().clear()
             const json: { id: EngineEntity, components: [Components, Object][] }[] = JSON.parse(data)
             for (let i = 0; i < json.length; i++) {
                 this.#parseEntity(json[i]);
@@ -140,9 +225,9 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    #parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
+    static #parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
         const components = new DynamicMap<Components, Component>()
-        this.#entities.set(entityData.id, components)
+        this.getEntities().set(entityData.id, components)
         for (let i1 = 0; i1 < entityData.components.length; i1++) {
             const componentObject = entityData.components[i1];
             try {
@@ -154,7 +239,7 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    #parseComponent(entity: EngineEntity, data: Object, key: Components): Component | undefined {
+    static #parseComponent(entity: EngineEntity, data: Object, key: Components): Component | undefined {
         const component = getComponentInstance(entity, key)
         const keys = Object.keys(data)
         for (let i = 0; i < keys.length; i++) {
@@ -191,9 +276,9 @@ export default class EntityManager extends AbstractSingleton {
         return component
     }
 
-    serializeState(): string {
+    static serializeState(): string {
         const data = []
-        this.#entities.forEach((value, key) => {
+        this.getEntities().forEach((value, key) => {
             data.push({
                 id: key,
                 components: Array.from(value.entries())
@@ -202,7 +287,15 @@ export default class EntityManager extends AbstractSingleton {
         return serializeStructure(data)
     }
 
-    getAllComponents(entity: EngineEntity) {
-        return this.#entities.get(entity).array
+    static getAllComponents(entity: EngineEntity) {
+        return this.getEntities().get(entity).array || []
+    }
+
+    static getAllComponentsMap(entity: EngineEntity) {
+        return this.getEntities().get(entity)
+    }
+
+    static getActiveEntities() {
+        return this.getInstance().#activeEntities
     }
 }

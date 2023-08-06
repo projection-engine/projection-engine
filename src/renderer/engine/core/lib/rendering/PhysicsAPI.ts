@@ -1,164 +1,126 @@
 import Ammo from "../Ammo.js"
 import EditorEntity from "../../../tools/EditorEntity"
-import {ColliderTypes,} from "@engine-core/engine.enum";
+import {ColliderTypes, Components,} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/EntityManager";
+import RigidBodyComponent from "@engine-core/components/RigidBodyComponent";
+import PhysicsColliderComponent from "@engine-core/components/PhysicsColliderComponent";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import {quat, vec3, vec4} from "gl-matrix";
+import DynamicMap from "@engine-core/resource-libs/DynamicMap";
 
 const COLLISION = "COLLISION",
-	DISPATCHER = "DISPATCHER",
-	BROAD_PHASE = "BROAD_PHASE",
-	SOLVER = "SOLVER",
-	GRAVITY = "GRAVITY"
+    DISPATCHER = "DISPATCHER",
+    BROAD_PHASE = "BROAD_PHASE",
+    SOLVER = "SOLVER",
+    GRAVITY = "GRAVITY"
 
 
 export default class PhysicsAPI {
-	static #gravity: [number, number, number] = [0, 0, 0]
-	static ammo?: TAmmoJS
-	static worldSettings = new Map()
-	static world?: btDiscreteDynamicsWorld
-	static rigidBodies: EditorEntity [] = []
-	static rigidBodiesMap = new Map()
-	static tempTransformation?: btTransform
+    static #gravity: [number, number, number] = [0, 0, 0]
+    static ammo?: TAmmoJS
+    static worldSettings = new Map()
+    static world?: btDiscreteDynamicsWorld
+    static registered = new DynamicMap<EngineEntity, { body: btRigidBody, setChanged: VoidFunction, motionState: btDefaultMotionState, translationVec: vec3, rotationQuat: quat }>()
+    static tempTransformation?: btTransform
 
-	static async initialize() {
-		const ammo = <TAmmoJS>await Ammo()
-		const wS = PhysicsAPI.worldSettings
-		PhysicsAPI.ammo = ammo
-		wS.set(COLLISION, new ammo.btDefaultCollisionConfiguration())
-		wS.set(DISPATCHER, new ammo.btCollisionDispatcher(wS.get(COLLISION)))
-		wS.set(BROAD_PHASE, new ammo.btDbvtBroadphase())
-		wS.set(SOLVER, new ammo.btSequentialImpulseConstraintSolver())
-		PhysicsAPI.world = <btDiscreteDynamicsWorld>new ammo.btDiscreteDynamicsWorld(
-			wS.get(DISPATCHER),
-			wS.get(BROAD_PHASE),
-			wS.get(SOLVER),
-			wS.get(COLLISION)
-		)
-		PhysicsAPI.gravity = [0, -9.8, 0]
-		PhysicsAPI.tempTransformation = <btTransform>new ammo.btTransform()
-	}
+    static async initialize() {
+        const ammo = <TAmmoJS>await Ammo()
+        const wS = PhysicsAPI.worldSettings
+        PhysicsAPI.ammo = ammo
+        wS.set(COLLISION, new ammo.btDefaultCollisionConfiguration())
+        wS.set(DISPATCHER, new ammo.btCollisionDispatcher(wS.get(COLLISION)))
+        wS.set(BROAD_PHASE, new ammo.btDbvtBroadphase())
+        wS.set(SOLVER, new ammo.btSequentialImpulseConstraintSolver())
+        PhysicsAPI.world = <btDiscreteDynamicsWorld>new ammo.btDiscreteDynamicsWorld(
+            wS.get(DISPATCHER),
+            wS.get(BROAD_PHASE),
+            wS.get(SOLVER),
+            wS.get(COLLISION)
+        )
+        PhysicsAPI.gravity = [0, -9.8, 0]
+        PhysicsAPI.tempTransformation = <btTransform>new ammo.btTransform()
+    }
 
-	static initializeCollider(entity) {
-		const ammo = PhysicsAPI.ammo
-		const pColliderComponent = entity.physicsColliderComponent
+    static initializeCollider(entity) {
+        const ammo = PhysicsAPI.ammo
+        const pColliderComponent = entity.physicsColliderComponent
 
-		switch (pColliderComponent.collisionType) {
-		case ColliderTypes.BOX: {
-			const boxSize = <btVector3>new ammo.btVector3(pColliderComponent.size[0], pColliderComponent.size[1], pColliderComponent.size[2])
-			pColliderComponent.shape = <btBoxShape>new ammo.btBoxShape(boxSize)
-			pColliderComponent.shape.setMargin(0.05)
-			break
-		}
-		case ColliderTypes.SPHERE:
-			pColliderComponent.shape = <btSphereShape>new ammo.btSphereShape(pColliderComponent.radius)
-			pColliderComponent.shape.setMargin(0.05)
-			break
-		case ColliderTypes.CAPSULE:
-			// TODO
-			break
-		default:
-			break
-		}
-		pColliderComponent.initialized = true
-	}
+        switch (pColliderComponent.collisionType) {
+            case ColliderTypes.BOX: {
+                const boxSize = <btVector3>new ammo.btVector3(pColliderComponent.size[0], pColliderComponent.size[1], pColliderComponent.size[2])
+                pColliderComponent.shape = <btBoxShape>new ammo.btBoxShape(boxSize)
+                pColliderComponent.shape.setMargin(0.05)
+                break
+            }
+            case ColliderTypes.SPHERE:
+                pColliderComponent.shape = <btSphereShape>new ammo.btSphereShape(pColliderComponent.radius)
+                pColliderComponent.shape.setMargin(0.05)
+                break
+            case ColliderTypes.CAPSULE:
+                // TODO
+                break
+            default:
+                break
+        }
+        pColliderComponent.initialized = true
+    }
 
-	static get gravity(): [number, number, number] {
-		return PhysicsAPI.#gravity
-	}
+    static get gravity(): [number, number, number] {
+        return PhysicsAPI.#gravity
+    }
 
-	static set gravity(data) {
-		PhysicsAPI.#gravity = data
-		const ammo = PhysicsAPI.ammo
-		PhysicsAPI.world.setGravity(<btVector3>new ammo.btVector3(data[0], data[1], data[2]))
-		PhysicsAPI.worldSettings.set(GRAVITY, data)
-	}
+    static set gravity(data) {
+        PhysicsAPI.#gravity = data
+        const ammo = PhysicsAPI.ammo
+        PhysicsAPI.world.setGravity(<btVector3>new ammo.btVector3(data[0], data[1], data[2]))
+        PhysicsAPI.worldSettings.set(GRAVITY, data)
+    }
 
-	static registerRigidBody(entity: EditorEntity) {
-		const ammo = PhysicsAPI.ammo
-		const rigidBodyComponent = entity.rigidBodyComponent
-		const pColliderComponent = entity.physicsColliderComponent
+    static registerRigidBody(entity: EngineEntity) {
+        if (this.registered.has(entity))
+            return
+        const components = EntityManager.getAllComponentsMap(entity)
+        const rigidBodyComponent = components.get(Components.RIGID_BODY) as RigidBodyComponent
+        const pColliderComponent = components.get(Components.PHYSICS_COLLIDER) as PhysicsColliderComponent
+        const transform = components.get(Components.TRANSFORMATION) as TransformationComponent
+        if (!rigidBodyComponent || !transform || !pColliderComponent)
+            return;
+        const ammo = PhysicsAPI.ammo
+        const translation = transform.absoluteTranslation
+        const rotation = transform.rotationQuaternionFinal
+        let body: btRigidBody, motionState: btDefaultMotionState
+        rigidBodyComponent.transform = <btTransform>new ammo.btTransform()
+        rigidBodyComponent.transform.setIdentity()
+        rigidBodyComponent.transform.setOrigin(<btVector3>new ammo.btVector3(translation[0], translation[1], translation[2]))
+        rigidBodyComponent.transform.setRotation(<btQuaternion>new ammo.btQuaternion(rotation[0], rotation[1], rotation[2], rotation[3]))
+        motionState = <btDefaultMotionState>new ammo.btDefaultMotionState(rigidBodyComponent.transform)
 
-		if (!ammo || !rigidBodyComponent || rigidBodyComponent.motionState || !pColliderComponent) {
-			if (PhysicsAPI.rigidBodiesMap.get(entity.id))
-				PhysicsAPI.removeRigidBody(entity)
-			return
-		}
+        if (!pColliderComponent.initialized) {
+            pColliderComponent.initialized = true
+            PhysicsAPI.initializeCollider(entity)
+        }
 
-		const t = entity.absoluteTranslation
-		const q = entity.rotationQuaternionFinal
+        const shape = pColliderComponent.shape
+        rigidBodyComponent.inertiaBody = <btVector3>new ammo.btVector3(...rigidBodyComponent.inertia)
+        if (rigidBodyComponent.mass > 0)
+            shape.calculateLocalInertia(rigidBodyComponent.mass, rigidBodyComponent.inertiaBody)
 
-		rigidBodyComponent.transform = <btTransform>new ammo.btTransform()
-		rigidBodyComponent.transform.setIdentity()
-		rigidBodyComponent.transform.setOrigin(<btVector3>new ammo.btVector3(t[0], t[1], t[2]))
-		rigidBodyComponent.transform.setRotation(<btQuaternion>new ammo.btQuaternion(q[0], q[1], q[2], q[3]))
-		rigidBodyComponent.motionState = <btDefaultMotionState>new ammo.btDefaultMotionState(rigidBodyComponent.transform)
+        const info = <btRigidBodyConstructionInfo>new ammo.btRigidBodyConstructionInfo(
+            rigidBodyComponent.mass,
+            motionState,
+            shape,
+            rigidBodyComponent.inertiaBody
+        )
+        body = <btRigidBody>new ammo.btRigidBody(info)
+        PhysicsAPI.world.addRigidBody(body)
+        this.registered.set(entity, {setChanged: () => transform.changed = true, motionState, body, translationVec: translation as vec3, rotationQuat: rotation as quat})
+    }
 
-		if (!pColliderComponent.initialized)
-			PhysicsAPI.initializeCollider(entity)
-
-		const shape = pColliderComponent.shape
-		rigidBodyComponent.inertiaBody = <btVector3>new ammo.btVector3(...rigidBodyComponent.inertia)
-		if (rigidBodyComponent.mass > 0)
-			shape.calculateLocalInertia(rigidBodyComponent.mass, rigidBodyComponent.inertiaBody)
-
-		const info = <btRigidBodyConstructionInfo>new ammo.btRigidBodyConstructionInfo(
-			rigidBodyComponent.mass,
-			rigidBodyComponent.motionState,
-			shape,
-			rigidBodyComponent.inertiaBody
-		)
-		rigidBodyComponent.body = <btRigidBody>new ammo.btRigidBody(info)
-		PhysicsAPI.world.addRigidBody(rigidBodyComponent.body)
-		rigidBodyComponent.initialized = true
-		PhysicsAPI.rigidBodies.push(entity)
-		PhysicsAPI.rigidBodiesMap.set(entity.id, entity)
-	}
-
-	static removeRigidBody(entity: EditorEntity) {
-		const ammo = PhysicsAPI.ammo
-		const rigidBodyComponent = entity.rigidBodyComponent
-		if (!ammo || !rigidBodyComponent?.motionState)
-			return
-		rigidBodyComponent.initialized = false
-		PhysicsAPI.world.removeRigidBody(rigidBodyComponent.body)
-		PhysicsAPI.rigidBodiesMap.delete(entity.id)
-		PhysicsAPI.rigidBodies = PhysicsAPI.rigidBodies.filter(r => r !== entity)
-	}
-
-	static initializeTerrainCollision(entity, heightMap, heightScale, dimensions) {
-		// const pColliderComponent = entity.Components.get(Components.PHYSICS_COLLIDER)
-		//
-		// const {imageData, imageToLoad, canvas} = getImageData(heightMap)
-		// const vertexCount = imageToLoad.width
-		//
-		// const ammo = PhysicsAPI.ammo
-		// const terrainData = ammo._malloc(4 * vertexCount ** 2);
-		// let p = 0;
-		// let p2 = 0;
-		// for (let j = 0; j < vertexCount; j++) {
-		//     for (let i = 0; i < vertexCount; i++) {
-		//         ammo.HEAPF32[terrainData + p2 >> 2] = imageData[i * (canvas.width * 4) + j * 4] * heightScale / 255;
-		//         p++;
-		//         p2 += 4;
-		//     }
-		// }
-		// const size = imageToLoad.width * dimensions
-		// const shape = new ammo.btHeightfieldTerrainShape(
-		//     size,
-		//     size,
-		//     terrainData,
-		//     heightScale,
-		//     0, // MIN HEIGHT
-		//     heightScale, // MAX HEIGHT
-		//     1, // UP AXIS
-		//     "PHY_FLOAT", // HDT
-		//     false // FLIP EDGES
-		// );
-		//
-		// const scaleX = size / ( imageToLoad.width - 1 );
-		// const scaleZ = size / ( imageToLoad.width - 1 );
-		// shape.setLocalScaling( new ammo.btVector3( scaleX, 1, scaleZ ) );
-		// shape.setMargin( 0.05 );
-		//
-		// pColliderComponent.shape = shape
-		// PhysicsAPI.initializeCollider(entity)
-	}
+    static removeRigidBody(entity: EngineEntity) {
+        const instance = this.registered.get(entity)
+        if (!instance)
+            return;
+        PhysicsAPI.world.removeRigidBody(instance.body)
+    }
 }
+

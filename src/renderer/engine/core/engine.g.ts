@@ -70,7 +70,10 @@ interface CameraSerialization {
     prevY?: number
 }
 
-
+interface IGPUResource {
+    lastUsed: number
+    loaded: boolean
+}
 interface MaterialSettings {
     renderingMode: number
     doubleSided: boolean
@@ -85,8 +88,9 @@ interface MaterialInformation {
     executionSignature: string
 }
 
-interface ITexture {
+interface ITexture extends IGPUResource{
 }
+
 
 interface TextureMeta {
     key: string

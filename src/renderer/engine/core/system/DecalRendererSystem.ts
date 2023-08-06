@@ -7,16 +7,21 @@ import GPUUtil from "../utils/GPUUtil";
 import EditorEntity from "../../tools/EditorEntity";
 import AbstractSystem from "../AbstractSystem";
 import SceneRenderingUtil from "./SceneRenderingUtil";
+import {Components} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/EntityManager";
+import CullingComponent from "@engine-core/components/CullingComponent";
+import DecalComponent from "@engine-core/components/DecalComponent";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
 
 export default class DecalRendererSystem extends AbstractSystem{
 
     shouldExecute(): boolean {
-        return ResourceEntityMapper.decals.size > 0;
+        return ResourceEntityMapper.withComponent(Components.DECAL).size > 0;
     }
 
     execute() {
         SceneRenderingUtil.bindGlobalResources()
-        const toRender = ResourceEntityMapper.decals.array
+        const toRender = ResourceEntityMapper.withComponent(Components.DECAL).array
         const size = toRender.length
         const context = GPU.context
         const uniforms = UberShader.uberUniforms
@@ -28,30 +33,32 @@ export default class DecalRendererSystem extends AbstractSystem{
         StaticMeshes.cube.bindAllResources()
         for (let i = 0; i < size; i++) {
             const entity = toRender[i]
-            if (!entity.active || entity.isCulled)
+            const components = EntityManager.getAllComponentsMap(entity)
+            const cullingComponent = components.get(Components.CULLING) as CullingComponent
+            const transformationComponent = components.get(Components.TRANSFORMATION) as TransformationComponent
+            if (!transformationComponent || !EntityManager.isEntityEnabled(entity) || cullingComponent?.isDistanceCulled)
                 continue
+            const decalComponent = components.get(Components.DECAL) as DecalComponent
 
-            const culling = entity.cullingComponent
-            UberMaterialAttributeGroup.screenDoorEffect = culling && culling.screenDoorEffect ? entity.__cullingMetadata[5] : 0
-            UberMaterialAttributeGroup.entityID = entity.pickID
+            UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
+            // UberMaterialAttributeGroup.entityID = entity.pickID
 
-            this.#bindDecalUniforms(uniforms, entity)
+            this.#bindDecalUniforms(uniforms, decalComponent)
 
             context.uniformMatrix4fv(uniforms.materialAttributes, false, UberMaterialAttributeGroup.data)
-            context.uniformMatrix4fv(uniforms.modelMatrix, false, entity.matrix)
+            context.uniformMatrix4fv(uniforms.modelMatrix, false, transformationComponent.matrix)
 
             StaticMeshes.cube.draw()
         }
         context.enable(context.DEPTH_TEST)
     }
 
-    #bindDecalUniforms(uniforms: UniformMap, entity: EditorEntity) {
-        const component = entity.decalComponent
-        const albedoSampler = component.albedo?.texture
-        const metallicSampler = component.metallic?.texture
-        const roughnessSampler = component.roughness?.texture
-        const normalSampler = component.normal?.texture
-        const aoSampler = component.occlusion?.texture
+    #bindDecalUniforms(uniforms: UniformMap, component: DecalComponent) {
+        const albedoSampler = GPU.textures.get(component.albedoID)?.texture
+        const metallicSampler =  GPU.textures.get(component.metallicID)?.texture
+        const roughnessSampler =  GPU.textures.get(component.roughnessID)?.texture
+        const normalSampler =  GPU.textures.get(component.normalID)?.texture
+        const aoSampler = GPU.textures.get(component.occlusionID)?.texture
         let texOffset = 7
         if (albedoSampler !== undefined)
             GPUUtil.bind2DTextureForDrawing(uniforms.sampler1, texOffset, albedoSampler)

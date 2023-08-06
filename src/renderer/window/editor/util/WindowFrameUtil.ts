@@ -4,7 +4,7 @@ import EditorActionHistory from "../services/EditorActionHistory"
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import GPU from "../../../engine/core/GPU"
-import ResourceGarbageCollector from "../../../engine/core/resource-libs/ResourceGarbageCollector"
+import GarbageCollectorSystem from "@engine-core/system/GarbageCollectorSystem"
 import WindowChangeStore from "../../shared/stores/WindowChangeStore"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
@@ -50,10 +50,6 @@ export default class WindowFrameUtil {
 				icon: "save",
 				disabled: disabledSave,
 				onClick: () => WindowFrameUtil.#callMethod("save")
-			},
-			{
-				label: "Clear unused resources",
-				onClick: ResourceGarbageCollector.execute
 			},
 			{divider: true, label: "Utils"},
 			{

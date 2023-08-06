@@ -26,10 +26,12 @@ import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
 import {UUID} from "crypto";
+import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
 
 export default class LevelService extends AbstractSingleton {
     #levelToLoad
+     // #loadedLevel: EditorEntity
 
     constructor(resolvePromise: Function) {
         super()
@@ -155,7 +157,7 @@ export default class LevelService extends AbstractSingleton {
             return
         const serialized = {
             entity: Engine.loadedLevel.serializable(),
-            entities: QueryAPI.getHierarchy(Engine.loadedLevel).map(e => e.serializable()),
+            entities: EditorEntityManager.getInstance().serialize()
         }
 
         const assetReg = EditorFSUtil.getRegistryEntry(Engine.loadedLevel.id)

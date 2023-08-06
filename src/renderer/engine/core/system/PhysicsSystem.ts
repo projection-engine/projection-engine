@@ -3,6 +3,11 @@ import PhysicsAPI from "../lib/rendering/PhysicsAPI"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import EngineState from "../EngineState"
+import {Components, Environment} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/EntityManager";
+import RigidBodyComponent from "@engine-core/components/RigidBodyComponent";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMapper";
 
 export default class PhysicsSystem  {
 	static #interval = null
@@ -18,29 +23,20 @@ export default class PhysicsSystem  {
 	}
 
 	static #execute() {
-		if (Engine.isDev || !PhysicsAPI.ammo)
+		if (Engine.environment === Environment.EXECUTION|| !PhysicsAPI.ammo)
 			return
-
-		const rigidBodies = PhysicsAPI.rigidBodies
+		const rigidBodies = PhysicsAPI.registered.array
 		const length = rigidBodies.length
 		const tempTransformation = PhysicsAPI.tempTransformation
-
 		PhysicsAPI.world.stepSimulation(EngineState.physicsSimulationStep, EngineState.physicsSubSteps)
-
 		for (let i = 0; i < length; i++) {
 			const current = rigidBodies[i]
-			const component = current.rigidBodyComponent
-			if (!component?.motionState) {
-				if (!component)
-					PhysicsAPI.removeRigidBody(current)
-				continue
-			}
-			component.motionState.getWorldTransform(tempTransformation)
+			current.motionState.getWorldTransform(tempTransformation)
 			const position = tempTransformation.getOrigin()
 			const quaternion = tempTransformation.getRotation()
 
-			const t = current.translation
-			const q = current.rotationQuaternionFinal
+			const t = current.translationVec
+			const q = current.rotationQuat
 
 			t[0] = position.x()
 			t[1] = position.y()
@@ -51,8 +47,7 @@ export default class PhysicsSystem  {
 			q[2] = quaternion.z()
 			q[3] = quaternion.w()
 
-			current.__changedBuffer[0] = 1
-			MetricsController.currentState = METRICS_FLAGS.PHYSICS
+			current.setChanged()
 		}
 	}
 }

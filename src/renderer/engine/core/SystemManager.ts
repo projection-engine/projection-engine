@@ -3,7 +3,7 @@ import DynamicMap from "./resource-libs/DynamicMap";
 import AbstractSystem from "./AbstractSystem";
 import {UUID} from "crypto";
 import PhysicsSystem from "./system/PhysicsSystem";
-import ResourceGarbageCollector from "./resource-libs/ResourceGarbageCollector";
+import GarbageCollectorSystem from "./system/GarbageCollectorSystem";
 import EngineState from "./EngineState";
 
 export default class SystemManager extends AbstractSingleton {
@@ -40,14 +40,12 @@ export default class SystemManager extends AbstractSingleton {
 
     start() {
         PhysicsSystem.start()
-        ResourceGarbageCollector.start()
         this.#frameId = requestAnimationFrame(this.#loop)
     }
 
     stop() {
         cancelAnimationFrame(this.#frameId)
         this.#frameId = undefined
-        ResourceGarbageCollector.stop()
         PhysicsSystem.stop()
     }
 

@@ -3,20 +3,28 @@ import TEXTURE_FILTERING from "../static/texture/TEXTURE_FILTERING"
 import TEXTURE_FORMATS from "../static/texture/TEXTURE_FORMATS"
 import ImageProcessor from "../lib/math/ImageProcessor"
 import GPU from "../GPU"
+import EngineState from "@engine-core/EngineState";
+import {ImageWorkerActions} from "@engine-core/engine.enum";
 
 
 export default class Texture implements ITexture{
 	loaded = false
-	texture?: WebGLTexture
+	#texture?: WebGLTexture
 	attributes: TextureParams = {}
 	#image?: ImageBitmap | HTMLImageElement
 	readonly #id: string
+
 	get id() {
 		return this.#id
 	}
 
 	constructor(id: string) {
 		this.#id = id
+	}
+
+	get texture(){
+		this.lastUsed = EngineState.elapsed
+		return this.#texture
 	}
 
 	async initialize(attributes: TextureParams) {
@@ -57,8 +65,8 @@ export default class Texture implements ITexture{
 			height,
 			type = "UNSIGNED_BYTE"
 		} = this.attributes
-		this.texture = GPU.context.createTexture()
-		GPU.context.bindTexture(GPU.context.TEXTURE_2D, this.texture)
+		this.#texture = GPU.context.createTexture()
+		GPU.context.bindTexture(GPU.context.TEXTURE_2D, this.#texture)
 		GPU.context.texImage2D(GPU.context.TEXTURE_2D, 0, GPU.context[internalFormat], width, height, 0, GPU.context[format], GPU.context[type], this.#image)
 		GPU.context.texParameteri(GPU.context.TEXTURE_2D, GPU.context.TEXTURE_MIN_FILTER, GPU.context[minFilter])
 		GPU.context.texParameteri(GPU.context.TEXTURE_2D, GPU.context.TEXTURE_MAG_FILTER, GPU.context[magFilter])
@@ -77,13 +85,13 @@ export default class Texture implements ITexture{
 			this.#image.close()
 		this.#image = null
 		this.loaded = true
+		this.lastUsed = EngineState.elapsed
 	}
 
 	update(attributes: TextureParams) {
 		if (this.loaded)
-			GPU.context.deleteTexture(this.texture)
+			GPU.context.deleteTexture(this.#texture)
 		this.initialize(attributes).catch(console.error)
-
 	}
 
 	static createTexture(
@@ -118,5 +126,7 @@ export default class Texture implements ITexture{
 
 		return texture
 	}
+
+	lastUsed: number;
 
 }

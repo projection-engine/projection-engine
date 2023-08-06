@@ -5,8 +5,6 @@ import PhysicsAPI from "../rendering/PhysicsAPI"
 import EditorEntity from "../../../tools/EditorEntity"
 import LightsAPI from "./LightsAPI"
 import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
-import MeshResourceMapper from "../MeshResourceMapper"
-import MaterialResourceMapper from "../MaterialResourceMapper"
 import QueryAPI from "./QueryAPI"
 import * as crypto from "crypto";
 import {UUID} from "crypto";
@@ -133,8 +131,6 @@ export default class EntityAPI {
 		}
 		const entities = Object.values(hierarchy)
 		Engine.entities.removeBlock(entities, entity => entity.id)
-		MeshResourceMapper.removeBlock(entities)
-		MaterialResourceMapper.removeBlock(entities)
 		ResourceEntityMapper.removeBlock(entities)
 		TransformationWorkerAPI.removeBlock(entities)
 

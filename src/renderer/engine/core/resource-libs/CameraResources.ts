@@ -10,7 +10,7 @@ import CameraNotificationDecoder from "../lib/CameraNotificationDecoder"
  * @field projectionBuffer {float32array [zFar, zNear, fov, aR, orthographicSize]}
  */
 export default class CameraResources extends CameraEffects {
-	static position = ArrayBufferAPI.allocateVector(3)
+	static position = ArrayBufferAPI.allocateVector(3) as Float32Array
 	static viewMatrix = ArrayBufferAPI.allocateMatrix(4, true)
 	static projectionMatrix = ArrayBufferAPI.allocateMatrix(4, true)
 	static invViewMatrix = ArrayBufferAPI.allocateMatrix(4, true)

@@ -12,7 +12,6 @@ export default class TransformationComponent extends Component {
 	}
 	__hasWorkerBound = false
 	__changedBuffer = new Uint8Array(new SharedArrayBuffer(3))
-	__cullingMetadata = new Float32Array(new SharedArrayBuffer(24))
 	_rotationQuaternion = <Float32Array>ArrayBufferAPI.allocateVector(4, 0, true, true, false)
 	_rotationQuaternionFinal = <Float32Array>ArrayBufferAPI.allocateVector(4, 0, true, true, false)
 	_translation = <Float32Array>ArrayBufferAPI.allocateVector(3, 0, false, true, false)
@@ -28,5 +27,51 @@ export default class TransformationComponent extends Component {
 	lockedTranslation = false
 	lockedScaling = false
 	absoluteTranslation = <Float32Array>ArrayBufferAPI.allocateVector(3, 0, false, true, false)
+	get hasWorkerBound() {
+		return this.__hasWorkerBound
+	}
 
+	set hasWorkerBound(data) {
+		this.__hasWorkerBound = data
+	}
+
+	get scaling() {
+		return this._scaling
+	}
+
+	get translation() {
+		return this._translation
+	}
+
+	get rotationType() {
+		return this._rotationType
+	}
+
+	get rotationEuler() {
+		return this._rotationEuler
+	}
+
+	get rotationQuaternion() {
+		return this._rotationQuaternion
+	}
+
+	get rotationQuaternionFinal() {
+		return this._rotationQuaternionFinal
+	}
+
+	get changed() {
+		return this.__changedBuffer[0] === 1
+	}
+
+	set changed(data) {
+		this.__changedBuffer[0] = data ? 1 : 0
+	}
+
+	get changesApplied() {
+		return this.__changedBuffer[1] === 1
+	}
+
+	get isUnderChange() {
+		return this.__changedBuffer[2] === 1
+	}
 }

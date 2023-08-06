@@ -8,6 +8,9 @@ import OShadowsSystem from "./OShadowsSystem"
 import Material from "../instances/Material"
 import UberShader from "../resource-libs/UberShader"
 import EngineState from "../EngineState"
+import MeshComponent from "@engine-core/components/MeshComponent";
+import EntityManager from "@engine-core/EntityManager";
+import {Components} from "@engine-core/engine.enum";
 
 export default class SceneRenderingUtil {
 	static #bindTexture(context: WebGL2RenderingContext, location: WebGLUniformLocation, index: number, sampler: WebGLTexture, cubeMap: boolean) {
@@ -44,8 +47,8 @@ export default class SceneRenderingUtil {
 		context.enable(context.CULL_FACE)
 	}
 
-	static bindComponentUniforms(entity: EditorEntity, material: Material, uniforms: { [key: string]: WebGLUniformLocation }) {
-		const component = entity.meshComponent
+	static bindComponentUniforms(entity: EngineEntity, material: Material, uniforms: { [key: string]: WebGLUniformLocation }) {
+		const component = EntityManager.getComponent(entity, Components.MESH) as MeshComponent
 		const overrideUniforms = component.overrideMaterialUniforms
 		const data = overrideUniforms ? component.mappedUniforms : material.uniformValues
 		const toBind = material.uniforms
