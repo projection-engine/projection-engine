@@ -4,6 +4,10 @@ import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum
 
 
 export default class TransformationComponent extends Component {
+	getDependencies(): Components[] {
+		return [];
+	}
+
 	static get componentKey(): Components {
 		return Components.TRANSFORMATION
 	}

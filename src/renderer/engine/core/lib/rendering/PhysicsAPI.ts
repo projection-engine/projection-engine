@@ -1,11 +1,10 @@
 import Ammo from "../Ammo.js"
-import EditorEntity from "../../../tools/EditorEntity"
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";
 import RigidBodyComponent from "@engine-core/components/RigidBodyComponent";
 import PhysicsColliderComponent from "@engine-core/components/PhysicsColliderComponent";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
-import {quat, vec3, vec4} from "gl-matrix";
+import {quat, vec3} from "gl-matrix";
 import DynamicMap from "@engine-core/resource-libs/DynamicMap";
 
 const COLLISION = "COLLISION",

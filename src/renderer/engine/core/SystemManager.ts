@@ -3,7 +3,6 @@ import DynamicMap from "./resource-libs/DynamicMap";
 import AbstractSystem from "./AbstractSystem";
 import {UUID} from "crypto";
 import PhysicsSystem from "./system/PhysicsSystem";
-import GarbageCollectorSystem from "./system/GarbageCollectorSystem";
 import EngineState from "./EngineState";
 
 export default class SystemManager extends AbstractSingleton {

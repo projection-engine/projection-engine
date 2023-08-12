@@ -6,7 +6,6 @@ import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import loopMeshes from "./loop-meshes"
-import EditorEntity from "../../tools/EditorEntity"
 import Mesh from "../instances/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../EngineState";

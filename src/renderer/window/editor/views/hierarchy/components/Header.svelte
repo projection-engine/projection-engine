@@ -60,7 +60,7 @@
             {/each}
         </Dropdown>
         <button data-sveltebuttondefault="-"
-                on:click={() => EntityFactoryService.createEmpty(true)}
+                on:click={() => EntityFactoryService.createEmpty()}
                 data-svelteview-header-button="-"
                 style="position: relative"
         >

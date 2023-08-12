@@ -3,7 +3,6 @@ import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMappe
 import EntityManager from "@engine-core/EntityManager";
 import MeshComponent from "@engine-core/components/MeshComponent";
 import CullingComponent from "@engine-core/components/CullingComponent";
-import GPU from "@engine-core/GPU";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import Mesh from "@engine-core/instances/Mesh";
 import Material from "@engine-core/instances/Material";

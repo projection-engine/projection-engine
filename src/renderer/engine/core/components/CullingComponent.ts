@@ -1,8 +1,13 @@
 import Component from "./Component"
 import CULLING_COMPONENT_PROPS from "../static/component-props/CULLING_COMPONENT_PROPS"
 import {Components,} from "@engine-core/engine.enum";
+import TransformationWorkerAPI from "@engine-core/lib/utils/TransformationWorkerAPI";
 
 export default class CullingComponent extends Component {
+    getDependencies(): Components[] {
+        return [Components.TRANSFORMATION];
+    }
+
     static get componentKey(): Components {
         return Components.CULLING
     }
@@ -11,7 +16,9 @@ export default class CullingComponent extends Component {
         return CullingComponent.componentKey
     }
 
-    __cullingMetadata = new Float32Array(new SharedArrayBuffer(24))
+    #getCullingMetadata(){
+        return TransformationWorkerAPI.getCullingMetadata(this.entity)
+    }
     _props = CULLING_COMPONENT_PROPS
 
     constructor(entity: EngineEntity) {
@@ -20,53 +27,53 @@ export default class CullingComponent extends Component {
         this.isScreenDoorEnabled = false
         this.distanceFromCamera = 100
     }
-    
+
     get distanceFromCamera() {
-        return this.__cullingMetadata[0]
+        return this.#getCullingMetadata()[0]
     }
 
     get cullingDistance() {
-        return this.__cullingMetadata[1]
+        return this.#getCullingMetadata()[1]
     }
 
     get hasDistanceCullingEnabled() {
-        return this.__cullingMetadata[2] === 1
+        return this.#getCullingMetadata()[2] === 1
     }
 
     get isDistanceCulled() {
-        return this.__cullingMetadata[3] === 1
+        return this.#getCullingMetadata()[3] === 1
     }
 
     get screenDoorDistance() {
-        return this.__cullingMetadata[4]
+        return this.#getCullingMetadata()[4]
     }
 
     get isScreenDoorEnabled() {
-        return this.__cullingMetadata[5] === 1
+        return this.#getCullingMetadata()[5] === 1
     }
 
     set distanceFromCamera(data) {
-        this.__cullingMetadata[0] = data
+        this.#getCullingMetadata()[0] = data
     }
 
     set cullingDistance(data) {
-        this.__cullingMetadata[1] = data
+        this.#getCullingMetadata()[1] = data
     }
 
     set hasDistanceCullingEnabled(data) {
-        this.__cullingMetadata[2] = data ? 1 : 0
+        this.#getCullingMetadata()[2] = data ? 1 : 0
     }
 
     set isDistanceCulled(data) {
-        this.__cullingMetadata[3] = data ? 1 : 0
+        this.#getCullingMetadata()[3] = data ? 1 : 0
     }
 
     set screenDoorDistance(data) {
-        this.__cullingMetadata[4] = data
+        this.#getCullingMetadata()[4] = data
     }
 
     set isScreenDoorEnabled(data) {
-        this.__cullingMetadata[5] = data ? 1 : 0
+        this.#getCullingMetadata()[5] = data ? 1 : 0
 
     }
 }

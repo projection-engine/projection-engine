@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import Icon from "../icon/Icon.svelte"
 
@@ -6,6 +6,8 @@
     export let handleCheck
     export let label
     export let disabled
+    let state: boolean
+    $: state = checked
 </script>
 
 <div
@@ -16,11 +18,11 @@
     <button
             data-sveltebuttondefault="-"
             class="check-button"
-            class:check-button-checked={checked}
+            class:check-button-checked={state}
             disabled={disabled}
-            on:click={() => handleCheck(checked)}
+            on:click={() => { state = !checked; handleCheck(checked)}}
     >
-        {#if checked}
+        {#if state}
             <Icon styles="font-size: .8rem; color: white">check</Icon>
         {/if}
     </button>

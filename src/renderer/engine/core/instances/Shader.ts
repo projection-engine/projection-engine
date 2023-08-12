@@ -2,6 +2,7 @@ import GPU from "../GPU"
 import applyShaderMethods from "../utils/apply-shader-methods"
 import StaticUBOs, {StaticUBONames} from "../lib/StaticUBOs"
 import GPUUtil from "../utils/GPUUtil";
+import {GLSLTypes} from "@engine-core/engine.enum";
 
 const regex = /uniform(\s+)(highp|mediump|lowp)?(\s*)((\w|_)+)((\s|\w|_)*);/gm
 const structRegex = (type) => {
@@ -27,7 +28,7 @@ interface Uniform {
 export default class Shader {
 	program?: WebGLProgram
 	uniforms = []
-	uniformMap: { [key: string]: WebGLUniformLocation } = {}
+	uniformMap: TypedObject<WebGLUniformLocation> = {}
 	length = 0
 	messages = {
 		error: undefined,
@@ -223,38 +224,33 @@ export default class Shader {
 
 	}
 
-	static bind(uLocation, data, type, currentSamplerIndex, increaseIndex) {
+	static bind(uLocation:WebGLUniformLocation, data, type: GLSLTypes, currentSamplerIndex: number, increaseIndex: VoidFunction) {
 
+		if (data == null)
+			return
 		switch (type) {
-		case "float":
-		case "int":
-		case "vec2":
-		case "vec3":
-		case "vec4":
-		case "ivec2":
-		case "ivec3":
-		case "bool":
-			if (data == null)
-				return
+		case GLSLTypes.float:
+		case GLSLTypes.vec3:
+		case GLSLTypes.vec2:
+		case GLSLTypes.vec4:
+		case GLSLTypes.ivec2:
+		case GLSLTypes.ivec3:
+		case GLSLTypes.bool:
 			GPU.context[GLSLTypes[type]](uLocation, data)
 			break
-		case "mat3":
-			if (data == null)
-				return
+		case GLSLTypes.mat3:
 			GPU.context.uniformMatrix3fv(uLocation, false, data)
 			break
-		case "mat4":
-			if (data == null)
-				return
+		case GLSLTypes.mat4:
 			GPU.context.uniformMatrix4fv(uLocation, false, data)
 			break
-		case "samplerCube":
+		case GLSLTypes.samplerCube:
 			GPU.context.activeTexture(GPU.context.TEXTURE0 + currentSamplerIndex)
 			GPU.context.bindTexture(GPU.context.TEXTURE_CUBE_MAP, data)
 			GPU.context.uniform1i(uLocation, currentSamplerIndex)
 			increaseIndex()
 			break
-		case "sampler2D":
+		case GLSLTypes.sampler2D:
 			GPUUtil.bind2DTextureForDrawing(uLocation, currentSamplerIndex, data)
 			increaseIndex()
 			break

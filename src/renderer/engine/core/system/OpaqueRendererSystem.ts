@@ -5,7 +5,6 @@ import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGr
 import UberShader from "../resource-libs/UberShader";
 import GPU from "../GPU";
 import loopMeshes from "./loop-meshes";
-import EditorEntity from "../../tools/EditorEntity";
 import Mesh from "../instances/Mesh";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import AbstractSystem from "../AbstractSystem";

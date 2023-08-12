@@ -13,7 +13,6 @@ import serializeStructure from "../../../../engine/core/utils/serialize-structur
 import ElectronResources from "../../../shared/lib/ElectronResources"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
-import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
 import EntityHierarchyService from "./EntityHierarchyService"
 import EntityNamingService from "./EntityNamingService"
 import PickingAPI from "../../../../engine/core/lib/utils/PickingAPI"

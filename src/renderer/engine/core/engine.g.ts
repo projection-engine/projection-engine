@@ -18,7 +18,7 @@ interface EntityManagerListener<T, R> {
     options?: EntityListenerOptions
 }
 
-type EntityEventTypes = "hard-change" | "component-add" | "component-remove" | "create" | "delete" | "update"
+type EntityEventTypes = "hierarchy-change" | "hard-change" | "component-add" | "component-remove" | "create" | "delete" | "update"
 
 interface UniformMap {
     [key: string]: WebGLUniformLocation
@@ -135,18 +135,16 @@ interface TextureParams {
 }
 
 interface WorkerEntity {
-    id: string,
+    id: EngineEntity,
     changedBuffer: Uint8Array,
     previousModelMatrix: Float32Array,
     matrix: Float32Array,
-    parentChangedBuffer?: Uint8Array,
     rotationQuaternion: Float32Array,
     translation: Float32Array,
     scaling: Float32Array,
     pivotPoint: Float32Array,
     baseTransformationMatrix: Float32Array,
     absoluteTranslation: Float32Array,
-    parentMatrix?: Float32Array,
     cullingMetadata: Float32Array,
     rotationType: Float32Array,
     rotationEuler: Float32Array,
@@ -260,3 +258,5 @@ interface btDiscreteDynamicsWorld {
 
     stepSimulation(stepSize: number, subSteps: number)
 }
+
+type TypedObject<V> = {[key: string | number | symbol]: V}

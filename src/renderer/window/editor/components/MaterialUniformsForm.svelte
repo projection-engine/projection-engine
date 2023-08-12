@@ -5,7 +5,6 @@
     import ShaderEditorUtil from "../util/ShaderEditorUtil"
     import {MaterialDataTypes} from "@engine-core/engine.enum";
     import MeshComponent from "@engine-core/components/MeshComponent";
-    import GPU from "@engine-core/GPU";
     import {onMount} from "svelte";
 
     export let component: MeshComponent

@@ -9,14 +9,9 @@ import FileSystemAPI from "./lib/utils/FileSystemAPI"
 import ScriptsAPI from "./lib/utils/ScriptsAPI"
 import UIAPI from "./lib/rendering/UIAPI"
 import LightProbe from "./instances/LightProbe"
-import EditorEntity from "../tools/EditorEntity"
 import DynamicMap from "./resource-libs/DynamicMap"
-import GPUAPI from "./lib/rendering/GPUAPI"
-import EntityAPI from "./lib/utils/EntityAPI"
 import LightsAPI from "./lib/utils/LightsAPI"
-import {UUID} from "crypto";
 import SystemManager from "./SystemManager";
-import EntityManager from "./EntityManager";
 import PreRendererSystem from "./system/PreRendererSystem";
 import ScriptExecutorSystem from "./system/ScriptExecutorSystem";
 import DShadowsSystem from "./system/DShadowsSystem";
@@ -79,7 +74,7 @@ export default class Engine {
         await GPU.initializeContext(canvas, mainResolution)
         FileSystemAPI.initialize(readAsset)
         await PhysicsAPI.initialize()
-        LightsAPI.initialize()
+        LightsAPI.get()
 
         ConversionAPI.canvasBBox = GPU.canvas.getBoundingClientRect()
         const OBS = new ResizeObserver(() => {

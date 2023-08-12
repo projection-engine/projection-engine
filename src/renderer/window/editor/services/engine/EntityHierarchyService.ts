@@ -1,9 +1,7 @@
-import Engine from "../../../../engine/core/Engine"
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
 import LevelService from "./LevelService";
-import EntityManager from "@engine-core/EntityManager";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
 

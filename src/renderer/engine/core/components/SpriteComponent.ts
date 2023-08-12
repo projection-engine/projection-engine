@@ -3,6 +3,10 @@ import Component from "./Component"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class SpriteComponent extends Component {
+	getDependencies(): Components[] {
+		return [Components.TRANSFORMATION, Components.CULLING];
+	}
+
 	static get componentKey(): Components {
 		return Components.SPRITE
 	}

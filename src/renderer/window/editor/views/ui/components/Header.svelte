@@ -10,6 +10,8 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
     import type EditorEntity from "../../../../../engine/tools/EditorEntity";
+    import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
+    import EntityFactoryService from "../../../services/engine/EntityFactoryService";
 
     export let isOnSelection:boolean
     export let toggleOnSelection:GenericVoidFunction
@@ -27,17 +29,11 @@
     	EntitySelectionStore.setEntitiesSelected(m)
     }
 
-    function addUI() {
-    	const e = EntityAPI.getNewEntityInstance()
-    	e.name = "UI-ShaderNode"
-    	e.addComponent(Components.UI)
-    	EngineStateService.add(e)
-    }
 </script>
 
 <ViewHeader>
     <div class="left-content">
-        <button data-sveltebuttondefault="-" on:click={addUI} data-svelteview-header-button="-"
+        <button data-sveltebuttondefault="-" on:click={EntityFactoryService.createUI} data-svelteview-header-button="-"
                 style="max-width: unset">
             <Icon styles="font-size: .9rem">add</Icon>
             {LocalizationEN.ADD_ELEMENT}

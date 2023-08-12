@@ -3,6 +3,10 @@ import RIGID_BODY_PROPS from "../static/component-props/RIGID_BODY_PROPS"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class RigidBodyComponent extends Component {
+	getDependencies(): Components[] {
+		return [Components.TRANSFORMATION, Components.PHYSICS_COLLIDER];
+	}
+
 	static get componentKey(): Components {
 		return Components.RIGID_BODY
 	}

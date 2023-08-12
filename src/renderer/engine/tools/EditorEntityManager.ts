@@ -1,7 +1,8 @@
 import AbstractSingleton from "../core/AbstractSingleton";
 import DynamicMap from "../core/resource-libs/DynamicMap";
 import EditorEntity from "./EditorEntity";
-import Engine from "@engine-core/Engine";
+import * as crypto from "crypto";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class EditorEntityManager extends AbstractSingleton {
     #entities = new DynamicMap<EngineEntity, EditorEntity>()
@@ -17,7 +18,13 @@ export default class EditorEntityManager extends AbstractSingleton {
     static serialize() {
     }
 
-    static getEntity(id: EngineEntity){
+    static getEntity(id: EngineEntity) {
         return EditorEntityManager.getInstance().#entities.get(id)
+    }
+
+    static create(id?: crypto.UUID): EditorEntity {
+        const entity = new EditorEntity(id)
+        EntityManager.createEntitiesById([entity.id])
+        return entity
     }
 }

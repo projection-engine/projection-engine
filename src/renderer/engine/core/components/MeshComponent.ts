@@ -9,6 +9,10 @@ import Mesh from "@engine-core/instances/Mesh";
 import Material from "@engine-core/instances/Material";
 
 export default class MeshComponent extends Component {
+    getDependencies(): Components[] {
+        return [Components.TRANSFORMATION, Components.CULLING];
+    }
+
     static get componentKey(): Components {
         return Components.MESH
     }

@@ -5,9 +5,6 @@ import EngineResourceLoaderService from "../services/engine/EngineResourceLoader
 import FileSystemAPI from "../../../engine/core/lib/utils/FileSystemAPI"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
-import LightComponent from "../../../engine/core/components/LightComponent"
-import LightsAPI from "../../../engine/core/lib/utils/LightsAPI"
-import CameraComponent from "../../../engine/core/components/CameraComponent"
 import EngineStore from "../../shared/stores/EngineStore"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import EditorUtil from "./EditorUtil"
@@ -49,13 +46,6 @@ export default class InspectorUtil {
     }
 
     static updateEntityComponent(entity:EditorEntity, key:string, value:any, component:Component) {
-        if (component instanceof LightComponent) {
-            entity.needsLightUpdate = true
-            LightsAPI.packageLights(true)
-        }
-        if (component instanceof CameraComponent) {
-            entity.__cameraNeedsUpdate = true
-        }
         component[key] = value
         if (component.getComponentKey() === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera)
             CameraAPI.updateViewTarget(entity)

@@ -8,6 +8,10 @@ import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class DecalComponent extends Component {
+    getDependencies(): Components[] {
+        return [Components.TRANSFORMATION];
+    }
+
     static get componentKey(): Components {
         return Components.DECAL
     }

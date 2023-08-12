@@ -5,7 +5,6 @@ import StaticMeshes from "../lib/StaticMeshes"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
-import EditorEntity from "../../tools/EditorEntity";
 import AbstractSystem from "../AbstractSystem";
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";

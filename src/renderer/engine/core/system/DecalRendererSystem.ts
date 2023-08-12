@@ -4,7 +4,6 @@ import UberShader from "../resource-libs/UberShader";
 import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper";
 import StaticMeshes from "../lib/StaticMeshes";
 import GPUUtil from "../utils/GPUUtil";
-import EditorEntity from "../../tools/EditorEntity";
 import AbstractSystem from "../AbstractSystem";
 import SceneRenderingUtil from "./SceneRenderingUtil";
 import {Components} from "@engine-core/engine.enum";

@@ -1,5 +1,4 @@
 import DynamicMap from "./DynamicMap"
-import type EditorEntity from "../../tools/EditorEntity"
 import AbstractSingleton from "../AbstractSingleton";
 import EntityManager from "../EntityManager";
 import Component from "../components/Component";

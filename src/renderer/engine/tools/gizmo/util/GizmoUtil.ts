@@ -62,20 +62,22 @@ export default class GizmoUtil {
 	}
 
 	static getGizmoEntity(index: number, rotation: vec3, scaling: vec3) {
+		// TODO - REWORK WITH NEW GIZMO ENTITY
+		// const TO_DEG = 57.29
 
-		const TO_DEG = 57.29
-		const entity = EntityAPI.getNewEntityInstance()
-		const pickID = PickingAPI.getPickerId(index)
-
-		entity.pickID[0] = pickID[0]
-		entity.pickID[1] = pickID[1]
-		entity.pickID[2] = pickID[2]
-		vec3.copy(<vec3>entity._scaling, scaling)
-		quat.fromEuler(<quat>entity._rotationQuaternion, TO_DEG * rotation[0], TO_DEG * rotation[1], TO_DEG * rotation[2])
-		quat.normalize(entity._rotationQuaternion, entity._rotationQuaternion)
-		mat4.fromRotationTranslationScale(entity.matrix, entity._rotationQuaternion, <vec3>entity._translation, <vec3>entity._scaling)
-		entity.__cacheMatrix = mat4.clone(entity.matrix)
-		return entity
+		// const entity = Entity.getNewEntityInstance()
+		// const pickID = PickingAPI.getPickerId(index)
+		//
+		// entity.pickID[0] = pickID[0]
+		// entity.pickID[1] = pickID[1]
+		// entity.pickID[2] = pickID[2]
+		// vec3.copy(<vec3>entity._scaling, scaling)
+		// quat.fromEuler(<quat>entity._rotationQuaternion, TO_DEG * rotation[0], TO_DEG * rotation[1], TO_DEG * rotation[2])
+		// quat.normalize(entity._rotationQuaternion, entity._rotationQuaternion)
+		// mat4.fromRotationTranslationScale(entity.matrix, entity._rotationQuaternion, <vec3>entity._translation, <vec3>entity._scaling)
+		// entity.__cacheMatrix = mat4.clone(entity.matrix)
+		// return entity
+		return null
 	}
 
 	static drawGizmo(mesh:Mesh, transformMatrix:mat4, axis:AXIS) {

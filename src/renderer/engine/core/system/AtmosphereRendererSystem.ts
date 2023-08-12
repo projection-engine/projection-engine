@@ -37,10 +37,29 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
         const context = GPU.context
         const component = EntityManager.getComponent<AtmosphereComponent>(entity, Components.ATMOSPHERE)
         if (EntityManager.isEntityEnabled(entity)) {
-            AtmosphereComponent.bindResources(resources, component)
+            AtmosphereRendererSystem.#bindResources(resources, component)
             context.uniform1i(uniforms.type, component.renderingType)
             context.uniformMatrix4fv(uniforms.information, false, resources)
             StaticMeshes.drawQuad()
         }
+    }
+
+    static #bindResources(matrix: mat4, component: AtmosphereComponent) {
+        matrix[0] = component.sunDirection[0]
+        matrix[1] = component.sunDirection[1]
+        matrix[2] = component.sunDirection[2]
+        matrix[3] = component.betaRayleigh[0] * 263157
+        matrix[4] = component.betaRayleigh[1] * 74074
+        matrix[5] = component.betaRayleigh[2] * 30211
+        matrix[6] = component.betaMie[0] * 476
+        matrix[7] = component.betaMie[1] * 476
+        matrix[8] = component.betaMie[2] * 476
+        matrix[9] = component.intensity
+        matrix[10] = component.atmosphereRadius
+        matrix[11] = component.planetRadius
+        matrix[12] = component.rayleighHeight
+        matrix[13] = component.mieHeight
+        matrix[14] = component.maxSamples
+        matrix[15] = component.threshold
     }
 }

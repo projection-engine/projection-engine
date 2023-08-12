@@ -3,6 +3,10 @@ import PHYSICS_COLLIDER_PROPS from "../static/component-props/PHYSICS_COLLIDER_P
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 
 export default class PhysicsColliderComponent extends Component {
+	getDependencies(): Components[] {
+		return [Components.TRANSFORMATION, Components.RIGID_BODY];
+	}
+
 	static get componentKey(): Components {
 		return Components.PHYSICS_COLLIDER
 	}

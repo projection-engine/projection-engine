@@ -4,7 +4,6 @@ import GIZMOS from "../../../../shared/enums/Gizmos"
 import EditorActionHistory from "../services/EditorActionHistory"
 import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
 import GizmoTransformationType from "../../../../shared/enums/GizmoTransformationType"
-import EntityFactoryService from "../services/engine/EntityFactoryService"
 import CAMERA_ROTATIONS from "../../../engine/tools/static/CAMERA_ROTATIONS"
 import LevelService from "../services/engine/LevelService"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
@@ -87,7 +86,7 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
 			callback: () => {
 				const selected = EntitySelectionStore.getEntitiesSelected()
 				for (let i = 0; i < selected.length; i++)
-					EntityFactoryService.toggleEntityVisibility(selected[i], true)
+					EngineStateService.toggleEntityVisibility(selected[i], true)
 				EntityHierarchyService.updateHierarchy()
 			},
 			require: viewportHotkeys.HIDE_ACTIVE,

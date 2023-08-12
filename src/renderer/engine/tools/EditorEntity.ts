@@ -1,11 +1,8 @@
-import EntityAPI from "../core/lib/utils/EntityAPI"
-import TransformationWorkerAPI from "../core/lib/utils/TransformationWorkerAPI"
-import QueryAPI from "../core/lib/utils/QueryAPI"
-import DynamicMap from "../core/resource-libs/DynamicMap"
 import * as crypto from "crypto";
 import EntityManager from "@engine-core/EntityManager";
 import Component from "@engine-core/components/Component";
 import {mat4, vec3} from "gl-matrix";
+import {Components} from "@engine-core/engine.enum";
 
 
 export default class EditorEntity {
@@ -17,7 +14,9 @@ export default class EditorEntity {
 	__cacheCenterMatrix: mat4
 	__pivotChanged: boolean
 	__cacheIconMatrix: mat4
+	__cameraIconMatrix: mat4
 	__pivotOffset: vec3
+	__isSelected = false
 
     constructor(id?: EngineEntity) {
     	this.id = id ?? this.id
@@ -38,6 +37,10 @@ export default class EditorEntity {
 
 	get allComponents(): Component[]{
 		return EntityManager.getAllComponents(this.id)
+	}
+
+	getComponent<T extends Component>(comp: Components):T{
+		return EntityManager.getComponent<T>(this.id, comp)
 	}
 
 	get children(): EngineEntity[]{

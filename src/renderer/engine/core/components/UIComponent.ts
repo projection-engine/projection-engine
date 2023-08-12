@@ -2,6 +2,10 @@ import Component from "./Component"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class UIComponent extends Component {
+	getDependencies(): Components[] {
+		return [];
+	}
+
 	static get componentKey(): Components {
 		return Components.UI
 	}

@@ -1,13 +1,7 @@
 import Engine from "../Engine"
 import PhysicsAPI from "../lib/rendering/PhysicsAPI"
-import MetricsController from "../lib/utils/MetricsController"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import EngineState from "../EngineState"
-import {Components, Environment} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
-import RigidBodyComponent from "@engine-core/components/RigidBodyComponent";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMapper";
+import {Environment} from "@engine-core/engine.enum";
 
 export default class PhysicsSystem  {
 	static #interval = null

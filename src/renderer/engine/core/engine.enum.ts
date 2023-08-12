@@ -129,7 +129,8 @@ enum WorkerMessages {
     INITIALIZE,
     REGISTER_ENTITY,
     REMOVE_ENTITY,
-    ADD_BLOCK
+    ADD_BLOCK,
+    HIERARCHY_CHANGE
 }
 
 enum TransformationRotationTypes {

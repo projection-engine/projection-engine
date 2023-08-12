@@ -8,6 +8,10 @@ import AbstractSystem from "../../core/AbstractSystem";
 import GPUUtil from "../../core/utils/GPUUtil";
 import StaticFBO from "../../core/lib/StaticFBO";
 import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
+import {Components} from "@engine-core/engine.enum";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import EditorEntityManager from "../EditorEntityManager";
+import CullingComponent from "@engine-core/components/CullingComponent";
 
 export default class CameraIconSystem extends AbstractSystem {
     static #invView = mat4.create()
@@ -15,10 +19,10 @@ export default class CameraIconSystem extends AbstractSystem {
     static #view = mat4.create()
 
     #createFrustumMatrix(entity: EditorEntity) {
-        if (entity.changesApplied || !entity.__cameraIconMatrix || entity.__cameraNeedsUpdate) {
-            entity.__cameraNeedsUpdate = false
-            const t = entity._translation
-            const q = entity._rotationQuaternion
+        const transform = entity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+        if (transform.changesApplied || !entity.__cameraIconMatrix) {
+            const t = transform.translation
+            const q = transform.rotationQuaternion
 
 
             mat4.perspective(CameraIconSystem.#projection, Math.PI / 4, 1.3, .5, 3)
@@ -32,19 +36,21 @@ export default class CameraIconSystem extends AbstractSystem {
     }
 
     shouldExecute(): boolean {
-        return ResourceEntityMapper.cameras.size > 0;
+        return ResourceEntityMapper.withComponent(Components.CAMERA).size > 0;
     }
 
     execute() {
         const uniforms = StaticEditorShaders.wireframeUniforms
+        const arr = ResourceEntityMapper.withComponent(Components.CAMERA).array
         const context = GPU.context
-        const size = ResourceEntityMapper.cameras.size
-        const arr = ResourceEntityMapper.cameras.array
+        const size = arr.length
         StaticEditorShaders.wireframe.bind()
         GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBO.sceneDepthVelocity)
         for (let i = 0; i < size; i++) {
-            const entity = arr[i]
-            if (entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
+            const entity = EditorEntityManager.getEntity(arr[i])
+            const cullingComp = entity.getComponent<CullingComponent>(Components.CULLING)
+
+            if (cullingComp && cullingComp.distanceFromCamera > EngineToolsState.maxDistanceIcon)
                 continue
             this.#createFrustumMatrix(entity)
 

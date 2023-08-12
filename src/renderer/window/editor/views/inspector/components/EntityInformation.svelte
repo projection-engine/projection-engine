@@ -3,7 +3,6 @@
 
     import Selector from "../../../components/selector/Selector.svelte";
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte";
-    import EntityFactoryService from "../../../services/engine/EntityFactoryService";
     import EntityHierarchyService from "../../../services/engine/EntityHierarchyService";
 
     import Input from "../../../../shared/components/input/Input.svelte";
@@ -17,6 +16,7 @@
     import AddComponent from "./AddComponent.svelte";
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
+    import EngineStateService from "../../../services/engine/EngineStateService";
 
     export let entity: EditorEntity
 
@@ -81,11 +81,7 @@
     <div data-svelteform="-">
         <Checkbox
                 checked={entity.active}
-                handleCheck={_ =>  {
-                const inv = !entity.active
-                EntityFactoryService.toggleEntityVisibility(entity.id)
-                entity.active = inv
-            }}
+                handleCheck={_ => EngineStateService.toggleEntityVisibility(entity.id)}
                 label={LocalizationEN.ACTIVE}
         />
 

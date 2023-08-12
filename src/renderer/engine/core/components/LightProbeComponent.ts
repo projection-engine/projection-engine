@@ -3,6 +3,10 @@ import LIGHT_PROBE_PROPS from "../static/component-props/LIGHT_PROBE_PROPS"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class LightProbeComponent extends Component {
+	getDependencies(): Components[] {
+		return [Components.TRANSFORMATION];
+	}
+
 	static get componentKey(): Components {
 		return Components.LIGHT_PROBE
 	}

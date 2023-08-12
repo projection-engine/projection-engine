@@ -2,6 +2,7 @@ import {Components,} from "@engine-core/engine.enum";
 
 
 export default abstract class Component {
+    abstract getDependencies(): Components[]
 
     _props: ComponentValueGeneric[] = []
     _name = ""

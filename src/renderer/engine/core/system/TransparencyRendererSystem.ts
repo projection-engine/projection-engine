@@ -3,7 +3,6 @@ import StaticFBO from "../lib/StaticFBO"
 import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGroup";
 import UberShader from "../resource-libs/UberShader";
 import GPU from "../GPU";
-import EditorEntity from "../../tools/EditorEntity";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";

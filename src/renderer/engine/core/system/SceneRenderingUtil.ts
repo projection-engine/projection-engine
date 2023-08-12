@@ -1,5 +1,4 @@
 import GPU from "../GPU"
-import type EditorEntity from "../../tools/EditorEntity"
 import Shader from "../instances/Shader"
 import Engine from "../Engine"
 import CameraAPI from "../lib/utils/CameraAPI"
