@@ -65,7 +65,7 @@
             <button data-sveltebuttondefault="-"
                     style="border: none"
                     class="button viewport"
-                    on:click={_ => EditorUtil.focusOnCamera(camera)}
+                    on:click={_ => EditorUtil.focusOnCamera(camera.id)}
             >
                 {#if focusedCamera === camera.id}
                     <Icon>check</Icon>

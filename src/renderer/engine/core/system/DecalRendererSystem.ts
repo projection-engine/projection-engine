@@ -40,7 +40,7 @@ export default class DecalRendererSystem extends AbstractSystem{
             const decalComponent = components.get(Components.DECAL) as DecalComponent
 
             UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
-            // UberMaterialAttributeGroup.entityID = entity.pickID
+            UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
 
             this.#bindDecalUniforms(uniforms, decalComponent)
 

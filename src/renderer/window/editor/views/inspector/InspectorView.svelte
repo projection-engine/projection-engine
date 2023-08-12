@@ -2,7 +2,6 @@
 
     import {onDestroy, onMount} from "svelte"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
-    import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
     import EntityInspector from "./components/EntityAttributes.svelte"
 
     import Icon from "../../../shared/components/icon/Icon.svelte"
@@ -12,6 +11,7 @@
     import InspectorUtil from "../../util/InspectorUtil"
     import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
     import SerializedState from "../../components/view/SerializedState.svelte";
+    import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     let selectedEntity
@@ -21,7 +21,7 @@
 
     onMount(() => {
         EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
-            const temp = QueryAPI.getEntityByID(data.array[0] || data.lockedEntity)
+            const temp = EditorEntityManager.getEntity(data.array[0] || data.lockedEntity)
             if (temp === selectedEntity)
                 return
             selectedEntity = temp

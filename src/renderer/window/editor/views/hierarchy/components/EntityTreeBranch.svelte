@@ -3,15 +3,15 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
-    import QueryAPI from "../../../../../engine/core/lib/utils/QueryAPI";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import EngineStateService from "../../../services/engine/EngineStateService";
+    import EntityManager from "@engine-core/EntityManager";
 
     export let testSearch: GenericVoidFunctionWithP<MutableObject>
     export let depth: number
     export let isOnSearch: boolean
     export let entity: EditorEntity
-    export let open: { [key: string]: boolean }
+    export let open: TypedObject<boolean>
     export let updateOpen: GenericVoidFunction
     export let selectedList:string[]
     export let lockedEntity: string
@@ -23,8 +23,8 @@
         } else {
 
             delete open[entity.id]
-            QueryAPI.loopHierarchy(entity, (child) => {
-                delete open[child.id]
+            EntityManager.loopHierarchy(entity.id, (child) => {
+                delete open[child]
             })
             updateOpen()
         }
@@ -32,7 +32,7 @@
 
     $: isOpen = open[entity.id]
     $: isNodeSelected = selectedList.includes(entity.id)
-    $: childQuantity = Math.max(entity.children.array.length, entity.allComponents.length)
+    $: childQuantity = Math.max(entity.children.length, entity.allComponents.length)
     $: hasChildren = childQuantity > 0
     $: isMatchToSearch = isOnSearch && testSearch(entity)
 </script>

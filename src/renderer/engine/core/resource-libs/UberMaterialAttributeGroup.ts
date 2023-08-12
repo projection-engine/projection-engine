@@ -1,3 +1,5 @@
+import {vec3} from "gl-matrix";
+
 const data = new Float32Array(16)
 
 // 0  [0][0]  1  [0][1] 2  [0][2] 3  [0][3]
@@ -12,7 +14,7 @@ export default class UberMaterialAttributeGroup {
 		data[0] = data[10] = data[1] = data[11] = data[2] = data[12] = data[3] = data[13] = data[4] = data[14] = data[5] = data[15] = data[6] = data[16] = data[7] = data[8] = 0
 	}
 
-	static set entityID(value: Float32Array) {
+	static set entityID(value: vec3) {
 		data[0] = value[0]
 		data[1] = value[1]
 		data[2] = value[2]

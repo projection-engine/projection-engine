@@ -1,11 +1,13 @@
 import EngineTools from "../../EngineTools"
 import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
-import EngineStateService from "../../../../window/editor/services/engine/EngineStateService"
 import {vec3} from "gl-matrix"
 import GizmoUtil from "../util/GizmoUtil"
 import GizmoState from "../util/GizmoState"
 import GizmoSystem from "../../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
+import EngineToolsState from "../../EngineToolsState";
+import {Components} from "@engine-core/engine.enum";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
 
 export default class TranslationGizmo extends AbstractXYZGizmo {
 	#hasCloned = false
@@ -38,39 +40,37 @@ export default class TranslationGizmo extends AbstractXYZGizmo {
 
 	onMouseMove(event: MouseEvent) {
 		if (!this.#hasCloned && event.shiftKey) {
-			const clones = EngineTools.selected.map(m => m.clone())
-			EngineStateService.appendBlock(clones)
-			GizmoState.mainEntity = clones[0]
+			// TODO - IMPLEMENT EDITOR ENGINE CLONING
+			// const clones = EngineTools.selected.map(m => m.clone())
+			// EngineStateService.appendBlock(clones)
+			// GizmoState.mainEntity = clones[0]
 		}
 		this.#hasCloned = event.shiftKey
 		this.#gizmoTranslateEntity(event)
 	}
 
 	#gizmoTranslateEntity(event) {
-		const firstEntity = GizmoState.mainEntity
-		if (!firstEntity)
-			return
+		const entities = EngineTools.selected
+		const SIZE = entities.length
 		const grid = event.ctrlKey ? 1 : GizmoState.translationGridSize
 		const vec = GizmoUtil.mapToScreenMovement(event, true)
-
+		const componentRoot = entities[0].getComponent<TransformationComponent>(Components.TRANSFORMATION)
+		if (SIZE === 1 && (!componentRoot || componentRoot.lockedTranslation))
+			return
 		if (!GizmoState.isGlobal)
-			vec3.transformQuat(vec, vec, firstEntity.rotationQuaternionFinal)
+			vec3.transformQuat(vec, vec, componentRoot.rotationQuaternionFinal)
 
 		vec[0] = GizmoUtil.nearestX(vec[0], grid)
 		vec[1] = GizmoUtil.nearestX(vec[1], grid)
 		vec[2] = GizmoUtil.nearestX(vec[2], grid)
 
-		const entities = EngineTools.selected
-		const SIZE = entities.length
-		if (SIZE === 1 && entities[0].lockedTranslation)
-			return
 		for (let i = 0; i < SIZE; i++) {
-			const target = entities[i]
-			if (target.lockedTranslation)
+			const target = entities[i].getComponent<TransformationComponent>(Components.TRANSFORMATION)
+			if (!target || target.lockedTranslation)
 				continue
 			if (SIZE === 1 && event.altKey) {
 				GizmoUtil.assignValueToVector(vec, target.pivotPoint)
-				target.__pivotChanged = true
+				EngineToolsState.pivotChanged.set(target.entity, true)
 				continue
 			}
 			GizmoUtil.assignValueToVector(vec, target._translation)

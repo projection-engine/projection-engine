@@ -11,6 +11,7 @@ import AbstractSystem from "../AbstractSystem";
 import Material from "../instances/Material";
 import CullingComponent from "@engine-core/components/CullingComponent";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class OpaqueRendererSystem extends AbstractSystem {
     #stateWasCleared = false
@@ -31,7 +32,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         const uniforms = UberShader.uberUniforms
         const context = GPU.context
         UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
-        // UberMaterialAttributeGroup.entityID = entity.pickID
+        UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
 
         if (this.#isSky) {
             this.#isSky = false

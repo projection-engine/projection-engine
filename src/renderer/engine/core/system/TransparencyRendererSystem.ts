@@ -12,6 +12,7 @@ import Mesh from "@engine-core/instances/Mesh";
 import Material from "@engine-core/instances/Material";
 import CullingComponent from "@engine-core/components/CullingComponent";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class TransparencyRendererSystem extends AbstractSystem {
     execute() {
@@ -38,7 +39,7 @@ export default class TransparencyRendererSystem extends AbstractSystem {
         const uniforms = UberShader.uberUniforms
         const context = GPU.context
         UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
-        // UberMaterialAttributeGroup.entityID = entity.pickID
+        UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
         UberMaterialAttributeGroup.materialID = material.bindID
         UberMaterialAttributeGroup.renderingMode = material.renderingMode
         UberMaterialAttributeGroup.ssrEnabled = material.ssrEnabled ? 1 : 0

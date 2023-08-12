@@ -6,6 +6,7 @@ import serializeStructure from "./utils/serialize-structure";
 import {Components} from "./engine.enum";
 import {vec3} from "gl-matrix";
 import LightsAPI from "@engine-core/lib/utils/LightsAPI";
+import PickingAPI from "@engine-core/lib/utils/PickingAPI";
 
 export default class EntityManager extends AbstractSingleton {
     #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<EngineEntity, Components>[]>
@@ -13,7 +14,8 @@ export default class EntityManager extends AbstractSingleton {
     #childParent = new Map<EngineEntity, EngineEntity>()
     #parentChildren = new Map<EngineEntity, EngineEntity[]>()
     #activeEntities = new Map<EngineEntity, boolean>()
-    #pickingIDs = new Map<EngineEntity, vec3>
+    #pickInteger = new Map<number, EngineEntity>
+    #pickVec3 = new Map<EngineEntity, vec3>
 
     static #preventDefaultTrigger = false
 
@@ -55,7 +57,14 @@ export default class EntityManager extends AbstractSingleton {
             return remove
         }
     }
-
+    static loopHierarchy(entity: EngineEntity, callback: GenericVoidFunctionWithP<EngineEntity>) {
+        const children = EntityManager.getChildren(entity)
+        callback(entity)
+        for (let i = 0; i < children.length; i++) {
+            const current = children[i]
+            EntityManager.loopHierarchy(current, callback)
+        }
+    }
     static getEntities() {
         return this.getInstance().#entities
     }
@@ -64,15 +73,18 @@ export default class EntityManager extends AbstractSingleton {
         return Array.from(this.getInstance().#entities.keys())
     }
 
-    static getEntityPickId(entity: EngineEntity): vec3 {
+    static getEntityPickVec3(entity: EngineEntity): vec3 | undefined {
         const instance = this.getInstance()
-        if (!instance.#pickingIDs.get(entity) && instance.#entities.has(entity)) {
-            const newValue = vec3.create()
-            instance.#pickingIDs.set(entity, newValue)
-            // TODO - FIND PICK ID
-            // instance.#entities..indexOf(entity)
+        if (!instance.#pickVec3.has(entity) && this.entityExists(entity)) {
+            const index = instance.#pickInteger.size
+            instance.#pickVec3.set(entity, PickingAPI.getPickerId(index) as vec3)
+            instance.#pickInteger.set(index, entity)
         }
-        return instance.#pickingIDs.get(entity)
+        return instance.#pickVec3.get(entity)
+    }
+
+    static getEntityWithPickIndex(index: number): EngineEntity | undefined {
+        return this.getInstance().#pickInteger.get(index)
     }
 
     static getState() {
@@ -99,6 +111,7 @@ export default class EntityManager extends AbstractSingleton {
             collected.push(...this.getChildren(entity))
             activeEntities.set(entity, state)
         }
+        this.#clearPickingCache()
         if (collected.length > 0) {
             this.#enableDisableEntityInternal(collected, state)
         }
@@ -134,10 +147,14 @@ export default class EntityManager extends AbstractSingleton {
             const child = children[i];
             instance.#childParent.set(child, parent)
         }
+        this.#clearPickingCache()
+
         instance.#parentChildren.set(parent, Array.from(new Set([...parentArr, ...children])))
     }
 
     static getComponent<T>(entity: EngineEntity, component: Components): T | undefined {
+        if (!entity)
+            return
         return this.getEntities().get(entity)?.get?.(component) as T
     }
 
@@ -145,6 +162,7 @@ export default class EntityManager extends AbstractSingleton {
         const id = crypto.randomUUID()
         const str = serializeStructure({id, components: Array.from(this.getEntities().get(entity).entries())})
         this.#parseEntity(JSON.parse(str))
+        this.#clearPickingCache()
         return id
     }
 
@@ -172,6 +190,7 @@ export default class EntityManager extends AbstractSingleton {
             activeEntities.set(newEntity, true)
             this.getEntities().set(newEntity, new DynamicMap<Components, Component>())
         }
+        this.#clearPickingCache()
         this.#callListeners({all: entities, type: "create"})
         return entities
     }
@@ -184,6 +203,7 @@ export default class EntityManager extends AbstractSingleton {
             activeEntities.set(newEntity, true)
             this.getEntities().set(newEntity, new DynamicMap<Components, Component>())
         }
+        this.#clearPickingCache()
         this.#callListeners({all: entities, type: "create"})
         return entities
     }
@@ -192,6 +212,7 @@ export default class EntityManager extends AbstractSingleton {
         const removed = {}
         const allRemoved = []
         this.#removeEntitiesInternal(entities, removed, allRemoved)
+        this.#clearPickingCache()
         this.#callListeners({all: allRemoved, type: "delete"})
     }
 
@@ -243,7 +264,7 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static removeComponent(target: EngineEntity, componentType: Components) {
-        const allRemoved : Components[]= []
+        const allRemoved: Components[] = []
         this.#removeComponentInternal(target, componentType, allRemoved)
         this.#callListeners({
             target: target,
@@ -288,6 +309,7 @@ export default class EntityManager extends AbstractSingleton {
             for (let i = 0; i < json.length; i++) {
                 this.#parseEntity(json[i]);
             }
+            this.#clearPickingCache()
             this.#callListeners({all: previousAll, type: "delete"})
             this.#callListeners({all: json.map(e => e.id), type: "create"})
         } catch (err) {
@@ -298,6 +320,7 @@ export default class EntityManager extends AbstractSingleton {
     static #parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
         const components = new DynamicMap<Components, Component>()
         this.getEntities().set(entityData.id, components)
+
         for (let i1 = 0; i1 < entityData.components.length; i1++) {
             const componentObject = entityData.components[i1];
             try {
@@ -378,5 +401,19 @@ export default class EntityManager extends AbstractSingleton {
         const events = callback()
         this.#preventDefaultTrigger = false
         events.forEach(this.#callListeners)
+    }
+
+    static getEntityIds(): EngineEntity[] {
+        return Array.from(this.getEntities().keys());
+    }
+
+    static #clearPickingCache() {
+        const i =this.getInstance()
+        i.#pickInteger.clear()
+        i.#pickVec3.clear()
+    }
+
+    static entityExists(found: EngineEntity): boolean {
+        return this.getInstance().#entities.has(found);
     }
 }

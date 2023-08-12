@@ -13,6 +13,7 @@ import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 import {LightTypes,} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/EntityManager";
 
 const iconAttributes = mat4.create()
 export default class IconsSystem extends AbstractSystem {
@@ -40,16 +41,14 @@ export default class IconsSystem extends AbstractSystem {
                 entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
                 doesntHaveIcon && entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
                 doesntHaveIcon && !entity.meshComponent?.hasMesh
-            )
+            ) {
                 continue
+            }
             cb(entity, uniforms)
         }
     }
 
-    static drawIcon(
-        entity: EditorEntity,
-        U
-    ) {
+    static drawIcon(entity: EditorEntity, U) {
         const uniforms = U || StaticEditorShaders.iconUniforms
         const context = GPU.context
         const lightComponent = entity.lightComponent
@@ -88,16 +87,13 @@ export default class IconsSystem extends AbstractSystem {
         }
 
 
-        // if (hasCamera)
-        //     imageIndex = imageIndex !== 0 ? 0 : 5
         if (entity.lightProbeComponent)
             imageIndex = imageIndex !== 0 ? 0 : 3
         if (entity.atmosphereComponent)
             imageIndex = imageIndex !== 0 ? 0 : 5
         if (entity.decalComponent)
             imageIndex = imageIndex !== 0 ? 0 : 6
-        // if (hasCamera)
-        //     imageIndex = imageIndex !== 0 ? 0 : 5
+
 
 
         iconAttributes[0] = doNotFaceCamera
@@ -115,7 +111,7 @@ export default class IconsSystem extends AbstractSystem {
 
         GizmoUtil.createTransformationCache(entity)
         if (uniforms.entityID !== undefined)
-            context.uniform3fv(uniforms.entityID, entity.pickID)
+            context.uniform3fv(uniforms.entityID, EntityManager.getEntityPickVec3(entity.id))
 
         context.uniformMatrix4fv(uniforms.settings, false, iconAttributes)
         context.uniformMatrix4fv(uniforms.transformationMatrix, false, entity.__cacheIconMatrix)
@@ -149,8 +145,9 @@ export default class IconsSystem extends AbstractSystem {
             else
                 LineRenderer.drawY(entity.__cacheIconMatrix)
         }
-        if (hasCamera)
+        if (hasCamera) {
             LineRenderer.drawZ(entity.__cacheIconMatrix)
+        }
     }
 
     shouldExecute(): boolean {

@@ -1,9 +1,9 @@
-import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import EntityManager from "../../../../engine/core/EntityManager"
+import EntityHierarchyService from "./EntityHierarchyService";
 
 export default class EntityNamingService {
-	static #byName = new Map<string, string>()
+	static #byName = new Map<string, EngineEntity>()
 	static get byName(){
 		return EntityNamingService.#byName
 	}
@@ -11,18 +11,16 @@ export default class EntityNamingService {
 	static clear(){
 		EntityNamingService.#byName.clear()
 	}
-	static set byName(data:Map<string, string>){
-		if(data instanceof Map)
-			EntityNamingService.#byName = data
-	}
+
 	static renameEntity(newName:string, entity:EditorEntity) {
 		const found = EntityNamingService.#byName.get(newName)
 		let validName = true
 		if (found !== entity.id)
-			validName = !QueryAPI.getEntityByID(found)
+			validName = !EntityManager.entityExists(found)
 		if (validName) {
-			EntityManager.updateEntity(entity,  newName, "name")
+			entity.name = newName
 			EntityNamingService.#byName.set(newName, entity.id)
+			EntityHierarchyService.updateHierarchy()
 		} else{
 			{
 				const subWord = ".00"

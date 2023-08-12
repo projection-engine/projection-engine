@@ -3,20 +3,21 @@ import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EngineStore from "../../shared/stores/EngineStore"
-import EditorEntity from "../../../engine/tools/EditorEntity"
-import Engine from "../../../engine/core/Engine"
 import ExecutionService from "../services/engine/ExecutionService"
 import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
 import SettingsStore from "../../shared/stores/SettingsStore"
-import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
 import GIZMOS from "../../../../shared/enums/Gizmos"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import TabsStoreUtil from "./TabsStoreUtil"
 import ContentBrowserUtil from "./ContentBrowserUtil"
 import GizmoState from "../../../engine/tools/gizmo/util/GizmoState";
 import GizmoUtil from "../../../engine/tools/gizmo/util/GizmoUtil";
+import {Components} from "@engine-core/engine.enum";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import EntityManager from "@engine-core/EntityManager";
+import CameraComponent from "@engine-core/components/CameraComponent";
 
 export default class EditorUtil {
     static async componentConstructor(entity, scriptID, autoUpdate = true) {
@@ -26,17 +27,16 @@ export default class EditorUtil {
         ToastNotificationSystem.getInstance().success(LocalizationEN.ADDED_COMPONENT)
     }
 
-    static focusOnCamera(cameraTarget) {
+    static focusOnCamera(cameraTarget?: EngineEntity) {
         const engineInstance = EngineStore.getInstance()
-        const focused = engineInstance.data.focusedCamera
-        const isCamera = cameraTarget instanceof EditorEntity
-        if (!focused || isCamera && cameraTarget.id !== focused) {
-            const current = isCamera ? cameraTarget : Engine.entities.get(EntitySelectionStore.getMainEntity())
-            if (current && current.cameraComponent) {
+        const focused = EngineStore.getData().focusedCamera
+        if (!focused || cameraTarget != null && cameraTarget !== focused) {
+            const component = EntityManager.getComponent<CameraComponent>(cameraTarget ?? EntitySelectionStore.getMainEntity(), Components.CAMERA)
+            if (component != null) {
                 ExecutionService.cameraSerialization = CameraAPI.serializeState()
                 EditorCameraSystem.stopTracking()
-                CameraAPI.updateViewTarget(current)
-                engineInstance.updateStore({focusedCamera: current.id})
+                CameraAPI.updateViewTarget(component)
+                engineInstance.updateStore({focusedCamera: component.entity})
             }
         } else {
             CameraAPI.restoreState(ExecutionService.cameraSerialization)
@@ -134,45 +134,48 @@ export default class EditorUtil {
         return await EditorUtil.getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
     }
 
-    static selectEntityHierarchy(start: EditorEntity): string[] {
-        const result: string[] = []
-        const direct = start.children.array
+    static selectEntityHierarchy(start: EngineEntity): EngineEntity[] {
+        const result: EngineEntity[] = []
+        const direct = EntityManager.getChildren(start)
         direct.forEach(d => result.push(...EditorUtil.selectEntityHierarchy(d)))
-        result.push(...direct.map(c => c.id))
+        result.push(...direct)
         return result
     }
 
     static snap(grid?: number) {
         const selected = EntitySelectionStore.getEntitiesSelected()
         for (let i = 0; i < selected.length; i++) {
-            const entity = QueryAPI.getEntityByID(selected[i])
+            const entity = selected[i]
             const currentGizmo = SettingsStore.getData().gizmo
-
+            const component = EntityManager.getComponent<TransformationComponent>(entity, Components.TRANSFORMATION)
+            if (!component) {
+                continue
+            }
             switch (currentGizmo) {
                 case GIZMOS.TRANSLATION: {
                     const g = grid ? grid : GizmoState.translationGridSize
-                    entity._translation[0] = GizmoUtil.nearestX(entity._translation[0], g)
-                    entity._translation[1] = GizmoUtil.nearestX(entity._translation[1], g)
-                    entity._translation[2] = GizmoUtil.nearestX(entity._translation[2], g)
+                    component.translation[0] = GizmoUtil.nearestX(component.translation[0], g)
+                    component.translation[1] = GizmoUtil.nearestX(component.translation[1], g)
+                    component.translation[2] = GizmoUtil.nearestX(component.translation[2], g)
                     break
                 }
                 case GIZMOS.SCALE: {
                     const g = grid ? grid : GizmoState.scalingGridSize
-                    entity._scaling[0] = GizmoUtil.nearestX(entity._scaling[0], g)
-                    entity._scaling[1] = GizmoUtil.nearestX(entity._scaling[1], g)
-                    entity._scaling[2] = GizmoUtil.nearestX(entity._scaling[2], g)
+                    component.scaling[0] = GizmoUtil.nearestX(component.scaling[0], g)
+                    component.scaling[1] = GizmoUtil.nearestX(component.scaling[1], g)
+                    component.scaling[2] = GizmoUtil.nearestX(component.scaling[2], g)
                     break
                 }
                 case GIZMOS.ROTATION: {
                     const g = grid ? grid : GizmoState.rotationGridSize
-                    entity._rotationQuaternion[0] = GizmoUtil.nearestX(entity._rotationQuaternion[0], g)
-                    entity._rotationQuaternion[1] = GizmoUtil.nearestX(entity._rotationQuaternion[1], g)
-                    entity._rotationQuaternion[2] = GizmoUtil.nearestX(entity._rotationQuaternion[2], g)
-                    entity._rotationQuaternion[3] = GizmoUtil.nearestX(entity._rotationQuaternion[2], g)
+                    component.rotationQuaternion[0] = GizmoUtil.nearestX(component.rotationQuaternion[0], g)
+                    component.rotationQuaternion[1] = GizmoUtil.nearestX(component.rotationQuaternion[1], g)
+                    component.rotationQuaternion[2] = GizmoUtil.nearestX(component.rotationQuaternion[2], g)
+                    component.rotationQuaternion[3] = GizmoUtil.nearestX(component.rotationQuaternion[2], g)
                     break
                 }
             }
-            entity.changed = true
+            component.changed = true
         }
     }
 

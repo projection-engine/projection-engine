@@ -4,7 +4,6 @@ import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem
 import Engine from "../../../engine/core/Engine"
 import GPU from "../../../engine/core/GPU"
 import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
-import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
 import EngineTools from "../../../engine/tools/EngineTools"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
@@ -13,6 +12,7 @@ import VIEWS from "../components/view/static/VIEWS"
 import StaticFBO from "../../../engine/core/lib/StaticFBO";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EngineState from "../../../engine/core/EngineState";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class ViewportUtil {
     static updateViewport(currentView: ViewTabItem) {
@@ -48,7 +48,7 @@ export default class ViewportUtil {
         EngineTools.drawIconsToBuffer()
 
         const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY, 1, StaticFBO.visibility.FBO)
-        const entity = QueryAPI.getEntityByPickerID(clickedEntity)
+        const entity = EntityManager.getEntityWithPickIndex(clickedEntity)
 
         if (!entity) {
             setContext([])
@@ -56,12 +56,12 @@ export default class ViewportUtil {
         }
 
         if (event.ctrlKey) {
-            if (selected.find(e => e === entity.id))
-                setContext(selected.filter(s => s !== entity.id))
+            if (selected.find(e => e === entity))
+                setContext(selected.filter(s => s !== entity))
             else
-                setContext([...selected, entity.id])
+                setContext([...selected, entity])
         } else
-            setContext([entity.id])
+            setContext([entity])
 
         EngineState.visibilityNeedsUpdate = true
     }

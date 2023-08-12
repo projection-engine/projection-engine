@@ -17,5 +17,5 @@ export default class EngineToolsState{
 	static outlineColor = [1., .5, .0]
 	static mouseCoordinates = vec2.create()
 	static unconvertedMouseCoordinates = vec2.create()
-
+	static pivotChanged = new Map<EngineEntity, boolean>()
 }

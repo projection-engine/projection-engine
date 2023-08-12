@@ -12,7 +12,6 @@ export default class EditorEntity {
     scripts = []
     parentID?: string
 	__cacheCenterMatrix: mat4
-	__pivotChanged: boolean
 	__cacheIconMatrix: mat4
 	__cameraIconMatrix: mat4
 	__pivotOffset: vec3

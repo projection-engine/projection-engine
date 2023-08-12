@@ -12,6 +12,9 @@ import ScreenSpaceGizmo from "../transformation/ScreenSpaceGizmo"
 import ScalingGizmo from "../transformation/ScalingGizmo"
 import RotationGizmo from "../transformation/RotationGizmo"
 import {vec3} from "gl-matrix"
+import EngineToolsState from "../../EngineToolsState";
+import {Components} from "@engine-core/engine.enum";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
 
 export default class GizmoState {
     static #mainEntity?: EditorEntity
@@ -57,18 +60,20 @@ export default class GizmoState {
         return GizmoState.#mainEntity
     }
 
-    static set mainEntity(mainEntity) {
+    static set mainEntity(mainEntity: EditorEntity|undefined) {
+
         if (mainEntity === undefined) {
             GizmoState.targetRotation = undefined
             GizmoState.#mainEntity = undefined
             return
         }
-        if (!mainEntity.active)
+        const tComponent = mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+        if (!mainEntity.active || !tComponent)
             return
         GizmoUtil.createTransformationCache(mainEntity)
-        mainEntity.__pivotChanged = true
+        EngineToolsState.pivotChanged.set(mainEntity.id, false)
         GizmoState.#mainEntity = mainEntity
-        GizmoState.targetRotation = mainEntity.rotationQuaternionFinal
+        GizmoState.targetRotation = tComponent.rotationQuaternionFinal
         GizmoUtil.updateGizmosTransformation(true)
         GizmoSystem.callListeners()
     }

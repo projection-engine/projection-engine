@@ -50,10 +50,10 @@ export default class VisibilityRendererSystem extends AbstractSystem {
             const transform = components.get(Components.TRANSFORMATION) as TransformationComponent
             if (!transform || culling.isDistanceCulled || !EntityManager.isEntityEnabled(entity) || culling?.isScreenDoorEnabled)
                 continue
-
-            // entityMetadata[0] = entity.pickID[0]
-            // entityMetadata[1] = entity.pickID[1]
-            // entityMetadata[2] = entity.pickID[2]
+            const pId = EntityManager.getEntityPickVec3(entity)
+            entityMetadata[0] = pId[0]
+            entityMetadata[1] = pId[1]
+            entityMetadata[2] = pId[2]
 
             entityMetadata[4] = 0
 
@@ -72,7 +72,6 @@ export default class VisibilityRendererSystem extends AbstractSystem {
         }
         context.enable(context.CULL_FACE)
     }
-
 
 
     shouldExecute(): boolean {
@@ -105,10 +104,10 @@ export default class VisibilityRendererSystem extends AbstractSystem {
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {
 
         const hasScreenDoor = cullingComponent?.isScreenDoorEnabled
-
-        // entityMetadata[0] = entity.pickID[0]
-        // entityMetadata[1] = entity.pickID[1]
-        // entityMetadata[2] = entity.pickID[2]
+        const pId = EntityManager.getEntityPickVec3(entity)
+        entityMetadata[0] = pId[0]
+        entityMetadata[1] = pId[1]
+        entityMetadata[2] = pId[2]
         entityMetadata[4] = hasScreenDoor || material?.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY ? 1 : 0
 
         context.uniformMatrix4fv(uniforms.metadata, false, entityMetadata)

@@ -21,9 +21,9 @@ import MouseCoordinateSystem from "./systems/MouseCoordinateSystem";
 import ClearContextSystem from "./systems/ClearContextSystem";
 import GizmoLineSystem from "./systems/GizmoLineSystem";
 import EditorCameraGizmoSystem from "./systems/EditorCameraGizmoSystem";
-import {UUID} from "crypto";
 import CameraIconSystem from "./systems/CameraIconSystem";
 import {Environment,} from "@engine-core/engine.enum";
+import EditorEntityManager from "./EditorEntityManager";
 
 export default class EngineTools {
     static selected: EditorEntity[] = []
@@ -47,7 +47,7 @@ export default class EngineTools {
         EngineToolsState.unconvertedMouseCoordinates[1] = event.clientY
     }
 
-    static updateSelectionData(data: string[]) {
+    static updateSelectionData(data: EngineEntity[]) {
         const selected = EngineTools.selected
         for (let i = 0; i < selected.length; i++) {
             const entity = selected[i]
@@ -56,8 +56,8 @@ export default class EngineTools {
 
         selected.length = 0
         for (let i = 0; i < data.length; i++) {
-            const d = data[i] as UUID
-            const entity = Engine.entities.get(d)
+            const d = data[i]
+            const entity = EditorEntityManager.getEntity(d)
             if (entity !== undefined) {
                 selected.push(entity)
                 entity.__isSelected = true

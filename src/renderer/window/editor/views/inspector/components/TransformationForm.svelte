@@ -12,6 +12,7 @@
     import ROTATION_TYPES from "../static/ROTATION_TYPES"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
+    import EngineToolsState from "../../../../../engine/tools/EngineToolsState";
 
     const COMPONENT_ID = crypto.randomUUID()
     let targets = []
@@ -124,7 +125,7 @@
     		if (!entity.__originalPivot)
     			entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(entity.pivotPoint)
     		entity.pivotPoint[axis] = entity.__originalPivot[axis] + value
-    		entity.__pivotChanged = true
+            EngineToolsState.pivotChanged.set(entity.id, true)
     	}
     	totalPivot[axis] = value
     }

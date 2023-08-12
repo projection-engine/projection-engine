@@ -5,6 +5,7 @@ import StaticFBO from "../../core/lib/StaticFBO"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import EngineTools from "../EngineTools"
 import AbstractSystem from "../../core/AbstractSystem";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class SelectedSystem extends AbstractSystem {
 
@@ -32,9 +33,10 @@ export default class SelectedSystem extends AbstractSystem {
 
             const sprite = current.spriteComponent
             const mesh = current.meshRef
-            metadata[6] = current.pickID[0]
-            metadata[7] = current.pickID[1]
-            metadata[8] = current.pickID[2]
+            const pId = EntityManager.getEntityPickVec3(current.id)
+            metadata[6] = pId[0]
+            metadata[7] = pId[1]
+            metadata[8] = pId[2]
             metadata[0] = sprite && !mesh ? 1 : 0
 
             context.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)

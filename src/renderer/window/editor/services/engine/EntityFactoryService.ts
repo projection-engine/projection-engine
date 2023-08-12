@@ -18,19 +18,19 @@ export default class EntityFactoryService {
     static #create(_, k: string, descriptor: PropertyDescriptor) {
         const original = descriptor.value
         descriptor.value = function (...args) {
-            let result
+            let result: EditorEntity|undefined
             EntityManager.delayedOperation(() => {
                 result = original.call(this, ...args)
                 return []
             })
             EngineStateService.add(result)
-            EntityFactoryService.translateEntity(result)
+            EntityFactoryService.translateEntity(result.id)
             return result
         }
     }
 
-    static translateEntity(entity: EditorEntity, rotation = CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
-        const transformComponent = entity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+    static translateEntity(entity: EngineEntity) {
+        const transformComponent = EntityManager.getComponent<TransformationComponent>(entity, Components.TRANSFORMATION)
         if (SettingsStore.getData().spawnOnOrigin) {
             vec3.copy(transformComponent.translation, [0, 0, 0])
             transformComponent.__changedBuffer[0] = 1
@@ -38,8 +38,8 @@ export default class EntityFactoryService {
         }
 
         const position = <vec4>[0, 0, -(SettingsStore.getData().spawnDistanceFromCamera || 10), 1]
-        vec4.transformQuat(position, position, rotation)
-        vec3.add(transformComponent._translation, translation, <vec3>position)
+        vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
+        vec3.add(transformComponent._translation, CameraAPI.translationBuffer, <vec3>position)
         transformComponent.__changedBuffer[0] = 1
     }
 
@@ -57,6 +57,7 @@ export default class EntityFactoryService {
         const m = EntityManager.addComponent(entity.id, Components.MESH) as MeshComponent
         m.meshID = id
         return entity
+
     }
 
     @EntityFactoryService.#create

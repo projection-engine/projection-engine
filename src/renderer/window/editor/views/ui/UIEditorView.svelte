@@ -1,7 +1,6 @@
 <script lang="ts">
     import {onDestroy, onMount} from "svelte"
     import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
-    import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
     import Header from "./components/Header.svelte"
 
 
@@ -12,6 +11,8 @@
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
     import type EditorEntity from "../../../../engine/tools/EditorEntity";
     import SerializedState from "../../components/view/SerializedState.svelte";
+    import EntityManager from "@engine-core/EntityManager";
+    import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
 
@@ -24,12 +25,12 @@
 
     const resizeObserver = new ResizeObserver(() => UIAPI.document.style.height = ref.offsetHeight + "px")
 
-    function clickHandler(e) {
+    function clickHandler(e: MouseEvent) {
         if (!isOnSelection)
             return
-
-        const bBox = e.target.getBoundingClientRect()
-        const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-entityid"))
+        const tElement = (e.target as HTMLElement)
+        const bBox = tElement.getBoundingClientRect()
+        const entity = tElement.getAttribute("data-entityid") as EngineEntity
 
         tooltipRef.style.width = bBox.width + "px"
         tooltipRef.style.height = bBox.height + "px"
@@ -38,11 +39,14 @@
         tooltipRef.style.zIndex = "500"
         tooltipRef.style.opacity = "1"
 
-        if (e.ctrl)
+        if (e.ctrlKey) {
             EntitySelectionStore.setEntitiesSelected([...EntitySelectionStore.getEntitiesSelected(), tooltipRef.hovered.id])
-        else
-            EntitySelectionStore.setEntitiesSelected(entity.id)
-        selectedEntity = entity
+        }
+        else if (EntityManager.entityExists(entity)) {
+            EntitySelectionStore.setEntitiesSelected(entity)
+            selectedEntity = EditorEntityManager.getEntity(entity)
+        }else
+            selectedEntity = undefined
     }
 
     $: if (!isOnSelection && tooltipRef) tooltipRef.style.zIndex = "-1"

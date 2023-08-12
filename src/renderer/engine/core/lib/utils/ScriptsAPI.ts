@@ -6,10 +6,9 @@ import InputEventsAPI from "./InputEventsAPI"
 import ConsoleAPI from "./ConsoleAPI"
 import Component from "../../components/Component"
 import CameraAPI from "./CameraAPI"
-import QueryAPI from "./QueryAPI"
 import FileSystemAPI from "./FileSystemAPI"
-import EntityAPI from "./EntityAPI"
 import Engine from "../../Engine"
+import {Components} from "@engine-core/engine.enum";
 
 export default class ScriptsAPI {
 	static scriptInstances = new Map()
@@ -25,11 +24,12 @@ export default class ScriptsAPI {
 			const data = await FileSystemAPI.readAsset(current)
 			ScriptsAPI.scriptInstances.set(current, data)
 		}
-		for (let i = 0; i < Engine.entities.array.length; i++) {
-			const current = Engine.entities.array[i]
-			for (let j = 0; j < current.scripts.length; j++)
-				ScriptsAPI.#updateEntityScript(current.scripts[j].id, current, j)
-		}
+		// TODO - REWORK SCRIPTING SYSTEM
+		// for (let i = 0; i < Engine.entities.array.length; i++) {
+		// 	const current = Engine.entities.array[i]
+		// 	for (let j = 0; j < current.scripts.length; j++)
+		// 		ScriptsAPI.#updateEntityScript(current.scripts[j].id, current, j)
+		// }
 	}
 
 	static async linkScript(entity, scriptID) {
@@ -53,9 +53,9 @@ export default class ScriptsAPI {
 		if (!scriptData)
 			return
 		try {
-			const generator = new Function("GPU, GPUAPI, PhysicsAPI, UIAPI, EntityAPI, InputEventsAPI, ConsoleAPI, Component, Components, CameraAPI, QueryAPI, entity, FileSystemAPI", scriptData)
+			const generator = new Function("GPU, GPUAPI, PhysicsAPI, UIAPI, InputEventsAPI, ConsoleAPI, Component, Components, CameraAPI, entity, FileSystemAPI", scriptData)
 			try {
-				const script = generator(GPU, GPUAPI, PhysicsAPI, UIAPI, EntityAPI, InputEventsAPI, ConsoleAPI, Component, Components, CameraAPI, QueryAPI, entity, FileSystemAPI)
+				const script = generator(GPU, GPUAPI, PhysicsAPI, UIAPI, InputEventsAPI, ConsoleAPI, Component, Components, CameraAPI,  entity, FileSystemAPI)
 				if (index > -1) {
 					const ref = entity.scripts[index]
 					Object.entries(ref).forEach(([key, value]) => {

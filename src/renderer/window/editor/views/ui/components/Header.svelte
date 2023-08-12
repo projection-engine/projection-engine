@@ -4,13 +4,10 @@
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
-    import EngineStateService from "../../../services/engine/EngineStateService"
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
-    import EntityAPI from "../../../../../engine/core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
     import type EditorEntity from "../../../../../engine/tools/EditorEntity";
-    import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
     import EntityFactoryService from "../../../services/engine/EntityFactoryService";
 
     export let isOnSelection:boolean
