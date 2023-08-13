@@ -4,6 +4,7 @@
     import Engine from "../../../../../engine/core/Engine"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import EntityManager from "@engine-core/EntityManager";
 
     let entities = 0
     let triangles = 0
@@ -14,12 +15,14 @@
 
     function refresh() {
     	let t = 0
+
+        // TODO - COMPUTE DATA BASED ON THE CURRENT SCENE, NOT LOADED
     	GPU.meshes.forEach(m => t = t + m.trianglesQuantity)
     	triangles = t
     	meshes = GPU.meshes.size
     	materials = GPU.materials.size
     	textures = GPU.textures.size
-    	entities = Engine.entities.size
+    	entities = EntityManager.getEntities().size
     }
 
     onMount(() => {

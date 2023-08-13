@@ -18,3 +18,19 @@ interface EditorCameraKeys {
     right: string;
     invertDirection: boolean
 }
+
+interface IEditorEntity {
+    id: EngineEntity
+    _colorIdentifier: [number, number, number]
+    name: string
+    __isSelected: boolean
+}
+
+interface RegisteredIcon  {
+    entity: IEditorEntity,
+    imageIndex: number,
+    doNotFaceCamera: number,
+    drawSphere: number,
+    removeSphereCenter: number,
+    scale: number
+}

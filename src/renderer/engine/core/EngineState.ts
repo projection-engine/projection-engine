@@ -47,4 +47,6 @@ export default class EngineState{
 	static directionalLightsAtlasRatio = 0
 	static directionalLightsToUpdate:LightComponent[] = []
 	static omnidirectionalLightsToUpdate:LightComponent[] = []
+	static cameraEntityTarget:EngineEntity|undefined
+
 }

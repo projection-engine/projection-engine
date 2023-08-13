@@ -17,6 +17,7 @@ import SETTINGS from "../static/SETTINGS"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EngineState from "../../../engine/core/EngineState";
 import {ShadingModels,} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
@@ -89,7 +90,7 @@ export default class SceneEditorUtil {
 
 				const data = PickingAPI.readBlock(nStart, nEnd)
 				worker.postMessage({
-					entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})),
+					entities: EntityManager.getEntityIds().map(e => ({id: e, pick: EntityManager.getEntityPickVec3(e)})).filter(e => e.pick != null),
 					data
 				}, [data.buffer])
 				worker.onmessage = ({data: selected}) => EntitySelectionStore.setEntitiesSelected(selected)
@@ -157,7 +158,7 @@ export default class SceneEditorUtil {
 		ViewportInteractionListener.get()
 		draggable.onMount({
 			targetElement: GPU.canvas,
-			onDrop: (data, event) => EngineResourceLoaderService.load(data, false, event.clientX, event.clientY).catch(console.error),
+			onDrop: (data, event) => EngineResourceLoaderService.load(data, false).catch(console.error),
 			onDragOver: () => `
                 <span data-svelteicon="-" style="font-size: 70px">add</span>
                 ${LocalizationEN.DRAG_DROP}

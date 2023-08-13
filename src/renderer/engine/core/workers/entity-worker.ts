@@ -30,6 +30,7 @@ self.onmessage = (event) => {
             case WorkerMessages.HIERARCHY_CHANGE:
                 TransformationPass.childParent = payload.childParent
                 TransformationPass.parentChildren = payload.parentChildren
+                TransformationPass.targets.forEach(t => t.changedBuffer[0] = 1)
                 break
         }
     } else

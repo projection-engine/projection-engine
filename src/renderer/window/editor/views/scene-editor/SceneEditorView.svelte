@@ -23,6 +23,7 @@
     import SerializedState from "../../components/view/SerializedState.svelte";
     import ViewStateStore from "../../../shared/stores/ViewStateStore";
     import {ShadingModels,} from "@engine-core/engine.enum";
+    import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     const draggable = dragDrop(false)
@@ -40,7 +41,7 @@
     	}, ["gizmo", "shadingModel"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
     		executingAnimation = data.executingAnimation
-    		focusedCamera = data.focusedCamera ? Engine.entities.get(data.focusedCamera) : null
+    		focusedCamera = data.focusedCamera ? EditorEntityManager.getEntity(data.focusedCamera) : null
     	}, ["focusedCamera", "executingAnimation"])
     	GizmoSystem.onStart = () => isOnGizmo = true
     	GizmoSystem.onStop = () => isOnGizmo = false

@@ -11,36 +11,39 @@
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import LoggerConfig from "./components/LoggerConfig.svelte"
+    import LevelManager from "@engine-core/LevelManager";
+    import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     let settings = {}
 
     let loadedLevel
     let entityID
+    let unsubscribe
 
     function load() {
-    	loadedLevel = Engine.loadedLevel?.name
-    	entityID = Engine.loadedLevel?.id
+        const entity = EditorEntityManager.getEntity(LevelManager.loadedLevel)
+        loadedLevel = entity?.name
+        entityID = entity?.id
 
-    	if (entityID)
-    		EntityManager.removeListener(entityID, COMPONENT_ID)
-
-    	if (!loadedLevel)
-    		return
-    	EntityManager.addListener(entityID, COMPONENT_ID, () => {
-    		loadedLevel = Engine.loadedLevel.name
-    	})
+        if (entityID)
+            EntityManager.removeListener(entityID, COMPONENT_ID)
+        if (entity) {
+            EntityManager.addEventListener("update", () => {
+                loadedLevel = entity.name
+            }, {targetEntityId: LevelManager.loadedLevel})
+        }
     }
 
     onMount(() => {
-    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => settings = data, ["hideFooter"])
-    	Engine.addLevelLoaderListener(COMPONENT_ID, load)
-    	load()
+        SettingsStore.getInstance().addListener(COMPONENT_ID, data => settings = data, ["hideFooter"])
+        unsubscribe = EntityManager.addEventListener("hard-change", load)
+        load()
     })
 
     onDestroy(() => {
-    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
-    	Engine.removeLevelLoaderListener(COMPONENT_ID)
+        SettingsStore.getInstance().removeListener(COMPONENT_ID)
+        unsubscribe()
     })
 </script>
 

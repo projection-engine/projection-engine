@@ -10,6 +10,9 @@ import ResourceEntityMapper from "../../../../engine/core/resource-libs/Resource
 import LevelService from "./LevelService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import {Environment,} from "@engine-core/engine.enum";
+import EngineState from "@engine-core/EngineState";
+import EntityManager from "@engine-core/EntityManager";
+import LevelManager from "@engine-core/LevelManager";
 
 export default class ExecutionService {
 	static #currentLevelID
@@ -17,7 +20,7 @@ export default class ExecutionService {
 	static cameraSerialization
 
 	static async startPlayState() {
-		if (ExecutionService.#isPlaying || !Engine.loadedLevel) {
+		if (ExecutionService.#isPlaying || !LevelManager.loadedLevel) {
 			ToastNotificationSystem.getInstance().error(LocalizationEN.NO_LEVEL_LOADED)
 			return
 		}
@@ -27,7 +30,7 @@ export default class ExecutionService {
 		ExecutionService.#isPlaying = true
 		EditorCameraSystem.stopTracking()
 		await LevelService.getInstance().saveCurrentLevel().catch(console.error)
-		ExecutionService.#currentLevelID = Engine.loadedLevel.id
+		ExecutionService.#currentLevelID = LevelManager.loadedLevel
 		await Engine.startSimulation()
 		EngineStore.updateStore({focusedCamera: undefined, executingAnimation: true})
 	}
@@ -35,9 +38,7 @@ export default class ExecutionService {
 	static async stopPlayState() {
 		if (!ExecutionService.#isPlaying)
 			return
-		ResourceEntityMapper.clear()
-
-		Engine.entities.clear()
+		EntityManager.clear()
 
 		ToastNotificationSystem.getInstance().log(LocalizationEN.RESTORING_STATE)
 		ExecutionService.#isPlaying = false
@@ -47,7 +48,7 @@ export default class ExecutionService {
 		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)
 		await ScriptsAPI.updateAllScripts()
 
-		CameraAPI.trackingEntity = undefined
+		EngineState.cameraEntityTarget = undefined
 		EditorCameraSystem.startTracking()
 		EngineStore.updateStore({executingAnimation: false})
 		CameraAPI.restoreState(ExecutionService.cameraSerialization)

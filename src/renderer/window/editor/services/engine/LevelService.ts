@@ -27,15 +27,11 @@ import TabsStoreUtil from "../../util/TabsStoreUtil"
 import {UUID} from "crypto";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EditorEntity from "../../../../engine/tools/EditorEntity";
+import LevelManager from "@engine-core/LevelManager";
 
 
 export default class LevelService extends AbstractSingleton {
     #levelToLoad
-    #loadedLevel: EditorEntity
-
-    get loadedLevel() {
-        return this.#levelToLoad
-    }
 
     constructor(resolvePromise: Function) {
         super()
@@ -79,13 +75,13 @@ export default class LevelService extends AbstractSingleton {
     }
 
     async loadLevel(levelID?: string) {
-        if (!levelID || levelID && levelID === Engine.loadedLevel?.id) {
-            if (levelID && levelID === Engine.loadedLevel?.id)
+        if (!levelID || levelID && levelID === LevelManager.loadedLevel) {
+            if (levelID && levelID === LevelManager.loadedLevel)
                 ToastNotificationSystem.getInstance().error(LocalizationEN.LEVEL_ALREADY_LOADED)
             return
         }
 
-        if (ChangesTrackerStore.getData() && Engine.loadedLevel) {
+        if (ChangesTrackerStore.getData() && LevelManager.loadedLevel != null) {
             WindowChangeStore.updateStore({
                 message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
                     await this.save().catch(console.error)
@@ -104,14 +100,11 @@ export default class LevelService extends AbstractSingleton {
         EditorActionHistory.clear()
 
 
-        await Engine.loadLevel(levelID as UUID, false)
-        const entities = Engine.entities.array
-        for (let i = 0; i < entities.length; i++) {
-            const entity = entities[i];
-            entity.setPickID(PickingAPI.getPickerId(i + AXIS.ZY + 1))
+        await LevelManager.loadLevel(levelID as UUID, false)
+        // TODO - LOAD EDITOR ENTITY
+        if (LevelManager.loadedLevel) {
+            EntitySelectionStore.setLockedEntity(LevelManager.loadedLevel)
         }
-        if (Engine.loadedLevel)
-            EntitySelectionStore.setLockedEntity(Engine.loadedLevel.id)
         EntityHierarchyService.updateHierarchy()
     }
 
@@ -144,7 +137,7 @@ export default class LevelService extends AbstractSingleton {
                     settings,
                     layout: TabsStore.getData(),
                     visualSettings: VisualsStore.getData(),
-                    level: Engine.loadedLevel?.id
+                    level: LevelManager.loadedLevel
                 }), true)
 
             await this.saveCurrentLevel().catch(console.error)
@@ -157,22 +150,25 @@ export default class LevelService extends AbstractSingleton {
     }
 
     async saveCurrentLevel() {
-        if (!Engine.loadedLevel)
+        if (!LevelManager.loadedLevel)
             return
+        // TODO - IMPLEMENT SERIALIZATION FOR EDITOR ENTITIES
         const serialized = {
-            entity: Engine.loadedLevel.serializable(),
-            entities: EditorEntityManager.getInstance().serialize()
+            // levelEntity: Engine.loadedLevel.serializable(),
+            engineState: LevelManager.serializeState(),
+            editorState: EditorEntityManager.serializeState()
         }
 
-        const assetReg = EditorFSUtil.getRegistryEntry(Engine.loadedLevel.id)
+        const assetReg = EditorFSUtil.getRegistryEntry(LevelManager.loadedLevel)
         let path = assetReg?.path
 
         if (!assetReg) {
-            path = FileSystemUtil.resolvePath(await EditorUtil.resolveFileName(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + Engine.loadedLevel.name, FileTypes.LEVEL))
-            await EditorFSUtil.createRegistryEntry(Engine.loadedLevel.id, FileSystemUtil.sep + path.split(FileSystemUtil.sep).pop())
+            path = FileSystemUtil.resolvePath(await EditorUtil.resolveFileName(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + LevelManager.loadedLevel, FileTypes.LEVEL))
+            await EditorFSUtil.createRegistryEntry(LevelManager.loadedLevel, FileSystemUtil.sep + path.split(FileSystemUtil.sep).pop())
             EditorFSUtil.readRegistry().catch(console.error)
-        } else
+        } else {
             path = FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path
+        }
 
         await FileSystemUtil.write(
             path,

@@ -9,6 +9,8 @@
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
     import type EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EntityFactoryService from "../../../services/engine/EntityFactoryService";
+    import {Components} from "@engine-core/engine.enum";
+    import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMapper";
 
     export let isOnSelection:boolean
     export let toggleOnSelection:GenericVoidFunction
@@ -17,13 +19,7 @@
     export let toggleAutoUpdate:GenericVoidFunction
 
     function selectAll() {
-    	const m = [], size = Engine.entities.array.length
-    	for (let i = 0; i < size; i++) {
-    		const e = Engine.entities.array[i]
-    		if (e.uiComponent)
-    			m.push(e.id)
-    	}
-    	EntitySelectionStore.setEntitiesSelected(m)
+    	EntitySelectionStore.setEntitiesSelected(ResourceEntityMapper.withComponent(Components.UI).array)
     }
 
 </script>

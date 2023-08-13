@@ -1,7 +1,7 @@
 <script>
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
     import Engine from "../../../../../engine/core/Engine"
-    import {TransformationRotationTypes,} from "@engine-core/engine.enum";
+    import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum";
     import {onDestroy, onMount} from "svelte"
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
     import EditorActionHistory from "../../../services/EditorActionHistory"
@@ -13,6 +13,10 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import EngineToolsState from "../../../../../engine/tools/EngineToolsState";
+    import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
+    import EntityManager from "@engine-core/EntityManager";
+    import TransformationComponent from "@engine-core/components/TransformationComponent";
 
     const COMPONENT_ID = crypto.randomUUID()
     let targets = []
@@ -29,110 +33,111 @@
     let lockedCache = [false, false, false]
 
     onMount(() => {
-    	EntitySelectionStore.getInstance().addListener(COMPONENT_ID, () => {
-    		const cache = []
-    		const entitiesSelected = EntitySelectionStore.getEntitiesSelected()
-    		for (let i = 0; i < entitiesSelected.length; i++) {
-    			const e = entitiesSelected[i]
-    			const c = Engine.entities.get(e)
-    			if (c) {
-    				cache.push(c)
-    				c.__originalTranslation = undefined
-    				c.__originalPivot = undefined
-    				c.__originalScaling = undefined
-    				c.__originalQuat = undefined
-    			}
-    		}
-    		if (cache.length === 0) {
-    			const fallback = Engine.entities.get(EntitySelectionStore.getMainEntity())
-    			if (fallback)
-    				fallback.__originalQuat = undefined
-    			fallback && cache.push(fallback)
-    		}
+        EntitySelectionStore.getInstance().addListener(COMPONENT_ID, () => {
+            const cache: EditorEntity[] = []
+            const entitiesSelected = EntitySelectionStore.getEntitiesSelected()
+            for (let i = 0; i < entitiesSelected.length; i++) {
+                const currentEntity = EditorEntityManager.getEntity(entitiesSelected[i])
+                if (currentEntity && EntityManager.hasComponent(currentEntity.id, Components.TRANSFORMATION)) {
+                    cache.push(currentEntity)
+                    currentEntity.__originalTranslation = undefined
+                    currentEntity.__originalPivot = undefined
+                    currentEntity.__originalScaling = undefined
+                    currentEntity.__originalQuat = undefined
+                }
+            }
+            if (cache.length === 0) {
+                const fallback = EditorEntityManager.getEntity(EntitySelectionStore.getMainEntity())
+                if (fallback && EntityManager.hasComponent(fallback.id, Components.TRANSFORMATION)) {
+                    fallback.__originalQuat = undefined
+                    cache.push(fallback)
+                }
+            }
 
-    		targets = cache
+            targets = cache
 
-    		if (cache.length === 1) {
-    			totalTranslated = Array.from(cache[0]._translation)
-    			totalScaled = Array.from(cache[0]._scaling)
-    			totalPivot = Array.from(cache[0].pivotPoint)
-    		} else {
-    			totalTranslated = [0, 0, 0]
-    			totalScaled = [0, 0, 0]
-    			totalPivot = [0, 0, 0]
-    		}
-    	})
+            if (cache.length === 1) {
+                const transformComp = cache[0].getComponent<TransformationComponent>(Components.TRANSFORMATION)
+                totalTranslated = Array.from(transformComp.translation)
+                totalScaled = Array.from(transformComp.scaling)
+                totalPivot = Array.from(transformComp.pivotPoint)
+            } else {
+                totalTranslated = [0, 0, 0]
+                totalScaled = [0, 0, 0]
+                totalPivot = [0, 0, 0]
+            }
+        })
     })
 
     onDestroy(() => EntitySelectionStore.getInstance().removeListener(COMPONENT_ID))
 
     $: {
-    	mainEntity = targets[0]
-    	rotationType = mainEntity?.rotationType[0]
-    	isSingle = targets.length === 1
-    	lockedRotation = isSingle && mainEntity?.lockedRotation
-    	lockedTranslation = isSingle && mainEntity?.lockedTranslation
-    	lockedScaling = isSingle && mainEntity?.lockedScaling
+        mainEntity = targets[0]
+        rotationType = mainEntity?.rotationType[0]
+        isSingle = targets.length === 1
+        lockedRotation = isSingle && mainEntity?.lockedRotation
+        lockedTranslation = isSingle && mainEntity?.lockedTranslation
+        lockedScaling = isSingle && mainEntity?.lockedScaling
     }
 
     function rotate(axis, value) {
-    	if (!hasStarted) {
-    		hasStarted = true
-    		EditorActionHistory.save(targets)
-    	}
+        if (!hasStarted) {
+            hasStarted = true
+            EditorActionHistory.save(targets)
+        }
 
-    	if (rotationType === TransformationRotationTypes.ROTATION_QUATERNION)
-    		mainEntity.rotationQuaternion[axis] = value
-    	else
-    		mainEntity.rotationEuler[axis] = value
-    	mainEntity.changed = true
+        if (rotationType === TransformationRotationTypes.ROTATION_QUATERNION)
+            mainEntity.rotationQuaternion[axis] = value
+        else
+            mainEntity.rotationEuler[axis] = value
+        mainEntity.changed = true
     }
 
     function transformScaleTranslation(axis, value, isTranslation) {
-    	if (!hasStarted) {
-    		hasStarted = true
-    		EditorActionHistory.save(targets)
-    	}
-    	for (let i = 0; i < targets.length; i++) {
-    		const entity = targets[i]
-    		if (!isTranslation) {
-    			if (!entity.__originalScaling)
-    				entity.__originalScaling = isSingle ? [0, 0, 0] : Array.from(entity._scaling)
-    			entity._scaling[axis] = entity.__originalScaling[axis] + value
-    		} else {
-    			if (!entity.__originalTranslation)
-    				entity.__originalTranslation = isSingle ? [0, 0, 0] : Array.from(entity._translation)
-    			entity._translation[axis] = entity.__originalTranslation[axis] + value
-    		}
-    		entity.changed = true
-    	}
+        if (!hasStarted) {
+            hasStarted = true
+            EditorActionHistory.save(targets)
+        }
+        for (let i = 0; i < targets.length; i++) {
+            const entity = targets[i]
+            if (!isTranslation) {
+                if (!entity.__originalScaling)
+                    entity.__originalScaling = isSingle ? [0, 0, 0] : Array.from(entity._scaling)
+                entity._scaling[axis] = entity.__originalScaling[axis] + value
+            } else {
+                if (!entity.__originalTranslation)
+                    entity.__originalTranslation = isSingle ? [0, 0, 0] : Array.from(entity._translation)
+                entity._translation[axis] = entity.__originalTranslation[axis] + value
+            }
+            entity.changed = true
+        }
 
-    	if (isTranslation)
-    		totalTranslated[axis] = value
-    	else
-    		totalScaled[axis] = value
+        if (isTranslation)
+            totalTranslated[axis] = value
+        else
+            totalScaled[axis] = value
 
     }
 
     function transformPivot(axis, value) {
-    	if (!hasStarted) {
-    		hasStarted = true
-    		EditorActionHistory.save(targets)
-    	}
+        if (!hasStarted) {
+            hasStarted = true
+            EditorActionHistory.save(targets)
+        }
 
-    	for (let i = 0; i < targets.length; i++) {
-    		const entity = targets[i]
-    		if (!entity.__originalPivot)
-    			entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(entity.pivotPoint)
-    		entity.pivotPoint[axis] = entity.__originalPivot[axis] + value
+        for (let i = 0; i < targets.length; i++) {
+            const entity = targets[i]
+            if (!entity.__originalPivot)
+                entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(entity.pivotPoint)
+            entity.pivotPoint[axis] = entity.__originalPivot[axis] + value
             EngineToolsState.pivotChanged.set(entity.id, true)
-    	}
-    	totalPivot[axis] = value
+        }
+        totalPivot[axis] = value
     }
 
     function onFinish() {
-    	EditorActionHistory.save(targets)
-    	hasStarted = false
+        EditorActionHistory.save(targets)
+        hasStarted = false
     }
 </script>
 {#if mainEntity}

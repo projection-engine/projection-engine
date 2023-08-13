@@ -8,13 +8,14 @@ import GizmoUtil from "../../../../engine/tools/gizmo/util/GizmoUtil"
 import LevelService from "./LevelService";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EntityManager from "@engine-core/EntityManager";
+import LevelManager from "@engine-core/LevelManager";
 
 
 export default class EngineStateService {
     static #checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
         const original = descriptor.value
         descriptor.value = function (...args) {
-            if (!LevelService.getInstance().loadedLevel) {
+            if (!LevelManager.loadedLevel) {
                 ToastNotificationSystem.getInstance().error(LocalizationEN.NO_LEVEL_LOADED)
                 return
             }

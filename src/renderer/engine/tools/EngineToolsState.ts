@@ -1,4 +1,5 @@
 import {vec2} from "gl-matrix";
+import DynamicMap from "@engine-core/resource-libs/DynamicMap";
 
 export default class EngineToolsState{
 	static gridColor = .3
@@ -18,4 +19,5 @@ export default class EngineToolsState{
 	static mouseCoordinates = vec2.create()
 	static unconvertedMouseCoordinates = vec2.create()
 	static pivotChanged = new Map<EngineEntity, boolean>()
+
 }

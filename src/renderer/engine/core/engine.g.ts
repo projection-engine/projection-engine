@@ -260,3 +260,14 @@ interface btDiscreteDynamicsWorld {
 }
 
 type TypedObject<V> = {[key: string | number | symbol]: V}
+
+interface EngineState<Cs, C>{
+    entities: {id: EngineEntity, components: [Cs, C][]}[],
+    activeEntities: [EngineEntity, boolean][],
+    parentChildren: [EngineEntity, EngineEntity[]][],
+    childParent: [EngineEntity, EngineEntity][]
+}
+
+interface EngineLevel<Cs, C> extends MutableObject{
+    state: EngineState<Cs, C>
+}

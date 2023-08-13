@@ -57,6 +57,7 @@ export default class EntityManager extends AbstractSingleton {
             return remove
         }
     }
+
     static loopHierarchy(entity: EngineEntity, callback: GenericVoidFunctionWithP<EngineEntity>) {
         const children = EntityManager.getChildren(entity)
         callback(entity)
@@ -65,6 +66,7 @@ export default class EntityManager extends AbstractSingleton {
             EntityManager.loopHierarchy(current, callback)
         }
     }
+
     static getEntities() {
         return this.getInstance().#entities
     }
@@ -75,7 +77,7 @@ export default class EntityManager extends AbstractSingleton {
 
     static getEntityPickVec3(entity: EngineEntity): vec3 | undefined {
         const instance = this.getInstance()
-        if (!instance.#pickVec3.has(entity) && this.entityExists(entity)) {
+        if (!instance.#pickVec3.has(entity) && this.entityExists(entity) && (this.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || this.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
             const index = instance.#pickInteger.size
             instance.#pickVec3.set(entity, PickingAPI.getPickerId(index) as vec3)
             instance.#pickInteger.set(index, entity)
@@ -111,7 +113,7 @@ export default class EntityManager extends AbstractSingleton {
             collected.push(...this.getChildren(entity))
             activeEntities.set(entity, state)
         }
-        this.#clearPickingCache()
+        this.clearPickingCache()
         if (collected.length > 0) {
             this.#enableDisableEntityInternal(collected, state)
         }
@@ -129,10 +131,20 @@ export default class EntityManager extends AbstractSingleton {
         return EntityManager.getInstance().#childParent.get(entity)
     }
 
+    static hasParent(entity: EngineEntity): boolean {
+        return EntityManager.getInstance().#childParent.has(entity)
+    }
+
     static addParent(child: EngineEntity, parent: EngineEntity | undefined) {
-        EntityManager.getInstance().#childParent.set(child, parent)
+        const prevParent = this.getParent(child)
+        const ins = this.getInstance()
+        ins.#childParent.set(child, parent)
+        if (prevParent) {
+            const parentArr = ins.#parentChildren.get(prevParent) || []
+            EntityManager.getInstance().#parentChildren.set(prevParent, parentArr.filter(e => e === child))
+        }
         if (parent) {
-            const parentArr = EntityManager.getInstance().#parentChildren.get(parent) || []
+            const parentArr = ins.#parentChildren.get(parent) || []
             if (!parentArr.includes(child))
                 parentArr.push(child)
             EntityManager.getInstance().#parentChildren.set(parent, parentArr)
@@ -141,15 +153,19 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static addChildren(parent: EngineEntity, children: EngineEntity[]) {
-        const instance = EntityManager.getInstance()
-        const parentArr = instance.#parentChildren.get(parent) || []
+        const ins = EntityManager.getInstance()
+        const parentArr = ins.#parentChildren.get(parent) || []
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
-            instance.#childParent.set(child, parent)
+            const prevParent = this.getParent(child)
+            ins.#childParent.set(child, parent)
+            if (prevParent) {
+                const parentArr = ins.#parentChildren.get(prevParent) || []
+                EntityManager.getInstance().#parentChildren.set(prevParent, parentArr.filter(e => e === child))
+            }
         }
-        this.#clearPickingCache()
-
-        instance.#parentChildren.set(parent, Array.from(new Set([...parentArr, ...children])))
+        this.clearPickingCache()
+        ins.#parentChildren.set(parent, Array.from(new Set([...parentArr, ...children])))
     }
 
     static getComponent<T>(entity: EngineEntity, component: Components): T | undefined {
@@ -161,8 +177,8 @@ export default class EntityManager extends AbstractSingleton {
     static clone(entity: EngineEntity) {
         const id = crypto.randomUUID()
         const str = serializeStructure({id, components: Array.from(this.getEntities().get(entity).entries())})
-        this.#parseEntity(JSON.parse(str))
-        this.#clearPickingCache()
+        this.parseEntity(JSON.parse(str))
+        this.clearPickingCache()
         return id
     }
 
@@ -190,7 +206,7 @@ export default class EntityManager extends AbstractSingleton {
             activeEntities.set(newEntity, true)
             this.getEntities().set(newEntity, new DynamicMap<Components, Component>())
         }
-        this.#clearPickingCache()
+        this.clearPickingCache()
         this.#callListeners({all: entities, type: "create"})
         return entities
     }
@@ -203,7 +219,7 @@ export default class EntityManager extends AbstractSingleton {
             activeEntities.set(newEntity, true)
             this.getEntities().set(newEntity, new DynamicMap<Components, Component>())
         }
-        this.#clearPickingCache()
+        this.clearPickingCache()
         this.#callListeners({all: entities, type: "create"})
         return entities
     }
@@ -212,7 +228,7 @@ export default class EntityManager extends AbstractSingleton {
         const removed = {}
         const allRemoved = []
         this.#removeEntitiesInternal(entities, removed, allRemoved)
-        this.#clearPickingCache()
+        this.clearPickingCache()
         this.#callListeners({all: allRemoved, type: "delete"})
     }
 
@@ -301,23 +317,8 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    static restoreState(data: string) {
-        try {
-            const previousAll = Array.from(this.getEntities().keys())
-            this.getEntities().clear()
-            const json: { id: EngineEntity, components: [Components, Object][] }[] = JSON.parse(data)
-            for (let i = 0; i < json.length; i++) {
-                this.#parseEntity(json[i]);
-            }
-            this.#clearPickingCache()
-            this.#callListeners({all: previousAll, type: "delete"})
-            this.#callListeners({all: json.map(e => e.id), type: "create"})
-        } catch (err) {
-            console.error(err)
-        }
-    }
 
-    static #parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
+    static parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
         const components = new DynamicMap<Components, Component>()
         this.getEntities().set(entityData.id, components)
 
@@ -369,16 +370,6 @@ export default class EntityManager extends AbstractSingleton {
         return component
     }
 
-    static serializeState(): string {
-        const data = []
-        this.getEntities().forEach((value, key) => {
-            data.push({
-                id: key,
-                components: Array.from(value.entries())
-            })
-        })
-        return serializeStructure(data)
-    }
 
     static getAllComponents(entity: EngineEntity) {
         return this.getEntities().get(entity).array || []
@@ -396,6 +387,17 @@ export default class EntityManager extends AbstractSingleton {
         return this.getEntities().get(entity)?.has?.(component) ?? false
     }
 
+    static hasAllComponents(entity: EngineEntity, ...components: Components[]) {
+        const list = this.getEntities().get(entity)
+        if (!list)
+            return false
+        let has = true
+        for (let i = 0; i < components.length; i++) {
+            has = has && list.has(components[i]);
+        }
+        return has
+    }
+
     static delayedOperation(callback: GenericNonVoidFunction<EntityListenerEvent<EngineEntity, Components>[]>) {
         this.#preventDefaultTrigger = true
         const events = callback()
@@ -407,13 +409,32 @@ export default class EntityManager extends AbstractSingleton {
         return Array.from(this.getEntities().keys());
     }
 
-    static #clearPickingCache() {
-        const i =this.getInstance()
+    static clearPickingCache() {
+        const i = this.getInstance()
         i.#pickInteger.clear()
         i.#pickVec3.clear()
     }
 
     static entityExists(found: EngineEntity): boolean {
         return this.getInstance().#entities.has(found);
+    }
+
+    static clear() {
+        this.delayedOperation(() => {
+            const ids = this.getEntityIds()
+            this.getInstance().#childParent.clear()
+            this.getInstance().#parentChildren.clear()
+            this.removeEntities(ids)
+            return [{type: "delete", all: ids}, {type: "hierarchy-change"}]
+        })
+    }
+
+    static getParentChildren() {
+        return this.getInstance().#parentChildren
+    }
+
+    static getChildParent() {
+        return this.getInstance().#childParent
+
     }
 }

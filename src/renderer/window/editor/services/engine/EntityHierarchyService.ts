@@ -3,6 +3,7 @@ import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderEle
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
 import LevelService from "./LevelService";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+import LevelManager from "@engine-core/LevelManager";
 
 
 export default class EntityHierarchyService {
@@ -10,7 +11,7 @@ export default class EntityHierarchyService {
 	static #listening: { [key: string]: Function } = {}
 
 	static updateHierarchy() {
-		const data = [], root = LevelService.getInstance().loadedLevel
+		const data = [], root = EditorEntityManager.getEntity(LevelManager.loadedLevel)
 		if(!root)
 			return
 

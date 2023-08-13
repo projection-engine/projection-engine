@@ -1,5 +1,6 @@
 import Engine from "../../../engine/core/Engine"
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
+import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
 
 export default class SelectorUtil{
 	static getIcon(type){
@@ -45,7 +46,7 @@ export default class SelectorUtil{
 		case "code":
 			return [...store.uiLayouts, ...store.components]
 		case "parent":
-			return Engine.entities.array
+			return EditorEntityManager.getEntities().array
 		default:
 			return []
 		}

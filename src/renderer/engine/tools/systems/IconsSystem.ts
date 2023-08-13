@@ -1,101 +1,50 @@
-import Engine from "../../core/Engine"
 import GPU from "../../core/GPU"
 import CameraAPI from "../../core/lib/utils/CameraAPI"
 import LineRenderer from "./LineRenderer"
 import StaticMeshes from "../../core/lib/StaticMeshes"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import {mat4} from "gl-matrix"
-import MATERIAL_RENDERING_TYPES from "../../core/static/MATERIAL_RENDERING_TYPES"
 import EditorEntity from "../EditorEntity"
 import StaticFBO from "../../core/lib/StaticFBO"
 import EngineToolsState from "../EngineToolsState"
 import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
-import {LightTypes,} from "@engine-core/engine.enum";
+import {Components, LightTypes, MaterialRenderingTypes,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";
+import EngineState from "@engine-core/EngineState";
+import EditorEntityManager from "../EditorEntityManager";
+import LightComponent from "@engine-core/components/LightComponent";
+import MeshComponent from "@engine-core/components/MeshComponent";
 
-const iconAttributes = mat4.create()
+
 export default class IconsSystem extends AbstractSystem {
     static iconsTexture?: WebGLTexture
+    static #iconAttributes = mat4.create()
 
     static loop(cb, uniforms?: MutableObject) {
-        const tracking = CameraAPI.trackingEntity
-        const entities = Engine.entities.array
-        const size = entities.length
-
+        const icons = EditorEntityManager.getIcons()
+        const size = icons.length
         for (let i = 0; i < size; i++) {
-            const entity = entities[i]
-            if (!entity.active || entity.spriteComponent !== undefined || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
-                continue
-            const hasLight = entity.lightComponent !== undefined
-            const hasProbe = entity.lightProbeComponent !== undefined
-            const hasCamera = entity.cameraComponent !== undefined
-            const hasDecal = entity.cameraComponent !== undefined
-            const hasAtmosphere = entity.cameraComponent !== undefined
-            const doesntHaveIcon = !hasLight && !hasProbe && !hasCamera && !hasDecal && !hasAtmosphere
-
-            if (
-                tracking === entity ||
-                doesntHaveIcon && entity.uiComponent ||
-                entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
-                doesntHaveIcon && entity.meshComponent?.hasMesh && entity.materialRef?.renderingMode !== MATERIAL_RENDERING_TYPES.SKY ||
-                doesntHaveIcon && !entity.meshComponent?.hasMesh
-            ) {
-                continue
-            }
-            cb(entity, uniforms)
+            cb(icons[i], uniforms)
         }
     }
 
-    static drawIcon(entity: EditorEntity, U) {
+    static drawIcon(icon: RegisteredIcon, U) {
         const uniforms = U || StaticEditorShaders.iconUniforms
         const context = GPU.context
-        const lightComponent = entity.lightComponent
-        const lightType = lightComponent?.type
-        let doNotFaceCamera = 0,
-            drawSphere = 0,
-            removeSphereCenter = 0,
-            scale = EngineToolsState.iconScale,
-            imageIndex = 0
+        const {
+            imageIndex,
+            doNotFaceCamera,
+            drawSphere,
+            removeSphereCenter,
+            scale
+        } = icon
+        const entity = icon.entity as EditorEntity
         const isSelected = entity.__isSelected ? 1 : 0,
-            color = entity.colorIdentifier
+            color = entity._colorIdentifier
 
-        switch (lightType) {
-            case LightTypes.DIRECTIONAL:
-                imageIndex = 1
-                break
-            case LightTypes.POINT:
-                imageIndex = 2
-                break
-            case LightTypes.SPOT:
-                imageIndex = 4
-                break
-            case LightTypes.SPHERE:
-                imageIndex = -1
-                drawSphere = 1
-                scale = lightComponent.areaRadius
-                removeSphereCenter = 0
-                break
-            case LightTypes.DISK:
-                imageIndex = -1
-                doNotFaceCamera = 1
-                drawSphere = 1
-                removeSphereCenter = 1
-                scale = lightComponent.areaRadius
-                break
-        }
-
-
-        if (entity.lightProbeComponent)
-            imageIndex = imageIndex !== 0 ? 0 : 3
-        if (entity.atmosphereComponent)
-            imageIndex = imageIndex !== 0 ? 0 : 5
-        if (entity.decalComponent)
-            imageIndex = imageIndex !== 0 ? 0 : 6
-
-
-
+        const iconAttributes = this.#iconAttributes
         iconAttributes[0] = doNotFaceCamera
         iconAttributes[1] = drawSphere
         iconAttributes[2] = removeSphereCenter
@@ -108,7 +57,6 @@ export default class IconsSystem extends AbstractSystem {
         iconAttributes[9] = color[1]
         iconAttributes[10] = color[2]
 
-
         GizmoUtil.createTransformationCache(entity)
         if (uniforms.entityID !== undefined)
             context.uniform3fv(uniforms.entityID, EntityManager.getEntityPickVec3(entity.id))
@@ -119,14 +67,14 @@ export default class IconsSystem extends AbstractSystem {
     }
 
     static #drawVisualizations(entity: EditorEntity) {
-        const hasLight = entity.lightComponent
-        const hasCamera = entity.cameraComponent
+        const hasLight = entity.hasComponent(Components.LIGHT)
+        const hasCamera = entity.hasComponent(Components.CAMERA)
         if (!hasCamera && !hasLight)
             return
 
-        const component = entity.lightComponent
+        const component = entity.getComponent<LightComponent>(Components.LIGHT)
         let lineSize = -50
-        if (!hasCamera)
+        if (!hasCamera && hasLight) {
             switch (component.type) {
                 case LightTypes.DISK:
                 case LightTypes.SPOT:
@@ -137,7 +85,7 @@ export default class IconsSystem extends AbstractSystem {
                     lineSize = -component.cutoff * 4
                     break
             }
-
+        }
         LineRenderer.setState(!entity.__isSelected, true, lineSize)
         if (hasLight) {
             if (component.type === LightTypes.SPOT)

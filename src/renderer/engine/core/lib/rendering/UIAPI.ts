@@ -45,8 +45,8 @@ export default class UIAPI {
     }
 
     static deleteUIEntity(entity: EngineEntity) {
-		if(!EntityManager.hasComponent(entity, Components.UI))
-			return;
+        if (!EntityManager.hasComponent(entity, Components.UI))
+            return;
         const UIComponent = EntityManager.getComponent<UIComponent>(entity, Components.UI)
         if (!UIComponent.__element || !UIAPI.document?.parentElement)
             return
@@ -56,10 +56,10 @@ export default class UIAPI {
             UIAPI.document.appendChild(c)
             UIComponent.anchorElement = undefined
         })
-		UIComponent.__element.parentElement?.removeChild?.(UIComponent.__element)
+        UIComponent.__element.parentElement?.removeChild?.(UIComponent.__element)
     }
 
-    static createUIEntity(entity: EngineEntity) {
+    static async createUIEntity(entity: EngineEntity) {
         const UIComponent = EntityManager.getComponent<UIComponent>(entity, Components.UI)
         if (!UIAPI.document?.parentElement || UIComponent.__element != undefined)
             return
@@ -71,7 +71,15 @@ export default class UIAPI {
         UIAPI.#mapToObject(el, UIComponent)
 
         el.id = entity
-        el.innerHTML = Engine.UILayouts.get(UIComponent.uiLayoutID) || ""
+        if (UIComponent.uiLayoutID != null && !Engine.UILayouts.has(UIComponent.uiLayoutID)) {
+            const asset = await FileSystemAPI.readAsset(UIComponent.uiLayoutID)
+            if (asset) {
+                Engine.UILayouts.set(UIComponent.uiLayoutID, asset)
+                el.innerHTML = asset
+            }
+        } else if (UIComponent.uiLayoutID != null) {
+            el.innerHTML = Engine.UILayouts.get(UIComponent.uiLayoutID)
+        }
 
         const children = el.children
         for (let i = 0; i < children.length; i++) {
@@ -97,16 +105,18 @@ export default class UIAPI {
         const entities = ResourceEntityMapper.withComponent(Components.UI).array
         for (let i = 0; i < entities.length; i++)
             elementsToBind.push(UIAPI.createUIEntity(entities[i]))
-        for (let i = 0; i < elementsToBind.length; i++) {
-            if (!elementsToBind[i])
-                continue
-            const {parent, element} = elementsToBind[i]
-            const parentElement = document.getElementById(parent)
-            if (!parentElement)
-                continue
-            UIAPI.document.removeChild(element)
-            parentElement.appendChild(element)
-        }
+        Promise.all(elementsToBind).then(() => {
+            for (let i = 0; i < elementsToBind.length; i++) {
+                if (!elementsToBind[i])
+                    continue
+                const {parent, element} = elementsToBind[i]
+                const parentElement = document.getElementById(parent)
+                if (!parentElement)
+                    continue
+                UIAPI.document.removeChild(element)
+                parentElement.appendChild(element)
+            }
+        })
     }
 
     static destroyUI() {

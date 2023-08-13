@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import ViewportActionUtil from "../../../services/ViewportActionUtil"
     import Engine from "../../../../../engine/core/Engine"
     import CameraGizmo from "./CameraGizmo.svelte"
@@ -13,10 +13,14 @@
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import EditorUtil from "../../../util/EditorUtil"
     import EngineStore from "../../../../shared/stores/EngineStore"
+    import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMapper";
+    import {Components} from "@engine-core/engine.enum";
+    import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
 
     const COMPONENT_ID = crypto.randomUUID()
-    let cameras = []
-    let focusedCamera
+    let cameras: EditorEntity[] = []
+    let focusedCamera: EngineEntity
     let screenSpaceMovement = false
     let camera = {}
 
@@ -29,8 +33,7 @@
     	}, ["screenSpaceMovement", "camera"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => focusedCamera = data.focusedCamera, ["focusedCamera"])
     	EntityHierarchyService.registerListener(COMPONENT_ID, () => {
-    		// TODO - CONSUME FROM DYNAMIC LIST OF ENTITIES WITH COMPONENT AFTER ECS
-    		cameras = Engine.entities.array.filter(entity => entity.cameraComponent != null)
+    		cameras = ResourceEntityMapper.withComponent(Components.CAMERA).array.map(EditorEntityManager.getEntity)
     	})
     })
 
@@ -76,7 +79,7 @@
             </button>
         {/each}
     </Dropdown>
-    <button data-sveltebuttondefault="-" disabled={focusedCamera} class="button viewport"
+    <button data-sveltebuttondefault="-" disabled={focusedCamera == null} class="button viewport"
             on:click={toggleProjection}>
         <ToolTip content={LocalizationEN.SWITCH_PROJECTION}/>
         {#if !camera.ortho}
@@ -88,14 +91,14 @@
         {/if}
     </button>
 
-    <button data-sveltebuttondefault="-" disabled={focusedCamera} class="button viewport"
+    <button data-sveltebuttondefault="-" disabled={focusedCamera == null} class="button viewport"
             style="max-width: 25px; justify-content: center"
             on:click={() => ViewportActionUtil.focus()}>
         <ToolTip content={LocalizationEN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>
 
-    <button data-sveltebuttondefault="-" disabled={focusedCamera} class="button viewport"
+    <button data-sveltebuttondefault="-" disabled={focusedCamera == null} class="button viewport"
             style="max-width: 25px; justify-content: center"
             on:click={() => SettingsStore.updateStore({screenSpaceMovement: !screenSpaceMovement})}>
         <ToolTip content={LocalizationEN.TOGGLE_CAMERA_MOVEMENT}/>
