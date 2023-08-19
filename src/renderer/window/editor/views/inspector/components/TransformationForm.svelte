@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
     import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum";
     import {onDestroy, onMount} from "svelte"
@@ -139,6 +139,7 @@
         hasStarted = false
     }
 </script>
+
 {#if mainEntity}
 
     <Accordion title={LocalizationEN.TRANSFORMATION} startOpen={true}>

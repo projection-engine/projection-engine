@@ -11,7 +11,7 @@ import LevelManager from "@engine-core/managers/LevelManager";
 
 
 export default class EngineStateService {
-    static #checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
+    static _checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
         const original = descriptor.value
         descriptor.value = function (...args) {
             if (!LevelManager.loadedLevel) {
@@ -22,7 +22,7 @@ export default class EngineStateService {
         }
     }
 
-    @EngineStateService.#checkLevel
+    @EngineStateService._checkLevel
     static replaceBlock(toRemove: EngineEntity[], toAdd: EditorEntity[]) {
 
         const replacedMap = {}
@@ -39,7 +39,7 @@ export default class EngineStateService {
         EntityHierarchyService.updateHierarchy()
     }
 
-    @EngineStateService.#checkLevel
+    @EngineStateService._checkLevel
     static appendBlock(block: EditorEntity[]) {
         EntityNamingService.renameInBlock(block)
         EntityManager.createEntitiesById(block.map(e => e.id))
@@ -49,7 +49,7 @@ export default class EngineStateService {
         EntityHierarchyService.updateHierarchy()
     }
 
-    @EngineStateService.#checkLevel
+    @EngineStateService._checkLevel
     static removeBlock(payload: EngineEntity[]) {
         EntityManager.removeEntities(payload)
         EntitySelectionStore.updateStore({array: []})
@@ -57,7 +57,7 @@ export default class EngineStateService {
         EntityHierarchyService.updateHierarchy()
     }
 
-    @EngineStateService.#checkLevel
+    @EngineStateService._checkLevel
     static add(entity: EditorEntity) {
         EntityNamingService.renameEntity(entity.name, entity)
         GizmoUtil.createTransformationCache(entity)
@@ -70,7 +70,7 @@ export default class EngineStateService {
 
     }
 
-    @EngineStateService.#checkLevel
+    @EngineStateService._checkLevel
     static linkMultiple(payload: EngineEntity[]) {
         const values = EditorEntityManager.entities.array
         for (let i = 0; i < values.length; i++) {

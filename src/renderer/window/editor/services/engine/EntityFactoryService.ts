@@ -15,7 +15,7 @@ import TransformationComponent from "@engine-core/lib/components/TransformationC
 
 
 export default class EntityFactoryService {
-    static #create(_, k: string, descriptor: PropertyDescriptor) {
+    static _create(_, k: string, descriptor: PropertyDescriptor) {
         const original = descriptor.value
         descriptor.value = function (...args) {
             let result: EditorEntity|undefined
@@ -43,24 +43,24 @@ export default class EntityFactoryService {
         transformComponent.__changedBuffer[0] = 1
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createEmpty() {
         const entity = EditorEntityManager.create(undefined)
         entity.name = LocalizationEN.NEW_ENTITY
         return entity
     }
 
-    @EntityFactoryService.#create
-    static createMesh(id?: EngineEntity) {
+    @EntityFactoryService._create
+    static createMesh(meshId?: string) {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.MESH_RENDERER
         const m = EntityManager.addComponent(entity.id, Components.MESH) as MeshComponent
-        m.meshID = id
+        m.meshID = meshId
         return entity
 
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createProbe() {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.LIGHT_PROBE
@@ -69,7 +69,7 @@ export default class EntityFactoryService {
         return entity
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createAtmosphere() {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.ATMOSPHERE_RENDERER
@@ -77,7 +77,7 @@ export default class EntityFactoryService {
         return entity
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createLight(type) {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.NEW_LIGHT
@@ -86,7 +86,7 @@ export default class EntityFactoryService {
         return entity
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createCamera() {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.CAMERA
@@ -94,7 +94,7 @@ export default class EntityFactoryService {
         return entity
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createUI() {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.UI_RENDERER
@@ -102,7 +102,7 @@ export default class EntityFactoryService {
         return entity
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createSprite() {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.SPRITE_RENDERER
@@ -110,7 +110,7 @@ export default class EntityFactoryService {
         return entity
     }
 
-    @EntityFactoryService.#create
+    @EntityFactoryService._create
     static createDecal() {
         const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.DECAL_RENDERER
