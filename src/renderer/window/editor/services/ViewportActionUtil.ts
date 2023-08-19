@@ -7,7 +7,6 @@ import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import EntityManager from "@engine-core/EntityManager";
-import EditorEntity from "../../../engine/tools/EditorEntity";
 import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
 
 

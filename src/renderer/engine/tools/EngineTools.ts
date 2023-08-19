@@ -10,7 +10,7 @@ import EditorEntity from "./EditorEntity"
 import GPU from "../core/GPU"
 import StaticEditorMeshes from "./utils/StaticEditorMeshes"
 import StaticEditorShaders from "./utils/StaticEditorShaders"
-import StaticFBO from "../core/lib/StaticFBO"
+import StaticFBOState from "@engine-core/states/StaticFBOState"
 import GizmoState from "./gizmo/util/GizmoState"
 import StaticEditorFBO from "./utils/StaticEditorFBO";
 import GPUUtil from "../core/utils/GPUUtil";
@@ -69,11 +69,11 @@ export default class EngineTools {
 
     static drawIconsToBuffer() {
         GPU.context.disable(GPU.context.DEPTH_TEST)
-        StaticFBO.visibility.use()
+        StaticFBOState.visibility.use()
         StaticEditorShaders.iconToDepth.bind()
         GPUUtil.bind2DTextureForDrawing(StaticEditorShaders.iconToDepthUniforms.image, 0, IconsSystem.iconsTexture)
         IconsSystem.loop(IconsSystem.drawIcon, StaticEditorShaders.iconToDepthUniforms)
-        StaticFBO.visibility.stopMapping()
+        StaticFBOState.visibility.stopMapping()
         GPU.context.enable(GPU.context.DEPTH_TEST)
     }
 

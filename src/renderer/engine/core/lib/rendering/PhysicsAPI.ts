@@ -5,7 +5,7 @@ import RigidBodyComponent from "@engine-core/components/RigidBodyComponent";
 import PhysicsColliderComponent from "@engine-core/components/PhysicsColliderComponent";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import {quat, vec3} from "gl-matrix";
-import DynamicMap from "@engine-core/resource-libs/DynamicMap";
+import DynamicMap from "@engine-core/lib/DynamicMap";
 
 const COLLISION = "COLLISION",
     DISPATCHER = "DISPATCHER",

@@ -1,7 +1,6 @@
 import GPU from "../GPU"
-import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper"
-import StaticShaders from "../lib/StaticShaders"
-import StaticMeshes from "../lib/StaticMeshes"
+import StaticShadersState from "../states/StaticShadersState"
+import StaticMeshesState from "../states/StaticMeshesState"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import AtmosphereComponent from "../components/AtmosphereComponent"
@@ -15,16 +14,16 @@ const resources = mat4.create().fill(0)
 export default class AtmosphereRendererSystem extends AbstractSystem {
 
     shouldExecute(): boolean {
-        return ResourceEntityMapper.withComponent(Components.ATMOSPHERE).size > 0;
+        return EntityManager.withComponent(Components.ATMOSPHERE).size > 0;
     }
 
     execute() {
-        const entities = ResourceEntityMapper.withComponent(Components.ATMOSPHERE).array
+        const entities = EntityManager.withComponent(Components.ATMOSPHERE).array
         const size = entities.length
         const context = GPU.context
-        StaticShaders.atmosphere.bind()
+        StaticShadersState.atmosphere.bind()
         context.disable(context.DEPTH_TEST)
-        context.uniformMatrix4fv(StaticShaders.atmosphereUniforms.invSkyProjectionMatrix, false, CameraAPI.invSkyboxProjectionMatrix)
+        context.uniformMatrix4fv(StaticShadersState.atmosphereUniforms.invSkyProjectionMatrix, false, CameraAPI.invSkyboxProjectionMatrix)
         for (let i = 0; i < size; i++) {
             this.#render(entities[i])
         }
@@ -33,14 +32,14 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
     }
 
     #render(entity: EngineEntity) {
-        const uniforms = StaticShaders.atmosphereUniforms
+        const uniforms = StaticShadersState.atmosphereUniforms
         const context = GPU.context
         const component = EntityManager.getComponent<AtmosphereComponent>(entity, Components.ATMOSPHERE)
         if (EntityManager.isEntityEnabled(entity)) {
             AtmosphereRendererSystem.#bindResources(resources, component)
             context.uniform1i(uniforms.type, component.renderingType)
             context.uniformMatrix4fv(uniforms.information, false, resources)
-            StaticMeshes.drawQuad()
+            StaticMeshesState.drawQuad()
         }
     }
 

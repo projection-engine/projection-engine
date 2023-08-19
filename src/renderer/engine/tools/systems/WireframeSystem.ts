@@ -1,17 +1,17 @@
 import GPU from "../../core/GPU"
 import {mat4, vec3} from "gl-matrix"
-import StaticMeshes from "../../core/lib/StaticMeshes"
+import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
-import StaticFBO from "../../core/lib/StaticFBO"
+import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import EngineToolsState from "../EngineToolsState"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
-import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 import EditorEntityManager from "../EditorEntityManager";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import PhysicsColliderComponent from "@engine-core/components/PhysicsColliderComponent";
+import EntityManager from "@engine-core/EntityManager";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
@@ -25,10 +25,10 @@ export default class WireframeSystem extends AbstractSystem {
         const context = GPU.context
 
         StaticEditorShaders.wireframe.bind()
-        GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBO.sceneDepthVelocity)
+        GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBOState.sceneDepthVelocity)
 
 
-        let arr = ResourceEntityMapper.withComponent(Components.DECAL).array
+        let arr = EntityManager.withComponent(Components.DECAL).array
         let size = arr.length
 
         for (let i = 0; i < size; i++) {
@@ -43,7 +43,7 @@ export default class WireframeSystem extends AbstractSystem {
             StaticEditorMeshes.clipSpaceCamera.drawLines()
         }
 
-        arr = ResourceEntityMapper.withComponent(Components.PHYSICS_COLLIDER).array
+        arr = EntityManager.withComponent(Components.PHYSICS_COLLIDER).array
         size = arr.length
         for (let i = 0; i < size; i++) {
             const entity = EditorEntityManager.getEntity(arr[i])
@@ -72,7 +72,7 @@ export default class WireframeSystem extends AbstractSystem {
             context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.__collisionTransformationMatrix)
             switch (collision.collisionType) {
                 case ColliderTypes.SPHERE:
-                    StaticMeshes.sphere.draw()
+                    StaticMeshesState.sphere.draw()
                     break
                 case ColliderTypes.BOX:
                     StaticEditorMeshes.clipSpaceCamera.drawLines()

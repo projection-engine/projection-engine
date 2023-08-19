@@ -1,7 +1,7 @@
 import SceneRenderingUtil from "./SceneRenderingUtil"
-import StaticFBO from "../lib/StaticFBO"
-import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGroup";
-import UberShader from "../resource-libs/UberShader";
+import StaticFBOState from "../states/StaticFBOState"
+import UberMaterialAttributeGroup from "../lib/UberMaterialAttributeGroup";
+import UberShader from "../lib/UberShader";
 import GPU from "../GPU";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import GPUUtil from "../utils/GPUUtil";
@@ -16,19 +16,19 @@ import EntityManager from "@engine-core/EntityManager";
 
 export default class TransparencyRendererSystem extends AbstractSystem {
     execute() {
-        StaticFBO.postProcessing2.stopMapping()
+        StaticFBOState.postProcessing2.stopMapping()
         loopMeshes(this.#loop)
-        StaticFBO.postProcessing2.stopMapping()
+        StaticFBOState.postProcessing2.stopMapping()
         GPU.context.flush()
     }
 
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent, index: number) {
         if (index === 0) {
-            GPUAPI.copyTexture(StaticFBO.postProcessing1, StaticFBO.postProcessing2, GPU.context.COLOR_BUFFER_BIT)
-            StaticFBO.postProcessing2.use()
+            GPUAPI.copyTexture(StaticFBOState.postProcessing1, StaticFBOState.postProcessing2, GPU.context.COLOR_BUFFER_BIT)
+            StaticFBOState.postProcessing2.use()
             UberMaterialAttributeGroup.clear()
             GPU.context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)
-            GPUUtil.bind2DTextureForDrawing(UberShader.uberUniforms.previousFrame, 3, StaticFBO.postProcessing1Sampler)
+            GPUUtil.bind2DTextureForDrawing(UberShader.uberUniforms.previousFrame, 3, StaticFBOState.postProcessing1Sampler)
         }
         if (!material || material.renderingMode !== MATERIAL_RENDERING_TYPES.TRANSPARENCY)
             return

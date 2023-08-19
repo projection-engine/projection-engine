@@ -117,7 +117,7 @@ export default class EngineResourceLoaderService {
 
                 case FileTypes.MATERIAL: {
                     // TODO - REWORK MATERIAL DROP
-                    // const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY, 1, StaticFBO.visibility.FBO))
+                    // const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY, 1, StaticFBOState.visibility.FBO))
                     // if (!entity || !entity.meshComponent) return
                     // const result = await FileSystemAPI.loadMaterial(data)
                     // if (result) {

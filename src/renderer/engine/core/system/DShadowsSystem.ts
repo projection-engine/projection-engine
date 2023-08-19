@@ -1,12 +1,11 @@
 import GPU from "../GPU"
-import StaticFBO from "../lib/StaticFBO"
-import StaticShaders from "../lib/StaticShaders"
-import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper"
+import StaticFBOState from "../states/StaticFBOState"
+import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import AbstractSystem from "../AbstractSystem";
-import EngineState from "../EngineState";
+import EngineState from "../states/EngineState";
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";
 import MeshComponent from "@engine-core/components/MeshComponent";
@@ -23,7 +22,7 @@ export default class DShadowsSystem extends AbstractSystem {
         const context = GPU.context
         context.cullFace(context.FRONT)
         let currentColumn = 0, currentRow = 0
-        StaticFBO.shadows.startMapping()
+        StaticFBOState.shadows.startMapping()
         context.enable(context.SCISSOR_TEST)
         const size = EngineState.directionalLightsAtlasRatio ** 2
         const resPr = EngineState.directionalLightsResolutionPerTexture
@@ -54,7 +53,7 @@ export default class DShadowsSystem extends AbstractSystem {
                 currentColumn += 1
         }
         context.disable(context.SCISSOR_TEST)
-        StaticFBO.shadows.stopMapping()
+        StaticFBOState.shadows.stopMapping()
         context.cullFace(context.BACK)
         EngineState.directionalLightsChanged = false
         EngineState.directionalLightsToUpdate.length = 0
@@ -63,7 +62,7 @@ export default class DShadowsSystem extends AbstractSystem {
 
     #loopMeshes(light: LightComponent) {
         const context = GPU.context
-        const toRender = ResourceEntityMapper.withComponent(Components.MESH).array
+        const toRender = EntityManager.withComponent(Components.MESH).array
         const size = toRender.length
         for (let m = 0; m < size; m++) {
             const current = toRender[m]
@@ -74,8 +73,8 @@ export default class DShadowsSystem extends AbstractSystem {
             if (!mesh || !meshComponent.castsShadows || !EntityManager.isEntityEnabled(current) || material && material.renderingMode === MATERIAL_RENDERING_TYPES.SKY)
                 continue
             const transformation = components.get(Components.TRANSFORMATION) as TransformationComponent
-            StaticShaders.directShadows.bind()
-            const U = StaticShaders.directShadowsUniforms
+            StaticShadersState.directShadows.bind()
+            const U = StaticShadersState.directShadowsUniforms
 
             context.uniformMatrix4fv(U.viewMatrix, false, light.__lightView)
             context.uniformMatrix4fv(U.transformMatrix, false, transformation.matrix)

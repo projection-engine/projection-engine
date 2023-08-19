@@ -1,12 +1,12 @@
 import ConversionAPI from "../math/ConversionAPI"
 import GPU from "../../GPU"
-import StaticFBO from "../StaticFBO"
+import StaticFBOState from "../../states/StaticFBOState"
 
 export default class PickingAPI {
     static readBlock(start, end) {
         const w = Math.round(Math.abs(start.x - end.x))
         const h = Math.round(Math.abs(start.y - end.y))
-        GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, StaticFBO.visibility.FBO)
+        GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, StaticFBOState.visibility.FBO)
         GPU.context.readBuffer(GPU.context.COLOR_ATTACHMENT1)
         const dd = new Uint8Array(w * h * 4)
         GPU.context.readPixels(

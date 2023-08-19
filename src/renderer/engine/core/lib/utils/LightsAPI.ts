@@ -1,9 +1,8 @@
 import ArrayBufferAPI from "./ArrayBufferAPI"
 import {glMatrix, mat4, vec3} from "gl-matrix"
-import UberShader from "../../resource-libs/UberShader"
-import StaticUBOs from "../StaticUBOs"
-import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
-import EngineState from "../../EngineState";
+import UberShader from "../UberShader"
+import StaticUBOState from "../../states/StaticUBOState"
+import EngineState from "../../states/EngineState";
 import {Components, LightTypes,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";
 import LightComponent from "@engine-core/components/LightComponent";
@@ -51,7 +50,7 @@ export default class LightsAPI extends AbstractSingleton {
     }
 
     #package(keepOld: boolean) {
-        const lights = ResourceEntityMapper.withComponent(Components.LIGHT).array
+        const lights = EntityManager.withComponent(Components.LIGHT).array
         const primaryBuffer = this.#primaryBuffer,
             secondaryBuffer = this.#secondaryBuffer
         let size = 0, offset = 0
@@ -78,7 +77,7 @@ export default class LightsAPI extends AbstractSingleton {
             size++
         }
 
-        const atmospheres = ResourceEntityMapper.withComponent(Components.ATMOSPHERE).array
+        const atmospheres = EntityManager.withComponent(Components.ATMOSPHERE).array
         for (let i = 0; i < atmospheres.length; i++) {
             const current = atmospheres[i]
             if (offset + 16 > UberShader.MAX_LIGHTS * 16)
@@ -95,15 +94,15 @@ export default class LightsAPI extends AbstractSingleton {
 
         this.#lightsQuantity = size
         if (this.#lightsQuantity > 0 || !keepOld) {
-            StaticUBOs.lightsUBO.bind()
-            StaticUBOs.lightsUBO.updateData("lightPrimaryBuffer", this.#primaryBuffer)
-            StaticUBOs.lightsUBO.updateData("lightSecondaryBuffer", this.#secondaryBuffer)
-            StaticUBOs.lightsUBO.unbind()
+            StaticUBOState.lightsUBO.bind()
+            StaticUBOState.lightsUBO.updateData("lightPrimaryBuffer", this.#primaryBuffer)
+            StaticUBOState.lightsUBO.updateData("lightSecondaryBuffer", this.#secondaryBuffer)
+            StaticUBOState.lightsUBO.unbind()
 
-            StaticUBOs.uberUBO.bind()
+            StaticUBOState.uberUBO.bind()
             quantity[0] = Math.min(this.#lightsQuantity, UberShader.MAX_LIGHTS)
-            StaticUBOs.uberUBO.updateData("lightQuantity", quantity)
-            StaticUBOs.uberUBO.unbind()
+            StaticUBOState.uberUBO.updateData("lightQuantity", quantity)
+            StaticUBOState.uberUBO.unbind()
         }
     }
 

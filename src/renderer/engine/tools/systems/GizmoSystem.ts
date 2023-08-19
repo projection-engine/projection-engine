@@ -1,7 +1,7 @@
 import GPU from "../../core/GPU"
 import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GizmoState from "../gizmo/util/GizmoState"
-import DynamicMap from "../../core/resource-libs/DynamicMap"
+import DynamicMap from "@engine-core/lib/DynamicMap"
 import AbstractSystem from "../../core/AbstractSystem";
 
 

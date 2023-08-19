@@ -21,7 +21,6 @@ import FileTypes from "../../../../../shared/enums/FileTypes"
 import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
-import {UUID} from "crypto";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import LevelManager from "@engine-core/LevelManager";
 import EntityManager from "@engine-core/EntityManager";

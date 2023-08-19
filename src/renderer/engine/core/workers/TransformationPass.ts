@@ -1,5 +1,5 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import DynamicMap from "../resource-libs/DynamicMap"
+import DynamicMap from "../lib/DynamicMap"
 import {TransformationRotationTypes,} from "@engine-core/engine.enum";
 
 /**

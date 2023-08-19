@@ -9,7 +9,7 @@ import FileSystemAPI from "./lib/utils/FileSystemAPI"
 import ScriptsAPI from "./lib/utils/ScriptsAPI"
 import UIAPI from "./lib/rendering/UIAPI"
 import LightProbe from "./instances/LightProbe"
-import DynamicMap from "./resource-libs/DynamicMap"
+import DynamicMap from "./lib/DynamicMap"
 import LightsAPI from "./lib/utils/LightsAPI"
 import SystemManager from "./SystemManager";
 import PreRendererSystem from "./system/PreRendererSystem";

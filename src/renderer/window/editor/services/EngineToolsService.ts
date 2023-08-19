@@ -11,7 +11,7 @@ import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import UIAPI from "../../../engine/core/lib/rendering/UIAPI"
 import GPU from "../../../engine/core/GPU"
 import EngineToolsState from "../../../engine/tools/EngineToolsState"
-import EngineState from "../../../engine/core/EngineState"
+import EngineState from "@engine-core/states/EngineState"
 import SETTINGS from "../static/SETTINGS"
 import GizmoState from "../../../engine/tools/gizmo/util/GizmoState"
 import {Environment,} from "@engine-core/engine.enum";

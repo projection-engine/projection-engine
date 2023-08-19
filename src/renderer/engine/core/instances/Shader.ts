@@ -1,6 +1,6 @@
 import GPU from "../GPU"
 import applyShaderMethods from "../utils/apply-shader-methods"
-import StaticUBOs, {StaticUBONames} from "../lib/StaticUBOs"
+import StaticUBOState, {StaticUBONames} from "../states/StaticUBOState"
 import GPUUtil from "../utils/GPUUtil";
 import {GLSLTypes} from "@engine-core/engine.enum";
 
@@ -69,24 +69,24 @@ export default class Shader {
 		this.length = this.uniforms.length
 
 		if (fragmentBuilt.includes(StaticUBONames.CAMERA_VIEW) || vertexBuilt.includes(StaticUBONames.CAMERA_VIEW))
-			StaticUBOs.cameraViewUBO.bindWithShader(this.program)
+			StaticUBOState.cameraViewUBO.bindWithShader(this.program)
 		if (fragmentBuilt.includes(StaticUBONames.CAMERA_PROJECTION) || vertexBuilt.includes(StaticUBONames.CAMERA_PROJECTION))
-			StaticUBOs.cameraProjectionUBO.bindWithShader(this.program)
+			StaticUBOState.cameraProjectionUBO.bindWithShader(this.program)
 
 		if (fragmentBuilt.includes(StaticUBONames.FRAME_COMPOSITION) || vertexBuilt.includes(StaticUBONames.FRAME_COMPOSITION))
-			StaticUBOs.frameCompositionUBO.bindWithShader(this.program)
+			StaticUBOState.frameCompositionUBO.bindWithShader(this.program)
 
 		if (fragmentBuilt.includes(StaticUBONames.LENS_PP) || vertexBuilt.includes(StaticUBONames.LENS_PP))
-			StaticUBOs.lensPostProcessingUBO.bindWithShader(this.program)
+			StaticUBOState.lensPostProcessingUBO.bindWithShader(this.program)
 
 		if (fragmentBuilt.includes(StaticUBONames.SSAO) || vertexBuilt.includes(StaticUBONames.SSAO))
-			StaticUBOs.ssaoUBO.bindWithShader(this.program)
+			StaticUBOState.ssaoUBO.bindWithShader(this.program)
 
 		if (fragmentBuilt.includes(StaticUBONames.UBER) || vertexBuilt.includes(StaticUBONames.UBER))
-			StaticUBOs.uberUBO.bindWithShader(this.program)
+			StaticUBOState.uberUBO.bindWithShader(this.program)
 
 		if (fragmentBuilt.includes(StaticUBONames.LIGHTS) || vertexBuilt.includes(StaticUBONames.LIGHTS))
-			StaticUBOs.lightsUBO.bindWithShader(this.program)
+			StaticUBOState.lightsUBO.bindWithShader(this.program)
 	}
 
 	#compileShader(shaderCode, shaderType, pushMessage) {

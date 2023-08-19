@@ -1,8 +1,7 @@
 import Component from "./Component"
 import ATMOSPHERE_PROPS from "../static/component-props/ATMOSPHERE_PROPS"
-import ATMOSPHERE_TYPES from "../static/ATMOSPHERE_TYPES"
 import {vec3} from "gl-matrix"
-import {Components,} from "@engine-core/engine.enum";
+import {AtmosphereTypes, Components,} from "@engine-core/engine.enum";
 
 export default class AtmosphereComponent extends Component {
     getDependencies(): Components[] {
@@ -27,7 +26,7 @@ export default class AtmosphereComponent extends Component {
     atmosphereRadius = 1
     planetRadius = 1
     intensity = 20
-    renderingType = ATMOSPHERE_TYPES.COMBINED
+    renderingType = AtmosphereTypes.COMBINED
     betaRayleigh = [1., 1, 1]
     betaMie = [1, 1, 1]
     threshold = 0

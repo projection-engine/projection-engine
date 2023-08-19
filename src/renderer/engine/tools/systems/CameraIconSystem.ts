@@ -6,12 +6,12 @@ import EditorEntity from "../EditorEntity"
 import EngineToolsState from "../EngineToolsState"
 import AbstractSystem from "../../core/AbstractSystem";
 import GPUUtil from "../../core/utils/GPUUtil";
-import StaticFBO from "../../core/lib/StaticFBO";
-import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
+import StaticFBOState from "@engine-core/states/StaticFBOState";
 import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import EditorEntityManager from "../EditorEntityManager";
 import CullingComponent from "@engine-core/components/CullingComponent";
+import EntityManager from "@engine-core/EntityManager";
 
 export default class CameraIconSystem extends AbstractSystem {
     static #invView = mat4.create()
@@ -36,16 +36,16 @@ export default class CameraIconSystem extends AbstractSystem {
     }
 
     shouldExecute(): boolean {
-        return ResourceEntityMapper.withComponent(Components.CAMERA).size > 0;
+        return EntityManager.withComponent(Components.CAMERA).size > 0;
     }
 
     execute() {
         const uniforms = StaticEditorShaders.wireframeUniforms
-        const arr = ResourceEntityMapper.withComponent(Components.CAMERA).array
+        const arr = EntityManager.withComponent(Components.CAMERA).array
         const context = GPU.context
         const size = arr.length
         StaticEditorShaders.wireframe.bind()
-        GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBO.sceneDepthVelocity)
+        GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBOState.sceneDepthVelocity)
         for (let i = 0; i < size; i++) {
             const entity = EditorEntityManager.getEntity(arr[i])
             const cullingComp = entity.getComponent<CullingComponent>(Components.CULLING)

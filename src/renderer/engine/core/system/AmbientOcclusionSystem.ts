@@ -1,11 +1,11 @@
 import GPU from "../GPU"
-import StaticMeshes from "../lib/StaticMeshes"
-import StaticFBO from "../lib/StaticFBO"
-import StaticShaders from "../lib/StaticShaders"
-import StaticUBOs from "../lib/StaticUBOs"
+import StaticMeshesState from "../states/StaticMeshesState"
+import StaticFBOState from "../states/StaticFBOState"
+import StaticShadersState from "../states/StaticShadersState"
+import StaticUBOState from "../states/StaticUBOState"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import EngineState from "../EngineState"
+import EngineState from "../states/EngineState"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 
@@ -19,12 +19,12 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
         this.#noiseScale[0] = GPU.internalResolution.w / 4
         this.#noiseScale[1] = GPU.internalResolution.h / 4
 
-        StaticUBOs.ssaoUBO.bind()
-        StaticUBOs.ssaoUBO.updateData("settings", new Float32Array([.5, .7, -.1, 1000]))
-        StaticUBOs.ssaoUBO.updateData("noiseScale", this.#noiseScale)
-        StaticUBOs.ssaoUBO.unbind()
+        StaticUBOState.ssaoUBO.bind()
+        StaticUBOState.ssaoUBO.updateData("settings", new Float32Array([.5, .7, -.1, 1000]))
+        StaticUBOState.ssaoUBO.updateData("noiseScale", this.#noiseScale)
+        StaticUBOState.ssaoUBO.unbind()
 
-        StaticFBO.generateSSAONoise().then(() => this.#ready = true)
+        StaticFBOState.generateSSAONoise().then(() => this.#ready = true)
     }
 
     shouldExecute(): boolean {
@@ -40,30 +40,30 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
     }
 
     #draw() {
-        StaticFBO.ssao.startMapping()
-        StaticShaders.ssao.bind()
+        StaticFBOState.ssao.startMapping()
+        StaticShadersState.ssao.bind()
 
 
-        GPUUtil.bind2DTextureForDrawing(StaticShaders.ssaoUniforms.sceneDepth, 0, StaticFBO.sceneDepthVelocity)
+        GPUUtil.bind2DTextureForDrawing(StaticShadersState.ssaoUniforms.sceneDepth, 0, StaticFBOState.sceneDepthVelocity)
 
-        GPUUtil.bind2DTextureForDrawing(StaticShaders.ssaoUniforms.noiseSampler, 1, StaticFBO.noiseSampler)
+        GPUUtil.bind2DTextureForDrawing(StaticShadersState.ssaoUniforms.noiseSampler, 1, StaticFBOState.noiseSampler)
 
-        GPU.context.uniform1i(StaticShaders.ssaoUniforms.maxSamples, EngineState.ssaoMaxSamples)
+        GPU.context.uniform1i(StaticShadersState.ssaoUniforms.maxSamples, EngineState.ssaoMaxSamples)
 
-        StaticMeshes.drawQuad()
-        StaticFBO.ssao.stopMapping()
+        StaticMeshesState.drawQuad()
+        StaticFBOState.ssao.stopMapping()
     }
 
     #blur() {
-        StaticShaders.boxBlur.bind()
-        StaticFBO.ssaoBlurred.startMapping()
+        StaticShadersState.boxBlur.bind()
+        StaticFBOState.ssaoBlurred.startMapping()
 
-        GPUUtil.bind2DTextureForDrawing(StaticShaders.boxBlurUniforms.sampler, 0, StaticFBO.ssaoSampler)
+        GPUUtil.bind2DTextureForDrawing(StaticShadersState.boxBlurUniforms.sampler, 0, StaticFBOState.ssaoSampler)
 
-        GPU.context.uniform1i(StaticShaders.boxBlurUniforms.samples, EngineState.ssaoBlurSamples)
+        GPU.context.uniform1i(StaticShadersState.boxBlurUniforms.samples, EngineState.ssaoBlurSamples)
 
-        StaticMeshes.drawQuad()
-        StaticFBO.ssaoBlurred.stopMapping()
+        StaticMeshesState.drawQuad()
+        StaticFBOState.ssaoBlurred.stopMapping()
     }
 
 }

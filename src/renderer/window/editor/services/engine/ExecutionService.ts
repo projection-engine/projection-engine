@@ -8,7 +8,7 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 import EditorLevelService from "./EditorLevelService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import {Environment,} from "@engine-core/engine.enum";
-import EngineState from "@engine-core/EngineState";
+import EngineState from "@engine-core/states/EngineState";
 import EntityManager from "@engine-core/EntityManager";
 import LevelManager from "@engine-core/LevelManager";
 

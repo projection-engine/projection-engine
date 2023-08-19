@@ -1,5 +1,5 @@
 import AbstractSingleton from "./AbstractSingleton";
-import DynamicMap from "./resource-libs/DynamicMap";
+import DynamicMap from "./lib/DynamicMap";
 import Component from "./components/Component";
 import getComponentInstance from "./utils/get-component-instance";
 import serializeStructure from "./utils/serialize-structure";
@@ -16,7 +16,7 @@ export default class EntityManager extends AbstractSingleton {
     #activeEntities = new Map<EngineEntity, boolean>()
     #pickInteger = new Map<number, EngineEntity>
     #pickVec3 = new Map<EngineEntity, vec3>
-
+    #byComponent = new Map<Components, DynamicMap<EngineEntity, EngineEntity>>()
     static #preventDefaultTrigger = false
 
     constructor() {
@@ -26,6 +26,7 @@ export default class EntityManager extends AbstractSingleton {
         this.#listeners.set("create", [])
         this.#listeners.set("delete", [])
         this.#listeners.set("update", [])
+        Object.values(Components).forEach(c => this.#byComponent.set(c as Components, new DynamicMap<EngineEntity, EngineEntity>()))
     }
 
     static getInstance(): EntityManager {
@@ -297,12 +298,55 @@ export default class EntityManager extends AbstractSingleton {
             return
         const listeners = EntityManager.getInstance().#listeners.get(event.type)
         Object.freeze(event)
+        this.#updateByComponent(event)
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i]
             listener.callback(event)
         }
     }
 
+    static #updateByComponent(event: EntityListenerEvent<EngineEntity, Components>){
+        const targets = event.all
+        const instance = this.getInstance()
+        switch (event.type) {
+            case "delete": {
+                instance.#byComponent.forEach(component => {
+                    component.removeBlock(targets, id => id)
+                })
+                break
+            }
+            case "create": {
+                for (let targetI = 0; targetI < targets.length; targetI++){
+                    const entity = targets[targetI];
+                    const allComponents = EntityManager.getAllComponents(entity)
+                    for (let i = 0; i < allComponents.length; i++){
+                        const component = allComponents[i];
+                        instance.#byComponent.get(component.getComponentKey()).set(entity, entity)
+                    }
+                }
+                break
+            }
+            case "component-add": {
+                const targetComponents = event.targetComponents
+                for (let i = 0; i < targetComponents.length; i++){
+                    const component = targetComponents[i];
+                    instance.#byComponent.get(component).set(event.target, event.target)
+                }
+                break
+            }
+            case "component-remove":
+                const targetComponents = event.targetComponents
+                for (let i = 0; i < targetComponents.length; i++){
+                    const component = targetComponents[i];
+                    instance.#byComponent.get(component).delete(event.target)
+                }
+                break
+        }
+    }
+
+    static withComponent<T extends Component>(component: Components): DynamicMap<EngineEntity, EngineEntity> {
+        return this.getInstance().#byComponent.get(component)
+    }
 
     static parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
         const components = new DynamicMap<Components, Component>()

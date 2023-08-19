@@ -5,7 +5,7 @@ import ToastNotificationSystem from "../../../../shared/components/alert/ToastNo
 import Canvas from "./Canvas"
 import type ShaderNode from "../templates/ShaderNode"
 import GPU from "../../../../../engine/core/GPU"
-import UberShader from "../../../../../engine/core/resource-libs/UberShader"
+import UberShader from "@engine-core/lib/UberShader"
 import GPUAPI from "../../../../../engine/core/lib/rendering/GPUAPI"
 import NodesIndex from "../static/NODE_MAP"
 import ShaderLink from "../templates/ShaderLink"

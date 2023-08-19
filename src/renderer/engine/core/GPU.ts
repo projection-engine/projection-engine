@@ -12,11 +12,11 @@ import Material from "./instances/Material"
 import Mesh from "./instances/Mesh"
 import Texture from "./instances/Texture"
 import LightProbe from "./instances/LightProbe"
-import StaticShaders from "./lib/StaticShaders"
-import StaticMeshes from "./lib/StaticMeshes"
-import StaticFBO from "./lib/StaticFBO"
-import StaticUBOs from "./lib/StaticUBOs"
-import DynamicMap from "./resource-libs/DynamicMap"
+import StaticShadersState from "./states/StaticShadersState"
+import StaticMeshesState from "./states/StaticMeshesState"
+import StaticFBOState from "./states/StaticFBOState"
+import StaticUBOState from "./states/StaticUBOState"
+import DynamicMap from "./lib/DynamicMap"
 
 export default class GPU {
 	static context?: WebGL2RenderingContext
@@ -63,11 +63,11 @@ export default class GPU {
 		GPU.context.frontFace(GPU.context.CCW)
 
 
-		StaticUBOs.initialize()
+		StaticUBOState.initialize()
 		CameraAPI.initialize()
-		await StaticMeshes.initialize()
-		StaticShaders.initialize()
-		StaticFBO.initialize()
+		await StaticMeshesState.initialize()
+		StaticShadersState.initialize()
+		StaticFBOState.initialize()
 		TransformationWorkerAPI.initialize()
 		TerrainGenerator.initialize()
 		ImageProcessor.initialize()
@@ -80,7 +80,7 @@ export default class GPU {
 
 		FBO.startMapping()
 		brdfShader.bind()
-		StaticMeshes.drawQuad()
+		StaticMeshesState.drawQuad()
 		FBO.stopMapping()
 		GPU.BRDF = FBO.colors[0]
 		GPU.context.deleteProgram(brdfShader.program)

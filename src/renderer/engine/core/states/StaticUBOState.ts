@@ -1,5 +1,5 @@
 import UBO from "../instances/UBO"
-import UberShader from "../resource-libs/UberShader"
+import UberShader from "../lib/UberShader"
 import GPU from "../GPU"
 
 export enum StaticUBONames {
@@ -12,7 +12,7 @@ export enum StaticUBONames {
     CAMERA_PROJECTION = "CameraProjectionInfo"
 }
 
-export default class StaticUBOs {
+export default class StaticUBOState {
 	static #initialized = false
 
 	static cameraViewUBO?: UBO
@@ -24,11 +24,11 @@ export default class StaticUBOs {
 	static cameraProjectionUBO?: UBO
 
 	static initialize() {
-		if (StaticUBOs.#initialized)
+		if (StaticUBOState.#initialized)
 			return
-		StaticUBOs.#initialized = true
+		StaticUBOState.#initialized = true
 
-		StaticUBOs.cameraViewUBO = new UBO(
+		StaticUBOState.cameraViewUBO = new UBO(
 			StaticUBONames.CAMERA_VIEW,
 			[
 				{name: "viewProjection", type: "mat4"},
@@ -37,7 +37,7 @@ export default class StaticUBOs {
 				{name: "placement", type: "vec4"},
 			])
 
-		StaticUBOs.cameraProjectionUBO = new UBO(
+		StaticUBOState.cameraProjectionUBO = new UBO(
 			StaticUBONames.CAMERA_PROJECTION,
 			[
 				{name: "projectionMatrix", type: "mat4"},
@@ -47,7 +47,7 @@ export default class StaticUBOs {
 				{name: "logC", type: "float"},
 			])
 
-		StaticUBOs.frameCompositionUBO = new UBO(
+		StaticUBOState.frameCompositionUBO = new UBO(
 			StaticUBONames.FRAME_COMPOSITION,
 			[
 				{type: "vec2", name: "inverseFilterTextureSize"},
@@ -63,7 +63,7 @@ export default class StaticUBOs {
 			]
 		)
 
-		StaticUBOs.lensPostProcessingUBO = new UBO(
+		StaticUBOState.lensPostProcessingUBO = new UBO(
 			StaticUBONames.LENS_PP,
 			[
 				{type: "float", name: "textureSizeXDOF"},
@@ -88,17 +88,17 @@ export default class StaticUBOs {
 		)
 
 		const F32 = new Float32Array([2.2])
-		StaticUBOs.lensPostProcessingUBO.bind()
-		StaticUBOs.lensPostProcessingUBO.updateData("gamma", F32)
+		StaticUBOState.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.updateData("gamma", F32)
 		F32[0] = 1
-		StaticUBOs.lensPostProcessingUBO.updateData("exposure", F32)
+		StaticUBOState.lensPostProcessingUBO.updateData("exposure", F32)
 		F32[0] = GPU.internalResolution.w
-		StaticUBOs.lensPostProcessingUBO.updateData("textureSizeXDOF", F32)
+		StaticUBOState.lensPostProcessingUBO.updateData("textureSizeXDOF", F32)
 		F32[0] = GPU.internalResolution.h
-		StaticUBOs.lensPostProcessingUBO.updateData("textureSizeYDOF", F32)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("textureSizeYDOF", F32)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 
-		StaticUBOs.ssaoUBO = new UBO(
+		StaticUBOState.ssaoUBO = new UBO(
 			StaticUBONames.SSAO,
 			[
 				{name: "settings", type: "vec4"},
@@ -107,7 +107,7 @@ export default class StaticUBOs {
 			]
 		)
 
-		StaticUBOs.uberUBO = new UBO(
+		StaticUBOState.uberUBO = new UBO(
 			StaticUBONames.UBER,
 			[
 				{name: "shadowMapsQuantity", type: "float"},
@@ -128,7 +128,7 @@ export default class StaticUBOs {
 				{type: "bool", name: "hasAmbientOcclusion"}
 			]
 		)
-		StaticUBOs.lightsUBO = new UBO(
+		StaticUBOState.lightsUBO = new UBO(
 			StaticUBONames.LIGHTS,
 			[
 				{name: "lightPrimaryBuffer", type: "mat4", dataLength: UberShader.MAX_LIGHTS},

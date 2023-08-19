@@ -2,7 +2,6 @@ import HierarchyToRenderElement from "../views/hierarchy/template/ToRenderElemen
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EditorEntity from "../../../engine/tools/EditorEntity"
-import EngineStateService from "../services/engine/EngineStateService"
 import EditorUtil from "./EditorUtil"
 import HotKeysController from "../../shared/lib/HotKeysController";
 import getViewportHotkeys from "../templates/get-viewport-hotkeys";

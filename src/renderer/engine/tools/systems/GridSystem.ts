@@ -1,6 +1,6 @@
 import GPU from "../../core/GPU"
-import StaticFBO from "../../core/lib/StaticFBO"
-import StaticMeshes from "../../core/lib/StaticMeshes"
+import StaticFBOState from "@engine-core/states/StaticFBOState"
+import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import EngineToolsState from "../EngineToolsState"
 import GPUUtil from "../../core/utils/GPUUtil";
@@ -26,11 +26,11 @@ export default class GridSystem extends AbstractSystem {
 
         context.uniform4fv(uniforms.settings, buffer)
 
-        GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 0, StaticFBO.sceneDepthVelocity)
+        GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 0, StaticFBOState.sceneDepthVelocity)
 
 
         context.uniform2fv(uniforms.resolution, GPU.bufferResolution)
 
-        StaticMeshes.plane.draw()
+        StaticMeshesState.plane.draw()
     }
 }

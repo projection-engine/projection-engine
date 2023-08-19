@@ -6,9 +6,9 @@ import Mesh, {MeshProps} from "../../instances/Mesh"
 import Shader from "../../instances/Shader"
 import GPU from "../../GPU"
 import MaterialAPI from "./MaterialAPI"
-import UberShader from "../../resource-libs/UberShader"
-import StaticMeshes from "../StaticMeshes"
-import EngineState from "../../EngineState";
+import UberShader from "../UberShader"
+import StaticMeshesState from "../../states/StaticMeshesState"
+import EngineState from "../../states/EngineState";
 
 export default class GPUAPI {
 	static async allocateTexture(imageData: string | TextureParams, id: string) {
@@ -145,7 +145,7 @@ export default class GPUAPI {
 
 	static destroyMesh(instance: string | Mesh) {
 		const mesh = typeof instance === "string" ? GPU.meshes.get(instance) : instance
-		if ([StaticMeshes.cube, StaticMeshes.plane, StaticMeshes.cylinder, StaticMeshes.sphere].includes(mesh))
+		if ([StaticMeshesState.cube, StaticMeshesState.plane, StaticMeshesState.cylinder, StaticMeshesState.sphere].includes(mesh))
 			return
 
 		if (mesh instanceof Mesh) {

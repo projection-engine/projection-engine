@@ -3,7 +3,7 @@ import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderEle
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EntityManager from "@engine-core/EntityManager";
-import DynamicMap from "@engine-core/resource-libs/DynamicMap";
+import DynamicMap from "@engine-core/lib/DynamicMap";
 
 
 export default class EntityHierarchyService {

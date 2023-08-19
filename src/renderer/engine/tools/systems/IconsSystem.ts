@@ -1,11 +1,11 @@
 import GPU from "../../core/GPU"
 import CameraAPI from "../../core/lib/utils/CameraAPI"
 import LineRenderer from "./LineRenderer"
-import StaticMeshes from "../../core/lib/StaticMeshes"
+import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import {mat4} from "gl-matrix"
 import EditorEntity from "../EditorEntity"
-import StaticFBO from "../../core/lib/StaticFBO"
+import StaticFBOState from "@engine-core/states/StaticFBOState"
 import EngineToolsState from "../EngineToolsState"
 import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GPUUtil from "../../core/utils/GPUUtil";
@@ -61,7 +61,7 @@ export default class IconsSystem extends AbstractSystem {
 
         context.uniformMatrix4fv(uniforms.settings, false, iconAttributes)
         context.uniformMatrix4fv(uniforms.transformationMatrix, false, entity.__cacheIconMatrix)
-        StaticMeshes.drawQuad()
+        StaticMeshesState.drawQuad()
     }
 
     static #drawVisualizations(entity: EditorEntity) {
@@ -107,7 +107,7 @@ export default class IconsSystem extends AbstractSystem {
 
         GPUUtil.bind2DTextureForDrawing(uniforms.iconSampler, 0, IconsSystem.iconsTexture)
 
-        GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 1, StaticFBO.sceneDepthVelocity)
+        GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 1, StaticFBOState.sceneDepthVelocity)
 
         context.uniformMatrix4fv(uniforms.projectionM, false, CameraAPI.projectionMatrix)
         context.uniformMatrix4fv(uniforms.viewM, false, CameraAPI.viewMatrix)

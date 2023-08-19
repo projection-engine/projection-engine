@@ -1,19 +1,19 @@
-import CameraEffects from "../../resource-libs/CameraEffects"
+import CameraEffects from "../CameraEffects"
 import Engine from "../../Engine"
 import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../math/ConversionAPI"
 
 import GPU from "../../GPU"
-import StaticUBOs from "../StaticUBOs"
-import CameraResources from "../../resource-libs/CameraResources"
+import StaticUBOState from "../../states/StaticUBOState"
+import CameraState from "../../states/CameraState"
 import CameraNotificationDecoder from "../CameraNotificationDecoder"
-import EngineState from "../../EngineState";
+import EngineState from "../../states/EngineState";
 import {Components, Environment,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import CameraComponent from "@engine-core/components/CameraComponent";
 
-export default class CameraAPI extends CameraResources {
+export default class CameraAPI extends CameraState {
     static #dynamicAspectRatio = false
     static metadata = new CameraEffects()
     static #worker: Worker
@@ -63,7 +63,7 @@ export default class CameraAPI extends CameraResources {
         }
 
         if (CameraNotificationDecoder.hasChangedProjection === 1) {
-            const UBO = StaticUBOs.cameraProjectionUBO
+            const UBO = StaticUBOState.cameraProjectionUBO
 
             UBO.bind()
             CameraAPI.projectionUBOBuffer[32] = GPU.bufferResolution[0]
@@ -77,7 +77,7 @@ export default class CameraAPI extends CameraResources {
         }
 
         if (CameraNotificationDecoder.hasChangedView === 1) {
-            const UBO = StaticUBOs.cameraViewUBO
+            const UBO = StaticUBOState.cameraViewUBO
             UBO.bind()
             UBO.updateBuffer(CameraAPI.viewUBOBuffer)
             UBO.unbind()

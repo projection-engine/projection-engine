@@ -3,7 +3,7 @@ import CameraAPI from "../lib/utils/CameraAPI";
 import GPU from "../GPU";
 import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI";
 import LightsAPI from "../lib/utils/LightsAPI";
-import EngineState from "../EngineState";
+import EngineState from "../states/EngineState";
 
 export default class PreLoopSystem extends AbstractSystem{
     #previousTimestamp = 0

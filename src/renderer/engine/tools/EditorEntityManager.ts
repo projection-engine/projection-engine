@@ -1,5 +1,5 @@
 import AbstractSingleton from "../core/AbstractSingleton";
-import DynamicMap from "../core/resource-libs/DynamicMap";
+import DynamicMap from "@engine-core/lib/DynamicMap";
 import EditorEntity from "./EditorEntity";
 import * as crypto from "crypto";
 import EntityManager from "@engine-core/EntityManager";

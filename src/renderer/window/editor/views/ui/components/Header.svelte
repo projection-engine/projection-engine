@@ -9,7 +9,7 @@
     import type EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EntityFactoryService from "../../../services/engine/EntityFactoryService";
     import {Components} from "@engine-core/engine.enum";
-    import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMapper";
+    import EntityManager from "@engine-core/EntityManager";
 
     export let isOnSelection:boolean
     export let toggleOnSelection:GenericVoidFunction
@@ -18,7 +18,7 @@
     export let toggleAutoUpdate:GenericVoidFunction
 
     function selectAll() {
-    	EntitySelectionStore.setEntitiesSelected(ResourceEntityMapper.withComponent(Components.UI).array)
+    	EntitySelectionStore.setEntitiesSelected(EntityManager.withComponent(Components.UI).array)
     }
 
 </script>

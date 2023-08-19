@@ -24,9 +24,9 @@ import SHADOWS_VERTEX from "../static/shaders/forward-rendering/SHADOWS.vert"
 import DIRECTIONAL_SHADOWS from "../static/shaders/forward-rendering/DIRECTIONAL_SHADOWS.frag"
 import ATMOSPHERE_FRAG from "../static/shaders/forward-rendering/ATMOSPHERE.frag"
 import Shader from "../instances/Shader"
-import UberShader from "../resource-libs/UberShader"
+import UberShader from "../lib/UberShader"
 
-export default class StaticShaders {
+export default class StaticShadersState {
 
 	static sprite?: Shader
 	static spriteUniforms?: { [key: string]: WebGLUniformLocation }
@@ -93,54 +93,54 @@ export default class StaticShaders {
 	static #initialized = false
 
 	static initialize() {
-		if (StaticShaders.#initialized)
+		if (StaticShadersState.#initialized)
 			return
-		StaticShaders.#initialized = true
+		StaticShadersState.#initialized = true
 
 
-		StaticShaders.sprite = new Shader(SPRITE_VERTEX, SPRITE_FRAG)
-		StaticShaders.visibility = new Shader(V_BUFFER_VERT, V_BUFFER_FRAG)
-		StaticShaders.toScreen = new Shader(QUAD_VERTEX, TO_SCREEN)
-		StaticShaders.downscale = new Shader(QUAD_VERTEX, BILINEAR_DOWNSCALE)
-		StaticShaders.bilateralBlur = new Shader(QUAD_VERTEX, BILATERAL_BLUR)
-		StaticShaders.bokeh = new Shader(QUAD_VERTEX, BOKEH_FRAG)
-		StaticShaders.irradiance = new Shader(CUBEMAP, IRRADIANCE_MAP)
-		StaticShaders.prefiltered = new Shader(CUBEMAP, PREFILTERED_MAP)
-		StaticShaders.ssgi = new Shader(QUAD_VERTEX, SSGI)
-		StaticShaders.mb = new Shader(QUAD_VERTEX, MOTION_BLUR_FRAG)
-		StaticShaders.ssao = new Shader(QUAD_VERTEX, SSAO)
-		StaticShaders.boxBlur = new Shader(QUAD_VERTEX, BOX_BLUR_FRAG)
-		StaticShaders.directShadows = new Shader(SHADOWS_VERTEX, DIRECTIONAL_SHADOWS)
-		StaticShaders.omniDirectShadows = new Shader(SHADOWS_VERTEX, OMNIDIRECTIONAL_SHADOWS)
-		StaticShaders.composition = new Shader(QUAD_VERTEX, FXAA_FRAG)
-		StaticShaders.bloom = new Shader(QUAD_VERTEX, BRIGHTNESS_FILTER_FRAG)
-		StaticShaders.lens = new Shader(QUAD_VERTEX, LENS_POST_PROCESSING_FRAG)
-		StaticShaders.gaussian = new Shader(QUAD_VERTEX, GAUSSIAN_FRAG)
-		StaticShaders.upSampling = new Shader(QUAD_VERTEX, UPSAMPLING_TEND_FRAG)
-		StaticShaders.atmosphere = new Shader(QUAD_VERTEX, ATMOSPHERE_FRAG)
+		StaticShadersState.sprite = new Shader(SPRITE_VERTEX, SPRITE_FRAG)
+		StaticShadersState.visibility = new Shader(V_BUFFER_VERT, V_BUFFER_FRAG)
+		StaticShadersState.toScreen = new Shader(QUAD_VERTEX, TO_SCREEN)
+		StaticShadersState.downscale = new Shader(QUAD_VERTEX, BILINEAR_DOWNSCALE)
+		StaticShadersState.bilateralBlur = new Shader(QUAD_VERTEX, BILATERAL_BLUR)
+		StaticShadersState.bokeh = new Shader(QUAD_VERTEX, BOKEH_FRAG)
+		StaticShadersState.irradiance = new Shader(CUBEMAP, IRRADIANCE_MAP)
+		StaticShadersState.prefiltered = new Shader(CUBEMAP, PREFILTERED_MAP)
+		StaticShadersState.ssgi = new Shader(QUAD_VERTEX, SSGI)
+		StaticShadersState.mb = new Shader(QUAD_VERTEX, MOTION_BLUR_FRAG)
+		StaticShadersState.ssao = new Shader(QUAD_VERTEX, SSAO)
+		StaticShadersState.boxBlur = new Shader(QUAD_VERTEX, BOX_BLUR_FRAG)
+		StaticShadersState.directShadows = new Shader(SHADOWS_VERTEX, DIRECTIONAL_SHADOWS)
+		StaticShadersState.omniDirectShadows = new Shader(SHADOWS_VERTEX, OMNIDIRECTIONAL_SHADOWS)
+		StaticShadersState.composition = new Shader(QUAD_VERTEX, FXAA_FRAG)
+		StaticShadersState.bloom = new Shader(QUAD_VERTEX, BRIGHTNESS_FILTER_FRAG)
+		StaticShadersState.lens = new Shader(QUAD_VERTEX, LENS_POST_PROCESSING_FRAG)
+		StaticShadersState.gaussian = new Shader(QUAD_VERTEX, GAUSSIAN_FRAG)
+		StaticShadersState.upSampling = new Shader(QUAD_VERTEX, UPSAMPLING_TEND_FRAG)
+		StaticShadersState.atmosphere = new Shader(QUAD_VERTEX, ATMOSPHERE_FRAG)
 
 		UberShader.compile()
 
-		StaticShaders.atmosphereUniforms = StaticShaders.atmosphere.uniformMap
-		StaticShaders.spriteUniforms = StaticShaders.sprite.uniformMap
-		StaticShaders.visibilityUniforms = StaticShaders.visibility.uniformMap
-		StaticShaders.toScreenUniforms = StaticShaders.toScreen.uniformMap
-		StaticShaders.downscaleUniforms = StaticShaders.downscale.uniformMap
-		StaticShaders.bilateralBlurUniforms = StaticShaders.bilateralBlur.uniformMap
-		StaticShaders.bokehUniforms = StaticShaders.bokeh.uniformMap
-		StaticShaders.irradianceUniforms = StaticShaders.irradiance.uniformMap
-		StaticShaders.prefilteredUniforms = StaticShaders.prefiltered.uniformMap
-		StaticShaders.ssgiUniforms = StaticShaders.ssgi.uniformMap
-		StaticShaders.mbUniforms = StaticShaders.mb.uniformMap
-		StaticShaders.ssaoUniforms = StaticShaders.ssao.uniformMap
-		StaticShaders.boxBlurUniforms = StaticShaders.boxBlur.uniformMap
-		StaticShaders.directShadowsUniforms = StaticShaders.directShadows.uniformMap
-		StaticShaders.omniDirectShadowsUniforms = StaticShaders.omniDirectShadows.uniformMap
-		StaticShaders.compositionUniforms = StaticShaders.composition.uniformMap
-		StaticShaders.bloomUniforms = StaticShaders.bloom.uniformMap
-		StaticShaders.lensUniforms = StaticShaders.lens.uniformMap
-		StaticShaders.gaussianUniforms = StaticShaders.gaussian.uniformMap
-		StaticShaders.upSamplingUniforms = StaticShaders.upSampling.uniformMap
+		StaticShadersState.atmosphereUniforms = StaticShadersState.atmosphere.uniformMap
+		StaticShadersState.spriteUniforms = StaticShadersState.sprite.uniformMap
+		StaticShadersState.visibilityUniforms = StaticShadersState.visibility.uniformMap
+		StaticShadersState.toScreenUniforms = StaticShadersState.toScreen.uniformMap
+		StaticShadersState.downscaleUniforms = StaticShadersState.downscale.uniformMap
+		StaticShadersState.bilateralBlurUniforms = StaticShadersState.bilateralBlur.uniformMap
+		StaticShadersState.bokehUniforms = StaticShadersState.bokeh.uniformMap
+		StaticShadersState.irradianceUniforms = StaticShadersState.irradiance.uniformMap
+		StaticShadersState.prefilteredUniforms = StaticShadersState.prefiltered.uniformMap
+		StaticShadersState.ssgiUniforms = StaticShadersState.ssgi.uniformMap
+		StaticShadersState.mbUniforms = StaticShadersState.mb.uniformMap
+		StaticShadersState.ssaoUniforms = StaticShadersState.ssao.uniformMap
+		StaticShadersState.boxBlurUniforms = StaticShadersState.boxBlur.uniformMap
+		StaticShadersState.directShadowsUniforms = StaticShadersState.directShadows.uniformMap
+		StaticShadersState.omniDirectShadowsUniforms = StaticShadersState.omniDirectShadows.uniformMap
+		StaticShadersState.compositionUniforms = StaticShadersState.composition.uniformMap
+		StaticShadersState.bloomUniforms = StaticShadersState.bloom.uniformMap
+		StaticShadersState.lensUniforms = StaticShadersState.lens.uniformMap
+		StaticShadersState.gaussianUniforms = StaticShadersState.gaussian.uniformMap
+		StaticShadersState.upSamplingUniforms = StaticShadersState.upSampling.uniformMap
 
 
 	}

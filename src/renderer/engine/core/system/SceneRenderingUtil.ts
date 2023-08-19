@@ -2,11 +2,11 @@ import GPU from "../GPU"
 import Shader from "../instances/Shader"
 import Engine from "../Engine"
 import CameraAPI from "../lib/utils/CameraAPI"
-import StaticFBO from "../lib/StaticFBO"
+import StaticFBOState from "../states/StaticFBOState"
 import OShadowsSystem from "./OShadowsSystem"
 import Material from "../instances/Material"
-import UberShader from "../resource-libs/UberShader"
-import EngineState from "../EngineState"
+import UberShader from "../lib/UberShader"
+import EngineState from "../states/EngineState"
 import MeshComponent from "@engine-core/components/MeshComponent";
 import EntityManager from "@engine-core/EntityManager";
 import {Components, GLSLTypes} from "@engine-core/engine.enum";
@@ -35,12 +35,12 @@ export default class SceneRenderingUtil {
 		context.uniform3fv(uniforms.cameraPosition, CameraAPI.position)
 
 		SceneRenderingUtil.#bindTexture(context, uniforms.brdf_sampler, 0, GPU.BRDF, false)
-		SceneRenderingUtil.#bindTexture(context, uniforms.SSAO, 1, StaticFBO.ssaoBlurredSampler, false)
-		SceneRenderingUtil.#bindTexture(context, uniforms.SSGI, 2, StaticFBO.ssgiSampler, false)
-		SceneRenderingUtil.#bindTexture(context, uniforms.sceneDepth, 3, StaticFBO.sceneDepthVelocity, false)
+		SceneRenderingUtil.#bindTexture(context, uniforms.SSAO, 1, StaticFBOState.ssaoBlurredSampler, false)
+		SceneRenderingUtil.#bindTexture(context, uniforms.SSGI, 2, StaticFBOState.ssgiSampler, false)
+		SceneRenderingUtil.#bindTexture(context, uniforms.sceneDepth, 3, StaticFBOState.sceneDepthVelocity, false)
 
-		SceneRenderingUtil.#bindTexture(context, uniforms.previousFrame, 4, StaticFBO.lensSampler, false)
-		SceneRenderingUtil.#bindTexture(context, uniforms.shadow_atlas, 5, StaticFBO.shadowsSampler, false)
+		SceneRenderingUtil.#bindTexture(context, uniforms.previousFrame, 4, StaticFBOState.lensSampler, false)
+		SceneRenderingUtil.#bindTexture(context, uniforms.shadow_atlas, 5, StaticFBOState.shadowsSampler, false)
 		SceneRenderingUtil.#bindTexture(context, uniforms.shadow_cube, 6, OShadowsSystem.getSampler(), true)
 
 		context.enable(context.CULL_FACE)

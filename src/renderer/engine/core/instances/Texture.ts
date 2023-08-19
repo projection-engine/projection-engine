@@ -3,7 +3,7 @@ import TEXTURE_FILTERING from "../static/texture/TEXTURE_FILTERING"
 import TEXTURE_FORMATS from "../static/texture/TEXTURE_FORMATS"
 import ImageProcessor from "../lib/math/ImageProcessor"
 import GPU from "../GPU"
-import EngineState from "@engine-core/EngineState";
+import EngineState from "@engine-core/states/EngineState";
 import {ImageWorkerActions} from "@engine-core/engine.enum";
 
 

@@ -1,6 +1,6 @@
 import GPU from "../GPU"
 import AbstractSystem from "@engine-core/AbstractSystem";
-import EngineState from "@engine-core/EngineState";
+import EngineState from "@engine-core/states/EngineState";
 import GPUAPI from "@engine-core/lib/rendering/GPUAPI";
 
 

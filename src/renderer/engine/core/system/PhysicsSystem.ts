@@ -1,6 +1,6 @@
 import Engine from "../Engine"
 import PhysicsAPI from "../lib/rendering/PhysicsAPI"
-import EngineState from "../EngineState"
+import EngineState from "../states/EngineState"
 import {Environment} from "@engine-core/engine.enum";
 
 export default class PhysicsSystem  {

@@ -1,5 +1,5 @@
 import Component from "../../components/Component"
-import ATMOSPHERE_TYPES from "../ATMOSPHERE_TYPES"
+import {AtmosphereTypes} from "@engine-core/engine.enum";
 
 export default [
 	Component.group("GLOBAL", [
@@ -25,15 +25,15 @@ export default [
 		Component.options("renderingType", [
 			{
 				label: "MIE",
-				value: ATMOSPHERE_TYPES.MIE
+				value: AtmosphereTypes.MIE
 			},
 			{
 				label: "RAYLEIGH",
-				value: ATMOSPHERE_TYPES.RAYLEIGH
+				value: AtmosphereTypes.RAYLEIGH
 			},
 			{
 				label: "COMBINED",
-				value: ATMOSPHERE_TYPES.COMBINED
+				value: AtmosphereTypes.COMBINED
 			}
 		]),
 	])

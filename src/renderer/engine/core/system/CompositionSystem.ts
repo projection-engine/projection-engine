@@ -1,8 +1,8 @@
 import GPU from "../GPU"
-import StaticMeshes from "../lib/StaticMeshes"
-import StaticFBO from "../lib/StaticFBO"
-import StaticShaders from "../lib/StaticShaders"
-import StaticUBOs from "../lib/StaticUBOs"
+import StaticMeshesState from "../states/StaticMeshesState"
+import StaticFBOState from "../states/StaticFBOState"
+import StaticShadersState from "../states/StaticShadersState"
+import StaticUBOState from "../states/StaticUBOState"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
@@ -16,12 +16,12 @@ export default class CompositionSystem extends AbstractSystem {
 
     constructor() {
         super()
-        StaticUBOs.frameCompositionUBO.bind()
-        StaticUBOs.frameCompositionUBO.updateData("FXAASpanMax", new Float32Array([8.0]))
-        StaticUBOs.frameCompositionUBO.updateData("FXAAReduceMin", new Float32Array([1.0 / 128.0]))
-        StaticUBOs.frameCompositionUBO.updateData("FXAAReduceMul", new Float32Array([1.0 / 8.0]))
-        StaticUBOs.frameCompositionUBO.updateData("inverseFilterTextureSize", new Float32Array([1 / GPU.internalResolution.w, 1 / GPU.internalResolution.h]))
-        StaticUBOs.frameCompositionUBO.unbind()
+        StaticUBOState.frameCompositionUBO.bind()
+        StaticUBOState.frameCompositionUBO.updateData("FXAASpanMax", new Float32Array([8.0]))
+        StaticUBOState.frameCompositionUBO.updateData("FXAAReduceMin", new Float32Array([1.0 / 128.0]))
+        StaticUBOState.frameCompositionUBO.updateData("FXAAReduceMul", new Float32Array([1.0 / 8.0]))
+        StaticUBOState.frameCompositionUBO.updateData("inverseFilterTextureSize", new Float32Array([1 / GPU.internalResolution.w, 1 / GPU.internalResolution.h]))
+        StaticUBOState.frameCompositionUBO.unbind()
 
         for (let i = 0; i < this.#lookUpRandom.length; i++) {
             this.#lookUpRandom[i] = Math.random()
@@ -34,15 +34,15 @@ export default class CompositionSystem extends AbstractSystem {
 
     execute() {
         const context = GPU.context
-        const shader = StaticShaders.composition, uniforms = StaticShaders.compositionUniforms
+        const shader = StaticShadersState.composition, uniforms = StaticShadersState.compositionUniforms
 
         this.#currentNoise = this.#lookup()
 
         shader.bind()
-        GPUUtil.bind2DTextureForDrawing(uniforms.currentFrame, 0, StaticFBO.lensSampler)
+        GPUUtil.bind2DTextureForDrawing(uniforms.currentFrame, 0, StaticFBOState.lensSampler)
 
         context.uniform1f(uniforms.filmGrainSeed, this.#currentNoise)
-        StaticMeshes.drawQuad()
+        StaticMeshesState.drawQuad()
         MetricsController.currentState = METRICS_FLAGS.FRAME_COMPOSITION
     }
 }

@@ -12,10 +12,10 @@
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import EditorUtil from "../../../util/EditorUtil"
     import EngineStore from "../../../../shared/stores/EngineStore"
-    import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMapper";
     import {Components} from "@engine-core/engine.enum";
     import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
+    import EntityManager from "@engine-core/EntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     let cameras: EditorEntity[] = []
@@ -32,7 +32,7 @@
     	}, ["screenSpaceMovement", "camera"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => focusedCamera = data.focusedCamera, ["focusedCamera"])
     	EntityHierarchyService.registerListener(COMPONENT_ID, () => {
-    		cameras = ResourceEntityMapper.withComponent(Components.CAMERA).array.map(EditorEntityManager.getEntity)
+    		cameras = EntityManager.withComponent(Components.CAMERA).array.map(EditorEntityManager.getEntity)
     	})
     })
 

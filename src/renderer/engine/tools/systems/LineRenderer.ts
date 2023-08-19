@@ -1,6 +1,6 @@
 import LineAPI from "../../core/lib/rendering/LineAPI"
 import GPU from "../../core/GPU"
-import StaticFBO from "../../core/lib/StaticFBO"
+import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import GPUUtil from "../../core/utils/GPUUtil";
 
@@ -36,7 +36,7 @@ export default class LineRenderer {
 			GPU.context.uniform1f(lineUniforms.size, size)
 			GPU.context.uniform1i(lineUniforms.atOrigin, atOrigin)
 
-			GPUUtil.bind2DTextureForDrawing(lineUniforms.sceneDepth, 0, StaticFBO.sceneDepthVelocity)
+			GPUUtil.bind2DTextureForDrawing(lineUniforms.sceneDepth, 0, StaticFBOState.sceneDepthVelocity)
 			finished = false
 		} else if (needsStateUpdate) {
 			GPU.context.uniform1i(lineUniforms.darker, darker)

@@ -9,9 +9,9 @@ import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import VIEWS from "../components/view/static/VIEWS"
-import StaticFBO from "../../../engine/core/lib/StaticFBO";
+import StaticFBOState from "@engine-core/states/StaticFBOState";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
-import EngineState from "../../../engine/core/EngineState";
+import EngineState from "@engine-core/states/EngineState";
 import EntityManager from "@engine-core/EntityManager";
 
 export default class ViewportUtil {
@@ -47,7 +47,7 @@ export default class ViewportUtil {
         const selected = EntitySelectionStore.getEntitiesSelected()
         EngineTools.drawIconsToBuffer()
 
-        const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY, 1, StaticFBO.visibility.FBO)
+        const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY, 1, StaticFBOState.visibility.FBO)
         const entity = EntityManager.getEntityWithPickIndex(clickedEntity)
 
         if (!entity) {

@@ -2,7 +2,7 @@ import VertexBuffer from "./VertexBuffer"
 
 import GPU from "../GPU"
 import GPUAPI from "../lib/rendering/GPUAPI"
-import EngineState from "../EngineState";
+import EngineState from "../states/EngineState";
 
 export interface MeshProps {
     id?: string,

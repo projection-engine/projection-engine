@@ -1,7 +1,7 @@
 import GPU from "../../core/GPU"
 
-import StaticMeshes from "../../core/lib/StaticMeshes"
-import StaticFBO from "../../core/lib/StaticFBO"
+import StaticMeshesState from "@engine-core/states/StaticMeshesState"
+import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import EngineTools from "../EngineTools"
 import AbstractSystem from "../../core/AbstractSystem";
@@ -18,7 +18,7 @@ export default class SelectedSystem extends AbstractSystem {
     shouldExecute(): boolean {
         const should = EngineTools.selected.length > 0;
         if (!should)
-            StaticFBO.postProcessing1.clear()
+            StaticFBOState.postProcessing1.clear()
         return should;
     }
 
@@ -28,7 +28,7 @@ export default class SelectedSystem extends AbstractSystem {
         const uniforms = StaticEditorShaders.silhouetteUniforms
         const metadata = SelectedSystem.#METADATA
 
-        StaticFBO.postProcessing1.startMapping()
+        StaticFBOState.postProcessing1.startMapping()
         StaticEditorShaders.silhouette.bind()
         for (let m = 0; m < length; m++) {
             const current = EngineTools.selected[m]
@@ -57,9 +57,9 @@ export default class SelectedSystem extends AbstractSystem {
                 metadata[4] = transformationComponent.scaling[1]
                 metadata[5] = transformationComponent.scaling[2]
                 context.uniformMatrix3fv(uniforms.metadata, false, metadata)
-                StaticMeshes.drawQuad()
+                StaticMeshesState.drawQuad()
             }
         }
-        StaticFBO.postProcessing1.stopMapping()
+        StaticFBOState.postProcessing1.stopMapping()
     }
 }

@@ -2,7 +2,6 @@ import Engine from "../../Engine"
 import InputEventsAPI from "../utils/InputEventsAPI"
 import FileSystemAPI from "../utils/FileSystemAPI"
 import UIComponent from "../../components/UIComponent"
-import ResourceEntityMapper from "../../resource-libs/ResourceEntityMapper"
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";
 
@@ -29,7 +28,7 @@ export default class UIAPI {
 
     static async updateAllElements() {
         const elements = Array.from(Engine.UILayouts.keys())
-        const UIComponents = ResourceEntityMapper.withComponent(Components.UI).array
+        const UIComponents = EntityManager.withComponent(Components.UI).array
         for (let i = 0; i < elements.length; i++) {
             const found = elements[i]
             const entities = UIComponents.filter(e => EntityManager.getComponent<UIComponent>(e, Components.UI).uiLayoutID === found)
@@ -102,7 +101,7 @@ export default class UIAPI {
         target.appendChild(UIAPI.document)
 
         const elementsToBind = []
-        const entities = ResourceEntityMapper.withComponent(Components.UI).array
+        const entities = EntityManager.withComponent(Components.UI).array
         for (let i = 0; i < entities.length; i++)
             elementsToBind.push(UIAPI.createUIEntity(entities[i]))
         Promise.all(elementsToBind).then(() => {
@@ -124,7 +123,7 @@ export default class UIAPI {
             return
 
         UIAPI.document.parentElement.removeChild(UIAPI.document)
-        const entities = ResourceEntityMapper.withComponent(Components.UI).array
+        const entities = EntityManager.withComponent(Components.UI).array
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i]
             const UIComponent = EntityManager.getComponent<UIComponent>(entity, Components.UI)

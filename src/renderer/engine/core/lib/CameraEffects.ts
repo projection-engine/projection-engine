@@ -1,4 +1,4 @@
-import StaticUBOs from "../lib/StaticUBOs"
+import StaticUBOState from "../states/StaticUBOState"
 import CameraEffectsSerialization from "../static/CameraEffectsSerialization"
 
 const U_INT = new Uint8Array(1)
@@ -95,10 +95,10 @@ export default class CameraEffects {
 
 	static set vignetteStrength(data) {
 		CameraEffects.#vignetteStrength = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.lensPostProcessingUBO.updateData("vignetteStrength", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("vignetteStrength", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get vignetteEnabled() {
@@ -107,10 +107,10 @@ export default class CameraEffects {
 
 	static set vignetteEnabled(data) {
 		CameraEffects.#vignetteEnabled = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		U_INT[0] = data ? 1 : 0
-		StaticUBOs.lensPostProcessingUBO.updateData("vignetteEnabled", U_INT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("vignetteEnabled", U_INT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get filmGrain() {
@@ -124,17 +124,17 @@ export default class CameraEffects {
 	static set filmGrain(data) {
 		CameraEffects.#filmGrain = data
 		FLOAT[0] = data ? 1 : 0
-		StaticUBOs.frameCompositionUBO.bind()
-		StaticUBOs.frameCompositionUBO.updateData("filmGrainEnabled", FLOAT)
-		StaticUBOs.frameCompositionUBO.unbind()
+		StaticUBOState.frameCompositionUBO.bind()
+		StaticUBOState.frameCompositionUBO.updateData("filmGrainEnabled", FLOAT)
+		StaticUBOState.frameCompositionUBO.unbind()
 	}
 
 	static set filmGrainStrength(data) {
 		CameraEffects.#filmGrainStrength = data
-		StaticUBOs.frameCompositionUBO.bind()
+		StaticUBOState.frameCompositionUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.frameCompositionUBO.updateData("filmGrainStrength", FLOAT)
-		StaticUBOs.frameCompositionUBO.unbind()
+		StaticUBOState.frameCompositionUBO.updateData("filmGrainStrength", FLOAT)
+		StaticUBOState.frameCompositionUBO.unbind()
 	}
 
 
@@ -152,10 +152,10 @@ export default class CameraEffects {
 
 	static set focusDistanceDOF(data) {
 		CameraEffects.#focusDistanceDOF = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.lensPostProcessingUBO.updateData("focusDistanceDOF", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("focusDistanceDOF", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get apertureDOF() {
@@ -164,10 +164,10 @@ export default class CameraEffects {
 
 	static set apertureDOF(data) {
 		CameraEffects.#apertureDOF = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.lensPostProcessingUBO.updateData("apertureDOF", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("apertureDOF", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get focalLengthDOF() {
@@ -176,10 +176,10 @@ export default class CameraEffects {
 
 	static set focalLengthDOF(data) {
 		CameraEffects.#focalLengthDOF = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.lensPostProcessingUBO.updateData("focalLengthDOF", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("focalLengthDOF", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get samplesDOF() {
@@ -188,27 +188,27 @@ export default class CameraEffects {
 
 	static set samplesDOF(data) {
 		CameraEffects.#samplesDOF = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.lensPostProcessingUBO.updateData("samplesDOF", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("samplesDOF", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 
 	static set gamma(data) {
 		CameraEffects.#gamma = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.lensPostProcessingUBO.updateData("gamma", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("gamma", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static set exposure(data) {
 		CameraEffects.#exposure = data
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = data
-		StaticUBOs.lensPostProcessingUBO.updateData("exposure", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("exposure", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get distortion() {
@@ -217,10 +217,10 @@ export default class CameraEffects {
 
 	static set distortion(v) {
 		CameraEffects.#distortion = v
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		U_INT[0] = v ? 1 : 0
-		StaticUBOs.lensPostProcessingUBO.updateData("distortionEnabled", U_INT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("distortionEnabled", U_INT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get chromaticAberration() {
@@ -229,10 +229,10 @@ export default class CameraEffects {
 
 	static set chromaticAberration(v) {
 		CameraEffects.#chromaticAberration = v
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		U_INT[0] = v ? 1 : 0
-		StaticUBOs.lensPostProcessingUBO.updateData("chromaticAberrationEnabled", U_INT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("chromaticAberrationEnabled", U_INT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get bloom() {
@@ -241,10 +241,10 @@ export default class CameraEffects {
 
 	static set bloom(v) {
 		CameraEffects.#bloom = v
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		U_INT[0] = v ? 1 : 0
-		StaticUBOs.lensPostProcessingUBO.updateData("bloomEnabled", U_INT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("bloomEnabled", U_INT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get chromaticAberrationStrength() {
@@ -253,10 +253,10 @@ export default class CameraEffects {
 
 	static set chromaticAberrationStrength(v) {
 		CameraEffects.#chromaticAberrationStrength = v
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = v
-		StaticUBOs.lensPostProcessingUBO.updateData("chromaticAberrationIntensity", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("chromaticAberrationIntensity", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 	static get distortionStrength() {
@@ -265,10 +265,10 @@ export default class CameraEffects {
 
 	static set distortionStrength(v) {
 		CameraEffects.#distortionStrength = v
-		StaticUBOs.lensPostProcessingUBO.bind()
+		StaticUBOState.lensPostProcessingUBO.bind()
 		FLOAT[0] = v
-		StaticUBOs.lensPostProcessingUBO.updateData("distortionIntensity", FLOAT)
-		StaticUBOs.lensPostProcessingUBO.unbind()
+		StaticUBOState.lensPostProcessingUBO.updateData("distortionIntensity", FLOAT)
+		StaticUBOState.lensPostProcessingUBO.unbind()
 	}
 
 }

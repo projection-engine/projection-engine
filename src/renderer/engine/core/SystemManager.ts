@@ -1,9 +1,9 @@
 import AbstractSingleton from "./AbstractSingleton";
-import DynamicMap from "./resource-libs/DynamicMap";
+import DynamicMap from "./lib/DynamicMap";
 import AbstractSystem from "./AbstractSystem";
 import {UUID} from "crypto";
 import PhysicsSystem from "./system/PhysicsSystem";
-import EngineState from "./EngineState";
+import EngineState from "./states/EngineState";
 
 export default class SystemManager extends AbstractSingleton {
     #executionQueue = new DynamicMap<UUID, AbstractSystem>()

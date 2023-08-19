@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import EngineState from "../../../../../engine/core/EngineState";
+    import EngineState from "@engine-core/states/EngineState";
     import PerformanceMetricsSystem from "../PerformanceMetricsSystem";
     import SystemManager from "../../../../../engine/core/SystemManager";
 

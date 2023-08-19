@@ -1,14 +1,14 @@
 import {mat4, vec3} from "gl-matrix"
 import ShadowProbe from "../instances/ShadowProbe"
 import GPU from "../GPU"
-import StaticShaders from "../lib/StaticShaders"
+import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import loopMeshes from "./loop-meshes"
 import Mesh from "../instances/Mesh"
 import AbstractSystem from "../AbstractSystem";
-import EngineState from "../EngineState";
+import EngineState from "../states/EngineState";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import CullingComponent from "@engine-core/components/CullingComponent";
 import Material from "@engine-core/instances/Material";
@@ -84,7 +84,7 @@ export default class OShadowsSystem extends AbstractSystem {
         const distanceFromLight = vec3.length(cacheVec3)
         if (distanceFromLight > currentEntity.lightComponent.cutoff)
             return
-        StaticShaders.omniDirectShadows.bindForUse({
+        StaticShadersState.omniDirectShadows.bindForUse({
             farPlane: currentEntity.lightComponent.zFar,
             viewMatrix: cacheViewMatrix,
             transformMatrix: transformComponent.matrix,

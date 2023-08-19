@@ -1,7 +1,6 @@
 import GPU from "../GPU"
-import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper"
-import StaticShaders from "../lib/StaticShaders"
-import StaticMeshes from "../lib/StaticMeshes"
+import StaticShadersState from "../states/StaticShadersState"
+import StaticMeshesState from "../states/StaticMeshesState"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
@@ -14,14 +13,14 @@ import CullingComponent from "@engine-core/components/CullingComponent";
 
 export default class SpriteRenderer extends AbstractSystem{
     shouldExecute(): boolean {
-        return ResourceEntityMapper.withComponent(Components.SPRITE).size > 0
+        return EntityManager.withComponent(Components.SPRITE).size > 0
     }
 
     execute() {
-        const sprites = ResourceEntityMapper.withComponent(Components.SPRITE).array
+        const sprites = EntityManager.withComponent(Components.SPRITE).array
         const size = sprites.length
         const context = GPU.context
-        StaticShaders.sprite.bind()
+        StaticShadersState.sprite.bind()
         context.activeTexture(context.TEXTURE0)
         for (let i = 0; i < size; i++) {
             this.#render(sprites[i])
@@ -37,7 +36,7 @@ export default class SpriteRenderer extends AbstractSystem{
         const transform = components.get(Components.TRANSFORMATION) as TransformationComponent
         if (!transform || culling.isDistanceCulled || !EntityManager.isEntityEnabled(entity) || culling?.isScreenDoorEnabled)
             return
-        const uniforms = StaticShaders.spriteUniforms
+        const uniforms = StaticShadersState.spriteUniforms
         const texture = GPU.textures.get(sprite.imageID)
         if (!texture)
             return
@@ -48,6 +47,6 @@ export default class SpriteRenderer extends AbstractSystem{
         context.uniform2fv(uniforms.attributes, sprite.attributes)
 
         GPUUtil.bind2DTextureForDrawing(uniforms.iconSampler, 0, texture.texture)
-        StaticMeshes.drawQuad()
+        StaticMeshesState.drawQuad()
     }
 }

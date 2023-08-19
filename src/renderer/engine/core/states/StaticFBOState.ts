@@ -1,13 +1,13 @@
 import GPU from "../GPU"
 import Framebuffer from "../instances/Framebuffer"
-import ImageProcessor from "./math/ImageProcessor"
-import StaticUBOs from "./StaticUBOs"
-import EngineState from "../EngineState"
+import ImageProcessor from "../lib/math/ImageProcessor"
+import StaticUBOState from "./StaticUBOState"
+import EngineState from "./EngineState"
 import {ImageWorkerActions,} from "@engine-core/engine.enum";
 
 const RESOLUTION = 4
 
-export default class StaticFBO {
+export default class StaticFBOState {
 	static visibility?: Framebuffer
 	static sceneDepthVelocity?: WebGLTexture
 	static entityIDSampler?: WebGLTexture
@@ -44,14 +44,14 @@ export default class StaticFBO {
 	static #initialized = false
 
 	static initialize() {
-		if (StaticFBO.#initialized)
+		if (StaticFBOState.#initialized)
 			return
-		StaticFBO.#initialized = true
+		StaticFBOState.#initialized = true
 		const context = GPU.context
 		const halfResW = GPU.internalResolution.w / 2
 		const halfResH = GPU.internalResolution.h / 2
 
-		StaticFBO.visibility = (new Framebuffer())
+		StaticFBOState.visibility = (new Framebuffer())
 			.texture({
 				attachment: 0,
 				precision: context.RGBA32F,
@@ -68,8 +68,8 @@ export default class StaticFBO {
 			.depthTest()
 
 
-		StaticFBO.postProcessing1 = new Framebuffer().texture()
-		StaticFBO.postProcessing2 = new Framebuffer().texture().depthTest()
+		StaticFBOState.postProcessing1 = new Framebuffer().texture()
+		StaticFBOState.postProcessing2 = new Framebuffer().texture().depthTest()
 
 		const linearTexture = {
 			linear: true,
@@ -78,8 +78,8 @@ export default class StaticFBO {
 			type: context.UNSIGNED_BYTE
 		}
 
-		StaticFBO.ssgi = new Framebuffer(halfResW, halfResH).texture(linearTexture)
-		StaticFBO.ssgiFallback = new Framebuffer(halfResW, halfResH).texture(linearTexture)
+		StaticFBOState.ssgi = new Framebuffer(halfResW, halfResH).texture(linearTexture)
+		StaticFBOState.ssgiFallback = new Framebuffer(halfResW, halfResH).texture(linearTexture)
 
 		const SSAO_SETTINGS = {
 			linear: true,
@@ -87,9 +87,9 @@ export default class StaticFBO {
 			format: context.RED,
 			type: context.UNSIGNED_BYTE
 		}
-		StaticFBO.ssao = new Framebuffer(halfResW, halfResH).texture(SSAO_SETTINGS)
-		StaticFBO.ssaoBlurred = new Framebuffer(halfResW, halfResH).texture(SSAO_SETTINGS)
-		StaticFBO.lens = new Framebuffer().texture()
+		StaticFBOState.ssao = new Framebuffer(halfResW, halfResH).texture(SSAO_SETTINGS)
+		StaticFBOState.ssaoBlurred = new Framebuffer(halfResW, halfResH).texture(SSAO_SETTINGS)
+		StaticFBOState.lens = new Framebuffer().texture()
 
 
 		const Q = 7
@@ -97,33 +97,33 @@ export default class StaticFBO {
 		for (let i = 0; i < Q; i++) {
 			w /= 2
 			h /= 2
-			StaticFBO.downscaleBloom.push((new Framebuffer(w, h)).texture(linearTexture))
+			StaticFBOState.downscaleBloom.push((new Framebuffer(w, h)).texture(linearTexture))
 		}
 		for (let i = 0; i < (Q / 2 - 1); i++) {
 			w *= 4
 			h *= 4
-			StaticFBO.upscaleBloom.push((new Framebuffer(w, h)).texture(linearTexture))
+			StaticFBOState.upscaleBloom.push((new Framebuffer(w, h)).texture(linearTexture))
 		}
 
-		StaticFBO.ssaoBlurredSampler = StaticFBO.ssaoBlurred.colors[0]
-		StaticFBO.ssaoSampler = StaticFBO.ssao.colors[0]
-		StaticFBO.ssgiSampler = StaticFBO.ssgi.colors[0]
-		StaticFBO.ssgiFallbackSampler = StaticFBO.ssgiFallback.colors[0]
-		StaticFBO.sceneDepthVelocity = StaticFBO.visibility.colors[0]
-		StaticFBO.entityIDSampler = StaticFBO.visibility.colors[1]
-		StaticFBO.postProcessing1Sampler = StaticFBO.postProcessing1.colors[0]
-		StaticFBO.postProcessing2Sampler = StaticFBO.postProcessing2.colors[0]
-		StaticFBO.lensSampler = StaticFBO.lens.colors[0]
+		StaticFBOState.ssaoBlurredSampler = StaticFBOState.ssaoBlurred.colors[0]
+		StaticFBOState.ssaoSampler = StaticFBOState.ssao.colors[0]
+		StaticFBOState.ssgiSampler = StaticFBOState.ssgi.colors[0]
+		StaticFBOState.ssgiFallbackSampler = StaticFBOState.ssgiFallback.colors[0]
+		StaticFBOState.sceneDepthVelocity = StaticFBOState.visibility.colors[0]
+		StaticFBOState.entityIDSampler = StaticFBOState.visibility.colors[1]
+		StaticFBOState.postProcessing1Sampler = StaticFBOState.postProcessing1.colors[0]
+		StaticFBOState.postProcessing2Sampler = StaticFBOState.postProcessing2.colors[0]
+		StaticFBOState.lensSampler = StaticFBOState.lens.colors[0]
 
-		StaticFBO.updateDirectionalShadowsFBO()
+		StaticFBOState.updateDirectionalShadowsFBO()
 	}
 
 	static updateDirectionalShadowsFBO() {
 		const context = GPU.context
-		if (StaticFBO.shadows)
-			context.deleteTexture(StaticFBO.shadows.depthSampler)
-		StaticFBO.shadows = new Framebuffer(EngineState.shadowMapResolution, EngineState.shadowMapResolution).depthTexture()
-		StaticFBO.shadowsSampler = StaticFBO.shadows.depthSampler
+		if (StaticFBOState.shadows)
+			context.deleteTexture(StaticFBOState.shadows.depthSampler)
+		StaticFBOState.shadows = new Framebuffer(EngineState.shadowMapResolution, EngineState.shadowMapResolution).depthTexture()
+		StaticFBOState.shadowsSampler = StaticFBOState.shadows.depthSampler
 	}
 
 	static async generateSSAONoise() {
@@ -133,12 +133,12 @@ export default class StaticFBO {
 			{w: RESOLUTION, h: RESOLUTION}
 		)
 
-		StaticUBOs.ssaoUBO.bind()
-		StaticUBOs.ssaoUBO.updateData("samples", kernels)
-		StaticUBOs.ssaoUBO.unbind()
-		StaticFBO.noiseSampler = context.createTexture()
+		StaticUBOState.ssaoUBO.bind()
+		StaticUBOState.ssaoUBO.updateData("samples", kernels)
+		StaticUBOState.ssaoUBO.unbind()
+		StaticFBOState.noiseSampler = context.createTexture()
 
-		context.bindTexture(context.TEXTURE_2D, StaticFBO.noiseSampler)
+		context.bindTexture(context.TEXTURE_2D, StaticFBOState.noiseSampler)
 		context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, context.NEAREST)
 		context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, context.NEAREST)
 		context.texParameteri(context.TEXTURE_2D, context.TEXTURE_WRAP_S, context.REPEAT)

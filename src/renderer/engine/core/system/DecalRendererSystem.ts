@@ -1,8 +1,7 @@
 import GPU from "../GPU"
-import UberMaterialAttributeGroup from "../resource-libs/UberMaterialAttributeGroup";
-import UberShader from "../resource-libs/UberShader";
-import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper";
-import StaticMeshes from "../lib/StaticMeshes";
+import UberMaterialAttributeGroup from "../lib/UberMaterialAttributeGroup";
+import UberShader from "../lib/UberShader";
+import StaticMeshesState from "../states/StaticMeshesState";
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 import SceneRenderingUtil from "./SceneRenderingUtil";
@@ -15,12 +14,12 @@ import TransformationComponent from "@engine-core/components/TransformationCompo
 export default class DecalRendererSystem extends AbstractSystem{
 
     shouldExecute(): boolean {
-        return ResourceEntityMapper.withComponent(Components.DECAL).size > 0;
+        return EntityManager.withComponent(Components.DECAL).size > 0;
     }
 
     execute() {
         SceneRenderingUtil.bindGlobalResources()
-        const toRender = ResourceEntityMapper.withComponent(Components.DECAL).array
+        const toRender = EntityManager.withComponent(Components.DECAL).array
         const size = toRender.length
         const context = GPU.context
         const uniforms = UberShader.uberUniforms
@@ -29,7 +28,7 @@ export default class DecalRendererSystem extends AbstractSystem{
         context.disable(context.CULL_FACE)
         UberMaterialAttributeGroup.clear()
         context.uniform1i(uniforms.isDecalPass, 1)
-        StaticMeshes.cube.bindAllResources()
+        StaticMeshesState.cube.bindAllResources()
         for (let i = 0; i < size; i++) {
             const entity = toRender[i]
             const components = EntityManager.getAllComponentsMap(entity)
@@ -47,7 +46,7 @@ export default class DecalRendererSystem extends AbstractSystem{
             context.uniformMatrix4fv(uniforms.materialAttributes, false, UberMaterialAttributeGroup.data)
             context.uniformMatrix4fv(uniforms.modelMatrix, false, transformationComponent.matrix)
 
-            StaticMeshes.cube.draw()
+            StaticMeshesState.cube.draw()
         }
         context.enable(context.DEPTH_TEST)
     }

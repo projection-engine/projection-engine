@@ -1,4 +1,4 @@
-import DynamicMap from "../../../engine/core/resource-libs/DynamicMap"
+import DynamicMap from "@engine-core/lib/DynamicMap"
 import AbstractSingleton from "../../../engine/core/AbstractSingleton"
 
 export default class AbstractStore extends AbstractSingleton {

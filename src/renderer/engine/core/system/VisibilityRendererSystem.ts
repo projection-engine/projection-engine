@@ -2,17 +2,16 @@ import GPU from "../GPU"
 import CameraAPI from "../lib/utils/CameraAPI"
 import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI"
 import {mat4} from "gl-matrix"
-import StaticShaders from "../lib/StaticShaders"
-import StaticFBO from "../lib/StaticFBO"
-import ResourceEntityMapper from "../resource-libs/ResourceEntityMapper"
-import StaticMeshes from "../lib/StaticMeshes"
+import StaticShadersState from "../states/StaticShadersState"
+import StaticFBOState from "../states/StaticFBOState"
+import StaticMeshesState from "../states/StaticMeshesState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsController from "../lib/utils/MetricsController"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import loopMeshes from "./loop-meshes"
 import Mesh from "../instances/Mesh"
 import AbstractSystem from "../AbstractSystem";
-import EngineState from "../EngineState";
+import EngineState from "../states/EngineState";
 import Material from "@engine-core/instances/Material";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import {Components} from "@engine-core/engine.enum";
@@ -26,7 +25,7 @@ export default class VisibilityRendererSystem extends AbstractSystem {
     #isSecondPass = false
 
     #bindUniforms() {
-        uniforms = StaticShaders.visibilityUniforms
+        uniforms = StaticShadersState.visibilityUniforms
         VP = CameraAPI.cameraMotionBlur ? CameraAPI.previousViewProjectionMatrix : CameraAPI.viewProjectionMatrix
         context.uniformMatrix4fv(uniforms.viewProjection, false, CameraAPI.viewProjectionMatrix)
         context.uniformMatrix4fv(uniforms.previousViewProjection, false, VP)
@@ -36,7 +35,7 @@ export default class VisibilityRendererSystem extends AbstractSystem {
     }
 
     #drawSprites() {
-        const toRender = ResourceEntityMapper.withComponent(Components.SPRITE).array
+        const toRender = EntityManager.withComponent(Components.SPRITE).array
         const size = toRender.length
         if (size === 0)
             return
@@ -68,7 +67,7 @@ export default class VisibilityRendererSystem extends AbstractSystem {
             context.uniformMatrix4fv(uniforms.modelMatrix, false, transform.matrix)
             context.uniformMatrix4fv(uniforms.previousModelMatrix, false, transform.previousModelMatrix)
 
-            StaticMeshes.drawQuad()
+            StaticMeshesState.drawQuad()
         }
         context.enable(context.CULL_FACE)
     }
@@ -88,14 +87,14 @@ export default class VisibilityRendererSystem extends AbstractSystem {
             this.#isSecondPass = false
         }
 
-        StaticShaders.visibility.bind()
-        StaticFBO.visibility.startMapping()
+        StaticShadersState.visibility.bind()
+        StaticFBOState.visibility.startMapping()
         this.#bindUniforms()
         entityMetadata[5] = 0
         loopMeshes(this.#loop)
 
         this.#drawSprites()
-        StaticFBO.visibility.stopMapping()
+        StaticFBOState.visibility.stopMapping()
         MetricsController.currentState = METRICS_FLAGS.VISIBILITY
 
         EngineState.shouldAOExecute = true

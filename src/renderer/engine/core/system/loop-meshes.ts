@@ -1,5 +1,4 @@
 import {Components} from "@engine-core/engine.enum";
-import ResourceEntityMapper from "@engine-core/resource-libs/ResourceEntityMapper";
 import EntityManager from "@engine-core/EntityManager";
 import MeshComponent from "@engine-core/components/MeshComponent";
 import CullingComponent from "@engine-core/components/CullingComponent";
@@ -8,7 +7,7 @@ import Mesh from "@engine-core/instances/Mesh";
 import Material from "@engine-core/instances/Material";
 
 export default function loopMeshes(callback: (param1: EngineEntity, param2: Mesh, param3: Material, param4: TransformationComponent, param5: CullingComponent, param6: number) => void) {
-    const toRender = ResourceEntityMapper.withComponent(Components.MESH).array
+    const toRender = EntityManager.withComponent(Components.MESH).array
     const size = toRender.length
     if (size === 0)
         return
