@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
@@ -20,7 +20,7 @@ export default class CompositionSystem extends AbstractSystem {
         StaticUBOState.frameCompositionUBO.updateData("FXAASpanMax", new Float32Array([8.0]))
         StaticUBOState.frameCompositionUBO.updateData("FXAAReduceMin", new Float32Array([1.0 / 128.0]))
         StaticUBOState.frameCompositionUBO.updateData("FXAAReduceMul", new Float32Array([1.0 / 8.0]))
-        StaticUBOState.frameCompositionUBO.updateData("inverseFilterTextureSize", new Float32Array([1 / GPU.internalResolution.w, 1 / GPU.internalResolution.h]))
+        StaticUBOState.frameCompositionUBO.updateData("inverseFilterTextureSize", new Float32Array([1 / GPUState.internalResolution.w, 1 / GPUState.internalResolution.h]))
         StaticUBOState.frameCompositionUBO.unbind()
 
         for (let i = 0; i < this.#lookUpRandom.length; i++) {
@@ -33,7 +33,7 @@ export default class CompositionSystem extends AbstractSystem {
     }
 
     execute() {
-        const context = GPU.context
+        const context = GPUState.context
         const shader = StaticShadersState.composition, uniforms = StaticShadersState.compositionUniforms
 
         this.#currentNoise = this.#lookup()

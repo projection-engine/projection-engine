@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import GPUManager from "./GPUManager"
 
 import EngineFileSystemManager from "./EngineFileSystemManager"
@@ -44,7 +44,7 @@ export default class MaterialManager {
                 if (texturesInUse[textureID] || !EngineFileSystemManager.isReady)
                     continue
                 try {
-                    const exists = GPU.textures.get(textureID)
+                    const exists = GPUState.textures.get(textureID)
                     if (exists) {
                         texturesInUse[textureID] = {texture: exists, key: currentUniform.key}
                         uniformValues[currentUniform.key] = exists

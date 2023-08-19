@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
@@ -19,7 +19,7 @@ export default class DShadowsSystem extends AbstractSystem {
     }
 
     execute() {
-        const context = GPU.context
+        const context = GPUState.context
         context.cullFace(context.FRONT)
         let currentColumn = 0, currentRow = 0
         StaticFBOState.shadows.startMapping()
@@ -61,7 +61,7 @@ export default class DShadowsSystem extends AbstractSystem {
     }
 
     #loopMeshes(light: LightComponent) {
-        const context = GPU.context
+        const context = GPUState.context
         const toRender = EntityManager.withComponent(Components.MESH).array
         const size = toRender.length
         for (let m = 0; m < size; m++) {

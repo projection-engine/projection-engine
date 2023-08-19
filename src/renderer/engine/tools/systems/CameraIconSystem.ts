@@ -1,6 +1,6 @@
 import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import {mat4} from "gl-matrix"
 import EditorEntity from "../EditorEntity"
 import EngineToolsState from "../EngineToolsState"
@@ -42,7 +42,7 @@ export default class CameraIconSystem extends AbstractSystem {
     execute() {
         const uniforms = StaticEditorShaders.wireframeUniforms
         const arr = EntityManager.withComponent(Components.CAMERA).array
-        const context = GPU.context
+        const context = GPUState.context
         const size = arr.length
         StaticEditorShaders.wireframe.bind()
         GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBOState.sceneDepthVelocity)

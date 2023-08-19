@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import AbstractSystem from "@engine-core/AbstractSystem";
 import EngineState from "@engine-core/states/EngineState";
 import GPUManager from "@engine-core/managers/GPUManager";
@@ -13,8 +13,8 @@ export default class GarbageCollectorSystem extends AbstractSystem {
     }
 
     execute() {
-        const meshes = GPU.meshes.array
-        const textures = GPU.textures.array
+        const meshes = GPUState.meshes.array
+        const textures = GPUState.textures.array
 
         for (let i = 0; i < meshes.length; i++) {
             const mesh = meshes[i];

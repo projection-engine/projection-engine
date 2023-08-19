@@ -7,7 +7,7 @@ import EditorCameraSystem from "./systems/EditorCameraSystem"
 import WireframeSystem from "./systems/WireframeSystem"
 import LineRenderer from "./systems/LineRenderer"
 import EditorEntity from "./EditorEntity"
-import GPU from "../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import StaticEditorMeshes from "./utils/StaticEditorMeshes"
 import StaticEditorShaders from "./utils/StaticEditorShaders"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
@@ -68,13 +68,13 @@ export default class EngineTools {
     }
 
     static drawIconsToBuffer() {
-        GPU.context.disable(GPU.context.DEPTH_TEST)
+        GPUState.context.disable(GPUState.context.DEPTH_TEST)
         StaticFBOState.visibility.use()
         StaticEditorShaders.iconToDepth.bind()
         GPUUtil.bind2DTextureForDrawing(StaticEditorShaders.iconToDepthUniforms.image, 0, IconsSystem.iconsTexture)
         IconsSystem.loop(IconsSystem.drawIcon, StaticEditorShaders.iconToDepthUniforms)
         StaticFBOState.visibility.stopMapping()
-        GPU.context.enable(GPU.context.DEPTH_TEST)
+        GPUState.context.enable(GPUState.context.DEPTH_TEST)
     }
 
     static bindSystems() {

@@ -1,4 +1,4 @@
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
@@ -24,7 +24,7 @@ export default class SelectedSystem extends AbstractSystem {
 
     execute() {
         const length = EngineTools.selected.length
-        const context = GPU.context
+        const context = GPUState.context
         const uniforms = StaticEditorShaders.silhouetteUniforms
         const metadata = SelectedSystem.#METADATA
 
@@ -39,7 +39,7 @@ export default class SelectedSystem extends AbstractSystem {
                 continue
             const sprite = current.getComponent<SpriteComponent>(Components.SPRITE)
             const meshComponent = current.getComponent<MeshComponent>(Components.MESH)
-            const mesh = meshComponent && meshComponent.meshID ? GPU.meshes.get(meshComponent.meshID) : undefined
+            const mesh = meshComponent && meshComponent.meshID ? GPUState.meshes.get(meshComponent.meshID) : undefined
             const pId = EntityManager.getEntityPickVec3(current.id)
             metadata[6] = pId[0]
             metadata[7] = pId[1]

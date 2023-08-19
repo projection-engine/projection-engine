@@ -1,5 +1,5 @@
 import AbstractSystem from "../../core/AbstractSystem";
-import GPU from "../../core/GPU";
+import GPUState from "@engine-core/states/GPUState";
 import StaticEditorShaders from "../utils/StaticEditorShaders";
 import EngineToolsState from "../EngineToolsState";
 import GPUUtil from "../../core/utils/GPUUtil";
@@ -11,11 +11,11 @@ export default class SilhouetteSystem extends AbstractSystem {
     static #FALLBACK_COLOR = new Float32Array([.5, .5, .5])
 
     execute() {
-        const context = GPU.context
+        const context = GPUState.context
 
         StaticEditorShaders.outline.bind()
         const outlineShaderUniforms = StaticEditorShaders.outlineUniforms
-        context.uniform2fv(outlineShaderUniforms.bufferSize, GPU.bufferResolution)
+        context.uniform2fv(outlineShaderUniforms.bufferSize, GPUState.bufferResolution)
         context.uniform1f(outlineShaderUniforms.outlineWidth, EngineToolsState.outlineWidth)
         if (EngineToolsState.showOutline) {
             GPUUtil.bind2DTextureForDrawing(outlineShaderUniforms.silhouette, 0, StaticFBOState.entityIDSampler)

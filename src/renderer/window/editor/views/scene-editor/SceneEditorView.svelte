@@ -15,7 +15,7 @@
     import GizmoSettings from "./components/GizmoSettings.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
-    import GPU from "../../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
     import CameraManager from "@engine-core/managers/CameraManager"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
@@ -70,7 +70,7 @@
         <SceneOptions {isOnGizmo}/>
     </ViewHeader>
     <SelectBox
-            targetElement={GPU.canvas}
+            targetElement={GPUState.canvas}
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}
             setSelected={SceneEditorUtil.getUnderSelectionBox}

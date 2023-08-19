@@ -1,5 +1,5 @@
 import LineRenderingManager from "@engine-core/managers/LineRenderingManager"
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import GPUUtil from "../../core/utils/GPUUtil";
@@ -32,38 +32,38 @@ export default class LineRenderer {
 		if (finished) {
 			StaticEditorShaders.line.bind()
 
-			GPU.context.uniform1i(lineUniforms.darker, darker)
-			GPU.context.uniform1f(lineUniforms.size, size)
-			GPU.context.uniform1i(lineUniforms.atOrigin, atOrigin)
+			GPUState.context.uniform1i(lineUniforms.darker, darker)
+			GPUState.context.uniform1f(lineUniforms.size, size)
+			GPUState.context.uniform1i(lineUniforms.atOrigin, atOrigin)
 
 			GPUUtil.bind2DTextureForDrawing(lineUniforms.sceneDepth, 0, StaticFBOState.sceneDepthVelocity)
 			finished = false
 		} else if (needsStateUpdate) {
-			GPU.context.uniform1i(lineUniforms.darker, darker)
-			GPU.context.uniform1f(lineUniforms.size, size)
-			GPU.context.uniform1i(lineUniforms.atOrigin, atOrigin)
+			GPUState.context.uniform1i(lineUniforms.darker, darker)
+			GPUState.context.uniform1f(lineUniforms.size, size)
+			GPUState.context.uniform1i(lineUniforms.atOrigin, atOrigin)
 			needsStateUpdate = false
 		}
 	}
 
 	static drawX(matrix) {
 		LineRenderer.#bind()
-		GPU.context.uniform3fv(lineUniforms.axis, X)
-		GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
+		GPUState.context.uniform3fv(lineUniforms.axis, X)
+		GPUState.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
 		LineRenderingManager.drawX()
 	}
 
 	static drawY(matrix) {
 		LineRenderer.#bind()
-		GPU.context.uniform3fv(lineUniforms.axis, Y)
-		GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
+		GPUState.context.uniform3fv(lineUniforms.axis, Y)
+		GPUState.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
 		LineRenderingManager.drawY()
 	}
 
 	static drawZ(matrix) {
 		LineRenderer.#bind()
-		GPU.context.uniform3fv(lineUniforms.axis, Z)
-		GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
+		GPUState.context.uniform3fv(lineUniforms.axis, Z)
+		GPUState.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
 		LineRenderingManager.drawZ()
 	}
 }

@@ -1,9 +1,9 @@
-import GPU from "../GPU"
+import GPUState from "./GPUState"
 import VertexBuffer from "@engine-core/lib/resources/VertexBuffer"
 
 import Mesh from "@engine-core/lib/resources/Mesh"
 import GPUManager from "../managers/GPUManager"
-import EmbeddedMeshes from "../static/EmbeddedMeshes"
+import {EmbeddedMeshes} from "@engine-core/engine.enum";
 
 export default class StaticMeshesState {
 	static #initialized = false
@@ -27,18 +27,18 @@ export default class StaticMeshesState {
 			StaticMeshesState.cylinder = GPUManager.allocateMesh(EmbeddedMeshes.CYLINDER, CYLINDER)
 			StaticMeshesState.plane = GPUManager.allocateMesh(EmbeddedMeshes.PLANE, PLANE)
 			StaticMeshesState.quad = new Mesh({...QUAD, id: "QUAD"})
-			StaticMeshesState.cubeBuffer = new VertexBuffer(0, new Float32Array(CUBE_LINEAR), GPU.context.ARRAY_BUFFER, 3, GPU.context.FLOAT, false, undefined, 0)
+			StaticMeshesState.cubeBuffer = new VertexBuffer(0, new Float32Array(CUBE_LINEAR), GPUState.context.ARRAY_BUFFER, 3, GPUState.context.FLOAT, false, undefined, 0)
 		} catch (err) {
 			console.error(err)
 		}
 	}
 	static drawQuad(){
 		const q = StaticMeshesState.quad
-		const last = GPU.activeMesh
+		const last = GPUState.activeMesh
 		if (last && last !== q)
 			last.finish()
 		q.bindEssentialResources()
-		GPU.context.drawElements(GPU.context.TRIANGLES, q.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
-		GPU.activeMesh = q
+		GPUState.context.drawElements(GPUState.context.TRIANGLES, q.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
+		GPUState.activeMesh = q
 	}
 }

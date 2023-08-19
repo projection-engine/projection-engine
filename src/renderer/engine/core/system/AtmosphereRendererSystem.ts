@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import MetricsManager from "../managers/MetricsManager"
@@ -20,7 +20,7 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
     execute() {
         const entities = EntityManager.withComponent(Components.ATMOSPHERE).array
         const size = entities.length
-        const context = GPU.context
+        const context = GPUState.context
         StaticShadersState.atmosphere.bind()
         context.disable(context.DEPTH_TEST)
         context.uniformMatrix4fv(StaticShadersState.atmosphereUniforms.invSkyProjectionMatrix, false, CameraManager.invSkyboxProjectionMatrix)
@@ -33,7 +33,7 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
 
     #render(entity: EngineEntity) {
         const uniforms = StaticShadersState.atmosphereUniforms
-        const context = GPU.context
+        const context = GPUState.context
         const component = EntityManager.getComponent<AtmosphereComponent>(entity, Components.ATMOSPHERE)
         if (EntityManager.isEntityEnabled(entity)) {
             AtmosphereRendererSystem.#bindResources(resources, component)

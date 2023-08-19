@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "./GPUState"
 import Framebuffer from "@engine-core/lib/resources/Framebuffer"
 import ImageProcessor from "../lib/math/ImageProcessor"
 import StaticUBOState from "./StaticUBOState"
@@ -47,9 +47,9 @@ export default class StaticFBOState {
 		if (StaticFBOState.#initialized)
 			return
 		StaticFBOState.#initialized = true
-		const context = GPU.context
-		const halfResW = GPU.internalResolution.w / 2
-		const halfResH = GPU.internalResolution.h / 2
+		const context = GPUState.context
+		const halfResW = GPUState.internalResolution.w / 2
+		const halfResH = GPUState.internalResolution.h / 2
 
 		StaticFBOState.visibility = (new Framebuffer())
 			.texture({
@@ -93,7 +93,7 @@ export default class StaticFBOState {
 
 
 		const Q = 7
-		let w = GPU.internalResolution.w, h = GPU.internalResolution.h
+		let w = GPUState.internalResolution.w, h = GPUState.internalResolution.h
 		for (let i = 0; i < Q; i++) {
 			w /= 2
 			h /= 2
@@ -119,7 +119,7 @@ export default class StaticFBOState {
 	}
 
 	static updateDirectionalShadowsFBO() {
-		const context = GPU.context
+		const context = GPUState.context
 		if (StaticFBOState.shadows)
 			context.deleteTexture(StaticFBOState.shadows.depthSampler)
 		StaticFBOState.shadows = new Framebuffer(EngineState.shadowMapResolution, EngineState.shadowMapResolution).depthTexture()
@@ -127,7 +127,7 @@ export default class StaticFBOState {
 	}
 
 	static async generateSSAONoise() {
-		const context = GPU.context
+		const context = GPUState.context
 		const {kernels, noise} = await ImageProcessor.request(
 			ImageWorkerActions.NOISE_DATA,
 			{w: RESOLUTION, h: RESOLUTION}

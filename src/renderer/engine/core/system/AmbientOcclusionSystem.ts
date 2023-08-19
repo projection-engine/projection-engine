@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
@@ -16,8 +16,8 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
 
     constructor() {
         super();
-        this.#noiseScale[0] = GPU.internalResolution.w / 4
-        this.#noiseScale[1] = GPU.internalResolution.h / 4
+        this.#noiseScale[0] = GPUState.internalResolution.w / 4
+        this.#noiseScale[1] = GPUState.internalResolution.h / 4
 
         StaticUBOState.ssaoUBO.bind()
         StaticUBOState.ssaoUBO.updateData("settings", new Float32Array([.5, .7, -.1, 1000]))
@@ -48,7 +48,7 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
 
         GPUUtil.bind2DTextureForDrawing(StaticShadersState.ssaoUniforms.noiseSampler, 1, StaticFBOState.noiseSampler)
 
-        GPU.context.uniform1i(StaticShadersState.ssaoUniforms.maxSamples, EngineState.ssaoMaxSamples)
+        GPUState.context.uniform1i(StaticShadersState.ssaoUniforms.maxSamples, EngineState.ssaoMaxSamples)
 
         StaticMeshesState.drawQuad()
         StaticFBOState.ssao.stopMapping()
@@ -60,7 +60,7 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
 
         GPUUtil.bind2DTextureForDrawing(StaticShadersState.boxBlurUniforms.sampler, 0, StaticFBOState.ssaoSampler)
 
-        GPU.context.uniform1i(StaticShadersState.boxBlurUniforms.samples, EngineState.ssaoBlurSamples)
+        GPUState.context.uniform1i(StaticShadersState.boxBlurUniforms.samples, EngineState.ssaoBlurSamples)
 
         StaticMeshesState.drawQuad()
         StaticFBOState.ssaoBlurred.stopMapping()

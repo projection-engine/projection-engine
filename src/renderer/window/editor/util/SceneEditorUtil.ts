@@ -1,7 +1,7 @@
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import ConversionAPI from "../../../engine/core/lib/math/ConversionAPI"
-import GPU from "../../../engine/core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import PickingUtil from "@engine-core/utils/PickingUtil"
 import EngineTools from "../../../engine/tools/EngineTools"
 import {glMatrix, quat} from "gl-matrix"
@@ -83,8 +83,8 @@ export default class SceneEditorUtil {
 		const worker = SceneEditorUtil.worker()
 		if (startCoords && endCoords) {
 			EngineTools.drawIconsToBuffer()
-			const nStart = ConversionAPI.toQuadCoordinates(startCoords.x, startCoords.y, GPU.internalResolution.w, GPU.internalResolution.h)
-			const nEnd = ConversionAPI.toQuadCoordinates(endCoords.x, endCoords.y, GPU.internalResolution.w, GPU.internalResolution.h)
+			const nStart = ConversionAPI.toQuadCoordinates(startCoords.x, startCoords.y, GPUState.internalResolution.w, GPUState.internalResolution.h)
+			const nEnd = ConversionAPI.toQuadCoordinates(endCoords.x, endCoords.y, GPUState.internalResolution.w, GPUState.internalResolution.h)
 			try {
 
 				const data = PickingUtil.readBlock(nStart, nEnd)
@@ -156,7 +156,7 @@ export default class SceneEditorUtil {
 		EditorCameraSystem.startTracking()
 		ViewportInteractionListener.get()
 		draggable.onMount({
-			targetElement: GPU.canvas,
+			targetElement: GPUState.canvas,
 			onDrop: (data, event) => EngineResourceLoaderService.load(data, false).catch(console.error),
 			onDragOver: () => `
                 <span data-svelteicon="-" style="font-size: 70px">add</span>

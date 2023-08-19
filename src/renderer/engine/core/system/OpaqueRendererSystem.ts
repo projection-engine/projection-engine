@@ -3,7 +3,7 @@ import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import SceneRenderingUtil from "./SceneRenderingUtil"
 import UberMaterialAttributeGroup from "../lib/UberMaterialAttributeGroup";
 import UberShader from "../lib/UberShader";
-import GPU from "../GPU";
+import GPUState from "../states/GPUState";
 import loopMeshes from "./loop-meshes";
 import Mesh from "@engine-core/lib/resources/Mesh";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
@@ -20,7 +20,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
 
     execute() {
         this.#isSky = this.#stateWasCleared = this.#isDoubleSided = false
-        const context = GPU.context
+        const context = GPUState.context
         UberMaterialAttributeGroup.clear()
         context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)
         loopMeshes(this.#loop)
@@ -30,7 +30,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {
 
         const uniforms = UberShader.uberUniforms
-        const context = GPU.context
+        const context = GPUState.context
         UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
         UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
 
@@ -53,7 +53,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
     }
 
     #withMaterial(entity: EngineEntity, material: Material) {
-        const context = GPU.context
+        const context = GPUState.context
         if (material.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY)
             return
         if (material.doubleSided) {
@@ -81,7 +81,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
     #withNoMaterial() {
         this.#stateWasCleared = true
         if (this.#isDoubleSided) {
-            GPU.context.enable(GPU.context.CULL_FACE)
+            GPUState.context.enable(GPUState.context.CULL_FACE)
             this.#isDoubleSided = false
         }
 

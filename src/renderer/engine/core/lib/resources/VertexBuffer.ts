@@ -1,5 +1,5 @@
 import GPUManager from "../../managers/GPUManager"
-import GPU from "../../GPU"
+import GPUState from "../../states/GPUState"
 
 export default class VertexBuffer  implements IResource {
 	private readonly id: WebGLBuffer
@@ -13,14 +13,14 @@ export default class VertexBuffer  implements IResource {
 	constructor(index: number, data, type: number, size: number, dataType: number, normalized?: boolean, renderingType?: number, stride?: number) {
 		this.id = GPUManager.createBuffer(type, data, renderingType)
 
-		GPU.context.vertexAttribPointer(
+		GPUState.context.vertexAttribPointer(
 			index,
 			size,
 			dataType,
 			normalized,
 			stride||0,
 			0)
-		GPU.context.bindBuffer(type, null)
+		GPUState.context.bindBuffer(type, null)
 
 		this.stride = stride || 0
 		this.index = index
@@ -32,17 +32,17 @@ export default class VertexBuffer  implements IResource {
 	}
 
 	enable() {
-		GPU.context.enableVertexAttribArray(this.index)
-		GPU.context.bindBuffer(this.type, this.id)
-		GPU.context.vertexAttribPointer(this.index, this.size, this.type, this.normalized, this.stride, 0)
+		GPUState.context.enableVertexAttribArray(this.index)
+		GPUState.context.bindBuffer(this.type, this.id)
+		GPUState.context.vertexAttribPointer(this.index, this.size, this.type, this.normalized, this.stride, 0)
 	}
 
 	disable() {
-		GPU.context.disableVertexAttribArray(this.index)
-		GPU.context.bindBuffer(this.type, null)
+		GPUState.context.disableVertexAttribArray(this.index)
+		GPUState.context.bindBuffer(this.type, null)
 	}
 
 	delete() {
-		GPU.context.deleteBuffer(this.id)
+		GPUState.context.deleteBuffer(this.id)
 	}
 }

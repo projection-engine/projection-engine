@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
@@ -33,7 +33,7 @@ export default class GlobalIlluminationSystem extends AbstractSystem {
 
     execute() {
         this.#cleared = false
-        const context = GPU.context
+        const context = GPUState.context
         const uniforms = StaticShadersState.ssgiUniforms
         StaticFBOState.ssgi.startMapping()
         StaticShadersState.ssgi.bind()

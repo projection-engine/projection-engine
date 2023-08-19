@@ -2,7 +2,7 @@ import SceneRenderingUtil from "./SceneRenderingUtil"
 import StaticFBOState from "../states/StaticFBOState"
 import UberMaterialAttributeGroup from "../lib/UberMaterialAttributeGroup";
 import UberShader from "../lib/UberShader";
-import GPU from "../GPU";
+import GPUState from "../states/GPUState";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
@@ -19,15 +19,15 @@ export default class TransparencyRendererSystem extends AbstractSystem {
         StaticFBOState.postProcessing2.stopMapping()
         loopMeshes(this.#loop)
         StaticFBOState.postProcessing2.stopMapping()
-        GPU.context.flush()
+        GPUState.context.flush()
     }
 
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent, index: number) {
         if (index === 0) {
-            GPUManager.copyTexture(StaticFBOState.postProcessing1, StaticFBOState.postProcessing2, GPU.context.COLOR_BUFFER_BIT)
+            GPUManager.copyTexture(StaticFBOState.postProcessing1, StaticFBOState.postProcessing2, GPUState.context.COLOR_BUFFER_BIT)
             StaticFBOState.postProcessing2.use()
             UberMaterialAttributeGroup.clear()
-            GPU.context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)
+            GPUState.context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)
             GPUUtil.bind2DTextureForDrawing(UberShader.uberUniforms.previousFrame, 3, StaticFBOState.postProcessing1Sampler)
         }
         if (!material || material.renderingMode !== MATERIAL_RENDERING_TYPES.TRANSPARENCY)
@@ -37,7 +37,7 @@ export default class TransparencyRendererSystem extends AbstractSystem {
 
     #renderEntity(entity: EngineEntity, mesh: Mesh, material: Material, cullingComponent: CullingComponent, transformationComponent: TransformationComponent) {
         const uniforms = UberShader.uberUniforms
-        const context = GPU.context
+        const context = GPUState.context
         UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
         UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
         UberMaterialAttributeGroup.materialID = material.bindID

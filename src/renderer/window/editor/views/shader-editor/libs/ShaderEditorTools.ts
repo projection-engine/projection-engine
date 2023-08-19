@@ -4,7 +4,7 @@ import ContentBrowserStore from "../../../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import Canvas from "./Canvas"
 import type ShaderNode from "../templates/ShaderNode"
-import GPU from "../../../../../engine/core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import UberShader from "@engine-core/lib/UberShader"
 import GPUManager from "@engine-core/managers/GPUManager"
 import NodesIndex from "../static/NODE_MAP"
@@ -98,7 +98,7 @@ export default class ShaderEditorTools {
 			}
 			await EditorFSUtil.updateAsset(openFile.registryID, JSON.stringify(materialData))
 
-			const oldMaterial = GPU.materials.get(openFile.registryID)
+			const oldMaterial = GPUState.materials.get(openFile.registryID)
 			if (oldMaterial) {
 				if (!UberShader.uberSignature[compiled[1]]) {
 					GPUManager.destroyMaterial(openFile.registryID)

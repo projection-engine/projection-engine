@@ -1,5 +1,5 @@
 import getGlslSizes from "../../utils/get-glsl-sizes"
-import GPU from "../../GPU"
+import GPUState from "../../states/GPUState"
 
 
 export default class UBO implements IResource{
@@ -27,34 +27,34 @@ export default class UBO implements IResource{
         this.blockPoint = UBO.#blockPointIncrement
         UBO.#blockPointIncrement += 1
 
-        this.buffer = GPU.context.createBuffer()
-        GPU.context.bindBuffer(GPU.context.UNIFORM_BUFFER, this.buffer)
-        GPU.context.bufferData(GPU.context.UNIFORM_BUFFER, bufferSize, GPU.context.DYNAMIC_DRAW)
-        GPU.context.bindBuffer(GPU.context.UNIFORM_BUFFER, null)
-        GPU.context.bindBufferBase(GPU.context.UNIFORM_BUFFER, this.blockPoint, this.buffer)
+        this.buffer = GPUState.context.createBuffer()
+        GPUState.context.bindBuffer(GPUState.context.UNIFORM_BUFFER, this.buffer)
+        GPUState.context.bufferData(GPUState.context.UNIFORM_BUFFER, bufferSize, GPUState.context.DYNAMIC_DRAW)
+        GPUState.context.bindBuffer(GPUState.context.UNIFORM_BUFFER, null)
+        GPUState.context.bindBufferBase(GPUState.context.UNIFORM_BUFFER, this.blockPoint, this.buffer)
     }
 
     bindWithShader(shaderProgram: WebGLProgram) {
-        GPU.context.useProgram(shaderProgram)
-        const index = GPU.context.getUniformBlockIndex(shaderProgram, this.blockName)
-        GPU.context.uniformBlockBinding(shaderProgram, index, this.blockPoint)
-        GPU.context.bindBuffer(GPU.context.UNIFORM_BUFFER, null)
+        GPUState.context.useProgram(shaderProgram)
+        const index = GPUState.context.getUniformBlockIndex(shaderProgram, this.blockName)
+        GPUState.context.uniformBlockBinding(shaderProgram, index, this.blockPoint)
+        GPUState.context.bindBuffer(GPUState.context.UNIFORM_BUFFER, null)
     }
 
     bind() {
-        GPU.context.bindBuffer(GPU.context.UNIFORM_BUFFER, this.buffer)
+        GPUState.context.bindBuffer(GPUState.context.UNIFORM_BUFFER, this.buffer)
     }
 
     unbind() {
-        GPU.context.bindBuffer(GPU.context.UNIFORM_BUFFER, null)
+        GPUState.context.bindBuffer(GPUState.context.UNIFORM_BUFFER, null)
     }
 
     updateData(name, data) {
-        GPU.context.bufferSubData(GPU.context.UNIFORM_BUFFER, this.items[name].offset, data, 0, null)
+        GPUState.context.bufferSubData(GPUState.context.UNIFORM_BUFFER, this.items[name].offset, data, 0, null)
     }
 
     updateBuffer(data) {
-        GPU.context.bufferSubData(GPU.context.UNIFORM_BUFFER, 0, data, 0, null)
+        GPUState.context.bufferSubData(GPUState.context.UNIFORM_BUFFER, 0, data, 0, null)
     }
 
     static #calculate(dataArray: UBOData[]): number {

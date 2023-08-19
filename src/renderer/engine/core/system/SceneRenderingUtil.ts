@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import Shader from "@engine-core/lib/resources/Shader"
 import Engine from "../Engine"
 import CameraManager from "../managers/CameraManager"
@@ -21,7 +21,7 @@ export default class SceneRenderingUtil {
 
 	static bindGlobalResources() {
 		const uniforms = UberShader.uberUniforms
-		const context = GPU.context
+		const context = GPUState.context
 
 		UberShader.uber.bind()
 		if (Engine.developmentMode)
@@ -34,7 +34,7 @@ export default class SceneRenderingUtil {
 		context.uniformMatrix4fv(uniforms.viewProjection, false, CameraManager.viewProjectionMatrix)
 		context.uniform3fv(uniforms.cameraPosition, CameraManager.position)
 
-		SceneRenderingUtil.#bindTexture(context, uniforms.brdf_sampler, 0, GPU.BRDF, false)
+		SceneRenderingUtil.#bindTexture(context, uniforms.brdf_sampler, 0, GPUState.BRDF, false)
 		SceneRenderingUtil.#bindTexture(context, uniforms.SSAO, 1, StaticFBOState.ssaoBlurredSampler, false)
 		SceneRenderingUtil.#bindTexture(context, uniforms.SSGI, 2, StaticFBOState.ssgiSampler, false)
 		SceneRenderingUtil.#bindTexture(context, uniforms.sceneDepth, 3, StaticFBOState.sceneDepthVelocity, false)

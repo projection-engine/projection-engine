@@ -1,4 +1,4 @@
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -14,7 +14,7 @@ export default class GridSystem extends AbstractSystem {
     }
 
     execute() {
-        const context = GPU.context
+        const context = GPUState.context
         const uniforms = StaticEditorShaders.gridUniforms
         const buffer = this.#buffer
 
@@ -29,7 +29,7 @@ export default class GridSystem extends AbstractSystem {
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 0, StaticFBOState.sceneDepthVelocity)
 
 
-        context.uniform2fv(uniforms.resolution, GPU.bufferResolution)
+        context.uniform2fv(uniforms.resolution, GPUState.bufferResolution)
 
         StaticMeshesState.plane.draw()
     }

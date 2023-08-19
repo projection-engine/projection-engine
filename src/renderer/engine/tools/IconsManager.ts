@@ -5,7 +5,7 @@ import EditorEntityManager from "./EditorEntityManager";
 import {Components, LightTypes, MaterialRenderingTypes} from "@engine-core/engine.enum";
 import EngineState from "@engine-core/states/EngineState";
 import EngineToolsState from "./EngineToolsState";
-import GPU from "@engine-core/GPU";
+import GPUState from "@engine-core/states/GPUState";
 import MeshComponent from "@engine-core/lib/components/MeshComponent";
 import LightComponent from "@engine-core/lib/components/LightComponent";
 
@@ -35,7 +35,7 @@ export default class IconsManager extends AbstractSingleton {
                 const meshComponent = entity.getComponent<MeshComponent>(Components.MESH)
                 const doesntHaveIcon = !hasLight && !hasProbe && !hasCamera && !hasDecal && !hasAtmosphere
 
-                const material = meshComponent?.materialID ? GPU.materials.get(meshComponent?.materialID) : undefined
+                const material = meshComponent?.materialID ? GPUState.materials.get(meshComponent?.materialID) : undefined
                 if (
                     EngineState.cameraEntityTarget === id ||
                     doesntHaveIcon && hasUI ||

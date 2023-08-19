@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import CameraManager from "../managers/CameraManager"
 import TransformationManager from "../managers/TransformationManager"
 import {mat4} from "gl-matrix"
@@ -78,7 +78,7 @@ export default class VisibilityRendererSystem extends AbstractSystem {
     }
 
     execute() {
-        context = GPU.context
+        context = GPUState.context
         if (!this.#isSecondPass) {
             this.#isSecondPass = true
             EngineState.visibilityNeedsUpdate = true

@@ -1,6 +1,6 @@
 import VertexBuffer from "./VertexBuffer"
 
-import GPU from "../../GPU"
+import GPUState from "../../states/GPUState"
 import GPUManager from "../../managers/GPUManager"
 import EngineState from "../../states/EngineState";
 
@@ -37,51 +37,51 @@ export default class Mesh implements IGPUResource{
 		this.trianglesQuantity = l / 3
 		this.verticesQuantity = l
 
-		this.VAO = GPU.context.createVertexArray()
-		GPU.context.bindVertexArray(this.VAO)
+		this.VAO = GPUState.context.createVertexArray()
+		GPUState.context.bindVertexArray(this.VAO)
 
-		this.indexVBO = GPUManager.createBuffer(GPU.context.ELEMENT_ARRAY_BUFFER, new Uint32Array(indices))
-		this.vertexVBO = new VertexBuffer(0, new Float32Array(vertices), GPU.context.ARRAY_BUFFER, 3, GPU.context.FLOAT, false, undefined, 0)
+		this.indexVBO = GPUManager.createBuffer(GPUState.context.ELEMENT_ARRAY_BUFFER, new Uint32Array(indices))
+		this.vertexVBO = new VertexBuffer(0, new Float32Array(vertices), GPUState.context.ARRAY_BUFFER, 3, GPUState.context.FLOAT, false, undefined, 0)
 
 		if (uvs && uvs.length > 0)
-			this.uvVBO = new VertexBuffer(1, new Float32Array(uvs), GPU.context.ARRAY_BUFFER, 2, GPU.context.FLOAT, false, undefined, 0)
+			this.uvVBO = new VertexBuffer(1, new Float32Array(uvs), GPUState.context.ARRAY_BUFFER, 2, GPUState.context.FLOAT, false, undefined, 0)
 
 		if (normals && normals.length > 0)
-			this.normalVBO = new VertexBuffer(2, new Float32Array(normals), GPU.context.ARRAY_BUFFER, 3, GPU.context.FLOAT, false, undefined, 0)
+			this.normalVBO = new VertexBuffer(2, new Float32Array(normals), GPUState.context.ARRAY_BUFFER, 3, GPUState.context.FLOAT, false, undefined, 0)
 
-		GPU.context.bindVertexArray(null)
-		GPU.context.bindBuffer(GPU.context.ELEMENT_ARRAY_BUFFER, null)
+		GPUState.context.bindVertexArray(null)
+		GPUState.context.bindBuffer(GPUState.context.ELEMENT_ARRAY_BUFFER, null)
 		this.loaded = true
 		this.lastUsed = EngineState.elapsed
 	}
 
 	static finishIfUsed() {
-		const lastUsed = GPU.activeMesh
+		const lastUsed = GPUState.activeMesh
 		if (lastUsed != null)
 			lastUsed.finish()
 	}
 
 	bindEssentialResources() {
-		const last = GPU.activeMesh
+		const last = GPUState.activeMesh
 		if (last === this)
 			return
 		// else if (last != null)
 		//     last.finish()
 
-		GPU.activeMesh = this
-		GPU.context.bindVertexArray(this.VAO)
-		GPU.context.bindBuffer(GPU.context.ELEMENT_ARRAY_BUFFER, this.indexVBO)
+		GPUState.activeMesh = this
+		GPUState.context.bindVertexArray(this.VAO)
+		GPUState.context.bindBuffer(GPUState.context.ELEMENT_ARRAY_BUFFER, this.indexVBO)
 		this.vertexVBO.enable()
 
 	}
 
 	bindAllResources() {
-		const last = GPU.activeMesh
+		const last = GPUState.activeMesh
 		if (last === this)
 			return
-		GPU.activeMesh = this
-		GPU.context.bindVertexArray(this.VAO)
-		GPU.context.bindBuffer(GPU.context.ELEMENT_ARRAY_BUFFER, this.indexVBO)
+		GPUState.activeMesh = this
+		GPUState.context.bindVertexArray(this.VAO)
+		GPUState.context.bindBuffer(GPUState.context.ELEMENT_ARRAY_BUFFER, this.indexVBO)
 		this.vertexVBO.enable()
 		if (this.normalVBO)
 			this.normalVBO.enable()
@@ -90,7 +90,7 @@ export default class Mesh implements IGPUResource{
 	}
 
 	finish() {
-		GPU.context.bindBuffer(GPU.context.ELEMENT_ARRAY_BUFFER, null)
+		GPUState.context.bindBuffer(GPUState.context.ELEMENT_ARRAY_BUFFER, null)
 		this.vertexVBO.disable()
 
 		if (this.uvVBO)
@@ -98,50 +98,50 @@ export default class Mesh implements IGPUResource{
 		if (this.normalVBO)
 			this.normalVBO.disable()
 
-		GPU.context.bindVertexArray(null)
-		GPU.activeMesh = undefined
+		GPUState.context.bindVertexArray(null)
+		GPUState.activeMesh = undefined
 	}
 
 	simplifiedDraw() {
 
 		this.bindEssentialResources()
-		GPU.context.drawElements(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
+		GPUState.context.drawElements(GPUState.context.TRIANGLES, this.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
 		this.lastUsed = EngineState.elapsed
 	}
 
 	draw() {
 		this.bindAllResources()
-		GPU.context.drawElements(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
+		GPUState.context.drawElements(GPUState.context.TRIANGLES, this.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
 		this.lastUsed = EngineState.elapsed
 	}
 
 	drawInstanced(quantity) {
 		this.bindAllResources()
-		GPU.context.drawElementsInstanced(GPU.context.TRIANGLES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0, quantity)
+		GPUState.context.drawElementsInstanced(GPUState.context.TRIANGLES, this.verticesQuantity, GPUState.context.UNSIGNED_INT, 0, quantity)
 		this.lastUsed = EngineState.elapsed
 	}
 
 	drawLineLoop() {
 		this.bindEssentialResources()
-		GPU.context.drawElements(GPU.context.LINE_LOOP, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
+		GPUState.context.drawElements(GPUState.context.LINE_LOOP, this.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
 		this.lastUsed = EngineState.elapsed
 	}
 
 	drawTriangleStrip() {
 		this.bindEssentialResources()
-		GPU.context.drawElements(GPU.context.TRIANGLE_STRIP, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
+		GPUState.context.drawElements(GPUState.context.TRIANGLE_STRIP, this.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
 		this.lastUsed = EngineState.elapsed
 	}
 
 	drawTriangleFan() {
 		this.bindEssentialResources()
-		GPU.context.drawElements(GPU.context.TRIANGLE_FAN, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
+		GPUState.context.drawElements(GPUState.context.TRIANGLE_FAN, this.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
 		this.lastUsed = EngineState.elapsed
 	}
 
 	drawLines() {
 		this.bindEssentialResources()
-		GPU.context.drawElements(GPU.context.LINES, this.verticesQuantity, GPU.context.UNSIGNED_INT, 0)
+		GPUState.context.drawElements(GPUState.context.LINES, this.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
 		this.lastUsed = EngineState.elapsed
 	}
 

@@ -3,7 +3,7 @@ import Engine from "../Engine"
 import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../lib/math/ConversionAPI"
 
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticUBOState from "../states/StaticUBOState"
 import CameraState from "../states/CameraState"
 import CameraNotificationDecoder from "../lib/CameraNotificationDecoder"
@@ -44,7 +44,7 @@ export default class CameraManager extends CameraState {
             CameraManager.projectionUBOBuffer
         ])
         new ResizeObserver(CameraManager.updateAspectRatio)
-            .observe(GPU.canvas)
+            .observe(GPUState.canvas)
 
     }
 
@@ -66,8 +66,8 @@ export default class CameraManager extends CameraState {
             const UBO = StaticUBOState.cameraProjectionUBO
 
             UBO.bind()
-            CameraManager.projectionUBOBuffer[32] = GPU.bufferResolution[0]
-            CameraManager.projectionUBOBuffer[33] = GPU.bufferResolution[1]
+            CameraManager.projectionUBOBuffer[32] = GPUState.bufferResolution[0]
+            CameraManager.projectionUBOBuffer[33] = GPUState.bufferResolution[1]
             CameraManager.projectionUBOBuffer[34] = 2.0 / Math.log2(CameraManager.projectionBuffer[0] + 1)
 
             UBO.updateBuffer(CameraManager.projectionUBOBuffer)
@@ -87,7 +87,7 @@ export default class CameraManager extends CameraState {
     }
 
     static updateAspectRatio() {
-        const bBox = GPU.canvas.getBoundingClientRect()
+        const bBox = GPUState.canvas.getBoundingClientRect()
         ConversionAPI.canvasBBox = bBox
         if (Engine.environment === Environment.DEV || CameraManager.#dynamicAspectRatio) {
             CameraManager.aspectRatio = bBox.width / bBox.height

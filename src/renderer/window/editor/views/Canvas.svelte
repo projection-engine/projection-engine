@@ -7,7 +7,7 @@
     import EngineTools from "../../../engine/tools/EngineTools"
     import EditorLevelService from "../services/engine/EditorLevelService"
     import UIManager from "@engine-core/managers/UIManager"
-    import GPU from "../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
     import EditorFSUtil from "../util/EditorFSUtil"
 
     export let initializeEditor
@@ -27,7 +27,7 @@
     		await levelServiceInstance.loadLevel(toLoad).catch(console.error)
 
     		initializeEditor()
-    		UIManager.buildUI(GPU.canvas.parentElement)
+    		UIManager.buildUI(GPUState.canvas.parentElement)
     		UIManager.hideUI()
     		EngineToolsService.get()
     	})

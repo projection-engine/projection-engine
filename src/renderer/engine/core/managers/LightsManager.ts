@@ -10,20 +10,15 @@ import AbstractSingleton from "@engine-core/AbstractSingleton";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import AtmosphereComponent from "@engine-core/lib/components/AtmosphereComponent";
 
-let lightTimeout
-const transformedNormalCache = vec3.create()
-const lightViewProjection = mat4.create()
-const quantity = new Uint8Array(1)
-/**
- * @property primaryBuffer: indexes 0-3 are reserved for [type - color - color - color]
- */
-const cache1Mat4 = mat4.create()
-const cache2Mat4 = mat4.create()
 export default class LightsManager extends AbstractSingleton {
-
+    /**
+     * indexes 0-3 are reserved for [type - color - color - color]
+     * @private
+     */
     #primaryBuffer?: Float32Array
     #secondaryBuffer?: Float32Array
     #lightsQuantity = 0
+    static #lightTimeout
 
     constructor() {
         super();
@@ -45,8 +40,8 @@ export default class LightsManager extends AbstractSingleton {
             instance.#package(keepOld)
             return
         }
-        clearTimeout(lightTimeout)
-        lightTimeout = setTimeout(() => instance.#package(keepOld), 50)
+        clearTimeout(LightsManager.#lightTimeout)
+        LightsManager.#lightTimeout = setTimeout(() => instance.#package(keepOld), 50)
     }
 
     #package(keepOld: boolean) {
@@ -100,13 +95,14 @@ export default class LightsManager extends AbstractSingleton {
             StaticUBOState.lightsUBO.unbind()
 
             StaticUBOState.uberUBO.bind()
+            const quantity = new Uint8Array(1)
             quantity[0] = Math.min(this.#lightsQuantity, UberShader.MAX_LIGHTS)
             StaticUBOState.uberUBO.updateData("lightQuantity", quantity)
             StaticUBOState.uberUBO.unbind()
         }
     }
 
-    #updateAtmosphereComponent( component: AtmosphereComponent, primaryBuffer: Float32Array, offset: number) {
+    #updateAtmosphereComponent(component: AtmosphereComponent, primaryBuffer: Float32Array, offset: number) {
         const position = component.sunDirection
         primaryBuffer[offset + 1] = component.intensity / 10
         primaryBuffer[offset + 2] = component.intensity / 10
@@ -130,6 +126,11 @@ export default class LightsManager extends AbstractSingleton {
         const color = component.fixedColor
         const position = transformationComponent.absoluteTranslation
         const attenuation = component.attenuation
+        const transformedNormalCache = vec3.create()
+        const lightViewProjection = mat4.create()
+
+        const cache1Mat4 = mat4.create()
+        const cache2Mat4 = mat4.create()
 
         primaryBuffer[offset] = component.type
         primaryBuffer[offset + 1] = color[0]

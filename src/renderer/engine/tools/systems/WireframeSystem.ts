@@ -1,4 +1,4 @@
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import {mat4, vec3} from "gl-matrix"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -22,7 +22,7 @@ export default class WireframeSystem extends AbstractSystem {
 
     execute() {
         const uniforms = StaticEditorShaders.wireframeUniforms
-        const context = GPU.context
+        const context = GPUState.context
 
         StaticEditorShaders.wireframe.bind()
         GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBOState.sceneDepthVelocity)

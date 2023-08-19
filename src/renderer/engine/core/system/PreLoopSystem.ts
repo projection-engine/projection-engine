@@ -1,6 +1,6 @@
 import AbstractSystem from "../AbstractSystem";
 import CameraManager from "../managers/CameraManager";
-import GPU from "../GPU";
+import GPUState from "../states/GPUState";
 import TransformationManager from "../managers/TransformationManager";
 import LightsManager from "../managers/LightsManager";
 import EngineState from "../states/EngineState";
@@ -13,7 +13,7 @@ export default class PreLoopSystem extends AbstractSystem{
         EngineState.elapsed = current - this.#previousTimestamp
         this.#previousTimestamp = current
         CameraManager.updateUBOs()
-        GPU.context.clear(GPU.context.COLOR_BUFFER_BIT | GPU.context.DEPTH_BUFFER_BIT)
+        GPUState.context.clear(GPUState.context.COLOR_BUFFER_BIT | GPUState.context.DEPTH_BUFFER_BIT)
         if (TransformationManager.hasChangeBuffer[0] === 1) {
             LightsManager.packageLights(false, true)
         }

@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import GPUManager from "./GPUManager"
 
 
@@ -22,7 +22,7 @@ export default class EngineFileSystemManager {
 	}
 
 	static async loadTexture(registryID: string) {
-		if (GPU.textures.get(registryID) != null)
+		if (GPUState.textures.get(registryID) != null)
 			return
 		try {
 			const textureData = await EngineFileSystemManager.readAsset(registryID)
@@ -40,7 +40,7 @@ export default class EngineFileSystemManager {
 	}
 
 	static async loadMesh(ID: string): Promise<boolean> {
-		if (!ID || GPU.meshes.get(ID) != null) {
+		if (!ID || GPUState.meshes.get(ID) != null) {
 			EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMeshes, ID)
 			return
 		}
@@ -52,7 +52,7 @@ export default class EngineFileSystemManager {
 			EngineFileSystemManager.#fetchingMeshes[ID] = []
 
 			try {
-				if (!GPU.meshes.get(ID)) {
+				if (!GPUState.meshes.get(ID)) {
 					const data = await EngineFileSystemManager.readAsset(ID)
 					if (!data) {
 						EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMeshes, ID)
@@ -77,7 +77,7 @@ export default class EngineFileSystemManager {
 	}
 
 	static async loadMaterial(ID: string) {
-		if (!ID || GPU.materials.get(ID) != null) {
+		if (!ID || GPUState.materials.get(ID) != null) {
 			EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMaterials, ID)
 			return
 		}
@@ -89,7 +89,7 @@ export default class EngineFileSystemManager {
 		else {
 			EngineFileSystemManager.#fetchingMaterials[ID] = []
 			try {
-				if (!GPU.materials.get(ID)) {
+				if (!GPUState.materials.get(ID)) {
 					const data = await EngineFileSystemManager.readAsset(ID)
 					if (!data) {
 						EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMaterials, ID)

@@ -1,24 +1,24 @@
 import ConversionAPI from "../lib/math/ConversionAPI"
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticFBOState from "../states/StaticFBOState"
 
 export default class PickingUtil {
     static readBlock(start, end) {
         const w = Math.round(Math.abs(start.x - end.x))
         const h = Math.round(Math.abs(start.y - end.y))
-        GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, StaticFBOState.visibility.FBO)
-        GPU.context.readBuffer(GPU.context.COLOR_ATTACHMENT1)
+        GPUState.context.bindFramebuffer(GPUState.context.FRAMEBUFFER, StaticFBOState.visibility.FBO)
+        GPUState.context.readBuffer(GPUState.context.COLOR_ATTACHMENT1)
         const dd = new Uint8Array(w * h * 4)
-        GPU.context.readPixels(
+        GPUState.context.readPixels(
             end.x > start.x ? start.x : end.x,
             end.y > start.y ? start.y : end.y,
             w,
             h,
-            GPU.context.RGBA,
-            GPU.context.UNSIGNED_BYTE,
+            GPUState.context.RGBA,
+            GPUState.context.UNSIGNED_BYTE,
             dd
         )
-        GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, null)
+        GPUState.context.bindFramebuffer(GPUState.context.FRAMEBUFFER, null)
 
         return dd
     }
@@ -32,26 +32,26 @@ export default class PickingUtil {
     }
 
     static readPixels(framebuffer, attachment = 0, coords: { x: number, y: number }) {
-        GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, framebuffer)
-        GPU.context.readBuffer(GPU.context.COLOR_ATTACHMENT0 + attachment)
+        GPUState.context.bindFramebuffer(GPUState.context.FRAMEBUFFER, framebuffer)
+        GPUState.context.readBuffer(GPUState.context.COLOR_ATTACHMENT0 + attachment)
         const dd = new Uint8Array(4)
-        GPU.context.readPixels(
+        GPUState.context.readPixels(
             coords.x,
             coords.y,
             1,
             1,
-            GPU.context.RGBA,
-            GPU.context.UNSIGNED_BYTE,
+            GPUState.context.RGBA,
+            GPUState.context.UNSIGNED_BYTE,
             dd
         )
-        GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, null)
+        GPUState.context.bindFramebuffer(GPUState.context.FRAMEBUFFER, null)
 
         return dd
     }
 
 
     static readEntityID(x: number, y: number, attachment:number, framebuffer: WebGLFramebuffer): number {
-        const w = GPU.canvas.width, h = GPU.canvas.height
+        const w = GPUState.canvas.width, h = GPUState.canvas.height
         const coords = ConversionAPI.toQuadCoordinates(x, y, w, h)
         const picked = PickingUtil.readPixels(framebuffer, attachment, coords)
 

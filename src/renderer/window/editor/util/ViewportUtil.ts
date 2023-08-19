@@ -2,7 +2,7 @@ import ViewTabItem from "../static/ViewTabItem"
 import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import Engine from "../../../engine/core/Engine"
-import GPU from "../../../engine/core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import PickingUtil from "@engine-core/utils/PickingUtil"
 import EngineTools from "../../../engine/tools/EngineTools"
 import EngineStore from "../../shared/stores/EngineStore"
@@ -38,7 +38,7 @@ export default class ViewportUtil {
 
     static onViewportClick(event, mouseDelta, settings, setContext) {
         const MAX_DELTA = 50, LEFT_BUTTON = 0
-        if (GPU.canvas !== event.target || event.button !== LEFT_BUTTON)
+        if (GPUState.canvas !== event.target || event.button !== LEFT_BUTTON)
             return
         const deltaX = Math.abs(mouseDelta.x - event.clientX)
         const deltaY = Math.abs(mouseDelta.y - event.clientY)

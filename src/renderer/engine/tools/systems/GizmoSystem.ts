@@ -1,4 +1,4 @@
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GizmoState from "../gizmo/util/GizmoState"
 import DynamicMap from "@engine-core/lib/DynamicMap"
@@ -33,7 +33,7 @@ export default class GizmoSystem extends AbstractSystem {
     }
 
     execute() {
-        const context = GPU.context
+        const context = GPUState.context
         context.clear(context.DEPTH_BUFFER_BIT)
         GizmoUtil.createTransformationCache(GizmoState.mainEntity)
         const targetGizmosSize = GizmoState.targetGizmos.length

@@ -3,7 +3,7 @@ import EngineFileSystemManager from "./EngineFileSystemManager"
 import UIComponent from "@engine-core/lib/components/UIComponent"
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
-import GPU from "@engine-core/GPU";
+import GPUState from "@engine-core/states/GPUState";
 
 const STYLES = {
     position: "absolute",
@@ -94,7 +94,7 @@ export default class UIManager {
     }
 
     static buildUI(mounting: HTMLElement) {
-        const target = mounting || GPU.canvas.parentElement
+        const target = mounting || GPUState.canvas.parentElement
         UIManager.destroyUI()
         UIManager.document = document.createElement("div")
         Object.assign(UIManager.document.style, STYLES)

@@ -2,7 +2,7 @@ import CameraManager from "./managers/CameraManager"
 import AmbientOcclusionSystem from "./system/AmbientOcclusionSystem"
 import ConversionAPI from "./lib/math/ConversionAPI"
 import CompositionSystem from "./system/CompositionSystem"
-import GPU from "./GPU"
+import GPUState from "./states/GPUState"
 import OShadowsSystem from "./system/OShadowsSystem"
 import PhysicsManager from "./managers/PhysicsManager"
 import EngineFileSystemManager from "./managers/EngineFileSystemManager"
@@ -30,6 +30,7 @@ import PostProcessingSystem from "./system/PostProcessingSystem";
 import {Environment,} from "@engine-core/engine.enum";
 import GarbageCollectorSystem from "@engine-core/system/GarbageCollectorSystem";
 import PreLoopSystem from "@engine-core/system/PreLoopSystem";
+import GPUManager from "@engine-core/managers/GPUManager";
 
 export default class Engine {
     static #development = false
@@ -69,22 +70,22 @@ export default class Engine {
         Engine.#initialized = true
 
         Engine.#development = devAmbient
-        await GPU.initializeContext(canvas, mainResolution)
+        await GPUManager.initializeContext(canvas, mainResolution)
         EngineFileSystemManager.initialize(readAsset)
         await PhysicsManager.initialize()
         LightsManager.get()
 
-        ConversionAPI.canvasBBox = GPU.canvas.getBoundingClientRect()
+        ConversionAPI.canvasBBox = GPUState.canvas.getBoundingClientRect()
         const OBS = new ResizeObserver(() => {
-            const bBox = GPU.canvas.getBoundingClientRect()
+            const bBox = GPUState.canvas.getBoundingClientRect()
             ConversionAPI.canvasBBox = bBox
             CameraManager.aspectRatio = bBox.width / bBox.height
             CameraManager.updateProjection()
         })
-        OBS.observe(GPU.canvas.parentElement)
-        OBS.observe(GPU.canvas)
+        OBS.observe(GPUState.canvas.parentElement)
+        OBS.observe(GPUState.canvas)
         Engine.#isReady = true
-        GPU.skylightProbe = new LightProbe(128)
+        GPUState.skylightProbe = new LightProbe(128)
         Engine.#startSystems()
         Engine.start()
     }
@@ -115,7 +116,7 @@ export default class Engine {
     }
 
     static async startSimulation() {
-        UIManager.buildUI(GPU.canvas.parentElement)
+        UIManager.buildUI(GPUState.canvas.parentElement)
         await ScriptsManager.updateAllScripts()
         Engine.environment = Environment.EXECUTION
     }

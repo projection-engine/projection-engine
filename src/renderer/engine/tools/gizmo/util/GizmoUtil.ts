@@ -2,7 +2,7 @@ import {mat4, quat, vec3} from "gl-matrix"
 import GizmoSystem from "../../systems/GizmoSystem"
 import EditorEntity from "../../EditorEntity"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
-import GPU from "../../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import CameraManager from "@engine-core/managers/CameraManager"
 import GizmoState from "./GizmoState"
 import AXIS from "../../static/AXIS"
@@ -77,13 +77,13 @@ export default class GizmoUtil {
         StaticEditorShaders.gizmo.bind()
         const uniforms = StaticEditorShaders.gizmoUniforms
         GPUUtil.bind2DTextureForDrawing(uniforms.gizmoIDS, 0, StaticEditorFBO.gizmo.colors[0])
-        GPU.context.uniform2fv(uniforms.mouseCoordinates, EngineToolsState.mouseCoordinates)
+        GPUState.context.uniform2fv(uniforms.mouseCoordinates, EngineToolsState.mouseCoordinates)
 
-        GPU.context.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
-        GPU.context.uniform3fv(uniforms.translation, GizmoState.mainEntity.__pivotOffset)
-        GPU.context.uniform1i(uniforms.axis, axis)
-        GPU.context.uniform1i(uniforms.selectedAxis, GizmoState.clickedAxis)
-        GPU.context.uniform1i(uniforms.cameraIsOrthographic, CameraManager.notificationBuffers[2])
+        GPUState.context.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
+        GPUState.context.uniform3fv(uniforms.translation, GizmoState.mainEntity.__pivotOffset)
+        GPUState.context.uniform1i(uniforms.axis, axis)
+        GPUState.context.uniform1i(uniforms.selectedAxis, GizmoState.clickedAxis)
+        GPUState.context.uniform1i(uniforms.cameraIsOrthographic, CameraManager.notificationBuffers[2])
         mesh.simplifiedDraw()
     }
 

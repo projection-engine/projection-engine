@@ -9,7 +9,7 @@
     import VIEWS from "./static/VIEWS"
     import View from "./components/View.svelte"
     import TabsStore from "../../../shared/stores/TabsStore"
-    import GPU from "../../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import ViewportUtil from "../../util/ViewportUtil"
@@ -44,12 +44,12 @@
     		v.name = LocalizationEN[v.type]
     		v.icon = ViewsUtil.getViewIcon(v.type)
     	})
-    	if (viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR && GPU.context) {
-    		GPU.canvas.style.zIndex = "-1"
-    		GPU.canvas.style.position = "absolute"
-    	} else if (GPU.context) {
-    		GPU.canvas.style.zIndex = "1"
-    		GPU.canvas.style.position = "relative"
+    	if (viewTab[currentTab].type !== VIEWPORT_TABS.EDITOR && GPUState.context) {
+    		GPUState.canvas.style.zIndex = "-1"
+    		GPUState.canvas.style.position = "absolute"
+    	} else if (GPUState.context) {
+    		GPUState.canvas.style.zIndex = "1"
+    		GPUState.canvas.style.position = "relative"
     	}
     }
 

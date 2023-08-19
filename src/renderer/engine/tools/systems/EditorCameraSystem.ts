@@ -1,7 +1,7 @@
 import CameraManager from "@engine-core/managers/CameraManager"
 import {quat, vec4} from "gl-matrix"
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS"
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import AbstractSystem from "../../core/AbstractSystem";
 
 
@@ -99,7 +99,7 @@ export default class EditorCameraSystem extends AbstractSystem {
     static forceRotationTracking() {
         const instance = this.get<EditorCameraSystem>()
         if (!instance.#isHoldingCanvas) {
-            GPU.canvas.requestPointerLock()
+            GPUState.canvas.requestPointerLock()
             document.addEventListener("mousemove", EditorCameraSystem.#handleInput)
             instance.#isHoldingCanvas = true
         }
@@ -145,7 +145,7 @@ export default class EditorCameraSystem extends AbstractSystem {
 
     #onMouseMove(event, map: EditorCameraActionMap) {
         if (!document.pointerLockElement)
-            GPU.canvas.requestPointerLock()
+            GPUState.canvas.requestPointerLock()
         if (this.#screenSpaceMovement) {
             this.#toApplyTranslation[0] = -event.movementX * this.#screenSpaceMovementSpeed / 2
             this.#toApplyTranslation[1] = event.movementY * this.#screenSpaceMovementSpeed / 2
@@ -180,7 +180,7 @@ export default class EditorCameraSystem extends AbstractSystem {
 
         if (!this.#isHoldingCanvas && map.mouseRight === true) {
             if (this.#screenSpaceMovement)
-                GPU.canvas.style.cursor = "grabbing"
+                GPUState.canvas.style.cursor = "grabbing"
             document.addEventListener("mousemove", EditorCameraSystem.#handleInput)
             this.#isHoldingCanvas = true
         }
@@ -194,7 +194,7 @@ export default class EditorCameraSystem extends AbstractSystem {
             map.mouseRight = false
         if (!keys.mouseRight && !keys.mouseLeft) {
             if (this.#screenSpaceMovement)
-                GPU.canvas.style.cursor = "default"
+                GPUState.canvas.style.cursor = "default"
             document.removeEventListener("mousemove", EditorCameraSystem.#handleInput)
             this.#isHoldingCanvas = false
         }
@@ -282,8 +282,8 @@ export default class EditorCameraSystem extends AbstractSystem {
             document.addEventListener("keydown", EditorCameraSystem.#handleInput)
             document.addEventListener("keyup", EditorCameraSystem.#handleInput)
             document.addEventListener("mouseup", EditorCameraSystem.#handleInput)
-            GPU.canvas.addEventListener("mousedown", EditorCameraSystem.#handleInput)
-            GPU.canvas.addEventListener("wheel", EditorCameraSystem.#handleInput)
+            GPUState.canvas.addEventListener("mousedown", EditorCameraSystem.#handleInput)
+            GPUState.canvas.addEventListener("wheel", EditorCameraSystem.#handleInput)
             instance.#hasInitializedEvents = true
         }
     }

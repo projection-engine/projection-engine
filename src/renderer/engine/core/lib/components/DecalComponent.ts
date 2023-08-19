@@ -1,7 +1,7 @@
 import Component from "./Component"
 import DECAL_PROPS from "../../static/component-props/DECAL_PROPS"
 import Texture from "@engine-core/lib/resources/Texture"
-import GPU from "../../GPU"
+import GPUState from "../../states/GPUState"
 import EngineFileSystemManager from "../../managers/EngineFileSystemManager"
 import GPUManager from "../../managers/GPUManager"
 import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
@@ -51,31 +51,31 @@ export default class DecalComponent extends Component {
     }
 
     set albedoID(value: string) {
-        if (value && !GPU.textures.has(value))
+        if (value && !GPUState.textures.has(value))
             DecalComponent.#fetchIfNotFound(value).catch()
         this._albedoID = value
     }
 
     set roughnessID(value: string) {
-        if (value && !GPU.textures.has(value))
+        if (value && !GPUState.textures.has(value))
             DecalComponent.#fetchIfNotFound(value).catch()
         this._roughnessID = value
     }
 
     set metallicID(value: string) {
-        if (value && !GPU.textures.has(value))
+        if (value && !GPUState.textures.has(value))
             DecalComponent.#fetchIfNotFound(value).catch()
         this._metallicID = value
     }
 
     set normalID(value: string) {
-        if (value && !GPU.textures.has(value))
+        if (value && !GPUState.textures.has(value))
             DecalComponent.#fetchIfNotFound(value).catch()
         this._normalID = value
     }
 
     set occlusionID(value: string) {
-        if (value && !GPU.textures.has(value))
+        if (value && !GPUState.textures.has(value))
             DecalComponent.#fetchIfNotFound(value).catch()
         this._occlusionID = value
     }

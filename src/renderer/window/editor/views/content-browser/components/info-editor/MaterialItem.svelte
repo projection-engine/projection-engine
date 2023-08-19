@@ -1,5 +1,5 @@
 <script>
-    import GPU from "../../../../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
 
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
@@ -54,7 +54,7 @@
     			}
     		}
     		await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(temp))
-    		const instance = GPU.materials.get(item.registryID)
+    		const instance = GPUState.materials.get(item.registryID)
     		if (instance) {
     			await instance.updateUniformGroup(temp.response.uniformValues)
     			ToastNotificationSystem.getInstance().success(LocalizationEN.MATERIAL_UPDATED)

@@ -5,7 +5,7 @@
 
 
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
-    import GPU from "../../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
@@ -75,7 +75,7 @@
         resizeObserver.observe(ref)
         UIManager.showUI()
 
-        UIManager.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
+        UIManager.document.style.height = (GPUState.canvas.getBoundingClientRect().height - 28) + "px"
         UIManager.document.style.top = "28px"
         EntityHierarchyService.registerListener(COMPONENT_ID, update)
         update()

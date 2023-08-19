@@ -1,4 +1,4 @@
-import GPU from "../../GPU"
+import GPUState from "../../states/GPUState"
 import applyShaderMethods from "../../utils/apply-shader-methods"
 import StaticUBOState, {StaticUBONames} from "../../states/StaticUBOState"
 import GPUUtil from "../../utils/GPUUtil";
@@ -30,22 +30,22 @@ export default class Shader {
 
 	constructor(vertex, fragment) {
 		const alert = []
-		this.program = GPU.context.createProgram()
+		this.program = GPUState.context.createProgram()
 
 		const vertexBuilt = "#version 300 es\n" + applyShaderMethods(vertex)
 		const fragmentBuilt = "#version 300 es\n" + applyShaderMethods(fragment)
 
 		this.txt = fragmentBuilt
-		const vertexShader = this.#compileShader(vertexBuilt, GPU.context.VERTEX_SHADER, m => alert.push(m))
-		const fragmentShader = this.#compileShader(fragmentBuilt, GPU.context.FRAGMENT_SHADER, m => alert.push(m))
+		const vertexShader = this.#compileShader(vertexBuilt, GPUState.context.VERTEX_SHADER, m => alert.push(m))
+		const fragmentShader = this.#compileShader(fragmentBuilt, GPUState.context.FRAGMENT_SHADER, m => alert.push(m))
 
-		GPU.context.attachShader(this.program, vertexShader)
-		GPU.context.attachShader(this.program, fragmentShader)
+		GPUState.context.attachShader(this.program, vertexShader)
+		GPUState.context.attachShader(this.program, fragmentShader)
 
-		GPU.context.linkProgram(this.program)
+		GPUState.context.linkProgram(this.program)
 
 
-		GPU.context.flush()
+		GPUState.context.flush()
 		this.#extractUniforms(vertexBuilt)
 		this.#extractUniforms(fragmentBuilt)
 		this.uniforms = this.uniforms.filter(u => u !== undefined && typeof u.uLocation === "object" || typeof u.uLocations === "object")
@@ -53,7 +53,7 @@ export default class Shader {
 		for (let i = 0; i < this.uniforms.length; i++)
 			this.uniformMap[this.uniforms[i].name] = this.uniforms[i].uLocation || this.uniforms[i].uLocations
 		this.messages = {
-			error: GPU.context.getError(),
+			error: GPUState.context.getError(),
 			messages: alert,
 			hasError: alert.length > 0
 		}
@@ -84,13 +84,13 @@ export default class Shader {
 	#compileShader(shaderCode, shaderType, pushMessage) {
 
 
-		const shader = GPU.context.createShader(shaderType)
-		GPU.context.shaderSource(shader, shaderCode)
-		GPU.context.compileShader(shader)
-		const compiled = GPU.context.getShaderParameter(shader, GPU.context.COMPILE_STATUS)
+		const shader = GPUState.context.createShader(shaderType)
+		GPUState.context.shaderSource(shader, shaderCode)
+		GPUState.context.compileShader(shader)
+		const compiled = GPUState.context.getShaderParameter(shader, GPUState.context.COMPILE_STATUS)
 
 		if (!compiled) {
-			const error = GPU.context.getShaderInfoLog(shader)
+			const error = GPUState.context.getShaderInfoLog(shader)
 			console.error({error, shaderCode})
 			pushMessage(error)
 		}
@@ -112,7 +112,7 @@ export default class Shader {
 					this.uniforms.push({
 						type,
 						name,
-						uLocation: GPU.context.getUniformLocation(this.program, name)
+						uLocation: GPUState.context.getUniformLocation(this.program, name)
 					})
 					return
 				}
@@ -130,7 +130,7 @@ export default class Shader {
 								type: current[2],
 								name: current[4],
 								parent: name,
-								uLocation: GPU.context.getUniformLocation(this.program, name + "." + current[4])
+								uLocation: GPUState.context.getUniformLocation(this.program, name + "." + current[4])
 							}
 						}
 					})
@@ -155,7 +155,7 @@ export default class Shader {
 						type,
 						name,
 						arraySize,
-						uLocations: (new Array(arraySize).fill(null)).map((_, i) => GPU.context.getUniformLocation(this.program, name + `[${i}]`))
+						uLocations: (new Array(arraySize).fill(null)).map((_, i) => GPUState.context.getUniformLocation(this.program, name + `[${i}]`))
 					})
 					return
 				}
@@ -175,7 +175,7 @@ export default class Shader {
 							name: current[4],
 							parent: name,
 							arraySize,
-							uLocations: (new Array(arraySize).fill(null)).map((_, i) => GPU.context.getUniformLocation(this.program, name + `[${i}]` + "." + current[4]))
+							uLocations: (new Array(arraySize).fill(null)).map((_, i) => GPUState.context.getUniformLocation(this.program, name + `[${i}]` + "." + current[4]))
 						}
 					})
 				)
@@ -184,9 +184,9 @@ export default class Shader {
 	}
 
 	bind() {
-		if (GPU.activeShader !== this) {
-			GPU.context.useProgram(this.program)
-			GPU.activeShader = this
+		if (GPUState.activeShader !== this) {
+			GPUState.context.useProgram(this.program)
+			GPUState.activeShader = this
 		}
 	}
 
@@ -228,18 +228,18 @@ export default class Shader {
 		case GLSLTypes.ivec2:
 		case GLSLTypes.ivec3:
 		case GLSLTypes.bool:
-			GPU.context[GLSLTypes[type]](uLocation, data)
+			GPUState.context[GLSLTypes[type]](uLocation, data)
 			break
 		case GLSLTypes.mat3:
-			GPU.context.uniformMatrix3fv(uLocation, false, data)
+			GPUState.context.uniformMatrix3fv(uLocation, false, data)
 			break
 		case GLSLTypes.mat4:
-			GPU.context.uniformMatrix4fv(uLocation, false, data)
+			GPUState.context.uniformMatrix4fv(uLocation, false, data)
 			break
 		case GLSLTypes.samplerCube:
-			GPU.context.activeTexture(GPU.context.TEXTURE0 + currentSamplerIndex)
-			GPU.context.bindTexture(GPU.context.TEXTURE_CUBE_MAP, data)
-			GPU.context.uniform1i(uLocation, currentSamplerIndex)
+			GPUState.context.activeTexture(GPUState.context.TEXTURE0 + currentSamplerIndex)
+			GPUState.context.bindTexture(GPUState.context.TEXTURE_CUBE_MAP, data)
+			GPUState.context.uniform1i(uLocation, currentSamplerIndex)
 			increaseIndex()
 			break
 		case GLSLTypes.sampler2D:

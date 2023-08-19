@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import GPUManager from "./GPUManager"
 import PhysicsManager from "./PhysicsManager"
 import UIManager from "./UIManager"
@@ -52,9 +52,9 @@ export default class ScriptsManager {
 		if (!scriptData)
 			return
 		try {
-			const generator = new Function("GPU, GPUManager, PhysicsManager, UIManager, ConsoleManager, Component, Components, CameraManager, entity, EngineFileSystemManager", scriptData)
+			const generator = new Function("GPUState, GPUManager, PhysicsManager, UIManager, ConsoleManager, Component, Components, CameraManager, entity, EngineFileSystemManager", scriptData)
 			try {
-				const script = generator(GPU, GPUManager, PhysicsManager, UIManager, ConsoleManager, Component, Components, CameraManager,  entity, EngineFileSystemManager)
+				const script = generator(GPUState, GPUManager, PhysicsManager, UIManager, ConsoleManager, Component, Components, CameraManager,  entity, EngineFileSystemManager)
 				if (index > -1) {
 					const ref = entity.scripts[index]
 					Object.entries(ref).forEach(([key, value]) => {

@@ -1,4 +1,4 @@
-import GPU from "../../core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import CameraManager from "@engine-core/managers/CameraManager"
 import LineRenderer from "./LineRenderer"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
@@ -30,7 +30,7 @@ export default class IconsSystem extends AbstractSystem {
 
     static drawIcon(icon: RegisteredIcon, U) {
         const uniforms = U || StaticEditorShaders.iconUniforms
-        const context = GPU.context
+        const context = GPUState.context
         const {
             imageIndex,
             doNotFaceCamera,
@@ -101,7 +101,7 @@ export default class IconsSystem extends AbstractSystem {
     }
 
     execute() {
-        const context = GPU.context
+        const context = GPUState.context
         const uniforms = StaticEditorShaders.iconUniforms
         StaticEditorShaders.icon.bind()
 

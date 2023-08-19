@@ -1,6 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
-    import GPU from "../../../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EntityManager from "@engine-core/managers/EntityManager";
@@ -16,11 +16,11 @@
     	let t = 0
 
         // TODO - COMPUTE DATA BASED ON THE CURRENT SCENE, NOT LOADED
-    	GPU.meshes.forEach(m => t = t + m.trianglesQuantity)
+    	GPUState.meshes.forEach(m => t = t + m.trianglesQuantity)
     	triangles = t
-    	meshes = GPU.meshes.size
-    	materials = GPU.materials.size
-    	textures = GPU.textures.size
+    	meshes = GPUState.meshes.size
+    	materials = GPUState.materials.size
+    	textures = GPUState.textures.size
     	entities = EntityManager.getEntities().size
     }
 

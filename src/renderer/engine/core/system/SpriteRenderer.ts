@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import MetricsManager from "../managers/MetricsManager"
@@ -19,7 +19,7 @@ export default class SpriteRenderer extends AbstractSystem{
     execute() {
         const sprites = EntityManager.withComponent(Components.SPRITE).array
         const size = sprites.length
-        const context = GPU.context
+        const context = GPUState.context
         StaticShadersState.sprite.bind()
         context.activeTexture(context.TEXTURE0)
         for (let i = 0; i < size; i++) {
@@ -37,11 +37,11 @@ export default class SpriteRenderer extends AbstractSystem{
         if (!transform || culling.isDistanceCulled || !EntityManager.isEntityEnabled(entity) || culling?.isScreenDoorEnabled)
             return
         const uniforms = StaticShadersState.spriteUniforms
-        const texture = GPU.textures.get(sprite.imageID)
+        const texture = GPUState.textures.get(sprite.imageID)
         if (!texture)
             return
 
-        const context = GPU.context
+        const context = GPUState.context
         context.uniformMatrix4fv(uniforms.transformationMatrix, false, transform.matrix)
         context.uniform3fv(uniforms.scale, transform.scaling)
         context.uniform2fv(uniforms.attributes, sprite.attributes)

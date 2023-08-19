@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import UberMaterialAttributeGroup from "../lib/UberMaterialAttributeGroup";
 import UberShader from "../lib/UberShader";
 import StaticMeshesState from "../states/StaticMeshesState";
@@ -21,7 +21,7 @@ export default class DecalRendererSystem extends AbstractSystem{
         SceneRenderingUtil.bindGlobalResources()
         const toRender = EntityManager.withComponent(Components.DECAL).array
         const size = toRender.length
-        const context = GPU.context
+        const context = GPUState.context
         const uniforms = UberShader.uberUniforms
 
         context.disable(context.DEPTH_TEST)
@@ -52,11 +52,11 @@ export default class DecalRendererSystem extends AbstractSystem{
     }
 
     #bindDecalUniforms(uniforms: UniformMap, component: DecalComponent) {
-        const albedoSampler = GPU.textures.get(component.albedoID)?.texture
-        const metallicSampler =  GPU.textures.get(component.metallicID)?.texture
-        const roughnessSampler =  GPU.textures.get(component.roughnessID)?.texture
-        const normalSampler =  GPU.textures.get(component.normalID)?.texture
-        const aoSampler = GPU.textures.get(component.occlusionID)?.texture
+        const albedoSampler = GPUState.textures.get(component.albedoID)?.texture
+        const metallicSampler =  GPUState.textures.get(component.metallicID)?.texture
+        const roughnessSampler =  GPUState.textures.get(component.roughnessID)?.texture
+        const normalSampler =  GPUState.textures.get(component.normalID)?.texture
+        const aoSampler = GPUState.textures.get(component.occlusionID)?.texture
         let texOffset = 7
         if (albedoSampler !== undefined)
             GPUUtil.bind2DTextureForDrawing(uniforms.sampler1, texOffset, albedoSampler)

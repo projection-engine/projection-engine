@@ -9,7 +9,7 @@ import SettingsStore from "../../shared/stores/SettingsStore"
 import VisualsStore from "../../shared/stores/VisualsStore"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import UIManager from "@engine-core/managers/UIManager"
-import GPU from "../../../engine/core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import EngineToolsState from "../../../engine/tools/EngineToolsState"
 import EngineState from "@engine-core/states/EngineState"
 import SETTINGS from "../static/SETTINGS"
@@ -68,8 +68,8 @@ export default class EngineToolsService extends AbstractSingleton {
 
 	static 	#updateEngineSettings() {
 		const visualSettings = VisualsStore.getData()
-		GPU.canvas.width = visualSettings.resolutionX
-		GPU.canvas.height = visualSettings.resolutionY
+		GPUState.canvas.width = visualSettings.resolutionX
+		GPUState.canvas.height = visualSettings.resolutionY
 
 		if (Engine.environment === Environment.DEV)
 			EngineTools.bindSystems()

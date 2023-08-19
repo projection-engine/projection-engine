@@ -1,6 +1,6 @@
 import {mat4} from "gl-matrix"
 import Mesh from "./Mesh"
-import GPU from "../../GPU"
+import GPUState from "../../states/GPUState"
 import CubeMapManager from "../../managers/CubeMapManager"
 import getProbeRotation from "../../utils/get-probe-rotation"
 import getProbeLookat from "../../utils/get-probe-lookat"
@@ -24,7 +24,7 @@ export default class LightProbe implements IResource {
 			return
 		this.#resolution = data
 		if (this.texture instanceof WebGLTexture)
-			GPU.context.deleteTexture(this.texture)
+			GPUState.context.deleteTexture(this.texture)
 
 		this.texture = CubeMapManager.initializeTexture(false, data, false)
 	}
@@ -42,7 +42,7 @@ export default class LightProbe implements IResource {
 					uSampler: sampler,
 					multiplier
 				})
-				GPU.context.drawArrays(GPU.context.TRIANGLES, 0, 36)
+				GPUState.context.drawArrays(GPUState.context.TRIANGLES, 0, 36)
 			},
 			undefined,
 			undefined,
@@ -53,7 +53,7 @@ export default class LightProbe implements IResource {
 	drawSpecularMap(mipLevels = 6, resolution = 128) {
 		mat4.perspective(perspective, 1.57, 1, .1, 10)
 		Mesh.finishIfUsed()
-		GPU.context.viewport(0, 0, resolution, resolution)
+		GPUState.context.viewport(0, 0, resolution, resolution)
 		if (!this.prefiltered)
 			this.prefiltered = CubeMapManager.initializeTexture(false, resolution, true)
 
@@ -64,35 +64,35 @@ export default class LightProbe implements IResource {
 		for (let i = 0; i < mipLevels; i++) {
 			const currentRes = resolution * Math.pow(0.5, i)
 			const roughness = i / (mipLevels - 1)
-			GPU.context.viewport(0, 0, currentRes, currentRes)
+			GPUState.context.viewport(0, 0, currentRes, currentRes)
 			for (let j = 0; j < 6; j++) {
-				GPU.context.renderbufferStorage(GPU.context.RENDERBUFFER, GPU.context.DEPTH_COMPONENT24, currentRes, currentRes)
+				GPUState.context.renderbufferStorage(GPUState.context.RENDERBUFFER, GPUState.context.DEPTH_COMPONENT24, currentRes, currentRes)
 				const rotations = getProbeRotation(j)
-				GPU.context.framebufferTexture2D(
-					GPU.context.FRAMEBUFFER,
-					GPU.context.COLOR_ATTACHMENT0,
-					GPU.context.TEXTURE_CUBE_MAP_POSITIVE_X + j,
+				GPUState.context.framebufferTexture2D(
+					GPUState.context.FRAMEBUFFER,
+					GPUState.context.COLOR_ATTACHMENT0,
+					GPUState.context.TEXTURE_CUBE_MAP_POSITIVE_X + j,
 					this.prefiltered,
 					i
 				)
 				const shader = StaticShadersState.prefiltered
 				const uniforms = shader.uniformMap
 				shader.bind()
-				GPU.context.uniformMatrix4fv(uniforms.projectionMatrix, false, perspective)
-				GPU.context.uniformMatrix4fv(uniforms.viewMatrix, false, getProbeLookat(rotations.yaw, rotations.pitch, [0, 0, 0]))
-				GPU.context.uniform1f(uniforms.roughness, roughness)
+				GPUState.context.uniformMatrix4fv(uniforms.projectionMatrix, false, perspective)
+				GPUState.context.uniformMatrix4fv(uniforms.viewMatrix, false, getProbeLookat(rotations.yaw, rotations.pitch, [0, 0, 0]))
+				GPUState.context.uniform1f(uniforms.roughness, roughness)
 
-				GPU.context.activeTexture(GPU.context.TEXTURE0)
-				GPU.context.bindTexture(GPU.context.TEXTURE_CUBE_MAP, this.texture)
-				GPU.context.uniform1i(uniforms.environmentMap, 0)
+				GPUState.context.activeTexture(GPUState.context.TEXTURE0)
+				GPUState.context.bindTexture(GPUState.context.TEXTURE_CUBE_MAP, this.texture)
+				GPUState.context.uniform1i(uniforms.environmentMap, 0)
 
-				GPU.context.drawArrays(GPU.context.TRIANGLES, 0, 36)
+				GPUState.context.drawArrays(GPUState.context.TRIANGLES, 0, 36)
 			}
 		}
 		StaticMeshesState.cubeBuffer.disable()
 
-		GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, null)
-		GPU.context.deleteRenderbuffer(rbo)
+		GPUState.context.bindFramebuffer(GPUState.context.FRAMEBUFFER, null)
+		GPUState.context.deleteRenderbuffer(rbo)
 	}
 
 	draw(callback: Function, zFar?: number, zNear?: number, asIrradiance?: boolean): LightProbe {
@@ -100,8 +100,8 @@ export default class LightProbe implements IResource {
 		mat4.perspective(perspective, Math.PI / 2, 1, zNear || 1, zFar || 25)
 
 
-		GPU.context.bindFramebuffer(GPU.context.FRAMEBUFFER, CubeMapManager.frameBuffer)
-		GPU.context.viewport(0, 0, resolution, resolution)
+		GPUState.context.bindFramebuffer(GPUState.context.FRAMEBUFFER, CubeMapManager.frameBuffer)
+		GPUState.context.viewport(0, 0, resolution, resolution)
 
 		const rbo = CubeMapManager.createRenderBuffer(resolution)
 
@@ -120,21 +120,21 @@ export default class LightProbe implements IResource {
 
 		for (let i = 0; i < 6; i++) {
 			const rotations = getProbeRotation(i)
-			GPU.context.framebufferTexture2D(
-				GPU.context.FRAMEBUFFER,
-				GPU.context.COLOR_ATTACHMENT0,
-				GPU.context.TEXTURE_CUBE_MAP_POSITIVE_X + i,
+			GPUState.context.framebufferTexture2D(
+				GPUState.context.FRAMEBUFFER,
+				GPUState.context.COLOR_ATTACHMENT0,
+				GPUState.context.TEXTURE_CUBE_MAP_POSITIVE_X + i,
 				texture,
 				0
 			)
-			GPU.context.clear(GPU.context.COLOR_BUFFER_BIT | GPU.context.DEPTH_BUFFER_BIT)
+			GPUState.context.clear(GPUState.context.COLOR_BUFFER_BIT | GPUState.context.DEPTH_BUFFER_BIT)
 
 			callback(rotations.yaw, rotations.pitch, perspective, i)
 		}
 		if (asIrradiance)
 			StaticMeshesState.cubeBuffer.disable()
 
-		GPU.context.deleteRenderbuffer(rbo)
+		GPUState.context.deleteRenderbuffer(rbo)
 		return this
 	}
 

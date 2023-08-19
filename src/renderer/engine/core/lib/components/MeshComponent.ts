@@ -2,7 +2,7 @@ import Component from "./Component"
 
 import MESH_PROPS from "../../static/component-props/MESH_PROPS"
 import MaterialManager from "../../managers/MaterialManager"
-import GPU from "../../GPU"
+import GPUState from "../../states/GPUState"
 import EngineFileSystemManager from "../../managers/EngineFileSystemManager"
 import {Components,} from "@engine-core/engine.enum";
 import Mesh from "@engine-core/lib/resources/Mesh";
@@ -44,7 +44,7 @@ export default class MeshComponent extends Component {
     resetUniforms() {
         if (!this.materialID)
             return
-        const mat = GPU.materials.get(this.materialID)
+        const mat = GPUState.materials.get(this.materialID)
         this.#materialUniforms = mat.uniforms
         this._mappedUniforms = {}
         MaterialManager.mapUniforms(this.#materialUniforms, this._mappedUniforms).catch(console.error)
@@ -68,8 +68,8 @@ export default class MeshComponent extends Component {
     getMeshInstance(): Mesh | undefined {
         if (!this.meshID)
             return null
-        if (GPU.meshes.has(this.meshID))
-            return GPU.meshes.get(this.meshID)
+        if (GPUState.meshes.has(this.meshID))
+            return GPUState.meshes.get(this.meshID)
         EngineFileSystemManager.loadMesh(this.meshID).catch(console.error)
         return null
     }
@@ -77,8 +77,8 @@ export default class MeshComponent extends Component {
     getMaterialInstance(): Material | null {
         if (!this._materialID)
             return null
-        if (GPU.materials.has(this._materialID))
-            return GPU.materials.get(this._materialID)
+        if (GPUState.materials.has(this._materialID))
+            return GPUState.materials.get(this._materialID)
         EngineFileSystemManager.loadMaterial(this._materialID).catch(console.error)
         return null
     }

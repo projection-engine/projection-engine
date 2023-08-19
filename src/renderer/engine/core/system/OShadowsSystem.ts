@@ -1,6 +1,6 @@
 import {mat4, vec3} from "gl-matrix"
 import ShadowProbe from "@engine-core/lib/resources/ShadowProbe"
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
 import MetricsManager from "../managers/MetricsManager"
@@ -55,8 +55,8 @@ export default class OShadowsSystem extends AbstractSystem {
     }
 
     execute() {
-        GPU.context.cullFace(GPU.context.BACK)
-        GPU.context.viewport(0, 0, 512, 512)
+        GPUState.context.cullFace(GPUState.context.BACK)
+        GPUState.context.viewport(0, 0, 512, 512)
         for (let i = 0; i < OShadowsSystem.#MAX_CUBEMAPS; i++) {
             const current = EngineState.omnidirectionalLightsToUpdate[i]
             if (!current)

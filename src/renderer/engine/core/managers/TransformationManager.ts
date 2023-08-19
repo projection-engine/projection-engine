@@ -7,7 +7,6 @@ let maxWorkers
 let currentActiveWorker = 0
 export default class TransformationManager {
     static hasChangeBuffer = new Uint8Array(new SharedArrayBuffer(1))
-
     static #initialized = false
     static #workers = []
     static #cullingMetadata = new Map<EngineEntity, Float32Array>()

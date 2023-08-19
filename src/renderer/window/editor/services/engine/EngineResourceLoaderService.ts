@@ -1,7 +1,7 @@
 import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorFSUtil from "../../util/EditorFSUtil"
 import EntityFactoryService from "./EntityFactoryService"
-import GPU from "../../../../engine/core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import GPUManager from "@engine-core/managers/GPUManager"
 
 import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager"
@@ -42,7 +42,7 @@ export default class EngineResourceLoaderService {
         if (!objLoaded)
             return
         let materialID
-        if (GPU.meshes.get(objLoaded.id))
+        if (GPUState.meshes.get(objLoaded.id))
             return
         try {
             GPUManager.allocateMesh(id, objLoaded)

@@ -1,7 +1,7 @@
 import {glMatrix, quat, vec3} from "gl-matrix"
 import CameraManager from "@engine-core/managers/CameraManager"
 import AXIS from "../static/AXIS"
-import GPU from "@engine-core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import EngineTools from "../EngineTools"
 import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -60,14 +60,14 @@ export default class RotationGizmo extends AbstractXYZGizmo {
         if (GizmoState.clickedAxis === axis || GizmoState.clickedAxis === AXIS.NONE) {
             StaticEditorShaders.rotation.bind()
             const uniforms = StaticEditorShaders.rotationUniforms
-            const context = GPU.context
+            const context = GPUState.context
 
             context.uniformMatrix4fv(uniforms.transformMatrix, false, transformMatrix)
             context.uniform3fv(uniforms.translation, GizmoState.mainEntity.__pivotOffset)
             context.uniform1i(uniforms.cameraIsOrthographic, CameraManager.notificationBuffers[2])
 
             GPUUtil.bind2DTextureForDrawing(uniforms.gizmoIDS, 0, StaticEditorFBO.gizmo.colors[0])
-            GPU.context.uniform2fv(uniforms.mouseCoordinates, EngineToolsState.mouseCoordinates)
+            GPUState.context.uniform2fv(uniforms.mouseCoordinates, EngineToolsState.mouseCoordinates)
 
             uniformCache[0] = axis
             uniformCache[1] = GizmoState.clickedAxis

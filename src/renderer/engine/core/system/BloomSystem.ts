@@ -1,4 +1,4 @@
-import GPU from "../GPU"
+import GPUState from "../states/GPUState"
 import CameraManager from "../managers/CameraManager"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
@@ -16,7 +16,7 @@ export default class BloomSystem extends AbstractSystem{
     }
 
     execute() {
-        const context = GPU.context
+        const context = GPUState.context
         StaticFBOState.lens.startMapping()
         StaticShadersState.bloom.bind()
         GPUUtil.bind2DTextureForDrawing(StaticShadersState.bloomUniforms.sceneColor, 0, StaticFBOState.postProcessing1Sampler)
@@ -54,7 +54,7 @@ export default class BloomSystem extends AbstractSystem{
     }
 
     #downscale(fbo: Framebuffer, sceneColor: WebGLTexture) {
-        const context = GPU.context
+        const context = GPUState.context
         const uniforms = StaticShadersState.gaussianUniforms
         fbo.startMapping()
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneColor, 0, sceneColor)

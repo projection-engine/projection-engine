@@ -3,7 +3,7 @@ import EditorLevelService from "../services/engine/EditorLevelService"
 import EditorActionHistory from "../services/EditorActionHistory"
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import ElectronResources from "../../shared/lib/ElectronResources"
-import GPU from "../../../engine/core/GPU"
+import GPUState from "@engine-core/states/GPUState"
 import WindowChangeStore from "../../shared/stores/WindowChangeStore"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
@@ -34,7 +34,7 @@ export default class WindowFrameUtil {
 			break
 
 		case "fullscreen":
-			GPU.canvas.requestFullscreen().catch(console.error)
+			GPUState.canvas.requestFullscreen().catch(console.error)
 			break
 		case "reload":
 			ElectronResources.ipcRenderer.send("reload")

@@ -1,6 +1,6 @@
 import EntityManager from "@engine-core/managers/EntityManager";
 import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager";
-import GPU from "@engine-core/GPU";
+import GPUState from "@engine-core/states/GPUState";
 import GPUManager from "@engine-core/managers/GPUManager";
 import {Components} from "@engine-core/engine.enum";
 import Component from "@engine-core/lib/components/Component";
@@ -18,9 +18,9 @@ export default class LevelManager {
             return []
         try {
             if (cleanEngine) {
-                GPU.meshes.forEach(m => GPUManager.destroyMesh(m))
-                GPU.textures.forEach(m => GPUManager.destroyTexture(m.id))
-                GPU.materials.clear()
+                GPUState.meshes.forEach(m => GPUManager.destroyMesh(m))
+                GPUState.textures.forEach(m => GPUManager.destroyTexture(m.id))
+                GPUState.materials.clear()
             }
 
             const asset = await EngineFileSystemManager.readAsset(levelID)

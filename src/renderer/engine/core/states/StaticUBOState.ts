@@ -1,6 +1,6 @@
 import UBO from "@engine-core/lib/resources/UBO"
 import UberShader from "../lib/UberShader"
-import GPU from "../GPU"
+import GPUState from "./GPUState"
 
 export enum StaticUBONames {
     CAMERA_VIEW = "CameraViewInfo",
@@ -92,9 +92,9 @@ export default class StaticUBOState {
 		StaticUBOState.lensPostProcessingUBO.updateData("gamma", F32)
 		F32[0] = 1
 		StaticUBOState.lensPostProcessingUBO.updateData("exposure", F32)
-		F32[0] = GPU.internalResolution.w
+		F32[0] = GPUState.internalResolution.w
 		StaticUBOState.lensPostProcessingUBO.updateData("textureSizeXDOF", F32)
-		F32[0] = GPU.internalResolution.h
+		F32[0] = GPUState.internalResolution.h
 		StaticUBOState.lensPostProcessingUBO.updateData("textureSizeYDOF", F32)
 		StaticUBOState.lensPostProcessingUBO.unbind()
 
