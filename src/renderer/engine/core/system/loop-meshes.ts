@@ -5,6 +5,7 @@ import CullingComponent from "@engine-core/lib/components/CullingComponent";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import Mesh from "@engine-core/lib/resources/Mesh";
 import Material from "@engine-core/lib/resources/Material";
+import AssetResourceManager from "@engine-core/managers/AssetResourceManager";
 
 export default function loopMeshes(callback: (param1: EngineEntity, param2: Mesh, param3: Material, param4: TransformationComponent, param5: CullingComponent, param6: number) => void) {
     const toRender = EntityManager.withComponent(Components.MESH).array
@@ -19,6 +20,6 @@ export default function loopMeshes(callback: (param1: EngineEntity, param2: Mesh
         const cullingComponent = components.get(Components.CULLING) as CullingComponent
         if (!transformComponent || !meshComponent.meshID || !EntityManager.isEntityEnabled(entity) || cullingComponent && cullingComponent.isDistanceCulled)
             continue
-        callback(entity, meshComponent.getMeshInstance(), meshComponent.getMaterialInstance(), transformComponent, cullingComponent, meshIndex)
+        callback(entity, AssetResourceManager.getMesh(meshComponent.meshID), AssetResourceManager.getMaterial(meshComponent.materialID), transformComponent, cullingComponent, meshIndex)
     }
 }

@@ -46,9 +46,7 @@ export default class EngineResourceLoaderService {
             return
         try {
             GPUManager.allocateMesh(id, objLoaded)
-            const result = await EngineFileSystemManager.loadMaterial(objLoaded.material)
-            if (result)
-                materialID = objLoaded.material
+            materialID = objLoaded.material
         } catch (e) {
             console.error(e)
         }
@@ -64,7 +62,7 @@ export default class EngineResourceLoaderService {
                 for (let i = 0; i < file.entities.length; i++) {
                     const currentEntity = file.entities[i]
                     const entity = EngineResourceLoaderService.#initializeEntity(currentEntity, currentEntity.meshID)
-                    entity.parentID = currentEntity.parent || root.id
+                    entity.setParent(currentEntity.parent || root.id)
                 }
             } else
                 ToastNotificationSystem.getInstance().error(LocalizationEN.COLLECTION_NOT_FOUND)
@@ -106,12 +104,9 @@ export default class EngineResourceLoaderService {
                     await EngineResourceLoaderService.scene(res.path)
                     break
                 case FileTypes.TEXTURE: {
-                    if (data)
-                        await EngineFileSystemManager.loadTexture(data)
                     const entity = EntityFactoryService.createSprite()
-                    const sprite = entity.getComponent<SpriteComponent>(Components.SPRITE)
+                    entity.getComponent<SpriteComponent>(Components.SPRITE).imageID = data
                     entity.name = LocalizationEN.SPRITE_RENDERER
-                    sprite.imageID = data
                     break
                 }
 

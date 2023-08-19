@@ -11,6 +11,7 @@ import EntityManager from "@engine-core/managers/EntityManager";
 import MeshComponent from "@engine-core/lib/components/MeshComponent";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import LightComponent from "@engine-core/lib/components/LightComponent";
+import AssetResourceManager from "@engine-core/managers/AssetResourceManager";
 
 
 export default class DShadowsSystem extends AbstractSystem {
@@ -68,8 +69,8 @@ export default class DShadowsSystem extends AbstractSystem {
             const current = toRender[m]
             const components = EntityManager.getAllComponentsMap(current)
             const meshComponent = components.get(Components.MESH) as MeshComponent
-            const mesh = meshComponent.getMeshInstance()
-            const material = meshComponent.getMaterialInstance()
+            const mesh = AssetResourceManager.getMesh(meshComponent.meshID)
+            const material = AssetResourceManager.getMaterial(meshComponent.materialID)
             if (!mesh || !meshComponent.castsShadows || !EntityManager.isEntityEnabled(current) || material && material.renderingMode === MATERIAL_RENDERING_TYPES.SKY)
                 continue
             const transformation = components.get(Components.TRANSFORMATION) as TransformationComponent

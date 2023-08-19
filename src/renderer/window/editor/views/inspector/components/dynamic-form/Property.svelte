@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
     import Component from "@engine-core/lib/components/Component"
     import Selector from "../../../../components/selector/Selector.svelte"
@@ -12,33 +12,30 @@
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
 
-    export let component = undefined
-    export let submit = undefined
-    export let attribute = undefined
+    export let component
+    export let submit: GenericVoidFunctionWith3P<string, any, boolean>
+    export let attribute
 
+    let value
+    let label
+    let isDisabled
     $: label = LocalizationEN[attribute.label] ? LocalizationEN[attribute.label] : attribute.label
     $: value = component[attribute.key]
     $: isDisabled = typeof attribute.disabledIf === "function" ? attribute.disabledIf(component) : component[attribute.disabledIf]
 
     let firstSubmit = false
-    const setImage = async (data) => {
-    	if (data) {
-    		const res = await EngineFileSystemManager.loadTexture(data.registryID)
-    		if (res)
-    			submit(attribute.key, data.registryID, true)
-    	} else
-    		submit(attribute.key, undefined, true)
+    const setImage = async (data: RegistryFile) => {
     }
     let originalValue
 
     $: {
-    	if (attribute.type === Component.propTypes.ARRAY && value != null && !originalValue) {
-    		const temp = []
-    		for (let i = 0; i < value.length; i++) {
-    			temp[i] = value[i]
-    		}
-    		originalValue = temp
-    	}
+        if (attribute.type === Component.propTypes.ARRAY && value != null && !originalValue) {
+            const temp = []
+            for (let i = 0; i < value.length; i++) {
+                temp[i] = value[i]
+            }
+            originalValue = temp
+        }
     }
     $: dropdownLabel = attribute.type === Component.propTypes.OPTIONS ? attribute.options.find(o => o.value === value) : undefined
 
@@ -51,7 +48,7 @@
                 handleChange={v => {
                     if(!firstSubmit){
                         firstSubmit = true
-                        submit(attribute.key, v)
+                        submit(attribute.key, v, false)
                     }
                     component[attribute.key] = v
                 }}
@@ -77,10 +74,10 @@
 
                         if(!firstSubmit){
                             firstSubmit = true
-                            submit(attribute.key, value)
+                            submit(attribute.key, value, false)
                             return
                         }
-                        submit(attribute.key, value)
+                        submit(attribute.key, value, false)
                     }}
                     onFinish={v => {
                         value[index] = v
@@ -149,7 +146,7 @@
         />
     {:else if attribute.type === Component.propTypes.IMAGE}
         <Selector
-                handleChange={setImage}
+                handleChange={data => submit(attribute.key, data?.registryID, true)}
                 type="image"
                 selected={value}
         />
@@ -158,9 +155,7 @@
                 selected={value}
                 type="material"
                 terrainMaterials={attribute.terrainMaterials}
-                handleChange={src => {
-                    submit(attribute.key, src?.registryID, true)
-                }}
+                handleChange={src => submit(attribute.key, src?.registryID, true)}
 
         />
     {:else if attribute.type === Component.propTypes.TERRAIN}

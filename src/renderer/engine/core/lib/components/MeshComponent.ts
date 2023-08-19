@@ -64,22 +64,4 @@ export default class MeshComponent extends Component {
         return this._materialID
     }
 
-
-    getMeshInstance(): Mesh | undefined {
-        if (!this.meshID)
-            return null
-        if (GPUState.meshes.has(this.meshID))
-            return GPUState.meshes.get(this.meshID)
-        EngineFileSystemManager.loadMesh(this.meshID).catch(console.error)
-        return null
-    }
-
-    getMaterialInstance(): Material | null {
-        if (!this._materialID)
-            return null
-        if (GPUState.materials.has(this._materialID))
-            return GPUState.materials.get(this._materialID)
-        EngineFileSystemManager.loadMaterial(this._materialID).catch(console.error)
-        return null
-    }
 }

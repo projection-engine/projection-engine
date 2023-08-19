@@ -34,40 +34,10 @@ export default class MaterialManager {
     static async mapUniforms(data: MaterialUniform[], uniformValues: MutableObject) {
         if (!Array.isArray(data))
             return
-        const texturesInUse = {}
         Object.keys(uniformValues).forEach((key) => delete uniformValues[key])
-
         for (let i = 0; i < data.length; i++) {
             const currentUniform = data[i]
-            if (currentUniform.type === MaterialDataTypes.TEXTURE) {
-                const textureID = currentUniform.data
-                if (texturesInUse[textureID] || !EngineFileSystemManager.isReady)
-                    continue
-                try {
-                    const exists = GPUState.textures.get(textureID)
-                    if (exists) {
-                        texturesInUse[textureID] = {texture: exists, key: currentUniform.key}
-                        uniformValues[currentUniform.key] = exists
-                    } else {
-                        const asset = await EngineFileSystemManager.readAsset(textureID)
-                        if (asset) {
-                            const textureData = <TextureParams>(typeof asset === "string" ? JSON.parse(asset) : asset)
-                            const texture = await GPUManager.allocateTexture({
-                                ...textureData,
-                                img: textureData.base64
-                            }, textureID)
-
-                            if (texture) {
-                                texturesInUse[textureID] = {texture, key: currentUniform.key}
-                                uniformValues[currentUniform.key] = texture
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error(error)
-                }
-            } else
-                uniformValues[currentUniform.key] = currentUniform.data
+            uniformValues[currentUniform.key] = currentUniform.data
         }
     }
 

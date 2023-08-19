@@ -21,7 +21,7 @@
 
 
     	await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(data))
-    	if (GPUState.meshes.get(item.registryID) != null)
+    	if (GPUState.meshes.has(item.registryID))
     		GPUManager.destroyMesh(item.registryID)
     	ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_ASSET)
     }

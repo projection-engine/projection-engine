@@ -30,13 +30,13 @@ export default class UIManager {
         const elements = Array.from(Engine.UILayouts.keys())
         const UIComponents = EntityManager.withComponent(Components.UI).array
         for (let i = 0; i < elements.length; i++) {
-            const found = elements[i]
-            const entities = UIComponents.filter(e => EntityManager.getComponent<UIComponent>(e, Components.UI).uiLayoutID === found)
+            const uiLayoutId = elements[i]
+            const entities = UIComponents.filter(e => EntityManager.getComponent<UIComponent>(e, Components.UI).uiLayoutID === uiLayoutId)
             if (!entities.length) {
-                Engine.UILayouts.delete(found)
+                Engine.UILayouts.delete(uiLayoutId)
                 continue
             }
-            Engine.UILayouts.set(found, await EngineFileSystemManager.readAsset(found))
+            Engine.UILayouts.set(uiLayoutId, await EngineFileSystemManager.readAsset(uiLayoutId))
             entities.forEach(e => {
                 UIManager.updateUIEntity(e)
             })

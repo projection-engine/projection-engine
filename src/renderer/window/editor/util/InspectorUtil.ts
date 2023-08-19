@@ -2,7 +2,6 @@ import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
-import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import EngineStore from "../../shared/stores/EngineStore"
@@ -11,6 +10,8 @@ import EditorUtil from "./EditorUtil"
 import type EditorEntity from "../../../engine/tools/EditorEntity";
 import type Component from "@engine-core/lib/components/Component";
 import {Components,} from "@engine-core/engine.enum";
+import MeshComponent from "@engine-core/lib/components/MeshComponent";
+import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
 
 export default class InspectorUtil {
     static compareObjects(obj1, obj2) {
@@ -64,7 +65,7 @@ export default class InspectorUtil {
         EntitySelectionStore.updateStore({array: EntitySelectionStore.getEntitiesSelected()})
     }
 
-    static async handleComponentDrop(entity, data) {
+    static async handleComponentDrop(entity: EditorEntity, data) {
         try {
             const id = JSON.parse(data)[0]
             const type = InspectorUtil.#getItemFound(id)
@@ -76,18 +77,19 @@ export default class InspectorUtil {
                     await EditorUtil.componentConstructor(entity, id, true)
                     break
                 case "MESH":
-                    if (!entity.meshComponent) {
+                    if (!entity.hasComponent(Components.MESH))
                         entity.addComponent(Components.MESH)
-                        entity.addComponent(Components.CULLING)
-                    }
-                    await EngineResourceLoaderService.load(id, true)
-                    entity.meshComponent.meshID = id
+                    entity.getComponent<MeshComponent>(Components.MESH).meshID = id
                     break
                 case "MATERIAL":
-                    entity.meshComponent.materialID = id
+                    if (!entity.hasComponent(Components.MESH))
+                        entity.addComponent(Components.MESH)
+                    entity.getComponent<MeshComponent>(Components.MESH).materialID = id
                     break
                 case "IMAGE":
-                    (entity.addComponent(Components.SPRITE)).imageID = await EngineFileSystemManager.loadTexture(id)
+                    if (!entity.hasComponent(Components.SPRITE))
+                        entity.addComponent(Components.SPRITE)
+                    entity.getComponent<SpriteComponent>(Components.SPRITE).imageID = id
                     break
             }
         } catch (err) {

@@ -19,9 +19,9 @@ export default class ScriptsManager {
 		ScriptsManager.mountedScriptsMap.clear()
 		const scriptsToUpdate = Array.from(ScriptsManager.scriptInstances.keys())
 		for (let i = 0; i < scriptsToUpdate.length; i++) {
-			const current = scriptsToUpdate[i]
-			const data = await EngineFileSystemManager.readAsset(current)
-			ScriptsManager.scriptInstances.set(current, data)
+			const scriptId = scriptsToUpdate[i]
+			const data = await EngineFileSystemManager.readAsset(scriptId)
+			ScriptsManager.scriptInstances.set(scriptId, data)
 		}
 		// TODO - REWORK SCRIPTING SYSTEM
 		// for (let i = 0; i < Engine.entities.array.length; i++) {

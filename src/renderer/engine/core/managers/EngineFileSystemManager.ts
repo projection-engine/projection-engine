@@ -1,123 +1,57 @@
 import GPUState from "../states/GPUState"
 import GPUManager from "./GPUManager"
+import DynamicMap from "@engine-core/lib/DynamicMap";
 
 
 export default class EngineFileSystemManager {
-	static #callback
-	static #fetchingMaterials: { [key: string]: Function[] } = {}
-	static #fetchingMeshes: { [key: string]: Function[] } = {}
-	static ASSETS_PATH
+    static #callback: GenericNonVoidFunctionWithP<string, string>
+    static #fetching = new Map<string, boolean>()
 
-	static get isReady() {
-		return EngineFileSystemManager.#callback != null
-	}
+    static async readAsset(assetID: string) {
+        if (EngineFileSystemManager.#callback)
+            return EngineFileSystemManager.#callback(assetID)
+        return null
+    }
 
-	/*
-    Param can be either a registryID or an absolute path to the asset itself
-     */
-	static async readAsset(assetID: string) {
-		if (EngineFileSystemManager.#callback)
-			return EngineFileSystemManager.#callback(assetID)
-		return null
-	}
+    static requestTextureLoad(ID: string) {
+        this.#doFetch(ID, GPUState.textures, async data => {
+            const texture = JSON.parse(data)
+            await GPUManager.allocateTexture({
+                ...texture,
+                img: texture.base64,
+                yFlip: texture.flipY
+            }, ID)
+        })
+    }
 
-	static async loadTexture(registryID: string) {
-		if (GPUState.textures.get(registryID) != null)
-			return
-		try {
-			const textureData = await EngineFileSystemManager.readAsset(registryID)
-			if (textureData) {
-				const data = JSON.parse(textureData)
-				await GPUManager.allocateTexture({
-					...data,
-					img: data.base64,
-					yFlip: data.flipY
-				}, registryID)
-			}
-		} catch (err) {
-			console.error(err)
-		}
-	}
+    static requestMeshLoad(ID: string) {
+        this.#doFetch(ID, GPUState.meshes, data => GPUManager.allocateMesh(ID, JSON.parse(data)))
+    }
 
-	static async loadMesh(ID: string): Promise<boolean> {
-		if (!ID || GPUState.meshes.get(ID) != null) {
-			EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMeshes, ID)
-			return
-		}
-		if (EngineFileSystemManager.#fetchingMeshes[ID])
-			return await new Promise(resolve => {
-				EngineFileSystemManager.#fetchingMeshes[ID].push(resolve)
-			})
-		else {
-			EngineFileSystemManager.#fetchingMeshes[ID] = []
+    static requestMaterialLoad(ID: string) {
+        this.#doFetch(ID, GPUState.materials, async data => {
+            const file = JSON.parse(data)
+            if (!file?.response) {
+                return
+            }
+            await GPUManager.allocateMaterial(<MaterialInformation>file.response, ID)
+        })
+    }
 
-			try {
-				if (!GPUState.meshes.get(ID)) {
-					const data = await EngineFileSystemManager.readAsset(ID)
-					if (!data) {
-						EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMeshes, ID)
-						return
-					}
-					const file = JSON.parse(data)
-					GPUManager.allocateMesh(ID, file)
-					EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMeshes, ID)
-					return
-				}
-			} catch (err) {
-				console.error(err)
-			}
-			EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMeshes, ID)
-		}
-	}
+    static #doFetch(id: string, resourceOrigin: DynamicMap<string, IResource>, onLoad: GenericVoidFunctionWithP<string>) {
+        if (!id || resourceOrigin.get(id) != null || EngineFileSystemManager.#fetching.get(id)) {
+            return
+        }
+        this.#fetching.set(id, true)
+        this.readAsset(id).then(data => {
+            if (!data)
+                return
+            onLoad(data)
+            this.#fetching.delete(id)
+        }).catch(console.error)
+    }
 
-	static #doCallback(data: { [key: string]: Function[] }, id: string) {
-		if (data[id])
-			data[id].forEach(cb => cb())
-		delete data[id]
-	}
-
-	static async loadMaterial(ID: string) {
-		if (!ID || GPUState.materials.get(ID) != null) {
-			EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMaterials, ID)
-			return
-		}
-		if (EngineFileSystemManager.#fetchingMaterials[ID])
-			return await new Promise(resolve => {
-
-				EngineFileSystemManager.#fetchingMaterials[ID].push(resolve)
-			})
-		else {
-			EngineFileSystemManager.#fetchingMaterials[ID] = []
-			try {
-				if (!GPUState.materials.get(ID)) {
-					const data = await EngineFileSystemManager.readAsset(ID)
-					if (!data) {
-						EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMaterials, ID)
-						return
-					}
-					const file = JSON.parse(data)
-					if (!file?.response) {
-						EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMaterials, ID)
-						return
-					}
-					const materialInformation = file.response
-					if (materialInformation) {
-						await GPUManager.allocateMaterial(<MaterialInformation>materialInformation, ID)
-						EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMaterials, ID)
-						return
-					}
-				}
-			} catch (err) {
-				console.error(err)
-			}
-			EngineFileSystemManager.#doCallback(EngineFileSystemManager.#fetchingMaterials, ID)
-		}
-	}
-
-
-	static initialize(cb: Function) {
-		if (EngineFileSystemManager.isReady)
-			return
-		EngineFileSystemManager.#callback = cb
-	}
+    static initialize(cb: GenericNonVoidFunction<string>) {
+        EngineFileSystemManager.#callback = cb
+    }
 }
