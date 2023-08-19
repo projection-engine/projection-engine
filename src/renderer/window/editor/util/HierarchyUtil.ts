@@ -109,24 +109,21 @@ export default class HierarchyUtil {
             return
         }
         const toSave = Array.isArray(entityDragged) ? entityDragged : [entityDragged]
-        const toAdd = [], newSelection = []
+        const newSelection = []
+        let noneCreate = true
         for (let i = 0; i < toSave.length; i++) {
             const currentEntity = <EditorEntity>toSave[i]
             if (event.ctrlKey) {
                 EntityManager.addParent(currentEntity.id, dropTargetEntity?.id)
             } else if (event.shiftKey) {
-                // TODO - IMPLEMENT CLONING
-                // const clone = currentEntity.clone()
-                // clone.removeParent()
-                // clone.parentID = dropTargetEntity?.id
-                // toAdd.push(clone)
-                // newSelection.push(clone.id)
+                const clone = currentEntity.clone()
+                clone.setParent(dropTargetEntity?.id)
+                noneCreate = false
+                newSelection.push(clone.id)
             }
         }
 
-        if (toAdd.length > 0) {
-            EngineStateService.appendBlock(toAdd)
-        } else {
+        if (noneCreate) {
             EntitySelectionStore.setEntitiesSelected(newSelection)
             EntityHierarchyService.updateHierarchy()
         }

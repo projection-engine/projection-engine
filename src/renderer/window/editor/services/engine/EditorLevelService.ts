@@ -98,8 +98,11 @@ export default class EditorLevelService extends AbstractSingleton {
         EntitySelectionStore.updateStore({array: []})
         EntitySelectionStore.setLockedEntity(undefined)
 
-        await LevelManager.loadLevel(levelID as UUID, false)
-        if (EntityManager.getEntities().size > 0) {
+        const {editorState} = JSON.parse(await EditorFSUtil.readAsset(levelID))
+        EditorEntityManager.restoreState(editorState)
+        await LevelManager.loadLevel(levelID, false)
+
+        if(EntityManager.getEntities().size > 0) {
             EntitySelectionStore.setLockedEntity(EntityManager.getEntityKeys()[0])
         }
         EntityHierarchyService.updateHierarchy()
@@ -164,8 +167,8 @@ export default class EditorLevelService extends AbstractSingleton {
 
         await FileSystemUtil.write(
             path,
-            serializeStructure( {
-                engineState: LevelManager.serializeState(),
+            serializeStructure({
+                ...LevelManager.serializeState(),
                 editorState: EditorEntityManager.serializeState()
             })
         )

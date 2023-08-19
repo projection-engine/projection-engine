@@ -40,10 +40,8 @@ export default class TranslationGizmo extends AbstractXYZGizmo {
 
 	onMouseMove(event: MouseEvent) {
 		if (!this.#hasCloned && event.shiftKey) {
-			// TODO - IMPLEMENT EDITOR ENGINE CLONING
-			// const clones = EngineTools.selected.map(m => m.clone())
-			// EngineStateService.appendBlock(clones)
-			// GizmoState.mainEntity = clones[0]
+			const clones = EngineTools.selected.map(m => m.clone())
+			GizmoState.mainEntity = clones[0]
 		}
 		this.#hasCloned = event.shiftKey
 		this.#gizmoTranslateEntity(event)

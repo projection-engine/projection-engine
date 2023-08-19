@@ -7,13 +7,13 @@ import Component from "@engine-core/components/Component";
 import serializeStructure from "@engine-core/utils/serialize-structure";
 
 export default class LevelManager {
-    static #loadedLevel: EngineEntity
+    static #loadedLevel: string
 
     static get loadedLevel() {
         return this.#loadedLevel
     }
 
-    static async loadLevel(levelID: EngineEntity, cleanEngine?: boolean) {
+    static async loadLevel(levelID: string, cleanEngine?: boolean) {
         if (!levelID || LevelManager.#loadedLevel === levelID && !cleanEngine)
             return []
         try {
@@ -24,8 +24,8 @@ export default class LevelManager {
             }
 
             const asset = await FileSystemAPI.readAsset(levelID)
-            const {state} = JSON.parse(asset) as EngineLevel<Components, Component>
-            this.restoreState(state)
+            const {engineState} = JSON.parse(asset) as EngineLevel<Components, Component>
+            this.restoreState(JSON.parse(engineState))
         } catch (err) {
             console.error(err)
         }
@@ -60,7 +60,7 @@ export default class LevelManager {
         }
     }
 
-    static serializeState(): string {
+    static serializeState(): { engineState: string } {
         const data = []
         EntityManager.getEntities().forEach((value, key) => {
             data.push({
@@ -68,11 +68,13 @@ export default class LevelManager {
                 components: Array.from(value.entries())
             })
         })
-        return serializeStructure({
-            entities: data,
-            activeEntities: Array.from(EntityManager.getActiveEntities().entries()),
-            parentChildren: Array.from(EntityManager.getParentChildren().entries()),
-            childParent: Array.from(EntityManager.getChildParent().entries()),
-        })
+        return {
+            engineState: serializeStructure({
+                entities: data,
+                activeEntities: Array.from(EntityManager.getActiveEntities().entries()),
+                parentChildren: Array.from(EntityManager.getParentChildren().entries()),
+                childParent: Array.from(EntityManager.getChildParent().entries()),
+            })
+        }
     }
 }

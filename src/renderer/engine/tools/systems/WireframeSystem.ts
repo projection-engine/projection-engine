@@ -9,6 +9,9 @@ import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
+import EditorEntityManager from "../EditorEntityManager";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import PhysicsColliderComponent from "@engine-core/components/PhysicsColliderComponent";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
@@ -29,11 +32,13 @@ export default class WireframeSystem extends AbstractSystem {
         let size = arr.length
 
         for (let i = 0; i < size; i++) {
-            const entity = arr[i]
-            if (!entity.active || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
+            const entity = EditorEntityManager.getEntity(arr[i])
+            const tComponent = entity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+            if (!entity.active )
+                //|| entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
                 continue
 
-            context.uniformMatrix4fv(uniforms.transformMatrix, false, entity.matrix)
+            context.uniformMatrix4fv(uniforms.transformMatrix, false, tComponent.matrix)
             context.uniform1i(uniforms.isSelected, entity.__isSelected ? 1 : 0)
             StaticEditorMeshes.clipSpaceCamera.drawLines()
         }
@@ -41,17 +46,19 @@ export default class WireframeSystem extends AbstractSystem {
         arr = ResourceEntityMapper.withComponent(Components.PHYSICS_COLLIDER).array
         size = arr.length
         for (let i = 0; i < size; i++) {
-            const entity = arr[i]
-            if (!entity.active || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
+            const entity = EditorEntityManager.getEntity(arr[i])
+            const tComponent = entity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+            if (!entity.active)
+                //|| entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
                 continue
 
-            const collision = entity.physicsColliderComponent
-            if (entity.changesApplied || !entity.__collisionTransformationMatrix) {
+            const collision = entity.getComponent<PhysicsColliderComponent>(Components.PHYSICS_COLLIDER)
+            if (tComponent.changesApplied || !entity.__collisionTransformationMatrix) {
                 entity.collisionUpdated = true
                 const m = entity.__collisionTransformationMatrix || mat4.clone(EMPTY_MATRIX)
-                vec3.add(translationCache, <vec3>collision.center, entity.absoluteTranslation)
+                vec3.add(translationCache, <vec3>collision.center, tComponent.absoluteTranslation)
                 let scale
-                const rotation = entity._rotationQuaternion
+                const rotation = tComponent.rotationQuaternion
                 if (collision.collisionType === ColliderTypes.BOX)
                     scale = collision.size
                 else {

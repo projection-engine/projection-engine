@@ -3,9 +3,12 @@ import EntityManager from "@engine-core/EntityManager";
 import Component from "@engine-core/components/Component";
 import {mat4, quat, vec3} from "gl-matrix";
 import {Components} from "@engine-core/engine.enum";
+import EditorEntityManager from "./EditorEntityManager";
 
 
 export default class EditorEntity implements IEditorEntity {
+
+
     id = crypto.randomUUID()
     _colorIdentifier: [number, number, number] = [255, 255, 255]
     name = ""
@@ -18,6 +21,8 @@ export default class EditorEntity implements IEditorEntity {
     __originalPivot: vec3 = undefined
     __originalScaling: vec3 = undefined
     __originalQuat: quat = undefined
+    private __collisionUpdated: boolean;
+    __collisionTransformationMatrix: mat4;
 
     constructor(id?: EngineEntity) {
         this.id = id ?? this.id
@@ -25,6 +30,14 @@ export default class EditorEntity implements IEditorEntity {
 
     get colorIdentifier() {
         return this._colorIdentifier
+    }
+
+    get collisionUpdated(): boolean {
+        return this.__collisionUpdated;
+    }
+
+    set collisionUpdated(value: boolean) {
+        this.__collisionUpdated = value;
     }
 
     set colorIdentifier(data) {
@@ -54,5 +67,13 @@ export default class EditorEntity implements IEditorEntity {
 
     hasComponent(comp: Components) {
         return EntityManager.hasComponent(this.id, comp)
+    }
+
+    clone():EditorEntity{
+        return EditorEntityManager.clone(this)
+    }
+
+    setParent(parent: EngineEntity|undefined) {
+        EntityManager.addParent(this.id, parent)
     }
 }

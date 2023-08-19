@@ -9,7 +9,7 @@ import UberShader from "../resource-libs/UberShader"
 import EngineState from "../EngineState"
 import MeshComponent from "@engine-core/components/MeshComponent";
 import EntityManager from "@engine-core/EntityManager";
-import {Components} from "@engine-core/engine.enum";
+import {Components, GLSLTypes} from "@engine-core/engine.enum";
 
 export default class SceneRenderingUtil {
 	static #bindTexture(context: WebGL2RenderingContext, location: WebGLUniformLocation, index: number, sampler: WebGLTexture, cubeMap: boolean) {
@@ -59,9 +59,9 @@ export default class SceneRenderingUtil {
 				if (!dataAttribute)
 					continue
 				if (current.type === "sampler2D")
-					Shader.bind(uniforms[current.key], dataAttribute.texture, current.type, texOffset, () => texOffset++)
+					Shader.bind(uniforms[current.key], dataAttribute.texture, <GLSLTypes>current.type, texOffset, () => texOffset++)
 				else
-					Shader.bind(uniforms[current.key], dataAttribute, current.type, texOffset, () => texOffset++)
+					Shader.bind(uniforms[current.key], dataAttribute, <GLSLTypes>current.type, texOffset, () => texOffset++)
 			}
 	}
 

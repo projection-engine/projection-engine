@@ -6,6 +6,10 @@ import StaticEditorShaders from "../utils/StaticEditorShaders"
 import EngineTools from "../EngineTools"
 import AbstractSystem from "../../core/AbstractSystem";
 import EntityManager from "@engine-core/EntityManager";
+import {Components} from "@engine-core/engine.enum";
+import SpriteComponent from "@engine-core/components/SpriteComponent";
+import MeshComponent from "@engine-core/components/MeshComponent";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
 
 export default class SelectedSystem extends AbstractSystem {
 
@@ -30,25 +34,28 @@ export default class SelectedSystem extends AbstractSystem {
             const current = EngineTools.selected[m]
             if (!current || !current.active)
                 continue
-
-            const sprite = current.spriteComponent
-            const mesh = current.meshRef
+            const transformationComponent = current.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+            if (!transformationComponent)
+                continue
+            const sprite = current.getComponent<SpriteComponent>(Components.SPRITE)
+            const meshComponent = current.getComponent<MeshComponent>(Components.MESH)
+            const mesh = meshComponent && meshComponent.meshID ? GPU.meshes.get(meshComponent.meshID) : undefined
             const pId = EntityManager.getEntityPickVec3(current.id)
             metadata[6] = pId[0]
             metadata[7] = pId[1]
             metadata[8] = pId[2]
             metadata[0] = sprite && !mesh ? 1 : 0
 
-            context.uniformMatrix4fv(uniforms.transformMatrix, false, current.matrix)
+            context.uniformMatrix4fv(uniforms.transformMatrix, false, transformationComponent.matrix)
             if (mesh) {
                 context.uniformMatrix3fv(uniforms.metadata, false, metadata)
                 mesh.draw()
             } else if (sprite) {
                 metadata[1] = sprite.attributes[0]
                 metadata[2] = sprite.attributes[1]
-                metadata[3] = current.scaling[0]
-                metadata[4] = current.scaling[1]
-                metadata[5] = current.scaling[2]
+                metadata[3] = transformationComponent.scaling[0]
+                metadata[4] = transformationComponent.scaling[1]
+                metadata[5] = transformationComponent.scaling[2]
                 context.uniformMatrix3fv(uniforms.metadata, false, metadata)
                 StaticMeshes.drawQuad()
             }

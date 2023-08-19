@@ -8,6 +8,14 @@ import serializeStructure from "@engine-core/utils/serialize-structure";
 export default class EditorEntityManager extends AbstractSingleton {
     #entities = new DynamicMap<EngineEntity, EditorEntity>()
 
+    static* #getIncrementalCloneIndex() {
+        let index = 0
+        while (true) {
+            yield index;
+            index++;
+        }
+    }
+
     static get entities() {
         return this.get<EditorEntityManager>().#entities
     }
@@ -32,5 +40,26 @@ export default class EditorEntityManager extends AbstractSingleton {
 
     static serializeState(): string {
         return serializeStructure(this.getInstance().#entities.array)
+    }
+
+    static restoreState(editorState: string) {
+        const entitiesToLoad = JSON.parse(editorState)
+        const entities = this.getInstance().#entities
+        entities.clear()
+        for (let i = 0; i < entitiesToLoad.length; i++) {
+            const entityObj = entitiesToLoad[i];
+            const instance = new EditorEntity(entityObj.id)
+            instance.name = entityObj.name
+            entities.set(instance.id, instance)
+        }
+    }
+
+    static clone(toClone: EditorEntity) {
+        const newInstance = new EditorEntity()
+        newInstance.name = toClone.name + this.#getIncrementalCloneIndex().next().value
+
+        this.getInstance().#entities.set(newInstance.id, newInstance)
+        EntityManager.clone(toClone.id, newInstance.id)
+        return newInstance
     }
 }

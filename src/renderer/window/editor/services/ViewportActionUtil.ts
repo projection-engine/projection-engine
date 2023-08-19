@@ -7,12 +7,14 @@ import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import EntityManager from "@engine-core/EntityManager";
+import EditorEntity from "../../../engine/tools/EditorEntity";
+import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
 
 
 export default class ViewportActionUtil {
-    static toCopy = []
+    static toCopy: EngineEntity[] = []
 
-    static copy(single?: boolean, target?: string) {
+    static copy(single?: boolean, target?: EngineEntity) {
         const selected = EntitySelectionStore.getEntitiesSelected()
         if (target)
             ViewportActionUtil.toCopy = [target]
@@ -56,7 +58,6 @@ export default class ViewportActionUtil {
     }
 
     static paste(parent?: EngineEntity) {
-        const block = []
         if (!ViewportActionUtil.toCopy)
             return
         for (let i = 0; i < ViewportActionUtil.toCopy.length; i++) {
@@ -64,15 +65,13 @@ export default class ViewportActionUtil {
             if (parent === found)
                 continue
             if (found) {
-                // TODO - IMPLEMENT CLONE METHOD FOR EDITOR ENTITIES
-                // const clone = found.clone()
-                // block.push(clone)
-                // if (!targetParent)
-                //     continue
-                // EntityManager.addParent(clone.id, targetParent.id)
+                const clone = EditorEntityManager.getEntity(found)?.clone?.()
+                if(!clone || !parent) {
+                    continue
+                }
+                clone.setParent(parent)
             }
         }
-        EngineStateService.appendBlock(block)
         ToastNotificationSystem.getInstance().log(`Pasted ${ViewportActionUtil.toCopy.length} entities.`)
 
     }

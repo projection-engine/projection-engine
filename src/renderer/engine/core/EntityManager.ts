@@ -174,8 +174,8 @@ export default class EntityManager extends AbstractSingleton {
         return this.getEntities().get(entity)?.get?.(component) as T
     }
 
-    static clone(entity: EngineEntity) {
-        const id = crypto.randomUUID()
+    static clone(entity: EngineEntity, targetId?: EngineEntity) {
+        const id = targetId ?? crypto.randomUUID()
         const str = serializeStructure({id, components: Array.from(this.getEntities().get(entity).entries())})
         this.parseEntity(JSON.parse(str))
         this.clearPickingCache()
@@ -195,20 +195,6 @@ export default class EntityManager extends AbstractSingleton {
             componentInstance[key] = value
         }
         this.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
-    }
-
-    static createEntities(quantity: number): EngineEntity[] {
-        const entities = []
-        const activeEntities = this.getActiveEntities()
-        for (let i = 0; i < quantity; i++) {
-            const newEntity: EngineEntity = crypto.randomUUID()
-            entities.push(newEntity)
-            activeEntities.set(newEntity, true)
-            this.getEntities().set(newEntity, new DynamicMap<Components, Component>())
-        }
-        this.clearPickingCache()
-        this.#callListeners({all: entities, type: "create"})
-        return entities
     }
 
     static createEntitiesById(entities: EngineEntity[]): EngineEntity[] {

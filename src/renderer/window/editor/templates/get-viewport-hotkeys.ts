@@ -16,6 +16,7 @@ import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import EntityManager from "@engine-core/EntityManager";
 import {vec3} from "gl-matrix";
+import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
 
 
 export default function getViewportHotkeys(): { [key: string]: ContextMenuOption } {
@@ -24,13 +25,8 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
         DUPLICATE: {
             label: "Duplicate active",
             callback: () => {
-                // TODO - IMPLEMENT EDITOR ENTITY CLONE
-                // const t = EntitySelectionStore.getMainEntity()
-                // if (!t)
-                //     return
-                // const entity = QueryAPI.getEntityByID(t)
-                // if (entity)
-                //     EngineStateService.add(entity.clone())
+                const t = EntitySelectionStore.getMainEntity()
+                EditorEntityManager.getEntity(t)?.clone?.()
             },
             require: viewportHotkeys.DUPLICATE,
         },

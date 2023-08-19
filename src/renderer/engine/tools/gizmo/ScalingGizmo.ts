@@ -44,6 +44,8 @@ export default class ScalingGizmo extends AbstractXYZGizmo {
 		if (!GizmoState.mainEntity)
 			return
 		const firstEntity = GizmoState.mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+		if(!firstEntity)
+			return;
 		const grid = event.ctrlKey ? 1 : GizmoState.scalingGridSize
 		const vec = GizmoUtil.mapToScreenMovement(event)
 
@@ -62,7 +64,7 @@ export default class ScalingGizmo extends AbstractXYZGizmo {
 			return
 		for (let i = 0; i < SIZE; i++) {
 			const target = entities[i].getComponent<TransformationComponent>(Components.TRANSFORMATION)
-			if (target.lockedScaling)
+			if (!target || target.lockedScaling)
 				continue
 			GizmoUtil.assignValueToVector(vec, target._scaling)
 			if (hasToTranslate)

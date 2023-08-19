@@ -29,7 +29,7 @@ export default class EditorFSUtil {
 		}
 	}
 
-	static async createRegistryEntry(fID = crypto.randomUUID(), pathToFile) {
+	static async createRegistryEntry(fID:string = crypto.randomUUID(), pathToFile) {
 		await EditorUtil.getCall<undefined>(IPCRoutes.CREATE_REG, {id: fID, path: pathToFile}, false)
 	}
 

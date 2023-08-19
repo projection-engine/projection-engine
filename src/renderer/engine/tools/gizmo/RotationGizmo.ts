@@ -105,6 +105,8 @@ export default class RotationGizmo extends AbstractXYZGizmo {
             return
 
         const firstEntity = GizmoState.mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+        if(!firstEntity)
+            return;
         const entities = EngineTools.selected
         const SIZE = entities.length
         if (SIZE === 1 && firstEntity.lockedRotation)
@@ -125,7 +127,7 @@ export default class RotationGizmo extends AbstractXYZGizmo {
         const isGlobalRotation = GizmoState.transformationType === GizmoTransformationType.GLOBAL && SIZE === 1
         for (let i = 0; i < SIZE; i++) {
             const target = entities[i].getComponent<TransformationComponent>(Components.TRANSFORMATION)
-            if (target.lockedRotation)
+            if (!target || target.lockedRotation)
                 continue
             if (screenSpace) {
                 quat.copy(target.rotationQuaternion, quatA)
