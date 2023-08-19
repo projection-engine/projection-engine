@@ -1,5 +1,5 @@
 import {quat, vec3} from "gl-matrix"
-import ArrayBufferAPI from "../lib/utils/ArrayBufferAPI"
+import ArrayBufferUtil from "../utils/ArrayBufferUtil"
 import CameraEffects from "../lib/CameraEffects"
 import CameraNotificationDecoder from "../lib/CameraNotificationDecoder"
 
@@ -10,21 +10,21 @@ import CameraNotificationDecoder from "../lib/CameraNotificationDecoder"
  * @field projectionBuffer {float32array [zFar, zNear, fov, aR, orthographicSize]}
  */
 export default class CameraState extends CameraEffects {
-	static position = ArrayBufferAPI.allocateVector(3) as Float32Array
-	static viewMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static projectionMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static invViewMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static invProjectionMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static viewProjectionMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static previousViewProjectionMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static staticViewMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static skyboxProjectionMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static invSkyboxProjectionMatrix = ArrayBufferAPI.allocateMatrix(4, true)
-	static viewUBOBuffer = ArrayBufferAPI.allocateVector(52)
-	static projectionUBOBuffer = ArrayBufferAPI.allocateVector(35)
-	static projectionBuffer = ArrayBufferAPI.allocateVector(5)
-	static translationBuffer = <vec3>ArrayBufferAPI.allocateVector(3)
-	static rotationBuffer = <quat>ArrayBufferAPI.allocateVector(4, 0, true)
+	static position = ArrayBufferUtil.allocateVector(3) as Float32Array
+	static viewMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static projectionMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static invViewMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static invProjectionMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static viewProjectionMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static previousViewProjectionMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static staticViewMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static skyboxProjectionMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static invSkyboxProjectionMatrix = ArrayBufferUtil.allocateMatrix(4, true)
+	static viewUBOBuffer = ArrayBufferUtil.allocateVector(52)
+	static projectionUBOBuffer = ArrayBufferUtil.allocateVector(35)
+	static projectionBuffer = ArrayBufferUtil.allocateVector(5)
+	static translationBuffer = <vec3>ArrayBufferUtil.allocateVector(3)
+	static rotationBuffer = <quat>ArrayBufferUtil.allocateVector(4, 0, true)
 	static notificationBuffers = CameraNotificationDecoder.generateBuffer()
 
 

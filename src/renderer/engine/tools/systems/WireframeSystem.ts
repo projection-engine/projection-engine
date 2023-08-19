@@ -9,9 +9,9 @@ import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 import EditorEntityManager from "../EditorEntityManager";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import PhysicsColliderComponent from "@engine-core/components/PhysicsColliderComponent";
-import EntityManager from "@engine-core/EntityManager";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import PhysicsColliderComponent from "@engine-core/lib/components/PhysicsColliderComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()

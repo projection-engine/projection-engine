@@ -1,10 +1,10 @@
 import GPU from "../GPU"
-import CameraAPI from "../lib/utils/CameraAPI"
+import CameraManager from "../managers/CameraManager"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
-import Framebuffer from "../instances/Framebuffer"
-import MetricsController from "../lib/utils/MetricsController"
+import Framebuffer from "@engine-core/lib/resources/Framebuffer"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
@@ -12,7 +12,7 @@ import AbstractSystem from "../AbstractSystem";
 export default class BloomSystem extends AbstractSystem{
 
     shouldExecute(): boolean {
-        return CameraAPI.bloom;
+        return CameraManager.bloom;
     }
 
     execute() {
@@ -21,7 +21,7 @@ export default class BloomSystem extends AbstractSystem{
         StaticShadersState.bloom.bind()
         GPUUtil.bind2DTextureForDrawing(StaticShadersState.bloomUniforms.sceneColor, 0, StaticFBOState.postProcessing1Sampler)
 
-        context.uniform1f(StaticShadersState.bloomUniforms.threshold, CameraAPI.bloomThreshold)
+        context.uniform1f(StaticShadersState.bloomUniforms.threshold, CameraManager.bloomThreshold)
         StaticMeshesState.drawQuad()
         StaticFBOState.lens.stopMapping()
 
@@ -38,7 +38,7 @@ export default class BloomSystem extends AbstractSystem{
             this.#upscale(fbo, context, i > 0 ? upscale[i - 1].colors[0] : undefined, downscale[downscale.length - 1 - i].colors[0])
         }
         this.#upscale(StaticFBOState.postProcessing2, context, StaticFBOState.postProcessing1Sampler, upscale[upscale.length - 1].colors[0])
-        MetricsController.currentState = METRICS_FLAGS.BLOOM
+        MetricsManager.currentState = METRICS_FLAGS.BLOOM
     }
 
     #upscale(fbo: Framebuffer, context: WebGL2RenderingContext, nextSampler: WebGLTexture, blurredSampler: WebGLTexture) {
@@ -48,7 +48,7 @@ export default class BloomSystem extends AbstractSystem{
         GPUUtil.bind2DTextureForDrawing(upSamplingShaderUniforms.nextSampler, 0, nextSampler)
         GPUUtil.bind2DTextureForDrawing(upSamplingShaderUniforms.blurred, 1, blurredSampler)
 
-        context.uniform1f(upSamplingShaderUniforms.sampleScale, CameraAPI.bloomOffset)
+        context.uniform1f(upSamplingShaderUniforms.sampleScale, CameraManager.bloomOffset)
         StaticMeshesState.drawQuad()
         fbo.stopMapping()
     }
@@ -59,7 +59,7 @@ export default class BloomSystem extends AbstractSystem{
         fbo.startMapping()
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneColor, 0, sceneColor)
         context.uniform1f(uniforms.blurRadius, 10)
-        context.uniform1i(uniforms.samples, CameraAPI.bloomQuality)
+        context.uniform1i(uniforms.samples, CameraManager.bloomQuality)
         context.uniform2fv(uniforms.bufferResolution, fbo.resolution)
 
         StaticMeshesState.drawQuad()

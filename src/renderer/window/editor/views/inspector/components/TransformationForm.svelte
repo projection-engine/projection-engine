@@ -14,8 +14,8 @@
     import EngineToolsState from "../../../../../engine/tools/EngineToolsState";
     import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
-    import EntityManager from "@engine-core/EntityManager";
-    import TransformationComponent from "@engine-core/components/TransformationComponent";
+    import EntityManager from "@engine-core/managers/EntityManager";
+    import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
     const COMPONENT_ID = crypto.randomUUID()
     let targets = []

@@ -3,7 +3,7 @@ import Engine from "../Engine"
 import DEBUG_FRAG from "../static/shaders/uber-shader/UBER-MATERIAL-DEBUG.frag"
 import BASIS_FRAG from "../static/shaders/uber-shader/UBER-MATERIAL-BASIS.frag"
 import VERTEX_SHADER from "../static/shaders/uber-shader/UBER-MATERIAL.vert"
-import Shader from "../instances/Shader"
+import Shader from "@engine-core/lib/resources/Shader"
 
 export default class UberShader {
 

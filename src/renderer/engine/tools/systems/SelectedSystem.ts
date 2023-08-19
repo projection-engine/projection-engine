@@ -5,11 +5,11 @@ import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
 import EngineTools from "../EngineTools"
 import AbstractSystem from "../../core/AbstractSystem";
-import EntityManager from "@engine-core/EntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 import {Components} from "@engine-core/engine.enum";
-import SpriteComponent from "@engine-core/components/SpriteComponent";
-import MeshComponent from "@engine-core/components/MeshComponent";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
+import MeshComponent from "@engine-core/lib/components/MeshComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
 export default class SelectedSystem extends AbstractSystem {
 

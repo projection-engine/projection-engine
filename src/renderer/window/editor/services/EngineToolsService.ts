@@ -1,14 +1,14 @@
 import Engine from "../../../engine/core/Engine"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import EngineTools from "../../../engine/tools/EngineTools"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import EngineResources from "../../../engine/core/lib/EngineResources"
 import AbstractSingleton from "../../../engine/core/AbstractSingleton"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import VisualsStore from "../../shared/stores/VisualsStore"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
-import UIAPI from "../../../engine/core/lib/rendering/UIAPI"
+import UIManager from "@engine-core/managers/UIManager"
 import GPU from "../../../engine/core/GPU"
 import EngineToolsState from "../../../engine/tools/EngineToolsState"
 import EngineState from "@engine-core/states/EngineState"
@@ -82,7 +82,7 @@ export default class EngineToolsService extends AbstractSingleton {
 		const engine = EngineStore.getData()
 		const settings = SettingsStore.getData()
 		if (engine.executingAnimation)
-			UIAPI.showUI()
+			UIManager.showUI()
 		if (Engine.environment === Environment.DEV && !engine.focusedCamera) {
 			EngineState.cameraEntityTarget = undefined
 			if (settings.camera !== undefined) {
@@ -93,8 +93,8 @@ export default class EngineToolsService extends AbstractSingleton {
 				})
 
 				if (settings.camera.smoothing != null)
-					CameraAPI.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
-				CameraAPI.updateViewTarget(settings.camera)
+					CameraManager.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
+				CameraManager.updateViewTarget(settings.camera)
 			}
 		}
 	}
@@ -125,6 +125,6 @@ export default class EngineToolsService extends AbstractSingleton {
 		GizmoState.gizmoType =settings.gizmo
 		EngineToolsService.#updateCameraTracker()
 		EngineToolsService.#updateEngineToolsState()
-		CameraAPI.isOrthographic = settings.camera.ortho
+		CameraManager.isOrthographic = settings.camera.ortho
 	}
 }

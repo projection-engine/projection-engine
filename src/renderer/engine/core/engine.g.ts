@@ -1,5 +1,20 @@
 type EngineEntity = `${string}-${string}-${string}-${string}-${string}`
 
+interface IResource{}
+interface FBOTexture {
+    [key: string]: any,
+
+    w?: number,
+    h?: number,
+    attachment?: number,
+    precision?: number,
+    format?: number,
+    type?: number,
+    linear?: boolean,
+    repeat?: boolean
+
+}
+
 interface EntityListenerOptions {
     once?: boolean,
     targetEntityId?: string,
@@ -61,6 +76,27 @@ interface CameraEffectsSerialization {
     distortion: boolean
 }
 
+interface Uniform {
+    type: string,
+    name: string,
+    parent?: string,
+    arraySize?: number,
+    uLocations?: WebGLUniformLocation[],
+    uLocation?: WebGLUniformLocation
+}
+
+interface MeshProps {
+    id?: string,
+    vertices?: number[] | Float32Array,
+    indices?: number[] | Float32Array,
+    normals?: number[] | Float32Array,
+    uvs?: number[] | Float32Array,
+    tangents?: number[] | Float32Array,
+    maxBoundingBox?: number[],
+    minBoundingBox?: number[]
+
+}
+
 interface CameraSerialization {
     translationSmoothing: number,
     metadata: CameraEffectsSerialization,
@@ -70,7 +106,7 @@ interface CameraSerialization {
     prevY?: number
 }
 
-interface IGPUResource {
+interface IGPUResource extends IResource{
     lastUsed: number
     loaded: boolean
 }
@@ -89,6 +125,21 @@ interface MaterialInformation {
 }
 
 interface ITexture extends IGPUResource{
+}
+
+interface UBOItem{
+    offset:number,
+    dataSize:number,
+    chunkSize:number
+}
+
+interface UBOData{
+    name:string
+    type:string
+    offset?:number
+    dataSize?:number
+    chunkSize?:number
+    dataLength?:number
 }
 
 

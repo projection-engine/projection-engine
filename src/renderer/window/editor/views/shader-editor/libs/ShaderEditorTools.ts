@@ -6,7 +6,7 @@ import Canvas from "./Canvas"
 import type ShaderNode from "../templates/ShaderNode"
 import GPU from "../../../../../engine/core/GPU"
 import UberShader from "@engine-core/lib/UberShader"
-import GPUAPI from "../../../../../engine/core/lib/rendering/GPUAPI"
+import GPUManager from "@engine-core/managers/GPUManager"
 import NodesIndex from "../static/NODE_MAP"
 import ShaderLink from "../templates/ShaderLink"
 import ShaderComment from "../templates/ShaderComment"
@@ -101,8 +101,8 @@ export default class ShaderEditorTools {
 			const oldMaterial = GPU.materials.get(openFile.registryID)
 			if (oldMaterial) {
 				if (!UberShader.uberSignature[compiled[1]]) {
-					GPUAPI.destroyMaterial(openFile.registryID)
-					await GPUAPI.allocateMaterial({
+					GPUManager.destroyMaterial(openFile.registryID)
+					await GPUManager.allocateMaterial({
 						functionDeclaration: compiled[0].functionDeclaration,
 						uniformsDeclaration: compiled[0].uniformsDeclaration,
 						uniformValues: compiled[0].uniformValues,

@@ -1,16 +1,16 @@
 import EngineStore from "../../../shared/stores/EngineStore"
 import EditorCameraSystem from "../../../../engine/tools/systems/EditorCameraSystem"
-import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
+import UIManager from "@engine-core/managers/UIManager"
 import Engine from "../../../../engine/core/Engine"
-import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
-import ScriptsAPI from "../../../../engine/core/lib/utils/ScriptsAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
+import ScriptsManager from "@engine-core/managers/ScriptsManager"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import EditorLevelService from "./EditorLevelService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import {Environment,} from "@engine-core/engine.enum";
 import EngineState from "@engine-core/states/EngineState";
-import EntityManager from "@engine-core/EntityManager";
-import LevelManager from "@engine-core/LevelManager";
+import EntityManager from "@engine-core/managers/EntityManager";
+import LevelManager from "@engine-core/managers/LevelManager";
 
 export default class ExecutionService {
 	static #currentLevelID
@@ -24,7 +24,7 @@ export default class ExecutionService {
 		}
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.SAVING_STATE)
 
-		ExecutionService.cameraSerialization = CameraAPI.serializeState()
+		ExecutionService.cameraSerialization = CameraManager.serializeState()
 		ExecutionService.#isPlaying = true
 		EditorCameraSystem.stopTracking()
 		await EditorLevelService.getInstance().saveCurrentLevel().catch(console.error)
@@ -42,14 +42,14 @@ export default class ExecutionService {
 		ExecutionService.#isPlaying = false
 		Engine.environment = Environment.DEV
 
-		UIAPI.destroyUI()
+		UIManager.destroyUI()
 		await EditorLevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)
-		await ScriptsAPI.updateAllScripts()
+		await ScriptsManager.updateAllScripts()
 
 		EngineState.cameraEntityTarget = undefined
 		EditorCameraSystem.startTracking()
 		EngineStore.updateStore({executingAnimation: false})
-		CameraAPI.restoreState(ExecutionService.cameraSerialization)
+		CameraManager.restoreState(ExecutionService.cameraSerialization)
 	}
 
 }

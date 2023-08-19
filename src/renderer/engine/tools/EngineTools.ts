@@ -15,7 +15,7 @@ import GizmoState from "./gizmo/util/GizmoState"
 import StaticEditorFBO from "./utils/StaticEditorFBO";
 import GPUUtil from "../core/utils/GPUUtil";
 import EngineToolsState from "./EngineToolsState";
-import SystemManager from "../core/SystemManager";
+import SystemManager from "@engine-core/managers/SystemManager";
 import SilhouetteSystem from "./systems/SilhouetteSystem";
 import MouseCoordinateSystem from "./systems/MouseCoordinateSystem";
 import ClearContextSystem from "./systems/ClearContextSystem";

@@ -23,7 +23,7 @@ import OMNIDIRECTIONAL_SHADOWS from "../static/shaders/forward-rendering/OMNIDIR
 import SHADOWS_VERTEX from "../static/shaders/forward-rendering/SHADOWS.vert"
 import DIRECTIONAL_SHADOWS from "../static/shaders/forward-rendering/DIRECTIONAL_SHADOWS.frag"
 import ATMOSPHERE_FRAG from "../static/shaders/forward-rendering/ATMOSPHERE.frag"
-import Shader from "../instances/Shader"
+import Shader from "@engine-core/lib/resources/Shader"
 import UberShader from "../lib/UberShader"
 
 export default class StaticShadersState {

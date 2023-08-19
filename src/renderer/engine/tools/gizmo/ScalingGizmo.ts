@@ -5,7 +5,7 @@ import EngineTools from "../EngineTools"
 import GizmoState from "./util/GizmoState"
 import GizmoSystem from "../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import {Components} from "@engine-core/engine.enum";
 
 export default class ScalingGizmo extends AbstractXYZGizmo {

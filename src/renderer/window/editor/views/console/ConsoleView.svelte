@@ -1,7 +1,7 @@
 <script lang="ts">
 
     import {onDestroy, onMount} from "svelte"
-    import ConsoleAPI from "../../../../engine/core/lib/utils/ConsoleAPI"
+    import ConsoleManager from "@engine-core/managers/ConsoleManager"
 
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
@@ -12,7 +12,7 @@
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
 
     const COMPONENT_ID = crypto.randomUUID()
-    const TYPES = ConsoleAPI.TYPES
+    const TYPES = ConsoleManager.TYPES
     const portal = new SveltePortal(999)
 
     let toRender:{type: string, object?: Object, message: string, src?: string}[] = []
@@ -26,8 +26,8 @@
     }
 
     onMount(() => {
-    	EngineStore.getInstance().addListener(COMPONENT_ID, () => ConsoleAPI.clear(), ["executingAnimation"])
-    	ConsoleAPI.addListener(COMPONENT_ID, (md, messages) => {
+    	EngineStore.getInstance().addListener(COMPONENT_ID, () => ConsoleManager.clear(), ["executingAnimation"])
+    	ConsoleManager.addListener(COMPONENT_ID, (md, messages) => {
     		toRender = messages
     		newMessages = messages.length > 0
     	})
@@ -37,7 +37,7 @@
 
     onDestroy(() => {
     	EngineStore.getInstance().removeListener(COMPONENT_ID)
-    	ConsoleAPI.removeListener(COMPONENT_ID)
+    	ConsoleManager.removeListener(COMPONENT_ID)
     	portal.destroy()
     	document.removeEventListener("mousedown", handler)
     })
@@ -48,7 +48,7 @@
     <button data-sveltebuttondefault="-"
             class="button frame button-small frame"
             style="max-width: 22px;gap: 4px"
-            on:click={() => ConsoleAPI.clear()}>
+            on:click={() => ConsoleManager.clear()}>
         <Icon>clear_all</Icon>
         {LocalizationEN.CLEAR}
         <ToolTip content={LocalizationEN.CLEAR}/>

@@ -1,17 +1,16 @@
-import CameraAPI from "./lib/utils/CameraAPI"
+import CameraManager from "./managers/CameraManager"
 import AmbientOcclusionSystem from "./system/AmbientOcclusionSystem"
 import ConversionAPI from "./lib/math/ConversionAPI"
 import CompositionSystem from "./system/CompositionSystem"
 import GPU from "./GPU"
 import OShadowsSystem from "./system/OShadowsSystem"
-import PhysicsAPI from "./lib/rendering/PhysicsAPI"
-import FileSystemAPI from "./lib/utils/FileSystemAPI"
-import ScriptsAPI from "./lib/utils/ScriptsAPI"
-import UIAPI from "./lib/rendering/UIAPI"
-import LightProbe from "./instances/LightProbe"
-import DynamicMap from "./lib/DynamicMap"
-import LightsAPI from "./lib/utils/LightsAPI"
-import SystemManager from "./SystemManager";
+import PhysicsManager from "./managers/PhysicsManager"
+import EngineFileSystemManager from "./managers/EngineFileSystemManager"
+import ScriptsManager from "./managers/ScriptsManager"
+import UIManager from "./managers/UIManager"
+import LightProbe from "@engine-core/lib/resources/LightProbe"
+import LightsManager from "./managers/LightsManager"
+import SystemManager from "./managers/SystemManager";
 import PreRendererSystem from "./system/PreRendererSystem";
 import ScriptExecutorSystem from "./system/ScriptExecutorSystem";
 import DShadowsSystem from "./system/DShadowsSystem";
@@ -34,7 +33,6 @@ import PreLoopSystem from "@engine-core/system/PreLoopSystem";
 
 export default class Engine {
     static #development = false
-    static #onLevelLoadListeners = new DynamicMap<string, Function>()
     static UILayouts = new Map()
     static isDev = true
     static #environment: number = Environment.DEV
@@ -57,7 +55,7 @@ export default class Engine {
         Engine.isDev = data === Environment.DEV
         Engine.#environment = data
         if (Engine.isDev)
-            CameraAPI.updateAspectRatio()
+            CameraManager.updateAspectRatio()
     }
 
     static async initializeContext(
@@ -72,16 +70,16 @@ export default class Engine {
 
         Engine.#development = devAmbient
         await GPU.initializeContext(canvas, mainResolution)
-        FileSystemAPI.initialize(readAsset)
-        await PhysicsAPI.initialize()
-        LightsAPI.get()
+        EngineFileSystemManager.initialize(readAsset)
+        await PhysicsManager.initialize()
+        LightsManager.get()
 
         ConversionAPI.canvasBBox = GPU.canvas.getBoundingClientRect()
         const OBS = new ResizeObserver(() => {
             const bBox = GPU.canvas.getBoundingClientRect()
             ConversionAPI.canvasBBox = bBox
-            CameraAPI.aspectRatio = bBox.width / bBox.height
-            CameraAPI.updateProjection()
+            CameraManager.aspectRatio = bBox.width / bBox.height
+            CameraManager.updateProjection()
         })
         OBS.observe(GPU.canvas.parentElement)
         OBS.observe(GPU.canvas)
@@ -117,8 +115,8 @@ export default class Engine {
     }
 
     static async startSimulation() {
-        UIAPI.buildUI(GPU.canvas.parentElement)
-        await ScriptsAPI.updateAllScripts()
+        UIManager.buildUI(GPU.canvas.parentElement)
+        await ScriptsManager.updateAllScripts()
         Engine.environment = Environment.EXECUTION
     }
 

@@ -2,18 +2,18 @@ import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorFSUtil from "../../util/EditorFSUtil"
 import EntityFactoryService from "./EntityFactoryService"
 import GPU from "../../../../engine/core/GPU"
-import GPUAPI from "../../../../engine/core/lib/rendering/GPUAPI"
+import GPUManager from "@engine-core/managers/GPUManager"
 
-import FileSystemAPI from "../../../../engine/core/lib/utils/FileSystemAPI"
-import MeshComponent from "../../../../engine/core/components/MeshComponent"
-import SpriteComponent from "../../../../engine/core/components/SpriteComponent"
+import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager"
+import MeshComponent from "@engine-core/lib/components/MeshComponent"
+import SpriteComponent from "@engine-core/lib/components/SpriteComponent"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import FileTypes from "../../../../../shared/enums/FileTypes"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import {Components} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
 
 export default class EngineResourceLoaderService {
@@ -45,8 +45,8 @@ export default class EngineResourceLoaderService {
         if (GPU.meshes.get(objLoaded.id))
             return
         try {
-            GPUAPI.allocateMesh(id, objLoaded)
-            const result = await FileSystemAPI.loadMaterial(objLoaded.material)
+            GPUManager.allocateMesh(id, objLoaded)
+            const result = await EngineFileSystemManager.loadMaterial(objLoaded.material)
             if (result)
                 materialID = objLoaded.material
         } catch (e) {
@@ -107,7 +107,7 @@ export default class EngineResourceLoaderService {
                     break
                 case FileTypes.TEXTURE: {
                     if (data)
-                        await FileSystemAPI.loadTexture(data)
+                        await EngineFileSystemManager.loadTexture(data)
                     const entity = EntityFactoryService.createSprite()
                     const sprite = entity.getComponent<SpriteComponent>(Components.SPRITE)
                     entity.name = LocalizationEN.SPRITE_RENDERER
@@ -117,9 +117,9 @@ export default class EngineResourceLoaderService {
 
                 case FileTypes.MATERIAL: {
                     // TODO - REWORK MATERIAL DROP
-                    // const entity = QueryAPI.getEntityByPickerID(PickingAPI.readEntityID(mouseX, mouseY, 1, StaticFBOState.visibility.FBO))
+                    // const entity = QueryAPI.getEntityByPickerID(PickingUtil.readEntityID(mouseX, mouseY, 1, StaticFBOState.visibility.FBO))
                     // if (!entity || !entity.meshComponent) return
-                    // const result = await FileSystemAPI.loadMaterial(data)
+                    // const result = await EngineFileSystemManager.loadMaterial(data)
                     // if (result) {
                     // 	EditorActionHistory.save(entity)
                     // 	const component = entity.meshComponent

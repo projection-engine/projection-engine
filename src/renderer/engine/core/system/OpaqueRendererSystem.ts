@@ -1,17 +1,17 @@
-import MetricsController from "../lib/utils/MetricsController"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import SceneRenderingUtil from "./SceneRenderingUtil"
 import UberMaterialAttributeGroup from "../lib/UberMaterialAttributeGroup";
 import UberShader from "../lib/UberShader";
 import GPU from "../GPU";
 import loopMeshes from "./loop-meshes";
-import Mesh from "../instances/Mesh";
+import Mesh from "@engine-core/lib/resources/Mesh";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import AbstractSystem from "../AbstractSystem";
-import Material from "../instances/Material";
-import CullingComponent from "@engine-core/components/CullingComponent";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import EntityManager from "@engine-core/EntityManager";
+import Material from "@engine-core/lib/resources/Material";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class OpaqueRendererSystem extends AbstractSystem {
     #stateWasCleared = false
@@ -24,7 +24,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         UberMaterialAttributeGroup.clear()
         context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)
         loopMeshes(this.#loop)
-        MetricsController.currentState = METRICS_FLAGS.OPAQUE
+        MetricsManager.currentState = METRICS_FLAGS.OPAQUE
     }
 
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {

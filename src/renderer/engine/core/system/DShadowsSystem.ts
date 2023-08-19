@@ -2,15 +2,15 @@ import GPU from "../GPU"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
-import MetricsController from "../lib/utils/MetricsController"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../states/EngineState";
 import {Components} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
-import MeshComponent from "@engine-core/components/MeshComponent";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import LightComponent from "@engine-core/components/LightComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
+import MeshComponent from "@engine-core/lib/components/MeshComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import LightComponent from "@engine-core/lib/components/LightComponent";
 
 
 export default class DShadowsSystem extends AbstractSystem {
@@ -57,7 +57,7 @@ export default class DShadowsSystem extends AbstractSystem {
         context.cullFace(context.BACK)
         EngineState.directionalLightsChanged = false
         EngineState.directionalLightsToUpdate.length = 0
-        MetricsController.currentState = METRICS_FLAGS.DIRECTIONAL_SHADOWS
+        MetricsManager.currentState = METRICS_FLAGS.DIRECTIONAL_SHADOWS
     }
 
     #loopMeshes(light: LightComponent) {

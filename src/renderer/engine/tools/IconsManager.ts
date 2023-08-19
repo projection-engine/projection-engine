@@ -1,13 +1,13 @@
 import AbstractSingleton from "@engine-core/AbstractSingleton";
 import DynamicMap from "@engine-core/lib/DynamicMap";
-import EntityManager from "@engine-core/EntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 import EditorEntityManager from "./EditorEntityManager";
 import {Components, LightTypes, MaterialRenderingTypes} from "@engine-core/engine.enum";
 import EngineState from "@engine-core/states/EngineState";
 import EngineToolsState from "./EngineToolsState";
 import GPU from "@engine-core/GPU";
-import MeshComponent from "@engine-core/components/MeshComponent";
-import LightComponent from "@engine-core/components/LightComponent";
+import MeshComponent from "@engine-core/lib/components/MeshComponent";
+import LightComponent from "@engine-core/lib/components/LightComponent";
 
 export default class IconsManager extends AbstractSingleton {
     #registeredIcons = new DynamicMap<EngineEntity, RegisteredIcon>()

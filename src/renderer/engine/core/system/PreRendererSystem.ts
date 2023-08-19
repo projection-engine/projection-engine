@@ -1,6 +1,6 @@
 import StaticFBOState from "../states/StaticFBOState"
 import UberShader from "../lib/UberShader"
-import Mesh from "../instances/Mesh"
+import Mesh from "@engine-core/lib/resources/Mesh"
 import GPU from "../GPU"
 import AbstractSystem from "../AbstractSystem";
 

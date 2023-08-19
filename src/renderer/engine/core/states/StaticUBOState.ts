@@ -1,4 +1,4 @@
-import UBO from "../instances/UBO"
+import UBO from "@engine-core/lib/resources/UBO"
 import UberShader from "../lib/UberShader"
 import GPU from "../GPU"
 

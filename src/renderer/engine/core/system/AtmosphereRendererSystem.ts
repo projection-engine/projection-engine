@@ -1,14 +1,14 @@
 import GPU from "../GPU"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
-import MetricsController from "../lib/utils/MetricsController"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import AtmosphereComponent from "../components/AtmosphereComponent"
+import AtmosphereComponent from "@engine-core/lib/components/AtmosphereComponent"
 import {mat4} from "gl-matrix"
-import CameraAPI from "../lib/utils/CameraAPI"
+import CameraManager from "../managers/CameraManager"
 import AbstractSystem from "../AbstractSystem";
 import {Components} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 const resources = mat4.create().fill(0)
 export default class AtmosphereRendererSystem extends AbstractSystem {
@@ -23,12 +23,12 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
         const context = GPU.context
         StaticShadersState.atmosphere.bind()
         context.disable(context.DEPTH_TEST)
-        context.uniformMatrix4fv(StaticShadersState.atmosphereUniforms.invSkyProjectionMatrix, false, CameraAPI.invSkyboxProjectionMatrix)
+        context.uniformMatrix4fv(StaticShadersState.atmosphereUniforms.invSkyProjectionMatrix, false, CameraManager.invSkyboxProjectionMatrix)
         for (let i = 0; i < size; i++) {
             this.#render(entities[i])
         }
         context.enable(context.DEPTH_TEST)
-        MetricsController.currentState = METRICS_FLAGS.ATMOSPHERE
+        MetricsManager.currentState = METRICS_FLAGS.ATMOSPHERE
     }
 
     #render(entity: EngineEntity) {

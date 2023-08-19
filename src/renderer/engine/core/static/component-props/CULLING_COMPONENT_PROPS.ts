@@ -1,4 +1,4 @@
-import Component from "../../components/Component"
+import Component from "@engine-core/lib/components/Component"
 
 export default [
 	Component.group("DISTANCE_CULLING", [

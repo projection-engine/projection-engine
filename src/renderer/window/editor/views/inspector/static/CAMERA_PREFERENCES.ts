@@ -1,4 +1,4 @@
-import Component from "../../../../../engine/core/components/Component"
+import Component from "@engine-core/lib/components/Component"
 import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
 import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
 

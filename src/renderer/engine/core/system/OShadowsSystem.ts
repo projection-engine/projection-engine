@@ -1,17 +1,17 @@
 import {mat4, vec3} from "gl-matrix"
-import ShadowProbe from "../instances/ShadowProbe"
+import ShadowProbe from "@engine-core/lib/resources/ShadowProbe"
 import GPU from "../GPU"
 import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
-import MetricsController from "../lib/utils/MetricsController"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import loopMeshes from "./loop-meshes"
-import Mesh from "../instances/Mesh"
+import Mesh from "@engine-core/lib/resources/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../states/EngineState";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import CullingComponent from "@engine-core/components/CullingComponent";
-import Material from "@engine-core/instances/Material";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
+import Material from "@engine-core/lib/resources/Material";
 
 const cacheVec3 = vec3.create()
 const cacheViewMatrix = mat4.create()
@@ -74,7 +74,7 @@ export default class OShadowsSystem extends AbstractSystem {
                 )
         }
         EngineState.omnidirectionalLightsToUpdate.length = 0
-        MetricsController.currentState = METRICS_FLAGS.OMNIDIRECTIONAL_SHADOWS
+        MetricsManager.currentState = METRICS_FLAGS.OMNIDIRECTIONAL_SHADOWS
     }
 
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {

@@ -15,7 +15,7 @@
     import {Components} from "@engine-core/engine.enum";
     import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
-    import EntityManager from "@engine-core/EntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     let cameras: EditorEntity[] = []

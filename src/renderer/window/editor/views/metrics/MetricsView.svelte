@@ -1,7 +1,7 @@
 <script>
 
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
-    import MetricsController from "../../../../engine/core/lib/utils/MetricsController"
+    import MetricsManager from "@engine-core/managers/MetricsManager"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
@@ -12,11 +12,11 @@
 
     function toggle() {
     	if (isRecording) {
-    		toShow = MetricsController.getRecord().sort((a, b) => b.percentage - a.percentage)
+    		toShow = MetricsManager.getRecord().sort((a, b) => b.percentage - a.percentage)
     		isRecording = isSampling = false
 
     	} else {
-    		MetricsController.start()
+    		MetricsManager.start()
     		isRecording = isSampling = true
     	}
     }

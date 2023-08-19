@@ -3,7 +3,7 @@
     import GPU from "../../../../../../engine/core/GPU"
     import PrimitiveProcessor from "../../../../../../engine/core/lib/math/PrimitiveProcessor"
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
-    import GPUAPI from "../../../../../../engine/core/lib/rendering/GPUAPI"
+    import GPUManager from "@engine-core/managers/GPUManager"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
@@ -22,7 +22,7 @@
 
     	await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(data))
     	if (GPU.meshes.get(item.registryID) != null)
-    		GPUAPI.destroyMesh(item.registryID)
+    		GPUManager.destroyMesh(item.registryID)
     	ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_ASSET)
     }
 </script>

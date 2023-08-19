@@ -1,5 +1,5 @@
 import EditorEntity from "../../../../../engine/tools/EditorEntity"
-import Component from "../../../../../engine/core/components/Component"
+import Component from "@engine-core/lib/components/Component"
 
 export default interface HierarchyToRenderElement{
     node:EditorEntity

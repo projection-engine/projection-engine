@@ -1,4 +1,4 @@
-import Component from "../../components/Component"
+import Component from "@engine-core/lib/components/Component"
 import MATERIAL_RENDERING_TYPES from "../MATERIAL_RENDERING_TYPES"
 
 export default [

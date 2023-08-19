@@ -6,8 +6,8 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import GizmoUtil from "../../../../engine/tools/gizmo/util/GizmoUtil"
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
-import EntityManager from "@engine-core/EntityManager";
-import LevelManager from "@engine-core/LevelManager";
+import EntityManager from "@engine-core/managers/EntityManager";
+import LevelManager from "@engine-core/managers/LevelManager";
 
 
 export default class EngineStateService {

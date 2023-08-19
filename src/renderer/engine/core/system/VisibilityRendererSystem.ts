@@ -1,23 +1,23 @@
 import GPU from "../GPU"
-import CameraAPI from "../lib/utils/CameraAPI"
-import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI"
+import CameraManager from "../managers/CameraManager"
+import TransformationManager from "../managers/TransformationManager"
 import {mat4} from "gl-matrix"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
-import MetricsController from "../lib/utils/MetricsController"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import loopMeshes from "./loop-meshes"
-import Mesh from "../instances/Mesh"
+import Mesh from "@engine-core/lib/resources/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../states/EngineState";
-import Material from "@engine-core/instances/Material";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import Material from "@engine-core/lib/resources/Material";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import {Components} from "@engine-core/engine.enum";
-import CullingComponent from "@engine-core/components/CullingComponent";
-import SpriteComponent from "@engine-core/components/SpriteComponent";
-import EntityManager from "@engine-core/EntityManager";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
+import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 const entityMetadata = new Float32Array(16)
 let context: WebGL2RenderingContext, uniforms, VP
@@ -26,12 +26,12 @@ export default class VisibilityRendererSystem extends AbstractSystem {
 
     #bindUniforms() {
         uniforms = StaticShadersState.visibilityUniforms
-        VP = CameraAPI.cameraMotionBlur ? CameraAPI.previousViewProjectionMatrix : CameraAPI.viewProjectionMatrix
-        context.uniformMatrix4fv(uniforms.viewProjection, false, CameraAPI.viewProjectionMatrix)
+        VP = CameraManager.cameraMotionBlur ? CameraManager.previousViewProjectionMatrix : CameraManager.viewProjectionMatrix
+        context.uniformMatrix4fv(uniforms.viewProjection, false, CameraManager.viewProjectionMatrix)
         context.uniformMatrix4fv(uniforms.previousViewProjection, false, VP)
-        context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraAPI.viewMatrix)
-        context.uniform3fv(uniforms.cameraPlacement, CameraAPI.position)
-        mat4.copy(CameraAPI.previousViewProjectionMatrix, CameraAPI.viewProjectionMatrix)
+        context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraManager.viewMatrix)
+        context.uniform3fv(uniforms.cameraPlacement, CameraManager.position)
+        mat4.copy(CameraManager.previousViewProjectionMatrix, CameraManager.viewProjectionMatrix)
     }
 
     #drawSprites() {
@@ -74,7 +74,7 @@ export default class VisibilityRendererSystem extends AbstractSystem {
 
 
     shouldExecute(): boolean {
-        return EngineState.visibilityNeedsUpdate || TransformationWorkerAPI.hasChangeBuffer[0] !== 0;
+        return EngineState.visibilityNeedsUpdate || TransformationManager.hasChangeBuffer[0] !== 0;
     }
 
     execute() {
@@ -95,7 +95,7 @@ export default class VisibilityRendererSystem extends AbstractSystem {
 
         this.#drawSprites()
         StaticFBOState.visibility.stopMapping()
-        MetricsController.currentState = METRICS_FLAGS.VISIBILITY
+        MetricsManager.currentState = METRICS_FLAGS.VISIBILITY
 
         EngineState.shouldAOExecute = true
     }

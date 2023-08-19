@@ -1,10 +1,10 @@
 import {Components} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
-import MeshComponent from "@engine-core/components/MeshComponent";
-import CullingComponent from "@engine-core/components/CullingComponent";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import Mesh from "@engine-core/instances/Mesh";
-import Material from "@engine-core/instances/Material";
+import EntityManager from "@engine-core/managers/EntityManager";
+import MeshComponent from "@engine-core/lib/components/MeshComponent";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import Mesh from "@engine-core/lib/resources/Mesh";
+import Material from "@engine-core/lib/resources/Material";
 
 export default function loopMeshes(callback: (param1: EngineEntity, param2: Mesh, param3: Material, param4: TransformationComponent, param5: CullingComponent, param6: number) => void) {
     const toRender = EntityManager.withComponent(Components.MESH).array

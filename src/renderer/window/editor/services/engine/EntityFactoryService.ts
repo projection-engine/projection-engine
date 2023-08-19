@@ -1,17 +1,17 @@
 import {vec3, vec4} from "gl-matrix"
 
 
-import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import SettingsStore from "../../../shared/stores/SettingsStore"
-import MeshComponent from "../../../../engine/core/components/MeshComponent"
-import LightComponent from "../../../../engine/core/components/LightComponent"
+import MeshComponent from "@engine-core/lib/components/MeshComponent"
+import LightComponent from "@engine-core/lib/components/LightComponent"
 import EngineStateService from "./EngineStateService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import {Components} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EditorEntity from "../../../../engine/tools/EditorEntity";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
 
 export default class EntityFactoryService {
@@ -38,8 +38,8 @@ export default class EntityFactoryService {
         }
 
         const position = <vec4>[0, 0, -(SettingsStore.getData().spawnDistanceFromCamera || 10), 1]
-        vec4.transformQuat(position, position, CameraAPI.rotationBuffer)
-        vec3.add(transformComponent._translation, CameraAPI.translationBuffer, <vec3>position)
+        vec4.transformQuat(position, position, CameraManager.rotationBuffer)
+        vec3.add(transformComponent._translation, CameraManager.translationBuffer, <vec3>position)
         transformComponent.__changedBuffer[0] = 1
     }
 

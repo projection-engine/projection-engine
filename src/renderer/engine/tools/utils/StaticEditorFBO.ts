@@ -1,4 +1,4 @@
-import Framebuffer from "../../core/instances/Framebuffer";
+import Framebuffer from "@engine-core/lib/resources/Framebuffer";
 import GPU from "../../core/GPU";
 
 export default class StaticEditorFBO {

@@ -2,7 +2,7 @@ import AbstractSingleton from "../core/AbstractSingleton";
 import DynamicMap from "@engine-core/lib/DynamicMap";
 import EditorEntity from "./EditorEntity";
 import * as crypto from "crypto";
-import EntityManager from "@engine-core/EntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 import serializeStructure from "@engine-core/utils/serialize-structure";
 
 export default class EditorEntityManager extends AbstractSingleton {

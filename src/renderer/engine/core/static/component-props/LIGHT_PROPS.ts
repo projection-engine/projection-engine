@@ -1,4 +1,4 @@
-import Component from "../../components/Component"
+import Component from "@engine-core/lib/components/Component"
 import {LightTypes,} from "@engine-core/engine.enum";
 
 function checkShadows(comp){

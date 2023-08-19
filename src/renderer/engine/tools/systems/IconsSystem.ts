@@ -1,5 +1,5 @@
 import GPU from "../../core/GPU"
-import CameraAPI from "../../core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import LineRenderer from "./LineRenderer"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -11,8 +11,8 @@ import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 import {Components, LightTypes,} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
-import LightComponent from "@engine-core/components/LightComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
+import LightComponent from "@engine-core/lib/components/LightComponent";
 import IconsManager from "../IconsManager";
 
 
@@ -109,8 +109,8 @@ export default class IconsSystem extends AbstractSystem {
 
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 1, StaticFBOState.sceneDepthVelocity)
 
-        context.uniformMatrix4fv(uniforms.projectionM, false, CameraAPI.projectionMatrix)
-        context.uniformMatrix4fv(uniforms.viewM, false, CameraAPI.viewMatrix)
+        context.uniformMatrix4fv(uniforms.projectionM, false, CameraManager.projectionMatrix)
+        context.uniformMatrix4fv(uniforms.viewM, false, CameraManager.viewMatrix)
 
         if (EngineToolsState.showIcons)
             IconsSystem.loop(IconsSystem.drawIcon)

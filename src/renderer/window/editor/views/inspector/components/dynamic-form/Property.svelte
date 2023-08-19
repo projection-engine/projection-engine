@@ -1,6 +1,6 @@
 <script>
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import Component from "../../../../../../engine/core/components/Component"
+    import Component from "@engine-core/lib/components/Component"
     import Selector from "../../../../components/selector/Selector.svelte"
 
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte"
@@ -8,7 +8,7 @@
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import Range from "../../../../../shared/components/range/Range.svelte"
-    import FileSystemAPI from "../../../../../../engine/core/lib/utils/FileSystemAPI"
+    import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
 
@@ -23,7 +23,7 @@
     let firstSubmit = false
     const setImage = async (data) => {
     	if (data) {
-    		const res = await FileSystemAPI.loadTexture(data.registryID)
+    		const res = await EngineFileSystemManager.loadTexture(data.registryID)
     		if (res)
     			submit(attribute.key, data.registryID, true)
     	} else

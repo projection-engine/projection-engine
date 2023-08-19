@@ -1,5 +1,5 @@
 import EditorEntity from "../../../../engine/tools/EditorEntity"
-import EntityManager from "../../../../engine/core/EntityManager"
+import EntityManager from "@engine-core/managers/EntityManager"
 import EntityHierarchyService from "./EntityHierarchyService";
 
 export default class EntityNamingService {

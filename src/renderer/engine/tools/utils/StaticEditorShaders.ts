@@ -18,7 +18,7 @@ import SILHOUETTE_VERT from "../static/shaders/SILHOUETTE.vert"
 import SILHOUETTE_FRAG from "../static/shaders/SILHOUETTE.frag"
 import MESH_MAP_VERT from "../static/shaders/MESH_MAP.vert"
 import MESH_MAP_FRAG from "../static/shaders/MESH_MAP.frag"
-import Shader from "../../core/instances/Shader"
+import Shader from "@engine-core/lib/resources/Shader"
 
 export default class StaticEditorShaders {
 	static icon?: Shader

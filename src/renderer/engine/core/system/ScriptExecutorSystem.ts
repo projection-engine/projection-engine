@@ -1,16 +1,16 @@
 import AbstractSystem from "../AbstractSystem";
 import Engine from "../Engine";
-import ScriptsAPI from "../lib/utils/ScriptsAPI";
-import MetricsController from "../lib/utils/MetricsController";
+import ScriptsManager from "../managers/ScriptsManager";
+import MetricsManager from "../managers/MetricsManager";
 import METRICS_FLAGS from "../static/METRICS_FLAGS";
 
 export default class ScriptExecutorSystem extends AbstractSystem{
     shouldExecute(): boolean {
-        return !Engine.isDev && ScriptsAPI.mountedScripts.length > 0;
+        return !Engine.isDev && ScriptsManager.mountedScripts.length > 0;
     }
 
     execute() {
-        const scripts = ScriptsAPI.mountedScripts
+        const scripts = ScriptsManager.mountedScripts
         const size = scripts.length
         for (let i = 0; i < size; i++) {
             try {
@@ -21,6 +21,6 @@ export default class ScriptExecutorSystem extends AbstractSystem{
                 console.error(err)
             }
         }
-        MetricsController.currentState = METRICS_FLAGS.SCRIPT
+        MetricsManager.currentState = METRICS_FLAGS.SCRIPT
     }
 }

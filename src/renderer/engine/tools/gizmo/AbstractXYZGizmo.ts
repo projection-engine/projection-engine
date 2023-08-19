@@ -1,7 +1,7 @@
 import IGizmo from "./IGizmo";
 import GizmoUtil from "./util/GizmoUtil";
 import AXIS from "../static/AXIS";
-import Mesh from "@engine-core/instances/Mesh";
+import Mesh from "@engine-core/lib/resources/Mesh";
 import AbstractSingleton from "@engine-core/AbstractSingleton";
 import GizmoEntity from "./GizmoEntity";
 

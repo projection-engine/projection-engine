@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onDestroy, onMount} from "svelte"
-    import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
+    import UIManager from "@engine-core/managers/UIManager"
     import Header from "./components/Header.svelte"
 
 
@@ -11,7 +11,7 @@
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
     import type EditorEntity from "../../../../engine/tools/EditorEntity";
     import SerializedState from "../../components/view/SerializedState.svelte";
-    import EntityManager from "@engine-core/EntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
     import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
@@ -23,7 +23,7 @@
     let selectedEntity: EditorEntity
 
 
-    const resizeObserver = new ResizeObserver(() => UIAPI.document.style.height = ref.offsetHeight + "px")
+    const resizeObserver = new ResizeObserver(() => UIManager.document.style.height = ref.offsetHeight + "px")
 
     function clickHandler(e: MouseEvent) {
         if (!isOnSelection)
@@ -65,7 +65,7 @@
         clearInterval(updateInterval)
         if (isAutoUpdateEnabled) {
             updateInterval = setInterval(async () => {
-                await UIAPI.updateAllElements()
+                await UIManager.updateAllElements()
                 ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
             }, 15000)
         }
@@ -73,10 +73,10 @@
 
     onMount(() => {
         resizeObserver.observe(ref)
-        UIAPI.showUI()
+        UIManager.showUI()
 
-        UIAPI.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
-        UIAPI.document.style.top = "28px"
+        UIManager.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
+        UIManager.document.style.top = "28px"
         EntityHierarchyService.registerListener(COMPONENT_ID, update)
         update()
     })
@@ -85,9 +85,9 @@
         clearInterval(updateInterval)
         resizeObserver.disconnect()
         EntityHierarchyService.removeListener(COMPONENT_ID)
-        UIAPI.hideUI()
-        UIAPI.document.style.height = "100%"
-        UIAPI.document.style.top = "0"
+        UIManager.hideUI()
+        UIManager.document.style.height = "100%"
+        UIManager.document.style.top = "0"
     })
 </script>
 

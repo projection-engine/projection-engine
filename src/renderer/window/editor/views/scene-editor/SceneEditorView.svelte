@@ -16,7 +16,7 @@
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
     import GPU from "../../../../engine/core/GPU"
-    import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
+    import CameraManager from "@engine-core/managers/CameraManager"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
     import SerializedState from "../../components/view/SerializedState.svelte";
@@ -59,7 +59,7 @@
 </script>
 
 <SerializedState
-        onBeforeDestroy={CameraAPI.serializeState}
+        onBeforeDestroy={CameraManager.serializeState}
         onStateInitialize={state => {
             SceneEditorUtil.restoreCameraState(state)
         }}

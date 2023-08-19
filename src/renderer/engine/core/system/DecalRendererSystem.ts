@@ -6,10 +6,10 @@ import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 import SceneRenderingUtil from "./SceneRenderingUtil";
 import {Components} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
-import CullingComponent from "@engine-core/components/CullingComponent";
-import DecalComponent from "@engine-core/components/DecalComponent";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
+import DecalComponent from "@engine-core/lib/components/DecalComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
 export default class DecalRendererSystem extends AbstractSystem{
 

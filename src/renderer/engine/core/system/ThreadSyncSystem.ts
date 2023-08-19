@@ -1,11 +1,11 @@
 import AbstractSystem from "../AbstractSystem";
-import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI";
-import CameraAPI from "../lib/utils/CameraAPI";
+import TransformationManager from "../managers/TransformationManager";
+import CameraManager from "../managers/CameraManager";
 
 export default class ThreadSyncSystem extends AbstractSystem{
     execute() {
-        TransformationWorkerAPI.hasChangeBuffer[0] = 0
-        CameraAPI.syncThreads()
-        TransformationWorkerAPI.syncThreads()
+        TransformationManager.hasChangeBuffer[0] = 0
+        CameraManager.syncThreads()
+        TransformationManager.syncThreads()
     }
 }

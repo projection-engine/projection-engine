@@ -1,14 +1,14 @@
 import AbstractSystem from "../../core/AbstractSystem";
-import CameraAPI from "../../core/lib/utils/CameraAPI";
+import CameraManager from "@engine-core/managers/CameraManager";
 
 export default class EditorCameraGizmoSystem extends AbstractSystem {
     static gizmoRef: HTMLElement
 
     shouldExecute(): boolean {
-        return CameraAPI.hasChangedView && EditorCameraGizmoSystem.gizmoRef != null;
+        return CameraManager.hasChangedView && EditorCameraGizmoSystem.gizmoRef != null;
     }
 
     execute() {
-        EditorCameraGizmoSystem.gizmoRef.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${CameraAPI.staticViewMatrix})`
+        EditorCameraGizmoSystem.gizmoRef.style.transform = `translateZ(calc(var(--cube-size) * -3)) matrix3d(${CameraManager.staticViewMatrix})`
     }
 }

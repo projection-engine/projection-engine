@@ -5,7 +5,7 @@ import EngineStore from "../../../shared/stores/EngineStore"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
 import SettingsStore from "../../../shared/stores/SettingsStore"
 import VisualsStore from "../../../shared/stores/VisualsStore"
-import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import TabsStore from "../../../shared/stores/TabsStore"
 import EditorCameraSystem from "../../../../engine/tools/systems/EditorCameraSystem"
 import serializeStructure from "../../../../engine/core/utils/serialize-structure"
@@ -22,8 +22,8 @@ import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
-import LevelManager from "@engine-core/LevelManager";
-import EntityManager from "@engine-core/EntityManager";
+import LevelManager from "@engine-core/managers/LevelManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 import LoadedLevelStore from "../../../shared/stores/LoadedLevelStore";
 
 
@@ -124,7 +124,7 @@ export default class EditorLevelService extends AbstractSingleton {
             const tabIndexViewport = TabsStoreUtil.getCurrentTabByCurrentView("viewport")
             const viewMetadata = <MutableObject | undefined>settings.views[settings.currentView].viewport[tabIndexViewport]
             if (viewMetadata !== undefined) {
-                viewMetadata.cameraMetadata = CameraAPI.serializeState()
+                viewMetadata.cameraMetadata = CameraManager.serializeState()
                 const {yaw, pitch} = EditorCameraSystem.getYawPitch()
                 viewMetadata.cameraMetadata.prevX = yaw
                 viewMetadata.cameraMetadata.prevY = pitch

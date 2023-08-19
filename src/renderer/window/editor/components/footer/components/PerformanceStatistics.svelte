@@ -2,7 +2,7 @@
     import {onDestroy, onMount} from "svelte"
     import EngineState from "@engine-core/states/EngineState";
     import PerformanceMetricsSystem from "../PerformanceMetricsSystem";
-    import SystemManager from "../../../../../engine/core/SystemManager";
+    import SystemManager from "@engine-core/managers/SystemManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     const MEMORY_UPDATE_INTERVAL = 2000

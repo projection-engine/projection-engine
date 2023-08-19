@@ -6,7 +6,7 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
-    import EntityManager from "../../../../../engine/core/EntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import HierarchyUtil from "../../../util/HierarchyUtil";

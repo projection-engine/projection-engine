@@ -1,4 +1,4 @@
-import CameraAPI from "../../core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import {quat, vec4} from "gl-matrix"
 import CAMERA_ROTATIONS from "../static/CAMERA_ROTATIONS"
 import GPU from "../../core/GPU"
@@ -67,15 +67,15 @@ export default class EditorCameraSystem extends AbstractSystem {
             changed = true
         }
         if (map.backward) {
-            if (CameraAPI.isOrthographic)
-                CameraAPI.orthographicProjectionSize += multiplier
+            if (CameraManager.isOrthographic)
+                CameraManager.orthographicProjectionSize += multiplier
             else
                 this.#toApplyTranslation[2] += multiplier
             changed = true
         }
         if (map.forward) {
-            if (CameraAPI.isOrthographic)
-                CameraAPI.orthographicProjectionSize -= multiplier
+            if (CameraManager.isOrthographic)
+                CameraManager.orthographicProjectionSize -= multiplier
             else
                 this.#toApplyTranslation[2] -= multiplier
             changed = true
@@ -88,7 +88,7 @@ export default class EditorCameraSystem extends AbstractSystem {
             const yaw = quat.fromEuler(this.#cacheYaw, 0, this.#yawAngle * this.#TO_DEG, 0)
             quat.copy(this.#cacheRotation, pitch)
             quat.multiply(this.#cacheRotation, yaw, this.#cacheRotation)
-            CameraAPI.updateRotation(this.#cacheRotation)
+            CameraManager.updateRotation(this.#cacheRotation)
             changed = true
         }
 
@@ -254,8 +254,8 @@ export default class EditorCameraSystem extends AbstractSystem {
     #onWheel(event) {
         event.preventDefault()
         const multiplier = event.ctrlKey ? 10 * 2 : 2
-        if (CameraAPI.isOrthographic)
-            CameraAPI.orthographicProjectionSize += multiplier * Math.sign(event.deltaY)
+        if (CameraManager.isOrthographic)
+            CameraManager.orthographicProjectionSize += multiplier * Math.sign(event.deltaY)
         else {
             this.#toApplyTranslation[0] = this.#toApplyTranslation[1] = 0
             this.#toApplyTranslation[2] += multiplier * Math.sign(event.deltaY)
@@ -266,10 +266,10 @@ export default class EditorCameraSystem extends AbstractSystem {
 
     #transform() {
         this.#forceUpdate = false
-        vec4.transformQuat(this.#toApplyTranslation, this.#toApplyTranslation, CameraAPI.rotationBuffer)
+        vec4.transformQuat(this.#toApplyTranslation, this.#toApplyTranslation, CameraManager.rotationBuffer)
 
-        CameraAPI.addTranslation(this.#toApplyTranslation)
-        CameraAPI.updateView()
+        CameraManager.addTranslation(this.#toApplyTranslation)
+        CameraManager.updateView()
     }
 
     static startTracking() {
@@ -295,14 +295,14 @@ export default class EditorCameraSystem extends AbstractSystem {
 
     static #updateCameraPlacement(yaw, pitch) {
         const instance = this.get<EditorCameraSystem>()
-        CameraAPI.updateProjection()
+        CameraManager.updateProjection()
         instance.#pitchAngle = pitch
         instance.#yawAngle = yaw
         instance.#isRotationChanged = true
     }
 
     static rotate(direction) {
-        vec4.copy(CameraAPI.rotationBuffer, [0, 0, 0, 1])
+        vec4.copy(CameraManager.rotationBuffer, [0, 0, 0, 1])
 
         switch (direction) {
             case CAMERA_ROTATIONS.TOP:

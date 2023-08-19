@@ -1,4 +1,4 @@
-import Component from "../../components/Component"
+import Component from "@engine-core/lib/components/Component"
 import {ColliderTypes,} from "@engine-core/engine.enum";
 
 export default [

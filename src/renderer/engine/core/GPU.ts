@@ -1,17 +1,16 @@
-import LineAPI from "./lib/rendering/LineAPI"
 import ImageProcessor from "./lib/math/ImageProcessor"
 import TerrainGenerator from "./lib/math/TerrainGenerator"
-import CameraAPI from "./lib/utils/CameraAPI"
-import TransformationWorkerAPI from "./lib/utils/TransformationWorkerAPI"
-import CubeMapAPI from "./lib/rendering/CubeMapAPI"
+import CameraManager from "./managers/CameraManager"
+import TransformationManager from "./managers/TransformationManager"
+import CubeMapManager from "./managers/CubeMapManager"
 import QUAD_VERT from "./static/shaders/post-processing/QUAD.vert"
 import BRDF_FRAG from "./static/shaders/post-processing/BRDF_GEN.frag"
-import Shader from "./instances/Shader"
-import Framebuffer from "./instances/Framebuffer"
-import Material from "./instances/Material"
-import Mesh from "./instances/Mesh"
-import Texture from "./instances/Texture"
-import LightProbe from "./instances/LightProbe"
+import Shader from "@engine-core/lib/resources/Shader"
+import Framebuffer from "@engine-core/lib/resources/Framebuffer"
+import Material from "@engine-core/lib/resources/Material"
+import Mesh from "@engine-core/lib/resources/Mesh"
+import Texture from "@engine-core/lib/resources/Texture"
+import LightProbe from "@engine-core/lib/resources/LightProbe"
 import StaticShadersState from "./states/StaticShadersState"
 import StaticMeshesState from "./states/StaticMeshesState"
 import StaticFBOState from "./states/StaticFBOState"
@@ -64,17 +63,15 @@ export default class GPU {
 
 
 		StaticUBOState.initialize()
-		CameraAPI.initialize()
+		CameraManager.initialize()
 		await StaticMeshesState.initialize()
 		StaticShadersState.initialize()
 		StaticFBOState.initialize()
-		TransformationWorkerAPI.initialize()
+		TransformationManager.initialize()
 		TerrainGenerator.initialize()
 		ImageProcessor.initialize()
 
-		CubeMapAPI.initialize()
-		LineAPI.initialize()
-
+		CubeMapManager.initialize()
 		const FBO = new Framebuffer(512, 512).texture({precision: GPU.context.RG32F, format: GPU.context.RG})
 		const brdfShader = new Shader(QUAD_VERT, BRDF_FRAG)
 

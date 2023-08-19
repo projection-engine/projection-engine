@@ -8,10 +8,10 @@ import AbstractSystem from "../../core/AbstractSystem";
 import GPUUtil from "../../core/utils/GPUUtil";
 import StaticFBOState from "@engine-core/states/StaticFBOState";
 import {Components} from "@engine-core/engine.enum";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import EditorEntityManager from "../EditorEntityManager";
-import CullingComponent from "@engine-core/components/CullingComponent";
-import EntityManager from "@engine-core/EntityManager";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class CameraIconSystem extends AbstractSystem {
     static #invView = mat4.create()

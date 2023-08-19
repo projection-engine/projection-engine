@@ -2,7 +2,7 @@ import GPU from "../GPU"
 import StaticMeshesState from "../states/StaticMeshesState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
-import MetricsController from "../lib/utils/MetricsController"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
@@ -28,6 +28,6 @@ export default class MotionBlurSystem extends AbstractSystem {
 
         StaticMeshesState.drawQuad()
         StaticFBOState.postProcessing1.stopMapping()
-        MetricsController.currentState = METRICS_FLAGS.MOTION_BLUR
+        MetricsManager.currentState = METRICS_FLAGS.MOTION_BLUR
     }
 }

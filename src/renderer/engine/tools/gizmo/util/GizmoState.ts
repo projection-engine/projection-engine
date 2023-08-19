@@ -14,7 +14,7 @@ import RotationGizmo from "../RotationGizmo"
 import {vec3} from "gl-matrix"
 import EngineToolsState from "../../EngineToolsState";
 import {Components} from "@engine-core/engine.enum";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
 export default class GizmoState {
     static #mainEntity?: EditorEntity

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
+    import UIManager from "@engine-core/managers/UIManager"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
@@ -9,7 +9,7 @@
     import type EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EntityFactoryService from "../../../services/engine/EntityFactoryService";
     import {Components} from "@engine-core/engine.enum";
-    import EntityManager from "@engine-core/EntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
 
     export let isOnSelection:boolean
     export let toggleOnSelection:GenericVoidFunction
@@ -37,7 +37,7 @@
         <div data-sveltevertdivider="-"></div>
         <button data-sveltebuttondefault="-"
                 on:click={() => {
-                    UIAPI.updateAllElements().then(() => {
+                    UIManager.updateAllElements().then(() => {
                         ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
                     })
                 }}

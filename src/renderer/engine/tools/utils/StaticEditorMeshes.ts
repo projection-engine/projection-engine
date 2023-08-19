@@ -1,6 +1,6 @@
-import Mesh from "../../core/instances/Mesh"
+import Mesh from "@engine-core/lib/resources/Mesh"
 
-import Texture from "../../core/instances/Texture"
+import Texture from "@engine-core/lib/resources/Texture"
 import IconsSystem from "../systems/IconsSystem"
 
 export default class StaticEditorMeshes {

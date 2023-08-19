@@ -2,10 +2,10 @@ import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import ConversionAPI from "../../../engine/core/lib/math/ConversionAPI"
 import GPU from "../../../engine/core/GPU"
-import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
+import PickingUtil from "@engine-core/utils/PickingUtil"
 import EngineTools from "../../../engine/tools/EngineTools"
 import {glMatrix, quat} from "gl-matrix"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import ViewportInteractionListener from "../views/scene-editor/lib/ViewportInteractionListener"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
@@ -16,7 +16,7 @@ import SETTINGS from "../static/SETTINGS"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EngineState from "@engine-core/states/EngineState";
 import {ShadingModels,} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
@@ -87,7 +87,7 @@ export default class SceneEditorUtil {
 			const nEnd = ConversionAPI.toQuadCoordinates(endCoords.x, endCoords.y, GPU.internalResolution.w, GPU.internalResolution.h)
 			try {
 
-				const data = PickingAPI.readBlock(nStart, nEnd)
+				const data = PickingUtil.readBlock(nStart, nEnd)
 				worker.postMessage({
 					entities: EntityManager.getEntityIds().map(e => ({id: e, pick: EntityManager.getEntityPickVec3(e)})).filter(e => e.pick != null),
 					data
@@ -140,10 +140,10 @@ export default class SceneEditorUtil {
 			if (!cameraMetadata) {
 				const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
 				const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
-				CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
+				CameraManager.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
 				EditorCameraSystem.setYawPitch(glMatrix.toRadian(45), -glMatrix.toRadian(45))
 			} else {
-				CameraAPI.restoreState(cameraMetadata)
+				CameraManager.restoreState(cameraMetadata)
 				EditorCameraSystem.setYawPitch(cameraMetadata.prevX, cameraMetadata.prevY)
 			}
 		}catch (err){

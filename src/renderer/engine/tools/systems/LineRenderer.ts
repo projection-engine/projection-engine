@@ -1,4 +1,4 @@
-import LineAPI from "../../core/lib/rendering/LineAPI"
+import LineRenderingManager from "@engine-core/managers/LineRenderingManager"
 import GPU from "../../core/GPU"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -50,20 +50,20 @@ export default class LineRenderer {
 		LineRenderer.#bind()
 		GPU.context.uniform3fv(lineUniforms.axis, X)
 		GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
-		LineAPI.drawX()
+		LineRenderingManager.drawX()
 	}
 
 	static drawY(matrix) {
 		LineRenderer.#bind()
 		GPU.context.uniform3fv(lineUniforms.axis, Y)
 		GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
-		LineAPI.drawY()
+		LineRenderingManager.drawY()
 	}
 
 	static drawZ(matrix) {
 		LineRenderer.#bind()
 		GPU.context.uniform3fv(lineUniforms.axis, Z)
 		GPU.context.uniformMatrix4fv(lineUniforms.transformMatrix, false, matrix)
-		LineAPI.drawZ()
+		LineRenderingManager.drawZ()
 	}
 }

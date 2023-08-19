@@ -6,13 +6,13 @@ import GPU from "../GPU";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
-import GPUAPI from "../lib/rendering/GPUAPI";
+import GPUManager from "../managers/GPUManager";
 import loopMeshes from "@engine-core/system/loop-meshes";
-import Mesh from "@engine-core/instances/Mesh";
-import Material from "@engine-core/instances/Material";
-import CullingComponent from "@engine-core/components/CullingComponent";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import EntityManager from "@engine-core/EntityManager";
+import Mesh from "@engine-core/lib/resources/Mesh";
+import Material from "@engine-core/lib/resources/Material";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class TransparencyRendererSystem extends AbstractSystem {
     execute() {
@@ -24,7 +24,7 @@ export default class TransparencyRendererSystem extends AbstractSystem {
 
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent, index: number) {
         if (index === 0) {
-            GPUAPI.copyTexture(StaticFBOState.postProcessing1, StaticFBOState.postProcessing2, GPU.context.COLOR_BUFFER_BIT)
+            GPUManager.copyTexture(StaticFBOState.postProcessing1, StaticFBOState.postProcessing2, GPU.context.COLOR_BUFFER_BIT)
             StaticFBOState.postProcessing2.use()
             UberMaterialAttributeGroup.clear()
             GPU.context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)

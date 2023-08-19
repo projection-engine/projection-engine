@@ -5,7 +5,7 @@
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import EngineStateService from "../../../services/engine/EngineStateService";
-    import EntityManager from "@engine-core/EntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
 
     export let testSearch: GenericVoidFunctionWithP<MutableObject>
     export let depth: number

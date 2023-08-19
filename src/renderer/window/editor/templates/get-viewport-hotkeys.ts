@@ -13,8 +13,8 @@ import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EditorUtil from "../util/EditorUtil"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import {Components} from "@engine-core/engine.enum";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import EntityManager from "@engine-core/EntityManager";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 import {vec3} from "gl-matrix";
 import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
 

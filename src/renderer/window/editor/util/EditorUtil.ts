@@ -1,10 +1,10 @@
-import ScriptsAPI from "../../../engine/core/lib/utils/ScriptsAPI"
+import ScriptsManager from "@engine-core/managers/ScriptsManager"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EngineStore from "../../shared/stores/EngineStore"
 import ExecutionService from "../services/engine/ExecutionService"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
 import SettingsStore from "../../shared/stores/SettingsStore"
@@ -15,13 +15,13 @@ import ContentBrowserUtil from "./ContentBrowserUtil"
 import GizmoState from "../../../engine/tools/gizmo/util/GizmoState";
 import GizmoUtil from "../../../engine/tools/gizmo/util/GizmoUtil";
 import {Components} from "@engine-core/engine.enum";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import EntityManager from "@engine-core/EntityManager";
-import CameraComponent from "@engine-core/components/CameraComponent";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
+import CameraComponent from "@engine-core/lib/components/CameraComponent";
 
 export default class EditorUtil {
     static async componentConstructor(entity, scriptID, autoUpdate = true) {
-        await ScriptsAPI.linkScript(entity, scriptID)
+        await ScriptsManager.linkScript(entity, scriptID)
         if (autoUpdate)
             EntitySelectionStore.updateStore({array: EntitySelectionStore.getEntitiesSelected()})
         ToastNotificationSystem.getInstance().success(LocalizationEN.ADDED_COMPONENT)
@@ -33,13 +33,13 @@ export default class EditorUtil {
         if (!focused || cameraTarget != null && cameraTarget !== focused) {
             const component = EntityManager.getComponent<CameraComponent>(cameraTarget ?? EntitySelectionStore.getMainEntity(), Components.CAMERA)
             if (component != null) {
-                ExecutionService.cameraSerialization = CameraAPI.serializeState()
+                ExecutionService.cameraSerialization = CameraManager.serializeState()
                 EditorCameraSystem.stopTracking()
-                CameraAPI.updateViewTarget(component)
+                CameraManager.updateViewTarget(component)
                 engineInstance.updateStore({focusedCamera: component.entity})
             }
         } else {
-            CameraAPI.restoreState(ExecutionService.cameraSerialization)
+            CameraManager.restoreState(ExecutionService.cameraSerialization)
             EditorCameraSystem.startTracking()
             engineInstance.updateStore({focusedCamera: undefined})
         }

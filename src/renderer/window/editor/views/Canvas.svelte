@@ -6,7 +6,7 @@
     import Engine from "../../../engine/core/Engine"
     import EngineTools from "../../../engine/tools/EngineTools"
     import EditorLevelService from "../services/engine/EditorLevelService"
-    import UIAPI from "../../../engine/core/lib/rendering/UIAPI"
+    import UIManager from "@engine-core/managers/UIManager"
     import GPU from "../../../engine/core/GPU"
     import EditorFSUtil from "../util/EditorFSUtil"
 
@@ -27,8 +27,8 @@
     		await levelServiceInstance.loadLevel(toLoad).catch(console.error)
 
     		initializeEditor()
-    		UIAPI.buildUI(GPU.canvas.parentElement)
-    		UIAPI.hideUI()
+    		UIManager.buildUI(GPU.canvas.parentElement)
+    		UIManager.hideUI()
     		EngineToolsService.get()
     	})
     })

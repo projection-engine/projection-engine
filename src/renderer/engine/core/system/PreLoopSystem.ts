@@ -1,8 +1,8 @@
 import AbstractSystem from "../AbstractSystem";
-import CameraAPI from "../lib/utils/CameraAPI";
+import CameraManager from "../managers/CameraManager";
 import GPU from "../GPU";
-import TransformationWorkerAPI from "../lib/utils/TransformationWorkerAPI";
-import LightsAPI from "../lib/utils/LightsAPI";
+import TransformationManager from "../managers/TransformationManager";
+import LightsManager from "../managers/LightsManager";
 import EngineState from "../states/EngineState";
 
 export default class PreLoopSystem extends AbstractSystem{
@@ -12,10 +12,10 @@ export default class PreLoopSystem extends AbstractSystem{
         const current = EngineState.currentTimeStamp
         EngineState.elapsed = current - this.#previousTimestamp
         this.#previousTimestamp = current
-        CameraAPI.updateUBOs()
+        CameraManager.updateUBOs()
         GPU.context.clear(GPU.context.COLOR_BUFFER_BIT | GPU.context.DEPTH_BUFFER_BIT)
-        if (TransformationWorkerAPI.hasChangeBuffer[0] === 1) {
-            LightsAPI.packageLights(false, true)
+        if (TransformationManager.hasChangeBuffer[0] === 1) {
+            LightsManager.packageLights(false, true)
         }
     }
 }

@@ -3,7 +3,7 @@
     import GPU from "../../../../../engine/core/GPU"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
-    import EntityManager from "@engine-core/EntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
 
     let entities = 0
     let triangles = 0

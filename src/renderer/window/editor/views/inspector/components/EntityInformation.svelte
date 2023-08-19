@@ -11,7 +11,7 @@
     import PropertyHeader from "../../../../shared/components/PropertyHeader.svelte";
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte";
     import TransformationForm from "./TransformationForm.svelte";
-    import EntityManager from "../../../../../engine/core/EntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
     import {onDestroy} from "svelte";
     import AddComponent from "./AddComponent.svelte";
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem";

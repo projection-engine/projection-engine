@@ -1,4 +1,4 @@
-import Mesh from "../../core/instances/Mesh"
+import Mesh from "@engine-core/lib/resources/Mesh"
 import GizmoEntity from "./GizmoEntity";
 
 interface IGizmo {

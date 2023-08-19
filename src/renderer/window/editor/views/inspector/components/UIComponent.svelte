@@ -3,7 +3,7 @@
     import Selector from "../../../components/selector/Selector.svelte"
     import EditorFSUtil from "../../../util/EditorFSUtil"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
-    import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
+    import UIManager from "@engine-core/managers/UIManager"
     import Engine from "../../../../../engine/core/Engine"
     import Input from "../../../../shared/components/input/Input.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
@@ -20,7 +20,7 @@
 
     function update(key, value) {
     	submit(key, value)
-    	UIAPI.updateUIEntity(entity)
+    	UIManager.updateUIEntity(entity)
     }
 
     async function loadUILayout(reg) {

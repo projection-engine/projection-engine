@@ -1,7 +1,7 @@
 <script>
     import Property from "./Property.svelte"
     import {Components,} from "@engine-core/engine.enum";
-    import Component from "../../../../../../engine/core/components/Component"
+    import Component from "@engine-core/lib/components/Component"
     import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
     import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"

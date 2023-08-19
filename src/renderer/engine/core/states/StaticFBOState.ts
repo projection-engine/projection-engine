@@ -1,5 +1,5 @@
 import GPU from "../GPU"
-import Framebuffer from "../instances/Framebuffer"
+import Framebuffer from "@engine-core/lib/resources/Framebuffer"
 import ImageProcessor from "../lib/math/ImageProcessor"
 import StaticUBOState from "./StaticUBOState"
 import EngineState from "./EngineState"

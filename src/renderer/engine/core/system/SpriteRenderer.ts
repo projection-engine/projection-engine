@@ -1,15 +1,15 @@
 import GPU from "../GPU"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
-import MetricsController from "../lib/utils/MetricsController"
+import MetricsManager from "../managers/MetricsManager"
 import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 import {Components} from "@engine-core/engine.enum";
-import EntityManager from "@engine-core/EntityManager";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import SpriteComponent from "@engine-core/components/SpriteComponent";
-import CullingComponent from "@engine-core/components/CullingComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
 
 export default class SpriteRenderer extends AbstractSystem{
     shouldExecute(): boolean {
@@ -25,7 +25,7 @@ export default class SpriteRenderer extends AbstractSystem{
         for (let i = 0; i < size; i++) {
             this.#render(sprites[i])
         }
-        MetricsController.currentState = METRICS_FLAGS.SPRITE
+        MetricsManager.currentState = METRICS_FLAGS.SPRITE
         context.enable(context.CULL_FACE)
     }
 

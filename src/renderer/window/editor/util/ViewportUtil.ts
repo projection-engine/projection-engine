@@ -3,7 +3,7 @@ import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import Engine from "../../../engine/core/Engine"
 import GPU from "../../../engine/core/GPU"
-import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
+import PickingUtil from "@engine-core/utils/PickingUtil"
 import EngineTools from "../../../engine/tools/EngineTools"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
@@ -12,7 +12,7 @@ import VIEWS from "../components/view/static/VIEWS"
 import StaticFBOState from "@engine-core/states/StaticFBOState";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EngineState from "@engine-core/states/EngineState";
-import EntityManager from "@engine-core/EntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class ViewportUtil {
     static updateViewport(currentView: ViewTabItem) {
@@ -47,7 +47,7 @@ export default class ViewportUtil {
         const selected = EntitySelectionStore.getEntitiesSelected()
         EngineTools.drawIconsToBuffer()
 
-        const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY, 1, StaticFBOState.visibility.FBO)
+        const clickedEntity = PickingUtil.readEntityID(event.clientX, event.clientY, 1, StaticFBOState.visibility.FBO)
         const entity = EntityManager.getEntityWithPickIndex(clickedEntity)
 
         if (!entity) {

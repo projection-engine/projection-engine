@@ -3,19 +3,19 @@ import GizmoSystem from "../../systems/GizmoSystem"
 import EditorEntity from "../../EditorEntity"
 import StaticEditorShaders from "../../utils/StaticEditorShaders"
 import GPU from "../../../core/GPU"
-import CameraAPI from "../../../core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import GizmoState from "./GizmoState"
 import AXIS from "../../static/AXIS"
 import ConversionAPI from "../../../core/lib/math/ConversionAPI"
-import Mesh from "../../../core/instances/Mesh";
+import Mesh from "@engine-core/lib/resources/Mesh";
 import StaticEditorFBO from "../../utils/StaticEditorFBO";
 import GPUUtil from "../../../core/utils/GPUUtil";
 import EngineToolsState from "../../EngineToolsState";
 import {Components} from "@engine-core/engine.enum";
-import TransformationComponent from "@engine-core/components/TransformationComponent";
-import EntityManager from "@engine-core/EntityManager";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 import GizmoEntity from "../GizmoEntity";
-import PickingAPI from "@engine-core/lib/utils/PickingAPI";
+import PickingUtil from "@engine-core/utils/PickingUtil";
 
 
 export default class GizmoUtil {
@@ -64,7 +64,7 @@ export default class GizmoUtil {
     static getGizmoEntity(index: number, rotation: vec3, scaling: vec3): GizmoEntity {
         const TO_DEG = 57.29
         const entity = new GizmoEntity()
-        const pickID = PickingAPI.getPickerId(index)
+        const pickID = PickingUtil.getPickerId(index)
         vec3.copy(entity.pickID, <vec3>pickID)
         vec3.copy(<vec3>entity.scaling, scaling)
         quat.fromEuler(<quat>entity.rotationQuaternion, TO_DEG * rotation[0], TO_DEG * rotation[1], TO_DEG * rotation[2])
@@ -83,7 +83,7 @@ export default class GizmoUtil {
         GPU.context.uniform3fv(uniforms.translation, GizmoState.mainEntity.__pivotOffset)
         GPU.context.uniform1i(uniforms.axis, axis)
         GPU.context.uniform1i(uniforms.selectedAxis, GizmoState.clickedAxis)
-        GPU.context.uniform1i(uniforms.cameraIsOrthographic, CameraAPI.notificationBuffers[2])
+        GPU.context.uniform1i(uniforms.cameraIsOrthographic, CameraManager.notificationBuffers[2])
         mesh.simplifiedDraw()
     }
 
@@ -91,7 +91,7 @@ export default class GizmoUtil {
     static drawGizmoToDepth() {
         const data = {
             translation: GizmoState.mainEntity.__pivotOffset,
-            cameraIsOrthographic: CameraAPI.isOrthographic
+            cameraIsOrthographic: CameraManager.isOrthographic
         }
         StaticEditorFBO.gizmo.startMapping()
         for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
@@ -158,7 +158,7 @@ export default class GizmoUtil {
     static mapToScreenMovement(event: MouseEvent, scaleVec = false): vec3 {
         if (GizmoState.clickedAxis === AXIS.NONE)
             return [0, 0, 0]
-        const distanceFrom = <vec3>CameraAPI.position
+        const distanceFrom = <vec3>CameraManager.position
         const scale = vec3.len(distanceFrom)
         const worldCoordinates = ConversionAPI.toWorldCoordinates(event.clientX, event.clientY)
         if (scaleVec) {

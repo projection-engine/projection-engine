@@ -2,14 +2,14 @@ import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
-import FileSystemAPI from "../../../engine/core/lib/utils/FileSystemAPI"
+import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import EngineStore from "../../shared/stores/EngineStore"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import EditorUtil from "./EditorUtil"
 import type EditorEntity from "../../../engine/tools/EditorEntity";
-import type Component from "../../../engine/core/components/Component";
+import type Component from "@engine-core/lib/components/Component";
 import {Components,} from "@engine-core/engine.enum";
 
 export default class InspectorUtil {
@@ -48,7 +48,7 @@ export default class InspectorUtil {
     static updateEntityComponent(entity:EditorEntity, key:string, value:any, component:Component) {
         component[key] = value
         if (component.getComponentKey() === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera)
-            CameraAPI.updateViewTarget(entity)
+            CameraManager.updateViewTarget(entity)
     }
 
     static removeComponent(entity, index, key) {
@@ -87,7 +87,7 @@ export default class InspectorUtil {
                     entity.meshComponent.materialID = id
                     break
                 case "IMAGE":
-                    (entity.addComponent(Components.SPRITE)).imageID = await FileSystemAPI.loadTexture(id)
+                    (entity.addComponent(Components.SPRITE)).imageID = await EngineFileSystemManager.loadTexture(id)
                     break
             }
         } catch (err) {
