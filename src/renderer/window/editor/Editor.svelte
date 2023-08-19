@@ -6,7 +6,7 @@
     import ViewsContainer from "./components/view/SideView.svelte"
     import SettingsStore from "../shared/stores/SettingsStore"
     import FileSystemUtil from "../shared/FileSystemUtil"
-    import LevelService from "./services/engine/LevelService"
+    import EditorLevelService from "./services/engine/EditorLevelService"
     import HotKeysController from "../shared/lib/HotKeysController"
     import WindowFrame from "./components/window-frame/WindowFrame.svelte"
     import Canvas from "./views/Canvas.svelte"
@@ -37,7 +37,7 @@
     	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
     		sessionStorage.setItem(StorageKeys.PROJECT_PATH, pathToProject)
     		FileSystemUtil.initializeFolders(pathToProject).catch(console.error)
-    		LevelService.get(() => isMetadataReady = true)
+    		EditorLevelService.get(() => isMetadataReady = true)
     		HotKeysController.initializeListener()
     		ContentBrowserUtil.initializeContentBrowser()
     	})

@@ -4,7 +4,7 @@ import GIZMOS from "../../../../shared/enums/Gizmos"
 import EditorActionHistory from "../services/EditorActionHistory"
 import GizmoTransformationType from "../../../../shared/enums/GizmoTransformationType"
 import CAMERA_ROTATIONS from "../../../engine/tools/static/CAMERA_ROTATIONS"
-import LevelService from "../services/engine/LevelService"
+import EditorLevelService from "../services/engine/EditorLevelService"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import ContextMenuOption from "../../shared/lib/context-menu/templates/ContextMenuOptions"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
@@ -49,7 +49,7 @@ export default function getViewportHotkeys(): { [key: string]: ContextMenuOption
         SAVE: {
             label: "Save",
             require: viewportHotkeys.SAVE,
-            callback: LevelService.getInstance().save
+            callback: EditorLevelService.getInstance().save
         },
         INVERT_SELECTION: {
             label: "Invert selection",

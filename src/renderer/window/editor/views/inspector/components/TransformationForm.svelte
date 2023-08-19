@@ -1,6 +1,5 @@
 <script>
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
-    import Engine from "../../../../../engine/core/Engine"
     import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum";
     import {onDestroy, onMount} from "svelte"
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"

@@ -1,5 +1,4 @@
 import {vec2} from "gl-matrix";
-import DynamicMap from "@engine-core/resource-libs/DynamicMap";
 
 export default class EngineToolsState{
 	static gridColor = .3

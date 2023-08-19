@@ -1,5 +1,5 @@
 import SettingsStore from "../../shared/stores/SettingsStore"
-import LevelService from "../services/engine/LevelService"
+import EditorLevelService from "../services/engine/EditorLevelService"
 import EditorActionHistory from "../services/EditorActionHistory"
 import ViewportActionUtil from "../services/ViewportActionUtil"
 import ElectronResources from "../../shared/lib/ElectronResources"
@@ -12,7 +12,7 @@ export default class WindowFrameUtil {
 	static #callMethod(id: string) {
 		switch (id) {
 		case "save":
-			LevelService.getInstance().save().catch(console.error)
+			EditorLevelService.getInstance().save().catch(console.error)
 			break
 		case "undo":
 			EditorActionHistory.undo()
@@ -66,7 +66,7 @@ export default class WindowFrameUtil {
 				icon: "refresh",
 				onClick: () => WindowChangeStore.updateStore({
 					message: LocalizationEN.UNSAVED_CHANGES, callback: () => {
-						LevelService.getInstance().save().then(() => WindowFrameUtil.#callMethod("reload"))
+						EditorLevelService.getInstance().save().then(() => WindowFrameUtil.#callMethod("reload"))
 					}
 				})
 			},
@@ -75,7 +75,7 @@ export default class WindowFrameUtil {
 				onClick: () => WindowChangeStore.updateStore({
 					message: LocalizationEN.UNSAVED_CHANGES,
 					callback: () => {
-						LevelService.getInstance().save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
+						EditorLevelService.getInstance().save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
 					}
 				})
 			},

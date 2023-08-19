@@ -2,7 +2,7 @@
     import EngineStore from "../../../shared/stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
 
-    import LevelService from "../../services/engine/LevelService"
+    import EditorLevelService from "../../services/engine/EditorLevelService"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import Tabs from "../tabs/Tabs.svelte"
     import CreationController from "./components/CreationController.svelte"
@@ -52,7 +52,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={executingAnimation}
-                on:click={() => LevelService.getInstance().save()}
+                on:click={() => EditorLevelService.getInstance().save()}
         >
             <Icon styles="font-size: 1rem">save</Icon>
             <ToolTip content={LocalizationEN.SAVE}/>

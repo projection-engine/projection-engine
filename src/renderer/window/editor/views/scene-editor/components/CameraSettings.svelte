@@ -1,6 +1,5 @@
 <script lang="ts">
     import ViewportActionUtil from "../../../services/ViewportActionUtil"
-    import Engine from "../../../../../engine/core/Engine"
     import CameraGizmo from "./CameraGizmo.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"

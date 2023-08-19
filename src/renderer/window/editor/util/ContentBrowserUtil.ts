@@ -5,7 +5,7 @@ import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import FileTypes from "../../../../shared/enums/FileTypes"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
-import LevelService from "../services/engine/LevelService"
+import EditorLevelService from "../services/engine/EditorLevelService"
 import ShaderEditorTools from "../views/shader-editor/libs/ShaderEditorTools"
 import VIEWS from "../components/view/static/VIEWS"
 import EditorFSUtil from "./EditorFSUtil"
@@ -86,7 +86,7 @@ export default class ContentBrowserUtil {
                     ToastNotificationSystem.getInstance().warn(LocalizationEN.CREATING_ENTITY)
                     break
                 case FileTypes.LEVEL:
-                    LevelService.getInstance().loadLevel(data.registryID).catch(console.error)
+                    EditorLevelService.getInstance().loadLevel(data.registryID).catch(console.error)
                     break
                 case FileTypes.MATERIAL:
                     ShaderEditorTools.toOpenFile = data

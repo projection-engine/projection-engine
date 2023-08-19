@@ -1,4 +1,3 @@
-import AbstractSingleton from "@engine-core/AbstractSingleton";
 import EntityManager from "@engine-core/EntityManager";
 import FileSystemAPI from "@engine-core/lib/utils/FileSystemAPI";
 import GPU from "@engine-core/GPU";
@@ -31,16 +30,6 @@ export default class LevelManager {
             console.error(err)
         }
 
-    }
-
-    static #replaceLevel(newLevel?: EngineEntity) {
-        const oldLevel = LevelManager.#loadedLevel
-        LevelManager.#loadedLevel = newLevel
-        if (oldLevel) {
-            EntityManager.removeEntities([oldLevel])
-        }
-        if (newLevel)
-            EntityManager.createEntitiesById([newLevel])
     }
 
     static restoreState(data: EngineState<Components, Component>) {

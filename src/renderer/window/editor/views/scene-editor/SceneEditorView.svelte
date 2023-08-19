@@ -11,7 +11,6 @@
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
     import EntityInformation from "./components/EntityInformation.svelte"
-    import Engine from "../../../../engine/core/Engine"
     import ViewportInteractionListener from "./lib/ViewportInteractionListener"
     import GizmoSettings from "./components/GizmoSettings.svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"

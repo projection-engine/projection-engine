@@ -1,15 +1,15 @@
-import IGizmo from "../IGizmo";
-import GizmoUtil from "../util/GizmoUtil";
-import AXIS from "../../static/AXIS";
-import Mesh from "../../../core/instances/Mesh";
-import EditorEntity from "../../EditorEntity";
-import AbstractSingleton from "../../../core/AbstractSingleton";
+import IGizmo from "./IGizmo";
+import GizmoUtil from "./util/GizmoUtil";
+import AXIS from "../static/AXIS";
+import Mesh from "@engine-core/instances/Mesh";
+import AbstractSingleton from "@engine-core/AbstractSingleton";
+import GizmoEntity from "./GizmoEntity";
 
 export default abstract class AbstractXYZGizmo extends AbstractSingleton implements IGizmo {
     declare mesh: Mesh;
-    declare xGizmo: EditorEntity;
-    declare yGizmo: EditorEntity;
-    declare zGizmo: EditorEntity;
+    declare xGizmo: GizmoEntity;
+    declare yGizmo: GizmoEntity;
+    declare zGizmo: GizmoEntity;
 
     drawToDepth(data) {
         GizmoUtil.drawToDepth(data, this.mesh, this.xGizmo.matrix, this.xGizmo.pickID)
@@ -35,6 +35,4 @@ export default abstract class AbstractXYZGizmo extends AbstractSingleton impleme
 
     onMouseMove(event: MouseEvent): void {
     }
-
-
 }

@@ -5,7 +5,7 @@
     import VisualsStore from "../../shared/stores/VisualsStore"
     import Engine from "../../../engine/core/Engine"
     import EngineTools from "../../../engine/tools/EngineTools"
-    import LevelService from "../services/engine/LevelService"
+    import EditorLevelService from "../services/engine/EditorLevelService"
     import UIAPI from "../../../engine/core/lib/rendering/UIAPI"
     import GPU from "../../../engine/core/GPU"
     import EditorFSUtil from "../util/EditorFSUtil"
@@ -21,7 +21,7 @@
     		EditorFSUtil.readAsset,
     		true
     	).then(async () => {
-    		const levelServiceInstance = LevelService.getInstance()
+    		const levelServiceInstance = EditorLevelService.getInstance()
     		await EngineTools.initialize().catch(console.error)
     		const toLoad = levelServiceInstance.getLevelToLoad()
     		await levelServiceInstance.loadLevel(toLoad).catch(console.error)

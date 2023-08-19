@@ -28,7 +28,7 @@ export default class ContentBrowserStore extends AbstractStore{
 		return ContentBrowserStore.getData().selectedItems
 	}
 
-	static getItemById(id:string){
+	static getItemById(id:string): MutableObject|undefined{
 		return ContentBrowserStore.getData().items.find(item => item.id === id)
 	}
 

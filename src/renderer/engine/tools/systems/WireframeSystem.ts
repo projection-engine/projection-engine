@@ -8,7 +8,7 @@ import EngineToolsState from "../EngineToolsState"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 import ResourceEntityMapper from "../../core/resource-libs/ResourceEntityMapper";
-import {ColliderTypes,} from "@engine-core/engine.enum";
+import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
@@ -24,9 +24,11 @@ export default class WireframeSystem extends AbstractSystem {
         StaticEditorShaders.wireframe.bind()
         GPUUtil.bind2DTextureForDrawing(uniforms.depth, 0, StaticFBO.sceneDepthVelocity)
 
-        let size = ResourceEntityMapper.decals.size
-        let arr = ResourceEntityMapper.decals.array
-        for(let i = 0; i < size; i++){
+
+        let arr = ResourceEntityMapper.withComponent(Components.DECAL).array
+        let size = arr.length
+
+        for (let i = 0; i < size; i++) {
             const entity = arr[i]
             if (!entity.active || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
                 continue
@@ -36,9 +38,9 @@ export default class WireframeSystem extends AbstractSystem {
             StaticEditorMeshes.clipSpaceCamera.drawLines()
         }
 
-        size = this.colliders.size
-        arr = this.colliders.array
-        for(let i = 0; i < size; i++){
+        arr = ResourceEntityMapper.withComponent(Components.PHYSICS_COLLIDER).array
+        size = arr.length
+        for (let i = 0; i < size; i++) {
             const entity = arr[i]
             if (!entity.active || entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
                 continue

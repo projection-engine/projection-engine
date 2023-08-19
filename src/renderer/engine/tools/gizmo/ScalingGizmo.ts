@@ -1,10 +1,12 @@
-import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
+import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import {vec3} from "gl-matrix"
-import GizmoUtil from "../util/GizmoUtil"
-import EngineTools from "../../EngineTools"
-import GizmoState from "../util/GizmoState"
-import GizmoSystem from "../../systems/GizmoSystem"
+import GizmoUtil from "./util/GizmoUtil"
+import EngineTools from "../EngineTools"
+import GizmoState from "./util/GizmoState"
+import GizmoSystem from "../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
+import TransformationComponent from "@engine-core/components/TransformationComponent";
+import {Components} from "@engine-core/engine.enum";
 
 export default class ScalingGizmo extends AbstractXYZGizmo {
 	#INVERSE_CACHE = vec3.create()
@@ -39,9 +41,9 @@ export default class ScalingGizmo extends AbstractXYZGizmo {
 	}
 
 	#gizmoScaleEntity(event) {
-		const firstEntity = GizmoState.mainEntity
-		if (!firstEntity)
+		if (!GizmoState.mainEntity)
 			return
+		const firstEntity = GizmoState.mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
 		const grid = event.ctrlKey ? 1 : GizmoState.scalingGridSize
 		const vec = GizmoUtil.mapToScreenMovement(event)
 
@@ -56,10 +58,10 @@ export default class ScalingGizmo extends AbstractXYZGizmo {
 			vec3.scale(this.#INVERSE_CACHE, vec, -1)
 		const entities = EngineTools.selected
 		const SIZE = entities.length
-		if (SIZE === 1 && entities[0].lockedScaling)
+		if (SIZE === 1 && firstEntity.lockedScaling)
 			return
 		for (let i = 0; i < SIZE; i++) {
-			const target = entities[i]
+			const target = entities[i].getComponent<TransformationComponent>(Components.TRANSFORMATION)
 			if (target.lockedScaling)
 				continue
 			GizmoUtil.assignValueToVector(vec, target._scaling)

@@ -1,12 +1,12 @@
-import AXIS from "../../static/AXIS"
-import StaticMeshes from "../../../core/lib/StaticMeshes"
-import GizmoState from "../util/GizmoState"
-import GizmoUtil from "../util/GizmoUtil"
-import AbstractSingleton from "../../../core/AbstractSingleton"
-import IGizmo from "../IGizmo"
-import Mesh from "../../../core/instances/Mesh"
-import EditorEntity from "../../EditorEntity"
-import PickingAPI from "../../../core/lib/utils/PickingAPI"
+import AXIS from "../static/AXIS"
+import StaticMeshes from "@engine-core/lib/StaticMeshes"
+import GizmoState from "./util/GizmoState"
+import GizmoUtil from "./util/GizmoUtil"
+import AbstractSingleton from "@engine-core/AbstractSingleton"
+import IGizmo from "./IGizmo"
+import Mesh from "@engine-core/instances/Mesh"
+import EditorEntity from "../EditorEntity"
+import PickingAPI from "@engine-core/lib/utils/PickingAPI"
 
 export default class ScreenSpaceGizmo extends AbstractSingleton implements IGizmo {
 	mesh: Mesh

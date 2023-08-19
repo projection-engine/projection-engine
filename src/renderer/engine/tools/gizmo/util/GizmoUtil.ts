@@ -14,6 +14,8 @@ import EngineToolsState from "../../EngineToolsState";
 import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 import EntityManager from "@engine-core/EntityManager";
+import GizmoEntity from "../GizmoEntity";
+import PickingAPI from "@engine-core/lib/utils/PickingAPI";
 
 
 export default class GizmoUtil {
@@ -59,23 +61,16 @@ export default class GizmoUtil {
 
     }
 
-    static getGizmoEntity(index: number, rotation: vec3, scaling: vec3) {
-        // TODO - REWORK WITH NEW GIZMO ENTITY
-        // const TO_DEG = 57.29
-
-        // const entity = Entity.getNewEntityInstance()
-        // const pickID = PickingAPI.getPickerId(index)
-        //
-        // entity.pickID[0] = pickID[0]
-        // entity.pickID[1] = pickID[1]
-        // entity.pickID[2] = pickID[2]
-        // vec3.copy(<vec3>entity._scaling, scaling)
-        // quat.fromEuler(<quat>entity._rotationQuaternion, TO_DEG * rotation[0], TO_DEG * rotation[1], TO_DEG * rotation[2])
-        // quat.normalize(entity._rotationQuaternion, entity._rotationQuaternion)
-        // mat4.fromRotationTranslationScale(entity.matrix, entity._rotationQuaternion, <vec3>entity._translation, <vec3>entity._scaling)
-        // entity.__cacheMatrix = mat4.clone(entity.matrix)
-        // return entity
-        return null
+    static getGizmoEntity(index: number, rotation: vec3, scaling: vec3): GizmoEntity {
+        const TO_DEG = 57.29
+        const entity = new GizmoEntity()
+        const pickID = PickingAPI.getPickerId(index)
+        vec3.copy(entity.pickID, <vec3>pickID)
+        vec3.copy(<vec3>entity.scaling, scaling)
+        quat.fromEuler(<quat>entity.rotationQuaternion, TO_DEG * rotation[0], TO_DEG * rotation[1], TO_DEG * rotation[2])
+        quat.normalize(entity.rotationQuaternion, entity.rotationQuaternion)
+        mat4.fromRotationTranslationScale(entity.matrix, entity.rotationQuaternion, entity.translation, entity.scaling)
+        return entity
     }
 
     static drawGizmo(mesh: Mesh, transformMatrix: mat4, axis: AXIS) {
@@ -105,26 +100,24 @@ export default class GizmoUtil {
         StaticEditorFBO.gizmo.stopMapping()
     }
 
-    static drawToDepth(data, mesh, transformation, pickId) {
+    static drawToDepth(data: MutableObject, mesh: Mesh, transformation: mat4, pickId: vec3) {
         data.transformMatrix = transformation
         data.uID = pickId
         StaticEditorShaders.toDepthBuffer.bindForUse(data)
         mesh.draw()
     }
 
-    static translateMatrix(entity: EditorEntity) {
+    static translateMatrix(entity: GizmoEntity) {
         GizmoUtil.applyTransformation(entity.matrix, entity.rotationQuaternion, entity.translation, entity.scaling)
     }
 
-    static applyTransformation(matrix: Float32Array, quaternion: Float32Array, translation: Float32Array, scale: Float32Array): void {
+    static applyTransformation(matrix: mat4 | Float32Array, quaternion: quat | Float32Array, translation: vec3 | Float32Array, scale: vec3 | Float32Array): void {
         const mainEntity = GizmoState.mainEntity
         if (!mainEntity)
             return
         const isRelative = !GizmoState.isGlobal
-        if (isRelative || mainEntity.parent) {
-            const quatToMultiply = isRelative ? GizmoState.targetRotation : mainEntity.parent.rotationQuaternionFinal
-            if (!quatToMultiply)
-                return
+        if (isRelative) {
+            const quatToMultiply =  GizmoState.targetRotation
             let cacheVec3 = vec3.create()
             let cacheQuat = quat.create()
 

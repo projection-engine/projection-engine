@@ -2,7 +2,6 @@ import HierarchyToRenderElement from "../views/hierarchy/template/ToRenderElemen
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EditorEntity from "../../../engine/tools/EditorEntity"
-import Engine from "../../../engine/core/Engine"
 import EngineStateService from "../services/engine/EngineStateService"
 import EditorUtil from "./EditorUtil"
 import HotKeysController from "../../shared/lib/HotKeysController";
@@ -10,7 +9,6 @@ import getViewportHotkeys from "../templates/get-viewport-hotkeys";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EntityManager from "@engine-core/EntityManager";
 import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
-import LevelManager from "@engine-core/LevelManager";
 
 export default class HierarchyUtil {
     static buildTree(openTree: {
@@ -107,17 +105,15 @@ export default class HierarchyUtil {
     }
 
     static handleDrop(event, entityDragged: EditorEntity | EditorEntity[], dropTargetEntity: EditorEntity | undefined) {
-
+        if (!dropTargetEntity) {
+            return
+        }
         const toSave = Array.isArray(entityDragged) ? entityDragged : [entityDragged]
-
         const toAdd = [], newSelection = []
-
         for (let i = 0; i < toSave.length; i++) {
             const currentEntity = <EditorEntity>toSave[i]
-            if (currentEntity.id === LevelManager.loadedLevel)
-                continue
             if (event.ctrlKey) {
-                EntityManager.addParent(currentEntity.id, dropTargetEntity?.id ?? LevelManager.loadedLevel)
+                EntityManager.addParent(currentEntity.id, dropTargetEntity?.id)
             } else if (event.shiftKey) {
                 // TODO - IMPLEMENT CLONING
                 // const clone = currentEntity.clone()
@@ -128,9 +124,9 @@ export default class HierarchyUtil {
             }
         }
 
-        if (toAdd.length > 0)
+        if (toAdd.length > 0) {
             EngineStateService.appendBlock(toAdd)
-        else {
+        } else {
             EntitySelectionStore.setEntitiesSelected(newSelection)
             EntityHierarchyService.updateHierarchy()
         }

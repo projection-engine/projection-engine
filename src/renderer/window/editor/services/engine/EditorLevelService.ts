@@ -1,6 +1,5 @@
 import FileSystemUtil from "../../../shared/FileSystemUtil"
 import EditorActionHistory from "../EditorActionHistory"
-import Engine from "../../../../engine/core/Engine"
 import EditorFSUtil from "../../util/EditorFSUtil"
 import EngineStore from "../../../shared/stores/EngineStore"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
@@ -15,8 +14,6 @@ import ToastNotificationSystem from "../../../shared/components/alert/ToastNotif
 import ChangesTrackerStore from "../../../shared/stores/ChangesTrackerStore"
 import EntityHierarchyService from "./EntityHierarchyService"
 import EntityNamingService from "./EntityNamingService"
-import PickingAPI from "../../../../engine/core/lib/utils/PickingAPI"
-import AXIS from "../../../../engine/tools/static/AXIS"
 import WindowChangeStore from "../../../shared/stores/WindowChangeStore"
 import IPCRoutes from "../../../../../shared/enums/IPCRoutes"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
@@ -26,11 +23,12 @@ import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
 import {UUID} from "crypto";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
-import EditorEntity from "../../../../engine/tools/EditorEntity";
 import LevelManager from "@engine-core/LevelManager";
+import EntityManager from "@engine-core/EntityManager";
+import LoadedLevelStore from "../../../shared/stores/LoadedLevelStore";
 
 
-export default class LevelService extends AbstractSingleton {
+export default class EditorLevelService extends AbstractSingleton {
     #levelToLoad
 
     constructor(resolvePromise: Function) {
@@ -64,8 +62,8 @@ export default class LevelService extends AbstractSingleton {
         resolvePromise()
     }
 
-    static getInstance(): LevelService {
-        return super.get<LevelService>()
+    static getInstance(): EditorLevelService {
+        return super.get<EditorLevelService>()
     }
 
     getLevelToLoad() {
@@ -75,13 +73,16 @@ export default class LevelService extends AbstractSingleton {
     }
 
     async loadLevel(levelID?: string) {
-        if (!levelID || levelID && levelID === LevelManager.loadedLevel) {
-            if (levelID && levelID === LevelManager.loadedLevel)
-                ToastNotificationSystem.getInstance().error(LocalizationEN.LEVEL_ALREADY_LOADED)
+        if (!levelID) {
             return
         }
 
-        if (ChangesTrackerStore.getData() && LevelManager.loadedLevel != null) {
+        if (levelID === LevelManager.loadedLevel) {
+            ToastNotificationSystem.getInstance().error(LocalizationEN.LEVEL_ALREADY_LOADED)
+            return
+        }
+
+        if (ChangesTrackerStore.getData().changed && LevelManager.loadedLevel != null) {
             WindowChangeStore.updateStore({
                 message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
                     await this.save().catch(console.error)
@@ -93,19 +94,16 @@ export default class LevelService extends AbstractSingleton {
 
         await EditorFSUtil.readRegistry()
         EntityNamingService.clear()
-        EntitySelectionStore.updateStore({
-            array: []
-        })
-        EntitySelectionStore.setLockedEntity(undefined)
         EditorActionHistory.clear()
-
+        EntitySelectionStore.updateStore({array: []})
+        EntitySelectionStore.setLockedEntity(undefined)
 
         await LevelManager.loadLevel(levelID as UUID, false)
-        // TODO - LOAD EDITOR ENTITY
-        if (LevelManager.loadedLevel) {
-            EntitySelectionStore.setLockedEntity(LevelManager.loadedLevel)
+        if (EntityManager.getEntities().size > 0) {
+            EntitySelectionStore.setLockedEntity(EntityManager.getEntityKeys()[0])
         }
         EntityHierarchyService.updateHierarchy()
+        LoadedLevelStore.updateStore({loadedLevel: levelID})
     }
 
     async save() {
@@ -152,12 +150,6 @@ export default class LevelService extends AbstractSingleton {
     async saveCurrentLevel() {
         if (!LevelManager.loadedLevel)
             return
-        // TODO - IMPLEMENT SERIALIZATION FOR EDITOR ENTITIES
-        const serialized = {
-            // levelEntity: Engine.loadedLevel.serializable(),
-            engineState: LevelManager.serializeState(),
-            editorState: EditorEntityManager.serializeState()
-        }
 
         const assetReg = EditorFSUtil.getRegistryEntry(LevelManager.loadedLevel)
         let path = assetReg?.path
@@ -172,7 +164,10 @@ export default class LevelService extends AbstractSingleton {
 
         await FileSystemUtil.write(
             path,
-            serializeStructure(serialized)
+            serializeStructure( {
+                engineState: LevelManager.serializeState(),
+                editorState: EditorEntityManager.serializeState()
+            })
         )
         ChangesTrackerStore.updateStore({changed: false})
     }

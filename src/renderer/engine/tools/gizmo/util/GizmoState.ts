@@ -6,11 +6,11 @@ import GizmoTransformationType from "../../../../../shared/enums/GizmoTransforma
 import EngineTools from "../../EngineTools"
 import IGizmo from "../IGizmo"
 import Gizmos from "../../../../../shared/enums/Gizmos"
-import TranslationGizmo from "../transformation/TranslationGizmo"
-import DualAxisGizmo from "../transformation/DualAxisGizmo"
-import ScreenSpaceGizmo from "../transformation/ScreenSpaceGizmo"
-import ScalingGizmo from "../transformation/ScalingGizmo"
-import RotationGizmo from "../transformation/RotationGizmo"
+import TranslationGizmo from "../TranslationGizmo"
+import DualAxisGizmo from "../DualAxisGizmo"
+import ScreenSpaceGizmo from "../ScreenSpaceGizmo"
+import ScalingGizmo from "../ScalingGizmo"
+import RotationGizmo from "../RotationGizmo"
 import {vec3} from "gl-matrix"
 import EngineToolsState from "../../EngineToolsState";
 import {Components} from "@engine-core/engine.enum";

@@ -1,11 +1,11 @@
-import EngineTools from "../../EngineTools"
-import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
+import EngineTools from "../EngineTools"
+import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import {vec3} from "gl-matrix"
-import GizmoUtil from "../util/GizmoUtil"
-import GizmoState from "../util/GizmoState"
-import GizmoSystem from "../../systems/GizmoSystem"
+import GizmoUtil from "./util/GizmoUtil"
+import GizmoState from "./util/GizmoState"
+import GizmoSystem from "../systems/GizmoSystem"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
-import EngineToolsState from "../../EngineToolsState";
+import EngineToolsState from "../EngineToolsState";
 import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/components/TransformationComponent";
 
@@ -50,6 +50,8 @@ export default class TranslationGizmo extends AbstractXYZGizmo {
 	}
 
 	#gizmoTranslateEntity(event) {
+		if (!GizmoState.mainEntity)
+			return
 		const entities = EngineTools.selected
 		const SIZE = entities.length
 		const grid = event.ctrlKey ? 1 : GizmoState.translationGridSize

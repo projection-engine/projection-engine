@@ -1,11 +1,11 @@
-import EditorEntity from "../EditorEntity"
 import Mesh from "../../core/instances/Mesh"
+import GizmoEntity from "./GizmoEntity";
 
 interface IGizmo {
     mesh: Mesh,
-    xGizmo: EditorEntity,
-    yGizmo: EditorEntity,
-    zGizmo: EditorEntity,
+    xGizmo: GizmoEntity,
+    yGizmo: GizmoEntity,
+    zGizmo: GizmoEntity,
     drawToDepth: (data:MutableObject) => void,
     onMouseMove: (event: MouseEvent) => void,
     transformGizmo: () => void,

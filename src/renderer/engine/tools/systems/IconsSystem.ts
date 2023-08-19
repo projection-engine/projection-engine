@@ -10,12 +10,10 @@ import EngineToolsState from "../EngineToolsState"
 import GizmoUtil from "../gizmo/util/GizmoUtil"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
-import {Components, LightTypes, MaterialRenderingTypes,} from "@engine-core/engine.enum";
+import {Components, LightTypes,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/EntityManager";
-import EngineState from "@engine-core/EngineState";
-import EditorEntityManager from "../EditorEntityManager";
 import LightComponent from "@engine-core/components/LightComponent";
-import MeshComponent from "@engine-core/components/MeshComponent";
+import IconsManager from "../IconsManager";
 
 
 export default class IconsSystem extends AbstractSystem {
@@ -23,7 +21,7 @@ export default class IconsSystem extends AbstractSystem {
     static #iconAttributes = mat4.create()
 
     static loop(cb, uniforms?: MutableObject) {
-        const icons = EditorEntityManager.getIcons()
+        const icons = IconsManager.getIcons()
         const size = icons.length
         for (let i = 0; i < size; i++) {
             cb(icons[i], uniforms)

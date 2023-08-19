@@ -1,20 +1,17 @@
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
-import LevelService from "./LevelService";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
-import LevelManager from "@engine-core/LevelManager";
+import EntityManager from "@engine-core/EntityManager";
+import DynamicMap from "@engine-core/resource-libs/DynamicMap";
 
 
 export default class EntityHierarchyService {
 	static hierarchy: HierarchyToRenderElement[] = []
-	static #listening: { [key: string]: Function } = {}
+	static #listening = new DynamicMap<string, VoidFunction>()
 
 	static updateHierarchy() {
-		const data = [], root = EditorEntityManager.getEntity(LevelManager.loadedLevel)
-		if(!root)
-			return
-
+		const data = []
 		const callback = (node: EditorEntity, depth: number) => {
 			if(!node)
 				return
@@ -25,17 +22,22 @@ export default class EntityHierarchyService {
 			for (let i = 0; i < children.length; i++)
 				callback(EditorEntityManager.getEntity(children[i]), depth + 1)
 		}
-		callback(root, 0)
+		const entities = EntityManager.getEntityKeys()
+		entities.forEach(e => {
+			if(EntityManager.hasParent(e))
+				return
+			callback(EditorEntityManager.getEntity(e), 0)
+		})
 		EntityHierarchyService.hierarchy = data
-		Object.values(EntityHierarchyService.#listening).forEach(v => v())
+		EntityHierarchyService.#listening.array.forEach(v => v())
 	}
 
 	static removeListener(internalID: string) {
-		delete EntityHierarchyService.#listening[internalID]
+		EntityHierarchyService.#listening.delete(internalID)
 	}
 
-	static registerListener(internalID: string, callback: Function) {
-		EntityHierarchyService.#listening[internalID] = callback
+	static registerListener(internalID: string, callback: VoidFunction) {
+		EntityHierarchyService.#listening.set(internalID, callback)
 		callback()
 	}
 

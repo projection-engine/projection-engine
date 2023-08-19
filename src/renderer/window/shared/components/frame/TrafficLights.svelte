@@ -10,7 +10,7 @@
     import ElectronResources from "../../lib/ElectronResources"
     import RENDER_TARGET from "../../../editor/static/RENDER_TARGET"
     import HotKeysController from "../../lib/HotKeysController"
-    import LevelService from "../../../editor/services/engine/LevelService"
+    import EditorLevelService from "../../../editor/services/engine/EditorLevelService"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 
     const COMPONENT_ID = crypto.randomUUID()
@@ -89,7 +89,7 @@
             on:click={() => {
                 if(ChangesTrackerStore.getData().changed)
                     WindowChangeStore.updateStore({message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
-                        await LevelService.getInstance().save()
+                        await EditorLevelService.getInstance().save()
                         ElectronResources.ipcRenderer.send("close")
                     }})
                 else

@@ -5,7 +5,6 @@ import EditorEntity from "../../../../engine/tools/EditorEntity"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import GizmoUtil from "../../../../engine/tools/gizmo/util/GizmoUtil"
-import LevelService from "./LevelService";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EntityManager from "@engine-core/EntityManager";
 import LevelManager from "@engine-core/LevelManager";

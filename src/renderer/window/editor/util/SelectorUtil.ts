@@ -1,4 +1,3 @@
-import Engine from "../../../engine/core/Engine"
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
 

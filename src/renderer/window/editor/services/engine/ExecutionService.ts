@@ -5,9 +5,7 @@ import Engine from "../../../../engine/core/Engine"
 import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
 import ScriptsAPI from "../../../../engine/core/lib/utils/ScriptsAPI"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
-
-import ResourceEntityMapper from "../../../../engine/core/resource-libs/ResourceEntityMapper"
-import LevelService from "./LevelService"
+import EditorLevelService from "./EditorLevelService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import {Environment,} from "@engine-core/engine.enum";
 import EngineState from "@engine-core/EngineState";
@@ -29,7 +27,7 @@ export default class ExecutionService {
 		ExecutionService.cameraSerialization = CameraAPI.serializeState()
 		ExecutionService.#isPlaying = true
 		EditorCameraSystem.stopTracking()
-		await LevelService.getInstance().saveCurrentLevel().catch(console.error)
+		await EditorLevelService.getInstance().saveCurrentLevel().catch(console.error)
 		ExecutionService.#currentLevelID = LevelManager.loadedLevel
 		await Engine.startSimulation()
 		EngineStore.updateStore({focusedCamera: undefined, executingAnimation: true})
@@ -45,7 +43,7 @@ export default class ExecutionService {
 		Engine.environment = Environment.DEV
 
 		UIAPI.destroyUI()
-		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)
+		await EditorLevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)
 		await ScriptsAPI.updateAllScripts()
 
 		EngineState.cameraEntityTarget = undefined

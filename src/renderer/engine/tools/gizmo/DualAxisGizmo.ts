@@ -1,26 +1,26 @@
-import AXIS from "../../static/AXIS"
-import StaticEditorMeshes from "../../utils/StaticEditorMeshes"
+import AXIS from "../static/AXIS"
+import StaticEditorMeshes from "../utils/StaticEditorMeshes"
 import {vec3} from "gl-matrix"
-import GizmoUtil from "../util/GizmoUtil"
-import AbstractSingleton from "../../../core/AbstractSingleton"
-import IGizmo from "../IGizmo"
-import Mesh from "../../../core/instances/Mesh"
-import EditorEntity from "../../EditorEntity"
+import GizmoUtil from "./util/GizmoUtil"
+import AbstractSingleton from "@engine-core/AbstractSingleton"
+import IGizmo from "./IGizmo"
+import Mesh from "@engine-core/instances/Mesh"
+import GizmoEntity from "./GizmoEntity";
 
 export default class DualAxisGizmo extends AbstractSingleton implements IGizmo {
 	mesh: Mesh
 	/**
      * XY gizmo
      */
-	xGizmo: EditorEntity
+	xGizmo: GizmoEntity
 	/**
      * ZY gizmo
      */
-	yGizmo: EditorEntity
+	yGizmo: GizmoEntity
 	/**
      * XZ gizmo
      */
-	zGizmo: EditorEntity
+	zGizmo: GizmoEntity
 
 	constructor() {
 		super()

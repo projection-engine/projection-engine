@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Engine from "../../../../../engine/core/Engine"
     import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"

@@ -1,7 +1,6 @@
 <script>
     import {onDestroy, onMount} from "svelte"
     import GPU from "../../../../../engine/core/GPU"
-    import Engine from "../../../../../engine/core/Engine"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EntityManager from "@engine-core/EntityManager";
