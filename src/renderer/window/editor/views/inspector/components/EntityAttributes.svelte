@@ -7,18 +7,15 @@
     import InspectorUtil from "../../../util/InspectorUtil"
     import INSPECTOR_TABS from "../static/INSPECTOR_TABS"
     import type EditorEntity from "../../../../../engine/tools/EditorEntity";
-
+    import Component from "@engine-core/lib/components/Component";
 
     export let entity: EditorEntity
     export let tabIndex: number
 
     const TAB_OFFSET = INSPECTOR_TABS.length
     let ref
-    let toRender
-    $: toRender = [
-        ...entity.scripts.map(c => ({type: "script", data: c})),
-        ...entity.allComponents.map(c => ({type: "component", data: c}))
-    ]
+    let toRender: { type: string, data: Component }[]
+    $: toRender = entity.allComponents.map(c => ({type: "component", data: c}))
     $: form = toRender[tabIndex - TAB_OFFSET - 2]
     const draggable = dragDrop(false)
     onMount(() => {
@@ -34,27 +31,17 @@
         InspectorUtil.updateEntityComponent(entity, k, v, form.data)
         entity = entity
     }
-    $: console.trace("UPDATED ENTITY", entity)
 </script>
 
 <span style="display: none" bind:this={ref}></span>
 {#if tabIndex === TAB_OFFSET}
     <EntityInformation entity={entity}/>
 {:else if form != null}
-    {#if form.type === "script"}
-        <Layout
-                {entity}
-                index={tabIndex - TAB_OFFSET}
-                component={form.data}
-                submit={(k, v) => form.data[k] = v}
-        />
-    {:else}
-        <Layout
-                {entity}
-                key={form.data.getComponentKey()}
-                component={form.data}
-                updateTabs={() => entity = entity}
-                submit={submit}
-        />
-    {/if}
+    <Layout
+            {entity}
+            key={form.data.getComponentKey()}
+            component={form.data}
+            updateTabs={() => entity = entity}
+            submit={submit}
+    />
 {/if}

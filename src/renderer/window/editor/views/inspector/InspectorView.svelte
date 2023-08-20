@@ -2,7 +2,7 @@
 
     import {onDestroy, onMount} from "svelte"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
-    import EntityInspector from "./components/EntityAttributes.svelte"
+    import EntityAttributes from "./components/EntityAttributes.svelte"
 
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
@@ -69,7 +69,7 @@
     </div>
     <div class="content">
         {#if isOnDynamicTab && selectedEntity != null}
-            <EntityInspector
+            <EntityAttributes
                     setTabIndex={i => tabIndex = i}
                     entity={selectedEntity}
                     tabIndex={tabIndex}

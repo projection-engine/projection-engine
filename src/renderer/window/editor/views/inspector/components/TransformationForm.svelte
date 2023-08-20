@@ -18,16 +18,17 @@
     import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
     const COMPONENT_ID = crypto.randomUUID()
-    let targets = []
+    let targets: EditorEntity[] = []
     let rotationType = TransformationRotationTypes.ROTATION_QUATERNION
     let totalTranslated = [0, 0, 0]
     let totalScaled = [0, 0, 0]
     let totalPivot = [0, 0, 0]
-    let mainEntity
-    let isSingle
-    let lockedRotation
-    let lockedTranslation
-    let lockedScaling
+    let mainEntity: EditorEntity
+    let mainEntityTransformationComponent: TransformationComponent
+    let isSingle: boolean
+    let lockedRotation: boolean
+    let lockedTranslation: boolean
+    let lockedScaling: boolean
     let hasStarted = false
     let lockedCache = [false, false, false]
 
@@ -37,7 +38,7 @@
             const entitiesSelected = EntitySelectionStore.getEntitiesSelected()
             for (let i = 0; i < entitiesSelected.length; i++) {
                 const currentEntity = EditorEntityManager.getEntity(entitiesSelected[i])
-                if (currentEntity && EntityManager.hasComponent(currentEntity.id, Components.TRANSFORMATION)) {
+                if (currentEntity && currentEntity.hasComponent(Components.TRANSFORMATION)) {
                     cache.push(currentEntity)
                     currentEntity.__originalTranslation = undefined
                     currentEntity.__originalPivot = undefined
@@ -68,47 +69,53 @@
         })
     })
 
+    function getTransformationComponent(entity: EditorEntity): TransformationComponent {
+        return entity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+    }
+
     onDestroy(() => EntitySelectionStore.getInstance().removeListener(COMPONENT_ID))
 
     $: {
         mainEntity = targets[0]
-        rotationType = mainEntity?.rotationType[0]
+        mainEntityTransformationComponent = getTransformationComponent(mainEntity)
+        rotationType = mainEntityTransformationComponent.rotationType[0]
         isSingle = targets.length === 1
-        lockedRotation = isSingle && mainEntity?.lockedRotation
-        lockedTranslation = isSingle && mainEntity?.lockedTranslation
-        lockedScaling = isSingle && mainEntity?.lockedScaling
+        lockedRotation = isSingle && mainEntityTransformationComponent.lockedRotation
+        lockedTranslation = isSingle && mainEntityTransformationComponent.lockedTranslation
+        lockedScaling = isSingle && mainEntityTransformationComponent.lockedScaling
     }
 
-    function rotate(axis, value) {
+    function rotate(axis: number, value: number) {
         if (!hasStarted) {
             hasStarted = true
             EditorActionHistory.save(targets)
         }
-
+        const transformationComponent = getTransformationComponent(mainEntity)
         if (rotationType === TransformationRotationTypes.ROTATION_QUATERNION)
-            mainEntity.rotationQuaternion[axis] = value
+            transformationComponent.rotationQuaternion[axis] = value
         else
-            mainEntity.rotationEuler[axis] = value
-        mainEntity.changed = true
+            transformationComponent.rotationEuler[axis] = value
+        transformationComponent.changed = true
     }
 
-    function transformScaleTranslation(axis, value, isTranslation) {
+    function transformScaleTranslation(axis: number, value: number, isTranslation?: boolean) {
         if (!hasStarted) {
             hasStarted = true
             EditorActionHistory.save(targets)
         }
         for (let i = 0; i < targets.length; i++) {
             const entity = targets[i]
+            const transformationComponent = getTransformationComponent(entity)
             if (!isTranslation) {
                 if (!entity.__originalScaling)
-                    entity.__originalScaling = isSingle ? [0, 0, 0] : Array.from(entity._scaling)
-                entity._scaling[axis] = entity.__originalScaling[axis] + value
+                    entity.__originalScaling = isSingle ? [0, 0, 0] : Array.from(transformationComponent._scaling)
+                transformationComponent._scaling[axis] = entity.__originalScaling[axis] + value
             } else {
                 if (!entity.__originalTranslation)
-                    entity.__originalTranslation = isSingle ? [0, 0, 0] : Array.from(entity._translation)
-                entity._translation[axis] = entity.__originalTranslation[axis] + value
+                    entity.__originalTranslation = isSingle ? [0, 0, 0] : Array.from(transformationComponent._translation)
+                transformationComponent._translation[axis] = entity.__originalTranslation[axis] + value
             }
-            entity.changed = true
+            transformationComponent.changed = true
         }
 
         if (isTranslation)
@@ -126,9 +133,10 @@
 
         for (let i = 0; i < targets.length; i++) {
             const entity = targets[i]
+            const transformationComponent = getTransformationComponent(entity)
             if (!entity.__originalPivot)
-                entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(entity.pivotPoint)
-            entity.pivotPoint[axis] = entity.__originalPivot[axis] + value
+                entity.__originalPivot = isSingle ? [0, 0, 0] : Array.from(transformationComponent.pivotPoint)
+            transformationComponent.pivotPoint[axis] = entity.__originalPivot[axis] + value
             EngineToolsState.pivotChanged.set(entity.id, true)
         }
         totalPivot[axis] = value
@@ -180,9 +188,9 @@
                         label={LocalizationEN.LOCKED}
                         checked={lockedCache[0]}
                         handleCheck={_ => {
-                      mainEntity.lockedTranslation = !mainEntity.lockedTranslation
-                      lockedCache[0] = !lockedCache[0]
-                }}
+                              mainEntityTransformationComponent.lockedTranslation = !mainEntityTransformationComponent.lockedTranslation
+                              lockedCache[0] = !lockedCache[0]
+                        }}
                 />
             {/if}
             <div data-svelteinline="-">
@@ -217,9 +225,9 @@
                         label={LocalizationEN.LOCKED}
                         checked={lockedCache[1]}
                         handleCheck={_ => {
-                      mainEntity.lockedScaling = !mainEntity.lockedScaling
-                      lockedCache[1] = !lockedCache[1]
-                }}
+                              mainEntityTransformationComponent.lockedScaling = !mainEntityTransformationComponent.lockedScaling
+                              lockedCache[1] = !lockedCache[1]
+                        }}
                 />
             {/if}
             <div data-svelteinline="-">
@@ -256,11 +264,14 @@
                             {ROTATION_TYPES.find(e => e.type === rotationType).label}
                         </button>
                         {#each ROTATION_TYPES as rt}
-                            <button data-sveltebuttondefault="-" on:click={() => {
-                        rotationType = rt.type
-                        mainEntity.rotationType[0] = rt.type
-                        mainEntity.changed = true
-                    }}>
+                            <button
+                                    data-sveltebuttondefault="-"
+                                    on:click={() => {
+
+                                        rotationType = rt.type
+                                        mainEntityTransformationComponent.rotationType[0] = rt.type
+                                        mainEntityTransformationComponent.changed = true
+                                    }}>
                                 {#if rotationType === rt.type}
                                     <Icon>check</Icon>
                                 {:else}
@@ -274,58 +285,58 @@
                             label={LocalizationEN.LOCKED}
                             checked={lockedCache[2]}
                             handleCheck={_ => {
-                          mainEntity.lockedRotation = !mainEntity.lockedRotation
-                          lockedCache[2] = !lockedCache[2]
-                    }}
+                                  mainEntityTransformationComponent.lockedRotation = !mainEntityTransformationComponent.lockedRotation
+                                  lockedCache[2] = !lockedCache[2]
+                            }}
                     />
                     {#if rotationType === TransformationRotationTypes.ROTATION_QUATERNION}
                         <Range
                                 onFinish={onFinish}
                                 disabled={lockedRotation}
                                 label="X"
-                                value={mainEntity.rotationQuaternion[0]}
+                                value={mainEntityTransformationComponent.rotationQuaternion[0]}
                                 handleChange={v => rotate(0, v)}
                         />
                         <Range
                                 onFinish={onFinish}
                                 disabled={lockedRotation}
                                 label="Y"
-                                value={mainEntity.rotationQuaternion[1]}
+                                value={mainEntityTransformationComponent.rotationQuaternion[1]}
                                 handleChange={v => rotate(1, v)}
                         />
                         <Range
                                 onFinish={onFinish}
                                 disabled={lockedRotation}
                                 label="Z"
-                                value={mainEntity.rotationQuaternion[2]}
+                                value={mainEntityTransformationComponent.rotationQuaternion[2]}
                                 handleChange={v => rotate(2, v)}
                         />
                         <Range
                                 onFinish={onFinish}
                                 disabled={lockedRotation}
                                 label="W"
-                                value={mainEntity.rotationQuaternion[3]}
+                                value={mainEntityTransformationComponent.rotationQuaternion[3]}
                                 handleChange={v => rotate(3, v)}
                         />
                     {:else}
 
                         <Range
                                 onFinish={onFinish}
-                                value={mainEntity.rotationEuler[0]}
+                                value={mainEntityTransformationComponent.rotationEuler[0]}
                                 disabled={lockedRotation}
                                 label="X"
                                 handleChange={v => rotate(0, v)}
                         />
                         <Range
                                 onFinish={onFinish}
-                                value={mainEntity.rotationEuler[1]}
+                                value={mainEntityTransformationComponent.rotationEuler[1]}
                                 disabled={lockedRotation}
                                 label="Y"
                                 handleChange={v => rotate(1, v)}
                         />
                         <Range
                                 onFinish={onFinish}
-                                value={mainEntity.rotationEuler[2]}
+                                value={mainEntityTransformationComponent.rotationEuler[2]}
                                 disabled={lockedRotation}
                                 label="Z"
                                 handleChange={v => rotate(2, v)}

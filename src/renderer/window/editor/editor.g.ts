@@ -7,3 +7,12 @@ interface ViewTabItem {
     name?: string
     icon?: string
 }
+
+interface ComponentValueGeneric {
+    [key: string]: any
+
+    type: string
+    label?: string
+    key?: string
+    disabledIf?: string | GenericNonVoidFunctionWithP<IComponent, boolean>
+}

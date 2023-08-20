@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import StyleField from "./UIStyles.svelte"
     import Selector from "../../../components/selector/Selector.svelte"
     import EditorFSUtil from "../../../util/EditorFSUtil"
@@ -9,18 +9,22 @@
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import InspectorUtil from "../../../util/InspectorUtil"
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
+    import {Components} from "@engine-core/engine.enum";
+    import UIComponent from "@engine-core/lib/components/UIComponent";
 
-    export let entity
-    export let submit
+    export let entity: EditorEntity
+    export let submit:  GenericVoidFunctionWith3P<string, any, boolean>
 
-    $: component = entity.uiComponent
+    let component: UIComponent
+    $: component = entity.getComponent<UIComponent>(Components.UI)
     $: wrapperStyles = component.wrapperStyles
     $: hasStyles = wrapperStyles.length > 0
 
 
     function update(key, value) {
-    	submit(key, value)
-    	UIManager.updateUIEntity(entity)
+    	submit(key, value, false)
+    	UIManager.updateUIEntity(entity.id)
     }
 
     async function loadUILayout(reg) {
@@ -40,7 +44,7 @@
     <legend class="legend">
         {LocalizationEN.UI_COMPONENT}
         <button data-sveltebuttondefault="-" class="button"
-                on:click={() => InspectorUtil.removeComponent(entity, undefined, Components.UI)}>
+                on:click={() => InspectorUtil.removeComponent(entity, component.getComponentKey())}>
             <Icon>delete_forever</Icon>
         </button>
     </legend>

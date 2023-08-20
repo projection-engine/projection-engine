@@ -77,4 +77,8 @@ export default class EditorEntity implements IEditorEntity {
     addComponent<T>(comp: Components): T {
         return EntityManager.addComponent(this.id, comp) as T
     }
+
+    removeComponent(key: Components) {
+        EntityManager.removeComponent(this.id, key)
+    }
 }

@@ -11,6 +11,7 @@ import type Component from "@engine-core/lib/components/Component";
 import {Components,} from "@engine-core/engine.enum";
 import MeshComponent from "@engine-core/lib/components/MeshComponent";
 import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class InspectorUtil {
     static compareObjects(obj1, obj2) {
@@ -45,21 +46,17 @@ export default class InspectorUtil {
         ]
     }
 
-    static updateEntityComponent(entity:EditorEntity, key:string, value:any, component:Component) {
-        component[key] = value
-        if (component.getComponentKey() === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera)
+    static updateEntityComponent(entity: EditorEntity, key: string, value: any, component: Component) {
+        EntityManager.updateProperty(entity.id, component.getComponentKey(), key, value)
+        if (component.getComponentKey() === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera) {
             CameraManager.updateViewTarget(entity)
+        }
     }
 
-    static removeComponent(entity, index, key) {
+    static removeComponent(entity: EditorEntity, key: Components) {
         if (!entity)
             return
-        if (index != null) {
-            entity.scripts[index] = undefined
-            entity.scripts = entity.scripts.filter(e => e)
-        } else
-            entity.removeComponent(key)
-
+        entity.removeComponent(key)
         EntityHierarchyService.updateHierarchy()
         EntitySelectionStore.updateStore({array: EntitySelectionStore.getEntitiesSelected()})
     }
@@ -99,12 +96,8 @@ export default class InspectorUtil {
 
     static #getItemFound(id) {
         const filesStoreData = ContentBrowserStore.getData()
-        let type = "SCRIPT"
-        let itemFound = filesStoreData.Components.find(s => s.registryID === id)
-        if (!itemFound) {
-            itemFound = filesStoreData.meshes.find(s => s.registryID === id)
-            type = "MESH"
-        }
+        let itemFound = filesStoreData.meshes.find(s => s.registryID === id)
+        let type = "MESH"
         if (!itemFound) {
             itemFound = filesStoreData.textures.find(s => s.registryID === id)
             type = "IMAGE"

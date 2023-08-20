@@ -1,5 +1,8 @@
 type EngineEntity = `${string}-${string}-${string}-${string}-${string}`
 
+interface IComponent{
+}
+
 interface IResource{}
 interface FBOTexture {
     [key: string]: any,
@@ -37,15 +40,6 @@ type EntityEventTypes = "hierarchy-change" | "hard-change" | "component-add" | "
 
 interface UniformMap {
     [key: string]: WebGLUniformLocation
-}
-
-interface ComponentValueGeneric {
-    [key: string]: any
-
-    type: string
-    label?: string
-    key?: string
-    disabledIf?: string | Function
 }
 
 interface CameraEffectsSerialization {

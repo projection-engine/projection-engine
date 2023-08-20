@@ -10,23 +10,21 @@
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
     import COMPONENT_PROP_TYPES from "../../../../static/COMPONENT_PROP_TYPES";
+    import Component from "@engine-core/lib/components/Component";
 
-    export let component
+    export let component: Component
     export let submit: GenericVoidFunctionWith3P<string, any, boolean>
-    export let attribute
+    export let attribute: ComponentValueGeneric
 
+    let firstSubmit = false
+    let originalValue
     let value
     let label
     let isDisabled
+
     $: label = LocalizationEN[attribute.label] ? LocalizationEN[attribute.label] : attribute.label
     $: value = component[attribute.key]
     $: isDisabled = typeof attribute.disabledIf === "function" ? attribute.disabledIf(component) : component[attribute.disabledIf]
-
-    let firstSubmit = false
-    const setImage = async (data: RegistryFile) => {
-    }
-    let originalValue
-
     $: {
         if (attribute.type === COMPONENT_PROP_TYPES.ARRAY && value != null && !originalValue) {
             const temp = []
