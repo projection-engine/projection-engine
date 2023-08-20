@@ -97,7 +97,7 @@ export default class EditorCameraSystem extends AbstractSystem {
     }
 
     static forceRotationTracking() {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         if (!instance.#isHoldingCanvas) {
             GPUState.canvas.requestPointerLock()
             document.addEventListener("mousemove", EditorCameraSystem.#handleInput)
@@ -108,7 +108,7 @@ export default class EditorCameraSystem extends AbstractSystem {
 
 
     static #handleInput(event) {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         if (!instance.#isTracking)
             return
         const keys = instance.#movementKeys
@@ -273,7 +273,7 @@ export default class EditorCameraSystem extends AbstractSystem {
     }
 
     static startTracking() {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         if (instance.#isTracking)
             return
         instance.#isTracking = true
@@ -289,16 +289,20 @@ export default class EditorCameraSystem extends AbstractSystem {
     }
 
     static stopTracking() {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         instance.#isTracking = false
     }
 
     static #updateCameraPlacement(yaw, pitch) {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         CameraManager.updateProjection()
         instance.#pitchAngle = pitch
         instance.#yawAngle = yaw
         instance.#isRotationChanged = true
+    }
+
+    static getInstance(){
+        return EditorCameraSystem.get<EditorCameraSystem>()
     }
 
     static rotate(direction) {
@@ -328,13 +332,13 @@ export default class EditorCameraSystem extends AbstractSystem {
 
 
     static setYawPitch(yaw: number, pitch: number) {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         instance.#yawAngle = yaw !== undefined ? yaw : instance.#yawAngle
         instance.#pitchAngle = pitch !== undefined ? pitch : instance.#pitchAngle
     }
 
     static getYawPitch(): { yaw: number, pitch: number } {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         return {yaw: instance.#yawAngle, pitch: instance.#pitchAngle}
     }
 
@@ -345,7 +349,7 @@ export default class EditorCameraSystem extends AbstractSystem {
         forceUpdate?: boolean,
         screenSpaceMovement?: boolean
     }) {
-        const instance = this.get<EditorCameraSystem>()
+        const instance = EditorCameraSystem.getInstance()
         instance.#screenSpaceMovementSpeed = Object.hasOwn(param, "screenSpaceMovementSpeed") ? param.screenSpaceMovementSpeed : instance.#screenSpaceMovementSpeed
         instance.#movementSpeed = Object.hasOwn(param, "movementSpeed") ? param.movementSpeed : instance.#movementSpeed
         instance.#turnSpeed = Object.hasOwn(param, "turnSpeed") ? param.turnSpeed : instance.#turnSpeed

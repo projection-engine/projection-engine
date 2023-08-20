@@ -7,19 +7,11 @@ import EngineState from "../states/EngineState";
 
 export default class SystemManager extends AbstractSingleton {
     #executionQueue = new DynamicMap<UUID, AbstractSystem>()
-    #systems = new Map<UUID, boolean>
-    #frameId:number = null
+    #systems = new Map<UUID, boolean>()
+    #frameId: number = null
 
     static getInstance(): SystemManager {
-        return super.get<SystemManager>()
-    }
-
-    static getExecutionQueue() {
-        return SystemManager.getInstance().getExecutionQueue()
-    }
-
-    getExecutionQueue() {
-        return this.#executionQueue
+        return SystemManager.get<SystemManager>()
     }
 
     enableSystem(system: typeof AbstractSystem) {
@@ -33,13 +25,13 @@ export default class SystemManager extends AbstractSingleton {
         this.#systems.set(ref.getSystemId(), false)
     }
 
-    isRunning(){
+    isRunning() {
         return this.#frameId != null
     }
 
     start() {
         PhysicsSystem.start()
-        this.#frameId = requestAnimationFrame(this.#loop)
+        this.#frameId = requestAnimationFrame(SystemManager.#loop)
     }
 
     stop() {
@@ -48,17 +40,19 @@ export default class SystemManager extends AbstractSingleton {
         PhysicsSystem.stop()
     }
 
-    #loop(c) {
-        const queue = SystemManager.getExecutionQueue().array
+    static #loop(c) {
+        const instance = SystemManager.getInstance()
+        const systems = instance.#systems
+        const queue = instance.#executionQueue.array
         const queueLength = queue.length
         EngineState.currentTimeStamp = c
         for (let i = 0; i < queueLength; i++) {
             const system = queue[i];
-            if(system.shouldExecute() && this.#systems.get(system.getSystemId())) {
+            if (system.shouldExecute() && systems.has(system.getSystemId())) {
                 system.execute()
             }
         }
-        this.#frameId = requestAnimationFrame(this.#loop)
+        instance.#frameId = requestAnimationFrame(SystemManager.#loop)
     }
 
 }

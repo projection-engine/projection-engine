@@ -9,20 +9,18 @@ import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EntityManager from "@engine-core/managers/EntityManager";
 import LevelManager from "@engine-core/managers/LevelManager";
 
-
-export default class EngineStateService {
-    static _checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
-        const original = descriptor.value
-        descriptor.value = function (...args) {
-            if (!LevelManager.loadedLevel) {
-                ToastNotificationSystem.getInstance().error(LocalizationEN.NO_LEVEL_LOADED)
-                return
-            }
-            return original.call(this, ...args)
+function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
+    const original = descriptor.value
+    descriptor.value = function (...args) {
+        if (!LevelManager.loadedLevel) {
+            ToastNotificationSystem.getInstance().error(LocalizationEN.NO_LEVEL_LOADED)
+            return
         }
+        return original.call(EngineStateService, ...args)
     }
-
-    @EngineStateService._checkLevel
+}
+export default class EngineStateService {
+    @checkLevel
     static replaceBlock(toRemove: EngineEntity[], toAdd: EditorEntity[]) {
 
         const replacedMap = {}
@@ -39,7 +37,7 @@ export default class EngineStateService {
         EntityHierarchyService.updateHierarchy()
     }
 
-    @EngineStateService._checkLevel
+    @checkLevel
     static appendBlock(block: EditorEntity[]) {
         EntityNamingService.renameInBlock(block)
         EntityManager.createEntitiesById(block.map(e => e.id))
@@ -49,7 +47,7 @@ export default class EngineStateService {
         EntityHierarchyService.updateHierarchy()
     }
 
-    @EngineStateService._checkLevel
+    @checkLevel
     static removeBlock(payload: EngineEntity[]) {
         EntityManager.removeEntities(payload)
         EntitySelectionStore.updateStore({array: []})
@@ -57,7 +55,7 @@ export default class EngineStateService {
         EntityHierarchyService.updateHierarchy()
     }
 
-    @EngineStateService._checkLevel
+    @checkLevel
     static add(entity: EditorEntity) {
         EntityNamingService.renameEntity(entity.name, entity)
         GizmoUtil.createTransformationCache(entity)
@@ -70,7 +68,7 @@ export default class EngineStateService {
 
     }
 
-    @EngineStateService._checkLevel
+    @checkLevel
     static linkMultiple(payload: EngineEntity[]) {
         const values = EditorEntityManager.entities.array
         for (let i = 0; i < values.length; i++) {

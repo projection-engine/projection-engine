@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import RENDER_TARGET from "../static/RENDER_TARGET"
     import {onMount} from "svelte"
     import EngineToolsService from "../services/EngineToolsService"
@@ -18,7 +18,7 @@
     	Engine.initializeContext(
     		canvasRef,
     		{w: VisualsStore.getData().resolutionX, h:  VisualsStore.getData().resolutionY},
-    		EditorFSUtil.readAsset,
+    		id => EditorFSUtil.readAsset<string>(id),
     		true
     	).then(async () => {
     		const levelServiceInstance = EditorLevelService.getInstance()
@@ -30,6 +30,7 @@
     		UIManager.buildUI(GPUState.canvas.parentElement)
     		UIManager.hideUI()
     		EngineToolsService.get()
+            Engine.start()
     	})
     })
 

@@ -26,6 +26,7 @@ export default class EntityManager extends AbstractSingleton {
         this.#listeners.set("create", [])
         this.#listeners.set("delete", [])
         this.#listeners.set("update", [])
+        this.#listeners.set("hierarchy-change", [])
         Object.values(Components).forEach(c => this.#byComponent.set(c as Components, new DynamicMap<EngineEntity, EngineEntity>()))
     }
 
@@ -48,7 +49,7 @@ export default class EntityManager extends AbstractSingleton {
             return () => toRemove.forEach(f => f())
         } else {
             let remove: VoidFunction
-            const targets: EntityManagerListener<EngineEntity, Components>[] = EntityManager.getInstance().#listeners.get(type)
+            const targets = EntityManager.getInstance().#listeners.get(type)
             const onceCallback = (e: EntityListenerEvent<EngineEntity, Components>) => {
                 callback(e)
                 remove()

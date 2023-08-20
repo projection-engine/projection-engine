@@ -43,14 +43,21 @@ export default class EditorEntityManager extends AbstractSingleton {
     }
 
     static restoreState(editorState: string) {
-        const entitiesToLoad = JSON.parse(editorState)
-        const entities = this.getInstance().#entities
-        entities.clear()
-        for (let i = 0; i < entitiesToLoad.length; i++) {
-            const entityObj = entitiesToLoad[i];
-            const instance = new EditorEntity(entityObj.id)
-            instance.name = entityObj.name
-            entities.set(instance.id, instance)
+        if (!editorState)
+            return
+
+        try {
+            const entitiesToLoad = JSON.parse(editorState)
+            const entities = this.getInstance().#entities
+            entities.clear()
+            for (let i = 0; i < entitiesToLoad.length; i++) {
+                const entityObj = entitiesToLoad[i];
+                const instance = new EditorEntity(entityObj.id)
+                instance.name = entityObj.name
+                entities.set(instance.id, instance)
+            }
+        } catch (err) {
+            console.error(err)
         }
     }
 

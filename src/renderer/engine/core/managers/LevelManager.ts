@@ -24,8 +24,12 @@ export default class LevelManager {
             }
 
             const asset = await EngineFileSystemManager.readAsset(levelID)
-            const {engineState} = JSON.parse(asset) as EngineLevel<Components, Component>
-            this.restoreState(JSON.parse(engineState))
+            if(asset != null) {
+                const {engineState} = JSON.parse(asset) as EngineLevel<Components, Component>
+                if(!engineState)
+                    return
+                this.restoreState(JSON.parse(engineState))
+            }
         } catch (err) {
             console.error(err)
         }

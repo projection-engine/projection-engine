@@ -4,7 +4,7 @@ import DynamicMap from "@engine-core/lib/DynamicMap";
 
 
 export default class EngineFileSystemManager {
-    static #callback: GenericNonVoidFunctionWithP<string, string>
+    static #callback: GenericNonVoidFunctionWithP<string, Promise<string>>
     static #fetching = new Map<string, boolean>()
 
     static async readAsset(assetID: string) {
@@ -51,7 +51,7 @@ export default class EngineFileSystemManager {
         }).catch(console.error)
     }
 
-    static initialize(cb: GenericNonVoidFunction<string>) {
+    static initialize(cb: GenericNonVoidFunctionWithP<string, Promise<string>>) {
         EngineFileSystemManager.#callback = cb
     }
 }

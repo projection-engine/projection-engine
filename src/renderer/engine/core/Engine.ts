@@ -62,7 +62,7 @@ export default class Engine {
     static async initializeContext(
         canvas: HTMLCanvasElement,
         mainResolution: { w: number, h: number } | undefined,
-        readAsset: GenericNonVoidFunction<string>,
+        readAsset: GenericNonVoidFunctionWithP<string, Promise<string>>,
         devAmbient: boolean
     ) {
         if (Engine.#initialized)
@@ -87,7 +87,6 @@ export default class Engine {
         Engine.#isReady = true
         GPUState.skylightProbe = new LightProbe(128)
         Engine.#startSystems()
-        Engine.start()
     }
 
     static #startSystems() {
@@ -122,7 +121,7 @@ export default class Engine {
     }
 
     static start() {
-        if (!SystemManager.getInstance().isRunning && Engine.#isReady)
+        if (!SystemManager.getInstance().isRunning() && Engine.#isReady)
             SystemManager.getInstance().start()
     }
 
