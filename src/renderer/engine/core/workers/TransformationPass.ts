@@ -79,7 +79,7 @@ export default class TransformationPass {
                 const entity = entities[i + TransformationPass.threadEntityOffset]
                 if (!entity)
                     continue
-                if (entity.changedBuffer[1] || TransformationPass.cameraBuffer[3]) {
+                if (entity.cullingMetadata != null && (entity.changedBuffer[1] || TransformationPass.cameraBuffer[3])) {
                     const cullingBuffer = entity.cullingMetadata
 
                     cullingBuffer[0] = vec3.length(vec3.sub(cacheDistance, entity.absoluteTranslation, TransformationPass.cameraPosition))

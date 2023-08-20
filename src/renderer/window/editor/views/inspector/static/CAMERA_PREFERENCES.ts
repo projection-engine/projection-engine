@@ -1,10 +1,10 @@
-import Component from "@engine-core/lib/components/Component"
 import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
 import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
+import COMPONENT_PROP_TYPES from "../../../static/COMPONENT_PROP_TYPES";
 
 export default [
 	{
-		type: Component.propTypes.NUMBER,
+		type: COMPONENT_PROP_TYPES.NUMBER,
 		label: LocalizationEN.SCREEN_GRABBING_SPEED,
 		key: ["camera", "screenSpaceMovementSpeed"],
 		target: "settings",
@@ -16,7 +16,7 @@ export default [
 		}
 	},
 	{
-		type: Component.propTypes.NUMBER,
+		type: COMPONENT_PROP_TYPES.NUMBER,
 		label: LocalizationEN.TRANSLATION,
 		key: ["camera", "movementSpeed"],
 		target: "settings",
@@ -28,7 +28,7 @@ export default [
 		}
 	},
 	{
-		type: Component.propTypes.NUMBER,
+		type: COMPONENT_PROP_TYPES.NUMBER,
 		label: LocalizationEN.ROTATION,
 		key: ["camera", "turnSpeed"],
 		target: "settings",
@@ -40,7 +40,7 @@ export default [
 		}
 	},
 	{
-		type: Component.propTypes.NUMBER,
+		type: COMPONENT_PROP_TYPES.NUMBER,
 		label: LocalizationEN.SMOOTHING,
 		key: ["camera", "smoothing"],
 		target: "settings",

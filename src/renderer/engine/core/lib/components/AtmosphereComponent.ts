@@ -1,5 +1,4 @@
 import Component from "./Component"
-import ATMOSPHERE_PROPS from "../../static/component-props/ATMOSPHERE_PROPS"
 import {vec3} from "gl-matrix"
 import {AtmosphereTypes, Components,} from "@engine-core/engine.enum";
 
@@ -17,7 +16,6 @@ export default class AtmosphereComponent extends Component {
     }
 
     #needsRepackaging = false
-    _props = ATMOSPHERE_PROPS
     _elapsedTime = 0
     #sunDirection = vec3.normalize(<vec3>[0, 1, 1], [Math.sin(this._elapsedTime), Math.cos(this._elapsedTime), 1.0])
     maxSamples = 10

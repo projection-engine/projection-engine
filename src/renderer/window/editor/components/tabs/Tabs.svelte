@@ -1,5 +1,5 @@
 <script>
-    import KEYS from "../../static/KEYS.ts"
+    import KEYS from "../../static/KeyboardKeys.ts"
     import {onDestroy, onMount} from "svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"

@@ -1,12 +1,7 @@
 import Component from "./Component"
-
-import MESH_PROPS from "../../static/component-props/MESH_PROPS"
 import MaterialManager from "../../managers/MaterialManager"
 import GPUState from "../../states/GPUState"
-import EngineFileSystemManager from "../../managers/EngineFileSystemManager"
 import {Components,} from "@engine-core/engine.enum";
-import Mesh from "@engine-core/lib/resources/Mesh";
-import Material from "@engine-core/lib/resources/Material";
 
 export default class MeshComponent extends Component {
     getDependencies(): Components[] {
@@ -20,8 +15,6 @@ export default class MeshComponent extends Component {
     getComponentKey(): Components {
         return MeshComponent.componentKey
     }
-
-    _props = MESH_PROPS
 
     castsShadows = true
     meshID?: string

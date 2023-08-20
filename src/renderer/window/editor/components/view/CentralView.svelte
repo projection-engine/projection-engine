@@ -2,11 +2,11 @@
 
     import EngineStore from "../../../shared/stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
-    import VIEWPORT_TABS from "../../static/VIEWPORT_TABS.ts"
+    import VIEWPORT_TABS from "../../static/CentralViews.ts"
     import HotKeysController from "../../../shared/lib/HotKeysController"
     import getViewportHotkeys from "../../templates/get-viewport-hotkeys"
     import Tabs from "../tabs/Tabs.svelte"
-    import VIEWS from "./static/VIEWS"
+    import VIEWS from "../../static/GenericViews"
     import View from "./components/View.svelte"
     import TabsStore from "../../../shared/stores/TabsStore"
     import GPUState from "@engine-core/states/GPUState"

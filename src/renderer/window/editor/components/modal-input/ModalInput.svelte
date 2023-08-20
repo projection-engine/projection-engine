@@ -1,6 +1,6 @@
 <script>
     import Modal from "../../../shared/components/modal/Modal.svelte"
-    import KEYS from "../../static/KEYS"
+    import KEYS from "../../static/KeyboardKeys"
 
     export let handleClose
     export let alignBottom

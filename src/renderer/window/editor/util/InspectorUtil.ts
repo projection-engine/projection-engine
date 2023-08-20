@@ -1,7 +1,6 @@
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
-import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import EngineStore from "../../shared/stores/EngineStore"

@@ -3,8 +3,6 @@ import EditorFSUtil from "../../util/EditorFSUtil"
 import EntityFactoryService from "./EntityFactoryService"
 import GPUState from "@engine-core/states/GPUState"
 import GPUManager from "@engine-core/managers/GPUManager"
-
-import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager"
 import MeshComponent from "@engine-core/lib/components/MeshComponent"
 import SpriteComponent from "@engine-core/lib/components/SpriteComponent"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"

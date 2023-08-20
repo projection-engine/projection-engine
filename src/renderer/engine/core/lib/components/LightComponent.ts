@@ -1,12 +1,11 @@
 import Component from "./Component"
-import LIGHT_PROPS from "../../static/component-props/LIGHT_PROPS"
 import {mat4} from "gl-matrix"
 import {Components, LightTypes,} from "@engine-core/engine.enum";
 
 
 export default class LightComponent extends Component {
 	getDependencies(): Components[] {
-		return [Components.TRANSFORMATION];
+		return [Components.TRANSFORMATION, Components.CULLING];
 	}
 
 	get planeAreaHeight(): number {
@@ -147,7 +146,6 @@ export default class LightComponent extends Component {
 		return LightComponent.componentKey
 	}
 
-	_props = LIGHT_PROPS
 	#needsRepackaging = false
 	// -------------- GLOBAL --------------
 	_color = [255, 255, 255]

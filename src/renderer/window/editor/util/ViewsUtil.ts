@@ -1,6 +1,5 @@
-import VIEWS from "../components/view/static/VIEWS"
-import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
-import ViewTabItem from "../static/ViewTabItem";
+import VIEWS from "../static/GenericViews"
+import VIEWPORT_TABS from "../static/CentralViews"
 
 export default class ViewsUtil {
 

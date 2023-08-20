@@ -1,10 +1,9 @@
 import Component from "./Component"
-import PHYSICS_COLLIDER_PROPS from "../../static/component-props/PHYSICS_COLLIDER_PROPS"
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 
 export default class PhysicsColliderComponent extends Component {
 	getDependencies(): Components[] {
-		return [Components.TRANSFORMATION, Components.RIGID_BODY];
+		return [Components.TRANSFORMATION, Components.RIGID_BODY, Components.MESH];
 	}
 
 	static get componentKey(): Components {
@@ -14,7 +13,6 @@ export default class PhysicsColliderComponent extends Component {
 		return PhysicsColliderComponent.componentKey
 	}
 
-	_props = PHYSICS_COLLIDER_PROPS
 	collisionType = ColliderTypes.BOX
 	direction = "Y"
 	_center = [0, 0, 0]

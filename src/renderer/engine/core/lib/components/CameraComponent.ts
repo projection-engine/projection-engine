@@ -1,5 +1,4 @@
 import Component from "./Component"
-import CAMERA_PROPS from "../../static/component-props/CAMERA_PROPS"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class CameraComponent extends Component {
@@ -13,8 +12,6 @@ export default class CameraComponent extends Component {
 	getComponentKey(): Components {
 		return CameraComponent.componentKey
 	}
-
-	_props = CAMERA_PROPS
 
 	fov = 45
 

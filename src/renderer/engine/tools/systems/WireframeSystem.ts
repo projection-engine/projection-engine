@@ -12,6 +12,7 @@ import EditorEntityManager from "../EditorEntityManager";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import PhysicsColliderComponent from "@engine-core/lib/components/PhysicsColliderComponent";
 import EntityManager from "@engine-core/managers/EntityManager";
+import CullingComponent from "@engine-core/lib/components/CullingComponent";
 
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
@@ -34,8 +35,8 @@ export default class WireframeSystem extends AbstractSystem {
         for (let i = 0; i < size; i++) {
             const entity = EditorEntityManager.getEntity(arr[i])
             const tComponent = entity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
-            if (!entity.active )
-                //|| entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
+            const cullingComponent = entity.getComponent<CullingComponent>(Components.CULLING)
+            if (!entity.active || cullingComponent.distanceFromCamera > EngineToolsState.maxDistanceIcon)
                 continue
 
             context.uniformMatrix4fv(uniforms.transformMatrix, false, tComponent.matrix)
@@ -48,9 +49,10 @@ export default class WireframeSystem extends AbstractSystem {
         for (let i = 0; i < size; i++) {
             const entity = EditorEntityManager.getEntity(arr[i])
             const tComponent = entity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
-            if (!entity.active)
-                //|| entity.distanceFromCamera > EngineToolsState.maxDistanceIcon)
+            const cullingComponent = entity.getComponent<CullingComponent>(Components.CULLING)
+            if (!entity.active || cullingComponent.distanceFromCamera > EngineToolsState.maxDistanceIcon) {
                 continue
+            }
 
             const collision = entity.getComponent<PhysicsColliderComponent>(Components.PHYSICS_COLLIDER)
             if (tComponent.changesApplied || !entity.__collisionTransformationMatrix) {

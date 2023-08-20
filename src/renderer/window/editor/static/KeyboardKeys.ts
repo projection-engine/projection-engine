@@ -1,4 +1,4 @@
-enum Keys{
+enum KeyboardKeys{
     Backspace = "Backspace",
     Tab = "Tab",
     Enter = "Enter",
@@ -116,4 +116,4 @@ enum Keys{
     Mouse5 = "MouseKey2",
 }
 
-export default Keys
+export default KeyboardKeys

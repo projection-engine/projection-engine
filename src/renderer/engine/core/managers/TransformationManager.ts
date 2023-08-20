@@ -52,7 +52,7 @@ export default class TransformationManager {
     static #onCreate(event: EntityListenerEvent<EngineEntity, Components>) {
         const all = []
         event.all.forEach(e => {
-            if (EntityManager.hasComponent(e, Components.TRANSFORMATION)) {
+            if (EntityManager.hasComponent(e, Components.TRANSFORMATION) && EntityManager.hasComponent(e, Components.CULLING)) {
                 TransformationManager.#cullingMetadata.set(e, new Float32Array(new SharedArrayBuffer(24)))
                 all.push(e)
             }

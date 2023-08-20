@@ -1,9 +1,4 @@
-import GPUState from "../states/GPUState"
-import GPUManager from "./GPUManager"
-
-import EngineFileSystemManager from "./EngineFileSystemManager"
 import Material from "@engine-core/lib/resources/Material"
-import {MaterialDataTypes} from "@engine-core/engine.enum";
 
 export default class MaterialManager {
     static #generator?: Generator<number>

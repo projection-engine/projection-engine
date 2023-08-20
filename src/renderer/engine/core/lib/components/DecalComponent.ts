@@ -1,5 +1,4 @@
 import Component from "./Component"
-import DECAL_PROPS from "../../static/component-props/DECAL_PROPS"
 import Texture from "@engine-core/lib/resources/Texture"
 import GPUState from "../../states/GPUState"
 import EngineFileSystemManager from "../../managers/EngineFileSystemManager"
@@ -9,7 +8,7 @@ import {Components,} from "@engine-core/engine.enum";
 
 export default class DecalComponent extends Component {
     getDependencies(): Components[] {
-        return [Components.TRANSFORMATION];
+        return [Components.TRANSFORMATION, Components.CULLING];
     }
 
     static get componentKey(): Components {
@@ -100,5 +99,4 @@ export default class DecalComponent extends Component {
         return this._occlusionID
     }
 
-    _props = DECAL_PROPS
 }

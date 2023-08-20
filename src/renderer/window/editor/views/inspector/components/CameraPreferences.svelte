@@ -2,7 +2,7 @@
     import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
     import Layout from "./dynamic-form/Layout.svelte"
-    import CAMERA_PROPS from "../../../../../engine/core/static/component-props/CAMERA_PROPS"
+    import CAMERA_PROPS from "../static/component-props/CAMERA_PROPS"
     import ContentField from "../../../../preferences/components/content/ContentField.svelte"
     import {onDestroy, onMount} from "svelte"
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte"

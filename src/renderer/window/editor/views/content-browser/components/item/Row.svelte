@@ -1,6 +1,6 @@
 <script>
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import KEYS from "../../../../static/KEYS"
+    import KEYS from "../../../../static/KeyboardKeys"
 
     import FileTypes from "../../../../../../../shared/enums/FileTypes"
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"

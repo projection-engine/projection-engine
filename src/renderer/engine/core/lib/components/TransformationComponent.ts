@@ -2,7 +2,6 @@ import Component from "./Component"
 import ArrayBufferUtil from "../../utils/ArrayBufferUtil";
 import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum";
 
-
 export default class TransformationComponent extends Component {
 	getDependencies(): Components[] {
 		return [];
@@ -11,6 +10,7 @@ export default class TransformationComponent extends Component {
 	static get componentKey(): Components {
 		return Components.TRANSFORMATION
 	}
+
 	getComponentKey(): Components {
 		return TransformationComponent.componentKey
 	}

@@ -370,7 +370,7 @@ export default class EntityManager extends AbstractSingleton {
             try {
                 const componentKey = keys[i]
                 const value = data[componentKey]
-                if (componentKey.includes("__") || componentKey.includes("#") || componentKey === "_props" || componentKey === "_name")
+                if (componentKey.includes("__") || componentKey.includes("#"))
                     continue
                 switch (key) {
                     case Components.MESH: {

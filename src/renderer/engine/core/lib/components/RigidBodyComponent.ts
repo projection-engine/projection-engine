@@ -1,5 +1,4 @@
 import Component from "./Component"
-import RIGID_BODY_PROPS from "../../static/component-props/RIGID_BODY_PROPS"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class RigidBodyComponent extends Component {
@@ -13,8 +12,6 @@ export default class RigidBodyComponent extends Component {
 	getComponentKey(): Components {
 		return RigidBodyComponent.componentKey
 	}
-
-	_props = RIGID_BODY_PROPS
 
 	mass = 1
 	drag = 0

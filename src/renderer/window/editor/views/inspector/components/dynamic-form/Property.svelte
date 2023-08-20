@@ -1,6 +1,5 @@
 <script lang="ts">
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import Component from "@engine-core/lib/components/Component"
     import Selector from "../../../../components/selector/Selector.svelte"
 
     import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte"
@@ -8,9 +7,9 @@
     import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import Range from "../../../../../shared/components/range/Range.svelte"
-    import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
+    import COMPONENT_PROP_TYPES from "../../../../static/COMPONENT_PROP_TYPES";
 
     export let component
     export let submit: GenericVoidFunctionWith3P<string, any, boolean>
@@ -29,7 +28,7 @@
     let originalValue
 
     $: {
-        if (attribute.type === Component.propTypes.ARRAY && value != null && !originalValue) {
+        if (attribute.type === COMPONENT_PROP_TYPES.ARRAY && value != null && !originalValue) {
             const temp = []
             for (let i = 0; i < value.length; i++) {
                 temp[i] = value[i]
@@ -37,13 +36,13 @@
             originalValue = temp
         }
     }
-    $: dropdownLabel = attribute.type === Component.propTypes.OPTIONS ? attribute.options.find(o => o.value === value) : undefined
+    $: dropdownLabel = attribute.type === COMPONENT_PROP_TYPES.OPTIONS ? attribute.options.find(o => o.value === value) : undefined
 
 </script>
 
 
 <div data-svelteform="-">
-    {#if attribute.type === Component.propTypes.NUMBER}
+    {#if attribute.type === COMPONENT_PROP_TYPES.NUMBER}
         <Range
                 handleChange={v => {
                     if(!firstSubmit){
@@ -63,7 +62,7 @@
                 disabled={isDisabled}
                 precision={attribute.precision}
         />
-    {:else if attribute.type === Component.propTypes.ARRAY}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.ARRAY}
         {#each attribute.labels as partial, index}
             <Range
                     noOriginal={true}
@@ -103,14 +102,14 @@
                 {LocalizationEN.UNDO}
             </button>
         {/if}
-    {:else if attribute.type === Component.propTypes.BOOLEAN}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.BOOLEAN}
         <Checkbox
                 handleCheck={() => submit(attribute.key, !value, true)}
                 label={label}
                 checked={value}
                 disabled={isDisabled}
         />
-    {:else if attribute.type === Component.propTypes.OPTIONS}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.OPTIONS}
         <Dropdown disabled={isDisabled} width="100%"
                   buttonStyles="border-radius: 3px; border: var(--pj-border-primary) 1px solid">
             <button data-sveltebuttondefault="-" slot="button" disabled={isDisabled} class="dropdown">
@@ -127,7 +126,7 @@
                 </button>
             {/each}
         </Dropdown>
-    {:else if attribute.type === Component.propTypes.STRING}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.STRING}
         <Input
                 inputValue={value}
                 onChange={v => submit(attribute.key, v, true)}
@@ -136,7 +135,7 @@
                 placeholder={label}
                 disabled={isDisabled}
         />
-    {:else if attribute.type === Component.propTypes.COLOR}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.COLOR}
         <ColorPicker
                 disabled={isDisabled}
                 submit={({r,g,b}) => submit(attribute.key, [r, g, b], true)}
@@ -144,13 +143,13 @@
                 value={value}
                 size={"small"}
         />
-    {:else if attribute.type === Component.propTypes.IMAGE}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.IMAGE}
         <Selector
                 handleChange={data => submit(attribute.key, data?.registryID, true)}
                 type="image"
                 selected={value}
         />
-    {:else if attribute.type === Component.propTypes.MATERIAL}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.MATERIAL}
         <Selector
                 selected={value}
                 type="material"
@@ -158,13 +157,13 @@
                 handleChange={src => submit(attribute.key, src?.registryID, true)}
 
         />
-    {:else if attribute.type === Component.propTypes.TERRAIN}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.TERRAIN}
         <Selector
                 selected={value}
                 type="terrain"
                 handleChange={(src) => submit(attribute.key, src?.registryID, true)}
         />
-    {:else if attribute.type === Component.propTypes.MESH}
+    {:else if attribute.type === COMPONENT_PROP_TYPES.MESH}
         <Selector
                 handleChange={src => submit(attribute.key, src?.registryID, true)}
                 type="mesh"

@@ -1,9 +1,10 @@
 import GIZMOS from "../../../../shared/enums/Gizmos"
 import GizmoTransformationType from "../../../../shared/enums/GizmoTransformationType"
-import KEYS from "./KEYS"
-import INITIAL_LAYOUT from "./INITIAL_LAYOUT"
+import KEYS from "./KeyboardKeys"
 import {glMatrix} from "gl-matrix"
 import {ShadingModels,} from "@engine-core/engine.enum";
+import VIEWS from "./GenericViews";
+import VIEWPORT_TABS from "./CentralViews";
 
 export default {
 	spawnOnOrigin: false,
@@ -105,7 +106,6 @@ export default {
 	},
 
 	camera: {
-
 		// PROPERTIES
 		fov: 90,
 		dynamicAspectRatio: true,
@@ -154,7 +154,41 @@ export default {
 	},
 
 	background: true,
-	views: INITIAL_LAYOUT,
+
 	currentView: 0,
-	INITIALIZED: false
+	INITIALIZED: false,
+	views:  [
+		{
+			name: "Level",
+			bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
+			left: [],
+			top: [],
+			viewport: [{color: [255,255,255], type: VIEWPORT_TABS.EDITOR}],
+			right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}], [{color: [255, 255, 255], type: VIEWS.INSPECTOR}]]
+		},
+		{
+			top: [],
+			name: "Debug",
+			bottom: [[{color: [255, 255, 255], type: VIEWS.CONSOLE}]],
+			left: [],
+			viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
+			right: []
+		},
+		{
+			name: "Shading",
+			top: [],
+			bottom: [[{color: [255, 255, 255], type: VIEWS.SHADER_EDITOR}, {color: [255, 255, 255], type: VIEWS.FILES}]],
+			left: [],
+			viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.EDITOR}],
+			right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}, {color: [255, 255, 255], typee: VIEWS.INSPECTOR}]]
+		},
+		{
+			name: "UI",
+			top: [],
+			bottom: [[{color: [255, 255, 255], type: VIEWS.FILES}]],
+			left: [[{color: [255, 255, 255], type: VIEWS.INSPECTOR}]],
+			viewport: [{color: [255, 255, 255], type: VIEWPORT_TABS.UI}],
+			right: [[{color: [255, 255, 255], type: VIEWS.HIERARCHY}]]
+		}
+	],
 }

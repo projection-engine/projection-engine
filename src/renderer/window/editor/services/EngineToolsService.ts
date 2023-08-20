@@ -12,7 +12,6 @@ import UIManager from "@engine-core/managers/UIManager"
 import GPUState from "@engine-core/states/GPUState"
 import EngineToolsState from "../../../engine/tools/EngineToolsState"
 import EngineState from "@engine-core/states/EngineState"
-import SETTINGS from "../static/SETTINGS"
 import GizmoState from "../../../engine/tools/gizmo/util/GizmoState"
 import {Environment,} from "@engine-core/engine.enum";
 
@@ -100,7 +99,7 @@ export default class EngineToolsService extends AbstractSingleton {
 	}
 
 	static 	#updateEngineToolsState() {
-		const settings = SettingsStore.getData() as typeof SETTINGS
+		const settings = SettingsStore.getData()
 		EngineToolsState.gridColor = settings.gridColor
 		EngineToolsState.gridScale = settings.gridScale * 10
 		EngineToolsState.gridThreshold = settings.gridThreshold

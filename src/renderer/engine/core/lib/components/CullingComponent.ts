@@ -1,5 +1,4 @@
 import Component from "./Component"
-import CULLING_COMPONENT_PROPS from "../../static/component-props/CULLING_COMPONENT_PROPS"
 import {Components,} from "@engine-core/engine.enum";
 import TransformationManager from "@engine-core/managers/TransformationManager";
 
@@ -19,17 +18,12 @@ export default class CullingComponent extends Component {
     #getCullingMetadata(){
         return TransformationManager.getCullingMetadata(this.entity)
     }
-    _props = CULLING_COMPONENT_PROPS
 
     constructor(entity: EngineEntity) {
         super(entity);
         this.isDistanceCulled = false
         this.isScreenDoorEnabled = false
         this.distanceFromCamera = 100
-    }
-
-    get distanceFromCamera() {
-        return this.#getCullingMetadata()[0]
     }
 
     get cullingDistance() {
@@ -50,6 +44,10 @@ export default class CullingComponent extends Component {
 
     get isScreenDoorEnabled() {
         return this.#getCullingMetadata()[5] === 1
+    }
+
+    get distanceFromCamera() {
+        return this.#getCullingMetadata()[0]
     }
 
     set distanceFromCamera(data) {

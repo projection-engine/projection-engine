@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Property from "./Property.svelte"
     import {Components,} from "@engine-core/engine.enum";
     import Component from "@engine-core/lib/components/Component"
@@ -11,10 +11,13 @@
     import MaterialUniforms from "../../../../components/MaterialUniformsForm.svelte";
     import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
     import TransformationForm from "../TransformationForm.svelte";
+    import COMPONENT_PROP_TYPES from "../../../../static/COMPONENT_PROP_TYPES";
+    import MeshComponent from "@engine-core/lib/components/MeshComponent";
+    import COMPONENT_ATTRIBUTES from "../../static/COMPONENT_ATTRIBUTES";
 
     export let key
     export let index
-    export let component
+    export let component: Component
     export let entity
     export let submit
     export let updateTabs
@@ -30,14 +33,15 @@
     }
 
     function updateMaterialUniform(index, value) {
-        const uniforms = component.materialUniforms
-        component.updateMaterialUniformValue(uniforms[index].key, value)
+        const c = component as MeshComponent
+        const uniforms = c.materialUniforms
+        c.updateMaterialUniformValue(uniforms[index].key, value)
     }
 </script>
 
 {#if component.getComponentKey() === Components.UI}
     <UIComponent {entity} {submit}/>
-{:else if component.getComponentKey() === Components.UI}
+{:else if component.getComponentKey() === Components.TRANSFORMATION}
     <TransformationForm/>
 {:else if component.getComponentKey() === Components.MESH && component.materialID}
     <fieldset>
@@ -64,9 +68,9 @@
                 onDelete={onDelete}
         />
     {/if}
-    {#if Array.isArray(component.props)}
+    {#if Array.isArray(COMPONENT_ATTRIBUTES[component.getComponentKey()])}
         {#each component.props as propAttr, index}
-            {#if propAttr.type === Component.propTypes.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
+            {#if propAttr.type === COMPONENT_PROP_TYPES.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
                 <Accordion startOpen={index === 0} title={LocalizationEN[propAttr.label] || propAttr.label}
                            styles="display: flex; flex-direction: column; gap: 4px;">
                     {#each propAttr.children as attribute}
@@ -79,7 +83,7 @@
                         {/if}
                     {/each}
                 </Accordion>
-            {:else if propAttr.type !== Component.propTypes.GROUP && !checkIsDisabled(propAttr)}
+            {:else if propAttr.type !== COMPONENT_PROP_TYPES.GROUP && !checkIsDisabled(propAttr)}
                 <Property
                         component={component}
                         submit={submit}

@@ -7,5 +7,3 @@ interface ViewTabItem {
     name?: string
     icon?: string
 }
-
-export default ViewTabItem

@@ -1,11 +1,10 @@
 <script lang="ts">
 
     import Tabs from "../../tabs/Tabs.svelte";
-    import VIEWS from "../static/VIEWS";
+    import VIEWS from "../../../static/GenericViews";
     import TabsStore from "../../../../shared/stores/TabsStore";
     import {onDestroy, onMount} from "svelte";
     import SettingsStore from "../../../../shared/stores/SettingsStore";
-    import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";

@@ -1,4 +1,3 @@
-import SPRITE_PROPS from "../../static/component-props/SPRITE_PROPS"
 import Component from "./Component"
 import {Components,} from "@engine-core/engine.enum";
 
@@ -13,7 +12,6 @@ export default class SpriteComponent extends Component {
 	getComponentKey(): Components {
 		return SpriteComponent.componentKey
 	}
-	_props = SPRITE_PROPS
 	imageID?: string
 	attributes: [number, number] = [0, 0]
 

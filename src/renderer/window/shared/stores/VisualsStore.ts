@@ -1,4 +1,4 @@
-import VISUAL_SETTINGS from "../../editor/static/VISUAL_SETTINGS"
+import VISUAL_SETTINGS from "../../editor/static/VisualsStoreState"
 import ChangesTrackerStore from "./ChangesTrackerStore"
 import StoreIPCListener from "../lib/StoreIPCListener"
 import UIDataStores from "../../../../shared/enums/UIDataStores"
@@ -19,6 +19,10 @@ export default class VisualsStore extends AbstractStore{
 		super.updateStore(value)
 		if (!VisualsStore.noPush)
 			StoreIPCListener.getInstance().onUpdate(this.data, UIDataStores.VISUALS)
+	}
+
+	static getData(): typeof VISUAL_SETTINGS {
+		return this.get<AbstractStore>().data as typeof VISUAL_SETTINGS
 	}
 }
 
