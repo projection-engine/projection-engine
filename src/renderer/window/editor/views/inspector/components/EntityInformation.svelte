@@ -33,9 +33,9 @@
         }
     }
 
-    <!--onDestroy(() => {-->
-    <!--    EntityManager.removeListener(entityID, ID)-->
-    // })
+   // onDestroy(() => {
+    //   EntityManager.removeListener(entityID, ID)
+    //})
 </script>
 
 
