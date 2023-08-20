@@ -73,7 +73,7 @@
         />
     </Dropdown>
     <div data-sveltevertdivider="-" style="margin: 0"></div>
-    <button data-sveltebuttondefault="-" class="remove-button" on:click={_ => handleChange(null)}>
+    <button data-sveltebuttondefault="-" class="remove-button" on:click={_ => handleChange(null, null)}>
         <Icon styles="font-size: 1rem">clear</Icon>
         <ToolTip content={LocalizationEN.CLEAR}/>
     </button>

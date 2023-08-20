@@ -40,11 +40,11 @@
 <div class="container" style={isHidden ? "display: none" : undefined}>
 
     <div class="meta-data" style="justify-content: flex-start">
-        {#if loadedLevel}
+        {#if loadedLevelName}
             <div class="wrapper footer-header"
                  style="max-width: clamp(100px, 5vw, 100px); background: var(--pj-background-primary)">
                 <Icon styles="font-size: .9rem">forest</Icon>
-                <small data-svelteoverflow="-">{loadedLevel}</small>
+                <small data-svelteoverflow="-">{loadedLevelName}</small>
                 <ToolTip content={LocalizationEN.LOADED_LEVEL}/>
             </div>
             <div data-sveltevertdivider="-" style="margin: 0 2px"></div>

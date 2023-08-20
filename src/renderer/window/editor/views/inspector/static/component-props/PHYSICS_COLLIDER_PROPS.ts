@@ -1,5 +1,6 @@
 import {ColliderTypes,} from "@engine-core/engine.enum";
 import {array, group, number, options} from "./prop-types";
+import PhysicsColliderComponent from "@engine-core/lib/components/PhysicsColliderComponent";
 
 export default [
 	group("COLLISION_TYPE", [
@@ -27,11 +28,11 @@ export default [
 		array(["X", "Y", "Z"], "center", .001, undefined, undefined)
 	]),
 	group("SIZE", [
-		array(["X", "Y", "Z"], "size", .001, undefined, 0, false, (comp) => comp.collisionType !== ColliderTypes.BOX)
+		array(["X", "Y", "Z"], "size", .001, undefined, 0, false, (comp) => (<PhysicsColliderComponent>comp).collisionType !== ColliderTypes.BOX)
 	]),
 	group("SIZE", [
-		number("RADIUS", "radius", undefined, .0001, .001, undefined, true, (comp) => comp.collisionType === ColliderTypes.BOX),
-		number("HEIGHT", "height", undefined, .0001, .001, undefined, true, (comp) => comp.collisionType !== ColliderTypes.CAPSULE),
+		number("RADIUS", "radius", undefined, .0001, .001, undefined, true, (comp) => (<PhysicsColliderComponent>comp).collisionType === ColliderTypes.BOX),
+		number("HEIGHT", "height", undefined, .0001, .001, undefined, true, (comp) => (<PhysicsColliderComponent>comp).collisionType !== ColliderTypes.CAPSULE),
 	]),
 
 
@@ -52,7 +53,7 @@ export default [
 					value: "Z"
 				}
 			],
-			(comp) => comp.collisionType !== ColliderTypes.CAPSULE
+			(comp) => (<PhysicsColliderComponent>comp).collisionType !== ColliderTypes.CAPSULE
 		)
 	])
 ]

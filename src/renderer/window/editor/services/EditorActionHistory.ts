@@ -24,13 +24,14 @@ export default class EditorActionHistory {
 
 	static save(value: EditorEntity[] | EditorEntity, isRemoval?: boolean) {
 		ChangesTrackerStore.updateStore({changed: true})
-
-		const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
-		EditorActionHistory.#cache.save({
-			nameCache: new Map(EntityNamingService.byName),
-			toRemove: data.map(d => d.id),
-			toAdd: !isRemoval ? serializeStructure(data) : undefined
-		})
+		// TODO
+		//
+		// const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
+		// EditorActionHistory.#cache.save({
+		// 	nameCache: new Map(EntityNamingService.byName),
+		// 	toRemove: data.map(d => d.id),
+		// 	toAdd: !isRemoval ? serializeStructure(data) : undefined
+		// })
 	}
 
 	static undo() {

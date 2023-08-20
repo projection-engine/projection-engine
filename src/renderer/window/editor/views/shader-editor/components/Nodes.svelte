@@ -6,6 +6,7 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
 
     let inputValue = ""
+    let nodes
     $: nodes = !inputValue ? ALL_NODES : ALL_NODES.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
 </script>
 

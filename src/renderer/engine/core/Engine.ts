@@ -62,7 +62,7 @@ export default class Engine {
     static async initializeContext(
         canvas: HTMLCanvasElement,
         mainResolution: { w: number, h: number } | undefined,
-        readAsset: Function,
+        readAsset: GenericNonVoidFunction<string>,
         devAmbient: boolean
     ) {
         if (Engine.#initialized)

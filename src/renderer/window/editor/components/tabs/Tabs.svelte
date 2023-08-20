@@ -92,9 +92,9 @@
     onMount(() => {
     	ref.addEventListener(
     		"wheel",
-    		ev => {
+    		(ev: WheelEvent) => {
     			ev.preventDefault()
-    			if (ev.wheelDelta > 0)
+    			if (ev.deltaY < 0)
     				ref.scrollLeft += ref.scrollWidth * .1
     			else
     				ref.scrollLeft -= ref.scrollWidth * .1

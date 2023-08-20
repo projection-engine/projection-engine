@@ -33,14 +33,14 @@
     let children = 0
     $: {
         if (entityID !== entity.id) {
-            if (entityID)
-                EntityManager.removeListener(entityID, ID)
-            EntityManager.addListener(entity.id, ID, () => {
-                entityName = entity.name
-                components = HierarchyUtil.mapComponents(entity)
-                children = entity.children.array.length
-            })
-            children = entity.children.array.length
+            // if (entityID)
+            //     EntityManager.removeListener(entityID, ID)
+            // EntityManager.addListener(entity.id, ID, () => {
+            //     entityName = entity.name
+            //     components = HierarchyUtil.mapComponents(entity)
+            //     children = entity.children.array.length
+            // })
+            children = entity.children.length
             components = HierarchyUtil.mapComponents(entity)
             entityName = entity.name
             entityID = entity.id
@@ -62,7 +62,7 @@
     })
     onDestroy(() => {
         draggable.onDestroy()
-        EntityManager.removeListener(entityID, ID)
+        // EntityManager.removeListener(entityID, ID)
     })
 
     $: isLocked = lockedEntity === entity.id

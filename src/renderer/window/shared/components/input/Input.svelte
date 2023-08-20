@@ -16,7 +16,7 @@
     export let disabled:boolean
 
     let changed = false
-    let timeout:NodeJS.Timeout
+    let timeout: number
     let input:HTMLInputElement
 
     const handler = (input) => {

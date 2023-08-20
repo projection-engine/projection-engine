@@ -21,6 +21,7 @@
     let currentShortcut
     $: currentShortcut = [...shortcut]
     let text = ""
+    let label = ""
     let onEdit = false
     $: original = SETTINGS[wrapperKey][key]
     $: isChanged = JSON.stringify(original) !== JSON.stringify(currentShortcut)

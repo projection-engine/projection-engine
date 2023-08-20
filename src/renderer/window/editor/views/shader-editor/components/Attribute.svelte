@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
     import Selector from "../../../components/selector/Selector.svelte"
     import getDropdownHeaderStyles from "../../../../shared/components/dropdown/utils/get-dropdown-header-styles"
@@ -7,6 +7,7 @@
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
+    import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
     export let attribute
     export let node

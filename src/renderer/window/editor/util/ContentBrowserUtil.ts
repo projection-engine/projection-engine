@@ -474,7 +474,7 @@ export default class ContentBrowserUtil {
         return Object.values(cache)
     }
 
-    static #getHierarchy(cache, item, depth = 0, folders) {
+    static #getHierarchy(cache, item: RegistryAsset, depth = 0, folders) {
         cache[item.id] = {item, depth, childQuantity: 0, children: []}
         const isOpen = ContentBrowserHierarchyStore.getData().open[item.id]
         for (let i = 0; i < folders.length; i++) {
@@ -520,7 +520,7 @@ export default class ContentBrowserUtil {
         )
     }
 
-    static #mapRegistryAsset(reg, type) {
+    static #mapRegistryAsset(reg, type): RegistryAsset {
         const split = reg.path.split(FileSystemUtil.sep)
         return {
             type,
@@ -585,7 +585,7 @@ export default class ContentBrowserUtil {
             if (!registryEntry.path)
                 continue
             let type
-            let slot
+            let slot: RegistryAsset[]
             switch (true) {
                 case registryEntry.path.includes(FileTypes.TEXTURE):
                     type = FileTypes.TEXTURE

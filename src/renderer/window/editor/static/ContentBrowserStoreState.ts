@@ -13,4 +13,19 @@ export default {
     terrainMaterials: [],
     toCut: [],
     collections: []
+} as {
+    selectedItems: RegistryAsset[],
+    items: RegistryAsset[],
+    textures: RegistryAsset[],
+    meshes: RegistryAsset[],
+    levels: RegistryAsset[],
+    materials: RegistryAsset [],
+    materialInstances: RegistryAsset [],
+    simpleMaterials: RegistryAsset [],
+    components: RegistryAsset [],
+    uiLayouts: RegistryAsset[],
+    terrains: RegistryAsset[],
+    terrainMaterials: RegistryAsset[],
+    toCut: string[],
+    collections: RegistryAsset[]
 }

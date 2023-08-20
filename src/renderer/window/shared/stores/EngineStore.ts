@@ -2,7 +2,7 @@ import ENGINE from "../../editor/static/EngineStoreState"
 import AbstractStore from "./AbstractStore"
 
 
-export default class EngineStore extends AbstractStore{
+export default class EngineStore extends AbstractStore<typeof ENGINE>{
 	constructor() {
 		super(ENGINE)
 	}

@@ -1,4 +1,5 @@
 import EditorUtil from "../../../util/EditorUtil"
+import {Components} from "@engine-core/engine.enum";
 
 
 export default [

@@ -13,6 +13,7 @@
 
     let openForChange = false
     let changeDate
+    let isSelected
     let hovered
 
     $: isSelected = selected === data.id

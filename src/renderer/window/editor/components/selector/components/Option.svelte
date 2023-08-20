@@ -14,6 +14,7 @@
     	if(handleChange)
     		handleChange(data, () => setState({name: "Empty"}))
     }
+    let isSelected
     $: isSelected = state.registryID !== undefined ? state.registryID === data.registryID : state.id !== undefined && state.id === data.id
 </script>
 

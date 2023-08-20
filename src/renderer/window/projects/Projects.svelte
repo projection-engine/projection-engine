@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {onDestroy, onMount} from "svelte"
     import ContextMenuService from "../shared/lib/context-menu/ContextMenuService"
     import List from "./components/List.svelte"

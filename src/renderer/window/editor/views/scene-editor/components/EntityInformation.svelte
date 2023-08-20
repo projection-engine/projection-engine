@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {onDestroy, onMount} from "svelte"
     import GIZMOS from "../../../../../../shared/enums/Gizmos.ts"
     import Gizmos from "../../../../../../shared/enums/Gizmos.ts"
@@ -9,9 +9,10 @@
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
     import GizmoState from "../../../../../engine/tools/gizmo/util/GizmoState"
     import SceneEditorUtil from "../../../util/SceneEditorUtil"
+    import {Components} from "@engine-core/engine.enum";
+    import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
-    /** @type boolean */
-    export let isOnGizmo
+    export let isOnGizmo: boolean
     const COMPONENT_ID = crypto.randomUUID()
 
     let selectedSize
@@ -23,37 +24,41 @@
     let isValidScaling = false
 
     onMount(() => {
-    	GizmoSystem.addListener(COMPONENT_ID, () => {
-    		const mainEntity = GizmoState.mainEntity
-    		switch (GizmoState.gizmoType) {
-    		case Gizmos.TRANSLATION: {
-    			translationRef.textContent = `X ${mainEntity.translation[0].toFixed(2)} | Y ${mainEntity.translation[1].toFixed(2)} | Z ${mainEntity.translation[2].toFixed(2)}`
-    			break
-    		}
-    		case Gizmos.ROTATION: {
-    			const {roll, pitch, yaw} = SceneEditorUtil.quaternionToEulerAngles(mainEntity.rotationQuaternion)
-    			rotationRef.textContent = `X ${roll.toFixed(2)} | Y ${yaw.toFixed(2)} | Z ${pitch.toFixed(2)}`
-    			break
-    		}
-    		case Gizmos.SCALE: {
-    			scaleRef.textContent = `X ${mainEntity.translation[0].toFixed(2)} | Y ${mainEntity.translation[1].toFixed(2)} | Z ${mainEntity.translation[2].toFixed(2)}`
-    			break
-    		}
-    		}
-    	})
-    	EntitySelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedSize = EntitySelectionStore.getEntitiesSelected().length)
-    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
-    		gizmo = data.gizmo
-    		isValidPivot = gizmo === GIZMOS.TRANSLATION && selectedSize === 1
-    		isValidScaling = gizmo === GIZMOS.SCALE
-    	}, ["gizmo"])
-    	GizmoSystem.scaleRef = scaleRef
+        GizmoSystem.addListener(COMPONENT_ID, () => {
+            const mainEntity = GizmoState.mainEntity
+            const transformationComponent = mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
+            switch (GizmoState.gizmoType) {
+                case Gizmos.TRANSLATION: {
+                    translationRef.textContent = `X ${transformationComponent.translation[0].toFixed(2)} | Y ${transformationComponent.translation[1].toFixed(2)} | Z ${transformationComponent.translation[2].toFixed(2)}`
+                    break
+                }
+                case Gizmos.ROTATION: {
+                    const {
+                        roll,
+                        pitch,
+                        yaw
+                    } = SceneEditorUtil.quaternionToEulerAngles(transformationComponent.rotationQuaternion)
+                    rotationRef.textContent = `X ${roll.toFixed(2)} | Y ${yaw.toFixed(2)} | Z ${pitch.toFixed(2)}`
+                    break
+                }
+                case Gizmos.SCALE: {
+                    scaleRef.textContent = `X ${transformationComponent.translation[0].toFixed(2)} | Y ${transformationComponent.translation[1].toFixed(2)} | Z ${transformationComponent.translation[2].toFixed(2)}`
+                    break
+                }
+            }
+        })
+        EntitySelectionStore.getInstance().addListener(COMPONENT_ID, () => selectedSize = EntitySelectionStore.getEntitiesSelected().length)
+        SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
+            gizmo = data.gizmo
+            isValidPivot = gizmo === GIZMOS.TRANSLATION && selectedSize === 1
+            isValidScaling = gizmo === GIZMOS.SCALE
+        }, ["gizmo"])
     })
 
     onDestroy(() => {
-    	EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
-    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
-    	GizmoSystem.removeListener(COMPONENT_ID)
+        EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
+        SettingsStore.getInstance().removeListener(COMPONENT_ID)
+        GizmoSystem.removeListener(COMPONENT_ID)
     })
 </script>
 

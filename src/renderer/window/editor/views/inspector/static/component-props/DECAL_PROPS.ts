@@ -1,5 +1,6 @@
 import MATERIAL_RENDERING_TYPES from "@engine-core/static/MATERIAL_RENDERING_TYPES"
 import {boolean, group, imageTexture, number, options} from "./prop-types";
+import DecalComponent from "@engine-core/lib/components/DecalComponent";
 
 export default [
 	group("RENDERING_MODE", [
@@ -26,16 +27,16 @@ export default [
 	group("SHEEN_PARAMS", [
 		number("SHEEN", "sheen"),
 		number("TINT", "sheenTint"),
-	], comp => comp.renderingMode !== MATERIAL_RENDERING_TYPES.SHEEN),
+	], comp => (<DecalComponent>comp).renderingMode !== MATERIAL_RENDERING_TYPES.SHEEN),
 
 	group("CLEAR_COAT_PARAMS", [
 		number("CLEAR_COAT", "clearCoat"),
-	], comp => comp.renderingMode !== MATERIAL_RENDERING_TYPES.CLEAR_COAT),
+	], comp => (<DecalComponent>comp).renderingMode !== MATERIAL_RENDERING_TYPES.CLEAR_COAT),
 
 	group("ANISOTROPIC_PARAMS", [
 		number("ROTATION", "anisotropicRotation"),
 		number("ANISOTROPY", "anisotropy", 1, 0)
-	], comp => comp.renderingMode !== MATERIAL_RENDERING_TYPES.ANISOTROPIC),
+	], comp => (<DecalComponent>comp).renderingMode !== MATERIAL_RENDERING_TYPES.ANISOTROPIC),
 
 	group("ALBEDO", [
 		imageTexture("ALBEDO", "albedoID"),

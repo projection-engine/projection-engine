@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {onDestroy, onMount} from "svelte"
     import dragDrop from "../../../../../shared/components/drag-drop/drag-drop"
     import Card from "./Card.svelte"
@@ -10,15 +10,15 @@
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import ContentBrowserStore from "../../../../../shared/stores/ContentBrowserStore";
 
-    export let reset
+    export let reset: VoidFunction
     export let data
-    export let submitRename
-    export let setCurrentDirectory
-    export let setOnDrag
-    export let onDrag
-    export let isOnRename
-    export let isCardViewType
-    export let selectedItems
+    export let submitRename: GenericVoidFunctionWithP<string>
+    export let setCurrentDirectory: GenericVoidFunctionWithP<{id: string}>
+    export let setOnDrag: GenericVoidFunctionWithP<string>
+    export let onDrag: string
+    export let isOnRename: boolean
+    export let isCardViewType: boolean
+    export let selectedItems: MutableObject[]
     export let toCut
 
     const COMPONENT_ID = crypto.randomUUID()
@@ -59,7 +59,7 @@
 
     onMount(() => {
     	draggable.onMount({
-    		targetElement: document.getElementById(COMPONENT_ID),
+    		targetElement: document.getElementById(COMPONENT_ID) as HTMLElement,
     		onDrop: (event) => ContentBrowserUtil.handleDropFolder(event, data.id)
     	})
     })
