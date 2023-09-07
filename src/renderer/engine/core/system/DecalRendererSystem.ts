@@ -18,7 +18,6 @@ export default class DecalRendererSystem extends AbstractSystem{
     }
 
      execute = () => {
-        SceneRenderingUtil.bindGlobalResources()
         const toRender = EntityManager.withComponent(Components.DECAL).array
         const size = toRender.length
         const context = GPUState.context

@@ -16,7 +16,7 @@ import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class TransparencyRendererSystem extends AbstractSystem {
      execute = () => {
-        StaticFBOState.postProcessing2.stopMapping()
+        StaticFBOState.postProcessing2.use()
         loopMeshes(this.#loop)
         StaticFBOState.postProcessing2.stopMapping()
         GPUState.context.flush()

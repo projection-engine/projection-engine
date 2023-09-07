@@ -9,11 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;">
+    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,14 +204,7 @@
       <workItem from="1693163851409" duration="618000" />
       <workItem from="1693167725153" duration="433000" />
       <workItem from="1694087650225" duration="10874000" />
-      <workItem from="1694107868545" duration="1743000" />
-    </task>
-    <task id="LOCAL-00033" summary="[STD-305] Completing rewrite of gizmo structure">
-      <created>1688910484357</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1688910484357</updated>
+      <workItem from="1694107868545" duration="3177000" />
     </task>
     <task id="LOCAL-00034" summary="[STD-305] Organizing structure; Fixing grid mapping for translation">
       <created>1688921445662</created>
@@ -545,7 +542,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694108960813</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows">
+      <created>1694109782560</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1694109782560</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -568,7 +572,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/engine-core" />
     </ignored-roots>
-    <MESSAGE value="[STD-282] Initializing rework of systems" />
     <MESSAGE value="[STD-282] Organizing systems and engine state" />
     <MESSAGE value="[STD-282] Changing tools to integrate with new system pipeline" />
     <MESSAGE value="[STD-282] Reworking tools&#10;- New camera gizmo system&#10;- Reworked EditorCameraSystem&#10;- Reworked WireframeSystem&#10;- Reworking CameraIconSystem &#10;- Fixing SystemManager not filtering by active/inactive and shouldExecute&#10;- Fixing disableSystem" />
@@ -593,7 +596,8 @@
     <MESSAGE value="[STD-282] Fixing initialization bugs" />
     <MESSAGE value="[STD-282] Fixing multiple bugs" />
     <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;" />
+    <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows" />
+    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

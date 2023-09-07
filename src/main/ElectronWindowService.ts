@@ -199,9 +199,9 @@ export default class ElectronWindowService extends AbstractSingleton {
             }
         })
 
-        if (process.env.IS_DEV) {
+        // if (process.env.IS_DEV) {
             window.webContents.openDevTools(isChild ? undefined : {mode: "detach"})
-        }
+        // }
         return window
     }
 }

@@ -5,6 +5,7 @@ import GPUState from "../states/GPUState";
 
 export default class PostRendererSystem extends AbstractSystem{
      execute = () => {
+         StaticFBOState.postProcessing2.stopMapping()
         GPUManager.copyTexture(StaticFBOState.postProcessing1, StaticFBOState.postProcessing2, GPUState.context.COLOR_BUFFER_BIT)
     }
 }

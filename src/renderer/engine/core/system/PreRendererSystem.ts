@@ -5,15 +5,15 @@ import GPUState from "../states/GPUState"
 import AbstractSystem from "../AbstractSystem";
 
 
-export default class PreRendererSystem extends AbstractSystem{
-	 shouldExecute = (): boolean =>  {
-		return UberShader.uber != null;
-	}
+export default class PreRendererSystem extends AbstractSystem {
+    shouldExecute = (): boolean => {
+        return UberShader.uber != null;
+    }
 
-	 execute = () => {
-		GPUState.context.flush()
-		Mesh.finishIfUsed()
-		StaticFBOState.postProcessing2.startMapping()
-	}
+    execute = () => {
+        GPUState.context.flush()
+        Mesh.finishIfUsed()
+        StaticFBOState.postProcessing2.startMapping()
+    }
 
 }

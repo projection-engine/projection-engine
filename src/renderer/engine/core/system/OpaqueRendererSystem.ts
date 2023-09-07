@@ -19,6 +19,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
     #isSky = false
 
     execute = () => {
+        SceneRenderingUtil.bindGlobalResources()
         this.#isSky = this.#stateWasCleared = this.#isDoubleSided = false
         const context = GPUState.context
         UberMaterialAttributeGroup.clear()
@@ -48,12 +49,10 @@ export default class OpaqueRendererSystem extends AbstractSystem {
 
         context.uniformMatrix4fv(uniforms.materialAttributes, false, UberMaterialAttributeGroup.data)
         context.uniformMatrix4fv(uniforms.modelMatrix, false, transformComponent.matrix)
-
         mesh.draw()
     }
 
     #withMaterial = (entity: EngineEntity, material: Material) => {
-        console.log(material)
         const context = GPUState.context
         if (material.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY)
             return

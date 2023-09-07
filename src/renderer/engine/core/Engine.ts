@@ -98,13 +98,15 @@ export default class Engine {
         systemManager.enableSystem(OShadowsSystem)
         systemManager.enableSystem(VisibilityRendererSystem)
         systemManager.enableSystem(AmbientOcclusionSystem)
+
         systemManager.enableSystem(PreRendererSystem)
         systemManager.enableSystem(AtmosphereRendererSystem)
         systemManager.enableSystem(OpaqueRendererSystem)
         systemManager.enableSystem(DecalRendererSystem)
         systemManager.enableSystem(SpriteRenderer)
-        systemManager.enableSystem(TransparencyRendererSystem)
         systemManager.enableSystem(PostRendererSystem)
+        systemManager.enableSystem(TransparencyRendererSystem)
+
         systemManager.enableSystem(GlobalIlluminationSystem)
         systemManager.enableSystem(BokehDOFSystem)
         systemManager.enableSystem(MotionBlurSystem)
