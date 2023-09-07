@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SPLITTER_PROPORTION" value="0.32142857" />
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/esbuild.js" beforeDir="false" afterPath="$PROJECT_DIR$/esbuild.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/libs/IPCListener.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/libs/IPCListener.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/AbstractSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/AbstractSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/DynamicMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/DynamicMap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/Component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/Component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/MeshComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/MeshComponent.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Shader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Shader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/TransformationManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/TransformationManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/GarbageCollectorSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/GarbageCollectorSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/workers/camera-worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/workers/camera-worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntityManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/CameraIconSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/CameraIconSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/ClearContextSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/ClearContextSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraGizmoSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraGizmoSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoLineSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoLineSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GridSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GridSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/MouseCoordinateSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/MouseCoordinateSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SelectedSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SelectedSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SilhouetteSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SilhouetteSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/WireframeSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/WireframeSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/Footer.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/Footer.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/PerformanceMetricsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/PerformanceMetricsSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EditorLevelService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EditorLevelService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/util/HierarchyUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/util/HierarchyUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/TransformationForm.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/TransformationForm.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/shared/stores/ContentBrowserStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/shared/stores/ContentBrowserStore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/logger/MainLogger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/logger/MainLogger.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CrashWindow" />
+        <option value="LoggerConfig" />
+        <option value="SerializedState" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="341-rework-selection" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectId" id="2RKci5rDvc4uOO0o0DA63GWqqfp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.nodejs.core.library.configured.version": "25.3.2",
+    "javascript.nodejs.core.library.typings.version": "20.5.9",
+    "last_opened_file_path": "C:/Users/russi/projectionengine",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "settings.nodejs",
+    "ts.external.directory.path": "C:\\Users\\russi\\projectionengine\\node_modules\\typescript\\lib",
+    "typescript.add.unambiguous.imports.on.the.fly": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\russi\projectionengine\src\renderer\window\shared\stores" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\utils" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\components" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\system" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\runtime" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\views\inspector\static" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\static" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\states" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\managers" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\utils" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="ShConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Node.js.Renderer">
+    <configuration name="Main" type="NodeJSConfigurationType" application-parameters=" --IS_DEV=1" path-to-node="$PROJECT_DIR$/node_modules/.bin/electron.cmd" node-parameters="." working-dir="$PROJECT_DIR$/build">
+      <method v="2" />
+    </configuration>
+    <configuration name="Renderer" type="NodeJSConfigurationType" application-parameters="--remote-debugging-port=9222 --enable-logging" path-to-node="$PROJECT_DIR$/node_modules/.bin/electron.cmd" node-parameters="." working-dir="$PROJECT_DIR$">
+      <envs>
+        <env name="IS_DEV" value="1" />
+      </envs>
+      <method v="2" />
+    </configuration>
+    <configuration name="BUILD" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="yarn bdev" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="false" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="RUN" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="yarn sdev" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="false" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Node.js.Main" />
+      <item itemvalue="Node.js.Renderer" />
+      <item itemvalue="Shell Script.BUILD" />
+      <item itemvalue="Shell Script.RUN" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="" />
+      <created>1687002337205</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1687002337205</updated>
+      <workItem from="1687002338214" duration="3566000" />
+      <workItem from="1687007649512" duration="4721000" />
+      <workItem from="1687012624377" duration="2810000" />
+      <workItem from="1687015515111" duration="18428000" />
+      <workItem from="1687040640069" duration="1252000" />
+      <workItem from="1687047384755" duration="6935000" />
+      <workItem from="1687095890318" duration="2089000" />
+      <workItem from="1687105496392" duration="4599000" />
+      <workItem from="1687111929487" duration="12097000" />
+      <workItem from="1687298956321" duration="5233000" />
+      <workItem from="1687627206272" duration="2235000" />
+      <workItem from="1687642388052" duration="7657000" />
+      <workItem from="1687697237264" duration="8761000" />
+      <workItem from="1688214194011" duration="1531000" />
+      <workItem from="1688224774258" duration="6459000" />
+      <workItem from="1688239923990" duration="30449000" />
+      <workItem from="1688340773018" duration="3266000" />
+      <workItem from="1688421768690" duration="5344000" />
+      <workItem from="1688679868329" duration="9219000" />
+      <workItem from="1688814360251" duration="14038000" />
+      <workItem from="1688905527258" duration="21870000" />
+      <workItem from="1688939682710" duration="7460000" />
+      <workItem from="1689449777725" duration="775000" />
+      <workItem from="1689527932131" duration="17000" />
+      <workItem from="1690031151498" duration="11687000" />
+      <workItem from="1690065219808" duration="12586000" />
+      <workItem from="1690148552244" duration="190000" />
+      <workItem from="1690628252008" duration="7470000" />
+      <workItem from="1690635837402" duration="13155000" />
+      <workItem from="1690671339669" duration="1139000" />
+      <workItem from="1690715565465" duration="10373000" />
+      <workItem from="1690737613814" duration="14060000" />
+      <workItem from="1691103903070" duration="5306000" />
+      <workItem from="1691231419080" duration="7909000" />
+      <workItem from="1691244948906" duration="17720000" />
+      <workItem from="1691322969530" duration="17184000" />
+      <workItem from="1691841290416" duration="32395000" />
+      <workItem from="1692445743195" duration="19560000" />
+      <workItem from="1692528149498" duration="9570000" />
+      <workItem from="1692544015499" duration="1755000" />
+      <workItem from="1692554614469" duration="476000" />
+      <workItem from="1692555112326" duration="1889000" />
+      <workItem from="1693137632688" duration="1282000" />
+      <workItem from="1693161924682" duration="47000" />
+      <workItem from="1693163851409" duration="618000" />
+      <workItem from="1693167725153" duration="433000" />
+      <workItem from="1694087650225" duration="10874000" />
+      <workItem from="1694107868545" duration="891000" />
+    </task>
+    <task id="LOCAL-00032" summary="[STD-305] Refactoring tools; Organizing common methods between gizmos;">
+      <created>1688844775517</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1688844775517</updated>
+    </task>
+    <task id="LOCAL-00033" summary="[STD-305] Completing rewrite of gizmo structure">
+      <created>1688910484357</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1688910484357</updated>
+    </task>
+    <task id="LOCAL-00034" summary="[STD-305] Organizing structure; Fixing grid mapping for translation">
+      <created>1688921445662</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1688921445662</updated>
+    </task>
+    <task id="LOCAL-00035" summary="[STD-305] Fixing rotation gizmo;">
+      <created>1688926163821</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1688926163821</updated>
+    </task>
+    <task id="LOCAL-00036" summary="[STD-305] Rewriting screen to world algorithm">
+      <created>1688930964724</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1688930964724</updated>
+    </task>
+    <task id="LOCAL-00037" summary="[STD-291] Changing transformation system to work without poiterLock">
+      <created>1689030320724</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1689030320724</updated>
+    </task>
+    <task id="LOCAL-00038" summary="[STD-335] Adding hover effect to gizmos; Adding AbstractXYZGizmo; Refactoring files; removing eslint; Adding common method for binding 2d texture">
+      <created>1690038009597</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1690038009597</updated>
+    </task>
+    <task id="LOCAL-00039" summary="[STD-335] Adding new files">
+      <created>1690038072706</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1690038072706</updated>
+    </task>
+    <task id="LOCAL-00040" summary="[STD-337] Optimizing mousePosition state; Adding hover effect to SelectedSystem; Fixing entity highlight">
+      <created>1690039762059</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1690039762059</updated>
+    </task>
+    <task id="LOCAL-00041" summary="[STD-341] create pull-request">
+      <created>1690040246127</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1690040246127</updated>
+    </task>
+    <task id="LOCAL-00042" summary="[STD-341] creating view-state store; Standardizing view component">
+      <created>1690045987681</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1690045987681</updated>
+    </task>
+    <task id="LOCAL-00043" summary="[STD-341] Reworking content browser selection; Organizing Item component; Adding missing file types to FileTypes enum;">
+      <created>1690117685396</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1690117685396</updated>
+    </task>
+    <task id="LOCAL-00044" summary="[STD-341] Moving inspector files to content browser; Reworking entity selection; Fixing grid snap for gizmos;">
+      <created>1690119859513</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1690119859513</updated>
+    </task>
+    <task id="LOCAL-00045" summary="[STD-341] Implementing state serialization for view components; removing jsdoc in favor of ts on svelte components;">
+      <created>1690634457777</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1690634457777</updated>
+    </task>
+    <task id="LOCAL-00046" summary="[STD-341] Updating libraries and fixing small bugs">
+      <created>1690637241166</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1690637241166</updated>
+    </task>
+    <task id="LOCAL-00047" summary="[STD-341] Fixing tab switch; Fixing inspector tabs not working; Removing current undo/redo implementation from entity changes for future rework; Fixing state not restoring after view change; Adding more types to svelte components and util methods">
+      <created>1690654171185</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1690654171185</updated>
+    </task>
+    <task id="LOCAL-00048" summary="[STD-341] Removing console logs and fixing typings for removeTab method">
+      <created>1690654304865</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1690654304865</updated>
+    </task>
+    <task id="LOCAL-00049" summary="[STD-341] Fixing content browser selection; Fixing state restoring of scene view; Adding viewStateStore to disk serialization;">
+      <created>1690655491256</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1690655491256</updated>
+    </task>
+    <task id="LOCAL-00050" summary="[STD-341] Fixing folder navigation; Fixing content browser file details and tabs">
+      <created>1690656331277</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1690656331277</updated>
+    </task>
+    <task id="LOCAL-00051" summary="[STD-341] Improving inspector and removing disk serialization of view states">
+      <created>1690662101054</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1690662101054</updated>
+    </task>
+    <task id="LOCAL-00052" summary="[STD-282] Starting implementation of entity manager">
+      <created>1690663269051</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1690663269051</updated>
+    </task>
+    <task id="LOCAL-00053" summary="[STD-282] Implementing EntityManager with event listener structure; Creating SystemManager and AbstractSystem with injection of entities">
+      <created>1690724483942</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1690724483942</updated>
+    </task>
+    <task id="LOCAL-00054" summary="[STD-282] Initializing rework of systems">
+      <created>1690842503685</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1690842503685</updated>
+    </task>
+    <task id="LOCAL-00055" summary="[STD-282] Organizing systems and engine state">
+      <created>1690927524153</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1690927524153</updated>
+    </task>
+    <task id="LOCAL-00056" summary="[STD-282] Organizing systems and engine state">
+      <created>1691012860626</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1691012860626</updated>
+    </task>
+    <task id="LOCAL-00057" summary="[STD-282] Changing tools to integrate with new system pipeline">
+      <created>1691018383614</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1691018383614</updated>
+    </task>
+    <task id="LOCAL-00058" summary="[STD-282] Reworking tools&#10;- New camera gizmo system&#10;- Reworked EditorCameraSystem&#10;- Reworked WireframeSystem&#10;- Reworking CameraIconSystem &#10;- Fixing SystemManager not filtering by active/inactive and shouldExecute&#10;- Fixing disableSystem">
+      <created>1691234519876</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1691234519876</updated>
+    </task>
+    <task id="LOCAL-00059" summary="[STD-282] Organizing engine static files&#10;- Moving objects to enums&#10;- Moving all interfaces to engine.g.ts&#10;- Starting resource manager rework">
+      <created>1691246101162</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1691246101162</updated>
+    </task>
+    <task id="LOCAL-00060" summary="[STD-282] Starting segregation of entities and components&#10;&#10;- EntityManager with new methods&#10;- TransformationComponent&#10;- Starting EditorEntityManager&#10;- EditorEntity&#10;- New serialization structure&#10;- Fixing engine enums&#10;- Fixing path to engine core&#10;- Fixing componentKey getter">
+      <created>1691258018879</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1691258018879</updated>
+    </task>
+    <task id="LOCAL-00061" summary="[STD-282] Starting segregation of entities and components&#10;&#10;- EntityManager with new methods&#10;- TransformationComponent&#10;- Starting EditorEntityManager&#10;- EditorEntity&#10;- New serialization structure&#10;- Fixing engine enums&#10;- Fixing path to engine core&#10;- Fixing componentKey getter">
+      <created>1691258028864</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1691258028864</updated>
+    </task>
+    <task id="LOCAL-00062" summary="[STD-282] Continuing entity rework&#10;&#10;- Reworking multiple systems&#10;- Reworking resource access (mesh, material, texture)&#10;- Reworking garbage collection&#10;- Reworking entity hierarchy and enabled/disabled entities&#10;- Reworked physics system and api&#10;- Removing textures from decal component">
+      <created>1691333312552</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1691333312553</updated>
+    </task>
+    <task id="LOCAL-00063" summary="[STD-282] Continuing entity rework&#10;&#10;- Starting rework outside of engine&#10;- Implementing lazy initialization of engine resources">
+      <created>1691349074953</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1691349074953</updated>
+    </task>
+    <task id="LOCAL-00064" summary="[STD-282] Continuing entity rework&#10;&#10;- Implementing component dependency&#10;- Removing unused classes&#10;- Reworking EngineStateService &#10;- Reworking EntityFactoryService&#10;- Reworking TransformationPass to use new hierarchy structure&#10;- Reworking TransformationWorkerAPI to integrate with new event pipeline&#10;- Reworking LightsAPI to integrate with event system and to be an Abstract singleton">
+      <created>1691855193214</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1691855193214</updated>
+    </task>
+    <task id="LOCAL-00065" summary="[STD-282] Continuing entity rework&#10;&#10;- Implementing component dependency&#10;- Removing unused classes&#10;- Reworking EngineStateService &#10;- Reworking EntityFactoryService&#10;- Reworking TransformationPass to use new hierarchy structure&#10;- Reworking TransformationWorkerAPI to integrate with new event pipeline&#10;- Reworking LightsAPI to integrate with event system and to be an Abstract singleton">
+      <created>1691855201266</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1691855201266</updated>
+    </task>
+    <task id="LOCAL-00066" summary="[STD-282] Continuing entity rework&#10;- Removing unused classes&#10;- Fixing various reference errors to old entity system">
+      <created>1691868733704</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1691868733704</updated>
+    </task>
+    <task id="LOCAL-00067" summary="[STD-282] Continuing entity rework&#10;- Reworking icons&#10;- Reworking loadedLevel and state serialization&#10;- Continuing integration of new pipeline for entities">
+      <created>1691933803581</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1691933803581</updated>
+    </task>
+    <task id="LOCAL-00068" summary="[STD-282] Continuing entity rework&#10;- Moving icons processing to separate manager&#10;- Removing level as an entity &#10;- Implementing LoadedLevelStore&#10;- Implementing GizmoEntity&#10;- Fixing gizmos referencing properties not present on editor entity">
+      <created>1692449523566</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1692449523567</updated>
+    </task>
+    <task id="LOCAL-00069" summary="[STD-282] Continuing entity rework&#10;- Implementing cloning&#10;- Fixing ScreenSpaceGizmo.ts references to EditorEntity&#10;- Fixing missing check for transformation component while transforming entity (gizmos)">
+      <created>1692455567577</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1692455567577</updated>
+    </task>
+    <task id="LOCAL-00070" summary="[STD-282] Continuing entity rework&#10;- Removing ATMOSPHERE_TYPES&#10;- Moving ResourceEntityMapper to EntityManager &#10;- Organizing state singletons">
+      <created>1692456604993</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1692456604993</updated>
+    </task>
+    <task id="LOCAL-00071" summary="[STD-282] Continuing entity rework&#10;- Removing ATMOSPHERE_TYPES&#10;- Moving ResourceEntityMapper to EntityManager &#10;- Organizing state singletons&#10;- Organizing managers &#10;- Organizing resources with new inteface&#10;- Removing unused classes&#10;- AbstactSingleton LineAPI">
+      <created>1692458097336</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1692458097336</updated>
+    </task>
+    <task id="LOCAL-00072" summary="[STD-282] Continuing entity rework&#10;- Organizing LightsManager properties&#10;- GPUState and GPUManager">
+      <created>1692465194879</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1692465194879</updated>
+    </task>
+    <task id="LOCAL-00073" summary="[STD-282] Continuing entity rework&#10;- AssetResourceManager&#10;- Reworking EngineFileSystemManager to better integrate with new async pipeline of resource access&#10;- Reworking MaterialManager to only include ID of texture instead of the instance ref&#10;- Making Shader fetch texture if param &quot;data&quot; is of type string (resource ID)">
+      <created>1692485547728</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1692485547728</updated>
+    </task>
+    <task id="LOCAL-00074" summary="[STD-282] Fixing build errors">
+      <created>1692486169837</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1692486169837</updated>
+    </task>
+    <task id="LOCAL-00075" summary="[STD-282] Continuing rework of entities&#10;- Organizing static data of editor&#10;- Adding typing to getData for engine store/ settings store/ visuals store and contnet browser store&#10;- Organizing component dependencies&#10;- Re-enabling distance from camera property check&#10;- Removing props from components and moving them into Inspector static data">
+      <created>1692530787065</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1692530787065</updated>
+    </task>
+    <task id="LOCAL-00076" summary="[STD-282] Continuing rework of entities&#10;- Adding types to Layout and Property svelte components&#10;- Fixing reference errors on TransformationForm">
+      <created>1692532224811</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1692532224811</updated>
+    </task>
+    <task id="LOCAL-00077" summary="[STD-282] Continuing rework of entities&#10;- Fixing multiple reference bugs">
+      <created>1692534623347</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1692534623347</updated>
+    </task>
+    <task id="LOCAL-00078" summary="[STD-282] Fixing build bugs">
+      <created>1692534901889</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1692534901889</updated>
+    </task>
+    <task id="LOCAL-00079" summary="[STD-282] Fixing initialization bugs">
+      <created>1692537784693</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1692537784693</updated>
+    </task>
+    <task id="LOCAL-00080" summary="[STD-282] Fixing multiple bugs">
+      <created>1694092735982</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1694092735983</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/engine-core" />
+    </ignored-roots>
+    <MESSAGE value="[STD-282] Implementing EntityManager with event listener structure; Creating SystemManager and AbstractSystem with injection of entities" />
+    <MESSAGE value="[STD-282] Initializing rework of systems" />
+    <MESSAGE value="[STD-282] Organizing systems and engine state" />
+    <MESSAGE value="[STD-282] Changing tools to integrate with new system pipeline" />
+    <MESSAGE value="[STD-282] Reworking tools&#10;- New camera gizmo system&#10;- Reworked EditorCameraSystem&#10;- Reworked WireframeSystem&#10;- Reworking CameraIconSystem &#10;- Fixing SystemManager not filtering by active/inactive and shouldExecute&#10;- Fixing disableSystem" />
+    <MESSAGE value="[STD-282] Organizing engine static files&#10;- Moving objects to enums&#10;- Moving all interfaces to engine.g.ts&#10;- Starting resource manager rework" />
+    <MESSAGE value="[STD-282] Starting segregation of entities and components&#10;&#10;- EntityManager with new methods&#10;- TransformationComponent&#10;- Starting EditorEntityManager&#10;- EditorEntity&#10;- New serialization structure&#10;- Fixing engine enums&#10;- Fixing path to engine core&#10;- Fixing componentKey getter" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;&#10;- Reworking multiple systems&#10;- Reworking resource access (mesh, material, texture)&#10;- Reworking garbage collection&#10;- Reworking entity hierarchy and enabled/disabled entities&#10;- Reworked physics system and api&#10;- Removing textures from decal component" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;&#10;- Starting rework outside of engine&#10;- Implementing lazy initialization of engine resources" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;&#10;- Implementing component dependency&#10;- Removing unused classes&#10;- Reworking EngineStateService &#10;- Reworking EntityFactoryService&#10;- Reworking TransformationPass to use new hierarchy structure&#10;- Reworking TransformationWorkerAPI to integrate with new event pipeline&#10;- Reworking LightsAPI to integrate with event system and to be an Abstract singleton" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Removing unused classes&#10;- Fixing various reference errors to old entity system" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Reworking icons&#10;- Reworking loadedLevel and state serialization&#10;- Continuing integration of new pipeline for entities" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Moving icons processing to separate manager&#10;- Removing level as an entity &#10;- Implementing LoadedLevelStore&#10;- Implementing GizmoEntity&#10;- Fixing gizmos referencing properties not present on editor entity" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Implementing cloning&#10;- Fixing ScreenSpaceGizmo.ts references to EditorEntity&#10;- Fixing missing check for transformation component while transforming entity (gizmos)" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Removing ATMOSPHERE_TYPES&#10;- Moving ResourceEntityMapper to EntityManager &#10;- Organizing state singletons" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Removing ATMOSPHERE_TYPES&#10;- Moving ResourceEntityMapper to EntityManager &#10;- Organizing state singletons&#10;- Organizing managers &#10;- Organizing resources with new inteface&#10;- Removing unused classes&#10;- AbstactSingleton LineAPI" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Organizing LightsManager properties&#10;- GPUState and GPUManager" />
+    <MESSAGE value="[STD-282] Continuing entity rework&#10;- AssetResourceManager&#10;- Reworking EngineFileSystemManager to better integrate with new async pipeline of resource access&#10;- Reworking MaterialManager to only include ID of texture instead of the instance ref&#10;- Making Shader fetch texture if param &quot;data&quot; is of type string (resource ID)" />
+    <MESSAGE value="[STD-282] Fixing build errors" />
+    <MESSAGE value="[STD-282] Continuing rework of entities&#10;- Organizing static data of editor&#10;- Adding typing to getData for engine store/ settings store/ visuals store and contnet browser store&#10;- Organizing component dependencies&#10;- Re-enabling distance from camera property check&#10;- Removing props from components and moving them into Inspector static data" />
+    <MESSAGE value="[STD-282] Continuing rework of entities&#10;- Adding types to Layout and Property svelte components&#10;- Fixing reference errors on TransformationForm" />
+    <MESSAGE value="[STD-282] Continuing rework of entities&#10;- Fixing multiple reference bugs" />
+    <MESSAGE value="[STD-282] Fixing build bugs" />
+    <MESSAGE value="[STD-282] Fixing initialization bugs" />
+    <MESSAGE value="[STD-282] Fixing multiple bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/EntityAttributes.svelte</url>
+          <line>12</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/ContentBrowserView.svelte</url>
+          <line>14</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/window/shared/WindowInitializer.ts</url>
+          <line>10</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/engine/tools/gizmo/AbstractXYZGizmo.ts</url>
+          <line>8</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/engine/core/states/GPUState.ts</url>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/engine/core/lib/SharedNumericMap.ts</url>
+          <line>6</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityFactoryService.ts</url>
+          <line>49</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" log-message="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/window/shared/stores/ContentBrowserStore.ts</url>
+          <line>17</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/window/editor/util/HierarchyUtil.ts</url>
+          <line>16</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/window/editor/util/HierarchyUtil.ts</url>
+          <line>19</line>
+          <log-expression expression="console.log(&quot;minDepth&quot;)" language="TypeScript" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

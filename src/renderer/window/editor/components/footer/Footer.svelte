@@ -27,7 +27,7 @@
             }else{
                 loadedLevelName = undefined
             }
-        })
+        }, ["loadedLevel"])
         SettingsStore.getInstance().addListener(COMPONENT_ID, data => isHidden = data.hideFooter, ["hideFooter"])
     })
 

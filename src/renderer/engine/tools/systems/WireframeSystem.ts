@@ -17,11 +17,11 @@ import CullingComponent from "@engine-core/lib/components/CullingComponent";
 const EMPTY_MATRIX = mat4.create()
 const translationCache = vec3.create()
 export default class WireframeSystem extends AbstractSystem {
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EngineToolsState.showOutline;
     }
 
-    execute() {
+     execute = () => {
         const uniforms = StaticEditorShaders.wireframeUniforms
         const context = GPUState.context
 

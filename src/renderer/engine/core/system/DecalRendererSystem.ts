@@ -13,11 +13,11 @@ import TransformationComponent from "@engine-core/lib/components/TransformationC
 
 export default class DecalRendererSystem extends AbstractSystem{
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EntityManager.withComponent(Components.DECAL).size > 0;
     }
 
-    execute() {
+     execute = () => {
         SceneRenderingUtil.bindGlobalResources()
         const toRender = EntityManager.withComponent(Components.DECAL).array
         const size = toRender.length

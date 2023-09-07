@@ -18,7 +18,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
     #isDoubleSided = false
     #isSky = false
 
-    execute() {
+    execute = () => {
         this.#isSky = this.#stateWasCleared = this.#isDoubleSided = false
         const context = GPUState.context
         UberMaterialAttributeGroup.clear()
@@ -27,7 +27,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         MetricsManager.currentState = METRICS_FLAGS.OPAQUE
     }
 
-    #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {
+    #loop = (entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) => {
 
         const uniforms = UberShader.uberUniforms
         const context = GPUState.context
@@ -40,7 +40,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
             context.enable(context.DEPTH_TEST)
         }
 
-        if (material !== undefined) {
+        if (material != null) {
             this.#withMaterial(entity, material)
         } else if (!this.#stateWasCleared) {
             this.#withNoMaterial()
@@ -52,7 +52,8 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         mesh.draw()
     }
 
-    #withMaterial(entity: EngineEntity, material: Material) {
+    #withMaterial = (entity: EngineEntity, material: Material) => {
+        console.log(material)
         const context = GPUState.context
         if (material.renderingMode === MATERIAL_RENDERING_TYPES.TRANSPARENCY)
             return
@@ -78,7 +79,7 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         this.#stateWasCleared = false
     }
 
-    #withNoMaterial() {
+    #withNoMaterial = () => {
         this.#stateWasCleared = true
         if (this.#isDoubleSided) {
             GPUState.context.enable(GPUState.context.CULL_FACE)

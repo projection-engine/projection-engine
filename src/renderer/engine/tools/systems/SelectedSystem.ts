@@ -15,14 +15,14 @@ export default class SelectedSystem extends AbstractSystem {
 
     static #METADATA = new Float32Array(9)
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         const should = EngineTools.selected.length > 0;
         if (!should)
             StaticFBOState.postProcessing1.clear()
         return should;
     }
 
-    execute() {
+     execute = () => {
         const length = EngineTools.selected.length
         const context = GPUState.context
         const uniforms = StaticEditorShaders.silhouetteUniforms

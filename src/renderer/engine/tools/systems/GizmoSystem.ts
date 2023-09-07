@@ -27,12 +27,12 @@ export default class GizmoSystem extends AbstractSystem {
         }
     }
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         const m = GizmoState.mainEntity
         return m != null && m.active
     }
 
-    execute() {
+     execute = () => {
         const context = GPUState.context
         context.clear(context.DEPTH_BUFFER_BIT)
         GizmoUtil.createTransformationCache(GizmoState.mainEntity)

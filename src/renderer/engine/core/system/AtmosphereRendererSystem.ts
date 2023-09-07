@@ -13,11 +13,11 @@ import EntityManager from "@engine-core/managers/EntityManager";
 const resources = mat4.create().fill(0)
 export default class AtmosphereRendererSystem extends AbstractSystem {
 
-    shouldExecute(): boolean {
+    shouldExecute = (): boolean => {
         return EntityManager.withComponent(Components.ATMOSPHERE).size > 0;
     }
 
-    execute() {
+     execute = () => {
         const entities = EntityManager.withComponent(Components.ATMOSPHERE).array
         const size = entities.length
         const context = GPUState.context

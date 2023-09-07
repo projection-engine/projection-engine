@@ -10,11 +10,11 @@ import AbstractSystem from "../AbstractSystem";
 
 export default class BokehDOFSystem extends AbstractSystem {
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return CameraManager.DOF;
     }
 
-    execute() {
+     execute = () => {
         StaticShadersState.bokeh.bind()
         StaticFBOState.postProcessing2.startMapping()
 

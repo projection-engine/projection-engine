@@ -14,27 +14,27 @@ export default class SystemManager extends AbstractSingleton {
         return SystemManager.get<SystemManager>()
     }
 
-    enableSystem(system: typeof AbstractSystem) {
+    enableSystem = (system: typeof AbstractSystem) => {
         const ref = system.get<AbstractSystem>()
         this.#systems.set(ref.getSystemId(), true)
         this.#executionQueue.set(ref.getSystemId(), ref)
     }
 
-    disableSystem(system: typeof AbstractSystem) {
+    disableSystem= (system: typeof AbstractSystem)=> {
         const ref = system.get<AbstractSystem>()
         this.#systems.set(ref.getSystemId(), false)
     }
 
-    isRunning() {
+    isRunning = () =>  {
         return this.#frameId != null
     }
 
-    start() {
+    start = () =>  {
         PhysicsSystem.start()
         this.#frameId = requestAnimationFrame(SystemManager.#loop)
     }
 
-    stop() {
+    stop = () =>  {
         cancelAnimationFrame(this.#frameId)
         this.#frameId = undefined
         PhysicsSystem.stop()

@@ -35,11 +35,11 @@ export default class CameraIconSystem extends AbstractSystem {
         }
     }
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EntityManager.withComponent(Components.CAMERA).size > 0;
     }
 
-    execute() {
+     execute = () => {
         const uniforms = StaticEditorShaders.wireframeUniforms
         const arr = EntityManager.withComponent(Components.CAMERA).array
         const context = GPUState.context

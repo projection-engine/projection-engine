@@ -32,7 +32,7 @@ export default class CompositionSystem extends AbstractSystem {
         return ++this.#lookUpIndex >= this.#lookUpRandom.length ? this.#lookUpRandom[this.#lookUpIndex = 0] : this.#lookUpRandom[this.#lookUpIndex]
     }
 
-    execute() {
+     execute = () => {
         const context = GPUState.context
         const shader = StaticShadersState.composition, uniforms = StaticShadersState.compositionUniforms
 

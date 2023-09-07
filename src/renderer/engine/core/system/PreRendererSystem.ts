@@ -6,11 +6,11 @@ import AbstractSystem from "../AbstractSystem";
 
 
 export default class PreRendererSystem extends AbstractSystem{
-	shouldExecute(): boolean {
+	 shouldExecute = (): boolean =>  {
 		return UberShader.uber != null;
 	}
 
-	execute() {
+	 execute = () => {
 		GPUState.context.flush()
 		Mesh.finishIfUsed()
 		StaticFBOState.postProcessing2.startMapping()

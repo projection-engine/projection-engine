@@ -15,7 +15,7 @@ export default class ContentBrowserStore extends AbstractStore{
 	}
 
 	static getItemById(id:string): MutableObject|undefined{
-		return ContentBrowserStore.getData().items.find(item => item.id === id)
+		return ContentBrowserStore.getData().items.find(item => item.registryID === id)
 	}
 
 	static getData(): typeof CONTENT_BROWSER_STATE {

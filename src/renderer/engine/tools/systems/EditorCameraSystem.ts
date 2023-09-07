@@ -46,7 +46,7 @@ export default class EditorCameraSystem extends AbstractSystem {
         fasterJonny: false
     }
 
-    execute() {
+     execute = () => {
         const map = this.#keysOnHold
         let changed = this.#forceUpdate
 

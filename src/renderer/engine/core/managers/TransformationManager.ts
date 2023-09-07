@@ -53,12 +53,16 @@ export default class TransformationManager {
         const all = []
         event.all.forEach(e => {
             if (EntityManager.hasComponent(e, Components.TRANSFORMATION) && EntityManager.hasComponent(e, Components.CULLING)) {
-                TransformationManager.#cullingMetadata.set(e, new Float32Array(new SharedArrayBuffer(24)))
+                TransformationManager.#registerEntity(e);
                 all.push(e)
             }
         })
         const ev = {type: WorkerMessages.ADD_BLOCK, payload: all.map(TransformationManager.#getEntityInfo)}
         TransformationManager.#workers.forEach(w => w.postMessage(ev))
+    }
+
+    static #registerEntity(e: EngineEntity) {
+        TransformationManager.#cullingMetadata.set(e, new Float32Array(new SharedArrayBuffer(24)))
     }
 
     static #onDelete(event: EntityListenerEvent<EngineEntity, Components>) {
@@ -100,6 +104,11 @@ export default class TransformationManager {
     }
 
     static getCullingMetadata(entity: EngineEntity) {
+        const map = TransformationManager.#cullingMetadata
+
+        if (!map.has(entity)) {
+            TransformationManager.#registerEntity(entity)
+        }
         return TransformationManager.#cullingMetadata.get(entity)
     }
 }

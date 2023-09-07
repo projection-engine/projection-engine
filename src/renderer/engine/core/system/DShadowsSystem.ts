@@ -15,11 +15,11 @@ import AssetResourceManager from "@engine-core/managers/AssetResourceManager";
 
 
 export default class DShadowsSystem extends AbstractSystem {
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EngineState.directionalLightsChanged || EngineState.directionalLightsToUpdate.length > 0;
     }
 
-    execute() {
+     execute = () => {
         const context = GPUState.context
         context.cullFace(context.FRONT)
         let currentColumn = 0, currentRow = 0

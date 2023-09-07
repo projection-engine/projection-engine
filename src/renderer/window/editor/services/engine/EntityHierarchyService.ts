@@ -4,6 +4,7 @@ import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EntityManager from "@engine-core/managers/EntityManager";
 import DynamicMap from "@engine-core/lib/DynamicMap";
+import LevelManager from "@engine-core/managers/LevelManager";
 
 
 export default class EntityHierarchyService {
@@ -24,9 +25,10 @@ export default class EntityHierarchyService {
 		}
 		const entities = EntityManager.getEntityKeys()
 		entities.forEach(e => {
-			if(EntityManager.hasParent(e))
-				return
-			callback(EditorEntityManager.getEntity(e), 0)
+			console.log(e, EntityManager.getParent(e), EditorEntityManager.getEntity(e))
+			if(EntityManager.getParent(e) == null) {
+				callback(EditorEntityManager.getEntity(e), 0)
+			}
 		})
 		EntityHierarchyService.hierarchy = data
 		EntityHierarchyService.#listening.array.forEach(v => v())

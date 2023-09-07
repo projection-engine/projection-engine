@@ -96,11 +96,11 @@ export default class IconsSystem extends AbstractSystem {
         }
     }
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return IconsSystem.iconsTexture != null
     }
 
-    execute() {
+     execute = () => {
         const context = GPUState.context
         const uniforms = StaticEditorShaders.iconUniforms
         StaticEditorShaders.icon.bind()

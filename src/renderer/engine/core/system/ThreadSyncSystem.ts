@@ -3,7 +3,7 @@ import TransformationManager from "../managers/TransformationManager";
 import CameraManager from "../managers/CameraManager";
 
 export default class ThreadSyncSystem extends AbstractSystem{
-    execute() {
+     execute = () => {
         TransformationManager.hasChangeBuffer[0] = 0
         CameraManager.syncThreads()
         TransformationManager.syncThreads()

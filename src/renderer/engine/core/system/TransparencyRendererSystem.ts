@@ -15,7 +15,7 @@ import TransformationComponent from "@engine-core/lib/components/TransformationC
 import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class TransparencyRendererSystem extends AbstractSystem {
-    execute() {
+     execute = () => {
         StaticFBOState.postProcessing2.stopMapping()
         loopMeshes(this.#loop)
         StaticFBOState.postProcessing2.stopMapping()

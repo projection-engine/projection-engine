@@ -29,6 +29,8 @@ export default class GizmoUtil {
     }
 
     static createTransformationCache(entity: EditorEntity) {
+        if(!entity)
+            return
         const component = EntityManager.getComponent(entity.id, Components.TRANSFORMATION) as TransformationComponent
         if (component && (component.changesApplied || !entity.__cacheCenterMatrix || EngineToolsState.pivotChanged.get(entity.id))) {
             const m = !entity.__cacheCenterMatrix ? mat4.create() : entity.__cacheCenterMatrix

@@ -5,11 +5,11 @@ import MetricsManager from "../managers/MetricsManager";
 import METRICS_FLAGS from "../static/METRICS_FLAGS";
 
 export default class ScriptExecutorSystem extends AbstractSystem{
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return !Engine.isDev && ScriptsManager.mountedScripts.length > 0;
     }
 
-    execute() {
+     execute = () => {
         const scripts = ScriptsManager.mountedScripts
         const size = scripts.length
         for (let i = 0; i < size; i++) {

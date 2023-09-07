@@ -50,11 +50,11 @@ export default class OShadowsSystem extends AbstractSystem {
         return this.get<OShadowsSystem>().sampler
     }
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EngineState.omnidirectionalLightsToUpdate.length > 0;
     }
 
-    execute() {
+     execute = () => {
         GPUState.context.cullFace(GPUState.context.BACK)
         GPUState.context.viewport(0, 0, 512, 512)
         for (let i = 0; i < OShadowsSystem.#MAX_CUBEMAPS; i++) {

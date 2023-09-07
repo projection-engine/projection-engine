@@ -8,11 +8,11 @@ export default class GarbageCollectorSystem extends AbstractSystem {
     #THRESHOLD = 1000
     #lastExecution = 0
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EngineState.elapsed - this.#lastExecution >= this.#THRESHOLD
     }
 
-    execute() {
+     execute = () => {
         const meshes = GPUState.meshes.array
         const textures = GPUState.textures.array
 

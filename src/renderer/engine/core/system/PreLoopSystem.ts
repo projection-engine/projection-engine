@@ -8,7 +8,7 @@ import EngineState from "../states/EngineState";
 export default class PreLoopSystem extends AbstractSystem{
     #previousTimestamp = 0
 
-    execute() {
+     execute = () => {
         const current = EngineState.currentTimeStamp
         EngineState.elapsed = current - this.#previousTimestamp
         this.#previousTimestamp = current

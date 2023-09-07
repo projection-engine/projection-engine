@@ -43,7 +43,7 @@ export default class IPCListener extends AbstractSingleton {
 
 	#reload() {
 		const electronInstance = ElectronWindowService.getInstance()
-		electronInstance.closeSubWindows()
+		electronInstance.recreateWindow()
 		electronInstance.bindEssentialResources(electronInstance.pathToProject).catch(console.error)
 	}
 

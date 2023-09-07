@@ -17,6 +17,8 @@
     import EditorUtil from "./util/EditorUtil"
     import ContentBrowserUtil from "./util/ContentBrowserUtil"
     import StorageKeys from "../../../shared/enums/StorageKeys"
+    import EditorEntityManager from "../../engine/tools/EditorEntityManager";
+    import EntityManager from "@engine-core/managers/EntityManager";
 
     const COMPONENT_ID = crypto.randomUUID()
     let isMetadataReady = false
@@ -26,6 +28,8 @@
     let currentViewIndex = 0
 
     onMount(() => {
+        window.editorEntityManager = EditorEntityManager
+        window.entityManager = EntityManager
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
     		view = data.views?.[data.currentView]
             currentViewIndex = data.currentView

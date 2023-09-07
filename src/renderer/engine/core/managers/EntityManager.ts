@@ -85,7 +85,7 @@ export default class EntityManager extends AbstractSingleton {
     static getEntityPickVec3(entity: EngineEntity): vec3 | undefined {
         const instance = EntityManager.getInstance()
         if (!instance.#pickVec3.has(entity) && EntityManager.entityExists(entity) && (EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
-            const index = instance.#pickInteger.size
+            const index = instance.#pickInteger.size + 4
             instance.#pickVec3.set(entity, PickingUtil.getPickerId(index) as vec3)
             instance.#pickInteger.set(index, entity)
         }
@@ -205,7 +205,7 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static createEntitiesById(entities: EngineEntity[]): EngineEntity[] {
-        if(!LevelManager.loadedLevel) {
+        if (!LevelManager.loadedLevel) {
             return
         }
         const activeEntities = EntityManager.getActiveEntities()
@@ -220,7 +220,7 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static removeEntities(entities: EngineEntity[]) {
-        if(!LevelManager.loadedLevel) {
+        if (!LevelManager.loadedLevel) {
             return
         }
         const removed = {}
@@ -267,7 +267,7 @@ export default class EntityManager extends AbstractSingleton {
 
     static #addComponentInternal(target: EngineEntity, componentType: Components, allAdded: Component[]) {
         const targetMap = EntityManager.getEntities().get(target)
-        if(!targetMap) {
+        if (!targetMap) {
             console.warn("NO MAP FOUND FOR ENTITY: " + target)
             return
         }
@@ -320,7 +320,7 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    static #updateByComponent(event: EntityListenerEvent<EngineEntity, Components>){
+    static #updateByComponent(event: EntityListenerEvent<EngineEntity, Components>) {
         const targets = event.all
         const instance = EntityManager.getInstance()
         switch (event.type) {
@@ -331,10 +331,10 @@ export default class EntityManager extends AbstractSingleton {
                 break
             }
             case "create": {
-                for (let targetI = 0; targetI < targets.length; targetI++){
+                for (let targetI = 0; targetI < targets.length; targetI++) {
                     const entity = targets[targetI];
                     const allComponents = EntityManager.getAllComponents(entity)
-                    for (let i = 0; i < allComponents.length; i++){
+                    for (let i = 0; i < allComponents.length; i++) {
                         const component = allComponents[i];
                         instance.#byComponent.get(component.getComponentKey()).set(entity, entity)
                     }
@@ -343,7 +343,7 @@ export default class EntityManager extends AbstractSingleton {
             }
             case "component-add": {
                 const targetComponents = event.targetComponents
-                for (let i = 0; i < targetComponents.length; i++){
+                for (let i = 0; i < targetComponents.length; i++) {
                     const component = targetComponents[i];
                     instance.#byComponent.get(component).set(event.target, event.target)
                 }
@@ -351,7 +351,7 @@ export default class EntityManager extends AbstractSingleton {
             }
             case "component-remove":
                 const targetComponents = event.targetComponents
-                for (let i = 0; i < targetComponents.length; i++){
+                for (let i = 0; i < targetComponents.length; i++) {
                     const component = targetComponents[i];
                     instance.#byComponent.get(component).delete(event.target)
                 }
@@ -364,6 +364,8 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
+        if (!entityData)
+            return
         const components = new DynamicMap<Components, Component>()
         EntityManager.getEntities().set(entityData.id, components)
 
@@ -417,7 +419,7 @@ export default class EntityManager extends AbstractSingleton {
 
 
     static getAllComponents(entity: EngineEntity) {
-        return EntityManager.getEntities().get(entity).array || []
+        return EntityManager.getEntities().get(entity)?.array || []
     }
 
     static getAllComponentsMap(entity: EngineEntity) {

@@ -8,7 +8,7 @@ import AbstractSystem from "../AbstractSystem";
 
 
 export default class PostProcessingSystem extends AbstractSystem{
-	execute() {
+	 execute = () => {
 
 		StaticFBOState.lens.startMapping()
 		StaticShadersState.lens.bind()

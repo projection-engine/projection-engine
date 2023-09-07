@@ -10,7 +10,7 @@ import EngineTools from "../EngineTools";
 export default class SilhouetteSystem extends AbstractSystem {
     static #FALLBACK_COLOR = new Float32Array([.5, .5, .5])
 
-    execute() {
+     execute = () => {
         const context = GPUState.context
 
         StaticEditorShaders.outline.bind()

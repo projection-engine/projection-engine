@@ -79,7 +79,7 @@ class TransformationPass {
 
     }
 
-    static execute() {
+    static  execute = () => {
         if (!TransformationPass.#initialized)
             return
         const entities = TransformationPass.targets.array
@@ -188,7 +188,7 @@ class TransformationPass {
         mat4.fromRotationTranslationScaleOrigin(entity.matrix, entity.rotationQuaternionFinal, entity.translation, scaling, entity.pivotPoint)
         mat4.multiply(entity.matrix, entity.matrix, entity.baseTransformationMatrix)
 
-        if (parentEntity.matrix)
+        if (parentEntity?.matrix != null)
             mat4.multiply(
                 entity.matrix,
                 parentEntity.matrix,

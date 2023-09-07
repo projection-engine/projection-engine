@@ -9,11 +9,11 @@ import AbstractSystem from "../../core/AbstractSystem";
 export default class GridSystem extends AbstractSystem {
     #buffer = new Float32Array([.3, 20, 50, 1])
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EngineToolsState.showGrid
     }
 
-    execute() {
+     execute = () => {
         const context = GPUState.context
         const uniforms = StaticEditorShaders.gridUniforms
         const buffer = this.#buffer

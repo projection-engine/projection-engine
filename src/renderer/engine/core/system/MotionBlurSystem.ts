@@ -10,11 +10,11 @@ import EngineState from "../states/EngineState";
 
 
 export default class MotionBlurSystem extends AbstractSystem {
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EngineState.motionBlurEnabled;
     }
 
-    execute() {
+     execute = () => {
         StaticFBOState.postProcessing1.startMapping()
         StaticShadersState.mb.bind()
         const uniforms = StaticShadersState.mbUniforms

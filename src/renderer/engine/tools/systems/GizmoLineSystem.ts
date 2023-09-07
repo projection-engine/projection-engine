@@ -12,11 +12,11 @@ export default class GizmoLineSystem extends AbstractSystem {
     static #NULL_VEC3_1 = <Float32Array>vec3.create().fill(1)
     static #LINE_SIZE = 1000000
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return GizmoState.targetGizmos.length > 0;
     }
 
-    execute() {
+     execute = () => {
         mat4.identity(GizmoLineSystem.#lineMatrix)
         GizmoUtil.applyTransformation(GizmoLineSystem.#lineMatrix, GizmoLineSystem.#NULL_QUAT, GizmoLineSystem.#NULL_VEC3, GizmoLineSystem.#NULL_VEC3_1)
         const axis = GizmoState.clickedAxis

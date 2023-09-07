@@ -38,7 +38,7 @@
             const entitiesSelected = EntitySelectionStore.getEntitiesSelected()
             for (let i = 0; i < entitiesSelected.length; i++) {
                 const currentEntity = EditorEntityManager.getEntity(entitiesSelected[i])
-                if (currentEntity && currentEntity.hasComponent(Components.TRANSFORMATION)) {
+                if (currentEntity != null && currentEntity.hasComponent(Components.TRANSFORMATION)) {
                     cache.push(currentEntity)
                     currentEntity.__originalTranslation = undefined
                     currentEntity.__originalPivot = undefined
@@ -77,12 +77,14 @@
 
     $: {
         mainEntity = targets[0]
-        mainEntityTransformationComponent = getTransformationComponent(mainEntity)
-        rotationType = mainEntityTransformationComponent.rotationType[0]
-        isSingle = targets.length === 1
-        lockedRotation = isSingle && mainEntityTransformationComponent.lockedRotation
-        lockedTranslation = isSingle && mainEntityTransformationComponent.lockedTranslation
-        lockedScaling = isSingle && mainEntityTransformationComponent.lockedScaling
+        if(mainEntity != null) {
+            mainEntityTransformationComponent = getTransformationComponent(mainEntity)
+            rotationType = mainEntityTransformationComponent.rotationType[0]
+            isSingle = targets.length === 1
+            lockedRotation = isSingle && mainEntityTransformationComponent.lockedRotation
+            lockedTranslation = isSingle && mainEntityTransformationComponent.lockedTranslation
+            lockedScaling = isSingle && mainEntityTransformationComponent.lockedScaling
+        }
     }
 
     function rotate(axis: number, value: number) {

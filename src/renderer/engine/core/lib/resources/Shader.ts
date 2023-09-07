@@ -184,14 +184,14 @@ export default class Shader {
 
     }
 
-    bind() {
+    bind = () =>  {
         if (GPUState.activeShader !== this) {
             GPUState.context.useProgram(this.program)
             GPUState.activeShader = this
         }
     }
 
-    bindForUse(data: MutableObject) {
+    bindForUse = (data: MutableObject) => {
         this.bind()
         let currentSamplerIndex = 0
         const increase = () => currentSamplerIndex++

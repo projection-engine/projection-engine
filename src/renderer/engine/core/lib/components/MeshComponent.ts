@@ -34,7 +34,7 @@ export default class MeshComponent extends Component {
     contributeToProbes = true
     overrideMaterialUniforms = false
 
-    resetUniforms() {
+    resetUniforms = () =>  {
         if (!this.materialID)
             return
         const mat = GPUState.materials.get(this.materialID)

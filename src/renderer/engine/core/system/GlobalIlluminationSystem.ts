@@ -23,7 +23,7 @@ export default class GlobalIlluminationSystem extends AbstractSystem {
         this.#uniformSettings[2] = EngineState.ssgiStrength
     }
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         if (!EngineState.ssgiEnabled && !this.#cleared) {
             StaticFBOState.ssgi.clear()
             this.#cleared = true
@@ -31,7 +31,7 @@ export default class GlobalIlluminationSystem extends AbstractSystem {
         return EngineState.ssgiEnabled;
     }
 
-    execute() {
+     execute = () => {
         this.#cleared = false
         const context = GPUState.context
         const uniforms = StaticShadersState.ssgiUniforms

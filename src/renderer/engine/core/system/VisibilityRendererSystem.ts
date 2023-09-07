@@ -73,11 +73,11 @@ export default class VisibilityRendererSystem extends AbstractSystem {
     }
 
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EngineState.visibilityNeedsUpdate || TransformationManager.hasChangeBuffer[0] !== 0;
     }
 
-    execute() {
+     execute = () => {
         context = GPUState.context
         if (!this.#isSecondPass) {
             this.#isSecondPass = true

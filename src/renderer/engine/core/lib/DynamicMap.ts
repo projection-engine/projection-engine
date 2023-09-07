@@ -25,7 +25,7 @@ export default class DynamicMap<K, T> extends Map<K, T> {
         return this
     }
 
-    clear() {
+    clear = () =>  {
         super.clear()
         this.#array.length = 0
     }

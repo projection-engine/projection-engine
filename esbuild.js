@@ -9,7 +9,7 @@ const COMMON = {
     bundle: true,
     target: ["es2022"],
     minify: production,
-    sourcemap: !production,
+    sourcemap: production ? false : "linked",
     ignoreAnnotations: true,
     loader: {".glsl": "text", ".frag": "text", ".vert": "text", ".svg": "text"}
 }
@@ -66,6 +66,7 @@ async function start() {
         format: "cjs",
         external: ["electron", "sharp"],
         outfile: "./build/index.js",
+
         plugins: [copy({assets: [{from: ["./src/static/*"], to: ["./"]}]})]
     }))
     entriesRegistered.push("build/index.js")

@@ -4,7 +4,7 @@ import StaticFBOState from "../states/StaticFBOState";
 import GPUState from "../states/GPUState";
 
 export default class PostRendererSystem extends AbstractSystem{
-    execute() {
+     execute = () => {
         GPUManager.copyTexture(StaticFBOState.postProcessing1, StaticFBOState.postProcessing2, GPUState.context.COLOR_BUFFER_BIT)
     }
 }

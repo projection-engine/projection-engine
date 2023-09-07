@@ -11,11 +11,11 @@ export default abstract class AbstractSystem extends AbstractSingleton {
 
     abstract execute()
 
-    shouldExecute(){
+    shouldExecute = () => {
         return true
     }
 
-    getSystemId() {
+    getSystemId = () => {
         return this.#id
     }
 }

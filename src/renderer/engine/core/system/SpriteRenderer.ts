@@ -12,11 +12,11 @@ import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
 import CullingComponent from "@engine-core/lib/components/CullingComponent";
 
 export default class SpriteRenderer extends AbstractSystem{
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return EntityManager.withComponent(Components.SPRITE).size > 0
     }
 
-    execute() {
+     execute = () => {
         const sprites = EntityManager.withComponent(Components.SPRITE).array
         const size = sprites.length
         const context = GPUState.context

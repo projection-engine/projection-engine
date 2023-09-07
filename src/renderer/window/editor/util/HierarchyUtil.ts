@@ -12,14 +12,14 @@ import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
 export default class HierarchyUtil {
     static buildTree(openTree: {
         [key: string]: boolean
-    }, search: string, filteredComponent: string): HierarchyToRenderElement[] {
+    }, searchString: string, filteredComponent: string): HierarchyToRenderElement[] {
 
         const hierarchy = EntityHierarchyService.hierarchy
-        const data: HierarchyToRenderElement[] = []
+        let data: HierarchyToRenderElement[] = []
         let blockStart = -1
         let minDepth = -1
         let blockEnd = -1
-        const hasSearch = search || filteredComponent
+        const hasSearch = searchString != null || filteredComponent != null
         for (let i = 0; i < hierarchy.length; i++) {
             const current = hierarchy[i]
             let node = current.node
@@ -37,7 +37,7 @@ export default class HierarchyUtil {
                     continue
                 blockEnd = i
                 if (blockEnd !== blockStart)
-                    HierarchyUtil.#searchTree(blockStart, blockEnd, data, hierarchy, search, filteredComponent)
+                    HierarchyUtil.#searchTree(blockStart, blockEnd, data, hierarchy, searchString, filteredComponent)
                 if (minDepth > hierarchy[i + 1]?.depth) {
                     blockStart = -1
                     minDepth = -1
@@ -53,7 +53,10 @@ export default class HierarchyUtil {
                     data.push(current)
             }
         }
-        return hasSearch ? data.filter(e => e !== undefined && e.node !== undefined) : data
+        if (hasSearch) {
+            data = data.filter(e => e !== undefined && e.node !== undefined)
+        }
+        return data
     }
 
 

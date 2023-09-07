@@ -15,6 +15,6 @@ export default abstract class Component implements IComponent{
 
     abstract getComponentKey(): Components
 
-    onUpdate() {}
+    onUpdate = () =>  {}
 
 }

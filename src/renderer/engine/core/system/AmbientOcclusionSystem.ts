@@ -27,11 +27,11 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
         StaticFBOState.generateSSAONoise().then(() => this.#ready = true)
     }
 
-    shouldExecute(): boolean {
+    shouldExecute = (): boolean => {
         return EngineState.ssaoEnabled && this.#ready && EngineState.shouldAOExecute;
     }
 
-    execute() {
+    execute = () => {
         this.#draw()
         this.#blur()
 
@@ -39,7 +39,7 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
         EngineState.shouldAOExecute = false
     }
 
-    #draw() {
+    #draw = () => {
         StaticFBOState.ssao.startMapping()
         StaticShadersState.ssao.bind()
 
@@ -54,7 +54,7 @@ export default class AmbientOcclusionSystem extends AbstractSystem {
         StaticFBOState.ssao.stopMapping()
     }
 
-    #blur() {
+    #blur = () => {
         StaticShadersState.boxBlur.bind()
         StaticFBOState.ssaoBlurred.startMapping()
 

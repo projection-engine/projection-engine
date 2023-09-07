@@ -11,11 +11,11 @@ import AbstractSystem from "../AbstractSystem";
 
 export default class BloomSystem extends AbstractSystem{
 
-    shouldExecute(): boolean {
+     shouldExecute = (): boolean =>  {
         return CameraManager.bloom;
     }
 
-    execute() {
+     execute = () => {
         const context = GPUState.context
         StaticFBOState.lens.startMapping()
         StaticShadersState.bloom.bind()
