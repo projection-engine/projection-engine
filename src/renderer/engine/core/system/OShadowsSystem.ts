@@ -2,9 +2,7 @@ import {mat4, vec3} from "gl-matrix"
 import ShadowProbe from "@engine-core/lib/resources/ShadowProbe"
 import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import loopMeshes from "./loop-meshes"
+import loopMeshes from "../utils/loop-meshes"
 import Mesh from "@engine-core/lib/resources/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../states/EngineState";
@@ -80,7 +78,6 @@ export default class OShadowsSystem extends AbstractSystem {
                 )
         }
         EngineState.omnidirectionalLightsToUpdate.length = 0
-        MetricsManager.currentState = METRICS_FLAGS.OMNIDIRECTIONAL_SHADOWS
     }
 
     #loop = (entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) => {

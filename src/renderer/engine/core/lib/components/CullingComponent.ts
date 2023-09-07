@@ -72,6 +72,5 @@ export default class CullingComponent extends Component {
 
     set isScreenDoorEnabled(data) {
         this.#getCullingMetadata()[5] = data ? 1 : 0
-
     }
 }

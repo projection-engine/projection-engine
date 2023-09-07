@@ -2,8 +2,6 @@ import GPUState from "../states/GPUState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../states/EngineState";
 import {Components} from "@engine-core/engine.enum";
@@ -58,7 +56,6 @@ export default class DShadowsSystem extends AbstractSystem {
         context.cullFace(context.BACK)
         EngineState.directionalLightsChanged = false
         EngineState.directionalLightsToUpdate.length = 0
-        MetricsManager.currentState = METRICS_FLAGS.DIRECTIONAL_SHADOWS
     }
 
     #loopMeshes(light: LightComponent) {

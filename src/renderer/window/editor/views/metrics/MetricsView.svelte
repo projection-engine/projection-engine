@@ -14,7 +14,6 @@
     	if (isRecording) {
     		toShow = MetricsManager.getRecord().sort((a, b) => b.percentage - a.percentage)
     		isRecording = isSampling = false
-
     	} else {
     		MetricsManager.start()
     		isRecording = isSampling = true

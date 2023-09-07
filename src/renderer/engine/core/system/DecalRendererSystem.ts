@@ -4,7 +4,6 @@ import UberShader from "../lib/UberShader";
 import StaticMeshesState from "../states/StaticMeshesState";
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
-import SceneRenderingUtil from "./SceneRenderingUtil";
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
 import CullingComponent from "@engine-core/lib/components/CullingComponent";
@@ -37,7 +36,8 @@ export default class DecalRendererSystem extends AbstractSystem{
                 continue
             const decalComponent = components.get(Components.DECAL) as DecalComponent
 
-            UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
+            UberMaterialAttributeGroup.screenDoorEffect = 0
+            // UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
             UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
 
             this.#bindDecalUniforms(uniforms, decalComponent)

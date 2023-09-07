@@ -6,9 +6,7 @@ import StaticShadersState from "../states/StaticShadersState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES"
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
-import loopMeshes from "./loop-meshes"
+import loopMeshes from "../utils/loop-meshes"
 import Mesh from "@engine-core/lib/resources/Mesh"
 import AbstractSystem from "../AbstractSystem";
 import EngineState from "../states/EngineState";
@@ -95,14 +93,13 @@ export default class VisibilityRendererSystem extends AbstractSystem {
 
         this.#drawSprites()
         StaticFBOState.visibility.stopMapping()
-        MetricsManager.currentState = METRICS_FLAGS.VISIBILITY
 
         EngineState.shouldAOExecute = true
     }
 
     #loop(entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) {
 
-        const hasScreenDoor = cullingComponent?.isScreenDoorEnabled
+        const hasScreenDoor = false// cullingComponent?.isScreenDoorEnabled
         const pId = EntityManager.getEntityPickVec3(entity)
         entityMetadata[0] = pId[0]
         entityMetadata[1] = pId[1]

@@ -1,10 +1,8 @@
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import SceneRenderingUtil from "./SceneRenderingUtil"
 import UberMaterialAttributeGroup from "../lib/UberMaterialAttributeGroup";
 import UberShader from "../lib/UberShader";
 import GPUState from "../states/GPUState";
-import loopMeshes from "./loop-meshes";
+import loopMeshes from "../utils/loop-meshes";
 import Mesh from "@engine-core/lib/resources/Mesh";
 import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import AbstractSystem from "../AbstractSystem";
@@ -25,14 +23,13 @@ export default class OpaqueRendererSystem extends AbstractSystem {
         UberMaterialAttributeGroup.clear()
         context.uniform1i(UberShader.uberUniforms.isDecalPass, 0)
         loopMeshes(this.#loop)
-        MetricsManager.currentState = METRICS_FLAGS.OPAQUE
     }
 
     #loop = (entity: EngineEntity, mesh: Mesh, material: Material, transformComponent: TransformationComponent, cullingComponent: CullingComponent) => {
 
         const uniforms = UberShader.uberUniforms
         const context = GPUState.context
-        UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
+        UberMaterialAttributeGroup.screenDoorEffect = 0// cullingComponent?.isScreenDoorEnabled ? 1 : 0
         UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
 
         if (this.#isSky) {

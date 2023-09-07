@@ -1,5 +1,3 @@
-import RendererLogger from "../../../shared/logger/RendererLogger"
-
 export default class WindowInitializer {
 	static initialize() {
 		document.addEventListener("pointerlockerror", WindowInitializer.#onPointerLockError, false)

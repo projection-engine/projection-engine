@@ -36,8 +36,8 @@ export default class ViewportInteractionListener extends AbstractSingleton {
 
 	}
 
-	#onMouseUp(event) {
-		GizmoMouseUtil.onMouseUp()
+	#onMouseUp(event: MouseEvent) {
+		GizmoMouseUtil.onMouseUp(event)
 
 		if (!Engine.isReady)
 			return

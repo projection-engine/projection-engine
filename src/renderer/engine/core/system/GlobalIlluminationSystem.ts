@@ -3,8 +3,6 @@ import StaticMeshesState from "../states/StaticMeshesState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
 import Framebuffer from "@engine-core/lib/resources/Framebuffer"
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import EngineState from "../states/EngineState"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
@@ -45,7 +43,6 @@ export default class GlobalIlluminationSystem extends AbstractSystem {
         this.#applyBlur(context, StaticFBOState.ssgiFallback, StaticFBOState.ssgiSampler, true)
         this.#applyBlur(context, StaticFBOState.ssgi, StaticFBOState.ssgiFallbackSampler, false)
 
-        MetricsManager.currentState = METRICS_FLAGS.SSGI
     }
 
     #applyBlur(context: WebGL2RenderingContext, FBO: Framebuffer, color: WebGLTexture, first: boolean) {

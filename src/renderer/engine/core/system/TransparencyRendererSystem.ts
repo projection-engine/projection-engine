@@ -7,7 +7,7 @@ import MATERIAL_RENDERING_TYPES from "../static/MATERIAL_RENDERING_TYPES";
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 import GPUManager from "../managers/GPUManager";
-import loopMeshes from "@engine-core/system/loop-meshes";
+import loopMeshes from "@engine-core/utils/loop-meshes";
 import Mesh from "@engine-core/lib/resources/Mesh";
 import Material from "@engine-core/lib/resources/Material";
 import CullingComponent from "@engine-core/lib/components/CullingComponent";
@@ -38,7 +38,7 @@ export default class TransparencyRendererSystem extends AbstractSystem {
     #renderEntity(entity: EngineEntity, mesh: Mesh, material: Material, cullingComponent: CullingComponent, transformationComponent: TransformationComponent) {
         const uniforms = UberShader.uberUniforms
         const context = GPUState.context
-        UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
+        // UberMaterialAttributeGroup.screenDoorEffect = cullingComponent?.isScreenDoorEnabled ? 1 : 0
         UberMaterialAttributeGroup.entityID = EntityManager.getEntityPickVec3(entity)
         UberMaterialAttributeGroup.materialID = material.bindID
         UberMaterialAttributeGroup.renderingMode = material.renderingMode

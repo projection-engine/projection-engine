@@ -1,8 +1,6 @@
 import GPUState from "../states/GPUState"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 import {Components} from "@engine-core/engine.enum";
@@ -25,7 +23,6 @@ export default class SpriteRenderer extends AbstractSystem{
         for (let i = 0; i < size; i++) {
             this.#render(sprites[i])
         }
-        MetricsManager.currentState = METRICS_FLAGS.SPRITE
         context.enable(context.CULL_FACE)
     }
 
@@ -34,7 +31,7 @@ export default class SpriteRenderer extends AbstractSystem{
         const culling = components.get(Components.CULLING) as CullingComponent
         const sprite = components.get(Components.SPRITE) as SpriteComponent
         const transform = components.get(Components.TRANSFORMATION) as TransformationComponent
-        if (!transform || culling.isDistanceCulled || !EntityManager.isEntityEnabled(entity) || culling?.isScreenDoorEnabled)
+        if (!transform || culling.isDistanceCulled || !EntityManager.isEntityEnabled(entity))
             return
         const uniforms = StaticShadersState.spriteUniforms
         const texture = GPUState.textures.get(sprite.imageID)

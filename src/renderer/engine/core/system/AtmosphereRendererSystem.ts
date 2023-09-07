@@ -1,8 +1,6 @@
 import GPUState from "../states/GPUState"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import AtmosphereComponent from "@engine-core/lib/components/AtmosphereComponent"
 import {mat4} from "gl-matrix"
 import CameraManager from "../managers/CameraManager"
@@ -28,7 +26,6 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
             this.#render(entities[i])
         }
         context.enable(context.DEPTH_TEST)
-        MetricsManager.currentState = METRICS_FLAGS.ATMOSPHERE
     }
 
     #render(entity: EngineEntity) {

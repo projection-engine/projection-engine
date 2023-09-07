@@ -4,6 +4,7 @@ import GPUState from "../states/GPUState";
 import TransformationManager from "../managers/TransformationManager";
 import LightsManager from "../managers/LightsManager";
 import EngineState from "../states/EngineState";
+import MetricsManager from "@engine-core/managers/MetricsManager";
 
 export default class PreLoopSystem extends AbstractSystem{
     #previousTimestamp = 0

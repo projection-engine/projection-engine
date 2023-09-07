@@ -1,5 +1,4 @@
 import EntityManager from "@engine-core/managers/EntityManager";
-import EngineFileSystemManager from "@engine-core/managers/EngineFileSystemManager";
 import GPUState from "@engine-core/states/GPUState";
 import GPUManager from "@engine-core/managers/GPUManager";
 import {Components} from "@engine-core/engine.enum";

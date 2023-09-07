@@ -29,10 +29,11 @@ export default class GizmoUtil {
     }
 
     static createTransformationCache(entity: EditorEntity) {
-        if(!entity)
+        if (!entity)
             return
         const component = EntityManager.getComponent(entity.id, Components.TRANSFORMATION) as TransformationComponent
-        if (component && (component.changesApplied || !entity.__cacheCenterMatrix || EngineToolsState.pivotChanged.get(entity.id))) {
+        const pivotChanged = EngineToolsState.pivotChanged.get(entity.id);
+        if (component != null && (component.changesApplied || !entity.__cacheCenterMatrix || pivotChanged)) {
             const m = !entity.__cacheCenterMatrix ? mat4.create() : entity.__cacheCenterMatrix
             GizmoUtil.#getPivotPointTranslation(entity)
 
@@ -96,6 +97,7 @@ export default class GizmoUtil {
             cameraIsOrthographic: CameraManager.isOrthographic
         }
         StaticEditorFBO.gizmo.startMapping()
+        StaticEditorShaders.toDepthBuffer.bind()
         for (let i = 0; i < GizmoState.targetGizmos.length; i++) {
             GizmoState.targetGizmos[i].drawToDepth(data)
         }
@@ -103,9 +105,13 @@ export default class GizmoUtil {
     }
 
     static drawToDepth(data: MutableObject, mesh: Mesh, transformation: mat4, pickId: vec3) {
-        data.transformMatrix = transformation
-        data.uID = pickId
-        StaticEditorShaders.toDepthBuffer.bindForUse(data)
+        const uniformMap = StaticEditorShaders.toDepthBuffer.uniformMap
+
+        GPUState.context.uniformMatrix4fv(uniformMap.transformMatrix, false, transformation)
+        GPUState.context.uniform1i(uniformMap.cameraIsOrthographic, data.cameraIsOrthographic)
+        GPUState.context.uniform3fv(uniformMap.uID, pickId)
+        GPUState.context.uniform3fv(uniformMap.translation, data.translation)
+
         mesh.draw()
     }
 
@@ -119,7 +125,7 @@ export default class GizmoUtil {
             return
         const isRelative = !GizmoState.isGlobal
         if (isRelative) {
-            const quatToMultiply =  GizmoState.targetRotation
+            const quatToMultiply = GizmoState.targetRotation
             let cacheVec3 = vec3.create()
             let cacheQuat = quat.create()
 

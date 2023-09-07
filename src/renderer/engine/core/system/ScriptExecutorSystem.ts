@@ -1,8 +1,6 @@
 import AbstractSystem from "../AbstractSystem";
 import Engine from "../Engine";
 import ScriptsManager from "../managers/ScriptsManager";
-import MetricsManager from "../managers/MetricsManager";
-import METRICS_FLAGS from "../static/METRICS_FLAGS";
 
 export default class ScriptExecutorSystem extends AbstractSystem{
      shouldExecute = (): boolean =>  {
@@ -21,6 +19,5 @@ export default class ScriptExecutorSystem extends AbstractSystem{
                 console.error(err)
             }
         }
-        MetricsManager.currentState = METRICS_FLAGS.SCRIPT
     }
 }

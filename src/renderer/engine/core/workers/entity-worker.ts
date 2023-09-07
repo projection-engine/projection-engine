@@ -1,7 +1,6 @@
 import {mat4, quat, vec3} from "gl-matrix"
 import DynamicMap from "../lib/DynamicMap"
-import {TransformationRotationTypes,} from "@engine-core/engine.enum";
-import {WorkerMessages,} from "@engine-core/engine.enum";
+import {TransformationRotationTypes, WorkerMessages,} from "@engine-core/engine.enum";
 
 const MIN_SCALE = 5e-10
 const EMPTY_QUATERNION = quat.create()

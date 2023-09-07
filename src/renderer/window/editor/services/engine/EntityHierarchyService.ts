@@ -4,7 +4,6 @@ import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EntityManager from "@engine-core/managers/EntityManager";
 import DynamicMap from "@engine-core/lib/DynamicMap";
-import LevelManager from "@engine-core/managers/LevelManager";
 
 
 export default class EntityHierarchyService {

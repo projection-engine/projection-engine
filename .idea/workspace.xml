@@ -9,15 +9,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows">
+    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs&#10;- Fixing rendering order">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/engine.enum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/engine.enum.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CullingComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CullingComponent.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/LevelManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/LevelManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/MetricsManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/MetricsManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/static/METRICS_FLAGS.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/loop-meshes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/loop-meshes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoMouseUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoMouseUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/EditorActionHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/EditorActionHistory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/EntityTreeBranchContent.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/EntityTreeBranchContent.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/metrics/MetricsView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/metrics/MetricsView.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/lib/ViewportInteractionListener.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/lib/ViewportInteractionListener.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/shared/WindowInitializer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/shared/WindowInitializer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,11 +115,11 @@
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\runtime" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\utils" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\views\inspector\static" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\static" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\states" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\managers" />
-      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\utils" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -204,14 +231,7 @@
       <workItem from="1693163851409" duration="618000" />
       <workItem from="1693167725153" duration="433000" />
       <workItem from="1694087650225" duration="10874000" />
-      <workItem from="1694107868545" duration="3177000" />
-    </task>
-    <task id="LOCAL-00034" summary="[STD-305] Organizing structure; Fixing grid mapping for translation">
-      <created>1688921445662</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1688921445662</updated>
+      <workItem from="1694107868545" duration="7850000" />
     </task>
     <task id="LOCAL-00035" summary="[STD-305] Fixing rotation gizmo;">
       <created>1688926163821</created>
@@ -549,7 +569,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694109782560</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="[STD-282] Fixing multiple bugs&#10;- Fixing rendering order">
+      <created>1694111287271</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1694111287271</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -572,7 +599,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/engine-core" />
     </ignored-roots>
-    <MESSAGE value="[STD-282] Organizing systems and engine state" />
     <MESSAGE value="[STD-282] Changing tools to integrate with new system pipeline" />
     <MESSAGE value="[STD-282] Reworking tools&#10;- New camera gizmo system&#10;- Reworked EditorCameraSystem&#10;- Reworked WireframeSystem&#10;- Reworking CameraIconSystem &#10;- Fixing SystemManager not filtering by active/inactive and shouldExecute&#10;- Fixing disableSystem" />
     <MESSAGE value="[STD-282] Organizing engine static files&#10;- Moving objects to enums&#10;- Moving all interfaces to engine.g.ts&#10;- Starting resource manager rework" />
@@ -597,7 +623,8 @@
     <MESSAGE value="[STD-282] Fixing multiple bugs" />
     <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;" />
     <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows" />
-    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows" />
+    <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing rendering order" />
+    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs&#10;- Fixing rendering order" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -614,7 +641,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/renderer/window/shared/WindowInitializer.ts</url>
-          <line>10</line>
+          <line>8</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">

@@ -8,8 +8,10 @@ import {vec3} from "gl-matrix"
 import StaticEditorFBO from "../../utils/StaticEditorFBO";
 
 export default class GizmoMouseUtil {
+    static #RIGHT_BUTTON = 2;
 
-    static onMouseUp() {
+    static onMouseUp(event: MouseEvent) {
+        if(event.button === GizmoMouseUtil.#RIGHT_BUTTON)
         GizmoState.hasTransformationStarted = false
         // document.exitPointerLock()
         GizmoState.clickedAxis = AXIS.NONE

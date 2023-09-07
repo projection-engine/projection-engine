@@ -1,55 +1,61 @@
-import METRICS_FLAGS, {REVERSED_METRICS_FLAGS} from "../static/METRICS_FLAGS"
-
 let started = false
 export default class MetricsManager {
-	static #elapsed = new Float32Array(Object.keys(METRICS_FLAGS).length)
-	static #totalElapsed = 0
-	static #start = 0
-	static #previousStart = 0
+    static #elapsed: { [key: string]: number } = {}
+    static #totalElapsed = 0
+    static #start = 0
+    static #previousStart = 0
 
-	static set currentState(data: number) {
-		if (!started)
-			return
+    static set currentState(data: string) {
+        if (!started)
+            return
 
-		const now = performance.now()
-		MetricsManager.#elapsed[data]+= now-MetricsManager.#previousStart
-		MetricsManager.#previousStart = now
-	}
-	static init(){
-		if (!started)
-			return
-		MetricsManager.#start = performance.now()
-		MetricsManager.#previousStart = performance.now()
-	}
-	static end(){
-		if (!started)
-			return
+        const now = performance.now()
+        if (!Object.hasOwn(MetricsManager.#elapsed, data)) {
+            MetricsManager.#elapsed[data] = now - MetricsManager.#previousStart
+        } else {
+            MetricsManager.#elapsed[data] = now - MetricsManager.#previousStart
+        }
+        MetricsManager.#previousStart = now
+    }
 
-		MetricsManager.#totalElapsed += performance.now() - MetricsManager.#start
-		MetricsManager.#previousStart = 0
-	}
-	static start() {
-		started = true
-		MetricsManager.#totalElapsed= 0
-		Object.keys(METRICS_FLAGS).forEach((_, i) => MetricsManager.#elapsed[i] = 0)
-	}
+    static init() {
+        if (!started)
+            return
+        MetricsManager.#start = performance.now()
+        MetricsManager.#previousStart = performance.now()
+    }
 
-	static getRecord() {
-		started = false
-		const data = MetricsManager.#elapsed
-		const totalElapsed = MetricsManager.#totalElapsed
-		const response = []
+    static end() {
+        if (!started)
+            return
 
-		for (let i = 0; i < data.length; i++) {
-			const percentage = data[i] / totalElapsed
-			response[i] = {
-				flag: REVERSED_METRICS_FLAGS[i.toString()],
-				percentage: percentage  * 100,
-				elapsed: (totalElapsed * percentage).toFixed(1)
-			}
-		}
+        MetricsManager.#totalElapsed += performance.now() - MetricsManager.#start
+        MetricsManager.#previousStart = 0
+    }
 
-		return response
-	}
+    static start() {
+        started = true
+        MetricsManager.#totalElapsed = 0
+        MetricsManager.#elapsed = {}
+    }
+
+    static getRecord() {
+        started = false
+        const data = Object.entries(MetricsManager.#elapsed)
+        const totalElapsed = MetricsManager.#totalElapsed
+        const response = []
+        console.trace(MetricsManager.#elapsed)
+        for (let i = 0; i < data.length; i++) {
+            const percentage = data[i][1] / totalElapsed
+            console.log(totalElapsed, data[i][1])
+            response[i] = {
+                flag: data[i][0],
+                percentage: percentage * 100,
+                elapsed: (totalElapsed * percentage).toFixed(1)
+            }
+        }
+
+        return response
+    }
 
 }

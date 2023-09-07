@@ -4,8 +4,6 @@ import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import Framebuffer from "@engine-core/lib/resources/Framebuffer"
-import MetricsManager from "../managers/MetricsManager"
-import METRICS_FLAGS from "../static/METRICS_FLAGS"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
 
@@ -38,7 +36,6 @@ export default class BloomSystem extends AbstractSystem{
             this.#upscale(fbo, context, i > 0 ? upscale[i - 1].colors[0] : undefined, downscale[downscale.length - 1 - i].colors[0])
         }
         this.#upscale(StaticFBOState.postProcessing2, context, StaticFBOState.postProcessing1Sampler, upscale[upscale.length - 1].colors[0])
-        MetricsManager.currentState = METRICS_FLAGS.BLOOM
     }
 
     #upscale(fbo: Framebuffer, context: WebGL2RenderingContext, nextSampler: WebGLTexture, blurredSampler: WebGLTexture) {

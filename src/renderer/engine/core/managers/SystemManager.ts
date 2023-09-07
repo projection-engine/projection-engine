@@ -4,6 +4,7 @@ import AbstractSystem from "../AbstractSystem";
 import {UUID} from "crypto";
 import PhysicsSystem from "../system/PhysicsSystem";
 import EngineState from "../states/EngineState";
+import MetricsManager from "@engine-core/managers/MetricsManager";
 
 export default class SystemManager extends AbstractSingleton {
     #executionQueue = new DynamicMap<UUID, AbstractSystem>()
@@ -46,12 +47,16 @@ export default class SystemManager extends AbstractSingleton {
         const queue = instance.#executionQueue.array
         const queueLength = queue.length
         EngineState.currentTimeStamp = c
+        MetricsManager.init()
         for (let i = 0; i < queueLength; i++) {
             const system = queue[i];
             if (system.shouldExecute() && systems.has(system.getSystemId())) {
                 system.execute()
+                MetricsManager.currentState = system.constructor.name
             }
         }
+        MetricsManager.end()
+
         instance.#frameId = requestAnimationFrame(SystemManager.#loop)
     }
 
