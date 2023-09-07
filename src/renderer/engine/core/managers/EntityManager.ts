@@ -19,6 +19,7 @@ export default class EntityManager extends AbstractSingleton {
     #pickVec3 = new Map<EngineEntity, vec3>
     #byComponent = new Map<Components, DynamicMap<EngineEntity, EngineEntity>>()
     static #preventDefaultTrigger = false
+    static #FALLBACK_PID = vec3.create();
 
     constructor() {
         super();
@@ -82,14 +83,16 @@ export default class EntityManager extends AbstractSingleton {
         return Array.from(EntityManager.getInstance().#entities.keys())
     }
 
-    static getEntityPickVec3(entity: EngineEntity): vec3 | undefined {
+    static getEntityPickVec3(entity: EngineEntity): vec3 {
         const instance = EntityManager.getInstance()
-        if (!instance.#pickVec3.has(entity) && EntityManager.entityExists(entity) && (EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
+        let pId = instance.#pickVec3.get(entity)
+        if (pId == null && EntityManager.entityExists(entity) && (EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
             const index = instance.#pickInteger.size + 4
-            instance.#pickVec3.set(entity, PickingUtil.getPickerId(index) as vec3)
+            pId = PickingUtil.getPickerId(index) as vec3
+            instance.#pickVec3.set(entity, pId)
             instance.#pickInteger.set(index, entity)
         }
-        return instance.#pickVec3.get(entity)
+        return pId ?? EntityManager.#FALLBACK_PID
     }
 
     static getEntityWithPickIndex(index: number): EngineEntity | undefined {

@@ -16,11 +16,12 @@ import LightComponent from "@engine-core/lib/components/LightComponent";
 import IconsManager from "../IconsManager";
 
 
+type CallbackFunc = (icon: RegisteredIcon, U?: { [key: string]: WebGLUniformLocation }) => void
 export default class IconsSystem extends AbstractSystem {
     static iconsTexture?: WebGLTexture
     static #iconAttributes = mat4.create()
 
-    static loop(cb, uniforms?: MutableObject) {
+    static loop(cb: CallbackFunc, uniforms?: { [key: string]: WebGLUniformLocation }) {
         const icons = IconsManager.getIcons()
         const size = icons.length
         for (let i = 0; i < size; i++) {
@@ -28,8 +29,13 @@ export default class IconsSystem extends AbstractSystem {
         }
     }
 
-    static drawIcon(icon: RegisteredIcon, U) {
-        const uniforms = U || StaticEditorShaders.iconUniforms
+    static drawIcon(icon: RegisteredIcon, U?: { [key: string]: WebGLUniformLocation }) {
+        const entity = icon.entity as EditorEntity
+        if (entity == null) {
+            return
+        }
+
+        const uniforms = U ?? StaticEditorShaders.iconUniforms
         const context = GPUState.context
         const {
             imageIndex,
@@ -38,11 +44,11 @@ export default class IconsSystem extends AbstractSystem {
             removeSphereCenter,
             scale
         } = icon
-        const entity = icon.entity as EditorEntity
-        const isSelected = entity.__isSelected ? 1 : 0,
-            color = entity._colorIdentifier
 
-        const iconAttributes = this.#iconAttributes
+        const isSelected = entity.__isSelected ? 1 : 0
+        const color = entity._colorIdentifier
+        const iconAttributes = IconsSystem.#iconAttributes
+
         iconAttributes[0] = doNotFaceCamera
         iconAttributes[1] = drawSphere
         iconAttributes[2] = removeSphereCenter
@@ -64,7 +70,11 @@ export default class IconsSystem extends AbstractSystem {
         StaticMeshesState.drawQuad()
     }
 
-    static #drawVisualizations(entity: EditorEntity) {
+    static #drawVisualizations(icon: RegisteredIcon) {
+        const entity = icon.entity as EditorEntity
+        if (entity == null) {
+            return
+        }
         const hasLight = entity.hasComponent(Components.LIGHT)
         const hasCamera = entity.hasComponent(Components.CAMERA)
         if (!hasCamera && !hasLight)
@@ -96,11 +106,11 @@ export default class IconsSystem extends AbstractSystem {
         }
     }
 
-     shouldExecute = (): boolean =>  {
+    shouldExecute = (): boolean => {
         return IconsSystem.iconsTexture != null
     }
 
-     execute = () => {
+    execute = () => {
         const context = GPUState.context
         const uniforms = StaticEditorShaders.iconUniforms
         StaticEditorShaders.icon.bind()
@@ -114,8 +124,9 @@ export default class IconsSystem extends AbstractSystem {
 
         if (EngineToolsState.showIcons)
             IconsSystem.loop(IconsSystem.drawIcon)
-        if (EngineToolsState.showLines)
+        if (EngineToolsState.showLines) {
             IconsSystem.loop(IconsSystem.#drawVisualizations)
+        }
         LineRenderer.finish()
         context.enable(context.DEPTH_TEST)
         context.enable(context.CULL_FACE)

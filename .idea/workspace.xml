@@ -9,66 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/esbuild.js" beforeDir="false" afterPath="$PROJECT_DIR$/esbuild.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/ElectronWindowService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/libs/IPCListener.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/libs/IPCListener.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/AbstractSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/AbstractSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/DynamicMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/DynamicMap.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/Component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/Component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/MeshComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/MeshComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Shader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Shader.ts" afterDir="false" />
+    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/TransformationManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/TransformationManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/GarbageCollectorSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/GarbageCollectorSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/workers/camera-worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/workers/camera-worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntityManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/CameraIconSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/CameraIconSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/ClearContextSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/ClearContextSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraGizmoSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraGizmoSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoLineSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoLineSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GizmoSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GridSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/GridSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/MouseCoordinateSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/MouseCoordinateSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SelectedSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SelectedSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SilhouetteSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/SilhouetteSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/WireframeSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/WireframeSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/Footer.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/Footer.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/PerformanceMetricsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/PerformanceMetricsSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EditorLevelService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EditorLevelService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/util/HierarchyUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/util/HierarchyUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/TransformationForm.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/TransformationForm.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/shared/stores/ContentBrowserStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/shared/stores/ContentBrowserStore.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/logger/MainLogger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/logger/MainLogger.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,14 +200,7 @@
       <workItem from="1693163851409" duration="618000" />
       <workItem from="1693167725153" duration="433000" />
       <workItem from="1694087650225" duration="10874000" />
-      <workItem from="1694107868545" duration="891000" />
-    </task>
-    <task id="LOCAL-00032" summary="[STD-305] Refactoring tools; Organizing common methods between gizmos;">
-      <created>1688844775517</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1688844775517</updated>
+      <workItem from="1694107868545" duration="1743000" />
     </task>
     <task id="LOCAL-00033" summary="[STD-305] Completing rewrite of gizmo structure">
       <created>1688910484357</created>
@@ -600,7 +538,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694092735983</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;">
+      <created>1694108960813</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1694108960813</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -623,7 +568,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/engine-core" />
     </ignored-roots>
-    <MESSAGE value="[STD-282] Implementing EntityManager with event listener structure; Creating SystemManager and AbstractSystem with injection of entities" />
     <MESSAGE value="[STD-282] Initializing rework of systems" />
     <MESSAGE value="[STD-282] Organizing systems and engine state" />
     <MESSAGE value="[STD-282] Changing tools to integrate with new system pipeline" />
@@ -648,7 +592,8 @@
     <MESSAGE value="[STD-282] Fixing build bugs" />
     <MESSAGE value="[STD-282] Fixing initialization bugs" />
     <MESSAGE value="[STD-282] Fixing multiple bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs" />
+    <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
