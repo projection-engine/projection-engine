@@ -349,6 +349,7 @@ export default class EditorCameraSystem extends AbstractSystem {
         forceUpdate?: boolean,
         screenSpaceMovement?: boolean
     }) {
+        console.trace(param)
         const instance = EditorCameraSystem.getInstance()
         instance.#screenSpaceMovementSpeed = Object.hasOwn(param, "screenSpaceMovementSpeed") ? param.screenSpaceMovementSpeed : instance.#screenSpaceMovementSpeed
         instance.#movementSpeed = Object.hasOwn(param, "movementSpeed") ? param.movementSpeed : instance.#movementSpeed

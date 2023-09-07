@@ -31,10 +31,10 @@ export default class TransformationManager {
         EntityManager.addEventListener("component-add", ev => {
             const toAdd = []
             ev.all.forEach(e => {
-                if (EntityManager.hasComponent(e, Components.TRANSFORMATION) && !this.#cullingMetadata.has(e))
+                if (EntityManager.hasComponent(e, Components.TRANSFORMATION) && !TransformationManager.#cullingMetadata.has(e))
                     toAdd.push(e)
             })
-            this.#onCreate({type: "create", all: toAdd})
+            TransformationManager.#onCreate({type: "create", all: toAdd})
         })
         EntityManager.addEventListener("component-remove", ev => {
             const toRemove = []
@@ -42,10 +42,10 @@ export default class TransformationManager {
                 if (!EntityManager.hasComponent(e, Components.TRANSFORMATION))
                     toRemove.push(e)
             })
-            this.#onDelete({type: "delete", all: toRemove})
+            TransformationManager.#onDelete({type: "delete", all: toRemove})
         })
-        EntityManager.addEventListener("create", this.#onCreate)
-        EntityManager.addEventListener("delete", this.#onDelete)
+        EntityManager.addEventListener("create", TransformationManager.#onCreate)
+        EntityManager.addEventListener("delete", TransformationManager.#onDelete)
     }
 
 
@@ -57,7 +57,7 @@ export default class TransformationManager {
                 all.push(e)
             }
         })
-        const ev = {type: WorkerMessages.ADD_BLOCK, payload: all.map(this.#getEntityInfo)}
+        const ev = {type: WorkerMessages.ADD_BLOCK, payload: all.map(TransformationManager.#getEntityInfo)}
         TransformationManager.#workers.forEach(w => w.postMessage(ev))
     }
 
@@ -81,7 +81,7 @@ export default class TransformationManager {
             pivotPoint: <Float32Array>transformComp.pivotPoint,
             baseTransformationMatrix: <Float32Array>transformComp.baseTransformationMatrix,
             absoluteTranslation: <Float32Array>transformComp.absoluteTranslation,
-            cullingMetadata: <Float32Array>this.getCullingMetadata(entity),
+            cullingMetadata: <Float32Array>TransformationManager.getCullingMetadata(entity),
             rotationType: <Float32Array>transformComp.rotationType,
             rotationEuler: <Float32Array>transformComp.rotationEuler,
             rotationQuaternionFinal: <Float32Array>transformComp.rotationQuaternionFinal,
@@ -100,7 +100,7 @@ export default class TransformationManager {
     }
 
     static getCullingMetadata(entity: EngineEntity) {
-        return this.#cullingMetadata.get(entity)
+        return TransformationManager.#cullingMetadata.get(entity)
     }
 }
 

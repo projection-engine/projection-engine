@@ -408,7 +408,7 @@ export default {
     EDITOR: "Scene Editor",
     UI: "UI Editor",
     UI_RENDERER: "UI Renderer",
-    EMPTY_ENTITY: "Empty EditorEntity",
+    EMPTY_ENTITY: "Empty entity",
     LAYOUT: "Layout",
     ADD_DETAILS: "Add entity",
     ACTIVE_ENTITY: "Active EditorEntity",

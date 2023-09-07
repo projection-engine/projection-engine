@@ -20,11 +20,10 @@ export default class FileSystemUtil {
 		FileSystemUtil.TEMP = ElectronResources.path.resolve(FileSystemUtil.path + FileSystemUtil.sep + Folders.TEMP + FileSystemUtil.sep)
 		FileSystemUtil.PREVIEW_PATH = ElectronResources.path.resolve(FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS + FileSystemUtil.sep)
 		FileSystemUtil.ASSETS_PATH = ElectronResources.path.resolve(FileSystemUtil.path + FileSystemUtil.sep + Folders.ASSETS + FileSystemUtil.sep)
-
-		if (FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS)
-		if (FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.ASSETS)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.ASSETS)
-		if (FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.REGISTRY)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.REGISTRY)
-		if (FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.TEMP)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.TEMP)
+		if (!FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS).catch(console.error)
+		if (!FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.ASSETS)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.ASSETS).catch(console.error)
+		if (!FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.REGISTRY)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.REGISTRY).catch(console.error)
+		if (!FileSystemUtil.exists(FileSystemUtil.path + FileSystemUtil.sep + Folders.TEMP)) await FileSystemUtil.mkdir(FileSystemUtil.path + FileSystemUtil.sep + Folders.TEMP).catch(console.error)
 	}
 
 

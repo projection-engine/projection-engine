@@ -20,6 +20,7 @@ import getContentBrowserActions from "../templates/get-content-browser-actions"
 import HotKeysController from "../../shared/lib/HotKeysController"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
 import NavigationHistory from "../views/content-browser/libs/NavigationHistory"
+import LevelTemplate from "@engine-core/static/LevelTemplate";
 
 export default class ContentBrowserUtil {
     static sortItems(arr: MutableObject[], isDSC: boolean, sortKey: string) {
@@ -384,7 +385,7 @@ export default class ContentBrowserUtil {
             {divider: true},
             {
                 label: LocalizationEN.LEVEL,
-                onClick: async () => ContentBrowserUtil.#createFile(currentDirectory, LocalizationEN.LEVEL, FileTypes.LEVEL, {entities: []})
+                onClick: async () => ContentBrowserUtil.#createFile(currentDirectory, LocalizationEN.LEVEL, FileTypes.LEVEL, LevelTemplate())
             },
             {divider: true},
             {

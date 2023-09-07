@@ -26,7 +26,7 @@
 
     onMount(() => {
     	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
-            EditorCameraSystem.updateProperties({screenSpaceMovement: data})
+            EditorCameraSystem.updateProperties(data)
     		screenSpaceMovement = data.screenSpaceMovement
     		camera = data.camera
     	}, ["screenSpaceMovement", "camera"])
@@ -78,7 +78,7 @@
             </button>
         {/each}
     </Dropdown>
-    <button data-sveltebuttondefault="-" disabled={focusedCamera == null} class="button viewport"
+    <button data-sveltebuttondefault="-" disabled={focusedCamera != null} class="button viewport"
             on:click={toggleProjection}>
         <ToolTip content={LocalizationEN.SWITCH_PROJECTION}/>
         {#if !camera.ortho}
@@ -90,14 +90,14 @@
         {/if}
     </button>
 
-    <button data-sveltebuttondefault="-" disabled={focusedCamera == null} class="button viewport"
+    <button data-sveltebuttondefault="-" disabled={focusedCamera != null} class="button viewport"
             style="max-width: 25px; justify-content: center"
             on:click={() => ViewportActionUtil.focus()}>
         <ToolTip content={LocalizationEN.FOCUS}/>
         <Icon styles="font-size: 1rem">my_location</Icon>
     </button>
 
-    <button data-sveltebuttondefault="-" disabled={focusedCamera == null} class="button viewport"
+    <button data-sveltebuttondefault="-" disabled={focusedCamera != null} class="button viewport"
             style="max-width: 25px; justify-content: center"
             on:click={() => SettingsStore.updateStore({screenSpaceMovement: !screenSpaceMovement})}>
         <ToolTip content={LocalizationEN.TOGGLE_CAMERA_MOVEMENT}/>

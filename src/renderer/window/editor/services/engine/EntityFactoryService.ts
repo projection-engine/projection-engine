@@ -30,6 +30,8 @@ function create(_, k: string, descriptor: PropertyDescriptor) {
 export default class EntityFactoryService {
     static translateEntity(entity: EngineEntity) {
         const transformComponent = EntityManager.getComponent<TransformationComponent>(entity, Components.TRANSFORMATION)
+        if(!transformComponent)
+            return;
         if (SettingsStore.getData().spawnOnOrigin) {
             vec3.copy(transformComponent.translation, [0, 0, 0])
             transformComponent.__changedBuffer[0] = 1
@@ -44,7 +46,7 @@ export default class EntityFactoryService {
 
     @create
     static createEmpty() {
-        const entity = EditorEntityManager.create(undefined)
+        const entity = EditorEntityManager.create()
         entity.name = LocalizationEN.NEW_ENTITY
         return entity
     }

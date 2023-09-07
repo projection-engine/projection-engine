@@ -13,7 +13,7 @@ export default class LevelManager {
         return this.#loadedLevel
     }
 
-    static async loadLevel(levelID: string, cleanEngine?: boolean) {
+    static async loadLevel(asset: { engineState: string }, levelID: string, cleanEngine?: boolean) {
         if (!levelID || LevelManager.#loadedLevel === levelID && !cleanEngine)
             return []
         try {
@@ -22,14 +22,11 @@ export default class LevelManager {
                 GPUState.textures.forEach(m => GPUManager.destroyTexture(m.id))
                 GPUState.materials.clear()
             }
-
-            const asset = await EngineFileSystemManager.readAsset(levelID)
-            if(asset != null) {
-                const {engineState} = JSON.parse(asset) as EngineLevel<Components, Component>
-                if(!engineState)
-                    return
-                this.restoreState(JSON.parse(engineState))
-            }
+            const engineState = JSON.parse(asset.engineState) as EngineState<Components, Component>
+            if (!engineState)
+                return
+            this.restoreState(engineState)
+            this.#loadedLevel = levelID
         } catch (err) {
             console.error(err)
         }
@@ -40,23 +37,29 @@ export default class LevelManager {
         try {
             EntityManager.clear()
             EntityManager.delayedOperation(() => {
-                for (let i = 0; i < data.entities.length; i++) {
-                    EntityManager.parseEntity(data[i]);
+                try {
+                    for (let i = 0; i < data.entities.length; i++) {
+                        EntityManager.parseEntity(data[i]);
+                    }
+                    EntityManager.clearPickingCache()
+                    for (let i = 0; i < data.parentChildren.length; i++) {
+                        const e = data.parentChildren[i];
+                        EntityManager.getParentChildren().set(e[0], e[1])
+                    }
+                    for (let i = 0; i < data.childParent.length; i++) {
+                        const e = data.childParent[i];
+                        EntityManager.getChildParent().set(e[0], e[1])
+                    }
+                    for (let i = 0; i < data.activeEntities.length; i++) {
+                        const e = data.activeEntities[i];
+                        EntityManager.getActiveEntities().set(e[0], e[1])
+                    }
+                    return [{all: data.entities.map(e => e.id), type: "create"}]
+                } catch (err) {
+                    EntityManager.clear()
+                    console.error(err)
                 }
-                EntityManager.clearPickingCache()
-                for (let i = 0; i < data.parentChildren.length; i++) {
-                    const e = data.parentChildren[i];
-                    EntityManager.getParentChildren().set(e[0], e[1])
-                }
-                for (let i = 0; i < data.childParent.length; i++) {
-                    const e = data.childParent[i];
-                    EntityManager.getChildParent().set(e[0], e[1])
-                }
-                for (let i = 0; i < data.activeEntities.length; i++) {
-                    const e = data.activeEntities[i];
-                    EntityManager.getActiveEntities().set(e[0], e[1])
-                }
-                return [{all: data.entities.map(e => e.id), type: "create"}]
+                return []
             })
         } catch (err) {
             EntityManager.clear()

@@ -96,10 +96,9 @@ export default class EditorLevelService extends AbstractSingleton {
         EditorActionHistory.clear()
         EntitySelectionStore.updateStore({array: []})
         EntitySelectionStore.setLockedEntity(undefined)
-
-        const {editorState} = JSON.parse(await EditorFSUtil.readAsset(levelID))
-        EditorEntityManager.restoreState(editorState)
-        await LevelManager.loadLevel(levelID, false)
+        const data = JSON.parse(await EditorFSUtil.readAsset(levelID))
+        EditorEntityManager.restoreState(data.editorState)
+        await LevelManager.loadLevel(data, levelID, false)
 
         if(EntityManager.getEntities().size > 0) {
             EntitySelectionStore.setLockedEntity(EntityManager.getEntityKeys()[0])

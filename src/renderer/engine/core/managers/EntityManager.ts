@@ -7,6 +7,7 @@ import {Components} from "../engine.enum";
 import {vec3} from "gl-matrix";
 import LightsManager from "@engine-core/managers/LightsManager";
 import PickingUtil from "@engine-core/utils/PickingUtil";
+import LevelManager from "@engine-core/managers/LevelManager";
 
 export default class EntityManager extends AbstractSingleton {
     #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<EngineEntity, Components>[]>
@@ -27,7 +28,11 @@ export default class EntityManager extends AbstractSingleton {
         this.#listeners.set("delete", [])
         this.#listeners.set("update", [])
         this.#listeners.set("hierarchy-change", [])
-        Object.values(Components).forEach(c => this.#byComponent.set(c as Components, new DynamicMap<EngineEntity, EngineEntity>()))
+        const comps = Object.values(Components)
+        for (let i = 0; i < comps.length; i++) {
+            const c = comps[i];
+            this.#byComponent.set(c as Components, new DynamicMap<EngineEntity, EngineEntity>());
+        }
     }
 
     static getInstance(): EntityManager {
@@ -41,10 +46,10 @@ export default class EntityManager extends AbstractSingleton {
     static addEventListener(type: EntityEventTypes, callback: GenericVoidFunctionWithP<EntityListenerEvent<EngineEntity, Components>>, options?: EntityListenerOptions): GenericVoidFunction {
         if (type === "hard-change") {
             const toRemove = [
-                this.addEventListener("component-add", callback, options),
-                this.addEventListener("component-remove", callback, options),
-                this.addEventListener("create", callback, options),
-                this.addEventListener("delete", callback, options)
+                EntityManager.addEventListener("component-add", callback, options),
+                EntityManager.addEventListener("component-remove", callback, options),
+                EntityManager.addEventListener("create", callback, options),
+                EntityManager.addEventListener("delete", callback, options)
             ]
             return () => toRemove.forEach(f => f())
         } else {
@@ -70,16 +75,16 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static getEntities() {
-        return this.getInstance().#entities
+        return EntityManager.getInstance().#entities
     }
 
     static getEntityKeys(): EngineEntity [] {
-        return Array.from(this.getInstance().#entities.keys())
+        return Array.from(EntityManager.getInstance().#entities.keys())
     }
 
     static getEntityPickVec3(entity: EngineEntity): vec3 | undefined {
-        const instance = this.getInstance()
-        if (!instance.#pickVec3.has(entity) && this.entityExists(entity) && (this.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || this.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
+        const instance = EntityManager.getInstance()
+        if (!instance.#pickVec3.has(entity) && EntityManager.entityExists(entity) && (EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
             const index = instance.#pickInteger.size
             instance.#pickVec3.set(entity, PickingUtil.getPickerId(index) as vec3)
             instance.#pickInteger.set(index, entity)
@@ -88,41 +93,41 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static getEntityWithPickIndex(index: number): EngineEntity | undefined {
-        return this.getInstance().#pickInteger.get(index)
+        return EntityManager.getInstance().#pickInteger.get(index)
     }
 
     static getState() {
         return {
-            entities: this.getEntities(),
+            entities: EntityManager.getEntities(),
             childParent: EntityManager.getInstance().#childParent,
             parentChildren: EntityManager.getInstance().#parentChildren
         }
     }
 
     static toggleEntityActiveState(entity: EngineEntity) {
-        const original = this.getActiveEntities().get(entity)
-        this.#enableDisableEntityInternal([entity], !original)
-        if (this.hasComponent(entity, Components.LIGHT) || this.hasComponent(entity, Components.ATMOSPHERE)) {
+        const original = EntityManager.getActiveEntities().get(entity)
+        EntityManager.#enableDisableEntityInternal([entity], !original)
+        if (EntityManager.hasComponent(entity, Components.LIGHT) || EntityManager.hasComponent(entity, Components.ATMOSPHERE)) {
             LightsManager.packageLights(false, true)
         }
     }
 
     static #enableDisableEntityInternal(entities: EngineEntity[], state: boolean) {
         const collected: EngineEntity[] = []
-        const activeEntities = this.getActiveEntities()
+        const activeEntities = EntityManager.getActiveEntities()
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
-            collected.push(...this.getChildren(entity))
+            collected.push(...EntityManager.getChildren(entity))
             activeEntities.set(entity, state)
         }
-        this.clearPickingCache()
+        EntityManager.clearPickingCache()
         if (collected.length > 0) {
-            this.#enableDisableEntityInternal(collected, state)
+            EntityManager.#enableDisableEntityInternal(collected, state)
         }
     }
 
     static isEntityEnabled(entity: EngineEntity): boolean {
-        return this.getActiveEntities().get(entity)
+        return EntityManager.getActiveEntities().get(entity)
     }
 
     static getChildren(entity: EngineEntity): EngineEntity[] {
@@ -138,8 +143,8 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static addParent(child: EngineEntity, parent: EngineEntity | undefined) {
-        const prevParent = this.getParent(child)
-        const ins = this.getInstance()
+        const prevParent = EntityManager.getParent(child)
+        const ins = EntityManager.getInstance()
         ins.#childParent.set(child, parent)
         if (prevParent) {
             const parentArr = ins.#parentChildren.get(prevParent) || []
@@ -151,7 +156,7 @@ export default class EntityManager extends AbstractSingleton {
                 parentArr.push(child)
             EntityManager.getInstance().#parentChildren.set(parent, parentArr)
         }
-        this.#callListeners({type: "hierarchy-change"})
+        EntityManager.#callListeners({type: "hierarchy-change"})
     }
 
     static addChildren(parent: EngineEntity, children: EngineEntity[]) {
@@ -159,73 +164,78 @@ export default class EntityManager extends AbstractSingleton {
         const parentArr = ins.#parentChildren.get(parent) || []
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
-            const prevParent = this.getParent(child)
+            const prevParent = EntityManager.getParent(child)
             ins.#childParent.set(child, parent)
             if (prevParent) {
                 const parentArr = ins.#parentChildren.get(prevParent) || []
                 EntityManager.getInstance().#parentChildren.set(prevParent, parentArr.filter(e => e === child))
             }
         }
-        this.clearPickingCache()
+        EntityManager.clearPickingCache()
         ins.#parentChildren.set(parent, Array.from(new Set([...parentArr, ...children])))
     }
 
     static getComponent<T>(entity: EngineEntity, component: Components): T | undefined {
         if (!entity)
             return
-        return this.getEntities().get(entity)?.get?.(component) as T
+        return EntityManager.getEntities().get(entity)?.get?.(component) as T
     }
 
     static clone(entity: EngineEntity, targetId?: EngineEntity) {
         const id = targetId ?? crypto.randomUUID()
-        const str = serializeStructure({id, components: Array.from(this.getEntities().get(entity).entries())})
-        this.parseEntity(JSON.parse(str))
-        this.clearPickingCache()
+        const str = serializeStructure({id, components: Array.from(EntityManager.getEntities().get(entity).entries())})
+        EntityManager.parseEntity(JSON.parse(str))
+        EntityManager.clearPickingCache()
         return id
     }
 
     static updateProperty(entity: EngineEntity, component: Components, key: string, value: any) {
-        this.getEntities().get(entity).get(component)[key] = value
-        this.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
+        EntityManager.getEntities().get(entity).get(component)[key] = value
+        EntityManager.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
     }
 
     static updateProperties(entity: EngineEntity, component: Components, properties: MutableObject) {
         const entries = Object.entries(properties)
-        const componentInstance = this.getEntities().get(entity).get(component)
+        const componentInstance = EntityManager.getEntities().get(entity).get(component)
         for (let i = 0; i < entries.length; i++) {
             const [key, value] = entries[i];
             componentInstance[key] = value
         }
-        this.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
+        EntityManager.#callListeners({target: entity, all: [entity], type: "update", targetComponents: [component]})
     }
 
     static createEntitiesById(entities: EngineEntity[]): EngineEntity[] {
-        const activeEntities = this.getActiveEntities()
+        if(!LevelManager.loadedLevel) {
+            return
+        }
+        const activeEntities = EntityManager.getActiveEntities()
         for (let i = 0; i < entities.length; i++) {
             const newEntity = entities[i]
-            entities.push(newEntity)
             activeEntities.set(newEntity, true)
-            this.getEntities().set(newEntity, new DynamicMap<Components, Component>())
+            EntityManager.getEntities().set(newEntity, new DynamicMap<Components, Component>())
         }
-        this.clearPickingCache()
-        this.#callListeners({all: entities, type: "create"})
+        EntityManager.clearPickingCache()
+        EntityManager.#callListeners({all: entities, type: "create"})
         return entities
     }
 
     static removeEntities(entities: EngineEntity[]) {
+        if(!LevelManager.loadedLevel) {
+            return
+        }
         const removed = {}
         const allRemoved = []
-        this.#removeEntitiesInternal(entities, removed, allRemoved)
-        this.clearPickingCache()
-        this.#callListeners({all: allRemoved, type: "delete"})
+        EntityManager.#removeEntitiesInternal(entities, removed, allRemoved)
+        EntityManager.clearPickingCache()
+        EntityManager.#callListeners({all: allRemoved, type: "delete"})
     }
 
     static #removeEntitiesInternal(entities: EngineEntity[], removed: TypedObject<boolean>, allRemoved: EngineEntity[]) {
         const collected: EngineEntity[] = []
-        const activeEntities = this.getActiveEntities()
+        const activeEntities = EntityManager.getActiveEntities()
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
-            this.getEntities().delete(entity);
+            EntityManager.getEntities().delete(entity);
             activeEntities.delete(entity)
             if (!removed[entity]) {
                 const parentEntity = EntityManager.getInstance().#childParent.get(entity)
@@ -235,18 +245,18 @@ export default class EntityManager extends AbstractSingleton {
                     EntityManager.getInstance().#parentChildren.set(parentEntity, parentDeps.filter(e => e !== entity))
                 }
             }
-            collected.push(...this.getChildren(entity))
+            collected.push(...EntityManager.getChildren(entity))
             allRemoved.push(entity)
         }
         if (collected.length > 0) {
-            this.#removeEntitiesInternal(collected, removed, allRemoved)
+            EntityManager.#removeEntitiesInternal(collected, removed, allRemoved)
         }
     }
 
     static addComponent(target: EngineEntity, componentType: Components): Component {
         const allAdded: Component[] = []
-        this.#addComponentInternal(target, componentType, allAdded)
-        this.#callListeners({
+        EntityManager.#addComponentInternal(target, componentType, allAdded)
+        EntityManager.#callListeners({
             target,
             all: [target],
             type: "component-add",
@@ -256,21 +266,25 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static #addComponentInternal(target: EngineEntity, componentType: Components, allAdded: Component[]) {
-        const targetMap = this.getEntities().get(target)
+        const targetMap = EntityManager.getEntities().get(target)
+        if(!targetMap) {
+            console.warn("NO MAP FOUND FOR ENTITY: " + target)
+            return
+        }
         if (!targetMap.has(componentType)) {
             const newInstance = getComponentInstance(target, componentType)
             targetMap.set(componentType, newInstance)
             allAdded.push(newInstance)
         }
         targetMap.get(componentType).getDependencies().forEach(c => {
-            this.#addComponentInternal(target, c, allAdded)
+            EntityManager.#addComponentInternal(target, c, allAdded)
         })
     }
 
     static removeComponent(target: EngineEntity, componentType: Components) {
         const allRemoved: Components[] = []
-        this.#removeComponentInternal(target, componentType, allRemoved)
-        this.#callListeners({
+        EntityManager.#removeComponentInternal(target, componentType, allRemoved)
+        EntityManager.#callListeners({
             target: target,
             all: [target],
             type: "component-remove",
@@ -279,7 +293,7 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static #removeComponentInternal(target: EngineEntity, componentType: Components, allRemoved: Components[]) {
-        const targetMap = this.getEntities().get(target)
+        const targetMap = EntityManager.getEntities().get(target)
         const instance = targetMap.get(componentType)
         const componentsToRemove: Components[] = []
         if (instance != null) {
@@ -291,15 +305,15 @@ export default class EntityManager extends AbstractSingleton {
             targetMap.delete(componentType)
             allRemoved.push(componentType)
         }
-        componentsToRemove.forEach(comp => this.#removeComponentInternal(target, comp, allRemoved))
+        componentsToRemove.forEach(comp => EntityManager.#removeComponentInternal(target, comp, allRemoved))
     }
 
     static #callListeners(event: EntityListenerEvent<EngineEntity, Components>) {
-        if (this.#preventDefaultTrigger)
+        if (EntityManager.#preventDefaultTrigger)
             return
         const listeners = EntityManager.getInstance().#listeners.get(event.type)
         Object.freeze(event)
-        this.#updateByComponent(event)
+        EntityManager.#updateByComponent(event)
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i]
             listener.callback(event)
@@ -308,7 +322,7 @@ export default class EntityManager extends AbstractSingleton {
 
     static #updateByComponent(event: EntityListenerEvent<EngineEntity, Components>){
         const targets = event.all
-        const instance = this.getInstance()
+        const instance = EntityManager.getInstance()
         switch (event.type) {
             case "delete": {
                 instance.#byComponent.forEach(component => {
@@ -346,17 +360,17 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static withComponent<T extends Component>(component: Components): DynamicMap<EngineEntity, EngineEntity> {
-        return this.getInstance().#byComponent.get(component)
+        return EntityManager.getInstance().#byComponent.get(component)
     }
 
     static parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
         const components = new DynamicMap<Components, Component>()
-        this.getEntities().set(entityData.id, components)
+        EntityManager.getEntities().set(entityData.id, components)
 
         for (let i1 = 0; i1 < entityData.components.length; i1++) {
             const componentObject = entityData.components[i1];
             try {
-                const instance = this.#parseComponent(entityData.id, componentObject[1], componentObject[0])
+                const instance = EntityManager.#parseComponent(entityData.id, componentObject[1], componentObject[0])
                 components.set(componentObject[0], instance)
             } catch (err) {
                 console.error(err)
@@ -403,23 +417,23 @@ export default class EntityManager extends AbstractSingleton {
 
 
     static getAllComponents(entity: EngineEntity) {
-        return this.getEntities().get(entity).array || []
+        return EntityManager.getEntities().get(entity).array || []
     }
 
     static getAllComponentsMap(entity: EngineEntity) {
-        return this.getEntities().get(entity)
+        return EntityManager.getEntities().get(entity)
     }
 
     static getActiveEntities() {
-        return this.getInstance().#activeEntities
+        return EntityManager.getInstance().#activeEntities
     }
 
     static hasComponent(entity: EngineEntity, component: Components) {
-        return this.getEntities().get(entity)?.has?.(component) ?? false
+        return EntityManager.getEntities().get(entity)?.has?.(component) ?? false
     }
 
     static hasAllComponents(entity: EngineEntity, ...components: Components[]) {
-        const list = this.getEntities().get(entity)
+        const list = EntityManager.getEntities().get(entity)
         if (!list)
             return false
         let has = true
@@ -430,42 +444,42 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static delayedOperation(callback: GenericNonVoidFunction<EntityListenerEvent<EngineEntity, Components>[]>) {
-        this.#preventDefaultTrigger = true
+        EntityManager.#preventDefaultTrigger = true
         const events = callback()
-        this.#preventDefaultTrigger = false
-        events.forEach(this.#callListeners)
+        EntityManager.#preventDefaultTrigger = false
+        events.forEach(EntityManager.#callListeners)
     }
 
     static getEntityIds(): EngineEntity[] {
-        return Array.from(this.getEntities().keys());
+        return Array.from(EntityManager.getEntities().keys());
     }
 
     static clearPickingCache() {
-        const i = this.getInstance()
+        const i = EntityManager.getInstance()
         i.#pickInteger.clear()
         i.#pickVec3.clear()
     }
 
     static entityExists(found: EngineEntity): boolean {
-        return this.getInstance().#entities.has(found);
+        return EntityManager.getInstance().#entities.has(found);
     }
 
     static clear() {
-        this.delayedOperation(() => {
-            const ids = this.getEntityIds()
-            this.getInstance().#childParent.clear()
-            this.getInstance().#parentChildren.clear()
-            this.removeEntities(ids)
+        EntityManager.delayedOperation(() => {
+            const ids = EntityManager.getEntityIds()
+            EntityManager.getInstance().#childParent.clear()
+            EntityManager.getInstance().#parentChildren.clear()
+            EntityManager.removeEntities(ids)
             return [{type: "delete", all: ids}, {type: "hierarchy-change"}]
         })
     }
 
     static getParentChildren() {
-        return this.getInstance().#parentChildren
+        return EntityManager.getInstance().#parentChildren
     }
 
     static getChildParent() {
-        return this.getInstance().#childParent
+        return EntityManager.getInstance().#childParent
 
     }
 }

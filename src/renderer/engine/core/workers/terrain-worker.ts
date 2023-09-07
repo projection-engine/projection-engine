@@ -9,8 +9,7 @@ function sampleTexture(x, y, buffer, heightScale, canvasSize) {
 }
 
 async function buildTerrain(base64, scale, dimension) {
-	// @ts-ignore
-	const {imageToLoad, imageData, canvas} = getImageData(base64)
+	const {imageToLoad, imageData, canvas} = await getImageData(base64)
 	const vertexCount = imageToLoad.width
 	const count = vertexCount ** 2
 
