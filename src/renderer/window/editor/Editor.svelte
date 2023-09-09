@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {onDestroy, onMount} from "svelte"
     import Viewport from "./components/view/CentralView.svelte"
     import Footer from "./components/footer/Footer.svelte"
@@ -17,94 +17,116 @@
     import EditorUtil from "./util/EditorUtil"
     import ContentBrowserUtil from "./util/ContentBrowserUtil"
     import StorageKeys from "../../../shared/enums/StorageKeys"
-    import EditorEntityManager from "../../engine/tools/EditorEntityManager";
-    import EntityManager from "@engine-core/managers/EntityManager";
+    import Icon from "../shared/components/icon/Icon.svelte";
+    import LocalizationEN from "../../../shared/enums/LocalizationEN";
+    import WindowFrameUtil from "./util/WindowFrameUtil";
 
     const COMPONENT_ID = crypto.randomUUID()
     let isMetadataReady = false
     let isContextInitialized = false
     let view
     let cameraGizmoSize
+    let errorInitializing = false
     let currentViewIndex = 0
 
     onMount(() => {
-        window.editorEntityManager = EditorEntityManager
-        window.entityManager = EntityManager
-    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
-    		view = data.views?.[data.currentView]
+        SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
+            view = data.views?.[data.currentView]
             currentViewIndex = data.currentView
-    		cameraGizmoSize = data.cameraGizmoSize
-    	}, ["views", "currentView", "cameraGizmoSize"])
-    	EngineStore.getInstance().addListener(COMPONENT_ID, data => HotKeysController.blockActions = data.executingAnimation, ["executingAnimation"])
-    	StoreIPCListener.get()
-    	ToastNotificationSystem.get()
-    	ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
-    		sessionStorage.setItem(StorageKeys.PROJECT_PATH, pathToProject)
-    		FileSystemUtil.initializeFolders(pathToProject).catch(console.error)
-    		EditorLevelService.get(() => isMetadataReady = true)
-    		HotKeysController.initializeListener()
-    		ContentBrowserUtil.initializeContentBrowser()
-    	})
+            cameraGizmoSize = data.cameraGizmoSize
+        }, ["views", "currentView", "cameraGizmoSize"])
+        EngineStore.getInstance().addListener(COMPONENT_ID, data => HotKeysController.blockActions = data.executingAnimation, ["executingAnimation"])
+        StoreIPCListener.get()
+        ToastNotificationSystem.get()
+        ElectronResources.ipcRenderer.on(IPCRoutes.EDITOR_INITIALIZATION, (_, pathToProject) => {
+            sessionStorage.setItem(StorageKeys.PROJECT_PATH, pathToProject)
+            FileSystemUtil.initializeFolders(pathToProject).catch(console.error)
+            EditorLevelService.get(() => isMetadataReady = true)
+            HotKeysController.initializeListener()
+            ContentBrowserUtil.initializeContentBrowser()
+        })
     })
 
     onDestroy(() => {
-    	EngineStore.getInstance().removeListener(COMPONENT_ID)
-    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
+        EngineStore.getInstance().removeListener(COMPONENT_ID)
+        SettingsStore.getInstance().removeListener(COMPONENT_ID)
     })
+
+    const initializeEditor = (success: boolean) => {
+        if (success) {
+            isContextInitialized = true
+        } else {
+            errorInitializing = true
+        }
+    }
 </script>
 
 {#if isMetadataReady}
-    <Canvas initializeEditor={() => isContextInitialized = true}/>
+    <Canvas {initializeEditor}/>
 {/if}
-{#if isMetadataReady && isContextInitialized && view !== undefined}
-    <WindowFrame/>
-    <div class="wrapper" style={`--cube-size: ${cameraGizmoSize}px;`}>
-        <div class="middle">
-            <ViewsContainer
-                    id="left"
-                    setTabs={(tabs) => EditorUtil.updateView("left", tabs)}
-                    tabs={view.left}
-                    leftOffset={"8px"}
-                    {currentViewIndex}
-                    orientation={"vertical"}
-                    resizePosition={"left"}
-            />
-            <div class="content">
+{#if errorInitializing || !isContextInitialized}
+        <div data-svelteempty="-" style="gap: 8px">
+            <Icon styles="font-size: 75px">folder</Icon>
+            {#if !isContextInitialized && !errorInitializing}
+                {LocalizationEN.LOADING}
+            {:else}
+                {LocalizationEN.ERROR_INITIALIZING_PROJECT}
+            {/if}
+            <button data-sveltebuttondefault="-" on:click={WindowFrameUtil.closeProject}>
+                {LocalizationEN.CLOSE_PROJECT}
+            </button>
+        </div>
+{:else}
+    {#if isMetadataReady && isContextInitialized && view !== undefined}
+        <WindowFrame/>
+        <div class="wrapper" style={`--cube-size: ${cameraGizmoSize}px;`}>
+            <div class="middle">
                 <ViewsContainer
-                        id="bottom"
-                        setTabs={(tabs) => EditorUtil.updateView("top", tabs)}
-                        tabs={view.top}
+                        id="left"
+                        setTabs={(tabs) => EditorUtil.updateView("left", tabs)}
+                        tabs={view.left}
+                        leftOffset={"8px"}
                         {currentViewIndex}
-                        resizePosition={"bottom"}
-                        orientation={"horizontal"}
+                        orientation={"vertical"}
+                        resizePosition={"left"}
                 />
-                <Viewport
-                        {currentViewIndex}
-                        viewTab={view.viewport}
-                        updateView={(viewTab) => EditorUtil.updateView("viewport", viewTab)}
-                />
+                <div class="content">
+                    <ViewsContainer
+                            id="bottom"
+                            setTabs={(tabs) => EditorUtil.updateView("top", tabs)}
+                            tabs={view.top}
+                            {currentViewIndex}
+                            resizePosition={"bottom"}
+                            orientation={"horizontal"}
+                    />
+                    <Viewport
+                            {currentViewIndex}
+                            viewTab={view.viewport}
+                            updateView={(viewTab) => EditorUtil.updateView("viewport", viewTab)}
+                    />
+                    <ViewsContainer
+                            {currentViewIndex}
+                            id="bottom"
+                            setTabs={(tabs) => EditorUtil.updateView("bottom", tabs)}
+                            tabs={view.bottom}
+                            resizePosition={"top"}
+                            orientation={"horizontal"}
+                    />
+                </div>
                 <ViewsContainer
+                        id="right"
                         {currentViewIndex}
-                        id="bottom"
-                        setTabs={(tabs) => EditorUtil.updateView("bottom", tabs)}
-                        tabs={view.bottom}
+                        setTabs={(tabs) => EditorUtil.updateView("right", tabs)}
+                        tabs={view.right}
+                        orientation={"vertical"}
+                        leftOffset={"0%"}
                         resizePosition={"top"}
-                        orientation={"horizontal"}
                 />
             </div>
-            <ViewsContainer
-                    id="right"
-                    {currentViewIndex}
-                    setTabs={(tabs) => EditorUtil.updateView("right", tabs)}
-                    tabs={view.right}
-                    orientation={"vertical"}
-                    leftOffset={"0%"}
-                    resizePosition={"top"}
-            />
-        </div>
 
-        <Footer/>
-    </div>
+            <Footer/>
+        </div>
+    {/if}
 {/if}
 
 

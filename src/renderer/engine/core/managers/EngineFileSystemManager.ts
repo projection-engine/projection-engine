@@ -1,6 +1,7 @@
 import GPUState from "../states/GPUState"
 import GPUManager from "./GPUManager"
 import DynamicMap from "@engine-core/lib/DynamicMap";
+import TerrainProcessor from "@engine-core/lib/math/TerrainProcessor";
 
 
 export default class EngineFileSystemManager {
@@ -25,7 +26,9 @@ export default class EngineFileSystemManager {
     }
 
     static requestMeshLoad(ID: string) {
-        this.#doFetch(ID, GPUState.meshes, data => GPUManager.allocateMesh(ID, JSON.parse(data)))
+        this.#doFetch(ID, GPUState.meshes, async data => {
+            GPUManager.allocateMesh(ID, JSON.parse(data))
+        })
     }
 
     static requestMaterialLoad(ID: string) {
@@ -38,20 +41,33 @@ export default class EngineFileSystemManager {
         })
     }
 
-    static #doFetch(id: string, resourceOrigin: DynamicMap<string, IResource>, onLoad: GenericVoidFunctionWithP<string>) {
-        if (!id || resourceOrigin.get(id) != null || EngineFileSystemManager.#fetching.get(id)) {
+    static #doFetch(id: string, resourceOrigin: DynamicMap<string, IResource>, onLoad: GenericNonVoidFunctionWithP<string, Promise<void>>) {
+        const fetching = EngineFileSystemManager.#fetching;
+        if (!id || fetching.get(id) || resourceOrigin.get(id) != null) {
             return
         }
-        this.#fetching.set(id, true)
-        this.readAsset(id).then(data => {
-            if (!data)
-                return
-            onLoad(data)
-            this.#fetching.delete(id)
-        }).catch(console.error)
+        fetching.set(id, true)
+        EngineFileSystemManager.readAsset(id)
+            .then(data => {
+                if (!data)
+                    return
+                onLoad(data).then(() => fetching.delete(id)).catch(console.error)
+            })
+            .catch(console.error)
     }
 
     static initialize(cb: GenericNonVoidFunctionWithP<string, Promise<string>>) {
         EngineFileSystemManager.#callback = cb
+    }
+
+    static requestTerrainLoad(ID: string) {
+        this.#doFetch(ID, GPUState.terrains, async data => {
+            try {
+                const texture = JSON.parse(data)
+                await TerrainProcessor.generate(ID, texture.base64)
+            } catch (ex) {
+                console.error(ex)
+            }
+        })
     }
 }

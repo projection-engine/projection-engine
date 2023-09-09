@@ -1,23 +1,22 @@
 <script lang="ts">
-    import Property from "./Property.svelte"
+    import Property from "./ComponentProperty.svelte"
     import {Components,} from "@engine-core/engine.enum";
-    import Component from "@engine-core/lib/components/Component"
-    import Accordion from "../../../../../shared/components/accordion/Accordion.svelte"
-    import PropertyHeader from "../../../../../shared/components/PropertyHeader.svelte"
-    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
-    import InspectorUtil from "../../../../util/InspectorUtil"
-    import EditorUtil from "../../../../util/EditorUtil";
-    import UIComponent from "../UIComponent.svelte";
-    import MaterialUniforms from "../../../../components/MaterialUniformsForm.svelte";
-    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte";
-    import TransformationForm from "../TransformationForm.svelte";
-    import COMPONENT_PROP_TYPES from "../../../../static/COMPONENT_PROP_TYPES";
+    import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
+    import Accordion from "../../../../shared/components/accordion/Accordion.svelte"
+    import PropertyHeader from "../../../../shared/components/PropertyHeader.svelte"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import InspectorUtil from "../../../util/InspectorUtil"
+    import EditorUtil from "../../../util/EditorUtil";
+    import UIComponent from "./UIComponent.svelte";
+    import TransformationForm from "./TransformationForm.svelte";
+    import COMPONENT_PROP_TYPES from "../../../static/COMPONENT_PROP_TYPES";
     import MeshComponent from "@engine-core/lib/components/MeshComponent";
-    import COMPONENT_ATTRIBUTES from "../../static/COMPONENT_ATTRIBUTES";
-    import EditorEntity from "../../../../../../engine/tools/EditorEntity";
+    import COMPONENT_ATTRIBUTES from "../static/COMPONENT_ATTRIBUTES";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
+    import MeshComponentForm from "./MeshComponentForm.svelte";
 
     export let key: Components
-    export let component: Component
+    export let component: AbstractComponent
     export let entity: EditorEntity
     export let submit: GenericVoidFunctionWith3P<string, any, boolean>
     export let updateTabs: VoidFunction
@@ -32,35 +31,14 @@
         InspectorUtil.removeComponent(entity, key)
         updateTabs()
     }
-
-    function updateMaterialUniform(index, value) {
-        const c = component as MeshComponent
-        const uniforms = c.materialUniforms
-        c.updateMaterialUniformValue(uniforms[index].key, value)
-    }
 </script>
 
 {#if component.getComponentKey() === Components.UI}
     <UIComponent {entity} {submit}/>
 {:else if component.getComponentKey() === Components.TRANSFORMATION}
     <TransformationForm/>
-{:else if component.getComponentKey() === Components.MESH && component.materialID}
-    <fieldset>
-        <legend>{LocalizationEN.MATERIAL_VALUES}</legend>
-        <Checkbox
-                label={LocalizationEN.OVERRIDE_PROPERTIES}
-                handleCheck={() => InspectorUtil.updateEntityComponent(entity, "overrideMaterialUniforms", !component.overrideMaterialUniforms, component)}
-                checked={component.overrideMaterialUniforms}
-        />
-        {#if component.overrideMaterialUniforms}
-            <MaterialUniforms
-                    {component}
-                    uniforms={component.materialUniforms}
-                    update={updateMaterialUniform}
-
-            />
-        {/if}
-    </fieldset>
+{:else if component instanceof MeshComponent}
+    <MeshComponentForm component={component} entity={entity}/>
 {:else}
     {#if layoutTitle}
         <PropertyHeader

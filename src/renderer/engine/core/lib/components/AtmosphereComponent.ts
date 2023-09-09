@@ -1,8 +1,8 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import {vec3} from "gl-matrix"
 import {AtmosphereTypes, Components,} from "@engine-core/engine.enum";
 
-export default class AtmosphereComponent extends Component {
+export default class AtmosphereComponent extends AbstractComponent {
     getDependencies(): Components[] {
         return [Components.TRANSFORMATION];
     }

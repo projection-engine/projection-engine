@@ -1,5 +1,5 @@
-import VIEWS from "../static/GenericViews"
-import VIEWPORT_TABS from "../static/CentralViews"
+import VIEWS from "../static/VIEWS"
+import VIEWPORT_TABS from "../static/CENTRAL_VIEWS"
 
 export default class ViewsUtil {
 

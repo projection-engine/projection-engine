@@ -1,5 +1,5 @@
 import EntityManager from "@engine-core/managers/EntityManager";
-import Component from "@engine-core/lib/components/Component";
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 import {mat4, quat, vec3} from "gl-matrix";
 import {Components} from "@engine-core/engine.enum";
 import EditorEntityManager from "./EditorEntityManager";
@@ -46,11 +46,11 @@ export default class EditorEntity implements IEditorEntity {
         return EntityManager.isEntityEnabled(this.id)
     }
 
-    get allComponents(): Component[] {
+    get allComponents(): AbstractComponent[] {
         return EntityManager.getAllComponents(this.id)
     }
 
-    getComponent<T extends Component>(comp: Components): T {
+    getComponent<T extends AbstractComponent>(comp: Components): T {
         return EntityManager.getComponent<T>(this.id, comp)
     }
 

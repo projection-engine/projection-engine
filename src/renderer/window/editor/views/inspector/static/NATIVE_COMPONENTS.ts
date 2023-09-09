@@ -14,4 +14,5 @@ export default [
 	[Components.RIGID_BODY, EditorUtil.getComponentLabel(Components.RIGID_BODY), EditorUtil.getComponentIcon(Components.RIGID_BODY)],
 	[Components.CULLING, EditorUtil.getComponentLabel(Components.CULLING), EditorUtil.getComponentIcon(Components.CULLING)],
 	[Components.UI, EditorUtil.getComponentLabel(Components.UI), EditorUtil.getComponentIcon(Components.UI)],
+	[Components.TERRAIN, EditorUtil.getComponentLabel(Components.TERRAIN), EditorUtil.getComponentIcon(Components.TERRAIN)],
 ]

@@ -1,8 +1,8 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import {Components,} from "@engine-core/engine.enum";
 import TransformationManager from "@engine-core/managers/TransformationManager";
 
-export default class CullingComponent extends Component {
+export default class CullingComponent extends AbstractComponent {
     getDependencies(): Components[] {
         return [Components.TRANSFORMATION];
     }

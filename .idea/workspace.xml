@@ -9,42 +9,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing multiple bugs&#10;- Fixing rendering order">
+    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-361] Implementing structure for terrain rendering&#10;- Renaming static state templates&#10;- Renaming inspector components&#10;- Fixing camera tab on inspector&#10;- Fixing add component method&#10;- Created terrain component&#10;- Created terrain mesh&#10;- Moved mesh initialziation to AbstractMesh&#10;- Renamed Component to AbstractComponent &#10;- Adding terrain shader to StaticShadersState&#10;- Adding fallback options when initializing project">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/engine.enum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/engine.enum.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CullingComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CullingComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/LevelManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/LevelManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/MetricsManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/MetricsManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/static/METRICS_FLAGS.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AmbientOcclusionSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/CameraEffects.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/TerrainComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/TerrainComponent.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/math/ConversionAPI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/math/ConversionAPI.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/math/TerrainProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/math/TerrainProcessor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/LightProbe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/LightProbe.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Mesh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Mesh.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/ShadowProbe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/ShadowProbe.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Terrain.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Terrain.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/CameraManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/CameraManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/EngineFileSystemManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/EngineFileSystemManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/GPUManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/GPUManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/LineRenderingManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/LineRenderingManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/TransformationManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/TransformationManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/states/CameraState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/states/CameraState.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/static/shaders/terrain-shader/TERRAIN.frag" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/static/shaders/terrain-shader/TERRAIN.frag" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/static/shaders/terrain-shader/TERRAIN.vert" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/static/shaders/terrain-shader/TERRAIN.vert" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/AtmosphereRendererSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BloomSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/BokehDOFSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/CompositionSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DShadowsSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/DecalRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/GlobalIlluminationSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/MotionBlurSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OShadowsSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/OpaqueRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PostProcessingSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreLoopSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ScriptExecutorSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/SpriteRenderer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/PreRendererSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/SceneRenderingUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/SceneRenderingUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/TerrainRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/TerrainRendererSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/ThreadSyncSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/TransparencyRendererSystem.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/system/VisibilityRendererSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/system/loop-meshes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/loop-meshes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/workers/entity-worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoMouseUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoMouseUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/TerrainUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/TerrainUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/get-image-data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/get-image-data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/loop-meshes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/loop-meshes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/workers/terrain-worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/workers/terrain-worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/RotationGizmo.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/RotationGizmo.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/gizmo/util/GizmoUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/EditorActionHistory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/EditorActionHistory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityHierarchyService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/EntityTreeBranchContent.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/EntityTreeBranchContent.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/metrics/MetricsView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/metrics/MetricsView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/lib/ViewportInteractionListener.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/lib/ViewportInteractionListener.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/shared/WindowInitializer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/shared/WindowInitializer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraGizmoSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraGizmoSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/EditorCameraSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/systems/IconsSystem.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/view/CentralView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/view/CentralView.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/ViewportActionUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/ViewportActionUtil.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityFactoryService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityFactoryService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/templates/get-entity-creation-options.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/templates/get-entity-creation-options.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/InspectorView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/InspectorView.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/AddComponent.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/AddComponent.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/CameraPreferences.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/CameraPreferences.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/ComponentForm.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/ComponentForm.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/EntityInformation.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/EntityInformation.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/static/component-props/TERRAIN_PROPS.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/static/component-props/TERRAIN_PROPS.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,13 +70,15 @@
         <option value="LoggerConfig" />
         <option value="SerializedState" />
         <option value="TypeScript File" />
+        <option value="vs-template" />
+        <option value="MeshComponent" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="341-rework-selection" />
+        <entry key="$PROJECT_DIR$" value="282-static-pipeline-for-entity-property-change" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -83,43 +97,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "25.3.2",
-    "javascript.nodejs.core.library.typings.version": "20.5.9",
-    "last_opened_file_path": "C:/Users/russi/projectionengine",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "C:\\Users\\russi\\projectionengine\\node_modules\\typescript\\lib",
-    "typescript.add.unambiguous.imports.on.the.fly": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;25.3.2&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.5.9&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/russi/projectionengine/src/renderer/engine/core/static/shaders/terrain-shader&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\russi\\projectionengine\\node_modules\\typescript\\lib&quot;,
+    &quot;typescript.add.unambiguous.imports.on.the.fly&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\static\shaders\terrain-shader" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\lib\components" />
+      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\system" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\shared\stores" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\utils" />
-      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\components" />
-      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\system" />
-      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\runtime" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\views\inspector\components" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\utils" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\views\inspector\static" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\static" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\states" />
-      <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\managers" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -231,21 +245,9 @@
       <workItem from="1693163851409" duration="618000" />
       <workItem from="1693167725153" duration="433000" />
       <workItem from="1694087650225" duration="10874000" />
-      <workItem from="1694107868545" duration="7850000" />
-    </task>
-    <task id="LOCAL-00035" summary="[STD-305] Fixing rotation gizmo;">
-      <created>1688926163821</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1688926163821</updated>
-    </task>
-    <task id="LOCAL-00036" summary="[STD-305] Rewriting screen to world algorithm">
-      <created>1688930964724</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1688930964724</updated>
+      <workItem from="1694107868545" duration="11892000" />
+      <workItem from="1694263886076" duration="8507000" />
+      <workItem from="1694278789852" duration="4283000" />
     </task>
     <task id="LOCAL-00037" summary="[STD-291] Changing transformation system to work without poiterLock">
       <created>1689030320724</created>
@@ -576,7 +578,21 @@
       <option name="project" value="LOCAL" />
       <updated>1694111287271</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="[STD-282] Fixing multiple bugs&#10;- Fixing metrics&#10;- Disabling screendoor effect&#10;- Fixing shading modes&#10;- Fixing gizmo rendering to depth buffer&#10;- Fixing gizmo moving when clicking right mouse button">
+      <created>1694117013769</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1694117013769</updated>
+    </task>
+    <task id="LOCAL-00085" summary="[STD-361] Implementing structure for terrain rendering&#10;- Renaming static state templates&#10;- Renaming inspector components&#10;- Fixing camera tab on inspector&#10;- Fixing add component method&#10;- Created terrain component&#10;- Created terrain mesh&#10;- Moved mesh initialziation to AbstractMesh&#10;- Renamed Component to AbstractComponent &#10;- Adding terrain shader to StaticShadersState&#10;- Adding fallback options when initializing project">
+      <created>1694278512402</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1694278512402</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -599,8 +615,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/engine-core" />
     </ignored-roots>
-    <MESSAGE value="[STD-282] Changing tools to integrate with new system pipeline" />
-    <MESSAGE value="[STD-282] Reworking tools&#10;- New camera gizmo system&#10;- Reworked EditorCameraSystem&#10;- Reworked WireframeSystem&#10;- Reworking CameraIconSystem &#10;- Fixing SystemManager not filtering by active/inactive and shouldExecute&#10;- Fixing disableSystem" />
     <MESSAGE value="[STD-282] Organizing engine static files&#10;- Moving objects to enums&#10;- Moving all interfaces to engine.g.ts&#10;- Starting resource manager rework" />
     <MESSAGE value="[STD-282] Starting segregation of entities and components&#10;&#10;- EntityManager with new methods&#10;- TransformationComponent&#10;- Starting EditorEntityManager&#10;- EditorEntity&#10;- New serialization structure&#10;- Fixing engine enums&#10;- Fixing path to engine core&#10;- Fixing componentKey getter" />
     <MESSAGE value="[STD-282] Continuing entity rework&#10;&#10;- Reworking multiple systems&#10;- Reworking resource access (mesh, material, texture)&#10;- Reworking garbage collection&#10;- Reworking entity hierarchy and enabled/disabled entities&#10;- Reworked physics system and api&#10;- Removing textures from decal component" />
@@ -624,7 +638,9 @@
     <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing initialization of entities&#10;- Fixing editor entity manager not registering entity&#10;- Adding webstorm's idea folder to repo&#10;- Fixing multiple bugs related to reference of &quot;this&quot;" />
     <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing icon rndering&#10;- Fixing Omnidirectional shadows" />
     <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing rendering order" />
-    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing multiple bugs&#10;- Fixing rendering order" />
+    <MESSAGE value="[STD-282] Fixing multiple bugs&#10;- Fixing metrics&#10;- Disabling screendoor effect&#10;- Fixing shading modes&#10;- Fixing gizmo rendering to depth buffer&#10;- Fixing gizmo moving when clicking right mouse button" />
+    <MESSAGE value="[STD-361] Implementing structure for terrain rendering&#10;- Renaming static state templates&#10;- Renaming inspector components&#10;- Fixing camera tab on inspector&#10;- Fixing add component method&#10;- Created terrain component&#10;- Created terrain mesh&#10;- Moved mesh initialziation to AbstractMesh&#10;- Renamed Component to AbstractComponent &#10;- Adding terrain shader to StaticShadersState&#10;- Adding fallback options when initializing project" />
+    <option name="LAST_COMMIT_MESSAGE" value="[STD-361] Implementing structure for terrain rendering&#10;- Renaming static state templates&#10;- Renaming inspector components&#10;- Fixing camera tab on inspector&#10;- Fixing add component method&#10;- Created terrain component&#10;- Created terrain mesh&#10;- Moved mesh initialziation to AbstractMesh&#10;- Renamed Component to AbstractComponent &#10;- Adding terrain shader to StaticShadersState&#10;- Adding fallback options when initializing project" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -660,7 +676,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityFactoryService.ts</url>
-          <line>49</line>
+          <line>48</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" log-message="true" type="javascript">

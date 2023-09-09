@@ -1,5 +1,5 @@
 import AbstractStore from "./AbstractStore"
-import CONTENT_BROWSER_STATE from "../../editor/static/ContentBrowserStoreState";
+import CONTENT_BROWSER_STATE from "../../editor/static/CB_STORE_STATE";
 
 export default class ContentBrowserStore extends AbstractStore{
 	constructor() {

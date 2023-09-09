@@ -31,6 +31,8 @@ import {Environment,} from "@engine-core/engine.enum";
 import GarbageCollectorSystem from "@engine-core/system/GarbageCollectorSystem";
 import PreLoopSystem from "@engine-core/system/PreLoopSystem";
 import GPUManager from "@engine-core/managers/GPUManager";
+import TerrainRendererSystem from "@engine-core/system/TerrainRendererSystem";
+import CameraState from "@engine-core/states/CameraState";
 
 export default class Engine {
     static #development = false
@@ -79,7 +81,7 @@ export default class Engine {
         const OBS = new ResizeObserver(() => {
             const bBox = GPUState.canvas.getBoundingClientRect()
             ConversionAPI.canvasBBox = bBox
-            CameraManager.aspectRatio = bBox.width / bBox.height
+            CameraState.aspectRatio = bBox.width / bBox.height
             CameraManager.updateProjection()
         })
         OBS.observe(GPUState.canvas.parentElement)
@@ -101,6 +103,7 @@ export default class Engine {
 
         systemManager.enableSystem(PreRendererSystem)
         systemManager.enableSystem(AtmosphereRendererSystem)
+        systemManager.enableSystem(TerrainRendererSystem)
         systemManager.enableSystem(OpaqueRendererSystem)
         systemManager.enableSystem(DecalRendererSystem)
         systemManager.enableSystem(SpriteRenderer)

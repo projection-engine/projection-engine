@@ -3,10 +3,10 @@ import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import AtmosphereComponent from "@engine-core/lib/components/AtmosphereComponent"
 import {mat4} from "gl-matrix"
-import CameraManager from "../managers/CameraManager"
 import AbstractSystem from "../AbstractSystem";
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
+import CameraState from "@engine-core/states/CameraState";
 
 const resources = mat4.create().fill(0)
 export default class AtmosphereRendererSystem extends AbstractSystem {
@@ -21,7 +21,7 @@ export default class AtmosphereRendererSystem extends AbstractSystem {
         const context = GPUState.context
         StaticShadersState.atmosphere.bind()
         context.disable(context.DEPTH_TEST)
-        context.uniformMatrix4fv(StaticShadersState.atmosphereUniforms.invSkyProjectionMatrix, false, CameraManager.invSkyboxProjectionMatrix)
+        context.uniformMatrix4fv(StaticShadersState.atmosphereUniforms.invSkyProjectionMatrix, false, CameraState.invSkyboxProjectionMatrix)
         for (let i = 0; i < size; i++) {
             this.#render(entities[i])
         }

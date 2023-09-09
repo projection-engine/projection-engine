@@ -30,7 +30,6 @@ export default class EditorEntityManager extends AbstractSingleton {
 
     static create(id?: UUID): EditorEntity {
         const entity = new EditorEntity(id)
-        console.trace("HERE")
         EntityManager.createEntitiesById([entity.id])
         EditorEntityManager.entities.set(entity.id, entity)
         return entity

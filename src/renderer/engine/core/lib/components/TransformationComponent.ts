@@ -1,8 +1,8 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import ArrayBufferUtil from "../../utils/ArrayBufferUtil";
 import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum";
 
-export default class TransformationComponent extends Component {
+export default class TransformationComponent extends AbstractComponent {
 	getDependencies(): Components[] {
 		return [];
 	}

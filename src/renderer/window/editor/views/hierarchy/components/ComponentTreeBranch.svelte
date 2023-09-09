@@ -1,13 +1,13 @@
 <!--suppress ALL -->
 <script lang="ts">
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Component from "@engine-core/lib/components/Component";
+    import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
     import HierarchyUtil from "../../../util/HierarchyUtil";
     import EditorUtil from "../../../util/EditorUtil";
 
 
     export let depth: number
-    export let component: Component
+    export let component: AbstractComponent
 
     $: icon = EditorUtil.getComponentIcon(component.getComponentKey())
     $: label = EditorUtil.getComponentLabel(component.getComponentKey())

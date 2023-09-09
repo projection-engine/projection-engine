@@ -1,7 +1,7 @@
 import {Components,} from "@engine-core/engine.enum";
 
 
-export default abstract class Component implements IComponent{
+export default abstract class AbstractComponent implements IComponent{
     abstract getDependencies(): Components[]
 
     #entity: EngineEntity

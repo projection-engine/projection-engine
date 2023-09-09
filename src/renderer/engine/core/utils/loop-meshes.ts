@@ -18,8 +18,9 @@ export default function loopMeshes(callback: (param1: EngineEntity, param2: Mesh
         const meshComponent = components.get(Components.MESH) as MeshComponent
         const transformComponent = components.get(Components.TRANSFORMATION) as TransformationComponent
         const cullingComponent = components.get(Components.CULLING) as CullingComponent
-        if (!transformComponent || !meshComponent.meshID || !EntityManager.isEntityEnabled(entity) || cullingComponent && cullingComponent.isDistanceCulled)
+        const mesh = AssetResourceManager.getMesh(meshComponent.meshID)
+        if (mesh == null || !transformComponent || !meshComponent.meshID || !EntityManager.isEntityEnabled(entity) || cullingComponent && cullingComponent.isDistanceCulled)
             continue
-        callback(entity, AssetResourceManager.getMesh(meshComponent.meshID), AssetResourceManager.getMaterial(meshComponent.materialID), transformComponent, cullingComponent, meshIndex)
+        callback(entity, mesh, AssetResourceManager.getMaterial(meshComponent.materialID), transformComponent, cullingComponent, meshIndex)
     }
 }

@@ -1,7 +1,7 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import {Components,} from "@engine-core/engine.enum";
 
-export default class UIComponent extends Component {
+export default class UIComponent extends AbstractComponent {
 	getDependencies(): Components[] {
 		return [];
 	}

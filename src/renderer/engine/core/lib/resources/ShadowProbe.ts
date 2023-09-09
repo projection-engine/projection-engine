@@ -1,8 +1,8 @@
 import {mat4} from "gl-matrix"
-import Mesh from "./Mesh"
 import getProbeRotation from "../../utils/get-probe-rotation"
 import CubeMapManager from "../../managers/CubeMapManager"
 import GPUState from "../../states/GPUState"
+import AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
 
 const cacheMat4 = mat4.create()
 export default class ShadowProbe implements IResource{
@@ -27,7 +27,7 @@ export default class ShadowProbe implements IResource{
 			texture = this.texture
 		mat4.perspective(cacheMat4, Math.PI / 2, 1, zNear, zFar)
 
-		Mesh.finishIfUsed()
+		AbstractMesh.finishIfUsed()
 		const rbo = CubeMapManager.createRenderBuffer(resolution)
 		GPUState.context.viewport(0, 0, resolution, resolution)
 		for (let i = 0; i < 6; i++) {

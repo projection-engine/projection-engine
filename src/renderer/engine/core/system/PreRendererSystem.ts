@@ -1,8 +1,8 @@
 import StaticFBOState from "../states/StaticFBOState"
 import UberShader from "../lib/UberShader"
-import Mesh from "@engine-core/lib/resources/Mesh"
 import GPUState from "../states/GPUState"
 import AbstractSystem from "../AbstractSystem";
+import AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
 
 
 export default class PreRendererSystem extends AbstractSystem {
@@ -12,7 +12,7 @@ export default class PreRendererSystem extends AbstractSystem {
 
     execute = () => {
         GPUState.context.flush()
-        Mesh.finishIfUsed()
+        AbstractMesh.finishIfUsed()
         StaticFBOState.postProcessing2.startMapping()
     }
 

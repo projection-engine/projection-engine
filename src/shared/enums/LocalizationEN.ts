@@ -10,6 +10,7 @@ export default {
     [FileTypes.COLLECTION]: "Scene",
     [FileTypes.JAVASCRIPT]: "Javascript package",
     [FileTypes.JSON]: "JSON object",
+    TERRAIN_HEIGHTMAP: "Terrain heightmap",
 
     LOGGER_SILENT: "Writes log/error/warning to terminal (integrated) only",
     LOGGER_DETAILED: "Writes every log/error/warning to file and to terminal (integrated)",
@@ -789,5 +790,8 @@ export default {
     INSPECTOR: "Inspector",
     CONSOLE: "Console",
     IMAGE: "Texture",
-    TERRAIN: "terrain"
+    TERRAIN: "Terrain",
+    NO_ENTITY_SELECTED: "No entity selected",
+    ERROR_INITIALIZING_PROJECT: "Error initializing project",
+    CLOSE_PROJECT: "Close project"
 }

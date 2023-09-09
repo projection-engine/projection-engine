@@ -1,7 +1,4 @@
 import {vec3, vec4} from "gl-matrix"
-
-
-import CameraManager from "@engine-core/managers/CameraManager"
 import SettingsStore from "../../../shared/stores/SettingsStore"
 import MeshComponent from "@engine-core/lib/components/MeshComponent"
 import LightComponent from "@engine-core/lib/components/LightComponent"
@@ -12,6 +9,8 @@ import EntityManager from "@engine-core/managers/EntityManager";
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EditorEntity from "../../../../engine/tools/EditorEntity";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import TerrainComponent from "@engine-core/lib/components/TerrainComponent";
+import CameraState from "@engine-core/states/CameraState";
 
 function create(_, k: string, descriptor: PropertyDescriptor) {
     const original = descriptor.value
@@ -39,8 +38,8 @@ export default class EntityFactoryService {
         }
 
         const position = <vec4>[0, 0, -(SettingsStore.getData().spawnDistanceFromCamera || 10), 1]
-        vec4.transformQuat(position, position, CameraManager.rotationBuffer)
-        vec3.add(transformComponent._translation, CameraManager.translationBuffer, <vec3>position)
+        vec4.transformQuat(position, position, CameraState.rotationBuffer)
+        vec3.add(transformComponent._translation, CameraState.translationBuffer, <vec3>position)
         transformComponent.__changedBuffer[0] = 1
     }
 
@@ -59,6 +58,15 @@ export default class EntityFactoryService {
         m.meshID = meshId
         return entity
 
+    }
+
+    @create
+    static createTerrain(terrainId?: string) {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.TERRAIN
+        const component = EntityManager.addComponent(entity.id, Components.TERRAIN) as TerrainComponent
+        component.terrainID = terrainId
+        return entity
     }
 
     @create

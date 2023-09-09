@@ -1,5 +1,4 @@
 import GPUState from "../states/GPUState"
-import CameraManager from "../managers/CameraManager"
 import TransformationManager from "../managers/TransformationManager"
 import {mat4} from "gl-matrix"
 import StaticShadersState from "../states/StaticShadersState"
@@ -16,6 +15,7 @@ import {Components} from "@engine-core/engine.enum";
 import CullingComponent from "@engine-core/lib/components/CullingComponent";
 import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
 import EntityManager from "@engine-core/managers/EntityManager";
+import CameraState from "@engine-core/states/CameraState";
 
 const entityMetadata = new Float32Array(16)
 let context: WebGL2RenderingContext, uniforms, VP
@@ -24,12 +24,12 @@ export default class VisibilityRendererSystem extends AbstractSystem {
 
     #bindUniforms() {
         uniforms = StaticShadersState.visibilityUniforms
-        VP = CameraManager.cameraMotionBlur ? CameraManager.previousViewProjectionMatrix : CameraManager.viewProjectionMatrix
-        context.uniformMatrix4fv(uniforms.viewProjection, false, CameraManager.viewProjectionMatrix)
+        VP = CameraState.cameraMotionBlur ? CameraState.previousViewProjectionMatrix : CameraState.viewProjectionMatrix
+        context.uniformMatrix4fv(uniforms.viewProjection, false, CameraState.viewProjectionMatrix)
         context.uniformMatrix4fv(uniforms.previousViewProjection, false, VP)
-        context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraManager.viewMatrix)
-        context.uniform3fv(uniforms.cameraPlacement, CameraManager.position)
-        mat4.copy(CameraManager.previousViewProjectionMatrix, CameraManager.viewProjectionMatrix)
+        context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraState.viewMatrix)
+        context.uniform3fv(uniforms.cameraPlacement, CameraState.position)
+        mat4.copy(CameraState.previousViewProjectionMatrix, CameraState.viewProjectionMatrix)
     }
 
     #drawSprites() {

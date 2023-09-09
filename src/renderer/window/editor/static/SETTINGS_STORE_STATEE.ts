@@ -3,8 +3,8 @@ import GizmoTransformationType from "../../../../shared/enums/GizmoTransformatio
 import KEYS from "./KeyboardKeys"
 import {glMatrix} from "gl-matrix"
 import {ShadingModels,} from "@engine-core/engine.enum";
-import VIEWS from "./GenericViews";
-import VIEWPORT_TABS from "./CentralViews";
+import VIEWS from "./VIEWS";
+import VIEWPORT_TABS from "./CENTRAL_VIEWS";
 
 export default {
 	spawnOnOrigin: false,

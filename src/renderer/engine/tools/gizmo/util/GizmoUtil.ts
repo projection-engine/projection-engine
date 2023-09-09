@@ -16,6 +16,7 @@ import TransformationComponent from "@engine-core/lib/components/TransformationC
 import EntityManager from "@engine-core/managers/EntityManager";
 import GizmoEntity from "../GizmoEntity";
 import PickingUtil from "@engine-core/utils/PickingUtil";
+import CameraState from "@engine-core/states/CameraState";
 
 
 export default class GizmoUtil {
@@ -86,7 +87,7 @@ export default class GizmoUtil {
         GPUState.context.uniform3fv(uniforms.translation, GizmoState.mainEntity.__pivotOffset)
         GPUState.context.uniform1i(uniforms.axis, axis)
         GPUState.context.uniform1i(uniforms.selectedAxis, GizmoState.clickedAxis)
-        GPUState.context.uniform1i(uniforms.cameraIsOrthographic, CameraManager.notificationBuffers[2])
+        GPUState.context.uniform1i(uniforms.cameraIsOrthographic, CameraState.notificationBuffers[2])
         mesh.simplifiedDraw()
     }
 
@@ -166,7 +167,7 @@ export default class GizmoUtil {
     static mapToScreenMovement(event: MouseEvent, scaleVec = false): vec3 {
         if (GizmoState.clickedAxis === AXIS.NONE)
             return [0, 0, 0]
-        const distanceFrom = <vec3>CameraManager.position
+        const distanceFrom = <vec3>CameraState.position
         const scale = vec3.len(distanceFrom)
         const worldCoordinates = ConversionAPI.toWorldCoordinates(event.clientX, event.clientY)
         if (scaleVec) {
