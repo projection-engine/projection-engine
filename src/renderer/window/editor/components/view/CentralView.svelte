@@ -15,8 +15,6 @@
     import ViewportUtil from "../../util/ViewportUtil"
     import ViewsUtil from "../../util/ViewsUtil"
     import TabsStoreUtil from "../../util/TabsStoreUtil"
-    import TerrainProcessor from "@engine-core/lib/math/TerrainProcessor";
-    import EntityFactoryService from "../../services/engine/EntityFactoryService";
 
     const COMPONENT_ID = crypto.randomUUID()
     const VIEW_TEMPLATES = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
@@ -90,10 +88,6 @@
         updateView([current])
     }
 
-    async function createTerrain() {
-        const mesh = await TerrainProcessor.generate()
-        EntityFactoryService.createMesh(mesh.id)
-    }
 </script>
 
 <div
@@ -117,9 +111,6 @@
         />
     </div>
     <div class="wrapper">
-        <button class="btn-demo" on:click={createTerrain}>
-
-        </button>
         {#if isReady}
             <View
                     {currentViewIndex}

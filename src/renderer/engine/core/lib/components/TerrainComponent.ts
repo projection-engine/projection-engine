@@ -1,9 +1,8 @@
 import AbstractComponent from "./AbstractComponent"
-import MaterialManager from "../../managers/MaterialManager"
-import GPUState from "../../states/GPUState"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class TerrainComponent extends AbstractComponent {
+    heightScale: number = 1;
     getDependencies(): Components[] {
         return [Components.TRANSFORMATION];
     }

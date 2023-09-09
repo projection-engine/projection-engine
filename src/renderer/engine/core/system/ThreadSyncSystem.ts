@@ -1,7 +1,6 @@
 import AbstractSystem from "../AbstractSystem";
 import TransformationManager from "../managers/TransformationManager";
 import CameraManager from "../managers/CameraManager";
-import MetricsManager from "@engine-core/managers/MetricsManager";
 
 export default class ThreadSyncSystem extends AbstractSystem {
     execute = () => {

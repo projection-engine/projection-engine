@@ -1,16 +1,16 @@
 import GPUState from "../states/GPUState"
-import CameraManager from "../managers/CameraManager"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
 import StaticMeshesState from "../states/StaticMeshesState"
 import Framebuffer from "@engine-core/lib/resources/Framebuffer"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
+import CameraState from "@engine-core/states/CameraState";
 
 export default class BloomSystem extends AbstractSystem{
 
      shouldExecute = (): boolean =>  {
-        return CameraManager.bloom;
+        return CameraState.bloom;
     }
 
      execute = () => {
@@ -19,7 +19,7 @@ export default class BloomSystem extends AbstractSystem{
         StaticShadersState.bloom.bind()
         GPUUtil.bind2DTextureForDrawing(StaticShadersState.bloomUniforms.sceneColor, 0, StaticFBOState.postProcessing1Sampler)
 
-        context.uniform1f(StaticShadersState.bloomUniforms.threshold, CameraManager.bloomThreshold)
+        context.uniform1f(StaticShadersState.bloomUniforms.threshold, CameraState.bloomThreshold)
         StaticMeshesState.drawQuad()
         StaticFBOState.lens.stopMapping()
 
@@ -45,7 +45,7 @@ export default class BloomSystem extends AbstractSystem{
         GPUUtil.bind2DTextureForDrawing(upSamplingShaderUniforms.nextSampler, 0, nextSampler)
         GPUUtil.bind2DTextureForDrawing(upSamplingShaderUniforms.blurred, 1, blurredSampler)
 
-        context.uniform1f(upSamplingShaderUniforms.sampleScale, CameraManager.bloomOffset)
+        context.uniform1f(upSamplingShaderUniforms.sampleScale, CameraState.bloomOffset)
         StaticMeshesState.drawQuad()
         fbo.stopMapping()
     }
@@ -56,7 +56,7 @@ export default class BloomSystem extends AbstractSystem{
         fbo.startMapping()
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneColor, 0, sceneColor)
         context.uniform1f(uniforms.blurRadius, 10)
-        context.uniform1i(uniforms.samples, CameraManager.bloomQuality)
+        context.uniform1i(uniforms.samples, CameraState.bloomQuality)
         context.uniform2fv(uniforms.bufferResolution, fbo.resolution)
 
         StaticMeshesState.drawQuad()

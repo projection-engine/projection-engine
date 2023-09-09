@@ -8,8 +8,6 @@
     import InspectorUtil from "../../../util/InspectorUtil"
     import EditorUtil from "../../../util/EditorUtil";
     import UIComponent from "./UIComponent.svelte";
-    import MaterialUniforms from "../../../components/MaterialUniformsForm.svelte";
-    import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte";
     import TransformationForm from "./TransformationForm.svelte";
     import COMPONENT_PROP_TYPES from "../../../static/COMPONENT_PROP_TYPES";
     import MeshComponent from "@engine-core/lib/components/MeshComponent";

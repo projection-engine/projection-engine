@@ -1,5 +1,4 @@
 import GPUState from "@engine-core/states/GPUState"
-import CameraManager from "@engine-core/managers/CameraManager"
 import LineRenderer from "./LineRenderer"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticEditorShaders from "../utils/StaticEditorShaders"
@@ -14,6 +13,7 @@ import {Components, LightTypes,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
 import LightComponent from "@engine-core/lib/components/LightComponent";
 import IconsManager from "../IconsManager";
+import CameraState from "@engine-core/states/CameraState";
 
 
 type CallbackFunc = (icon: RegisteredIcon, U?: { [key: string]: WebGLUniformLocation }) => void
@@ -119,8 +119,8 @@ export default class IconsSystem extends AbstractSystem {
 
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 1, StaticFBOState.sceneDepthVelocity)
 
-        context.uniformMatrix4fv(uniforms.projectionM, false, CameraManager.projectionMatrix)
-        context.uniformMatrix4fv(uniforms.viewM, false, CameraManager.viewMatrix)
+        context.uniformMatrix4fv(uniforms.projectionM, false, CameraState.projectionMatrix)
+        context.uniformMatrix4fv(uniforms.viewM, false, CameraState.viewMatrix)
 
         if (EngineToolsState.showIcons)
             IconsSystem.loop(IconsSystem.drawIcon)

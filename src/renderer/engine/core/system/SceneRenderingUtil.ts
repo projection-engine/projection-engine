@@ -1,7 +1,6 @@
 import GPUState from "../states/GPUState"
 import Shader from "@engine-core/lib/resources/Shader"
 import Engine from "../Engine"
-import CameraManager from "../managers/CameraManager"
 import StaticFBOState from "../states/StaticFBOState"
 import OShadowsSystem from "./OShadowsSystem"
 import Material from "@engine-core/lib/resources/Material"
@@ -10,6 +9,7 @@ import EngineState from "../states/EngineState"
 import MeshComponent from "@engine-core/lib/components/MeshComponent";
 import EntityManager from "@engine-core/managers/EntityManager";
 import {Components, GLSLTypes} from "@engine-core/engine.enum";
+import CameraState from "@engine-core/states/CameraState";
 
 export default class SceneRenderingUtil {
 	static #bindTexture(context: WebGL2RenderingContext, location: WebGLUniformLocation, index: number, sampler: WebGLTexture, cubeMap: boolean) {
@@ -27,12 +27,12 @@ export default class SceneRenderingUtil {
 		if (Engine.developmentMode)
 			context.uniform1i(uniforms.shadingModel, EngineState.debugShadingModel)
 
-		context.uniformMatrix4fv(uniforms.skyProjectionMatrix, false, CameraManager.skyboxProjectionMatrix)
+		context.uniformMatrix4fv(uniforms.skyProjectionMatrix, false, CameraState.skyboxProjectionMatrix)
 		context.uniform1f(uniforms.elapsedTime, EngineState.elapsed)
-		context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraManager.viewMatrix)
-		context.uniformMatrix4fv(uniforms.invViewMatrix, false, CameraManager.invViewMatrix)
-		context.uniformMatrix4fv(uniforms.viewProjection, false, CameraManager.viewProjectionMatrix)
-		context.uniform3fv(uniforms.cameraPosition, CameraManager.position)
+		context.uniformMatrix4fv(uniforms.viewMatrix, false, CameraState.viewMatrix)
+		context.uniformMatrix4fv(uniforms.invViewMatrix, false, CameraState.invViewMatrix)
+		context.uniformMatrix4fv(uniforms.viewProjection, false, CameraState.viewProjectionMatrix)
+		context.uniform3fv(uniforms.cameraPosition, CameraState.position)
 
 		SceneRenderingUtil.#bindTexture(context, uniforms.brdf_sampler, 0, GPUState.BRDF, false)
 		SceneRenderingUtil.#bindTexture(context, uniforms.SSAO, 1, StaticFBOState.ssaoBlurredSampler, false)

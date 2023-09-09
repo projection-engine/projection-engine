@@ -17,8 +17,6 @@
     import EditorUtil from "./util/EditorUtil"
     import ContentBrowserUtil from "./util/ContentBrowserUtil"
     import StorageKeys from "../../../shared/enums/StorageKeys"
-    import EditorEntityManager from "../../engine/tools/EditorEntityManager";
-    import EntityManager from "@engine-core/managers/EntityManager";
     import Icon from "../shared/components/icon/Icon.svelte";
     import LocalizationEN from "../../../shared/enums/LocalizationEN";
     import WindowFrameUtil from "./util/WindowFrameUtil";

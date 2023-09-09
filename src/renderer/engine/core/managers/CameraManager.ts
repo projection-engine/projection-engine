@@ -1,4 +1,3 @@
-import CameraEffects from "../lib/CameraEffects"
 import Engine from "../Engine"
 import {glMatrix, vec3, vec4} from "gl-matrix"
 import ConversionAPI from "../lib/math/ConversionAPI"
@@ -13,9 +12,8 @@ import EntityManager from "@engine-core/managers/EntityManager";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import CameraComponent from "@engine-core/lib/components/CameraComponent";
 
-export default class CameraManager extends CameraState {
+export default class CameraManager {
     static #dynamicAspectRatio = false
-    static metadata = new CameraEffects()
     static #worker: Worker
     static #initialized = false
 
@@ -24,24 +22,24 @@ export default class CameraManager extends CameraState {
             return
         CameraManager.#initialized = true
         CameraManager.#worker = new Worker("./camera-worker.js")
-        CameraManager.projectionBuffer[4] = 10
-        CameraNotificationDecoder.initialize(CameraManager.notificationBuffers)
+        CameraState.projectionBuffer[4] = 10
+        CameraNotificationDecoder.initialize(CameraState.notificationBuffers)
         CameraManager.#worker.postMessage([
-            CameraManager.notificationBuffers,
-            CameraManager.position,
-            CameraManager.viewMatrix,
-            CameraManager.projectionMatrix,
-            CameraManager.invViewMatrix,
-            CameraManager.invProjectionMatrix,
-            CameraManager.staticViewMatrix,
-            CameraManager.translationBuffer,
-            CameraManager.rotationBuffer,
-            CameraManager.skyboxProjectionMatrix,
-            CameraManager.invSkyboxProjectionMatrix,
-            CameraManager.projectionBuffer,
-            CameraManager.viewProjectionMatrix,
-            CameraManager.viewUBOBuffer,
-            CameraManager.projectionUBOBuffer
+            CameraState.notificationBuffers,
+            CameraState.position,
+            CameraState.viewMatrix,
+            CameraState.projectionMatrix,
+            CameraState.invViewMatrix,
+            CameraState.invProjectionMatrix,
+            CameraState.staticViewMatrix,
+            CameraState.translationBuffer,
+            CameraState.rotationBuffer,
+            CameraState.skyboxProjectionMatrix,
+            CameraState.invSkyboxProjectionMatrix,
+            CameraState.projectionBuffer,
+            CameraState.viewProjectionMatrix,
+            CameraState.viewUBOBuffer,
+            CameraState.projectionUBOBuffer
         ])
         new ResizeObserver(CameraManager.updateAspectRatio)
             .observe(GPUState.canvas)
@@ -66,11 +64,11 @@ export default class CameraManager extends CameraState {
             const UBO = StaticUBOState.cameraProjectionUBO
 
             UBO.bind()
-            CameraManager.projectionUBOBuffer[32] = GPUState.bufferResolution[0]
-            CameraManager.projectionUBOBuffer[33] = GPUState.bufferResolution[1]
-            CameraManager.projectionUBOBuffer[34] = 2.0 / Math.log2(CameraManager.projectionBuffer[0] + 1)
+            CameraState.projectionUBOBuffer[32] = GPUState.bufferResolution[0]
+            CameraState.projectionUBOBuffer[33] = GPUState.bufferResolution[1]
+            CameraState.projectionUBOBuffer[34] = 2.0 / Math.log2(CameraState.projectionBuffer[0] + 1)
 
-            UBO.updateBuffer(CameraManager.projectionUBOBuffer)
+            UBO.updateBuffer(CameraState.projectionUBOBuffer)
             UBO.unbind()
 
             EngineState.visibilityNeedsUpdate = true
@@ -79,7 +77,7 @@ export default class CameraManager extends CameraState {
         if (CameraNotificationDecoder.hasChangedView === 1) {
             const UBO = StaticUBOState.cameraViewUBO
             UBO.bind()
-            UBO.updateBuffer(CameraManager.viewUBOBuffer)
+            UBO.updateBuffer(CameraState.viewUBOBuffer)
             UBO.unbind()
 
             EngineState.visibilityNeedsUpdate = true
@@ -90,16 +88,16 @@ export default class CameraManager extends CameraState {
         const bBox = GPUState.canvas.getBoundingClientRect()
         ConversionAPI.canvasBBox = bBox
         if (Engine.environment === Environment.DEV || CameraManager.#dynamicAspectRatio) {
-            CameraManager.aspectRatio = bBox.width / bBox.height
+            CameraState.aspectRatio = bBox.width / bBox.height
             CameraManager.updateProjection()
         }
     }
 
     static update(translation, rotation) {
         if (translation != null)
-            vec3.copy(CameraManager.translationBuffer, translation)
+            vec3.copy(CameraState.translationBuffer, translation)
         if (rotation != null)
-            vec4.copy(CameraManager.rotationBuffer, rotation)
+            vec4.copy(CameraState.rotationBuffer, rotation)
         CameraNotificationDecoder.viewNeedsUpdate = 1
     }
 
@@ -107,9 +105,9 @@ export default class CameraManager extends CameraState {
 
         return {
             translationSmoothing: CameraManager.translationSmoothing,
-            metadata: {...CameraManager.dumpEffects()},
-            rotation: [...CameraManager.rotationBuffer],
-            translation: [...CameraManager.translationBuffer]
+            metadata: {...CameraState.dumpEffects()},
+            rotation: [...CameraState.rotationBuffer],
+            translation: [...CameraState.translationBuffer]
         }
     }
 
@@ -145,9 +143,9 @@ export default class CameraManager extends CameraState {
 
     static restoreState(state: CameraSerialization) {
         const {rotation, translation, translationSmoothing, metadata} = state
-        CameraManager.restoreMetadata(metadata)
-        CameraManager.updateTranslation(translation)
-        CameraManager.updateRotation(rotation)
+        CameraState.restoreMetadata(metadata)
+        CameraState.updateTranslation(translation)
+        CameraState.updateRotation(rotation)
         CameraManager.translationSmoothing = translationSmoothing
 
         CameraManager.updateView()
@@ -172,32 +170,32 @@ export default class CameraManager extends CameraState {
         EngineState.motionBlurVelocityScale = cameraObj.mbVelocityScale
         EngineState.motionBlurMaxSamples = cameraObj.mbSamples
 
-        CameraManager.zFar = cameraObj.zFar
-        CameraManager.zNear = cameraObj.zNear
-        CameraManager.fov = cameraObj.fov < Math.PI * 2 ? cameraObj.fov : glMatrix.toRadian(cameraObj.fov)
+        CameraState.zFar = cameraObj.zFar
+        CameraState.zNear = cameraObj.zNear
+        CameraState.fov = cameraObj.fov < Math.PI * 2 ? cameraObj.fov : glMatrix.toRadian(cameraObj.fov)
         CameraManager.#dynamicAspectRatio = cameraObj.dynamicAspectRatio
         CameraManager.isOrthographic = cameraObj.ortho
-        CameraManager.cameraMotionBlur = cameraObj.cameraMotionBlur
-        CameraManager.vignetteEnabled = cameraObj.vignette
-        CameraManager.vignetteStrength = cameraObj.vignetteStrength
-        CameraManager.distortion = cameraObj.distortion
-        CameraManager.distortionStrength = cameraObj.distortionStrength
-        CameraManager.chromaticAberration = cameraObj.chromaticAberration
-        CameraManager.chromaticAberrationStrength = cameraObj.chromaticAberrationStrength
-        CameraManager.filmGrain = cameraObj.filmGrain
-        CameraManager.filmGrainStrength = cameraObj.filmGrainStrength
-        CameraManager.bloom = cameraObj.bloom
-        CameraManager.bloomThreshold = cameraObj.bloomThreshold
-        CameraManager.gamma = cameraObj.gamma
-        CameraManager.exposure = cameraObj.exposure
-        CameraManager.apertureDOF = cameraObj.apertureDOF
-        CameraManager.focalLengthDOF = cameraObj.focalLengthDOF
-        CameraManager.focusDistanceDOF = cameraObj.focusDistanceDOF
-        CameraManager.samplesDOF = cameraObj.samplesDOF
-        CameraManager.DOF = cameraObj.enabledDOF
+        CameraState.cameraMotionBlur = cameraObj.cameraMotionBlur
+        CameraState.vignetteEnabled = cameraObj.vignette
+        CameraState.vignetteStrength = cameraObj.vignetteStrength
+        CameraState.distortion = cameraObj.distortion
+        CameraState.distortionStrength = cameraObj.distortionStrength
+        CameraState.chromaticAberration = cameraObj.chromaticAberration
+        CameraState.chromaticAberrationStrength = cameraObj.chromaticAberrationStrength
+        CameraState.filmGrain = cameraObj.filmGrain
+        CameraState.filmGrainStrength = cameraObj.filmGrainStrength
+        CameraState.bloom = cameraObj.bloom
+        CameraState.bloomThreshold = cameraObj.bloomThreshold
+        CameraState.gamma = cameraObj.gamma
+        CameraState.exposure = cameraObj.exposure
+        CameraState.apertureDOF = cameraObj.apertureDOF
+        CameraState.focalLengthDOF = cameraObj.focalLengthDOF
+        CameraState.focusDistanceDOF = cameraObj.focusDistanceDOF
+        CameraState.samplesDOF = cameraObj.samplesDOF
+        CameraState.DOF = cameraObj.enabledDOF
 
         if (!cameraObj.dynamicAspectRatio && cameraObj.aspectRatio)
-            CameraManager.aspectRatio = cameraObj.aspectRatio
+            CameraState.aspectRatio = cameraObj.aspectRatio
         else
             CameraManager.updateAspectRatio()
 

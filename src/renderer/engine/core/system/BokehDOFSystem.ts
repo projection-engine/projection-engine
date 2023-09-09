@@ -1,15 +1,15 @@
 import StaticMeshesState from "../states/StaticMeshesState"
 import StaticFBOState from "../states/StaticFBOState"
 import StaticShadersState from "../states/StaticShadersState"
-import CameraManager from "../managers/CameraManager"
 import GPUUtil from "../utils/GPUUtil";
 import AbstractSystem from "../AbstractSystem";
+import CameraState from "@engine-core/states/CameraState";
 
 
 export default class BokehDOFSystem extends AbstractSystem {
 
      shouldExecute = (): boolean =>  {
-        return CameraManager.DOF;
+        return CameraState.DOF;
     }
 
      execute = () => {

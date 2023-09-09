@@ -1,7 +1,7 @@
-import CameraManager from "./CameraManager"
 import {Components, WorkerMessages,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import CameraState from "@engine-core/states/CameraState";
 
 let maxWorkers
 let currentActiveWorker = 0
@@ -20,7 +20,7 @@ export default class TransformationManager {
             const currentWorker = new Worker("./entity-worker.js")
             currentWorker.postMessage({
                 type: WorkerMessages.INITIALIZE,
-                payload: [TransformationManager.hasChangeBuffer, CameraManager.notificationBuffers, CameraManager.position, i, maxWorkers]
+                payload: [TransformationManager.hasChangeBuffer, CameraState.notificationBuffers, CameraState.position, i, maxWorkers]
             })
             TransformationManager.#workers.push(currentWorker)
         }

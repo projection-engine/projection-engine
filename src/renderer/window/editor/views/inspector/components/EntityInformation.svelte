@@ -10,7 +10,6 @@
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import PropertyHeader from "../../../../shared/components/PropertyHeader.svelte";
     import Accordion from "../../../../shared/components/accordion/Accordion.svelte";
-    import TransformationForm from "./TransformationForm.svelte";
     import AddComponent from "./AddComponent.svelte";
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
@@ -41,7 +40,6 @@
 
 <PropertyHeader title={entityName}/>
 <AddComponent entity={entity}/>
-<TransformationForm/>
 <Accordion title={LocalizationEN.BASIC} startOpen={true}>
     <div data-svelteform="-">
         <Input

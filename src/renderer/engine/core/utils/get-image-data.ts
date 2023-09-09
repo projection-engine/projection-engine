@@ -1,4 +1,4 @@
-export default async function getImageData(base64) {
+export default async function getImageData(base64: string) {
 	const fetchData = await fetch(base64)
 	const blob = await fetchData.blob()
 	const imageToLoad = await createImageBitmap(blob)

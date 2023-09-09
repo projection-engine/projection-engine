@@ -1,5 +1,4 @@
 import {vec3, vec4} from "gl-matrix"
-import CameraManager from "@engine-core/managers/CameraManager"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import EngineStateService from "./engine/EngineStateService"
@@ -8,6 +7,7 @@ import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import EntityManager from "@engine-core/managers/EntityManager";
 import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
+import CameraState from "@engine-core/states/CameraState";
 
 
 export default class ViewportActionUtil {
@@ -28,11 +28,11 @@ export default class ViewportActionUtil {
         if (!transformComponent)
             return
 
-        vec3.copy(CameraManager.translationBuffer, transformComponent.absoluteTranslation)
+        vec3.copy(CameraState.translationBuffer, transformComponent.absoluteTranslation)
 
         const position = <vec4>[0, 0, 5, 1]
-        vec4.transformQuat(position, position, CameraManager.rotationBuffer)
-        vec3.add(CameraManager.translationBuffer, CameraManager.translationBuffer, <vec3>position)
+        vec4.transformQuat(position, position, CameraState.rotationBuffer)
+        vec3.add(CameraState.translationBuffer, CameraState.translationBuffer, <vec3>position)
 
         EditorCameraSystem.updateProperties({forceUpdate: true})
     }

@@ -1,7 +1,4 @@
-import VertexBuffer from "./VertexBuffer"
-
 import GPUState from "../../states/GPUState"
-import GPUManager from "../../managers/GPUManager"
 import EngineState from "../../states/EngineState";
 import AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
 

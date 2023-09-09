@@ -22,12 +22,9 @@
 
     onMount(() => {
         EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
-            const temp = EditorEntityManager.getEntity(data.array[0] || data.lockedEntity)
-            if (temp === selectedEntity)
-                return
-            selectedEntity = temp
+            selectedEntity = EditorEntityManager.getEntity(data.array[0] || data.lockedEntity)
             tabIndex = INSPECTOR_TABS.length
-            if (selectedEntity) {
+            if (selectedEntity != null) {
                 const entityTabs = InspectorUtil.getEntityTabs(selectedEntity.allComponents)
                 setTabs(entityTabs)
             } else {

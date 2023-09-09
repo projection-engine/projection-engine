@@ -250,6 +250,7 @@ export default class GPUManager {
         if (GPUState.terrains.has(id))
             return GPUState.terrains.get(id)
         const instance = new Terrain({...bufferData, id})
+        console.log(instance, GPUState.terrains)
         GPUState.terrains.set(id, instance)
         return instance
     }

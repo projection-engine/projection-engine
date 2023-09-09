@@ -42,15 +42,16 @@ export default class EngineFileSystemManager {
     }
 
     static #doFetch(id: string, resourceOrigin: DynamicMap<string, IResource>, onLoad: GenericNonVoidFunctionWithP<string, Promise<void>>) {
-        if (!id || resourceOrigin.get(id) != null || EngineFileSystemManager.#fetching.get(id)) {
+        const fetching = EngineFileSystemManager.#fetching;
+        if (!id || fetching.get(id) || resourceOrigin.get(id) != null) {
             return
         }
-        this.#fetching.set(id, true)
-        this.readAsset(id)
+        fetching.set(id, true)
+        EngineFileSystemManager.readAsset(id)
             .then(data => {
                 if (!data)
                     return
-                onLoad(data).then(() => this.#fetching.delete(id)).catch(console.error)
+                onLoad(data).then(() => fetching.delete(id)).catch(console.error)
             })
             .catch(console.error)
     }
@@ -61,7 +62,12 @@ export default class EngineFileSystemManager {
 
     static requestTerrainLoad(ID: string) {
         this.#doFetch(ID, GPUState.terrains, async data => {
-            await TerrainProcessor.generate(data, 1)
+            try {
+                const texture = JSON.parse(data)
+                await TerrainProcessor.generate(ID, texture.base64)
+            } catch (ex) {
+                console.error(ex)
+            }
         })
     }
 }

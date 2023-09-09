@@ -1,5 +1,4 @@
 import {mat4} from "gl-matrix"
-import Mesh from "./Mesh"
 import GPUState from "../../states/GPUState"
 import CubeMapManager from "../../managers/CubeMapManager"
 import getProbeRotation from "../../utils/get-probe-rotation"

@@ -1,7 +1,6 @@
 <script>
     import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
-    import ComponentForm from "./ComponentForm.svelte"
     import CAMERA_PROPS from "../static/component-props/CAMERA_PROPS"
     import ContentField from "../../../../preferences/components/content/ContentField.svelte"
     import {onDestroy, onMount} from "svelte"
@@ -20,24 +19,22 @@
     let camera
 
     onMount(() => {
-    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
-    		cameraSettings = {...data.camera, props: CAMERA_PROPS}
-    		settings = data
-    		camera = data.camera
-    	}, ["camera"])
+        SettingsStore.getInstance().addListener(COMPONENT_ID, data => {
+            cameraSettings = {...data.camera, props: CAMERA_PROPS}
+            settings = data
+            camera = data.camera
+        }, ["camera"])
     })
 
     onDestroy(() => SettingsStore.getInstance().removeListener(COMPONENT_ID))
 
     const updateCamera = (key, value, full) => {
-    	if (full)
-    		SettingsStore.updateStore({camera: {...camera, [key]: value}})
-    	if (EditorCameraSystem[key] !== undefined)
-    		EditorCameraSystem[key] = value
+        if (full)
+            SettingsStore.updateStore({camera: {...camera, [key]: value}})
+        if (EditorCameraSystem[key] !== undefined)
+            EditorCameraSystem[key] = value
     }
-    function checkIsDisabled(propAttr) {
-        return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]
-    }
+
 </script>
 
 <PropertyHeader title={LocalizationEN.EDITOR_CAMERA}/>
@@ -53,23 +50,21 @@
 
 {#if Object.hasOwn(COMPONENT_ATTRIBUTES, Components.CAMERA)}
     {#each COMPONENT_ATTRIBUTES[Components.CAMERA] as propAttr, index}
-        {#if propAttr.type === COMPONENT_PROP_TYPES.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
+        {#if propAttr.type === COMPONENT_PROP_TYPES.GROUP && Array.isArray(propAttr.children)}
             <Accordion
                     startOpen={index === 0}
                     title={LocalizationEN[propAttr.label] || propAttr.label}
                     styles="display: flex; flex-direction: column; gap: 4px;"
             >
                 {#each propAttr.children as attribute}
-                    {#if !checkIsDisabled(attribute)}
-                        <ComponentProperty
-                                component={cameraSettings}
-                                submit={updateCamera}
-                                attribute={attribute}
-                        />
-                    {/if}
+                    <ComponentProperty
+                            component={cameraSettings}
+                            submit={updateCamera}
+                            attribute={attribute}
+                    />
                 {/each}
             </Accordion>
-        {:else if propAttr.type !== COMPONENT_PROP_TYPES.GROUP && !checkIsDisabled(propAttr)}
+        {:else if propAttr.type !== COMPONENT_PROP_TYPES.GROUP }
             <ComponentProperty
                     component={cameraSettings}
                     submit={updateCamera}

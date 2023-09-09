@@ -40,7 +40,7 @@ export default class TerrainUtil {
         for (let i = 0; i < vertexCount; i++) {
             for (let j = 0; j < vertexCount; j++) {
                 vertices[vertexPointer * 3] = (j / (vertexCount - 1)) * dimension - OFFSET
-                vertices[vertexPointer * 3 + 1] = TerrainUtil.#sampleTexture(j, i, imageData, canvas.width)
+                vertices[vertexPointer * 3 + 1] = 0//TerrainUtil.#sampleTexture(j, i, imageData, canvas.width)
                 vertices[vertexPointer * 3 + 2] = (i / (vertexCount - 1)) * dimension - OFFSET
 
                 uvs[vertexPointer * 2] = j / (vertexCount - 1)
@@ -51,12 +51,13 @@ export default class TerrainUtil {
         return {vertices, uvs}
     }
 
-    static async buildTerrain(base64: string, dimension: number): Promise<[TerrainProcessorResult, Transferable[]]> {
+    static async buildTerrain(base64: string): Promise<[TerrainProcessorResult, Transferable[]]> {
         const {imageToLoad, imageData, canvas} = await getImageData(base64)
         const vertexCount = imageToLoad.width
+        const SIZE = imageToLoad.width * .5
 
-        const OFFSET = dimension / 2
-        const {uvs, vertices} = TerrainUtil.#computeVertices(vertexCount, dimension, OFFSET, imageData, canvas);
+        const OFFSET = SIZE / 2
+        const {uvs, vertices} = TerrainUtil.#computeVertices(vertexCount, SIZE, OFFSET, imageData, canvas);
         const indices = TerrainUtil.#computeIndices(vertexCount);
         const normals = Float32Array.from(PrimitiveProcessor.computeNormals(indices, vertices))
         const tangents = Float32Array.from(PrimitiveProcessor.computeTangents(indices, vertices, uvs, normals))
