@@ -1,6 +1,7 @@
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import EntityManager from "@engine-core/managers/EntityManager"
 import EntityHierarchyService from "./EntityHierarchyService";
+import UUIDGen from "../../../../../shared/UUIDGen";
 
 export default class EntityNamingService {
 	static #byName = new Map<string, EngineEntity>()
@@ -35,7 +36,7 @@ export default class EntityNamingService {
 		}
 	}
 	static renameInBlock(entities:EditorEntity[]){
-		const groupID = crypto.randomUUID().substring(0, 3)
+		const groupID = UUIDGen().substring(0, 3)
 		for (let i = 0; i < entities.length; i++){
 			const entity = entities[i]
 			if(EntityNamingService.#byName.has(entity.name))

@@ -9,6 +9,7 @@
     import ContentBrowserUtil from "../../../../util/ContentBrowserUtil"
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import ContentBrowserStore from "../../../../../shared/stores/ContentBrowserStore";
+    import UUIDGen from "../../../../../../../shared/UUIDGen";
 
     export let reset: VoidFunction
     export let data
@@ -21,7 +22,7 @@
     export let selectedItems: MutableObject[]
     export let toCut
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let isFolder = data.isFolder
     let isSelected = false
     $: isSelected = selectedItems.includes(data)

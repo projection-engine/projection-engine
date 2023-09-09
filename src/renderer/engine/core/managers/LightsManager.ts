@@ -9,6 +9,7 @@ import LightComponent from "@engine-core/lib/components/LightComponent";
 import AbstractSingleton from "@engine-core/AbstractSingleton";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import AtmosphereComponent from "@engine-core/lib/components/AtmosphereComponent";
+import GPUState from "@engine-core/states/GPUState";
 
 export default class LightsManager extends AbstractSingleton {
     /**
@@ -30,8 +31,8 @@ export default class LightsManager extends AbstractSingleton {
                 }
             })
         })
-        this.#primaryBuffer = <Float32Array>ArrayBufferUtil.allocateVector(UberShader.MAX_LIGHTS * 16, 0, false, false, false)
-        this.#secondaryBuffer = <Float32Array>ArrayBufferUtil.allocateVector(UberShader.MAX_LIGHTS * 16, 0, false, false, false)
+        this.#primaryBuffer = <Float32Array>ArrayBufferUtil.allocateVector(GPUState.MAX_LIGHTS * 16, 0, false, false, false)
+        this.#secondaryBuffer = <Float32Array>ArrayBufferUtil.allocateVector(GPUState.MAX_LIGHTS * 16, 0, false, false, false)
     }
 
     static packageLights(keepOld = false, force = false) {
@@ -60,7 +61,7 @@ export default class LightsManager extends AbstractSingleton {
         const toLoopSize = lights.length
         for (let i = 0; i < toLoopSize; i++) {
             const current = lights[i]
-            if (offset + 16 > UberShader.MAX_LIGHTS * 16)
+            if (offset + 16 > GPUState.MAX_LIGHTS * 16)
                 break
             const transformationComponent = EntityManager.getComponent<TransformationComponent>(current, Components.TRANSFORMATION)
             const light = EntityManager.getComponent<LightComponent>(current, Components.LIGHT)
@@ -75,7 +76,7 @@ export default class LightsManager extends AbstractSingleton {
         const atmospheres = EntityManager.withComponent(Components.ATMOSPHERE).array
         for (let i = 0; i < atmospheres.length; i++) {
             const current = atmospheres[i]
-            if (offset + 16 > UberShader.MAX_LIGHTS * 16)
+            if (offset + 16 > GPUState.MAX_LIGHTS * 16)
                 break
             const transformationComponent = EntityManager.getComponent<TransformationComponent>(current, Components.TRANSFORMATION)
             const atmosphere = EntityManager.getComponent<AtmosphereComponent>(current, Components.ATMOSPHERE)
@@ -96,7 +97,7 @@ export default class LightsManager extends AbstractSingleton {
 
             StaticUBOState.uberUBO.bind()
             const quantity = new Uint8Array(1)
-            quantity[0] = Math.min(this.#lightsQuantity, UberShader.MAX_LIGHTS)
+            quantity[0] = Math.min(this.#lightsQuantity, GPUState.MAX_LIGHTS)
             StaticUBOState.uberUBO.updateData("lightQuantity", quantity)
             StaticUBOState.uberUBO.unbind()
         }

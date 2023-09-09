@@ -4,6 +4,7 @@ import VertexBuffer from "@engine-core/lib/resources/VertexBuffer"
 import Mesh from "@engine-core/lib/resources/Mesh"
 import GPUManager from "../managers/GPUManager"
 import {EmbeddedMeshes} from "@engine-core/engine.enum";
+import AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
 
 export default class StaticMeshesState {
 	static #initialized = false
@@ -36,7 +37,7 @@ export default class StaticMeshesState {
 		const q = StaticMeshesState.quad
 		const last = GPUState.activeMesh
 		if (last && last !== q)
-			last.finish()
+			AbstractMesh.finishIfUsed()
 		q.bindEssentialResources()
 		GPUState.context.drawElements(GPUState.context.TRIANGLES, q.verticesQuantity, GPUState.context.UNSIGNED_INT, 0)
 		GPUState.activeMesh = q

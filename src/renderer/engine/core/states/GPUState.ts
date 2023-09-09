@@ -1,12 +1,12 @@
-import Shader from "@engine-core/lib/resources/Shader"
-import Framebuffer from "@engine-core/lib/resources/Framebuffer"
-import Material from "@engine-core/lib/resources/Material"
-import Mesh from "@engine-core/lib/resources/Mesh"
-import Texture from "@engine-core/lib/resources/Texture"
-import LightProbe from "@engine-core/lib/resources/LightProbe"
-import DynamicMap from "../lib/DynamicMap"
-import AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
-import Terrain from "@engine-core/lib/resources/Terrain";
+import type Shader from "@engine-core/lib/resources/Shader"
+import type Framebuffer from "@engine-core/lib/resources/Framebuffer"
+import type Material from "@engine-core/lib/resources/Material"
+import type Mesh from "@engine-core/lib/resources/Mesh"
+import type Texture from "@engine-core/lib/resources/Texture"
+import type LightProbe from "@engine-core/lib/resources/LightProbe"
+import DynamicMap from "@engine-core/lib/DynamicMap"
+import type AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
+import type Terrain from "@engine-core/lib/resources/Terrain";
 
 export default class GPUState {
     static context?: WebGL2RenderingContext
@@ -24,4 +24,5 @@ export default class GPUState {
     static internalResolution = {w: 0, h: 0}
     static skylightProbe: LightProbe
     static bufferResolution = new Float32Array([0, 0])
+    static MAX_LIGHTS = 310
 }

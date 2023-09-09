@@ -3,8 +3,9 @@
     import EngineState from "@engine-core/states/EngineState";
     import PerformanceMetricsSystem from "../PerformanceMetricsSystem";
     import SystemManager from "@engine-core/managers/SystemManager";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     const MEMORY_UPDATE_INTERVAL = 2000
     let frameTime
     let frameRate

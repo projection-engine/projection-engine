@@ -6,12 +6,6 @@ import VERTEX_SHADER from "../static/shaders/uber-shader/UBER-MATERIAL.vert"
 import Shader from "@engine-core/lib/resources/Shader"
 
 export default class UberShader {
-
-	static #MAX_LIGHTS = 310
-	static get MAX_LIGHTS() {
-		return UberShader.#MAX_LIGHTS
-	}
-
 	static #uberSignature = {}
 	static get uberSignature() {
 		return UberShader.#uberSignature

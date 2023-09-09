@@ -15,8 +15,9 @@
     import ViewportUtil from "../../util/ViewportUtil"
     import ViewsUtil from "../../util/ViewsUtil"
     import TabsStoreUtil from "../../util/TabsStoreUtil"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     const VIEW_TEMPLATES = [...Object.values(VIEWS), ...Object.values(VIEWPORT_TABS)].map(value => ({
         name: LocalizationEN[value],
         id: value

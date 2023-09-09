@@ -18,8 +18,9 @@
     import WindowTypes from "../../../../../shared/enums/WindowTypes"
     import ViewportUtil from "../../util/ViewportUtil"
     import WindowFrameUtil from "../../util/WindowFrameUtil"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     let executingAnimation = false
     let settings = {}

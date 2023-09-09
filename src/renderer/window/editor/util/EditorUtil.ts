@@ -18,6 +18,7 @@ import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import EntityManager from "@engine-core/managers/EntityManager";
 import CameraComponent from "@engine-core/lib/components/CameraComponent";
+import UUIDGen from "../../../../shared/UUIDGen";
 
 export default class EditorUtil {
     static async componentConstructor(entity, scriptID, autoUpdate = true) {
@@ -194,7 +195,7 @@ export default class EditorUtil {
 
     static getCall<T>(channel, data, addMiddle = true): Promise<T> {
         return new Promise(resolve => {
-            let listenID = crypto.randomUUID()
+            let listenID = UUIDGen()
             if (data.listenID)
                 listenID = data.listenID
             ElectronResources.ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data: T) => {

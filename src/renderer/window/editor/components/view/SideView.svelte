@@ -4,8 +4,9 @@
     import ViewsUtil from "../../util/ViewsUtil"
     import {onDestroy, onMount} from "svelte"
     import EngineStore from "../../../shared/stores/EngineStore"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     export let resizePosition
     export let orientation

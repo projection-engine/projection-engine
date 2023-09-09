@@ -1,4 +1,4 @@
-import AbstractComponent from "./AbstractComponent"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
 import {vec3} from "gl-matrix"
 import {AtmosphereTypes, Components,} from "@engine-core/engine.enum";
 

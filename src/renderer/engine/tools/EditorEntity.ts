@@ -3,10 +3,11 @@ import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 import {mat4, quat, vec3} from "gl-matrix";
 import {Components} from "@engine-core/engine.enum";
 import EditorEntityManager from "./EditorEntityManager";
+import UUIDGen from "../../../shared/UUIDGen";
 
 
 export default class EditorEntity implements IEditorEntity {
-    id = crypto.randomUUID()
+    id = UUIDGen()
     _colorIdentifier: [number, number, number] = [255, 255, 255]
     name = ""
     __cacheCenterMatrix: mat4

@@ -16,8 +16,9 @@
     import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EntityManager from "@engine-core/managers/EntityManager";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let cameras: EditorEntity[] = []
     let focusedCamera: EngineEntity
     let screenSpaceMovement = false

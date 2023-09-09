@@ -1,6 +1,6 @@
 import {quat, vec3} from "gl-matrix"
-import ArrayBufferUtil from "../utils/ArrayBufferUtil"
-import CameraNotificationDecoder from "../lib/CameraNotificationDecoder"
+import ArrayBufferUtil from "@engine-core/utils/ArrayBufferUtil"
+import CameraNotificationDecoder from "@engine-core/lib/CameraNotificationDecoder"
 import StaticUBOState from "@engine-core/states/StaticUBOState";
 
 
@@ -180,6 +180,92 @@ export default class CameraState {
         return CameraState.#vignetteStrength
     }
 
+
+    static get vignetteEnabled() {
+        return CameraState.#vignetteEnabled
+    }
+
+
+    static get filmGrain() {
+        return CameraState.#filmGrain
+    }
+
+    static get filmGrainStrength() {
+        return CameraState.#filmGrainStrength
+    }
+
+
+    static get gamma() {
+        return CameraState.#gamma
+    }
+
+    static get exposure() {
+        return CameraState.#exposure
+    }
+
+    static get focusDistanceDOF() {
+        return CameraState.#focusDistanceDOF
+    }
+
+
+    static get apertureDOF() {
+        return CameraState.#apertureDOF
+    }
+
+
+    static get focalLengthDOF() {
+        return CameraState.#focalLengthDOF
+    }
+
+    static get distortionStrength() {
+        return CameraState.#distortionStrength
+    }
+
+    static get chromaticAberrationStrength() {
+        return CameraState.#chromaticAberrationStrength
+    }
+
+    static get bloom() {
+        return CameraState.#bloom
+    }
+
+    static get chromaticAberration() {
+        return CameraState.#chromaticAberration
+    }
+
+    static get distortion() {
+        return CameraState.#distortion
+    }
+
+    static get samplesDOF() {
+        return CameraState.#samplesDOF
+    }
+
+
+    static set focalLengthDOF(data) {
+        CameraState.#focalLengthDOF = data
+        StaticUBOState.lensPostProcessingUBO.bind()
+        FLOAT[0] = data
+        StaticUBOState.lensPostProcessingUBO.updateData("focalLengthDOF", FLOAT)
+        StaticUBOState.lensPostProcessingUBO.unbind()
+    }
+
+    static set apertureDOF(data) {
+        CameraState.#apertureDOF = data
+        StaticUBOState.lensPostProcessingUBO.bind()
+        FLOAT[0] = data
+        StaticUBOState.lensPostProcessingUBO.updateData("apertureDOF", FLOAT)
+        StaticUBOState.lensPostProcessingUBO.unbind()
+    }
+
+    static set focusDistanceDOF(data) {
+        CameraState.#focusDistanceDOF = data
+        StaticUBOState.lensPostProcessingUBO.bind()
+        FLOAT[0] = data
+        StaticUBOState.lensPostProcessingUBO.updateData("focusDistanceDOF", FLOAT)
+        StaticUBOState.lensPostProcessingUBO.unbind()
+    }
+
     static set vignetteStrength(data) {
         CameraState.#vignetteStrength = data
         StaticUBOState.lensPostProcessingUBO.bind()
@@ -188,24 +274,12 @@ export default class CameraState {
         StaticUBOState.lensPostProcessingUBO.unbind()
     }
 
-    static get vignetteEnabled() {
-        return CameraState.#vignetteEnabled
-    }
-
     static set vignetteEnabled(data) {
         CameraState.#vignetteEnabled = data
         StaticUBOState.lensPostProcessingUBO.bind()
         U_INT[0] = data ? 1 : 0
         StaticUBOState.lensPostProcessingUBO.updateData("vignetteEnabled", U_INT)
         StaticUBOState.lensPostProcessingUBO.unbind()
-    }
-
-    static get filmGrain() {
-        return CameraState.#filmGrain
-    }
-
-    static get filmGrainStrength() {
-        return CameraState.#filmGrainStrength
     }
 
     static set filmGrain(data) {
@@ -224,54 +298,6 @@ export default class CameraState {
         StaticUBOState.frameCompositionUBO.unbind()
     }
 
-
-    static get gamma() {
-        return CameraState.#gamma
-    }
-
-    static get exposure() {
-        return CameraState.#exposure
-    }
-
-    static get focusDistanceDOF() {
-        return CameraState.#focusDistanceDOF
-    }
-
-    static set focusDistanceDOF(data) {
-        CameraState.#focusDistanceDOF = data
-        StaticUBOState.lensPostProcessingUBO.bind()
-        FLOAT[0] = data
-        StaticUBOState.lensPostProcessingUBO.updateData("focusDistanceDOF", FLOAT)
-        StaticUBOState.lensPostProcessingUBO.unbind()
-    }
-
-    static get apertureDOF() {
-        return CameraState.#apertureDOF
-    }
-
-    static set apertureDOF(data) {
-        CameraState.#apertureDOF = data
-        StaticUBOState.lensPostProcessingUBO.bind()
-        FLOAT[0] = data
-        StaticUBOState.lensPostProcessingUBO.updateData("apertureDOF", FLOAT)
-        StaticUBOState.lensPostProcessingUBO.unbind()
-    }
-
-    static get focalLengthDOF() {
-        return CameraState.#focalLengthDOF
-    }
-
-    static set focalLengthDOF(data) {
-        CameraState.#focalLengthDOF = data
-        StaticUBOState.lensPostProcessingUBO.bind()
-        FLOAT[0] = data
-        StaticUBOState.lensPostProcessingUBO.updateData("focalLengthDOF", FLOAT)
-        StaticUBOState.lensPostProcessingUBO.unbind()
-    }
-
-    static get samplesDOF() {
-        return CameraState.#samplesDOF
-    }
 
     static set samplesDOF(data) {
         CameraState.#samplesDOF = data
@@ -298,9 +324,6 @@ export default class CameraState {
         StaticUBOState.lensPostProcessingUBO.unbind()
     }
 
-    static get distortion() {
-        return CameraState.#distortion
-    }
 
     static set distortion(v) {
         CameraState.#distortion = v
@@ -310,9 +333,6 @@ export default class CameraState {
         StaticUBOState.lensPostProcessingUBO.unbind()
     }
 
-    static get chromaticAberration() {
-        return CameraState.#chromaticAberration
-    }
 
     static set chromaticAberration(v) {
         CameraState.#chromaticAberration = v
@@ -322,9 +342,6 @@ export default class CameraState {
         StaticUBOState.lensPostProcessingUBO.unbind()
     }
 
-    static get bloom() {
-        return CameraState.#bloom
-    }
 
     static set bloom(v) {
         CameraState.#bloom = v
@@ -334,9 +351,6 @@ export default class CameraState {
         StaticUBOState.lensPostProcessingUBO.unbind()
     }
 
-    static get chromaticAberrationStrength() {
-        return CameraState.#chromaticAberrationStrength
-    }
 
     static set chromaticAberrationStrength(v) {
         CameraState.#chromaticAberrationStrength = v
@@ -346,9 +360,6 @@ export default class CameraState {
         StaticUBOState.lensPostProcessingUBO.unbind()
     }
 
-    static get distortionStrength() {
-        return CameraState.#distortionStrength
-    }
 
     static set distortionStrength(v) {
         CameraState.#distortionStrength = v

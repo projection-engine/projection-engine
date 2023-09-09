@@ -10,8 +10,9 @@
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EditorActionHistory from "../../../services/EditorActionHistory";
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     export let entity: EditorEntity
 
     let components

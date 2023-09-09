@@ -11,8 +11,9 @@
     import LoggerConfig from "./components/LoggerConfig.svelte"
     import LoadedLevelStore from "../../../shared/stores/LoadedLevelStore";
     import ContentBrowserStore from "../../../shared/stores/ContentBrowserStore";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let isHidden = false
 
     let loadedLevelName

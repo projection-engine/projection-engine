@@ -5,8 +5,9 @@
     import PropertyHeader from "../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../../shared/enums/LocalizationEN"
     import {onDestroy, onMount} from "svelte"
+    import UUIDGen from "../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     function update(key, value) {
     	SettingsStore.updateStore({[key]: value})

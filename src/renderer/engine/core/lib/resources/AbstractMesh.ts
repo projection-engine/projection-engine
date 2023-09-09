@@ -2,6 +2,7 @@ import VertexBuffer from "@engine-core/lib/resources/VertexBuffer";
 import GPUState from "@engine-core/states/GPUState";
 import GPUManager from "@engine-core/managers/GPUManager";
 import EngineState from "@engine-core/states/EngineState";
+import UUIDGen from "../../../../../shared/UUIDGen";
 
 export default abstract class AbstractMesh implements IGPUResource {
     verticesQuantity: number
@@ -19,7 +20,7 @@ export default abstract class AbstractMesh implements IGPUResource {
 
     constructor(attributes: MeshProps) {
         const {
-            id = crypto.randomUUID(),
+            id = UUIDGen(),
             vertices,
             indices,
             normals,

@@ -13,8 +13,9 @@
     import SerializedState from "../../components/view/SerializedState.svelte";
     import EntityManager from "@engine-core/managers/EntityManager";
     import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     let ref: HTMLElement
     let tooltipRef: HTMLElement

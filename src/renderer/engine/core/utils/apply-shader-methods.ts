@@ -14,6 +14,7 @@ import UBER_ATTRIBUTES from "../static/shaders/uber-shader/ATTRIBUTES.glsl"
 import SSS from "../static/shaders/uber-shader/lights/SSS.glsl"
 import UberShader from "../lib/UberShader"
 import {StaticUBONames} from "../states/StaticUBOState"
+import GPUState from "@engine-core/states/GPUState";
 
 const METHODS = {
 	cameraViewInfo: "//import(cameraViewInfo)",
@@ -61,7 +62,7 @@ export default function applyShaderMethods(shaderCode) {
 				response = response.replaceAll(METHODS[key], COMPUTE_AREA_LIGHT)
 				break
 			case key === "MAX_LIGHTS":
-				response = response.replaceAll(METHODS[key], "#define MAX_LIGHTS " + UberShader.MAX_LIGHTS)
+				response = response.replaceAll(METHODS[key], "#define MAX_LIGHTS " + GPUState.MAX_LIGHTS)
 				break
 			case key === "blur":
 				response = response.replaceAll(METHODS[key], STRONG_BLUR)

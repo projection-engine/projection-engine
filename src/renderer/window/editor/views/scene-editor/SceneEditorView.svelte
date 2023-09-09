@@ -23,8 +23,9 @@
     import ViewStateStore from "../../../shared/stores/ViewStateStore";
     import {ShadingModels,} from "@engine-core/engine.enum";
     import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     const draggable = dragDrop(false)
 
     let isOnGizmo = false

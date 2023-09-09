@@ -6,12 +6,12 @@ import * as Buffer from "buffer"
 
 import * as pathRequire from "path"
 import * as fs from "fs"
-import * as crypto from "node:crypto"
 import sharp from "sharp"
 import imageSize from "image-size"
 import FileTypes from "../../shared/enums/FileTypes"
 import Folders from "../../shared/enums/Folders"
 import FileSystemUtil from "./FileSystemUtil"
+import UUIDGen from "../../shared/UUIDGen";
 
 export default class FileImporterUtil {
 	static async importFiles(filesToLoad: string[], dir: string) {
@@ -22,7 +22,7 @@ export default class FileImporterUtil {
 				const filePath = filesToLoad[i]
 				const name = filePath.split(pathRequire.sep).pop()
 				const newRoot = targetDir + pathRequire.sep + name.split(".")[0]
-				const fileID = crypto.randomUUID()
+				const fileID = UUIDGen()
 				const type = filePath.split(/\.([a-zA-Z0-9]+)$/)[1]
 				switch (type) {
 				case "png":

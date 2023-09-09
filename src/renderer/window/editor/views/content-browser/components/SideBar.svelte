@@ -4,8 +4,9 @@
     import ContentBrowserHierarchyStore from "../../../../shared/stores/ContentBrowserHierarchyStore"
     import {onDestroy, onMount} from "svelte"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     /** @type {function} */
     export let setCurrentDirectory

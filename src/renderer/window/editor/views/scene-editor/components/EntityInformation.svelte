@@ -11,9 +11,10 @@
     import SceneEditorUtil from "../../../util/SceneEditorUtil"
     import {Components} from "@engine-core/engine.enum";
     import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
     export let isOnGizmo: boolean
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     let selectedSize
     let translationRef

@@ -3,7 +3,6 @@ import DynamicMap from "@engine-core/lib/DynamicMap";
 import EditorEntity from "./EditorEntity";
 import EntityManager from "@engine-core/managers/EntityManager";
 import serializeStructure from "@engine-core/utils/serialize-structure";
-import {UUID} from "crypto";
 
 export default class EditorEntityManager extends AbstractSingleton {
     #entities = new DynamicMap<EngineEntity, EditorEntity>()

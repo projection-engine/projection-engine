@@ -12,8 +12,9 @@
     import HotKeysController from "../../lib/HotKeysController"
     import EditorLevelService from "../../../editor/services/engine/EditorLevelService"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     export let noChangeTracking
 

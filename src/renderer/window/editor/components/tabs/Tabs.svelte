@@ -6,6 +6,7 @@
     import {Sortable} from "sortablejs"
     import Tab from "./components/Tab.svelte"
     import TabContextController from "./TabContextController"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
     export let addNewTab: Function
     export let removeTab: Function
@@ -20,7 +21,7 @@
     export let focused: boolean
     export let styles: string
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
 
     let sortedTabs = []

@@ -1,4 +1,4 @@
-import AbstractComponent from "./AbstractComponent"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class SpriteComponent extends AbstractComponent {

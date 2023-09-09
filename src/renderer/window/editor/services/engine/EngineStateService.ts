@@ -8,6 +8,8 @@ import GizmoUtil from "../../../../engine/tools/gizmo/util/GizmoUtil"
 import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
 import EntityManager from "@engine-core/managers/EntityManager";
 import LevelManager from "@engine-core/managers/LevelManager";
+import LightsManager from "@engine-core/managers/LightsManager";
+import {Components} from "@engine-core/engine.enum";
 
 function checkLevel(_, propertyKey: string, descriptor: PropertyDescriptor) {
     const original = descriptor.value
@@ -82,6 +84,9 @@ export default class EngineStateService {
 
     static toggleEntityVisibility(entityID:EngineEntity, noSubmit?:boolean) {
         EntityManager.toggleEntityActiveState(entityID)
+        if (EntityManager.hasComponent(entityID, Components.LIGHT) || EntityManager.hasComponent(entityID, Components.ATMOSPHERE)) {
+            LightsManager.packageLights(false, true)
+        }
         if (!noSubmit) {
             EntityHierarchyService.updateHierarchy()
         }

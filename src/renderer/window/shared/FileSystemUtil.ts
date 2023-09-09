@@ -4,6 +4,7 @@ import Folders from "../../../shared/enums/Folders"
 import IPCRoutes from "../../../shared/enums/IPCRoutes"
 import FileTypes from "../../../shared/enums/FileTypes"
 import EditorUtil from "../editor/util/EditorUtil"
+import UUIDGen from "../../../shared/UUIDGen";
 
 
 export default class FileSystemUtil {
@@ -37,7 +38,7 @@ export default class FileSystemUtil {
 
 	static readFile(pathName: string, type?: string): Promise<any> {
 		return new Promise(resolve => {
-			const listenID = crypto.randomUUID()
+			const listenID = UUIDGen()
 			ElectronResources.ipcRenderer.once(IPCRoutes.READ_FILE + listenID, (ev, data) => resolve(data))
 			ElectronResources.ipcRenderer.send(IPCRoutes.READ_FILE, {pathName, type, listenID})
 		})

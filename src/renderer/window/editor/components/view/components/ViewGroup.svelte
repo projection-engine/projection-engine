@@ -12,8 +12,9 @@
     import View from "./View.svelte";
     import ViewTemplates from "../static/ViewTemplates";
     import ViewStateStore from "../../../../shared/stores/ViewStateStore";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     export let groupIndex: number
     export let views: ViewTabItem[]

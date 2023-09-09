@@ -11,8 +11,9 @@
     import FileSystemUtil from "../../../shared/FileSystemUtil"
     import Properties from "./components/info-editor/Properties.svelte";
     import SerializedState from "../../components/view/SerializedState.svelte";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     const navigationHistory = new NavigationHistory(v => currentDirectory = v)
     let sortKey = SORTS_KEYS[0]

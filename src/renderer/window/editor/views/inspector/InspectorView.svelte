@@ -14,8 +14,9 @@
     import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
     import EditorEntity from "../../../../engine/tools/EditorEntity";
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let selectedEntity: EditorEntity
     let tabIndex = 0
     let tabs = []

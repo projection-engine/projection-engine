@@ -8,6 +8,7 @@
     import FileTypes from "../../../../shared/enums/FileTypes";
     import FileSystemUtil from "../../shared/FileSystemUtil";
     import StorageKeys from "../../../../shared/enums/StorageKeys";
+    import UUIDGen from "../../../../shared/UUIDGen";
 
     export let close: Function
     export let setProjectsToShow: Function
@@ -15,7 +16,7 @@
     let input
 
     const create = async (name: string) => {
-        const projectID = crypto.randomUUID()
+        const projectID = UUIDGen()
         const projectPath = localStorage.getItem(StorageKeys.ROOT_PATH) + FileSystemUtil.sep + projectID
         if (!FileSystemUtil.exists(FileSystemUtil.resolvePath(localStorage.getItem(StorageKeys.ROOT_PATH)))) {
             ToastNotificationSystem.getInstance().error("Directory not found, creating on root directory.")

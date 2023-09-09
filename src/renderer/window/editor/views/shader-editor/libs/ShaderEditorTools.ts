@@ -12,6 +12,7 @@ import ShaderLink from "../templates/ShaderLink"
 import ShaderComment from "../templates/ShaderComment"
 import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
 import EditorFSUtil from "../../../util/EditorFSUtil"
+import UUIDGen from "../../../../../../shared/UUIDGen";
 
 export default class ShaderEditorTools {
 
@@ -59,7 +60,7 @@ export default class ShaderEditorTools {
 
 	static paste(canvasAPI: Canvas) {
 		ShaderEditorTools.copied.forEach(d => {
-			canvasAPI.addNode(ShaderEditorTools.parseNode({...d, id: crypto.randomUUID()}), true, true)
+			canvasAPI.addNode(ShaderEditorTools.parseNode({...d, id: UUIDGen()}), true, true)
 		})
 		canvasAPI.clear()
 	}

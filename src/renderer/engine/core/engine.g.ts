@@ -100,9 +100,9 @@ interface MeshProps {
     id?: string,
     vertices: number[] | Float32Array,
     indices: number[] | Float32Array,
-    normals: number[] | Float32Array,
-    uvs: number[] | Float32Array,
-    tangents: number[] | Float32Array,
+    normals?: number[] | Float32Array,
+    uvs?: number[] | Float32Array,
+    tangents?: number[] | Float32Array,
     maxBoundingBox?: number[],
     minBoundingBox?: number[]
 }

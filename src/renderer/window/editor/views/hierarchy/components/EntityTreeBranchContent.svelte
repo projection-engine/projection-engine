@@ -10,6 +10,7 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import HierarchyUtil from "../../../util/HierarchyUtil";
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
     export let entity: EditorEntity
     export let lockedEntity: string
@@ -25,7 +26,7 @@
     $: draggable.disabled = isOnEdit
 
 
-    const ID = crypto.randomUUID()
+    const ID = UUIDGen()
     let entityName = entity.name
     let entityID
     let components = []

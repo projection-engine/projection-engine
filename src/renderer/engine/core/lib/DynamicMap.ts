@@ -1,9 +1,6 @@
-import {UUID} from "crypto";
 
 export default class DynamicMap<K, T> extends Map<K, T> {
     #array: T[] = []
-    #locked = false
-    #lockingKey: UUID
 
     get map(): Map<K, T> {
         return <Map<K, T>><unknown>this

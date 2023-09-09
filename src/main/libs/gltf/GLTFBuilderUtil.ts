@@ -8,6 +8,7 @@ import {mat4, quat} from "gl-matrix"
 import PrimitiveProcessor from "../../../renderer/engine/core/lib/math/PrimitiveProcessor"
 import GLTFLoaderUtil from "./GLTFLoaderUtil"
 import FileSystemUtil from "../FileSystemUtil"
+import UUIDGen from "../../../shared/UUIDGen";
 
 export default class GLTFBuilderUtil{
 	static async buildImage(resourceRoot, image, fileID) {
@@ -92,7 +93,7 @@ export default class GLTFBuilderUtil{
 		if (!node.children && node.mesh === undefined)
 			return
 		const parsedNode = <MutableObject>{
-			id: crypto.randomUUID(),
+			id: UUIDGen(),
 			children: node.children,
 			mesh: node.mesh,
 			index,
@@ -123,7 +124,7 @@ export default class GLTFBuilderUtil{
 					continue
 				if (i > 1) {
 					const clone = <MutableObject>{...parsedNode}
-					clone.id = crypto.randomUUID()
+					clone.id = UUIDGen()
 					clone.meshID = primitiveID
 					sceneMap.entities.push(clone)
 					m.push(clone)

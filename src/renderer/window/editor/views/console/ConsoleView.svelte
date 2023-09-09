@@ -10,8 +10,9 @@
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import EngineStore from "../../../shared/stores/EngineStore"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     const TYPES = ConsoleManager.TYPES
     const portal = new SveltePortal(999)
 

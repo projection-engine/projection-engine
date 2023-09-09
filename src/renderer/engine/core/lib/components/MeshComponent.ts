@@ -1,6 +1,6 @@
-import AbstractComponent from "./AbstractComponent"
-import MaterialManager from "../../managers/MaterialManager"
-import GPUState from "../../states/GPUState"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
+import MaterialManager from "@engine-core/managers/MaterialManager"
+import GPUState from "@engine-core/states/GPUState"
 import {Components,} from "@engine-core/engine.enum";
 
 export default class MeshComponent extends AbstractComponent {

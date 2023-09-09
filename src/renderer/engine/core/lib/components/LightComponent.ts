@@ -1,4 +1,4 @@
-import AbstractComponent from "./AbstractComponent"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
 import {mat4} from "gl-matrix"
 import {Components, LightTypes,} from "@engine-core/engine.enum";
 

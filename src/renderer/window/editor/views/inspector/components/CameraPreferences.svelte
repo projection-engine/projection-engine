@@ -12,8 +12,9 @@
     import COMPONENT_PROP_TYPES from "../../../static/COMPONENT_PROP_TYPES";
     import COMPONENT_ATTRIBUTES from "../static/COMPONENT_ATTRIBUTES";
     import {Components} from "@engine-core/engine.enum";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let cameraSettings = {}
     let settings
     let camera

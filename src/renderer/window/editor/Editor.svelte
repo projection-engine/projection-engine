@@ -20,8 +20,9 @@
     import Icon from "../shared/components/icon/Icon.svelte";
     import LocalizationEN from "../../../shared/enums/LocalizationEN";
     import WindowFrameUtil from "./util/WindowFrameUtil";
+    import UUIDGen from "../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let isMetadataReady = false
     let isContextInitialized = false
     let view

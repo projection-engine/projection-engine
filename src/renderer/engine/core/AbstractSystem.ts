@@ -1,12 +1,12 @@
 import AbstractSingleton from "./AbstractSingleton";
-import {UUID} from "crypto";
+import UUIDGen from "../../../shared/UUIDGen";
 
 export default abstract class AbstractSystem extends AbstractSingleton {
     readonly #id: UUID
 
     protected constructor() {
         super();
-        this.#id = crypto.randomUUID()
+        this.#id = UUIDGen()
     }
 
     abstract execute()

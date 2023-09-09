@@ -13,8 +13,9 @@
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
     import {onDestroy, onMount} from "svelte"
     import SceneEditorUtil from "../../../util/SceneEditorUtil"
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     const BUTTON_DROPDOWN = "border-radius: 25px; height: 25px; background: var(--pj-background-tertiary);"
     const BUTTON_DROPDOWN_INT = "background: transparent; box-shadow: none; width: 50px; justify-content: center; gap: 6px"
 

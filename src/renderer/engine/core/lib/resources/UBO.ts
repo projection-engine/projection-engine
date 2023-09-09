@@ -1,6 +1,4 @@
-import getGlslSizes from "../../utils/get-glsl-sizes"
 import GPUState from "../../states/GPUState"
-
 
 export default class UBO implements IResource{
     items: UBOItem[] = []
@@ -10,6 +8,17 @@ export default class UBO implements IResource{
     blockPoint?: number
 
     static #blockPointIncrement = 0
+    static #getGlslSizes(type) {
+        switch (type) {
+            case "float": case "int": case "bool": return [4,4]
+            case "mat4": return [64,64]
+            case "mat3": return [48,48]
+            case "vec2": return [8,8]
+            case "vec3": return [16,12]
+            case "vec4": return [16,16]
+            default: return [0,0]
+        }
+    }
 
     constructor(blockName: string, dataArray: UBOData[]) {
 
@@ -65,7 +74,7 @@ export default class UBO implements IResource{
 
         for (let i = 0; i < dataArray.length; i++) {
             if (!dataArray[i].dataLength || dataArray[i].dataLength === 0)
-                size = getGlslSizes(dataArray[i].type)
+                size = UBO.#getGlslSizes(dataArray[i].type)
             else
                 size = [dataArray[i].dataLength * 16 * 4, dataArray[i].dataLength * 16 * 4]
 

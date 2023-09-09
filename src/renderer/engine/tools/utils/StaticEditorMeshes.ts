@@ -2,6 +2,7 @@ import Mesh from "@engine-core/lib/resources/Mesh"
 
 import Texture from "@engine-core/lib/resources/Texture"
 import IconsSystem from "../systems/IconsSystem"
+import UUIDGen from "../../../../shared/UUIDGen";
 
 export default class StaticEditorMeshes {
 	static #initialized = false
@@ -29,7 +30,7 @@ export default class StaticEditorMeshes {
 
 			const image = <Response> await fetch("./image.base64").catch(console.error)
 			if (image !== undefined) {
-				const t = new Texture(crypto.randomUUID())
+				const t = new Texture(UUIDGen())
 				await t.initialize({img: await image.text()})
 				IconsSystem.iconsTexture = t.texture
 			}
@@ -54,9 +55,7 @@ export default class StaticEditorMeshes {
 		]
 		StaticEditorMeshes.clipSpaceCamera = new Mesh({
 			indices,
-			vertices: positions
+			vertices: positions,
 		})
-
-
 	}
 }

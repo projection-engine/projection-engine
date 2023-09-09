@@ -1,4 +1,4 @@
-import AbstractComponent from "./AbstractComponent"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 
 export default class PhysicsColliderComponent extends AbstractComponent {

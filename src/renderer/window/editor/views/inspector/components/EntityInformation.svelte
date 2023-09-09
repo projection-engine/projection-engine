@@ -14,10 +14,11 @@
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import EngineStateService from "../../../services/engine/EngineStateService";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
     export let entity: EditorEntity
 
-    const ID = crypto.randomUUID()
+    const ID = UUIDGen()
     let entityName = entity.name
     let entityID
     $: {

@@ -1,9 +1,10 @@
 import HEADER_HEIGHT from "../static/HEADER_HEIGHT"
 import SCALE_BUTTON_SIZE from "../static/SCALE_BUTTON_SIZE"
 import CanvasResources from "../libs/CanvasResources"
+import UUIDGen from "../../../../../../shared/UUIDGen";
 
 export default class Draggable {
-	id = crypto.randomUUID()
+	id = UUIDGen()
 	isOnDrag = false
 	width = 200
 	height = HEADER_HEIGHT

@@ -1,6 +1,5 @@
 import UBO from "@engine-core/lib/resources/UBO"
-import UberShader from "../lib/UberShader"
-import GPUState from "./GPUState"
+import GPUState from "@engine-core/states/GPUState"
 
 export enum StaticUBONames {
     CAMERA_VIEW = "CameraViewInfo",
@@ -131,8 +130,8 @@ export default class StaticUBOState {
 		StaticUBOState.lightsUBO = new UBO(
 			StaticUBONames.LIGHTS,
 			[
-				{name: "lightPrimaryBuffer", type: "mat4", dataLength: UberShader.MAX_LIGHTS},
-				{name: "lightSecondaryBuffer", type: "mat4", dataLength: UberShader.MAX_LIGHTS},
+				{name: "lightPrimaryBuffer", type: "mat4", dataLength: GPUState.MAX_LIGHTS},
+				{name: "lightSecondaryBuffer", type: "mat4", dataLength: GPUState.MAX_LIGHTS},
 			]
 		)
 	}

@@ -5,8 +5,9 @@
     import VirtualList from "@sveltejs/svelte-virtual-list"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import HierarchyToRenderElement from "../template/ToRenderElement";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     export let ID:string
     export let testSearch:GenericVoidFunctionWithP<MutableObject>
     export let isOnSearch:boolean

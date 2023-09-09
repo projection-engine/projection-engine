@@ -5,9 +5,7 @@ import getComponentInstance from "../utils/get-component-instance";
 import serializeStructure from "../utils/serialize-structure";
 import {Components} from "../engine.enum";
 import {vec3} from "gl-matrix";
-import LightsManager from "@engine-core/managers/LightsManager";
-import PickingUtil from "@engine-core/utils/PickingUtil";
-import LevelManager from "@engine-core/managers/LevelManager";
+import UUIDGen from "../../../../shared/UUIDGen";
 
 export default class EntityManager extends AbstractSingleton {
     #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<EngineEntity, Components>[]>
@@ -83,12 +81,20 @@ export default class EntityManager extends AbstractSingleton {
         return Array.from(EntityManager.getInstance().#entities.keys())
     }
 
+    static #getPickerId(i: number) {
+        return [
+            ((i >> 0) & 0xFF) / 0xFF,
+            ((i >> 8) & 0xFF) / 0xFF,
+            ((i >> 16) & 0xFF) / 0xFF
+        ]
+    }
+
     static getEntityPickVec3(entity: EngineEntity): vec3 {
         const instance = EntityManager.getInstance()
         let pId = instance.#pickVec3.get(entity)
         if (pId == null && EntityManager.entityExists(entity) && (EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
             const index = instance.#pickInteger.size + 4
-            pId = PickingUtil.getPickerId(index) as vec3
+            pId = EntityManager.#getPickerId(index) as vec3
             instance.#pickVec3.set(entity, pId)
             instance.#pickInteger.set(index, entity)
         }
@@ -110,9 +116,6 @@ export default class EntityManager extends AbstractSingleton {
     static toggleEntityActiveState(entity: EngineEntity) {
         const original = EntityManager.getActiveEntities().get(entity)
         EntityManager.#enableDisableEntityInternal([entity], !original)
-        if (EntityManager.hasComponent(entity, Components.LIGHT) || EntityManager.hasComponent(entity, Components.ATMOSPHERE)) {
-            LightsManager.packageLights(false, true)
-        }
     }
 
     static #enableDisableEntityInternal(entities: EngineEntity[], state: boolean) {
@@ -185,7 +188,7 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static clone(entity: EngineEntity, targetId?: EngineEntity) {
-        const id = targetId ?? crypto.randomUUID()
+        const id = targetId ?? UUIDGen()
         const str = serializeStructure({id, components: Array.from(EntityManager.getEntities().get(entity).entries())})
         EntityManager.parseEntity(JSON.parse(str))
         EntityManager.clearPickingCache()
@@ -208,9 +211,6 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static createEntitiesById(entities: EngineEntity[]): EngineEntity[] {
-        if (!LevelManager.loadedLevel) {
-            return
-        }
         const activeEntities = EntityManager.getActiveEntities()
         for (let i = 0; i < entities.length; i++) {
             const newEntity = entities[i]
@@ -223,9 +223,6 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static removeEntities(entities: EngineEntity[]) {
-        if (!LevelManager.loadedLevel) {
-            return
-        }
         const removed = {}
         const allRemoved = []
         EntityManager.#removeEntitiesInternal(entities, removed, allRemoved)
@@ -276,7 +273,7 @@ export default class EntityManager extends AbstractSingleton {
         }
         if (!targetMap.has(componentType)) {
             const newInstance = getComponentInstance(target, componentType)
-            if(newInstance == null) {
+            if (newInstance == null) {
                 console.warn("COMPONENT NOT FOUND: " + componentType)
                 return;
             }

@@ -16,8 +16,9 @@
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EntityManager from "@engine-core/managers/EntityManager";
     import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let targets: EditorEntity[] = []
     let rotationType = TransformationRotationTypes.ROTATION_QUATERNION
     let totalTranslated = [0, 0, 0]

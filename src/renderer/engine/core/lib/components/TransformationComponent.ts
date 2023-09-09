@@ -1,5 +1,5 @@
-import AbstractComponent from "./AbstractComponent"
-import ArrayBufferUtil from "../../utils/ArrayBufferUtil";
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
+import ArrayBufferUtil from "@engine-core/utils/ArrayBufferUtil";
 import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum";
 
 export default class TransformationComponent extends AbstractComponent {

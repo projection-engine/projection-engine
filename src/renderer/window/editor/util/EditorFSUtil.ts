@@ -4,6 +4,7 @@ import Folders from "../../../../shared/enums/Folders"
 import FileTypes from "../../../../shared/enums/FileTypes"
 import EditorUtil from "./EditorUtil"
 import FileSystemUtil from "../../shared/FileSystemUtil"
+import UUIDGen from "../../../../shared/UUIDGen";
 
 export default class EditorFSUtil {
 	static registry: { [key: string]: RegistryFile } = {}
@@ -29,7 +30,7 @@ export default class EditorFSUtil {
 		}
 	}
 
-	static async createRegistryEntry(fID:string = crypto.randomUUID(), pathToFile) {
+	static async createRegistryEntry(fID:string = UUIDGen(), pathToFile) {
 		await EditorUtil.getCall<undefined>(IPCRoutes.CREATE_REG, {id: fID, path: pathToFile}, false)
 	}
 
@@ -70,7 +71,7 @@ export default class EditorFSUtil {
 
 
 	static async writeAsset(path, fileData, previewImage?: boolean, registryID?: string) {
-		const fileID = registryID !== undefined ? registryID : crypto.randomUUID()
+		const fileID = registryID !== undefined ? registryID : UUIDGen()
 		await FileSystemUtil.write(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + path), fileData)
 		if (previewImage)
 			await FileSystemUtil.write(FileSystemUtil.resolvePath(FileSystemUtil.path + FileSystemUtil.sep + Folders.PREVIEWS + FileSystemUtil.sep + registryID + ".preview"), previewImage)

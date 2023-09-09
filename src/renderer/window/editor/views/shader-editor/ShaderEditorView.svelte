@@ -15,8 +15,9 @@
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import ShaderEditorUtil from "../../util/ShaderEditorUtil"
     import SerializedState from "../../components/view/SerializedState.svelte";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     const canvas = new Canvas()
     let openFile
