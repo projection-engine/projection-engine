@@ -83,9 +83,13 @@ export default class EditorLevelService extends AbstractSingleton {
 
         if (ChangesTrackerStore.getData().changed && LevelManager.loadedLevel != null) {
             WindowChangeStore.updateStore({
-                message: LocalizationEN.UNSAVED_CHANGES, callback: async () => {
-                    await this.save().catch(console.error)
-                    this.loadLevel(levelID).catch(console.error)
+                message: LocalizationEN.UNSAVED_CHANGES,
+                callback: async (save: boolean) => {
+                    if(save) {
+                        await this.save().catch(console.error)
+                    }else {
+                        this.loadLevel(levelID).catch(console.error)
+                    }
                 }
             })
             return

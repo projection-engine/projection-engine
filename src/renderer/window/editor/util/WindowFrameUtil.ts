@@ -65,8 +65,12 @@ export default class WindowFrameUtil {
                 label: "Reload project",
                 icon: "refresh",
                 onClick: () => WindowChangeStore.updateStore({
-                    message: LocalizationEN.UNSAVED_CHANGES, callback: () => {
-                        EditorLevelService.getInstance().save().then(() => WindowFrameUtil.#callMethod("reload"))
+                    message: LocalizationEN.UNSAVED_CHANGES, callback: (save: boolean) => {
+                        if (save) {
+                            EditorLevelService.getInstance().save().then(() => WindowFrameUtil.#callMethod("reload"))
+                        } else {
+                            WindowFrameUtil.#callMethod("reload")
+                        }
                     }
                 })
             },
@@ -80,8 +84,12 @@ export default class WindowFrameUtil {
     static closeProject() {
         WindowChangeStore.updateStore({
             message: LocalizationEN.UNSAVED_CHANGES,
-            callback: () => {
-                EditorLevelService.getInstance().save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
+            callback: (save: boolean) => {
+                if (save) {
+                    EditorLevelService.getInstance().save().then(() => ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR))
+                } else {
+                    ElectronResources.ipcRenderer.send(IPCRoutes.CLOSE_EDITOR)
+                }
             }
         })
     }
