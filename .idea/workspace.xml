@@ -182,7 +182,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Jest.Should create entity and return key (2)">
+  <component name="RunManager" selected="Jest.Should create entity and return key (1)">
     <configuration name="Should create entity and return key (1)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -269,8 +269,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.Should create entity and return key (2)" />
         <item itemvalue="Jest.Should create entity and return key (1)" />
+        <item itemvalue="Jest.Should create entity and return key (2)" />
         <item itemvalue="Jest.Should create entity and return key" />
       </list>
     </recent_temporary>
