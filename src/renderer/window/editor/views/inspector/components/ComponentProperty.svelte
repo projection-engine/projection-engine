@@ -1,18 +1,18 @@
 <script lang="ts">
-    import Checkbox from "../../../../../shared/components/checkbox/Checkbox.svelte"
-    import Selector from "../../../../components/selector/Selector.svelte"
+    import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
+    import Selector from "../../../components/selector/Selector.svelte"
 
-    import ColorPicker from "../../../../../shared/components/color-picker/ColorPicker.svelte"
-    import Input from "../../../../../shared/components/input/Input.svelte"
-    import Dropdown from "../../../../../shared/components/dropdown/Dropdown.svelte"
-    import Icon from "../../../../../shared/components/icon/Icon.svelte"
-    import Range from "../../../../../shared/components/range/Range.svelte"
-    import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
-    import EmptyIcon from "../../../../../shared/components/icon/EmptyIcon.svelte";
-    import COMPONENT_PROP_TYPES from "../../../../static/COMPONENT_PROP_TYPES";
-    import Component from "@engine-core/lib/components/Component";
+    import ColorPicker from "../../../../shared/components/color-picker/ColorPicker.svelte"
+    import Input from "../../../../shared/components/input/Input.svelte"
+    import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
+    import Icon from "../../../../shared/components/icon/Icon.svelte"
+    import Range from "../../../../shared/components/range/Range.svelte"
+    import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
+    import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte";
+    import COMPONENT_PROP_TYPES from "../../../static/COMPONENT_PROP_TYPES";
+    import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 
-    export let component: Component
+    export let component: AbstractComponent
     export let submit: GenericVoidFunctionWith3P<string, any, boolean>
     export let attribute: ComponentValueGeneric
 

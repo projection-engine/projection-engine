@@ -2,7 +2,7 @@ import EntityManager from "@engine-core/managers/EntityManager";
 import GPUState from "@engine-core/states/GPUState";
 import GPUManager from "@engine-core/managers/GPUManager";
 import {Components} from "@engine-core/engine.enum";
-import Component from "@engine-core/lib/components/Component";
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 import serializeStructure from "@engine-core/utils/serialize-structure";
 
 export default class LevelManager {
@@ -21,7 +21,7 @@ export default class LevelManager {
                 GPUState.textures.forEach(m => GPUManager.destroyTexture(m.id))
                 GPUState.materials.clear()
             }
-            const engineState = JSON.parse(asset.engineState) as EngineState<Components, Component>
+            const engineState = JSON.parse(asset.engineState) as EngineState<Components, AbstractComponent>
             if (!engineState)
                 return
             this.restoreState(engineState)
@@ -32,7 +32,7 @@ export default class LevelManager {
 
     }
 
-    static restoreState(data: EngineState<Components, Component>) {
+    static restoreState(data: EngineState<Components, AbstractComponent>) {
         try {
             EntityManager.clear()
             EntityManager.delayedOperation(() => {

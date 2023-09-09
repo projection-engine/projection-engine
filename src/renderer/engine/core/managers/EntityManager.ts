@@ -1,6 +1,6 @@
 import AbstractSingleton from "../AbstractSingleton";
 import DynamicMap from "../lib/DynamicMap";
-import Component from "@engine-core/lib/components/Component";
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 import getComponentInstance from "../utils/get-component-instance";
 import serializeStructure from "../utils/serialize-structure";
 import {Components} from "../engine.enum";
@@ -11,7 +11,7 @@ import LevelManager from "@engine-core/managers/LevelManager";
 
 export default class EntityManager extends AbstractSingleton {
     #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<EngineEntity, Components>[]>
-    #entities = new DynamicMap<EngineEntity, DynamicMap<Components, Component>>()
+    #entities = new DynamicMap<EngineEntity, DynamicMap<Components, AbstractComponent>>()
     #childParent = new Map<EngineEntity, EngineEntity>()
     #parentChildren = new Map<EngineEntity, EngineEntity[]>()
     #activeEntities = new Map<EngineEntity, boolean>()
@@ -215,7 +215,7 @@ export default class EntityManager extends AbstractSingleton {
         for (let i = 0; i < entities.length; i++) {
             const newEntity = entities[i]
             activeEntities.set(newEntity, true)
-            EntityManager.getEntities().set(newEntity, new DynamicMap<Components, Component>())
+            EntityManager.getEntities().set(newEntity, new DynamicMap<Components, AbstractComponent>())
         }
         EntityManager.clearPickingCache()
         EntityManager.#callListeners({all: entities, type: "create"})
@@ -256,8 +256,8 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    static addComponent(target: EngineEntity, componentType: Components): Component {
-        const allAdded: Component[] = []
+    static addComponent(target: EngineEntity, componentType: Components): AbstractComponent {
+        const allAdded: AbstractComponent[] = []
         EntityManager.#addComponentInternal(target, componentType, allAdded)
         EntityManager.#callListeners({
             target,
@@ -268,7 +268,7 @@ export default class EntityManager extends AbstractSingleton {
         return allAdded[0]
     }
 
-    static #addComponentInternal(target: EngineEntity, componentType: Components, allAdded: Component[]) {
+    static #addComponentInternal(target: EngineEntity, componentType: Components, allAdded: AbstractComponent[]) {
         const targetMap = EntityManager.getEntities().get(target)
         if (!targetMap) {
             console.warn("NO MAP FOUND FOR ENTITY: " + target)
@@ -276,6 +276,10 @@ export default class EntityManager extends AbstractSingleton {
         }
         if (!targetMap.has(componentType)) {
             const newInstance = getComponentInstance(target, componentType)
+            if(newInstance == null) {
+                console.warn("COMPONENT NOT FOUND: " + componentType)
+                return;
+            }
             targetMap.set(componentType, newInstance)
             allAdded.push(newInstance)
         }
@@ -362,14 +366,14 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    static withComponent<T extends Component>(component: Components): DynamicMap<EngineEntity, EngineEntity> {
+    static withComponent<T extends AbstractComponent>(component: Components): DynamicMap<EngineEntity, EngineEntity> {
         return EntityManager.getInstance().#byComponent.get(component)
     }
 
     static parseEntity(entityData: { id: EngineEntity, components: [Components, Object][] }) {
         if (!entityData)
             return
-        const components = new DynamicMap<Components, Component>()
+        const components = new DynamicMap<Components, AbstractComponent>()
         EntityManager.getEntities().set(entityData.id, components)
 
         for (let i1 = 0; i1 < entityData.components.length; i1++) {
@@ -383,7 +387,7 @@ export default class EntityManager extends AbstractSingleton {
         }
     }
 
-    static #parseComponent(entity: EngineEntity, data: Object, key: Components): Component | undefined {
+    static #parseComponent(entity: EngineEntity, data: Object, key: Components): AbstractComponent | undefined {
         const component = getComponentInstance(entity, key)
         const keys = Object.keys(data)
         for (let i = 0; i < keys.length; i++) {

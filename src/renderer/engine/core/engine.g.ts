@@ -1,9 +1,19 @@
 type EngineEntity = `${string}-${string}-${string}-${string}-${string}`
 
-interface IComponent{
+interface TerrainProcessorResult {
+    vertices: Float32Array;
+    uvs: Float32Array;
+    normals: Float32Array;
+    indices: Float32Array;
+    tangents: Float32Array
 }
 
-interface IResource{}
+interface IComponent {
+}
+
+interface IResource {
+}
+
 interface FBOTexture {
     [key: string]: any,
 
@@ -36,7 +46,14 @@ interface EntityManagerListener<T, R> {
     options?: EntityListenerOptions
 }
 
-type EntityEventTypes = "hierarchy-change" | "hard-change" | "component-add" | "component-remove" | "create" | "delete" | "update"
+type EntityEventTypes =
+    "hierarchy-change"
+    | "hard-change"
+    | "component-add"
+    | "component-remove"
+    | "create"
+    | "delete"
+    | "update"
 
 interface UniformMap {
     [key: string]: WebGLUniformLocation
@@ -81,14 +98,13 @@ interface Uniform {
 
 interface MeshProps {
     id?: string,
-    vertices?: number[] | Float32Array,
-    indices?: number[] | Float32Array,
-    normals?: number[] | Float32Array,
-    uvs?: number[] | Float32Array,
-    tangents?: number[] | Float32Array,
+    vertices: number[] | Float32Array,
+    indices: number[] | Float32Array,
+    normals: number[] | Float32Array,
+    uvs: number[] | Float32Array,
+    tangents: number[] | Float32Array,
     maxBoundingBox?: number[],
     minBoundingBox?: number[]
-
 }
 
 interface CameraSerialization {
@@ -100,10 +116,11 @@ interface CameraSerialization {
     prevY?: number
 }
 
-interface IGPUResource extends IResource{
+interface IGPUResource extends IResource {
     lastUsed: number
     loaded: boolean
 }
+
 interface MaterialSettings {
     renderingMode: number
     doubleSided: boolean
@@ -118,22 +135,22 @@ interface MaterialInformation {
     executionSignature: string
 }
 
-interface ITexture extends IGPUResource{
+interface ITexture extends IGPUResource {
 }
 
-interface UBOItem{
-    offset:number,
-    dataSize:number,
-    chunkSize:number
+interface UBOItem {
+    offset: number,
+    dataSize: number,
+    chunkSize: number
 }
 
-interface UBOData{
-    name:string
-    type:string
-    offset?:number
-    dataSize?:number
-    chunkSize?:number
-    dataLength?:number
+interface UBOData {
+    name: string
+    type: string
+    offset?: number
+    dataSize?: number
+    chunkSize?: number
+    dataLength?: number
 }
 
 
@@ -304,15 +321,15 @@ interface btDiscreteDynamicsWorld {
     stepSimulation(stepSize: number, subSteps: number)
 }
 
-type TypedObject<V> = {[key: string | number | symbol]: V}
+type TypedObject<V> = { [key: string | number | symbol]: V }
 
-interface EngineState<Cs, C>{
-    entities: {id: EngineEntity, components: [Cs, C][]}[],
+interface EngineState<Cs, C> {
+    entities: { id: EngineEntity, components: [Cs, C][] }[],
     activeEntities: [EngineEntity, boolean][],
     parentChildren: [EngineEntity, EngineEntity[]][],
     childParent: [EngineEntity, EngineEntity][]
 }
 
-interface EngineLevel<Cs, C> extends MutableObject{
+interface EngineLevel<Cs, C> extends MutableObject {
     state: EngineState<Cs, C>
 }

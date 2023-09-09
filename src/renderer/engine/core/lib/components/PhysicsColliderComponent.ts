@@ -1,7 +1,7 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 
-export default class PhysicsColliderComponent extends Component {
+export default class PhysicsColliderComponent extends AbstractComponent {
 	getDependencies(): Components[] {
 		return [Components.TRANSFORMATION, Components.RIGID_BODY, Components.MESH];
 	}

@@ -31,6 +31,7 @@ import {Environment,} from "@engine-core/engine.enum";
 import GarbageCollectorSystem from "@engine-core/system/GarbageCollectorSystem";
 import PreLoopSystem from "@engine-core/system/PreLoopSystem";
 import GPUManager from "@engine-core/managers/GPUManager";
+import TerrainRendererSystem from "@engine-core/system/TerrainRendererSystem";
 
 export default class Engine {
     static #development = false
@@ -101,6 +102,7 @@ export default class Engine {
 
         systemManager.enableSystem(PreRendererSystem)
         systemManager.enableSystem(AtmosphereRendererSystem)
+        systemManager.enableSystem(TerrainRendererSystem)
         systemManager.enableSystem(OpaqueRendererSystem)
         systemManager.enableSystem(DecalRendererSystem)
         systemManager.enableSystem(SpriteRenderer)

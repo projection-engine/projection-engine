@@ -1,4 +1,4 @@
-import VISUAL_SETTINGS from "../../editor/static/VisualsStoreState"
+import VISUAL_SETTINGS from "../../editor/static/VISUALS_STORE_STATE"
 import ChangesTrackerStore from "./ChangesTrackerStore"
 import StoreIPCListener from "../lib/StoreIPCListener"
 import UIDataStores from "../../../../shared/enums/UIDataStores"

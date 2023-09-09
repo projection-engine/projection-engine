@@ -1,3 +1,5 @@
+import TERRAIN_VERT from "../static/shaders/terrain-shader/TERRAIN.vert"
+import TERRAIN_FRAG from "../static/shaders/terrain-shader/TERRAIN.frag"
 import SPRITE_FRAG from "../static/shaders/forward-rendering/SPRITE.frag"
 import SPRITE_VERTEX from "../static/shaders/forward-rendering/SPRITE.vert"
 import QUAD_VERTEX from "../static/shaders/post-processing/QUAD.vert"
@@ -29,65 +31,68 @@ import UberShader from "../lib/UberShader"
 export default class StaticShadersState {
 
 	static sprite?: Shader
-	static spriteUniforms?: { [key: string]: WebGLUniformLocation }
+	static spriteUniforms?: UniformMap
+
+	static terrain?: Shader
+	static terrainUniforms?: UniformMap
 
 	static visibility?: Shader
-	static visibilityUniforms?: { [key: string]: WebGLUniformLocation }
+	static visibilityUniforms?: UniformMap
 
 	static toScreen?: Shader
-	static toScreenUniforms?: { [key: string]: WebGLUniformLocation }
+	static toScreenUniforms?: UniformMap
 
 	static downscale?: Shader
-	static downscaleUniforms?: { [key: string]: WebGLUniformLocation }
+	static downscaleUniforms?: UniformMap
 
 	static bilateralBlur?: Shader
-	static bilateralBlurUniforms?: { [key: string]: WebGLUniformLocation }
+	static bilateralBlurUniforms?: UniformMap
 
 	static bokeh?: Shader
-	static bokehUniforms?: { [key: string]: WebGLUniformLocation }
+	static bokehUniforms?: UniformMap
 
 	static irradiance?: Shader
-	static irradianceUniforms?: { [key: string]: WebGLUniformLocation }
+	static irradianceUniforms?: UniformMap
 
 	static prefiltered?: Shader
-	static prefilteredUniforms?: { [key: string]: WebGLUniformLocation }
+	static prefilteredUniforms?: UniformMap
 
 	static ssgi?: Shader
-	static ssgiUniforms?: { [key: string]: WebGLUniformLocation }
+	static ssgiUniforms?: UniformMap
 
 	static atmosphere?: Shader
-	static atmosphereUniforms?: { [key: string]: WebGLUniformLocation }
+	static atmosphereUniforms?: UniformMap
 
 
 	static mb?: Shader
-	static mbUniforms?: { [key: string]: WebGLUniformLocation }
+	static mbUniforms?: UniformMap
 
 	static ssao?: Shader
-	static ssaoUniforms?: { [key: string]: WebGLUniformLocation }
+	static ssaoUniforms?: UniformMap
 
 	static boxBlur?: Shader
-	static boxBlurUniforms?: { [key: string]: WebGLUniformLocation }
+	static boxBlurUniforms?: UniformMap
 
 	static directShadows?: Shader
-	static directShadowsUniforms?: { [key: string]: WebGLUniformLocation }
+	static directShadowsUniforms?: UniformMap
 
 	static omniDirectShadows?: Shader
-	static omniDirectShadowsUniforms?: { [key: string]: WebGLUniformLocation }
+	static omniDirectShadowsUniforms?: UniformMap
 
 	static composition?: Shader
-	static compositionUniforms?: { [key: string]: WebGLUniformLocation }
+	static compositionUniforms?: UniformMap
 
 	static bloom?: Shader
-	static bloomUniforms?: { [key: string]: WebGLUniformLocation }
+	static bloomUniforms?: UniformMap
 
 	static lens?: Shader
-	static lensUniforms?: { [key: string]: WebGLUniformLocation }
+	static lensUniforms?: UniformMap
 
 	static gaussian?: Shader
-	static gaussianUniforms?: { [key: string]: WebGLUniformLocation }
+	static gaussianUniforms?: UniformMap
 
 	static upSampling?: Shader
-	static upSamplingUniforms?: { [key: string]: WebGLUniformLocation }
+	static upSamplingUniforms?: UniformMap
 
 
 	static #initialized = false
@@ -98,6 +103,7 @@ export default class StaticShadersState {
 		StaticShadersState.#initialized = true
 
 
+		StaticShadersState.terrain = new Shader(TERRAIN_VERT, TERRAIN_FRAG)
 		StaticShadersState.sprite = new Shader(SPRITE_VERTEX, SPRITE_FRAG)
 		StaticShadersState.visibility = new Shader(V_BUFFER_VERT, V_BUFFER_FRAG)
 		StaticShadersState.toScreen = new Shader(QUAD_VERTEX, TO_SCREEN)
@@ -121,6 +127,7 @@ export default class StaticShadersState {
 
 		UberShader.compile()
 
+		StaticShadersState.terrainUniforms = StaticShadersState.terrain.uniformMap
 		StaticShadersState.atmosphereUniforms = StaticShadersState.atmosphere.uniformMap
 		StaticShadersState.spriteUniforms = StaticShadersState.sprite.uniformMap
 		StaticShadersState.visibilityUniforms = StaticShadersState.visibility.uniformMap

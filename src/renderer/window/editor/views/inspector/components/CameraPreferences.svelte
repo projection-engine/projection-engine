@@ -1,7 +1,7 @@
 <script>
     import EditorCameraSystem from "../../../../../engine/tools/systems/EditorCameraSystem"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
-    import Layout from "./dynamic-form/Layout.svelte"
+    import ComponentForm from "./ComponentForm.svelte"
     import CAMERA_PROPS from "../static/component-props/CAMERA_PROPS"
     import ContentField from "../../../../preferences/components/content/ContentField.svelte"
     import {onDestroy, onMount} from "svelte"
@@ -9,6 +9,10 @@
     import PropertyHeader from "../../../../shared/components/PropertyHeader.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import CAMERA_PREFERENCES from "../static/CAMERA_PREFERENCES"
+    import ComponentProperty from "./ComponentProperty.svelte";
+    import COMPONENT_PROP_TYPES from "../../../static/COMPONENT_PROP_TYPES";
+    import COMPONENT_ATTRIBUTES from "../static/COMPONENT_ATTRIBUTES";
+    import {Components} from "@engine-core/engine.enum";
 
     const COMPONENT_ID = crypto.randomUUID()
     let cameraSettings = {}
@@ -31,6 +35,9 @@
     	if (EditorCameraSystem[key] !== undefined)
     		EditorCameraSystem[key] = value
     }
+    function checkIsDisabled(propAttr) {
+        return typeof propAttr.disabledIf === "function" ? propAttr.disabledIf(component) : component[propAttr.disabledIf]
+    }
 </script>
 
 <PropertyHeader title={LocalizationEN.EDITOR_CAMERA}/>
@@ -43,5 +50,32 @@
         </div>
     {/if}
 </Accordion>
-<Layout component={cameraSettings} submit={updateCamera}/>
+
+{#if Object.hasOwn(COMPONENT_ATTRIBUTES, Components.CAMERA)}
+    {#each COMPONENT_ATTRIBUTES[Components.CAMERA] as propAttr, index}
+        {#if propAttr.type === COMPONENT_PROP_TYPES.GROUP && Array.isArray(propAttr.children) && !checkIsDisabled(propAttr)}
+            <Accordion
+                    startOpen={index === 0}
+                    title={LocalizationEN[propAttr.label] || propAttr.label}
+                    styles="display: flex; flex-direction: column; gap: 4px;"
+            >
+                {#each propAttr.children as attribute}
+                    {#if !checkIsDisabled(attribute)}
+                        <ComponentProperty
+                                component={cameraSettings}
+                                submit={updateCamera}
+                                attribute={attribute}
+                        />
+                    {/if}
+                {/each}
+            </Accordion>
+        {:else if propAttr.type !== COMPONENT_PROP_TYPES.GROUP && !checkIsDisabled(propAttr)}
+            <ComponentProperty
+                    component={cameraSettings}
+                    submit={updateCamera}
+                    attribute={propAttr}
+            />
+        {/if}
+    {/each}
+{/if}
 

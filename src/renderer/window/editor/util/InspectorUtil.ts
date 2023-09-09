@@ -7,7 +7,7 @@ import EngineStore from "../../shared/stores/EngineStore"
 import CameraManager from "@engine-core/managers/CameraManager"
 import EditorUtil from "./EditorUtil"
 import type EditorEntity from "../../../engine/tools/EditorEntity";
-import type Component from "@engine-core/lib/components/Component";
+import type AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 import {Components,} from "@engine-core/engine.enum";
 import MeshComponent from "@engine-core/lib/components/MeshComponent";
 import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
@@ -29,7 +29,7 @@ export default class InspectorUtil {
         return isValid
     }
 
-    static getEntityTabs(components: Component[]) {
+    static getEntityTabs(components: AbstractComponent[]) {
         return [
             {
                 icon: "settings",
@@ -46,7 +46,7 @@ export default class InspectorUtil {
         ]
     }
 
-    static updateEntityComponent(entity: EditorEntity, key: string, value: any, component: Component) {
+    static updateEntityComponent(entity: EditorEntity, key: string, value: any, component: AbstractComponent) {
         EntityManager.updateProperty(entity.id, component.getComponentKey(), key, value)
         if (component.getComponentKey() === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera) {
             CameraManager.updateViewTarget(entity)

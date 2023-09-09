@@ -1,5 +1,5 @@
 <script>
-    import VIEWS from "../../../static/GenericViews"
+    import VIEWS from "../../../static/VIEWS"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"

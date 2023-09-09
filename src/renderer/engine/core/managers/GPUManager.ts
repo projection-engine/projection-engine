@@ -13,11 +13,12 @@ import EngineState from "../states/EngineState";
 import StaticUBOState from "@engine-core/states/StaticUBOState";
 import CameraManager from "@engine-core/managers/CameraManager";
 import TransformationManager from "@engine-core/managers/TransformationManager";
-import TerrainGenerator from "@engine-core/lib/math/TerrainGenerator";
+import TerrainProcessor from "@engine-core/lib/math/TerrainProcessor";
 import ImageProcessor from "@engine-core/lib/math/ImageProcessor";
 import CubeMapManager from "@engine-core/managers/CubeMapManager";
 import StaticFBOState from "@engine-core/states/StaticFBOState";
 import StaticShadersState from "@engine-core/states/StaticShadersState";
+import Terrain from "@engine-core/lib/resources/Terrain";
 
 export default class GPUManager {
     static async allocateTexture(imageData: string | TextureParams, id: string) {
@@ -230,7 +231,7 @@ export default class GPUManager {
         StaticShadersState.initialize()
         StaticFBOState.initialize()
         TransformationManager.initialize()
-        TerrainGenerator.initialize()
+        TerrainProcessor.initialize()
         ImageProcessor.initialize()
         CubeMapManager.initialize()
     }
@@ -244,4 +245,27 @@ export default class GPUManager {
         GPUState.context.depthFunc(GPUState.context.LESS)
         GPUState.context.frontFace(GPUState.context.CCW)
     }
+
+    static allocateTerrain(id: string, bufferData: TerrainProcessorResult) {
+        if (GPUState.terrains.has(id))
+            return GPUState.terrains.get(id)
+        const instance = new Terrain({...bufferData, id})
+        GPUState.terrains.set(id, instance)
+        return instance
+    }
+
+
+    static destroyTerrain(instance: string | Terrain) {
+        const terrain = typeof instance === "string" ? GPUState.terrains.get(instance) : instance
+
+        GPUState.context.deleteVertexArray(terrain.VAO)
+        GPUState.context.deleteBuffer(terrain.indexVBO)
+        if (terrain.uvVBO)
+            terrain.uvVBO.delete()
+        if (terrain.normalVBO)
+            terrain.normalVBO.delete()
+        GPUState.terrains.delete(terrain.id)
+        EngineState.visibilityNeedsUpdate = true
+    }
+
 }

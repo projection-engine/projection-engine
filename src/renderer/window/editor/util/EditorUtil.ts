@@ -71,6 +71,8 @@ export default class EditorUtil {
                 return "disabled_visible"
             case Components.UI:
                 return "widgets"
+            case Components.TERRAIN:
+                return "terrain"
             default:
                 return "code"
         }
@@ -80,6 +82,8 @@ export default class EditorUtil {
         switch (component) {
             case Components.MESH:
                 return LocalizationEN.MESH
+            case Components.TERRAIN:
+                return LocalizationEN.TERRAIN
             case Components.CAMERA:
                 return LocalizationEN.CAMERA
             case Components.SPRITE:

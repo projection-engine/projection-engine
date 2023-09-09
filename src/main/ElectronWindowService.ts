@@ -102,7 +102,6 @@ export default class ElectronWindowService extends AbstractSingleton {
                     width: width * (settings.widthScale || 1),
                     height: height * (settings.heightScale || 1)
                 }, true)
-                this.windows.push({electronWindow: newWindow, type})
                 newWindow.loadFile(path.join(__dirname, "./preferences-window.html")).catch(console.error)
                 newWindow.on("closed", () => {
                     try {
@@ -111,6 +110,7 @@ export default class ElectronWindowService extends AbstractSingleton {
                         console.error(err)
                     }
                 })
+                this.windows.push({electronWindow: newWindow, type})
             }
         } catch (err) {
             console.error(err)

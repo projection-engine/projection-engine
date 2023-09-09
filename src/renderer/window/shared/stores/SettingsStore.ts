@@ -1,4 +1,4 @@
-import SETTINGS from "../../editor/static/SettingsStoreState"
+import SETTINGS from "../../editor/static/SETTINGS_STORE_STATEE"
 import ChangesTrackerStore from "./ChangesTrackerStore"
 import StoreIPCListener from "../lib/StoreIPCListener"
 import UIDataStores from "../../../../shared/enums/UIDataStores"

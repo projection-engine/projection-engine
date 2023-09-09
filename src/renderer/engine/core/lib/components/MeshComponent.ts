@@ -1,9 +1,9 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import MaterialManager from "../../managers/MaterialManager"
 import GPUState from "../../states/GPUState"
 import {Components,} from "@engine-core/engine.enum";
 
-export default class MeshComponent extends Component {
+export default class MeshComponent extends AbstractComponent {
     getDependencies(): Components[] {
         return [Components.TRANSFORMATION, Components.CULLING];
     }

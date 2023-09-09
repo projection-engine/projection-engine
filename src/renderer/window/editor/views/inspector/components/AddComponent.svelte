@@ -13,7 +13,7 @@
     const COMPONENT_ID = crypto.randomUUID()
     export let entity: EditorEntity
 
-    let components = []
+    let components
     let scripts = []
 
     onMount(() => ContentBrowserStore.getInstance().addListener(COMPONENT_ID, data => scripts = data.components, ["components"]))

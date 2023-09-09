@@ -26,7 +26,6 @@ export default class DecalRendererSystem extends AbstractSystem{
         context.disable(context.CULL_FACE)
         UberMaterialAttributeGroup.clear()
         context.uniform1i(uniforms.isDecalPass, 1)
-        StaticMeshesState.cube.bindAllResources()
         for (let i = 0; i < size; i++) {
             const entity = toRender[i]
             const components = EntityManager.getAllComponentsMap(entity)

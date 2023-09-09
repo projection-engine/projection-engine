@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
     import {onDestroy, onMount} from "svelte"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
@@ -12,12 +12,13 @@
     import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
     import SerializedState from "../../components/view/SerializedState.svelte";
     import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+    import EditorEntity from "../../../../engine/tools/EditorEntity";
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
 
     const COMPONENT_ID = crypto.randomUUID()
-    let selectedEntity
+    let selectedEntity: EditorEntity
     let tabIndex = 0
     let tabs = []
-    let isOnDynamicTab = false
 
     onMount(() => {
         EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
@@ -29,8 +30,9 @@
             if (selectedEntity) {
                 const entityTabs = InspectorUtil.getEntityTabs(selectedEntity.allComponents)
                 setTabs(entityTabs)
-            } else
+            } else {
                 setTabs([])
+            }
         }, ["array", "lockedEntity"])
     })
 
@@ -49,38 +51,45 @@
 </script>
 
 <SerializedState state={{tabIndex}} onStateInitialize={state => tabIndex = state.tabIndex}/>
-<div class="wrapper">
-    <div class="tabs">
-        {#each tabs as button, index}
-            {#if button.divider}
-                <div data-sveltedivider="-"></div>
+{#if selectedEntity != null}
+    <div class="wrapper">
+        <div class="tabs">
+            {#each tabs as button, index}
+                {#if button.divider}
+                    <div data-sveltedivider="-"></div>
+                {:else}
+                    <button data-sveltebuttondefault="-"
+                            data-sveltehighlight={tabIndex === index ? "-" : undefined}
+                            class="tab-button shared"
+                            on:click={() => tabIndex = index}
+                            style={button.color ? "--pj-accent-color: " + button.color  + "; color: " + button.color : undefined}
+                    >
+                        <Icon styles="font-size: .9rem">{button.icon}</Icon>
+                        <ToolTip content={button.label}/>
+                    </button>
+                {/if}
+            {/each}
+        </div>
+        <div class="content">
+            {#if isOnDynamicTab && selectedEntity != null}
+                <EntityAttributes
+                        setTabIndex={i => tabIndex = i}
+                        entity={selectedEntity}
+                        tabIndex={tabIndex}
+                />
+            {:else if tabIndex === 2}
+                <CameraPreferences/>
             {:else}
-                <button data-sveltebuttondefault="-"
-                        data-sveltehighlight={tabIndex === index ? "-" : undefined}
-                        class="tab-button shared"
-                        on:click={() => tabIndex = index}
-                        style={button.color ? "--pj-accent-color: " + button.color  + "; color: " + button.color : undefined}
-                >
-                    <Icon styles="font-size: .9rem">{button.icon}</Icon>
-                    <ToolTip content={button.label}/>
-                </button>
+                <ContentWrapper data={tabs[tabIndex]}/>
             {/if}
-        {/each}
+        </div>
     </div>
-    <div class="content">
-        {#if isOnDynamicTab && selectedEntity != null}
-            <EntityAttributes
-                    setTabIndex={i => tabIndex = i}
-                    entity={selectedEntity}
-                    tabIndex={tabIndex}
-            />
-        {:else if tabIndex === 2}
-            <CameraPreferences/>
-        {:else}
-            <ContentWrapper data={tabs[tabIndex]}/>
-        {/if}
+{:else}
+    <div data-svelteempty="-">
+        <Icon styles="font-size: 2rem">folder</Icon>
+        {LocalizationEN.NO_ENTITY_SELECTED}
     </div>
-</div>
+{/if}
 
 
 <style>

@@ -10,7 +10,7 @@
     import GPUState from "@engine-core/states/GPUState"
     import EditorFSUtil from "../util/EditorFSUtil"
 
-    export let initializeEditor
+    export let initializeEditor: GenericVoidFunctionWithP<boolean>
 
     let canvasRef
 
@@ -25,13 +25,15 @@
     		await EngineTools.initialize().catch(console.error)
     		const toLoad = levelServiceInstance.getLevelToLoad()
     		await levelServiceInstance.loadLevel(toLoad).catch(console.error)
-
-    		initializeEditor()
+    		initializeEditor(true)
     		UIManager.buildUI(GPUState.canvas.parentElement)
     		UIManager.hideUI()
     		EngineToolsService.get()
             Engine.start()
-    	})
+    	}).catch(err => {
+            console.error(err)
+            initializeEditor(false)
+        })
     })
 
 </script>

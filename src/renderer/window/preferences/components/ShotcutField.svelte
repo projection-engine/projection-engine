@@ -1,6 +1,6 @@
 <script>
 
-    import SETTINGS from "../../editor/static/SettingsStoreState"
+    import SETTINGS from "../../editor/static/SETTINGS_STORE_STATEE"
 
     import KEYS from "../../editor/static/KeyboardKeys.ts"
     import SettingsStore from "../../shared/stores/SettingsStore"

@@ -1,7 +1,7 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import {Components,} from "@engine-core/engine.enum";
 
-export default class SpriteComponent extends Component {
+export default class SpriteComponent extends AbstractComponent {
 	getDependencies(): Components[] {
 		return [Components.TRANSFORMATION, Components.CULLING];
 	}

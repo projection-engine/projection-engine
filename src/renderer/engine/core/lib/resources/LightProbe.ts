@@ -6,6 +6,7 @@ import getProbeRotation from "../../utils/get-probe-rotation"
 import getProbeLookat from "../../utils/get-probe-lookat"
 import StaticMeshesState from "../../states/StaticMeshesState"
 import StaticShadersState from "../../states/StaticShadersState"
+import AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
 
 
 const perspective = mat4.create()
@@ -52,7 +53,7 @@ export default class LightProbe implements IResource {
 
 	drawSpecularMap(mipLevels = 6, resolution = 128) {
 		mat4.perspective(perspective, 1.57, 1, .1, 10)
-		Mesh.finishIfUsed()
+		AbstractMesh.finishIfUsed()
 		GPUState.context.viewport(0, 0, resolution, resolution)
 		if (!this.prefiltered)
 			this.prefiltered = CubeMapManager.initializeTexture(false, resolution, true)
@@ -114,7 +115,7 @@ export default class LightProbe implements IResource {
 		}
 
 		if (asIrradiance) {
-			Mesh.finishIfUsed()
+			AbstractMesh.finishIfUsed()
 			StaticMeshesState.cubeBuffer.enable()
 		}
 

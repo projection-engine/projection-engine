@@ -1,7 +1,7 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import {Components,} from "@engine-core/engine.enum";
 
-export default class CameraComponent extends Component {
+export default class CameraComponent extends AbstractComponent {
 	getDependencies(): Components[] {
 		return [Components.TRANSFORMATION];
 	}

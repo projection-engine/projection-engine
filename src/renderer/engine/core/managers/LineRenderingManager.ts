@@ -2,6 +2,7 @@ import VertexBuffer from "@engine-core/lib/resources/VertexBuffer"
 import Mesh from "@engine-core/lib/resources/Mesh"
 import GPUState from "../states/GPUState"
 import AbstractSingleton from "@engine-core/AbstractSingleton";
+import AbstractMesh from "@engine-core/lib/resources/AbstractMesh";
 
 export default class LineRenderingManager extends AbstractSingleton {
     #vaoX: WebGLVertexArrayObject
@@ -58,7 +59,7 @@ export default class LineRenderingManager extends AbstractSingleton {
         const vbo = instance.#vboX,
             vao = instance.#vaoX
 
-        Mesh.finishIfUsed()
+        AbstractMesh.finishIfUsed()
 
         GPUState.context.bindVertexArray(vao)
         vbo.enable()
@@ -74,7 +75,7 @@ export default class LineRenderingManager extends AbstractSingleton {
             vao = instance.#vaoY
 
 
-        Mesh.finishIfUsed()
+        AbstractMesh.finishIfUsed()
 
         GPUState.context.bindVertexArray(vao)
         vbo.enable()
@@ -92,7 +93,7 @@ export default class LineRenderingManager extends AbstractSingleton {
         const vbo = instance.#vboZ,
             vao = instance.#vaoZ
 
-        Mesh.finishIfUsed()
+        AbstractMesh.finishIfUsed()
 
         GPUState.context.bindVertexArray(vao)
         vbo.enable()

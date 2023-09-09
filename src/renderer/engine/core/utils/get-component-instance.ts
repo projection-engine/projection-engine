@@ -7,13 +7,14 @@ import RigidBodyComponent from "@engine-core/lib/components/RigidBodyComponent"
 import CullingComponent from "@engine-core/lib/components/CullingComponent"
 import UIComponent from "@engine-core/lib/components/UIComponent"
 import LightComponent from "@engine-core/lib/components/LightComponent"
-import Component from "@engine-core/lib/components/Component"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
 import DecalComponent from "@engine-core/lib/components/DecalComponent"
 import LightProbeComponent from "@engine-core/lib/components/LightProbeComponent"
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import {Components} from "../engine.enum";
+import TerrainComponent from "@engine-core/lib/components/TerrainComponent";
 
-export default function getComponentInstance(entity: EngineEntity, key: Components): Component | undefined {
+export default function getComponentInstance(entity: EngineEntity, key: Components): AbstractComponent | undefined {
     switch (key) {
         case  Components.LIGHT:
             return new LightComponent(entity)
@@ -39,5 +40,7 @@ export default function getComponentInstance(entity: EngineEntity, key: Componen
             return new UIComponent(entity)
         case  Components.TRANSFORMATION:
             return new TransformationComponent(entity)
+        case  Components.TERRAIN:
+            return new TerrainComponent(entity)
     }
 }

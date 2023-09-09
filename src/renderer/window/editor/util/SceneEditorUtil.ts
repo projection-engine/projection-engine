@@ -12,7 +12,7 @@ import EngineResourceLoaderService from "../services/engine/EngineResourceLoader
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
 import getViewportContext from "../templates/get-viewport-context"
 import RENDER_TARGET from "../static/RENDER_TARGET"
-import SETTINGS from "../static/SettingsStoreState"
+import SETTINGS from "../static/SETTINGS_STORE_STATEE"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EngineState from "@engine-core/states/EngineState";
 import {ShadingModels,} from "@engine-core/engine.enum";

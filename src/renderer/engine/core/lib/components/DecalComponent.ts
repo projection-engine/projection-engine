@@ -1,4 +1,4 @@
-import Component from "./Component"
+import AbstractComponent from "./AbstractComponent"
 import Texture from "@engine-core/lib/resources/Texture"
 import GPUState from "../../states/GPUState"
 import EngineFileSystemManager from "../../managers/EngineFileSystemManager"
@@ -6,7 +6,7 @@ import GPUManager from "../../managers/GPUManager"
 import MATERIAL_RENDERING_TYPES from "../../static/MATERIAL_RENDERING_TYPES"
 import {Components,} from "@engine-core/engine.enum";
 
-export default class DecalComponent extends Component {
+export default class DecalComponent extends AbstractComponent {
     getDependencies(): Components[] {
         return [Components.TRANSFORMATION, Components.CULLING];
     }

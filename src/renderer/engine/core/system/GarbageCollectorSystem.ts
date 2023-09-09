@@ -14,12 +14,19 @@ export default class GarbageCollectorSystem extends AbstractSystem {
 
      execute = () => {
         const meshes = GPUState.meshes.array
+        const terrains = GPUState.terrains.array
         const textures = GPUState.textures.array
 
         for (let i = 0; i < meshes.length; i++) {
             const mesh = meshes[i];
             if (mesh.loaded && EngineState.elapsed - mesh.lastUsed >= this.#THRESHOLD)
                 GPUManager.destroyMesh(mesh)
+        }
+
+        for (let i = 0; i < terrains.length; i++) {
+            const terrain = terrains[i];
+            if (terrain.loaded && EngineState.elapsed - terrain.lastUsed >= this.#THRESHOLD)
+                GPUManager.destroyTerrain(terrain)
         }
 
         for (let i = 0; i < textures.length; i++) {

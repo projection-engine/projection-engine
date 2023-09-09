@@ -1,8 +1,8 @@
 import EditorEntity from "../../../../../engine/tools/EditorEntity"
-import Component from "@engine-core/lib/components/Component"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
 
 export default interface HierarchyToRenderElement{
     node:EditorEntity
-    component?:Component
+    component?:AbstractComponent
     depth:number
 }

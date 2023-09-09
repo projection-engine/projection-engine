@@ -3,7 +3,7 @@ import GPUManager from "./GPUManager"
 import PhysicsManager from "./PhysicsManager"
 import UIManager from "./UIManager"
 import ConsoleManager from "./ConsoleManager"
-import Component from "@engine-core/lib/components/Component"
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent"
 import CameraManager from "./CameraManager"
 import EngineFileSystemManager from "./EngineFileSystemManager"
 import Engine from "../Engine"
@@ -52,9 +52,9 @@ export default class ScriptsManager {
 		if (!scriptData)
 			return
 		try {
-			const generator = new Function("GPUState, GPUManager, PhysicsManager, UIManager, ConsoleManager, Component, Components, CameraManager, entity, EngineFileSystemManager", scriptData)
+			const generator = new Function("GPUState, GPUManager, PhysicsManager, UIManager, ConsoleManager, AbstractComponent, Components, CameraManager, entity, EngineFileSystemManager", scriptData)
 			try {
-				const script = generator(GPUState, GPUManager, PhysicsManager, UIManager, ConsoleManager, Component, Components, CameraManager,  entity, EngineFileSystemManager)
+				const script = generator(GPUState, GPUManager, PhysicsManager, UIManager, ConsoleManager, AbstractComponent, Components, CameraManager,  entity, EngineFileSystemManager)
 				if (index > -1) {
 					const ref = entity.scripts[index]
 					Object.entries(ref).forEach(([key, value]) => {

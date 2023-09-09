@@ -13,6 +13,7 @@ export default class Texture implements ITexture{
 	attributes: TextureParams = {}
 	#image?: ImageBitmap | HTMLImageElement
 	readonly #id: string
+	lastUsed: number;
 
 	get id() {
 		return this.#id
@@ -127,6 +128,5 @@ export default class Texture implements ITexture{
 		return texture
 	}
 
-	lastUsed: number;
 
 }

@@ -1,4 +1,4 @@
-import VIEWPORT_TABS from "../static/CentralViews"
+import VIEWPORT_TABS from "../static/CENTRAL_VIEWS"
 import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import Engine from "../../../engine/core/Engine"
 import GPUState from "@engine-core/states/GPUState"
@@ -7,7 +7,7 @@ import EngineTools from "../../../engine/tools/EngineTools"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
-import VIEWS from "../static/GenericViews"
+import VIEWS from "../static/VIEWS"
 import StaticFBOState from "@engine-core/states/StaticFBOState";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EngineState from "@engine-core/states/EngineState";
