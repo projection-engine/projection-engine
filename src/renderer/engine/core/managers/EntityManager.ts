@@ -92,7 +92,7 @@ export default class EntityManager extends AbstractSingleton {
     static getEntityPickVec3(entity: EngineEntity): vec3 {
         const instance = EntityManager.getInstance()
         let pId = instance.#pickVec3.get(entity)
-        if (pId == null && EntityManager.entityExists(entity) && (EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.MESH) || EntityManager.hasAllComponents(entity, Components.TRANSFORMATION, Components.SPRITE))) {
+        if (pId == null && EntityManager.entityExists(entity) && EntityManager.hasAllComponents(entity, Components.TRANSFORMATION)) {
             const index = instance.#pickInteger.size + 4
             pId = EntityManager.#getPickerId(index) as vec3
             instance.#pickVec3.set(entity, pId)

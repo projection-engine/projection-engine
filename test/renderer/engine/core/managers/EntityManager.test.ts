@@ -2,6 +2,8 @@ import {expect, test} from '@jest/globals';
 import EntityManager from "@engine-core/managers/EntityManager";
 import uuid from "uuidv4";
 import {Components} from "@engine-core/engine.enum";
+import UIComponent from "@engine-core/lib/components/UIComponent";
+import {vec3} from "gl-matrix";
 
 beforeEach(() => EntityManager.get());
 
@@ -53,7 +55,26 @@ test('Should trigger update event', () => {
     EntityManager.addEventListener("update", () => eventTriggered = true)
     createEntity()
     const id = EntityManager.getEntityKeys()[0]
-    EntityManager.addComponent(id, Components.UI)
-    EntityManager.updateProperty(id, Components.UI, "uiLayoutID", "TEST_KEY")
+    const component = EntityManager.addComponent(id, Components.UI)
+    const TEST_VALUE = "TEST_VALUE";
+    EntityManager.updateProperty(id, Components.UI, "uiLayoutID", TEST_VALUE)
     expect(eventTriggered).toStrictEqual(true);
+    expect((component as UIComponent).uiLayoutID).toStrictEqual(TEST_VALUE);
+});
+
+test('Should not generate picker id', () => {
+    createEntity()
+    const id = EntityManager.getEntityKeys()[0]
+    const pickerGenerated = EntityManager.getEntityPickVec3(id)
+
+    expect(pickerGenerated).toStrictEqual(vec3.fromValues(0, 0, 0));
+});
+
+test('Should generate picker id', () => {
+    createEntity()
+    const id = EntityManager.getEntityKeys()[0]
+    EntityManager.addComponent(id, Components.TRANSFORMATION)
+    const pickerGenerated = EntityManager.getEntityPickVec3(id)
+
+    expect(Math.round(pickerGenerated[0] * 255)).toStrictEqual(4);
 });
