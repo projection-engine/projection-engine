@@ -2,7 +2,7 @@ import AbstractSingleton from "../AbstractSingleton";
 import DynamicMap from "../lib/DynamicMap";
 import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 import getComponentInstance from "../utils/get-component-instance";
-import serializeStructure from "../utils/serialize-structure";
+import serializeStructure, {checkIfIsTypedArray} from "../utils/serialize-structure";
 import {Components} from "../engine.enum";
 import {vec3} from "gl-matrix";
 import UUIDGen from "../../../../shared/UUIDGen";
@@ -18,6 +18,9 @@ export default class EntityManager extends AbstractSingleton {
     #byComponent = new Map<Components, DynamicMap<EngineEntity, EngineEntity>>()
     static #preventDefaultTrigger = false
     static #FALLBACK_PID = vec3.create();
+    static debounceEvents: boolean = true;
+    static #currentEventGroupByType = new Map<EntityEventTypes, EntityListenerEvent<EngineEntity, Components>>()
+    static #timeout: NodeJS.Timeout;
 
     constructor() {
         super();
@@ -137,7 +140,7 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static getChildren(entity: EngineEntity): EngineEntity[] {
-        return EntityManager.getInstance().#parentChildren.get(entity) || []
+        return EntityManager.getInstance().#parentChildren.get(entity) ?? []
     }
 
     static getParent(entity: EngineEntity): EngineEntity | undefined {
@@ -151,16 +154,21 @@ export default class EntityManager extends AbstractSingleton {
     static addParent(child: EngineEntity, parent: EngineEntity | undefined) {
         const prevParent = EntityManager.getParent(child)
         const ins = EntityManager.getInstance()
-        ins.#childParent.set(child, parent)
-        if (prevParent) {
-            const parentArr = ins.#parentChildren.get(prevParent) || []
-            EntityManager.getInstance().#parentChildren.set(prevParent, parentArr.filter(e => e === child))
+        if (parent == null) {
+            ins.#childParent.delete(child)
+        } else {
+            ins.#childParent.set(child, parent)
         }
-        if (parent) {
+
+        if (prevParent != null) {
+            const parentArr = ins.#parentChildren.get(prevParent) ?? []
+            ins.#parentChildren.set(prevParent, parentArr.filter(e => e !== child))
+        }
+        if (parent != null) {
             const parentArr = ins.#parentChildren.get(parent) || []
             if (!parentArr.includes(child))
                 parentArr.push(child)
-            EntityManager.getInstance().#parentChildren.set(parent, parentArr)
+            ins.#parentChildren.set(parent, parentArr)
         }
         EntityManager.#callListeners({type: "hierarchy-change"})
     }
@@ -179,6 +187,7 @@ export default class EntityManager extends AbstractSingleton {
         }
         EntityManager.clearPickingCache()
         ins.#parentChildren.set(parent, Array.from(new Set([...parentArr, ...children])))
+        EntityManager.#callListeners({type: "hierarchy-change"})
     }
 
     static getComponent<T>(entity: EngineEntity, component: Components): T | undefined {
@@ -192,6 +201,8 @@ export default class EntityManager extends AbstractSingleton {
         const str = serializeStructure({id, components: Array.from(EntityManager.getEntities().get(entity).entries())})
         EntityManager.parseEntity(JSON.parse(str))
         EntityManager.clearPickingCache()
+        EntityManager.#callListeners({type: "create", all: [id]})
+
         return id
     }
 
@@ -313,14 +324,36 @@ export default class EntityManager extends AbstractSingleton {
     }
 
     static #callListeners(event: EntityListenerEvent<EngineEntity, Components>) {
-        if (EntityManager.#preventDefaultTrigger)
+        if (EntityManager.#preventDefaultTrigger || event == null)
             return
+
+        clearTimeout(EntityManager.#timeout)
+        let currentGroup = EntityManager.#currentEventGroupByType.get(event.type)
+        if (currentGroup == null) {
+            EntityManager.#currentEventGroupByType.set(event.type, event)
+            currentGroup = event
+        } else {
+            if (currentGroup.all != null)
+                currentGroup.all.push(...event.all)
+            if (currentGroup.targetComponents != null)
+                currentGroup.targetComponents.push(...event.targetComponents)
+            currentGroup.target = undefined
+        }
+        if (EntityManager.debounceEvents) {
+            EntityManager.#timeout = setTimeout(() => EntityManager.#callListenersInternal(event, currentGroup), 20)
+        } else {
+            EntityManager.#callListenersInternal(event, currentGroup);
+        }
+    }
+
+    static #callListenersInternal(event: EntityListenerEvent<EngineEntity, Components>, currentGroup: EntityListenerEvent<EngineEntity, Components>) {
         const listeners = EntityManager.getInstance().#listeners.get(event.type)
-        Object.freeze(event)
-        EntityManager.#updateByComponent(event)
+        Object.freeze(currentGroup)
+        EntityManager.#updateByComponent(currentGroup)
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i]
-            listener.callback(event)
+            listener.callback(currentGroup)
+            EntityManager.#currentEventGroupByType.delete(currentGroup.type)
         }
     }
 
@@ -395,7 +428,7 @@ export default class EntityManager extends AbstractSingleton {
                     continue
                 switch (key) {
                     case Components.MESH: {
-                        if (componentKey === "_meshID" || componentKey === "_materialID")
+                        if (componentKey === "_materialID")
                             component[componentKey.replace("_", "")] = value
                         else
                             component[componentKey] = value
@@ -409,8 +442,13 @@ export default class EntityManager extends AbstractSingleton {
                             component[componentKey] = value
                         break
                     }
-                    default:
-                        component[componentKey] = value
+                    default: {
+                        if (checkIfIsTypedArray(component[componentKey]) && Array.isArray(value)) {
+                            EntityManager.#assignArrayValues(component[componentKey], value)
+                        } else {
+                            component[componentKey] = value
+                        }
+                    }
                 }
 
 
@@ -421,6 +459,9 @@ export default class EntityManager extends AbstractSingleton {
         return component
     }
 
+    static #assignArrayValues(targetArray: any[], source: any[]) {
+        source.forEach((el, index) => targetArray[index] = el)
+    }
 
     static getAllComponents(entity: EngineEntity) {
         return EntityManager.getEntities().get(entity)?.array || []

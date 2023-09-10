@@ -9,92 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Fixing cancel option when closing project/reloading">
+    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Unit tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/global.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/libs/FileImporterUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/libs/FileImporterUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/libs/assimp/AssimpService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/libs/assimp/AssimpService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/libs/gltf/GLTFBuilderUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/libs/gltf/GLTFBuilderUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/libs/gltf/GLTFLoaderUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/libs/gltf/GLTFLoaderUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/AbstractSystem.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/AbstractSystem.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/engine.g.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/engine.g.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/DynamicMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/DynamicMap.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/UberShader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/UberShader.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/AbstractComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/AbstractComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/AtmosphereComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/AtmosphereComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CameraComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CameraComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CullingComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/CullingComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/DecalComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/DecalComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/LightComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/LightComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/LightProbeComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/LightProbeComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/MeshComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/MeshComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/PhysicsColliderComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/PhysicsColliderComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/RigidBodyComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/RigidBodyComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/SpriteComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/SpriteComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/TerrainComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/TerrainComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/TransformationComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/TransformationComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/UIComponent.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/components/UIComponent.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/math/ImageProcessor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/math/ImageProcessor.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/AbstractMesh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/AbstractMesh.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Material.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/Material.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/UBO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/lib/resources/UBO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/ConsoleManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/ConsoleManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/LightsManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/LightsManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/states/CameraState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/states/CameraState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/states/GPUState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/states/GPUState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/states/StaticMeshesState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/states/StaticMeshesState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/states/StaticUBOState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/states/StaticUBOState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/apply-shader-methods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/apply-shader-methods.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/get-component-instance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/get-component-instance.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/get-glsl-sizes.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntity.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/EditorEntityManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/tools/utils/StaticEditorMeshes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/tools/utils/StaticEditorMeshes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/Editor.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/Footer.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/Footer.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/components/PerformanceStatistics.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/footer/components/PerformanceStatistics.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/tabs/TabContextController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/tabs/TabContextController.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/tabs/Tabs.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/tabs/Tabs.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/view/CentralView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/view/CentralView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/view/SideView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/view/SideView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/view/components/ViewGroup.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/view/components/ViewGroup.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/components/window-frame/WindowFrame.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/components/window-frame/WindowFrame.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EngineStateService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EngineStateService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityNamingService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/services/engine/EntityNamingService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/util/EditorFSUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/util/EditorFSUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/util/EditorUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/util/EditorUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/console/ConsoleView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/console/ConsoleView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/ContentBrowserView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/ContentBrowserView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/Browser.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/Browser.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/SideBar.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/SideBar.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/info-editor/Properties.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/info-editor/Properties.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/item/Item.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/content-browser/components/item/Item.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/HierarchyView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/HierarchyView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/EntityTreeBranchContent.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/EntityTreeBranchContent.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/Tree.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/hierarchy/components/Tree.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/InspectorView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/InspectorView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/AddComponent.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/AddComponent.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/CameraPreferences.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/CameraPreferences.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/EntityInformation.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/EntityInformation.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/TransformationForm.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/inspector/components/TransformationForm.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/SceneEditorView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/SceneEditorView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/CameraSettings.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/CameraSettings.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/EntityInformation.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/EntityInformation.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/GizmoSettings.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/GizmoSettings.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/SceneOptions.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/scene-editor/components/SceneOptions.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/shader-editor/ShaderEditorView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/shader-editor/ShaderEditorView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/shader-editor/libs/ShaderEditorTools.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/shader-editor/libs/ShaderEditorTools.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/shader-editor/templates/Draggable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/shader-editor/templates/Draggable.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/editor/views/ui/UIEditorView.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/editor/views/ui/UIEditorView.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/preferences/components/Shortcuts.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/preferences/components/Shortcuts.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/preferences/components/content/ContentGroup.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/preferences/components/content/ContentGroup.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/projects/Projects.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/projects/Projects.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/projects/components/CreateProject.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/projects/components/CreateProject.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/shared/FileSystemUtil.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/shared/FileSystemUtil.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/window/shared/components/frame/TrafficLights.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/window/shared/components/frame/TrafficLights.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/serialize-structure.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/serialize-structure.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,30 +54,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "25.3.2",
-    "javascript.nodejs.core.library.typings.version": "20.5.9",
-    "last_opened_file_path": "C:/Users/russi/projectionengine",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.jest.jest_package": "C:/Users/russi/projectionengine/node_modules/jest",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "C:\\Users\\russi\\projectionengine\\node_modules\\typescript\\lib",
-    "typescript.add.unambiguous.imports.on.the.fly": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.16.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.16.0&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/russi/projectionengine&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/russi/projectionengine/node_modules/jest&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\russi\\projectionengine\\node_modules\\typescript\\lib&quot;,
+    &quot;typescript.add.unambiguous.imports.on.the.fly&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\russi\projectionengine" />
@@ -168,11 +87,11 @@
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\shared\stores" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\russi\projectionengine\test\renderer\engine\core\managers" />
       <recent name="C:\Users\russi\projectionengine\test" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\views\inspector\components" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\utils" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\views\inspector\static" />
-      <recent name="C:\Users\russi\projectionengine\src\renderer\window\editor\static" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -182,8 +101,8 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Jest.Should create entity and return key (1)">
-    <configuration name="Should create entity and return key (1)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Jest.Should add to withComponent">
+    <configuration name="Should add to withComponent" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
@@ -191,31 +110,55 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
       <test-names>
-        <test-name value="Should create entity and return key" />
+        <test-name value="Should add to withComponent" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Should create entity and return key (2)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Should be child in parent list" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/EntityManager.test.ts" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
       <test-names>
-        <test-name value="Should create entity and return key" />
+        <test-name value="Should be child in parent list" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Should create entity and return key" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Should clone entity with components" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManagerTest.ts" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
       <test-names>
-        <test-name value="Should create entity and return key" />
+        <test-name value="Should clone entity with components" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Should not be child in parent list" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-names>
+        <test-name value="Should not be child in parent list" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Should trigger hierarchy change" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-names>
+        <test-name value="Should trigger hierarchy change" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -259,9 +202,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Jest.Should create entity and return key" />
-      <item itemvalue="Jest.Should create entity and return key (1)" />
-      <item itemvalue="Jest.Should create entity and return key (2)" />
+      <item itemvalue="Jest.Should add to withComponent" />
+      <item itemvalue="Jest.Should be child in parent list" />
+      <item itemvalue="Jest.Should clone entity with components" />
+      <item itemvalue="Jest.Should not be child in parent list" />
+      <item itemvalue="Jest.Should trigger hierarchy change" />
       <item itemvalue="Node.js.Main" />
       <item itemvalue="Node.js.Renderer" />
       <item itemvalue="Shell Script.BUILD" />
@@ -269,9 +214,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.Should create entity and return key (1)" />
-        <item itemvalue="Jest.Should create entity and return key (2)" />
-        <item itemvalue="Jest.Should create entity and return key" />
+        <item itemvalue="Jest.Should add to withComponent" />
+        <item itemvalue="Jest.Should clone entity with components" />
+        <item itemvalue="Jest.Should trigger hierarchy change" />
+        <item itemvalue="Jest.Should not be child in parent list" />
+        <item itemvalue="Jest.Should be child in parent list" />
       </list>
     </recent_temporary>
   </component>
@@ -333,28 +280,8 @@
       <workItem from="1694107868545" duration="11892000" />
       <workItem from="1694263886076" duration="8507000" />
       <workItem from="1694278789852" duration="4460000" />
-      <workItem from="1694285186656" duration="4600000" />
-    </task>
-    <task id="LOCAL-00039" summary="[STD-335] Adding new files">
-      <created>1690038072706</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1690038072706</updated>
-    </task>
-    <task id="LOCAL-00040" summary="[STD-337] Optimizing mousePosition state; Adding hover effect to SelectedSystem; Fixing entity highlight">
-      <created>1690039762059</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1690039762059</updated>
-    </task>
-    <task id="LOCAL-00041" summary="[STD-341] create pull-request">
-      <created>1690040246127</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1690040246127</updated>
+      <workItem from="1694285186656" duration="9302000" />
+      <workItem from="1694347746379" duration="3546000" />
     </task>
     <task id="LOCAL-00042" summary="[STD-341] creating view-state store; Standardizing view component">
       <created>1690045987681</created>
@@ -678,7 +605,28 @@
       <option name="project" value="LOCAL" />
       <updated>1694286318726</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="[STD-282] Fixing structure to support jest&#10;- Introducing jest&#10;- Orgazinging imports related to EntityManager &#10;- Creating first test for Entitymanager">
+      <created>1694290021506</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1694290021506</updated>
+    </task>
+    <task id="LOCAL-00089" summary="[STD-282] Unit tests&#10;- Creating tests for basic actions">
+      <created>1694301477539</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1694301477539</updated>
+    </task>
+    <task id="LOCAL-00090" summary="[STD-282] Unit tests">
+      <created>1694302257574</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1694302257574</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -701,9 +649,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/engine-core" />
     </ignored-roots>
-    <MESSAGE value="[STD-282] Continuing entity rework&#10;&#10;- Reworking multiple systems&#10;- Reworking resource access (mesh, material, texture)&#10;- Reworking garbage collection&#10;- Reworking entity hierarchy and enabled/disabled entities&#10;- Reworked physics system and api&#10;- Removing textures from decal component" />
-    <MESSAGE value="[STD-282] Continuing entity rework&#10;&#10;- Starting rework outside of engine&#10;- Implementing lazy initialization of engine resources" />
-    <MESSAGE value="[STD-282] Continuing entity rework&#10;&#10;- Implementing component dependency&#10;- Removing unused classes&#10;- Reworking EngineStateService &#10;- Reworking EntityFactoryService&#10;- Reworking TransformationPass to use new hierarchy structure&#10;- Reworking TransformationWorkerAPI to integrate with new event pipeline&#10;- Reworking LightsAPI to integrate with event system and to be an Abstract singleton" />
     <MESSAGE value="[STD-282] Continuing entity rework&#10;- Removing unused classes&#10;- Fixing various reference errors to old entity system" />
     <MESSAGE value="[STD-282] Continuing entity rework&#10;- Reworking icons&#10;- Reworking loadedLevel and state serialization&#10;- Continuing integration of new pipeline for entities" />
     <MESSAGE value="[STD-282] Continuing entity rework&#10;- Moving icons processing to separate manager&#10;- Removing level as an entity &#10;- Implementing LoadedLevelStore&#10;- Implementing GizmoEntity&#10;- Fixing gizmos referencing properties not present on editor entity" />
@@ -726,7 +671,10 @@
     <MESSAGE value="[STD-361] Implementing structure for terrain rendering&#10;- Renaming static state templates&#10;- Renaming inspector components&#10;- Fixing camera tab on inspector&#10;- Fixing add component method&#10;- Created terrain component&#10;- Created terrain mesh&#10;- Moved mesh initialziation to AbstractMesh&#10;- Renamed Component to AbstractComponent &#10;- Adding terrain shader to StaticShadersState&#10;- Adding fallback options when initializing project" />
     <MESSAGE value="[STD-361] Implementing structure for terrain rendering&#10;- Splitting CameraState from CameraManager&#10;- Fixing terrain loading&#10;- Fixing camera tab on inspector&#10;- Removing CameraEffects&#10;- Implementing terrain rendering and height scale" />
     <MESSAGE value="[STD-282] Fixing cancel option when closing project/reloading" />
-    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Fixing cancel option when closing project/reloading" />
+    <MESSAGE value="[STD-282] Fixing structure to support jest&#10;- Introducing jest&#10;- Orgazinging imports related to EntityManager &#10;- Creating first test for Entitymanager" />
+    <MESSAGE value="[STD-282] Unit tests&#10;- Creating tests for basic actions" />
+    <MESSAGE value="[STD-282] Unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Unit tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -750,10 +698,6 @@
           <url>file://$PROJECT_DIR$/src/renderer/engine/tools/gizmo/AbstractXYZGizmo.ts</url>
           <line>8</line>
           <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/renderer/engine/core/states/GPUState.ts</url>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/renderer/engine/core/lib/SharedNumericMap.ts</url>
@@ -780,6 +724,23 @@
           <line>19</line>
           <log-expression expression="console.log(&quot;minDepth&quot;)" language="TypeScript" />
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts</url>
+          <line>70</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts</url>
+          <line>129</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts</url>
+          <line>201</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
