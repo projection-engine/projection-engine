@@ -33,6 +33,7 @@ import PreLoopSystem from "@engine-core/system/PreLoopSystem";
 import GPUManager from "@engine-core/managers/GPUManager";
 import TerrainRendererSystem from "@engine-core/system/TerrainRendererSystem";
 import CameraState from "@engine-core/states/CameraState";
+import PhysicsSystem from "@engine-core/system/PhysicsSystem";
 
 export default class Engine {
     static #development = false
@@ -126,11 +127,14 @@ export default class Engine {
     }
 
     static start() {
-        if (!SystemManager.getInstance().isRunning() && Engine.#isReady)
+        if (!SystemManager.getInstance().isRunning() && Engine.#isReady) {
             SystemManager.getInstance().start()
+            PhysicsSystem.start()
+        }
     }
 
     static stop() {
         SystemManager.getInstance().stop()
+        PhysicsSystem.stop()
     }
 }

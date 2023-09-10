@@ -17,6 +17,24 @@ function createEntity(ids = [uuid()]): EngineEntity[] {
     return ids as EngineEntity[]
 }
 
+async function callMultipleTimes() {
+    const id = createEntity()[0]
+    let eventTriggered = 0
+    await new Promise(resolve => {
+        let timeout
+        EntityManager.addEventListener("component-add", () => {
+            clearTimeout(timeout)
+            eventTriggered++
+            timeout = setTimeout(() => resolve(null), 100)
+        })
+        EntityManager.addComponent(id, Components.TRANSFORMATION)
+        EntityManager.addComponent(id, Components.UI)
+        EntityManager.addComponent(id, Components.SPRITE)
+        EntityManager.addComponent(id, Components.DECAL)
+    })
+    return eventTriggered
+}
+
 test('Should trigger create event', () => {
     let eventTriggered = false
     EntityManager.addEventListener("create", () => eventTriggered = true)
@@ -113,24 +131,6 @@ test('Should add to withComponent', () => {
     EntityManager.addComponent(id, Components.TRANSFORMATION)
     expect(EntityManager.withComponent(Components.TRANSFORMATION).array).toContain(id)
 });
-
-async function callMultipleTimes() {
-    const id = createEntity()[0]
-    let eventTriggered = 0
-    await new Promise(resolve => {
-        let timeout
-        EntityManager.addEventListener("component-add", () => {
-            clearTimeout(timeout)
-            eventTriggered++
-            timeout = setTimeout(() => resolve(null), 100)
-        })
-        EntityManager.addComponent(id, Components.TRANSFORMATION)
-        EntityManager.addComponent(id, Components.UI)
-        EntityManager.addComponent(id, Components.SPRITE)
-        EntityManager.addComponent(id, Components.DECAL)
-    })
-    return eventTriggered
-}
 
 test('Should not debounce events', async () => {
     const eventTriggered = await callMultipleTimes()

@@ -39,15 +39,13 @@ export default class MetricsManager {
         MetricsManager.#elapsed = {}
     }
 
-    static getRecord() {
+    static getRecord(): { flag: string, percentage: number, elapsed: string }[] {
         started = false
         const data = Object.entries(MetricsManager.#elapsed)
         const totalElapsed = MetricsManager.#totalElapsed
         const response = []
-        console.trace(MetricsManager.#elapsed)
         for (let i = 0; i < data.length; i++) {
             const percentage = data[i][1] / totalElapsed
-            console.log(totalElapsed, data[i][1])
             response[i] = {
                 flag: data[i][0],
                 percentage: percentage * 100,

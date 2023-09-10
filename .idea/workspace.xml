@@ -11,7 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Unit tests&#10;- Fixing removing/adding parent&#10;- Fixing deserialization of components with typed arrays&#10;- Adding event debounce&#10;- Fixing clone method not triggering events&#10;- Implementing tests for clone, hierarchy, event debounce, withComponent and more">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/Engine.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/MetricsManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/MetricsManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/SystemManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,37 +55,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.16.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.16.0&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/russi/projectionengine&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/russi/projectionengine/node_modules/jest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\russi\\projectionengine\\node_modules\\typescript\\lib&quot;,
-    &quot;typescript.add.unambiguous.imports.on.the.fly&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.nodejs.core.library.configured.version": "18.16.0",
+    "javascript.nodejs.core.library.typings.version": "18.16.0",
+    "last_opened_file_path": "C:/Users/russi/projectionengine/test/renderer/engine/core/managers",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/russi/projectionengine/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "settings.nodejs",
+    "ts.external.directory.path": "C:\\Users\\russi\\projectionengine\\node_modules\\typescript\\lib",
+    "typescript.add.unambiguous.imports.on.the.fly": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\russi\projectionengine\test\renderer\engine\core\managers" />
       <recent name="C:\Users\russi\projectionengine" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\static\shaders\terrain-shader" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\lib\components" />
       <recent name="C:\Users\russi\projectionengine\src\renderer\engine\core\system" />
-      <recent name="C:\Users\russi\projectionengine\src\renderer\window\shared\stores" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\russi\projectionengine\test\renderer\engine\core\managers" />
@@ -100,64 +102,64 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Jest.Should debounce events">
-    <configuration name="Should add to withComponent" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Jest.Should record metrics">
+    <configuration name="Should execute system" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/SystemManager.test.ts" />
       <test-names>
-        <test-name value="Should add to withComponent" />
+        <test-name value="Should execute system" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Should clone entity with components" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Should include system" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/SystemManager.test.ts" />
       <test-names>
-        <test-name value="Should clone entity with components" />
+        <test-name value="Should include system" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Should debounce events" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Should not include system" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/SystemManager.test.ts" />
       <test-names>
-        <test-name value="Should debounce events" />
+        <test-name value="Should not include system" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Should not debounce events" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Should record metrics" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/SystemManager.test.ts" />
       <test-names>
-        <test-name value="Should not debounce events" />
+        <test-name value="Should record metrics" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Should trigger hierarchy change" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Should trigger create event" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/SystemManager.test.ts" />
       <test-names>
-        <test-name value="Should trigger hierarchy change" />
+        <test-name value="Should trigger create event" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -201,11 +203,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Jest.Should add to withComponent" />
-      <item itemvalue="Jest.Should clone entity with components" />
-      <item itemvalue="Jest.Should debounce events" />
-      <item itemvalue="Jest.Should not debounce events" />
-      <item itemvalue="Jest.Should trigger hierarchy change" />
+      <item itemvalue="Jest.Should execute system" />
+      <item itemvalue="Jest.Should include system" />
+      <item itemvalue="Jest.Should not include system" />
+      <item itemvalue="Jest.Should record metrics" />
+      <item itemvalue="Jest.Should trigger create event" />
       <item itemvalue="Node.js.Main" />
       <item itemvalue="Node.js.Renderer" />
       <item itemvalue="Shell Script.BUILD" />
@@ -213,11 +215,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.Should debounce events" />
-        <item itemvalue="Jest.Should not debounce events" />
-        <item itemvalue="Jest.Should add to withComponent" />
-        <item itemvalue="Jest.Should clone entity with components" />
-        <item itemvalue="Jest.Should trigger hierarchy change" />
+        <item itemvalue="Jest.Should record metrics" />
+        <item itemvalue="Jest.Should execute system" />
+        <item itemvalue="Jest.Should include system" />
+        <item itemvalue="Jest.Should not include system" />
+        <item itemvalue="Jest.Should trigger create event" />
       </list>
     </recent_temporary>
   </component>
@@ -280,14 +282,7 @@
       <workItem from="1694263886076" duration="8507000" />
       <workItem from="1694278789852" duration="4460000" />
       <workItem from="1694285186656" duration="9302000" />
-      <workItem from="1694347746379" duration="4284000" />
-    </task>
-    <task id="LOCAL-00043" summary="[STD-341] Reworking content browser selection; Organizing Item component; Adding missing file types to FileTypes enum;">
-      <created>1690117685396</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1690117685396</updated>
+      <workItem from="1694347746379" duration="6349000" />
     </task>
     <task id="LOCAL-00044" summary="[STD-341] Moving inspector files to content browser; Reworking entity selection; Fixing grid snap for gizmos;">
       <created>1690119859513</created>
@@ -625,7 +620,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694351695112</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="[STD-282] Unit tests&#10;- Fixing removing/adding parent&#10;- Fixing deserialization of components with typed arrays&#10;- Adding event debounce&#10;- Fixing clone method not triggering events&#10;- Implementing tests for clone, hierarchy, event debounce, withComponent and more">
+      <created>1694352142969</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1694352142969</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -726,7 +728,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts</url>
-          <line>71</line>
+          <line>89</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -740,6 +742,18 @@
           <line>202</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/test/renderer/engine/core/managers/SystemManager.test.ts</url>
+          <line>67</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/test/renderer/engine/core/managers/SystemManager.test.ts</url>
+          <line>66</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
