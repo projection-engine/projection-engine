@@ -12,8 +12,8 @@ import GIZMOS from "../../../../shared/enums/Gizmos"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import TabsStoreUtil from "./TabsStoreUtil"
 import ContentBrowserUtil from "./ContentBrowserUtil"
-import GizmoState from "../../../engine/tools/gizmo/util/GizmoState";
-import GizmoUtil from "../../../engine/tools/gizmo/util/GizmoUtil";
+import GizmoState from "../../../engine/tools/state/GizmoState";
+import GizmoUtil from "../../../engine/tools/utils/GizmoUtil";
 import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import EntityManager from "@engine-core/managers/EntityManager";

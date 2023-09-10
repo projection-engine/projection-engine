@@ -1,5 +1,5 @@
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
-import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
+import EditorEntityManager from "../../../engine/tools/managers/EditorEntityManager";
 
 export default class SelectorUtil{
 	static getIcon(type){

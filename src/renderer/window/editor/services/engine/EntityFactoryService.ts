@@ -6,7 +6,7 @@ import EngineStateService from "./EngineStateService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
-import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
 import EditorEntity from "../../../../engine/tools/EditorEntity";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import TerrainComponent from "@engine-core/lib/components/TerrainComponent";

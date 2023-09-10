@@ -1,6 +1,6 @@
 import AbstractSystem from "../../core/AbstractSystem";
 import ConversionAPI from "../../core/lib/math/ConversionAPI";
-import EngineToolsState from "../EngineToolsState";
+import EngineToolsState from "../state/EngineToolsState";
 import GPUState from "@engine-core/states/GPUState";
 
 export default class MouseCoordinateSystem extends AbstractSystem {

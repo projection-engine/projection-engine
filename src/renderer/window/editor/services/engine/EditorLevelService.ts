@@ -21,7 +21,7 @@ import FileTypes from "../../../../../shared/enums/FileTypes"
 import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import EditorUtil from "../../util/EditorUtil"
 import TabsStoreUtil from "../../util/TabsStoreUtil"
-import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
 import LevelManager from "@engine-core/managers/LevelManager";
 import EntityManager from "@engine-core/managers/EntityManager";
 import LoadedLevelStore from "../../../shared/stores/LoadedLevelStore";

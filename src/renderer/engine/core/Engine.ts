@@ -34,22 +34,17 @@ import GPUManager from "@engine-core/managers/GPUManager";
 import TerrainRendererSystem from "@engine-core/system/TerrainRendererSystem";
 import CameraState from "@engine-core/states/CameraState";
 import PhysicsSystem from "@engine-core/system/PhysicsSystem";
+import Framebuffer from "@engine-core/lib/resources/Framebuffer";
+import Shader from "@engine-core/lib/resources/Shader";
+import StaticMeshesState from "@engine-core/states/StaticMeshesState";
+import EngineState from "@engine-core/states/EngineState";
+import QUADVert from "@engine-core/shaders/QUAD.vert";
+import BRDF_GENFrag from "@engine-core/shaders/BRDF_GEN.frag";
 
 export default class Engine {
-    static #development = false
     static UILayouts = new Map()
     static isDev = true
     static #environment: number = Environment.DEV
-    static #isReady = false
-    static #initialized = false
-
-    static get isReady() {
-        return Engine.#isReady
-    }
-
-    static get developmentMode() {
-        return Engine.#development
-    }
 
     static get environment(): number {
         return Engine.#environment
@@ -62,6 +57,15 @@ export default class Engine {
             CameraManager.updateAspectRatio()
     }
 
+    static #isReady = false
+    static #initialized = false
+
+    static get isReady() {
+        return Engine.#isReady
+    }
+
+
+
     static async initializeContext(
         canvas: HTMLCanvasElement,
         mainResolution: { w: number, h: number } | undefined,
@@ -72,8 +76,9 @@ export default class Engine {
             return
         Engine.#initialized = true
 
-        Engine.#development = devAmbient
+        EngineState.developmentMode = devAmbient
         await GPUManager.initializeContext(canvas, mainResolution)
+        Engine.#generateBRDF();
         EngineFileSystemManager.initialize(readAsset)
         await PhysicsManager.initialize()
         LightsManager.get()
@@ -90,6 +95,18 @@ export default class Engine {
         Engine.#isReady = true
         GPUState.skylightProbe = new LightProbe(128)
         Engine.#startSystems()
+    }
+
+    static #generateBRDF() {
+        const FBO = new Framebuffer(512, 512).texture({precision: GPUState.context.RG32F, format: GPUState.context.RG})
+        const brdfShader = new Shader(QUADVert, BRDF_GENFrag)
+
+        FBO.startMapping()
+        brdfShader.bind()
+        StaticMeshesState.drawQuad()
+        FBO.stopMapping()
+        GPUState.BRDF = FBO.colors[0]
+        GPUState.context.deleteProgram(brdfShader.program)
     }
 
     static #startSystems() {

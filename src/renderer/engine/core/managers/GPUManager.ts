@@ -1,7 +1,5 @@
 import Texture from "@engine-core/lib/resources/Texture"
 import Material from "@engine-core/lib/resources/Material"
-import QUAD_VERT from "../static/shaders/post-processing/QUAD.vert"
-import BRDF_FRAG from "../static/shaders/post-processing/BRDF_GEN.frag"
 import Framebuffer from "@engine-core/lib/resources/Framebuffer"
 import Mesh from "@engine-core/lib/resources/Mesh"
 import Shader from "@engine-core/lib/resources/Shader"
@@ -75,16 +73,6 @@ export default class GPUManager {
         UberShader.compile()
         EngineState.visibilityNeedsUpdate = true
         return material
-    }
-
-
-    static createBuffer(type, data, renderingType: number = GPUState.context.STATIC_DRAW) {
-        if (!data && data.buffer instanceof ArrayBuffer && data.byteLength !== undefined || data.length === 0)
-            return null
-        const buffer = GPUState.context.createBuffer()
-        GPUState.context.bindBuffer(type, buffer)
-        GPUState.context.bufferData(type, data, renderingType)
-        return buffer
     }
 
 
@@ -196,7 +184,6 @@ export default class GPUManager {
         this.#initializeContext(canvas);
         this.#enableDefault();
         await this.#initializeResources();
-        this.#generateBRDF();
     }
 
     static #initializeContext(canvas: HTMLCanvasElement) {
@@ -210,18 +197,6 @@ export default class GPUManager {
         GPUState.context.getExtension("EXT_color_buffer_float")
         GPUState.context.getExtension("OES_texture_float")
         GPUState.context.getExtension("OES_texture_float_linear")
-    }
-
-    static #generateBRDF() {
-        const FBO = new Framebuffer(512, 512).texture({precision: GPUState.context.RG32F, format: GPUState.context.RG})
-        const brdfShader = new Shader(QUAD_VERT, BRDF_FRAG)
-
-        FBO.startMapping()
-        brdfShader.bind()
-        StaticMeshesState.drawQuad()
-        FBO.stopMapping()
-        GPUState.BRDF = FBO.colors[0]
-        GPUState.context.deleteProgram(brdfShader.program)
     }
 
     static async #initializeResources() {

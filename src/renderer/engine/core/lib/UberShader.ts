@@ -1,9 +1,10 @@
 import GPUState from "../states/GPUState"
 import Engine from "../Engine"
-import DEBUG_FRAG from "../static/shaders/uber-shader/UBER-MATERIAL-DEBUG.frag"
-import BASIS_FRAG from "../static/shaders/uber-shader/UBER-MATERIAL-BASIS.frag"
-import VERTEX_SHADER from "../static/shaders/uber-shader/UBER-MATERIAL.vert"
+import DEBUG_FRAG from "@engine-core/shaders/UBER_MATERIAL_DEBUG.frag"
+import BASIS_FRAG from "@engine-core/shaders/UBER_MATERIAL_BASIS.frag"
+import VERTEX_SHADER from "@engine-core/shaders/UBER_MATERIAL.vert"
 import Shader from "@engine-core/lib/resources/Shader"
+import EngineState from "@engine-core/states/EngineState";
 
 export default class UberShader {
 	static #uberSignature = {}
@@ -54,7 +55,7 @@ export default class UberShader {
             }
         `)
 
-		let fragment = Engine.developmentMode ? DEBUG_FRAG : BASIS_FRAG
+		let fragment = EngineState.developmentMode ? DEBUG_FRAG : BASIS_FRAG
 		fragment = fragment.replace("//--UNIFORMS--", uniformsToLoad.join("\n"))
 		fragment = fragment.replace("//--MATERIAL_SELECTION--", methodsToLoad.join("\n"))
 

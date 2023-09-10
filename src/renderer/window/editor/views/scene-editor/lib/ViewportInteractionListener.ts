@@ -3,8 +3,8 @@ import SettingsStore from "../../../../shared/stores/SettingsStore"
 import GPUState from "@engine-core/states/GPUState"
 import AbstractSingleton from "../../../../../engine/core/AbstractSingleton"
 import ViewportUtil from "../../../util/ViewportUtil"
-import GizmoState from "../../../../../engine/tools/gizmo/util/GizmoState"
-import GizmoMouseUtil from "../../../../../engine/tools/gizmo/util/GizmoMouseUtil"
+import GizmoState from "../../../../../engine/tools/state/GizmoState"
+import GizmoMouseUtil from "../../../../../engine/tools/utils/GizmoMouseUtil"
 import EngineTools from "../../../../../engine/tools/EngineTools";
 import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
 

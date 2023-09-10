@@ -13,7 +13,7 @@
     import EditorUtil from "../../../util/EditorUtil"
     import EngineStore from "../../../../shared/stores/EngineStore"
     import {Components} from "@engine-core/engine.enum";
-    import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
+    import EditorEntityManager from "../../../../../engine/tools/managers/EditorEntityManager";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EntityManager from "@engine-core/managers/EntityManager";
     import UUIDGen from "../../../../../../shared/UUIDGen";

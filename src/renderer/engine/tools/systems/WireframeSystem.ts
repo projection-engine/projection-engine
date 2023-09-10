@@ -1,14 +1,14 @@
 import GPUState from "@engine-core/states/GPUState"
 import {mat4, vec3} from "gl-matrix"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
-import StaticEditorShaders from "../utils/StaticEditorShaders"
+import StaticEditorShaders from "../state/StaticEditorShaders"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
-import StaticEditorMeshes from "../utils/StaticEditorMeshes"
-import EngineToolsState from "../EngineToolsState"
+import StaticEditorMeshes from "../state/StaticEditorMeshes"
+import EngineToolsState from "../state/EngineToolsState"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
-import EditorEntityManager from "../EditorEntityManager";
+import EditorEntityManager from "../managers/EditorEntityManager";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import PhysicsColliderComponent from "@engine-core/lib/components/PhysicsColliderComponent";
 import EntityManager from "@engine-core/managers/EntityManager";

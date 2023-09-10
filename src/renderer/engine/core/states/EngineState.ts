@@ -48,5 +48,6 @@ export default class EngineState{
 	static directionalLightsToUpdate:LightComponent[] = []
 	static omnidirectionalLightsToUpdate:LightComponent[] = []
 	static cameraEntityTarget:EngineEntity|undefined
+	static developmentMode = false
 
 }

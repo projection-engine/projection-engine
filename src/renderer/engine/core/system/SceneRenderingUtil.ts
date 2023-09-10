@@ -1,6 +1,5 @@
 import GPUState from "../states/GPUState"
 import Shader from "@engine-core/lib/resources/Shader"
-import Engine from "../Engine"
 import StaticFBOState from "../states/StaticFBOState"
 import OShadowsSystem from "./OShadowsSystem"
 import Material from "@engine-core/lib/resources/Material"
@@ -24,7 +23,7 @@ export default class SceneRenderingUtil {
 		const context = GPUState.context
 
 		UberShader.uber.bind()
-		if (Engine.developmentMode)
+		if (EngineState.developmentMode)
 			context.uniform1i(uniforms.shadingModel, EngineState.debugShadingModel)
 
 		context.uniformMatrix4fv(uniforms.skyProjectionMatrix, false, CameraState.skyboxProjectionMatrix)

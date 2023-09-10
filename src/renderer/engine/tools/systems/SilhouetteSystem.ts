@@ -1,11 +1,10 @@
 import AbstractSystem from "../../core/AbstractSystem";
 import GPUState from "@engine-core/states/GPUState";
-import StaticEditorShaders from "../utils/StaticEditorShaders";
-import EngineToolsState from "../EngineToolsState";
+import StaticEditorShaders from "../state/StaticEditorShaders";
+import EngineToolsState from "../state/EngineToolsState";
 import GPUUtil from "../../core/utils/GPUUtil";
 import StaticFBOState from "@engine-core/states/StaticFBOState";
 import StaticMeshesState from "@engine-core/states/StaticMeshesState";
-import EngineTools from "../EngineTools";
 
 export default class SilhouetteSystem extends AbstractSystem {
     static #FALLBACK_COLOR = new Float32Array([.5, .5, .5])
@@ -26,7 +25,7 @@ export default class SilhouetteSystem extends AbstractSystem {
             StaticMeshesState.drawQuad()
         }
 
-        const length = EngineTools.selected.length
+        const length = EngineToolsState.selected.length
         if (length > 0) {
             context.activeTexture(context.TEXTURE0)
             context.bindTexture(context.TEXTURE_2D, StaticFBOState.postProcessing1Sampler)

@@ -1,6 +1,6 @@
 import {mat4, quat, vec3} from "gl-matrix";
 
-export default class GizmoEntity {
+export default class GizmoEntity implements IGizmoEntity{
     pickID = vec3.create()
     matrix = mat4.create()
     rotationQuaternion = quat.create()

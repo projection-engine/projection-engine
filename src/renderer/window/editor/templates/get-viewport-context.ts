@@ -6,7 +6,7 @@ import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import {Components} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
-import EngineToolsState from "../../../engine/tools/EngineToolsState";
+import EngineToolsState from "../../../engine/tools/state/EngineToolsState";
 
 
 export function getViewportOptionsForDropdown() {

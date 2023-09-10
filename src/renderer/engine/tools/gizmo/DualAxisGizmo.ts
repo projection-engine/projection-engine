@@ -1,11 +1,11 @@
 import AXIS from "../static/AXIS"
-import StaticEditorMeshes from "../utils/StaticEditorMeshes"
+import StaticEditorMeshes from "../state/StaticEditorMeshes"
 import {vec3} from "gl-matrix"
-import GizmoUtil from "./util/GizmoUtil"
+import GizmoUtil from "../utils/GizmoUtil"
 import AbstractSingleton from "@engine-core/AbstractSingleton"
-import IGizmo from "./IGizmo"
 import Mesh from "@engine-core/lib/resources/Mesh"
 import GizmoEntity from "./GizmoEntity";
+import GizmoRenderingUtil from "../utils/GizmoRenderingUtil";
 
 export default class DualAxisGizmo extends AbstractSingleton implements IGizmo {
 	mesh: Mesh
@@ -50,15 +50,15 @@ export default class DualAxisGizmo extends AbstractSingleton implements IGizmo {
 	}
 
 	drawGizmo(): void {
-		GizmoUtil.drawGizmo(this.mesh, this.xGizmo.matrix, AXIS.XY)
-		GizmoUtil.drawGizmo(this.mesh, this.zGizmo.matrix, AXIS.XZ)
-		GizmoUtil.drawGizmo(this.mesh, this.yGizmo.matrix, AXIS.ZY)
+		GizmoRenderingUtil.drawGizmo(this.mesh, this.xGizmo.matrix, AXIS.XY)
+		GizmoRenderingUtil.drawGizmo(this.mesh, this.zGizmo.matrix, AXIS.XZ)
+		GizmoRenderingUtil.drawGizmo(this.mesh, this.yGizmo.matrix, AXIS.ZY)
 	}
 
 	drawToDepth(data: MutableObject){
-		GizmoUtil.drawToDepth(data, this.mesh, this.xGizmo.matrix, this.xGizmo.pickID)
-		GizmoUtil.drawToDepth(data, this.mesh, this.zGizmo.matrix, this.zGizmo.pickID)
-		GizmoUtil.drawToDepth(data, this.mesh, this.yGizmo.matrix, this.yGizmo.pickID)
+		GizmoRenderingUtil.drawToDepth(data, this.mesh, this.xGizmo.matrix, this.xGizmo.pickID)
+		GizmoRenderingUtil.drawToDepth(data, this.mesh, this.zGizmo.matrix, this.zGizmo.pickID)
+		GizmoRenderingUtil.drawToDepth(data, this.mesh, this.yGizmo.matrix, this.yGizmo.pickID)
 	}
 
 	onMouseMove(){}

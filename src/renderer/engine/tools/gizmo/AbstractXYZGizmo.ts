@@ -1,9 +1,9 @@
-import IGizmo from "./IGizmo";
-import GizmoUtil from "./util/GizmoUtil";
+import GizmoUtil from "../utils/GizmoUtil";
 import AXIS from "../static/AXIS";
 import Mesh from "@engine-core/lib/resources/Mesh";
 import AbstractSingleton from "@engine-core/AbstractSingleton";
 import GizmoEntity from "./GizmoEntity";
+import GizmoRenderingUtil from "../utils/GizmoRenderingUtil";
 
 export default abstract class AbstractXYZGizmo extends AbstractSingleton implements IGizmo {
     declare mesh: Mesh;
@@ -12,9 +12,9 @@ export default abstract class AbstractXYZGizmo extends AbstractSingleton impleme
     declare zGizmo: GizmoEntity;
 
     drawToDepth(data) {
-        GizmoUtil.drawToDepth(data, this.mesh, this.xGizmo.matrix, this.xGizmo.pickID)
-        GizmoUtil.drawToDepth(data, this.mesh, this.yGizmo.matrix, this.yGizmo.pickID)
-        GizmoUtil.drawToDepth(data, this.mesh, this.zGizmo.matrix, this.zGizmo.pickID)
+        GizmoRenderingUtil.drawToDepth(data, this.mesh, this.xGizmo.matrix, this.xGizmo.pickID)
+        GizmoRenderingUtil.drawToDepth(data, this.mesh, this.yGizmo.matrix, this.yGizmo.pickID)
+        GizmoRenderingUtil.drawToDepth(data, this.mesh, this.zGizmo.matrix, this.zGizmo.pickID)
     }
 
     transformGizmo() {
@@ -24,9 +24,9 @@ export default abstract class AbstractXYZGizmo extends AbstractSingleton impleme
     }
 
     drawGizmo() {
-        GizmoUtil.drawGizmo(this.mesh, this.xGizmo.matrix, AXIS.X)
-        GizmoUtil.drawGizmo(this.mesh, this.yGizmo.matrix, AXIS.Y)
-        GizmoUtil.drawGizmo(this.mesh, this.zGizmo.matrix, AXIS.Z)
+        GizmoRenderingUtil.drawGizmo(this.mesh, this.xGizmo.matrix, AXIS.X)
+        GizmoRenderingUtil.drawGizmo(this.mesh, this.yGizmo.matrix, AXIS.Y)
+        GizmoRenderingUtil.drawGizmo(this.mesh, this.zGizmo.matrix, AXIS.Z)
     }
 
     clearState(): void {

@@ -1,10 +1,10 @@
 import VertexBuffer from "@engine-core/lib/resources/VertexBuffer";
 import GPUState from "@engine-core/states/GPUState";
-import GPUManager from "@engine-core/managers/GPUManager";
 import EngineState from "@engine-core/states/EngineState";
 import UUIDGen from "../../../../../shared/UUIDGen";
+import BufferUtil from "@engine-core/utils/BufferUtil";
 
-export default abstract class AbstractMesh implements IGPUResource {
+export default abstract class AbstractMesh implements IMesh {
     verticesQuantity: number
     trianglesQuantity: number
     id: string
@@ -39,7 +39,7 @@ export default abstract class AbstractMesh implements IGPUResource {
         this.VAO = GPUState.context.createVertexArray()
         GPUState.context.bindVertexArray(this.VAO)
 
-        this.indexVBO = GPUManager.createBuffer(GPUState.context.ELEMENT_ARRAY_BUFFER, new Uint32Array(indices))
+        this.indexVBO = BufferUtil.createBuffer(GPUState.context.ELEMENT_ARRAY_BUFFER, new Uint32Array(indices))
         this.vertexVBO = new VertexBuffer(0, new Float32Array(vertices), GPUState.context.ARRAY_BUFFER, 3, GPUState.context.FLOAT, false, undefined, 0)
 
         if (uvs && uvs.length > 0)

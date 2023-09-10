@@ -6,15 +6,14 @@ import Engine from "../core/Engine"
 import EditorCameraSystem from "./systems/EditorCameraSystem"
 import WireframeSystem from "./systems/WireframeSystem"
 import LineRenderer from "./systems/LineRenderer"
-import EditorEntity from "./EditorEntity"
 import GPUState from "@engine-core/states/GPUState"
-import StaticEditorMeshes from "./utils/StaticEditorMeshes"
-import StaticEditorShaders from "./utils/StaticEditorShaders"
+import StaticEditorMeshes from "./state/StaticEditorMeshes"
+import StaticEditorShaders from "./state/StaticEditorShaders"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
-import GizmoState from "./gizmo/util/GizmoState"
-import StaticEditorFBO from "./utils/StaticEditorFBO";
+import GizmoState from "./state/GizmoState"
+import StaticEditorFBO from "./state/StaticEditorFBO";
 import GPUUtil from "../core/utils/GPUUtil";
-import EngineToolsState from "./EngineToolsState";
+import EngineToolsState from "./state/EngineToolsState";
 import SystemManager from "@engine-core/managers/SystemManager";
 import SilhouetteSystem from "./systems/SilhouetteSystem";
 import MouseCoordinateSystem from "./systems/MouseCoordinateSystem";
@@ -23,10 +22,9 @@ import GizmoLineSystem from "./systems/GizmoLineSystem";
 import EditorCameraGizmoSystem from "./systems/EditorCameraGizmoSystem";
 import CameraIconSystem from "./systems/CameraIconSystem";
 import {Environment,} from "@engine-core/engine.enum";
-import EditorEntityManager from "./EditorEntityManager";
+import EditorEntityManager from "./managers/EditorEntityManager";
 
 export default class EngineTools {
-    static selected: EditorEntity[] = []
     static #initialized = false
 
     static async initialize() {
@@ -48,7 +46,7 @@ export default class EngineTools {
     }
 
     static updateSelectionData(data: EngineEntity[]) {
-        const selected = EngineTools.selected
+        const selected = EngineToolsState.selected
         for (let i = 0; i < selected.length; i++) {
             const entity = selected[i]
             entity.__isSelected = false
@@ -71,7 +69,7 @@ export default class EngineTools {
         GPUState.context.disable(GPUState.context.DEPTH_TEST)
         StaticFBOState.visibility.use()
         StaticEditorShaders.iconToDepth.bind()
-        GPUUtil.bind2DTextureForDrawing(StaticEditorShaders.iconToDepthUniforms.image, 0, IconsSystem.iconsTexture)
+        GPUUtil.bind2DTextureForDrawing(StaticEditorShaders.iconToDepthUniforms.image, 0, EngineToolsState.iconsTexture)
         IconsSystem.loop(IconsSystem.drawIcon, StaticEditorShaders.iconToDepthUniforms)
         StaticFBOState.visibility.stopMapping()
         GPUState.context.enable(GPUState.context.DEPTH_TEST)

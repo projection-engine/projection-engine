@@ -11,7 +11,7 @@
     import InspectorUtil from "../../util/InspectorUtil"
     import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
     import SerializedState from "../../components/view/SerializedState.svelte";
-    import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+    import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
     import EditorEntity from "../../../../engine/tools/EditorEntity";
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
     import UUIDGen from "../../../../../shared/UUIDGen";

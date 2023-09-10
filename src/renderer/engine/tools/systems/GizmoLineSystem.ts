@@ -1,8 +1,8 @@
 import {mat4, quat, vec3} from "gl-matrix"
-import GizmoUtil from "../gizmo/util/GizmoUtil"
+import GizmoUtil from "../utils/GizmoUtil"
 import AXIS from "../static/AXIS"
 import LineRenderer from "./LineRenderer"
-import GizmoState from "../gizmo/util/GizmoState"
+import GizmoState from "../state/GizmoState"
 import AbstractSystem from "../../core/AbstractSystem";
 
 export default class GizmoLineSystem extends AbstractSystem {

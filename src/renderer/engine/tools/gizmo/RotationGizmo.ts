@@ -1,25 +1,19 @@
-import {glMatrix, quat, vec3} from "gl-matrix"
+import {glMatrix, vec3} from "gl-matrix"
 import AXIS from "../static/AXIS"
 import GPUState from "@engine-core/states/GPUState"
-import EngineTools from "../EngineTools"
-import StaticEditorMeshes from "../utils/StaticEditorMeshes"
-import StaticEditorShaders from "../utils/StaticEditorShaders"
-import GizmoUtil from "./util/GizmoUtil"
-import GizmoTransformationType from "../../../../shared/enums/GizmoTransformationType"
-import GizmoState from "./util/GizmoState"
-import GizmoSystem from "../systems/GizmoSystem"
+import StaticEditorMeshes from "../state/StaticEditorMeshes"
+import StaticEditorShaders from "../state/StaticEditorShaders"
+import GizmoUtil from "../utils/GizmoUtil"
+import GizmoState from "../state/GizmoState"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
 import GPUUtil from "@engine-core/utils/GPUUtil";
-import StaticEditorFBO from "../utils/StaticEditorFBO";
-import EngineToolsState from "../EngineToolsState";
-import {Components, TransformationRotationTypes,} from "@engine-core/engine.enum";
-import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import StaticEditorFBO from "../state/StaticEditorFBO";
+import EngineToolsState from "../state/EngineToolsState";
 import CameraState from "@engine-core/states/CameraState";
+import GizmoManager from "../managers/GizmoManager";
 
 const uniformCache = new Float32Array(4)
 export default class RotationGizmo extends AbstractXYZGizmo {
-    #currentRotation = vec3.create()
-    #currentIncrement = 0
 
     constructor() {
         super()
@@ -44,8 +38,8 @@ export default class RotationGizmo extends AbstractXYZGizmo {
     }
 
     clearState() {
-        this.#currentRotation.fill(0)
-        this.#currentIncrement = 0
+        GizmoManager.getCurrentRotation().fill(0)
+        GizmoManager.setCurrentIncrement(0)
     }
 
     drawGizmo() {
@@ -71,7 +65,7 @@ export default class RotationGizmo extends AbstractXYZGizmo {
 
             uniformCache[0] = axis
             uniformCache[1] = GizmoState.clickedAxis
-            uniformCache[2] = this.#currentRotation[axis - 2]
+            uniformCache[2] = GizmoManager.getCurrentRotation()[axis - 2]
             uniformCache[3] = glMatrix.toRadian(GizmoState.rotationGridSize)
             context.uniform4fv(uniforms.metadata, uniformCache)
 
@@ -80,70 +74,7 @@ export default class RotationGizmo extends AbstractXYZGizmo {
     }
 
     onMouseMove(event: MouseEvent) {
-        const grid = event.ctrlKey ? 1 : GizmoState.rotationGridSize
-        this.#currentIncrement -= event.movementX
-        if (Math.abs(this.#currentIncrement) < grid)
-            return
-        const mappedValue = glMatrix.toRadian(GizmoUtil.nearestX(this.#currentIncrement, grid))
-        this.#currentIncrement = 0
-        switch (GizmoState.clickedAxis) {
-            case AXIS.X:
-                this.#gizmoRotateEntity([mappedValue, 0, 0])
-                break
-            case AXIS.Y:
-                this.#gizmoRotateEntity([0, mappedValue, 0])
-                break
-            case AXIS.Z:
-                this.#gizmoRotateEntity([0, 0, mappedValue])
-                break
-        }
-        GizmoState.hasTransformationStarted = true
-    }
-
-    #gizmoRotateEntity(vec: [number, number, number] | Float32Array, screenSpace?: boolean) {
-        if (!GizmoState.mainEntity)
-            return
-
-        const firstEntity = GizmoState.mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
-        if(!firstEntity)
-            return;
-        const entities = EngineTools.selected
-        const SIZE = entities.length
-        if (SIZE === 1 && firstEntity.lockedRotation)
-            return
-        const quatA = quat.create()
-        if (screenSpace) {
-            this.#currentRotation = vec
-        } else {
-            vec3.add(this.#currentRotation, this.#currentRotation, vec)
-        }
-        if (vec[0] !== 0)
-            quat.rotateX(quatA, quatA, vec[0])
-        if (vec[1] !== 0)
-            quat.rotateY(quatA, quatA, vec[1])
-        if (vec[2] !== 0)
-            quat.rotateZ(quatA, quatA, vec[2])
-
-        const isGlobalRotation = GizmoState.transformationType === GizmoTransformationType.GLOBAL && SIZE === 1
-        for (let i = 0; i < SIZE; i++) {
-            const target = entities[i].getComponent<TransformationComponent>(Components.TRANSFORMATION)
-            if (!target || target.lockedRotation)
-                continue
-            if (screenSpace) {
-                quat.copy(target.rotationQuaternion, quatA)
-                continue
-            }
-
-            const isQuaternionRotation = target.rotationType[0] === TransformationRotationTypes.ROTATION_QUATERNION
-            if (isQuaternionRotation) {
-                if (isGlobalRotation)
-                    quat.multiply(target.rotationQuaternion, quatA, target.rotationQuaternion)
-                else
-                    quat.multiply(target.rotationQuaternion, target.rotationQuaternion, quatA)
-            } else
-                vec3.add(target.rotationEuler, target.rotationEuler, vec)
-            target.__changedBuffer[0] = 1
-            GizmoSystem.callListeners()
-        }
+        GizmoManager.rotate(event.movementX, event.ctrlKey)
+        GizmoState.callListeners()
     }
 }

@@ -2,28 +2,28 @@ import GPUState from "@engine-core/states/GPUState"
 
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
-import StaticEditorShaders from "../utils/StaticEditorShaders"
-import EngineTools from "../EngineTools"
+import StaticEditorShaders from "../state/StaticEditorShaders"
 import AbstractSystem from "../../core/AbstractSystem";
 import EntityManager from "@engine-core/managers/EntityManager";
 import {Components} from "@engine-core/engine.enum";
 import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
 import MeshComponent from "@engine-core/lib/components/MeshComponent";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import EngineToolsState from "../state/EngineToolsState";
 
 export default class SelectedSystem extends AbstractSystem {
 
     static #METADATA = new Float32Array(9)
 
      shouldExecute = (): boolean =>  {
-        const should = EngineTools.selected.length > 0;
+        const should = EngineToolsState.selected.length > 0;
         if (!should)
             StaticFBOState.postProcessing1.clear()
         return should;
     }
 
      execute = () => {
-        const length = EngineTools.selected.length
+        const length = EngineToolsState.selected.length
         const context = GPUState.context
         const uniforms = StaticEditorShaders.silhouetteUniforms
         const metadata = SelectedSystem.#METADATA
@@ -31,7 +31,7 @@ export default class SelectedSystem extends AbstractSystem {
         StaticFBOState.postProcessing1.startMapping()
         StaticEditorShaders.silhouette.bind()
         for (let m = 0; m < length; m++) {
-            const current = EngineTools.selected[m]
+            const current = EngineToolsState.selected[m]
             if (!current || !current.active)
                 continue
             const transformationComponent = current.getComponent<TransformationComponent>(Components.TRANSFORMATION)

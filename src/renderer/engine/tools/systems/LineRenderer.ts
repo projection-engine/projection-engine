@@ -1,7 +1,7 @@
 import LineRenderingManager from "@engine-core/managers/LineRenderingManager"
 import GPUState from "@engine-core/states/GPUState"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
-import StaticEditorShaders from "../utils/StaticEditorShaders"
+import StaticEditorShaders from "../state/StaticEditorShaders"
 import GPUUtil from "../../core/utils/GPUUtil";
 
 const X = new Float32Array([1, 0, 0]), Y = new Float32Array([0, 1, 0]), Z = new Float32Array([0, 0, 1])

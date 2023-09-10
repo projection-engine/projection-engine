@@ -2,7 +2,7 @@ import EntityManager from "@engine-core/managers/EntityManager";
 import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
 import {mat4, quat, vec3} from "gl-matrix";
 import {Components} from "@engine-core/engine.enum";
-import EditorEntityManager from "./EditorEntityManager";
+import EditorEntityManager from "./managers/EditorEntityManager";
 import UUIDGen from "../../../shared/UUIDGen";
 
 

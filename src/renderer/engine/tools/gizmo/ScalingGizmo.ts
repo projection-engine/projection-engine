@@ -1,15 +1,11 @@
-import StaticEditorMeshes from "../utils/StaticEditorMeshes"
+import StaticEditorMeshes from "../state/StaticEditorMeshes"
 import {vec3} from "gl-matrix"
-import GizmoUtil from "./util/GizmoUtil"
-import EngineTools from "../EngineTools"
-import GizmoState from "./util/GizmoState"
-import GizmoSystem from "../systems/GizmoSystem"
+import GizmoUtil from "../utils/GizmoUtil"
 import AbstractXYZGizmo from "./AbstractXYZGizmo";
-import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
-import {Components} from "@engine-core/engine.enum";
+import GizmoManager from "../managers/GizmoManager";
+import GizmoState from "../state/GizmoState";
 
 export default class ScalingGizmo extends AbstractXYZGizmo {
-	#INVERSE_CACHE = vec3.create()
 
 	constructor() {
 		super()
@@ -37,41 +33,7 @@ export default class ScalingGizmo extends AbstractXYZGizmo {
 	}
 
 	onMouseMove(event) {
-		this.#gizmoScaleEntity(event)
+		GizmoManager.scale(event.clientX, event.clientY, event.ctrlKey, event.altKey)
+		GizmoState.callListeners()
 	}
-
-	#gizmoScaleEntity(event) {
-		if (!GizmoState.mainEntity)
-			return
-		const firstEntity = GizmoState.mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
-		if(!firstEntity)
-			return;
-		const grid = event.ctrlKey ? 1 : GizmoState.scalingGridSize
-		const vec = GizmoUtil.mapToScreenMovement(event)
-
-		if (!GizmoState.isGlobal)
-			vec3.transformQuat(vec, vec, firstEntity.rotationQuaternionFinal)
-		vec[0] = GizmoUtil.nearestX(vec[0], grid)
-		vec[1] = GizmoUtil.nearestX(vec[1], grid)
-		vec[2] = GizmoUtil.nearestX(vec[2], grid)
-
-		const hasToTranslate = GizmoState.isGlobal && event.altKey
-		if (hasToTranslate)
-			vec3.scale(this.#INVERSE_CACHE, vec, -1)
-		const entities = EngineTools.selected
-		const SIZE = entities.length
-		if (SIZE === 1 && firstEntity.lockedScaling)
-			return
-		for (let i = 0; i < SIZE; i++) {
-			const target = entities[i].getComponent<TransformationComponent>(Components.TRANSFORMATION)
-			if (!target || target.lockedScaling)
-				continue
-			GizmoUtil.assignValueToVector(vec, target._scaling)
-			if (hasToTranslate)
-				vec3.add(target._translation, target._translation, this.#INVERSE_CACHE)
-			target.changed = true
-		}
-		GizmoSystem.callListeners()
-	}
-
 }

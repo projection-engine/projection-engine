@@ -1,6 +1,5 @@
 import ArrayBufferUtil from "../utils/ArrayBufferUtil"
 import {glMatrix, mat4, vec3} from "gl-matrix"
-import UberShader from "../lib/UberShader"
 import StaticUBOState from "../states/StaticUBOState"
 import EngineState from "../states/EngineState";
 import {Components, LightTypes,} from "@engine-core/engine.enum";

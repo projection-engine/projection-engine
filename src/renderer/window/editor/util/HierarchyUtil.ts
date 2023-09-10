@@ -7,7 +7,7 @@ import HotKeysController from "../../shared/lib/HotKeysController";
 import getViewportHotkeys from "../templates/get-viewport-hotkeys";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import EntityManager from "@engine-core/managers/EntityManager";
-import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
+import EditorEntityManager from "../../../engine/tools/managers/EditorEntityManager";
 
 export default class HierarchyUtil {
     static buildTree(openTree: {

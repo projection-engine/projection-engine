@@ -1,5 +1,5 @@
-import GPUManager from "../../managers/GPUManager"
 import GPUState from "../../states/GPUState"
+import BufferUtil from "@engine-core/utils/BufferUtil";
 
 export default class VertexBuffer  implements IResource {
 	private readonly id: WebGLBuffer
@@ -11,7 +11,7 @@ export default class VertexBuffer  implements IResource {
 	length = 0
 
 	constructor(index: number, data, type: number, size: number, dataType: number, normalized?: boolean, renderingType?: number, stride?: number) {
-		this.id = GPUManager.createBuffer(type, data, renderingType)
+		this.id = BufferUtil.createBuffer(type, data, renderingType)
 
 		GPUState.context.vertexAttribPointer(
 			index,

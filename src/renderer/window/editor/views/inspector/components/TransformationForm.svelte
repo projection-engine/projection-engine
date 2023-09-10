@@ -11,8 +11,8 @@
     import ROTATION_TYPES from "../static/ROTATION_TYPES"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EmptyIcon from "../../../../shared/components/icon/EmptyIcon.svelte"
-    import EngineToolsState from "../../../../../engine/tools/EngineToolsState";
-    import EditorEntityManager from "../../../../../engine/tools/EditorEntityManager";
+    import EngineToolsState from "../../../../../engine/tools/state/EngineToolsState";
+    import EditorEntityManager from "../../../../../engine/tools/managers/EditorEntityManager";
     import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EntityManager from "@engine-core/managers/EntityManager";
     import TransformationComponent from "@engine-core/lib/components/TransformationComponent";

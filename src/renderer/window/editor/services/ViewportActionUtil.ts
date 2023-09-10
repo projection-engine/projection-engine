@@ -6,7 +6,7 @@ import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
 import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import EntityManager from "@engine-core/managers/EntityManager";
-import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
+import EditorEntityManager from "../../../engine/tools/managers/EditorEntityManager";
 import CameraState from "@engine-core/states/CameraState";
 
 

@@ -1,4 +1,4 @@
-import Ammo from "../lib/Ammo.js"
+import Ammo from "@engine-core/lib/Ammo"
 import {ColliderTypes, Components,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
 import RigidBodyComponent from "@engine-core/lib/components/RigidBodyComponent";

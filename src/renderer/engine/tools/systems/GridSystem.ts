@@ -1,8 +1,8 @@
 import GPUState from "@engine-core/states/GPUState"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
-import StaticEditorShaders from "../utils/StaticEditorShaders"
-import EngineToolsState from "../EngineToolsState"
+import StaticEditorShaders from "../state/StaticEditorShaders"
+import EngineToolsState from "../state/EngineToolsState"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 

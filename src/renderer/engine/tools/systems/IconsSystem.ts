@@ -1,25 +1,24 @@
 import GPUState from "@engine-core/states/GPUState"
 import LineRenderer from "./LineRenderer"
 import StaticMeshesState from "@engine-core/states/StaticMeshesState"
-import StaticEditorShaders from "../utils/StaticEditorShaders"
+import StaticEditorShaders from "../state/StaticEditorShaders"
 import {mat4} from "gl-matrix"
 import EditorEntity from "../EditorEntity"
 import StaticFBOState from "@engine-core/states/StaticFBOState"
-import EngineToolsState from "../EngineToolsState"
-import GizmoUtil from "../gizmo/util/GizmoUtil"
+import EngineToolsState from "../state/EngineToolsState"
+import GizmoUtil from "../utils/GizmoUtil"
 import GPUUtil from "../../core/utils/GPUUtil";
 import AbstractSystem from "../../core/AbstractSystem";
 import {Components, LightTypes,} from "@engine-core/engine.enum";
 import EntityManager from "@engine-core/managers/EntityManager";
 import LightComponent from "@engine-core/lib/components/LightComponent";
-import IconsManager from "../IconsManager";
+import IconsManager from "../managers/IconsManager";
 import CameraState from "@engine-core/states/CameraState";
 
 
 type CallbackFunc = (icon: RegisteredIcon, U?: { [key: string]: WebGLUniformLocation }) => void
 export default class IconsSystem extends AbstractSystem {
-    static iconsTexture?: WebGLTexture
-    static #iconAttributes = mat4.create()
+     static #iconAttributes = mat4.create()
 
     static loop(cb: CallbackFunc, uniforms?: { [key: string]: WebGLUniformLocation }) {
         const icons = IconsManager.getIcons()
@@ -107,7 +106,7 @@ export default class IconsSystem extends AbstractSystem {
     }
 
     shouldExecute = (): boolean => {
-        return IconsSystem.iconsTexture != null
+        return EngineToolsState.iconsTexture != null
     }
 
     execute = () => {
@@ -115,7 +114,7 @@ export default class IconsSystem extends AbstractSystem {
         const uniforms = StaticEditorShaders.iconUniforms
         StaticEditorShaders.icon.bind()
 
-        GPUUtil.bind2DTextureForDrawing(uniforms.iconSampler, 0, IconsSystem.iconsTexture)
+        GPUUtil.bind2DTextureForDrawing(uniforms.iconSampler, 0, EngineToolsState.iconsTexture)
 
         GPUUtil.bind2DTextureForDrawing(uniforms.sceneDepth, 1, StaticFBOState.sceneDepthVelocity)
 

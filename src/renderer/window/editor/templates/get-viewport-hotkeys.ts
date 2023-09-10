@@ -16,7 +16,7 @@ import {Components} from "@engine-core/engine.enum";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 import EntityManager from "@engine-core/managers/EntityManager";
 import {vec3} from "gl-matrix";
-import EditorEntityManager from "../../../engine/tools/EditorEntityManager";
+import EditorEntityManager from "../../../engine/tools/managers/EditorEntityManager";
 
 
 export default function getViewportHotkeys(): { [key: string]: ContextMenuOption } {

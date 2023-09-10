@@ -1,5 +1,5 @@
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
-import EngineToolsState from "../../../engine/tools/EngineToolsState"
+import EngineToolsState from "../../../engine/tools/state/EngineToolsState"
 import COMPONENT_PROP_TYPES from "../../editor/static/COMPONENT_PROP_TYPES";
 
 export default [

@@ -2,12 +2,10 @@
     import {onDestroy, onMount} from "svelte"
     import GIZMOS from "../../../../../../shared/enums/Gizmos.ts"
     import Gizmos from "../../../../../../shared/enums/Gizmos.ts"
-
-    import GizmoSystem from "../../../../../engine/tools/systems/GizmoSystem"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../../shared/stores/SettingsStore"
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore"
-    import GizmoState from "../../../../../engine/tools/gizmo/util/GizmoState"
+    import GizmoState from "../../../../../engine/tools/state/GizmoState"
     import SceneEditorUtil from "../../../util/SceneEditorUtil"
     import {Components} from "@engine-core/engine.enum";
     import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
@@ -25,7 +23,7 @@
     let isValidScaling = false
 
     onMount(() => {
-        GizmoSystem.addListener(COMPONENT_ID, () => {
+        GizmoState.addListener(COMPONENT_ID, () => {
             const mainEntity = GizmoState.mainEntity
             const transformationComponent = mainEntity.getComponent<TransformationComponent>(Components.TRANSFORMATION)
             switch (GizmoState.gizmoType) {
@@ -59,7 +57,7 @@
     onDestroy(() => {
         EntitySelectionStore.getInstance().removeListener(COMPONENT_ID)
         SettingsStore.getInstance().removeListener(COMPONENT_ID)
-        GizmoSystem.removeListener(COMPONENT_ID)
+        GizmoState.removeListener(COMPONENT_ID)
     })
 </script>
 

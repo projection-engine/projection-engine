@@ -121,6 +121,10 @@ interface IGPUResource extends IResource {
     loaded: boolean
 }
 
+interface IMesh extends IGPUResource{
+
+}
+
 interface MaterialSettings {
     renderingMode: number
     doubleSided: boolean

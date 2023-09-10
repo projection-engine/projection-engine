@@ -10,9 +10,9 @@ import VisualsStore from "../../shared/stores/VisualsStore"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import UIManager from "@engine-core/managers/UIManager"
 import GPUState from "@engine-core/states/GPUState"
-import EngineToolsState from "../../../engine/tools/EngineToolsState"
+import EngineToolsState from "../../../engine/tools/state/EngineToolsState"
 import EngineState from "@engine-core/states/EngineState"
-import GizmoState from "../../../engine/tools/gizmo/util/GizmoState"
+import GizmoState from "../../../engine/tools/state/GizmoState"
 import {Environment,} from "@engine-core/engine.enum";
 
 export default class EngineToolsService extends AbstractSingleton {

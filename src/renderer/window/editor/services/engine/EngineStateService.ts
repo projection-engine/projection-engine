@@ -4,8 +4,8 @@ import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
-import GizmoUtil from "../../../../engine/tools/gizmo/util/GizmoUtil"
-import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+import GizmoUtil from "../../../../engine/tools/utils/GizmoUtil"
+import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
 import EntityManager from "@engine-core/managers/EntityManager";
 import LevelManager from "@engine-core/managers/LevelManager";
 import LightsManager from "@engine-core/managers/LightsManager";

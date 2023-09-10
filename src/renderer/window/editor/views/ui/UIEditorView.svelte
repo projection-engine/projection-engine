@@ -12,7 +12,7 @@
     import type EditorEntity from "../../../../engine/tools/EditorEntity";
     import SerializedState from "../../components/view/SerializedState.svelte";
     import EntityManager from "@engine-core/managers/EntityManager";
-    import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+    import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
     import UUIDGen from "../../../../../shared/UUIDGen";
 
     const COMPONENT_ID = UUIDGen()

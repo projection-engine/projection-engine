@@ -1,7 +1,7 @@
 import EditorEntity from "../../../../engine/tools/EditorEntity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
-import EditorEntityManager from "../../../../engine/tools/EditorEntityManager";
+import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
 import EntityManager from "@engine-core/managers/EntityManager";
 import DynamicMap from "@engine-core/lib/DynamicMap";
 
