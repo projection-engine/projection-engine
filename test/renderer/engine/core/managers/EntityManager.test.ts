@@ -6,7 +6,11 @@ import UIComponent from "@engine-core/lib/components/UIComponent";
 import {vec3} from "gl-matrix";
 import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
 
-beforeEach(() => EntityManager.get());
+beforeEach(() => {
+    EntityManager.get()
+    EntityManager.debounceEvents = false
+});
+afterEach(() => EntityManager.destroy());
 
 function createEntity(ids = [uuid()]): EngineEntity[] {
     EntityManager.createEntitiesById(ids as EngineEntity[])
@@ -33,8 +37,7 @@ test('Should trigger delete event', () => {
 test('Should trigger component-add event', () => {
     let eventTriggered = false
     EntityManager.addEventListener("component-add", () => eventTriggered = true)
-    createEntity()
-    const id = EntityManager.getEntityKeys()[0];
+    const id = createEntity()[0]
     EntityManager.addComponent(id, Components.UI)
     expect(eventTriggered).toStrictEqual(true);
     expect(EntityManager.getAllComponents(id).length).toStrictEqual(1);
@@ -54,8 +57,7 @@ test('Should trigger component-remove event', () => {
 test('Should trigger update event', () => {
     let eventTriggered = false
     EntityManager.addEventListener("update", () => eventTriggered = true)
-    createEntity()
-    const id = EntityManager.getEntityKeys()[0]
+    const id = createEntity()[0]
     const component = EntityManager.addComponent(id, Components.UI)
     const TEST_VALUE = "TEST_VALUE";
     EntityManager.updateProperty(id, Components.UI, "uiLayoutID", TEST_VALUE)
@@ -64,16 +66,14 @@ test('Should trigger update event', () => {
 });
 
 test('Should not generate picker id', () => {
-    createEntity()
-    const id = EntityManager.getEntityKeys()[0]
+    const id = createEntity()[0]
     const pickerGenerated = EntityManager.getEntityPickVec3(id)
 
     expect(pickerGenerated).toStrictEqual(vec3.fromValues(0, 0, 0));
 });
 
 test('Should generate picker id', () => {
-    createEntity()
-    const id = EntityManager.getEntityKeys()[0]
+    const id = createEntity()[0]
     EntityManager.addComponent(id, Components.TRANSFORMATION)
     const pickerGenerated = EntityManager.getEntityPickVec3(id)
 
@@ -100,7 +100,6 @@ test('Should not be child in parent list', () => {
 test('Should trigger hierarchy change', () => {
     const created = createEntity([uuid(), uuid()])
     let eventTriggered = 0
-    EntityManager.debounceEvents = false
     EntityManager.addEventListener("hierarchy-change", () => eventTriggered++)
 
     EntityManager.addChildren(created[0], [created[1]])
@@ -111,7 +110,6 @@ test('Should trigger hierarchy change', () => {
 
 test('Should add to withComponent', () => {
     const id = createEntity()[0]
-    EntityManager.debounceEvents = false
     EntityManager.addComponent(id, Components.TRANSFORMATION)
     expect(EntityManager.withComponent(Components.TRANSFORMATION).array).toContain(id)
 });
@@ -135,12 +133,12 @@ async function callMultipleTimes() {
 }
 
 test('Should not debounce events', async () => {
-    EntityManager.debounceEvents = false
     const eventTriggered = await callMultipleTimes()
     expect(eventTriggered).toEqual(4)
 });
 
 test('Should debounce events', async () => {
+    EntityManager.debounceEvents = true
     const eventTriggered = await callMultipleTimes()
     expect(eventTriggered).toEqual(1)
 });

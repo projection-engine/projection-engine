@@ -8,6 +8,10 @@ import {vec3} from "gl-matrix";
 import UUIDGen from "../../../../shared/UUIDGen";
 
 export default class EntityManager extends AbstractSingleton {
+    static #preventDefaultTrigger = false
+    static #FALLBACK_PID = vec3.create();
+    static debounceEvents: boolean = true;
+
     #listeners = new DynamicMap<EntityEventTypes, EntityManagerListener<EngineEntity, Components>[]>
     #entities = new DynamicMap<EngineEntity, DynamicMap<Components, AbstractComponent>>()
     #childParent = new Map<EngineEntity, EngineEntity>()
@@ -16,11 +20,8 @@ export default class EntityManager extends AbstractSingleton {
     #pickInteger = new Map<number, EngineEntity>
     #pickVec3 = new Map<EngineEntity, vec3>
     #byComponent = new Map<Components, DynamicMap<EngineEntity, EngineEntity>>()
-    static #preventDefaultTrigger = false
-    static #FALLBACK_PID = vec3.create();
-    static debounceEvents: boolean = true;
-    static #currentEventGroupByType = new Map<EntityEventTypes, EntityListenerEvent<EngineEntity, Components>>()
-    static #timeout: NodeJS.Timeout;
+    #currentEventGroupByType = new Map<EntityEventTypes, EntityListenerEvent<EngineEntity, Components>>()
+    #timeout: NodeJS.Timeout;
 
     constructor() {
         super();
@@ -327,10 +328,11 @@ export default class EntityManager extends AbstractSingleton {
         if (EntityManager.#preventDefaultTrigger || event == null)
             return
 
-        clearTimeout(EntityManager.#timeout)
-        let currentGroup = EntityManager.#currentEventGroupByType.get(event.type)
+        const ins = EntityManager.getInstance()
+        clearTimeout(ins.#timeout)
+        let currentGroup = ins.#currentEventGroupByType.get(event.type)
         if (currentGroup == null) {
-            EntityManager.#currentEventGroupByType.set(event.type, event)
+            ins.#currentEventGroupByType.set(event.type, event)
             currentGroup = event
         } else {
             if (currentGroup.all != null)
@@ -340,7 +342,7 @@ export default class EntityManager extends AbstractSingleton {
             currentGroup.target = undefined
         }
         if (EntityManager.debounceEvents) {
-            EntityManager.#timeout = setTimeout(() => EntityManager.#callListenersInternal(event, currentGroup), 20)
+            ins.#timeout = setTimeout(() => EntityManager.#callListenersInternal(event, currentGroup), 20)
         } else {
             EntityManager.#callListenersInternal(event, currentGroup);
         }
@@ -348,12 +350,11 @@ export default class EntityManager extends AbstractSingleton {
 
     static #callListenersInternal(event: EntityListenerEvent<EngineEntity, Components>, currentGroup: EntityListenerEvent<EngineEntity, Components>) {
         const listeners = EntityManager.getInstance().#listeners.get(event.type)
-        Object.freeze(currentGroup)
         EntityManager.#updateByComponent(currentGroup)
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i]
             listener.callback(currentGroup)
-            EntityManager.#currentEventGroupByType.delete(currentGroup.type)
+            EntityManager.getInstance().#currentEventGroupByType.delete(currentGroup.type)
         }
     }
 

@@ -9,10 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Unit tests">
+    <list default="true" id="b7aabad3-bb88-4f64-b5b2-be8488a814e0" name="Changes" comment="[STD-282] Unit tests&#10;- Fixing removing/adding parent&#10;- Fixing deserialization of components with typed arrays&#10;- Adding event debounce&#10;- Fixing clone method not triggering events&#10;- Implementing tests for clone, hierarchy, event debounce, withComponent and more">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/engine/core/utils/serialize-structure.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/engine/core/utils/serialize-structure.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +100,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Jest.Should add to withComponent">
+  <component name="RunManager" selected="Jest.Should debounce events">
     <configuration name="Should add to withComponent" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -111,18 +110,6 @@
       <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
       <test-names>
         <test-name value="Should add to withComponent" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Should be child in parent list" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
-      <test-names>
-        <test-name value="Should be child in parent list" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -138,7 +125,7 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Should not be child in parent list" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Should debounce events" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
@@ -146,7 +133,19 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
       <test-names>
-        <test-name value="Should not be child in parent list" />
+        <test-name value="Should debounce events" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Should not debounce events" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts" />
+      <test-names>
+        <test-name value="Should not debounce events" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -203,9 +202,9 @@
     </configuration>
     <list>
       <item itemvalue="Jest.Should add to withComponent" />
-      <item itemvalue="Jest.Should be child in parent list" />
       <item itemvalue="Jest.Should clone entity with components" />
-      <item itemvalue="Jest.Should not be child in parent list" />
+      <item itemvalue="Jest.Should debounce events" />
+      <item itemvalue="Jest.Should not debounce events" />
       <item itemvalue="Jest.Should trigger hierarchy change" />
       <item itemvalue="Node.js.Main" />
       <item itemvalue="Node.js.Renderer" />
@@ -214,11 +213,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.Should debounce events" />
+        <item itemvalue="Jest.Should not debounce events" />
         <item itemvalue="Jest.Should add to withComponent" />
         <item itemvalue="Jest.Should clone entity with components" />
         <item itemvalue="Jest.Should trigger hierarchy change" />
-        <item itemvalue="Jest.Should not be child in parent list" />
-        <item itemvalue="Jest.Should be child in parent list" />
       </list>
     </recent_temporary>
   </component>
@@ -281,14 +280,7 @@
       <workItem from="1694263886076" duration="8507000" />
       <workItem from="1694278789852" duration="4460000" />
       <workItem from="1694285186656" duration="9302000" />
-      <workItem from="1694347746379" duration="3546000" />
-    </task>
-    <task id="LOCAL-00042" summary="[STD-341] creating view-state store; Standardizing view component">
-      <created>1690045987681</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1690045987681</updated>
+      <workItem from="1694347746379" duration="4284000" />
     </task>
     <task id="LOCAL-00043" summary="[STD-341] Reworking content browser selection; Organizing Item component; Adding missing file types to FileTypes enum;">
       <created>1690117685396</created>
@@ -626,7 +618,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694302257574</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="[STD-282] Unit tests&#10;- Fixing removing/adding parent&#10;- Fixing deserialization of components with typed arrays&#10;- Adding event debounce&#10;- Fixing clone method not triggering events&#10;- Implementing tests for clone, hierarchy, event debounce, withComponent and more">
+      <created>1694351695112</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1694351695112</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -649,7 +648,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/engine-core" />
     </ignored-roots>
-    <MESSAGE value="[STD-282] Continuing entity rework&#10;- Removing unused classes&#10;- Fixing various reference errors to old entity system" />
     <MESSAGE value="[STD-282] Continuing entity rework&#10;- Reworking icons&#10;- Reworking loadedLevel and state serialization&#10;- Continuing integration of new pipeline for entities" />
     <MESSAGE value="[STD-282] Continuing entity rework&#10;- Moving icons processing to separate manager&#10;- Removing level as an entity &#10;- Implementing LoadedLevelStore&#10;- Implementing GizmoEntity&#10;- Fixing gizmos referencing properties not present on editor entity" />
     <MESSAGE value="[STD-282] Continuing entity rework&#10;- Implementing cloning&#10;- Fixing ScreenSpaceGizmo.ts references to EditorEntity&#10;- Fixing missing check for transformation component while transforming entity (gizmos)" />
@@ -674,7 +672,8 @@
     <MESSAGE value="[STD-282] Fixing structure to support jest&#10;- Introducing jest&#10;- Orgazinging imports related to EntityManager &#10;- Creating first test for Entitymanager" />
     <MESSAGE value="[STD-282] Unit tests&#10;- Creating tests for basic actions" />
     <MESSAGE value="[STD-282] Unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Unit tests" />
+    <MESSAGE value="[STD-282] Unit tests&#10;- Fixing removing/adding parent&#10;- Fixing deserialization of components with typed arrays&#10;- Adding event debounce&#10;- Fixing clone method not triggering events&#10;- Implementing tests for clone, hierarchy, event debounce, withComponent and more" />
+    <option name="LAST_COMMIT_MESSAGE" value="[STD-282] Unit tests&#10;- Fixing removing/adding parent&#10;- Fixing deserialization of components with typed arrays&#10;- Adding event debounce&#10;- Fixing clone method not triggering events&#10;- Implementing tests for clone, hierarchy, event debounce, withComponent and more" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -727,18 +726,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts</url>
-          <line>70</line>
+          <line>71</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/test/renderer/engine/core/managers/EntityManager.test.ts</url>
-          <line>129</line>
+          <line>155</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/renderer/engine/core/managers/EntityManager.ts</url>
-          <line>201</line>
+          <line>202</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="24" />
         </line-breakpoint>
