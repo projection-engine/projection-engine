@@ -1,23 +1,9 @@
 import AbstractStore from "./AbstractStore"
+import CONTENT_BROWSER_STATE from "../../editor/static/CB_STORE_STATE";
 
 export default class ContentBrowserStore extends AbstractStore{
 	constructor() {
-		super({
-			selectedItems: [],
-			items: [],
-			textures: [],
-			meshes: [],
-			levels: [],
-			materials: [],
-			materialInstances: [],
-			simpleMaterials: [],
-			components: [],
-			uiLayouts: [],
-			terrains: [],
-			terrainMaterials: [],
-			toCut: [],
-			collections: []
-		})
+		super(CONTENT_BROWSER_STATE)
 	}
 
 	static setContentBrowserSelected(data:MutableObject[]) {
@@ -28,8 +14,11 @@ export default class ContentBrowserStore extends AbstractStore{
 		return ContentBrowserStore.getData().selectedItems
 	}
 
-	static getItemById(id:string){
-		return ContentBrowserStore.getData().items.find(item => item.id === id)
+	static getItemById(id:string): MutableObject|undefined{
+		return ContentBrowserStore.getData().items.find(item => item.registryID === id)
 	}
 
+	static getData(): typeof CONTENT_BROWSER_STATE {
+		return this.get<AbstractStore>().data as typeof CONTENT_BROWSER_STATE
+	}
 }

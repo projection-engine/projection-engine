@@ -1,9 +1,8 @@
-<script>
+<script lang="ts">
 
     import {onDestroy, onMount} from "svelte"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore"
-    import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
-    import EntityInspector from "./components/EntityAttributes.svelte"
+    import EntityAttributes from "./components/EntityAttributes.svelte"
 
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
@@ -12,25 +11,26 @@
     import InspectorUtil from "../../util/InspectorUtil"
     import INSPECTOR_TABS from "./static/INSPECTOR_TABS"
     import SerializedState from "../../components/view/SerializedState.svelte";
+    import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
+    import EditorEntity from "../../../../engine/tools/EditorEntity";
+    import LocalizationEN from "../../../../../shared/enums/LocalizationEN";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
-    let selectedEntity
+    const COMPONENT_ID = UUIDGen()
+    let selectedEntity: EditorEntity
     let tabIndex = 0
     let tabs = []
-    let isOnDynamicTab = false
 
     onMount(() => {
         EntitySelectionStore.getInstance().addListener(COMPONENT_ID, data => {
-            const temp = QueryAPI.getEntityByID(data.array[0] || data.lockedEntity)
-            if (temp === selectedEntity)
-                return
-            selectedEntity = temp
+            selectedEntity = EditorEntityManager.getEntity(data.array[0] || data.lockedEntity)
             tabIndex = INSPECTOR_TABS.length
-            if (selectedEntity) {
-                const entityTabs = InspectorUtil.getEntityTabs(selectedEntity.allComponents, selectedEntity.isCollection)
+            if (selectedEntity != null) {
+                const entityTabs = InspectorUtil.getEntityTabs(selectedEntity.allComponents)
                 setTabs(entityTabs)
-            } else
+            } else {
                 setTabs([])
+            }
         }, ["array", "lockedEntity"])
     })
 
@@ -49,38 +49,45 @@
 </script>
 
 <SerializedState state={{tabIndex}} onStateInitialize={state => tabIndex = state.tabIndex}/>
-<div class="wrapper">
-    <div class="tabs">
-        {#each tabs as button, index}
-            {#if button.divider}
-                <div data-sveltedivider="-"></div>
+{#if selectedEntity != null}
+    <div class="wrapper">
+        <div class="tabs">
+            {#each tabs as button, index}
+                {#if button.divider}
+                    <div data-sveltedivider="-"></div>
+                {:else}
+                    <button data-sveltebuttondefault="-"
+                            data-sveltehighlight={tabIndex === index ? "-" : undefined}
+                            class="tab-button shared"
+                            on:click={() => tabIndex = index}
+                            style={button.color ? "--pj-accent-color: " + button.color  + "; color: " + button.color : undefined}
+                    >
+                        <Icon styles="font-size: .9rem">{button.icon}</Icon>
+                        <ToolTip content={button.label}/>
+                    </button>
+                {/if}
+            {/each}
+        </div>
+        <div class="content">
+            {#if isOnDynamicTab && selectedEntity != null}
+                <EntityAttributes
+                        setTabIndex={i => tabIndex = i}
+                        entity={selectedEntity}
+                        tabIndex={tabIndex}
+                />
+            {:else if tabIndex === 2}
+                <CameraPreferences/>
             {:else}
-                <button data-sveltebuttondefault="-"
-                        data-sveltehighlight={tabIndex === index ? "-" : undefined}
-                        class="tab-button shared"
-                        on:click={() => tabIndex = index}
-                        style={button.color ? "--pj-accent-color: " + button.color  + "; color: " + button.color : undefined}
-                >
-                    <Icon styles="font-size: .9rem">{button.icon}</Icon>
-                    <ToolTip content={button.label}/>
-                </button>
+                <ContentWrapper data={tabs[tabIndex]}/>
             {/if}
-        {/each}
+        </div>
     </div>
-    <div class="content">
-        {#if isOnDynamicTab && selectedEntity != null}
-            <EntityInspector
-                    setTabIndex={i => tabIndex = i}
-                    entity={selectedEntity}
-                    tabIndex={tabIndex}
-            />
-        {:else if tabIndex === 2}
-            <CameraPreferences/>
-        {:else}
-            <ContentWrapper data={tabs[tabIndex]}/>
-        {/if}
+{:else}
+    <div data-svelteempty="-">
+        <Icon styles="font-size: 2rem">folder</Icon>
+        {LocalizationEN.NO_ENTITY_SELECTED}
     </div>
-</div>
+{/if}
 
 
 <style>

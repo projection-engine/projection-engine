@@ -1,14 +1,14 @@
-<script>
+<script lang="ts">
     import Options from "./components/Options.svelte"
-    import EmbeddedMeshes from "../../../../engine/core/static/EmbeddedMeshes"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SelectorUtil from "../../util/SelectorUtil"
+    import {EmbeddedMeshes} from "@engine-core/engine.enum";
 
     export let type
-    export let handleChange
+    export let handleChange: GenericVoidFunctionWith2P<RegistryFile, VoidFunction>|undefined
     export let selected
     export let noDefault
     export let mergeMaterials = true
@@ -73,7 +73,7 @@
         />
     </Dropdown>
     <div data-sveltevertdivider="-" style="margin: 0"></div>
-    <button data-sveltebuttondefault="-" class="remove-button" on:click={_ => handleChange(null)}>
+    <button data-sveltebuttondefault="-" class="remove-button" on:click={_ => handleChange(null, null)}>
         <Icon styles="font-size: 1rem">clear</Icon>
         <ToolTip content={LocalizationEN.CLEAR}/>
     </button>

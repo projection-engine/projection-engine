@@ -4,7 +4,7 @@ import * as pathRequire from "path"
 import * as fs from "fs"
 import FileTypes from "../../shared/enums/FileTypes"
 import IPCRoutes from "../../shared/enums/IPCRoutes"
-import AbstractSingleton from "../../shared/AbstractSingleton"
+import AbstractSingleton from "../../renderer/engine/core/AbstractSingleton"
 import FileSystemUtil from "./FileSystemUtil"
 
 export default class FileSystemListener extends AbstractSingleton {

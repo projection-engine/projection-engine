@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {onDestroy, onMount} from "svelte"
     import ContextMenuService from "../shared/lib/context-menu/ContextMenuService"
     import List from "./components/List.svelte"
@@ -13,6 +13,7 @@
     import FileTypes from "../../../shared/enums/FileTypes"
     import FileSystemUtil from "../shared/FileSystemUtil"
     import StorageKeys from "../../../shared/enums/StorageKeys"
+    import UUIDGen from "../../../shared/UUIDGen";
 
 
     let basePath
@@ -21,7 +22,7 @@
     let selected
     let defaultVersion
 
-    const internalID = crypto.randomUUID()
+    const internalID = UUIDGen()
 
     onMount(() => {
     	ContextMenuService.getInstance().mount([

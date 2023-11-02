@@ -1,16 +1,16 @@
-<script>
+<script lang="ts">
     import RENDER_TARGET from "../static/RENDER_TARGET"
     import {onMount} from "svelte"
     import EngineToolsService from "../services/EngineToolsService"
     import VisualsStore from "../../shared/stores/VisualsStore"
     import Engine from "../../../engine/core/Engine"
     import EngineTools from "../../../engine/tools/EngineTools"
-    import LevelService from "../services/engine/LevelService"
-    import UIAPI from "../../../engine/core/lib/rendering/UIAPI"
-    import GPU from "../../../engine/core/GPU"
+    import EditorLevelService from "../services/engine/EditorLevelService"
+    import UIManager from "@engine-core/managers/UIManager"
+    import GPUState from "@engine-core/states/GPUState"
     import EditorFSUtil from "../util/EditorFSUtil"
 
-    export let initializeEditor
+    export let initializeEditor: GenericVoidFunctionWithP<boolean>
 
     let canvasRef
 
@@ -18,19 +18,22 @@
     	Engine.initializeContext(
     		canvasRef,
     		{w: VisualsStore.getData().resolutionX, h:  VisualsStore.getData().resolutionY},
-    		EditorFSUtil.readAsset,
+    		id => EditorFSUtil.readAsset<string>(id),
     		true
     	).then(async () => {
-    		const levelServiceInstance = LevelService.getInstance()
+    		const levelServiceInstance = EditorLevelService.getInstance()
     		await EngineTools.initialize().catch(console.error)
     		const toLoad = levelServiceInstance.getLevelToLoad()
     		await levelServiceInstance.loadLevel(toLoad).catch(console.error)
-
-    		initializeEditor()
-    		UIAPI.buildUI(GPU.canvas.parentElement)
-    		UIAPI.hideUI()
+    		initializeEditor(true)
+    		UIManager.buildUI(GPUState.canvas.parentElement)
+    		UIManager.hideUI()
     		EngineToolsService.get()
-    	})
+            Engine.start()
+    	}).catch(err => {
+            console.error(err)
+            initializeEditor(false)
+        })
     })
 
 </script>

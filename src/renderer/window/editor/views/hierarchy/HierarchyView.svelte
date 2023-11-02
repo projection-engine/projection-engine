@@ -12,8 +12,9 @@
     import getViewportContext from "../../templates/get-viewport-context";
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
     import HierarchyToRenderElement from "./template/ToRenderElement";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const ID = crypto.randomUUID()
+    const ID = UUIDGen()
     const draggable = dragDrop()
     let ref: HTMLElement
     let search = ""

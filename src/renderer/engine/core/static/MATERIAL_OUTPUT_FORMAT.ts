@@ -4,7 +4,6 @@ export default {
 	"functionDeclaration": "",
 	"uniformsDeclaration": "",
 	"settings": {
-
 		"ssrEnabled": false,
 		"doubleSided": false,
 		"renderingMode": MATERIAL_RENDERING_TYPES.UNLIT

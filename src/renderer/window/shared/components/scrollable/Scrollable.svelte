@@ -17,7 +17,7 @@
     onMount(() => {
     	ref.parentElement.addEventListener("wheel", ev => {
     		ev.preventDefault()
-    		const isIncrement = ev.wheelDelta < 0
+    		const isIncrement = ev.deltaY > 0
     		if (isIncrement && offset < toRender.length * 1.5)
     			offset += 1
     		else if (offset > 0 && !isIncrement)

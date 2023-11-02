@@ -1,17 +1,18 @@
-import COMPONENTS from "../../../../../engine/core/static/COMPONENTS"
 import EditorUtil from "../../../util/EditorUtil"
+import {Components} from "@engine-core/engine.enum";
 
 
 export default [
-	[COMPONENTS.LIGHT, EditorUtil.getComponentLabel(COMPONENTS.LIGHT), EditorUtil.getComponentIcon(COMPONENTS.LIGHT)],
-	[COMPONENTS.SPRITE, EditorUtil.getComponentLabel(COMPONENTS.SPRITE), EditorUtil.getComponentIcon(COMPONENTS.SPRITE)],
-	[COMPONENTS.DECAL, EditorUtil.getComponentLabel(COMPONENTS.DECAL), EditorUtil.getComponentIcon(COMPONENTS.DECAL)],
-	[COMPONENTS.MESH, EditorUtil.getComponentLabel(COMPONENTS.MESH), EditorUtil.getComponentIcon(COMPONENTS.MESH)],
-	[COMPONENTS.CAMERA, EditorUtil.getComponentLabel(COMPONENTS.CAMERA), EditorUtil.getComponentIcon(COMPONENTS.CAMERA)],
-	[COMPONENTS.LIGHT_PROBE, EditorUtil.getComponentLabel(COMPONENTS.LIGHT_PROBE), EditorUtil.getComponentIcon(COMPONENTS.LIGHT_PROBE)],
-	[COMPONENTS.ATMOSPHERE, EditorUtil.getComponentLabel(COMPONENTS.ATMOSPHERE), EditorUtil.getComponentIcon(COMPONENTS.ATMOSPHERE)],
-	[COMPONENTS.PHYSICS_COLLIDER, EditorUtil.getComponentLabel(COMPONENTS.PHYSICS_COLLIDER), EditorUtil.getComponentIcon(COMPONENTS.PHYSICS_COLLIDER)],
-	[COMPONENTS.RIGID_BODY, EditorUtil.getComponentLabel(COMPONENTS.RIGID_BODY), EditorUtil.getComponentIcon(COMPONENTS.RIGID_BODY)],
-	[COMPONENTS.CULLING, EditorUtil.getComponentLabel(COMPONENTS.CULLING), EditorUtil.getComponentIcon(COMPONENTS.CULLING)],
-	[COMPONENTS.UI, EditorUtil.getComponentLabel(COMPONENTS.UI), EditorUtil.getComponentIcon(COMPONENTS.UI)],
+	[Components.LIGHT, EditorUtil.getComponentLabel(Components.LIGHT), EditorUtil.getComponentIcon(Components.LIGHT)],
+	[Components.SPRITE, EditorUtil.getComponentLabel(Components.SPRITE), EditorUtil.getComponentIcon(Components.SPRITE)],
+	[Components.DECAL, EditorUtil.getComponentLabel(Components.DECAL), EditorUtil.getComponentIcon(Components.DECAL)],
+	[Components.MESH, EditorUtil.getComponentLabel(Components.MESH), EditorUtil.getComponentIcon(Components.MESH)],
+	[Components.CAMERA, EditorUtil.getComponentLabel(Components.CAMERA), EditorUtil.getComponentIcon(Components.CAMERA)],
+	[Components.LIGHT_PROBE, EditorUtil.getComponentLabel(Components.LIGHT_PROBE), EditorUtil.getComponentIcon(Components.LIGHT_PROBE)],
+	[Components.ATMOSPHERE, EditorUtil.getComponentLabel(Components.ATMOSPHERE), EditorUtil.getComponentIcon(Components.ATMOSPHERE)],
+	[Components.PHYSICS_COLLIDER, EditorUtil.getComponentLabel(Components.PHYSICS_COLLIDER), EditorUtil.getComponentIcon(Components.PHYSICS_COLLIDER)],
+	[Components.RIGID_BODY, EditorUtil.getComponentLabel(Components.RIGID_BODY), EditorUtil.getComponentIcon(Components.RIGID_BODY)],
+	[Components.CULLING, EditorUtil.getComponentLabel(Components.CULLING), EditorUtil.getComponentIcon(Components.CULLING)],
+	[Components.UI, EditorUtil.getComponentLabel(Components.UI), EditorUtil.getComponentIcon(Components.UI)],
+	[Components.TERRAIN, EditorUtil.getComponentLabel(Components.TERRAIN), EditorUtil.getComponentIcon(Components.TERRAIN)],
 ]

@@ -1,8 +1,7 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
-
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class Clamp  extends ShaderNode implements Signature{
 	static signature = "Clamp"
@@ -14,14 +13,14 @@ export default class Clamp  extends ShaderNode implements Signature{
 	c = 0
 	constructor() {
 		super([
-			{label: "in", key: "a", accept: [DATA_TYPES.FLOAT], type: DATA_TYPES.FLOAT},
-			{label: "Min", key: "b", accept: [DATA_TYPES.FLOAT], type: DATA_TYPES.FLOAT},
-			{label: "Max", key: "c", accept: [DATA_TYPES.FLOAT] , type: DATA_TYPES.FLOAT},
+			{label: "in", key: "a", accept: [MaterialDataTypes.FLOAT], type: MaterialDataTypes.FLOAT},
+			{label: "Min", key: "b", accept: [MaterialDataTypes.FLOAT], type: MaterialDataTypes.FLOAT},
+			{label: "Max", key: "c", accept: [MaterialDataTypes.FLOAT] , type: MaterialDataTypes.FLOAT},
 		], [
-			{label: "Result", key: "clampRes", type: DATA_TYPES.FLOAT}
+			{label: "Result", key: "clampRes", type: MaterialDataTypes.FLOAT}
 		])
 		this.name = "Clamp"
-        
+
 	}
 
 	get type() {

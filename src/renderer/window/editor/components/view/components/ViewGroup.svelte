@@ -1,11 +1,10 @@
 <script lang="ts">
 
     import Tabs from "../../tabs/Tabs.svelte";
-    import VIEWS from "../static/VIEWS";
+    import VIEWS from "../../../static/VIEWS";
     import TabsStore from "../../../../shared/stores/TabsStore";
     import {onDestroy, onMount} from "svelte";
     import SettingsStore from "../../../../shared/stores/SettingsStore";
-    import ViewTabItem from "../../../static/ViewTabItem";
     import Dialog from "../../../../shared/components/dialog/Dialog.svelte";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import ViewsUtil from "../../../util/ViewsUtil";
@@ -13,8 +12,9 @@
     import View from "./View.svelte";
     import ViewTemplates from "../static/ViewTemplates";
     import ViewStateStore from "../../../../shared/stores/ViewStateStore";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     export let groupIndex: number
     export let views: ViewTabItem[]

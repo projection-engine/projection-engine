@@ -1,4 +1,4 @@
-import ArrayBufferAPI from "./utils/ArrayBufferAPI"
+import ArrayBufferUtil from "../utils/ArrayBufferUtil"
 
 export default class CameraNotificationDecoder {
 	static #buffer:Float32Array
@@ -10,7 +10,7 @@ export default class CameraNotificationDecoder {
 		return 0
 	}
 	static generateBuffer(){
-		const b = <Float32Array>ArrayBufferAPI.allocateVector(7, 0)
+		const b = <Float32Array>ArrayBufferUtil.allocateVector(7, 0)
 		b[0] = 1
 		b[1] = 1
 		b[2] = 0

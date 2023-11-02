@@ -123,7 +123,7 @@ class CameraWorker {
 		copyWithOffset(P, CameraWorker.invProjectionMatrix, 16)
 	}
 
-	static execute() {
+	static  execute = () => {
 		const didViewChange = CameraNotificationDecoder.viewNeedsUpdate === 1
 		CameraWorker.needsUpdate = CameraWorker.needsUpdate || didViewChange
 		const elapsed = CameraNotificationDecoder.elapsed

@@ -1,4 +1,4 @@
-import SETTINGS from "../../editor/static/SETTINGS"
+import SETTINGS from "../../editor/static/SETTINGS_STORE_STATEE"
 import ChangesTrackerStore from "./ChangesTrackerStore"
 import StoreIPCListener from "../lib/StoreIPCListener"
 import UIDataStores from "../../../../shared/enums/UIDataStores"
@@ -19,6 +19,10 @@ export default class SettingsStore extends AbstractStore{
 		super.updateStore(value)
 		if (!SettingsStore.noPush)
 			StoreIPCListener.getInstance().onUpdate(this.data, UIDataStores.SETTINGS)
+	}
+
+	static getData(): typeof SETTINGS {
+		return this.get<AbstractStore>().data as typeof SETTINGS
 	}
 }
 

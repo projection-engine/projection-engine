@@ -1,13 +1,7 @@
 import UndoRedo from "../components/UndoRedo"
-import EntityAPI from "../../../engine/core/lib/utils/EntityAPI"
-
-
-import serializeStructure from "../../../engine/core/utils/serialize-structure"
-import EntityNamingService from "./engine/EntityNamingService"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import ChangesTrackerStore from "../../shared/stores/ChangesTrackerStore"
-import EngineStateService from "./engine/EngineStateService"
-import Entity from "../../../engine/core/instances/Entity"
+import EditorEntity from "../../../engine/tools/EditorEntity"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 
 interface Action {
@@ -24,15 +18,16 @@ export default class EditorActionHistory {
 		EditorActionHistory.#cache.history = [null]
 	}
 
-	static save(value: Entity[] | Entity, isRemoval?: boolean) {
+	static save(value: EditorEntity[] | EditorEntity, isRemoval?: boolean) {
 		ChangesTrackerStore.updateStore({changed: true})
-
-		const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
-		EditorActionHistory.#cache.save({
-			nameCache: new Map(EntityNamingService.byName),
-			toRemove: data.map(d => d.id),
-			toAdd: !isRemoval ? serializeStructure(data) : undefined
-		})
+		// TODO
+		//
+		// const data = (Array.isArray(value) ? value.map(v => v?.serializable?.()) : [value.serializable()]).filter(e => e !== undefined)
+		// EditorActionHistory.#cache.save({
+		// 	nameCache: new Map(EntityNamingService.byName),
+		// 	toRemove: data.map(d => d.id),
+		// 	toAdd: !isRemoval ? serializeStructure(data) : undefined
+		// })
 	}
 
 	static undo() {
@@ -53,18 +48,19 @@ export default class EditorActionHistory {
 	}
 
 	static #apply(currentAction: Action) {
-		const nameCache = currentAction.nameCache
-		const toRemove = currentAction.toRemove
-		const toAdd: Entity[] = []
-		const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
-
-		EntityNamingService.byName = nameCache
-		for (let i = 0; i < parsedToAdd.length; i++) {
-			if (!parsedToAdd[i])
-				continue
-			toAdd.push(EntityAPI.parseEntityObject(parsedToAdd[i]))
-		}
-		EngineStateService.replaceBlock(toRemove, toAdd)
+		// TODO
+		// const nameCache = currentAction.nameCache
+		// const toRemove = currentAction.toRemove
+		// const toAdd: EditorEntity[] = []
+		// const parsedToAdd = currentAction.toAdd ? JSON.parse(currentAction.toAdd) : []
+		//
+		// EntityNamingService.byName = nameCache
+		// for (let i = 0; i < parsedToAdd.length; i++) {
+		// 	if (!parsedToAdd[i])
+		// 		continue
+			// toAdd.push(EntityAPI.parseEntityObject(parsedToAdd[i]))
+		// }
+		// EngineStateService.replaceBlock(toRemove, toAdd)
 
 	}
 }

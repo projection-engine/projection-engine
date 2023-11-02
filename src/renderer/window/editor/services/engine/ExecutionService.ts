@@ -1,16 +1,16 @@
-import ENVIRONMENT from "../../../../engine/core/static/ENVIRONMENT"
-
 import EngineStore from "../../../shared/stores/EngineStore"
-import CameraTracker from "../../../../engine/tools/utils/CameraTracker"
-import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
+import EditorCameraSystem from "../../../../engine/tools/systems/EditorCameraSystem"
+import UIManager from "@engine-core/managers/UIManager"
 import Engine from "../../../../engine/core/Engine"
-import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
-import ScriptsAPI from "../../../../engine/core/lib/utils/ScriptsAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
+import ScriptsManager from "@engine-core/managers/ScriptsManager"
 import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
-
-import ResourceEntityMapper from "../../../../engine/core/resource-libs/ResourceEntityMapper"
-import LevelService from "./LevelService"
+import EditorLevelService from "./EditorLevelService"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
+import {Environment,} from "@engine-core/engine.enum";
+import EngineState from "@engine-core/states/EngineState";
+import EntityManager from "@engine-core/managers/EntityManager";
+import LevelManager from "@engine-core/managers/LevelManager";
 
 export default class ExecutionService {
 	static #currentLevelID
@@ -18,17 +18,17 @@ export default class ExecutionService {
 	static cameraSerialization
 
 	static async startPlayState() {
-		if (ExecutionService.#isPlaying || !Engine.loadedLevel) {
+		if (ExecutionService.#isPlaying || !LevelManager.loadedLevel) {
 			ToastNotificationSystem.getInstance().error(LocalizationEN.NO_LEVEL_LOADED)
 			return
 		}
 		ToastNotificationSystem.getInstance().warn(LocalizationEN.SAVING_STATE)
 
-		ExecutionService.cameraSerialization = CameraAPI.serializeState()
+		ExecutionService.cameraSerialization = CameraManager.serializeState()
 		ExecutionService.#isPlaying = true
-		CameraTracker.stopTracking()
-		await LevelService.getInstance().saveCurrentLevel().catch(console.error)
-		ExecutionService.#currentLevelID = Engine.loadedLevel.id
+		EditorCameraSystem.stopTracking()
+		await EditorLevelService.getInstance().saveCurrentLevel().catch(console.error)
+		ExecutionService.#currentLevelID = LevelManager.loadedLevel
 		await Engine.startSimulation()
 		EngineStore.updateStore({focusedCamera: undefined, executingAnimation: true})
 	}
@@ -36,23 +36,20 @@ export default class ExecutionService {
 	static async stopPlayState() {
 		if (!ExecutionService.#isPlaying)
 			return
-		ResourceEntityMapper.clear()
-
-		Engine.entities.clear()
-		Engine.queryMap.clear()
+		EntityManager.clear()
 
 		ToastNotificationSystem.getInstance().log(LocalizationEN.RESTORING_STATE)
 		ExecutionService.#isPlaying = false
-		Engine.environment = ENVIRONMENT.DEV
+		Engine.environment = Environment.DEV
 
-		UIAPI.destroyUI()
-		await LevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)
-		await ScriptsAPI.updateAllScripts()
+		UIManager.destroyUI()
+		await EditorLevelService.getInstance().loadLevel(ExecutionService.#currentLevelID).catch(console.error)
+		await ScriptsManager.updateAllScripts()
 
-		CameraAPI.trackingEntity = undefined
-		CameraTracker.startTracking()
+		EngineState.cameraEntityTarget = undefined
+		EditorCameraSystem.startTracking()
 		EngineStore.updateStore({executingAnimation: false})
-		CameraAPI.restoreState(ExecutionService.cameraSerialization)
+		CameraManager.restoreState(ExecutionService.cameraSerialization)
 	}
 
 }

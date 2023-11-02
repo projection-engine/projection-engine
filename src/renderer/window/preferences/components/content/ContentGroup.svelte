@@ -4,8 +4,9 @@
     import {onDestroy, onMount} from "svelte"
     import VisualsStore from "../../../shared/stores/VisualsStore"
     import SettingsStore from "../../../shared/stores/SettingsStore"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     export let toRender
 
     let settings

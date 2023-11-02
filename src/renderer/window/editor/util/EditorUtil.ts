@@ -1,77 +1,79 @@
-import ScriptsAPI from "../../../engine/core/lib/utils/ScriptsAPI"
+import ScriptsManager from "@engine-core/managers/ScriptsManager"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import EngineStore from "../../shared/stores/EngineStore"
-import Entity from "../../../engine/core/instances/Entity"
-import Engine from "../../../engine/core/Engine"
 import ExecutionService from "../services/engine/ExecutionService"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
-import COMPONENTS from "../../../engine/core/static/COMPONENTS"
+import CameraManager from "@engine-core/managers/CameraManager"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import IPCRoutes from "../../../../shared/enums/IPCRoutes"
 import SettingsStore from "../../shared/stores/SettingsStore"
-import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
 import GIZMOS from "../../../../shared/enums/Gizmos"
 import ElectronResources from "../../shared/lib/ElectronResources"
 import TabsStoreUtil from "./TabsStoreUtil"
 import ContentBrowserUtil from "./ContentBrowserUtil"
-import GizmoState from "../../../engine/tools/gizmo/util/GizmoState";
-import GizmoUtil from "../../../engine/tools/gizmo/util/GizmoUtil";
+import GizmoState from "../../../engine/tools/state/GizmoState";
+import GizmoUtil from "../../../engine/tools/utils/GizmoUtil";
+import {Components} from "@engine-core/engine.enum";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
+import CameraComponent from "@engine-core/lib/components/CameraComponent";
+import UUIDGen from "../../../../shared/UUIDGen";
 
 export default class EditorUtil {
     static async componentConstructor(entity, scriptID, autoUpdate = true) {
-        await ScriptsAPI.linkScript(entity, scriptID)
+        await ScriptsManager.linkScript(entity, scriptID)
         if (autoUpdate)
             EntitySelectionStore.updateStore({array: EntitySelectionStore.getEntitiesSelected()})
         ToastNotificationSystem.getInstance().success(LocalizationEN.ADDED_COMPONENT)
     }
 
-    static focusOnCamera(cameraTarget) {
+    static focusOnCamera(cameraTarget?: EngineEntity) {
         const engineInstance = EngineStore.getInstance()
-        const focused = engineInstance.data.focusedCamera
-        const isCamera = cameraTarget instanceof Entity
-        if (!focused || isCamera && cameraTarget.id !== focused) {
-            const current = isCamera ? cameraTarget : Engine.entities.get(EntitySelectionStore.getMainEntity())
-            if (current && current.cameraComponent) {
-                ExecutionService.cameraSerialization = CameraAPI.serializeState()
-                CameraTracker.stopTracking()
-                CameraAPI.updateViewTarget(current)
-                engineInstance.updateStore({focusedCamera: current.id})
+        const focused = EngineStore.getData().focusedCamera
+        if (!focused || cameraTarget != null && cameraTarget !== focused) {
+            const component = EntityManager.getComponent<CameraComponent>(cameraTarget ?? EntitySelectionStore.getMainEntity(), Components.CAMERA)
+            if (component != null) {
+                ExecutionService.cameraSerialization = CameraManager.serializeState()
+                EditorCameraSystem.stopTracking()
+                CameraManager.updateViewTarget(component)
+                engineInstance.updateStore({focusedCamera: component.entity})
             }
         } else {
-            CameraAPI.restoreState(ExecutionService.cameraSerialization)
-            CameraTracker.startTracking()
+            CameraManager.restoreState(ExecutionService.cameraSerialization)
+            EditorCameraSystem.startTracking()
             engineInstance.updateStore({focusedCamera: undefined})
         }
     }
 
     static getComponentIcon(key) {
         switch (key) {
-            case COMPONENTS.MESH:
+            case Components.MESH:
                 return "category"
-            case COMPONENTS.LIGHT:
+            case Components.LIGHT:
                 return "light_mode"
-            case COMPONENTS.CAMERA:
+            case Components.CAMERA:
                 return "videocam"
-            case COMPONENTS.ATMOSPHERE:
+            case Components.ATMOSPHERE:
                 return "wb_twilight"
-            case COMPONENTS.LIGHT_PROBE:
+            case Components.LIGHT_PROBE:
                 return "lens_blur"
             case "TRANSFORMATION":
                 return "transform"
-            case COMPONENTS.DECAL:
+            case Components.DECAL:
                 return "layers"
-            case COMPONENTS.SPRITE:
+            case Components.SPRITE:
                 return "image"
-            case COMPONENTS.PHYSICS_COLLIDER:
+            case Components.PHYSICS_COLLIDER:
                 return "compare_arrows"
-            case COMPONENTS.RIGID_BODY:
+            case Components.RIGID_BODY:
                 return "language"
-            case COMPONENTS.CULLING:
+            case Components.CULLING:
                 return "disabled_visible"
-            case COMPONENTS.UI:
+            case Components.UI:
                 return "widgets"
+            case Components.TERRAIN:
+                return "terrain"
             default:
                 return "code"
         }
@@ -79,27 +81,29 @@ export default class EditorUtil {
 
     static getComponentLabel(component) {
         switch (component) {
-            case COMPONENTS.MESH:
+            case Components.MESH:
                 return LocalizationEN.MESH
-            case COMPONENTS.CAMERA:
+            case Components.TERRAIN:
+                return LocalizationEN.TERRAIN
+            case Components.CAMERA:
                 return LocalizationEN.CAMERA
-            case COMPONENTS.SPRITE:
+            case Components.SPRITE:
                 return LocalizationEN.SPRITE
-            case COMPONENTS.DECAL:
+            case Components.DECAL:
                 return LocalizationEN.DECAL
-            case COMPONENTS.LIGHT:
+            case Components.LIGHT:
                 return LocalizationEN.LIGHT
-            case COMPONENTS.ATMOSPHERE:
+            case Components.ATMOSPHERE:
                 return LocalizationEN.ATMOSPHERE_RENDERER
-            case COMPONENTS.LIGHT_PROBE:
+            case Components.LIGHT_PROBE:
                 return LocalizationEN.LIGHT_PROBE
-            case COMPONENTS.PHYSICS_COLLIDER:
+            case Components.PHYSICS_COLLIDER:
                 return LocalizationEN.PHYSICS_COLLIDER
-            case COMPONENTS.RIGID_BODY:
+            case Components.RIGID_BODY:
                 return LocalizationEN.RIGID_BODY
-            case COMPONENTS.CULLING:
+            case Components.CULLING:
                 return LocalizationEN.CULLING
-            case COMPONENTS.UI:
+            case Components.UI:
                 return LocalizationEN.UI_WRAPPER
         }
     }
@@ -135,45 +139,48 @@ export default class EditorUtil {
         return await EditorUtil.getCall(IPCRoutes.RESOLVE_NAME, {path, ext}, false)
     }
 
-    static selectEntityHierarchy(start: Entity): string[] {
-        const result: string[] = []
-        const direct = start.children.array
+    static selectEntityHierarchy(start: EngineEntity): EngineEntity[] {
+        const result: EngineEntity[] = []
+        const direct = EntityManager.getChildren(start)
         direct.forEach(d => result.push(...EditorUtil.selectEntityHierarchy(d)))
-        result.push(...direct.map(c => c.id))
+        result.push(...direct)
         return result
     }
 
     static snap(grid?: number) {
         const selected = EntitySelectionStore.getEntitiesSelected()
         for (let i = 0; i < selected.length; i++) {
-            const entity = QueryAPI.getEntityByID(selected[i])
+            const entity = selected[i]
             const currentGizmo = SettingsStore.getData().gizmo
-
+            const component = EntityManager.getComponent<TransformationComponent>(entity, Components.TRANSFORMATION)
+            if (!component) {
+                continue
+            }
             switch (currentGizmo) {
                 case GIZMOS.TRANSLATION: {
                     const g = grid ? grid : GizmoState.translationGridSize
-                    entity._translation[0] = GizmoUtil.nearestX(entity._translation[0], g)
-                    entity._translation[1] = GizmoUtil.nearestX(entity._translation[1], g)
-                    entity._translation[2] = GizmoUtil.nearestX(entity._translation[2], g)
+                    component.translation[0] = GizmoUtil.nearestX(component.translation[0], g)
+                    component.translation[1] = GizmoUtil.nearestX(component.translation[1], g)
+                    component.translation[2] = GizmoUtil.nearestX(component.translation[2], g)
                     break
                 }
                 case GIZMOS.SCALE: {
                     const g = grid ? grid : GizmoState.scalingGridSize
-                    entity._scaling[0] = GizmoUtil.nearestX(entity._scaling[0], g)
-                    entity._scaling[1] = GizmoUtil.nearestX(entity._scaling[1], g)
-                    entity._scaling[2] = GizmoUtil.nearestX(entity._scaling[2], g)
+                    component.scaling[0] = GizmoUtil.nearestX(component.scaling[0], g)
+                    component.scaling[1] = GizmoUtil.nearestX(component.scaling[1], g)
+                    component.scaling[2] = GizmoUtil.nearestX(component.scaling[2], g)
                     break
                 }
                 case GIZMOS.ROTATION: {
                     const g = grid ? grid : GizmoState.rotationGridSize
-                    entity._rotationQuaternion[0] = GizmoUtil.nearestX(entity._rotationQuaternion[0], g)
-                    entity._rotationQuaternion[1] = GizmoUtil.nearestX(entity._rotationQuaternion[1], g)
-                    entity._rotationQuaternion[2] = GizmoUtil.nearestX(entity._rotationQuaternion[2], g)
-                    entity._rotationQuaternion[3] = GizmoUtil.nearestX(entity._rotationQuaternion[2], g)
+                    component.rotationQuaternion[0] = GizmoUtil.nearestX(component.rotationQuaternion[0], g)
+                    component.rotationQuaternion[1] = GizmoUtil.nearestX(component.rotationQuaternion[1], g)
+                    component.rotationQuaternion[2] = GizmoUtil.nearestX(component.rotationQuaternion[2], g)
+                    component.rotationQuaternion[3] = GizmoUtil.nearestX(component.rotationQuaternion[2], g)
                     break
                 }
             }
-            entity.changed = true
+            component.changed = true
         }
     }
 
@@ -188,7 +195,7 @@ export default class EditorUtil {
 
     static getCall<T>(channel, data, addMiddle = true): Promise<T> {
         return new Promise(resolve => {
-            let listenID = crypto.randomUUID()
+            let listenID = UUIDGen()
             if (data.listenID)
                 listenID = data.listenID
             ElectronResources.ipcRenderer.once(channel + (addMiddle ? "-" : "") + listenID, (ev, data: T) => {

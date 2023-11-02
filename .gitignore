@@ -7,6 +7,5 @@ build
 /out
 out
 
-.idea
 yarn.lock
 yarn.error

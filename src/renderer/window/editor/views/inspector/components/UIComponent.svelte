@@ -1,28 +1,30 @@
-<script>
+<script lang="ts">
     import StyleField from "./UIStyles.svelte"
-    import COMPONENTS from "../../../../../engine/core/static/COMPONENTS.ts"
-
     import Selector from "../../../components/selector/Selector.svelte"
     import EditorFSUtil from "../../../util/EditorFSUtil"
     import FileSystemUtil from "../../../../shared/FileSystemUtil"
-    import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
+    import UIManager from "@engine-core/managers/UIManager"
     import Engine from "../../../../../engine/core/Engine"
     import Input from "../../../../shared/components/input/Input.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import InspectorUtil from "../../../util/InspectorUtil"
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
+    import {Components} from "@engine-core/engine.enum";
+    import UIComponent from "@engine-core/lib/components/UIComponent";
 
-    export let entity
-    export let submit
+    export let entity: EditorEntity
+    export let submit:  GenericVoidFunctionWith3P<string, any, boolean>
 
-    $: component = entity.uiComponent
+    let component: UIComponent
+    $: component = entity.getComponent<UIComponent>(Components.UI)
     $: wrapperStyles = component.wrapperStyles
     $: hasStyles = wrapperStyles.length > 0
 
 
     function update(key, value) {
-    	submit(key, value)
-    	UIAPI.updateUIEntity(entity)
+    	submit(key, value, false)
+    	UIManager.updateUIEntity(entity.id)
     }
 
     async function loadUILayout(reg) {
@@ -42,7 +44,7 @@
     <legend class="legend">
         {LocalizationEN.UI_COMPONENT}
         <button data-sveltebuttondefault="-" class="button"
-                on:click={() => InspectorUtil.removeComponent(entity, undefined, COMPONENTS.UI)}>
+                on:click={() => InspectorUtil.removeComponent(entity, component.getComponentKey())}>
             <Icon>delete_forever</Icon>
         </button>
     </legend>

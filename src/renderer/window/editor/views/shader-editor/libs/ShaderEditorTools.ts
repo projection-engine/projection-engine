@@ -4,14 +4,15 @@ import ContentBrowserStore from "../../../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
 import Canvas from "./Canvas"
 import type ShaderNode from "../templates/ShaderNode"
-import GPU from "../../../../../engine/core/GPU"
-import UberShader from "../../../../../engine/core/resource-libs/UberShader"
-import GPUAPI from "../../../../../engine/core/lib/rendering/GPUAPI"
+import GPUState from "@engine-core/states/GPUState"
+import UberShader from "@engine-core/lib/UberShader"
+import GPUManager from "@engine-core/managers/GPUManager"
 import NodesIndex from "../static/NODE_MAP"
 import ShaderLink from "../templates/ShaderLink"
 import ShaderComment from "../templates/ShaderComment"
 import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
 import EditorFSUtil from "../../../util/EditorFSUtil"
+import UUIDGen from "../../../../../../shared/UUIDGen";
 
 export default class ShaderEditorTools {
 
@@ -59,7 +60,7 @@ export default class ShaderEditorTools {
 
 	static paste(canvasAPI: Canvas) {
 		ShaderEditorTools.copied.forEach(d => {
-			canvasAPI.addNode(ShaderEditorTools.parseNode({...d, id: crypto.randomUUID()}), true, true)
+			canvasAPI.addNode(ShaderEditorTools.parseNode({...d, id: UUIDGen()}), true, true)
 		})
 		canvasAPI.clear()
 	}
@@ -98,11 +99,11 @@ export default class ShaderEditorTools {
 			}
 			await EditorFSUtil.updateAsset(openFile.registryID, JSON.stringify(materialData))
 
-			const oldMaterial = GPU.materials.get(openFile.registryID)
+			const oldMaterial = GPUState.materials.get(openFile.registryID)
 			if (oldMaterial) {
 				if (!UberShader.uberSignature[compiled[1]]) {
-					GPUAPI.destroyMaterial(openFile.registryID)
-					await GPUAPI.allocateMaterial({
+					GPUManager.destroyMaterial(openFile.registryID)
+					await GPUManager.allocateMaterial({
 						functionDeclaration: compiled[0].functionDeclaration,
 						uniformsDeclaration: compiled[0].uniformsDeclaration,
 						uniformValues: compiled[0].uniformValues,

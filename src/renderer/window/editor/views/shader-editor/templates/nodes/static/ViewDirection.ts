@@ -1,7 +1,7 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
+import {MaterialDataTypes} from "@engine-core/engine.enum";
 
 
 export default class ViewDirection extends ShaderNode implements Signature{
@@ -12,14 +12,14 @@ export default class ViewDirection extends ShaderNode implements Signature{
 
 	constructor() {
 		super([], [
-			{label: "Coordinates", key: "viewDirection", type: DATA_TYPES.VEC3},
-			{label: "X", key: "r", type: DATA_TYPES.FLOAT, color: "red"},
-			{label: "Y", key: "g", type: DATA_TYPES.FLOAT, color: "green"},
-			{label: "Z", key: "b", type: DATA_TYPES.FLOAT, color: "blue"}
+			{label: "Coordinates", key: "viewDirection", type: MaterialDataTypes.VEC3},
+			{label: "X", key: "r", type: MaterialDataTypes.FLOAT, color: "red"},
+			{label: "Y", key: "g", type: MaterialDataTypes.FLOAT, color: "green"},
+			{label: "Z", key: "b", type: MaterialDataTypes.FLOAT, color: "blue"}
 		])
 
 		this.name = "ViewDirection"
-        
+
 	}
 
 	get type() {

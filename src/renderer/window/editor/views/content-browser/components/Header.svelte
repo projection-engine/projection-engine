@@ -20,10 +20,10 @@
     export let fileType: string
     export let onChange: GenericVoidFunctionWithP<string>
     export let inputValue: string
-    export let navigationHistory: typeof NavigationHistory
-    export let viewType: string
+    export let navigationHistory: NavigationHistory
+    export let viewType: number
     export let showDetails: boolean
-    export let setViewType: GenericVoidFunctionWithP<string>
+    export let setViewType: GenericVoidFunctionWithP<number>
     export let setFileType: GenericVoidFunctionWithP<string>
     export let setSortKey: GenericVoidFunctionWithP<string>
     export let setShowDetails: GenericVoidFunctionWithP<boolean>

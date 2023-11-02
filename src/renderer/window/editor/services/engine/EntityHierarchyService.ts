@@ -1,44 +1,49 @@
-import Engine from "../../../../engine/core/Engine"
-import Entity from "../../../../engine/core/instances/Entity"
+import EditorEntity from "../../../../engine/tools/EditorEntity"
 import HierarchyToRenderElement from "../../views/hierarchy/template/ToRenderElement"
 import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
+import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
+import EntityManager from "@engine-core/managers/EntityManager";
+import DynamicMap from "@engine-core/lib/DynamicMap";
 
 
 export default class EntityHierarchyService {
 	static hierarchy: HierarchyToRenderElement[] = []
-	static #listening: { [key: string]: Function } = {}
+	static #listening = new DynamicMap<string, VoidFunction>()
 
 	static updateHierarchy() {
-		const data = [], root = Engine.loadedLevel
-		if(!root)
-			return
-
-		const callback = (node: Entity, depth: number) => {
+		const data = []
+		const callback = (node: EditorEntity, depth: number) => {
 			if(!node)
 				return
 			data.push({node, depth})
 			node.allComponents.forEach(component => data.push({component, depth: depth + 1}))
 
-			const children = node.children.array
+			const children = node.children
 			for (let i = 0; i < children.length; i++)
-				callback(children[i], depth + 1)
+				callback(EditorEntityManager.getEntity(children[i]), depth + 1)
 		}
-		callback(root, 0)
+		const entities = EntityManager.getEntityKeys()
+		entities.forEach(e => {
+			console.log(e, EntityManager.getParent(e), EditorEntityManager.getEntity(e))
+			if(EntityManager.getParent(e) == null) {
+				callback(EditorEntityManager.getEntity(e), 0)
+			}
+		})
 		EntityHierarchyService.hierarchy = data
-		Object.values(EntityHierarchyService.#listening).forEach(v => v())
+		EntityHierarchyService.#listening.array.forEach(v => v())
 	}
 
 	static removeListener(internalID: string) {
-		delete EntityHierarchyService.#listening[internalID]
+		EntityHierarchyService.#listening.delete(internalID)
 	}
 
-	static registerListener(internalID: string, callback: Function) {
-		EntityHierarchyService.#listening[internalID] = callback
+	static registerListener(internalID: string, callback: VoidFunction) {
+		EntityHierarchyService.#listening.set(internalID, callback)
 		callback()
 	}
 
 	static openTree() {
-		const node = Engine.entities.get(EntitySelectionStore.getMainEntity())
+		const node = EditorEntityManager.getEntity(EntitySelectionStore.getMainEntity())
 		if (!node)
 			return {}
 		const open = {}
@@ -48,7 +53,7 @@ export default class EntityHierarchyService {
 			if (open[target.id])
 				break
 			open[target.id] = true
-			target = target.parent
+			target = EditorEntityManager.getEntity(target.parent)
 		}
 		Object.values(EntityHierarchyService.#listening).forEach(v => v({...open}))
 	}

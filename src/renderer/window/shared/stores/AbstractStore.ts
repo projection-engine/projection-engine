@@ -1,8 +1,8 @@
-import DynamicMap from "../../../engine/core/resource-libs/DynamicMap"
-import AbstractSingleton from "../../../../shared/AbstractSingleton"
+import DynamicMap from "@engine-core/lib/DynamicMap"
+import AbstractSingleton from "../../../engine/core/AbstractSingleton"
 
-export default class AbstractStore extends AbstractSingleton {
-	#data: MutableObject = {}
+export default class AbstractStore<T = MutableObject> extends AbstractSingleton {
+	#data = {} as T
 	#listeners = new DynamicMap<string, { callback: Function, dependencies: string[] }>()
 
 	constructor(initialValue: MutableObject) {
@@ -10,7 +10,7 @@ export default class AbstractStore extends AbstractSingleton {
 		Object.assign(this.#data, initialValue)
 	}
 
-	get data() {
+	get data(): T {
 		return this.#data
 	}
 
@@ -25,7 +25,7 @@ export default class AbstractStore extends AbstractSingleton {
 			else {
 				for (let j = 0; j < dependencies.length; j++) {
 					const dep = dependencies[j]
-					if (Object.hasOwn(data, dep)) {
+					if (Object.hasOwn(data as MutableObject, dep)) {
 						listener.callback(newValue)
 						break
 					}
@@ -52,7 +52,7 @@ export default class AbstractStore extends AbstractSingleton {
 	static getData() {
 		return this.get<AbstractStore>().data
 	}
-	
+
 	static updateStore(data) {
 		return this.get<AbstractStore>().updateStore(data)
 	}

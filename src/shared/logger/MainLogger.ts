@@ -5,7 +5,7 @@ import * as fs from "fs"
 
 
 export default class MainLogger {
-	static #level = LoggerTypes.SILENT
+	static #level = LoggerTypes.DETAILED
 	static #isInitialized = false
 	static #writePath?: string
 	static #originalConsoleMethods = {}

@@ -1,13 +1,14 @@
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
-import AbstractSingleton from "../../../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
+import UUIDGen from "../../../../../shared/UUIDGen";
 
 
 export default class TabContextController extends AbstractSingleton {
 	activeContext?: Function
 	contexts = new Map<string, Function>()
 	contextElements = new Map<string, HTMLElement>()
-	contextID = crypto.randomUUID()
+	contextID = UUIDGen()
 
 	constructor() {
 		super()

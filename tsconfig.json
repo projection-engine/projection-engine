@@ -4,15 +4,32 @@
     "target": "es2022",
     "module": "es2022",
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
+    "outDir": "build",
+    "inlineSources": true,
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true,
     "typeRoots": [
       "./global.d.ts",
+      "./src/renderer/engine/core/engine.g.ts",
+      "./src/renderer/engine/tools/engine-tools.g.ts",
+      "./src/renderer/engine/core/engine.d.ts",
+      "./src/renderer/window/editor/editor.g.ts",
       "node_modules/@types"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@engine-core/*": [
+        "./src/renderer/engine/core/*"
+      ]
+    },
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules"

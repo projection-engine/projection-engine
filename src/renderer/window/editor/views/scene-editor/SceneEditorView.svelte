@@ -3,7 +3,7 @@
     import RENDER_TARGET from "../../static/RENDER_TARGET"
     import SelectBox from "../../../shared/components/select-box/SelectBox.svelte"
     import GIZMOS from "../../../../../shared/enums/Gizmos.ts"
-    import GizmoSystem from "../../../../engine/tools/gizmo/GizmoSystem"
+    import GizmoSystem from "../../../../engine/tools/systems/GizmoSystem"
     import dragDrop from "../../../shared/components/drag-drop/drag-drop"
     import CameraSettings from "./components/CameraSettings.svelte"
     import SceneOptions from "./components/SceneOptions.svelte"
@@ -11,20 +11,21 @@
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import ViewHeader from "../../components/view/components/ViewHeader.svelte"
     import EntityInformation from "./components/EntityInformation.svelte"
-    import Engine from "../../../../engine/core/Engine"
     import ViewportInteractionListener from "./lib/ViewportInteractionListener"
     import GizmoSettings from "./components/GizmoSettings.svelte"
-    import SHADING_MODELS from "../../../../engine/core/static/SHADING_MODELS"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ContextMenuService from "../../../shared/lib/context-menu/ContextMenuService"
-    import GPU from "../../../../engine/core/GPU"
-    import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
+    import GPUState from "@engine-core/states/GPUState"
+    import CameraManager from "@engine-core/managers/CameraManager"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SceneEditorUtil from "../../util/SceneEditorUtil"
     import SerializedState from "../../components/view/SerializedState.svelte";
     import ViewStateStore from "../../../shared/stores/ViewStateStore";
+    import {ShadingModels,} from "@engine-core/engine.enum";
+    import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     const draggable = dragDrop(false)
 
     let isOnGizmo = false
@@ -40,7 +41,7 @@
     	}, ["gizmo", "shadingModel"])
     	EngineStore.getInstance().addListener(COMPONENT_ID, data => {
     		executingAnimation = data.executingAnimation
-    		focusedCamera = data.focusedCamera ? Engine.entities.get(data.focusedCamera) : null
+    		focusedCamera = data.focusedCamera ? EditorEntityManager.getEntity(data.focusedCamera) : null
     	}, ["focusedCamera", "executingAnimation"])
     	GizmoSystem.onStart = () => isOnGizmo = true
     	GizmoSystem.onStop = () => isOnGizmo = false
@@ -59,7 +60,7 @@
 </script>
 
 <SerializedState
-        onBeforeDestroy={CameraAPI.serializeState}
+        onBeforeDestroy={CameraManager.serializeState}
         onStateInitialize={state => {
             SceneEditorUtil.restoreCameraState(state)
         }}
@@ -70,7 +71,7 @@
         <SceneOptions {isOnGizmo}/>
     </ViewHeader>
     <SelectBox
-            targetElement={GPU.canvas}
+            targetElement={GPUState.canvas}
             targetElementID={RENDER_TARGET}
             disabled={isSelectBoxDisabled}
             setSelected={SceneEditorUtil.getUnderSelectionBox}
@@ -87,12 +88,12 @@
             {focusedCamera.name}
         </div>
     {/if}
-    {#if shadingModel === SHADING_MODELS.LIGHT_QUANTITY}
+    {#if shadingModel === ShadingModels.LIGHT_QUANTITY}
         <div class="complexity-gradient">
             <small>{LocalizationEN.NO_CONTRIBUTION}</small>
             <small>{LocalizationEN.ALL_SCENE_LIGHTS}</small>
         </div>
-    {:else if shadingModel === SHADING_MODELS.LIGHT_COMPLEXITY}
+    {:else if shadingModel === ShadingModels.LIGHT_COMPLEXITY}
         <div class="complexity-gradient">
             <small>{LocalizationEN.NO_CONTRIBUTION}</small>
             <small>{LocalizationEN.MAXIMUM_NUMBER_OF_LIGHTS}</small>

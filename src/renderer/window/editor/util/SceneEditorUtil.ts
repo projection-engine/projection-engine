@@ -1,57 +1,56 @@
-import SHADING_MODELS from "../../../engine/core/static/SHADING_MODELS"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import ConversionAPI from "../../../engine/core/lib/math/ConversionAPI"
-import GPU from "../../../engine/core/GPU"
-import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
-import Engine from "../../../engine/core/Engine"
-import VisibilityRenderer from "../../../engine/core/runtime/VisibilityRenderer"
+import GPUState from "@engine-core/states/GPUState"
+import PickingUtil from "@engine-core/utils/PickingUtil"
 import EngineTools from "../../../engine/tools/EngineTools"
 import {glMatrix, quat} from "gl-matrix"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import CameraManager from "@engine-core/managers/CameraManager"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import ViewportInteractionListener from "../views/scene-editor/lib/ViewportInteractionListener"
 import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
 import ContextMenuService from "../../shared/lib/context-menu/ContextMenuService"
 import getViewportContext from "../templates/get-viewport-context"
 import RENDER_TARGET from "../static/RENDER_TARGET"
-import SETTINGS from "../static/SETTINGS"
+import SETTINGS from "../static/SETTINGS_STORE_STATEE"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
-import CameraSerialization from "../../../engine/core/static/CameraSerialization";
+import EngineState from "@engine-core/states/EngineState";
+import {ShadingModels,} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class SceneEditorUtil {
 	static #worker?: Worker
 
 	static getLabel(shadingModel): string {
 		switch (shadingModel) {
-		case SHADING_MODELS.LIGHT_ONLY:
+		case ShadingModels.LIGHT_ONLY:
 			return "SHADING_LIGHT"
-		case SHADING_MODELS.ALBEDO:
+		case ShadingModels.ALBEDO:
 			return "SHADING_UNLIT"
-		case SHADING_MODELS.NORMAL:
+		case ShadingModels.NORMAL:
 			return "SHADING_NORMAL"
-		case SHADING_MODELS.DEPTH:
+		case ShadingModels.DEPTH:
 			return "SHADING_DEPTH"
-		case SHADING_MODELS.G_AO:
-		case SHADING_MODELS.AO:
+		case ShadingModels.G_AO:
+		case ShadingModels.AO:
 			return "SHADING_AO"
-		case SHADING_MODELS.RANDOM:
+		case ShadingModels.RANDOM:
 			return "SHADING_RANDOM"
-		case SHADING_MODELS.POSITION:
+		case ShadingModels.POSITION:
 			return "POSITION"
-		case SHADING_MODELS.DETAIL:
+		case ShadingModels.DETAIL:
 			return "SHADING_DETAIL"
-		case SHADING_MODELS.ROUGHNESS:
+		case ShadingModels.ROUGHNESS:
 			return "SHADING_ROUGHNESS"
-		case SHADING_MODELS.METALLIC:
+		case ShadingModels.METALLIC:
 			return "SHADING_METALLIC"
-		case SHADING_MODELS.LIGHT_COMPLEXITY:
+		case ShadingModels.LIGHT_COMPLEXITY:
 			return "LIGHT_COMPLEXITY"
-		case SHADING_MODELS.UV:
+		case ShadingModels.UV:
 			return "SHADING_UV"
-		case SHADING_MODELS.OVERDRAW:
+		case ShadingModels.OVERDRAW:
 			return "OVERDRAW"
-		case SHADING_MODELS.LIGHT_QUANTITY:
+		case ShadingModels.LIGHT_QUANTITY:
 			return "LIGHT_QUANTITY"
 		default:
 			return ""
@@ -61,19 +60,19 @@ export default class SceneEditorUtil {
 	static getShadingModels() {
 		return [
 			{divider: true, label: LocalizationEN.MISC},
-			{label: LocalizationEN.SHADING_DETAIL, id: SHADING_MODELS.DETAIL},
-			{label: LocalizationEN.LIGHT_QUANTITY, id: SHADING_MODELS.LIGHT_QUANTITY},
+			{label: LocalizationEN.SHADING_DETAIL, id: ShadingModels.DETAIL},
+			{label: LocalizationEN.LIGHT_QUANTITY, id: ShadingModels.LIGHT_QUANTITY},
 			{divider: true, label: LocalizationEN.DEBUG_SHADING},
-			{label: LocalizationEN.SHADING_DEPTH, id: SHADING_MODELS.DEPTH},
-			{label: LocalizationEN.SHADING_RANDOM, id: SHADING_MODELS.RANDOM},
-			{label: LocalizationEN.LIGHT_COMPLEXITY, id: SHADING_MODELS.LIGHT_COMPLEXITY},
-			{label: LocalizationEN.POSITION, id: SHADING_MODELS.POSITION},
-			{label: LocalizationEN.SHADING_DYNAMIC_AO, id: SHADING_MODELS.AO,},
-			{label: LocalizationEN.OVERDRAW, id: SHADING_MODELS.OVERDRAW},
+			{label: LocalizationEN.SHADING_DEPTH, id: ShadingModels.DEPTH},
+			{label: LocalizationEN.SHADING_RANDOM, id: ShadingModels.RANDOM},
+			{label: LocalizationEN.LIGHT_COMPLEXITY, id: ShadingModels.LIGHT_COMPLEXITY},
+			{label: LocalizationEN.POSITION, id: ShadingModels.POSITION},
+			{label: LocalizationEN.SHADING_DYNAMIC_AO, id: ShadingModels.AO,},
+			{label: LocalizationEN.OVERDRAW, id: ShadingModels.OVERDRAW},
 			{divider: true, label: LocalizationEN.MATERIAL},
-			{label: LocalizationEN.SHADING_UNLIT, id: SHADING_MODELS.ALBEDO},
-			{label: LocalizationEN.SHADING_ROUGHNESS, id: SHADING_MODELS.ROUGHNESS},
-			{label: LocalizationEN.LIGHT_ONLY, id: SHADING_MODELS.LIGHT_ONLY}
+			{label: LocalizationEN.SHADING_UNLIT, id: ShadingModels.ALBEDO},
+			{label: LocalizationEN.SHADING_ROUGHNESS, id: ShadingModels.ROUGHNESS},
+			{label: LocalizationEN.LIGHT_ONLY, id: ShadingModels.LIGHT_ONLY}
 		].map(e => e.divider ? e : ({
 			...e,
 			onClick: () => SettingsStore.updateStore({shadingModel: e.id})
@@ -84,13 +83,13 @@ export default class SceneEditorUtil {
 		const worker = SceneEditorUtil.worker()
 		if (startCoords && endCoords) {
 			EngineTools.drawIconsToBuffer()
-			const nStart = ConversionAPI.toQuadCoordinates(startCoords.x, startCoords.y, GPU.internalResolution.w, GPU.internalResolution.h)
-			const nEnd = ConversionAPI.toQuadCoordinates(endCoords.x, endCoords.y, GPU.internalResolution.w, GPU.internalResolution.h)
+			const nStart = ConversionAPI.toQuadCoordinates(startCoords.x, startCoords.y, GPUState.internalResolution.w, GPUState.internalResolution.h)
+			const nEnd = ConversionAPI.toQuadCoordinates(endCoords.x, endCoords.y, GPUState.internalResolution.w, GPUState.internalResolution.h)
 			try {
 
-				const data = PickingAPI.readBlock(nStart, nEnd)
+				const data = PickingUtil.readBlock(nStart, nEnd)
 				worker.postMessage({
-					entities: Engine.entities.array.map(e => ({id: e.id, pick: e.pickIndex})),
+					entities: EntityManager.getEntityIds().map(e => ({id: e, pick: EntityManager.getEntityPickVec3(e)})).filter(e => e.pick != null),
 					data
 				}, [data.buffer])
 				worker.onmessage = ({data: selected}) => EntitySelectionStore.setEntitiesSelected(selected)
@@ -99,7 +98,7 @@ export default class SceneEditorUtil {
 				console.error(err, startCoords, nStart)
 			}
 
-			VisibilityRenderer.needsUpdate = true
+			EngineState.visibilityNeedsUpdate = true
 		}
 	}
 
@@ -141,13 +140,11 @@ export default class SceneEditorUtil {
 			if (!cameraMetadata) {
 				const pitch = quat.fromEuler(quat.create(), -45, 0, 0)
 				const yaw = quat.fromEuler(quat.create(), 0, 45, 0)
-				CameraAPI.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
-				CameraTracker.xRotation = glMatrix.toRadian(45)
-				CameraTracker.yRotation = -glMatrix.toRadian(45)
+				CameraManager.update([5, 10, 5], quat.multiply(quat.create(), yaw, pitch))
+				EditorCameraSystem.setYawPitch(glMatrix.toRadian(45), -glMatrix.toRadian(45))
 			} else {
-				CameraAPI.restoreState(cameraMetadata)
-				CameraTracker.xRotation = cameraMetadata.prevX
-				CameraTracker.yRotation = cameraMetadata.prevY
+				CameraManager.restoreState(cameraMetadata)
+				EditorCameraSystem.setYawPitch(cameraMetadata.prevX, cameraMetadata.prevY)
 			}
 		}catch (err){
 			console.error(err)
@@ -156,11 +153,11 @@ export default class SceneEditorUtil {
 
 	static onSceneEditorMount(draggable) {
 		ContextMenuService.getInstance().mount(getViewportContext(), RENDER_TARGET)
-		CameraTracker.startTracking()
+		EditorCameraSystem.startTracking()
 		ViewportInteractionListener.get()
 		draggable.onMount({
-			targetElement: GPU.canvas,
-			onDrop: (data, event) => EngineResourceLoaderService.load(data, false, event.clientX, event.clientY).catch(console.error),
+			targetElement: GPUState.canvas,
+			onDrop: (data, event) => EngineResourceLoaderService.load(data, false).catch(console.error),
 			onDragOver: () => `
                 <span data-svelteicon="-" style="font-size: 70px">add</span>
                 ${LocalizationEN.DRAG_DROP}

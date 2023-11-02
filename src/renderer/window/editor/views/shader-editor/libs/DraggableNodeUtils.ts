@@ -1,11 +1,11 @@
 import IO_RADIUS from "../static/IO_RADIUS"
 import HEADER_HEIGHT from "../static/HEADER_HEIGHT"
-import DATA_TYPES from "../static/DATA_TYPES"
 import type Draggable from "../templates/Draggable"
 import {Input} from "../static/Input"
 import {Output} from "../static/Output"
 import type ShaderNode from "../templates/ShaderNode"
 import CanvasResources from "./CanvasResources"
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 const types = {
 	vec2: 0,
@@ -24,14 +24,14 @@ export default class DraggableNodeUtils {
 	static getIOColor(attribute: Output | Input, isSomeoneDisabled: boolean) {
 		const type = attribute.type || attribute.accept?.[0]
 		switch (type) {
-		case DATA_TYPES.VEC2:
-		case DATA_TYPES.COLOR:
-		case DATA_TYPES.VEC3:
-		case DATA_TYPES.VEC4:
+		case MaterialDataTypes.VEC2:
+		case MaterialDataTypes.COLOR:
+		case MaterialDataTypes.VEC3:
+		case MaterialDataTypes.VEC4:
 			return `rgba(255,165,0,${isSomeoneDisabled ? .5 : 1})`
-		case DATA_TYPES.TEXTURE:
+		case MaterialDataTypes.TEXTURE:
 			return `rgba(138,43,226, ${isSomeoneDisabled ? .5 : 1})`
-		case DATA_TYPES.ANY:
+		case MaterialDataTypes.ANY:
 			return `rgba(255,255,255, ${isSomeoneDisabled ? .5 : 1})`
 		default:
 			return `rgba(153,153,153, ${isSomeoneDisabled ? .5 : 1})`

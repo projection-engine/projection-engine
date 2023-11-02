@@ -1,44 +1,31 @@
 <script lang="ts">
-    import Engine from "../../../../../engine/core/Engine"
-    import COMPONENTS from "../../../../../engine/core/static/COMPONENTS"
-    import UIAPI from "../../../../../engine/core/lib/rendering/UIAPI"
+    import UIManager from "@engine-core/managers/UIManager"
     import ViewHeader from "../../../components/view/components/ViewHeader.svelte"
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte"
-    import EngineStateService from "../../../services/engine/EngineStateService"
     import ToastNotificationSystem from "../../../../shared/components/alert/ToastNotificationSystem"
-    import EntityAPI from "../../../../../engine/core/lib/utils/EntityAPI"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
-    import type Entity from "../../../../../engine/core/instances/Entity";
+    import type EditorEntity from "../../../../../engine/tools/EditorEntity";
+    import EntityFactoryService from "../../../services/engine/EntityFactoryService";
+    import {Components} from "@engine-core/engine.enum";
+    import EntityManager from "@engine-core/managers/EntityManager";
 
     export let isOnSelection:boolean
     export let toggleOnSelection:GenericVoidFunction
-    export let selected:Entity
+    export let selected:EditorEntity
     export let isAutoUpdateEnabled:boolean
     export let toggleAutoUpdate:GenericVoidFunction
 
     function selectAll() {
-    	const m = [], size = Engine.entities.array.length
-    	for (let i = 0; i < size; i++) {
-    		const e = Engine.entities.array[i]
-    		if (e.uiComponent)
-    			m.push(e.id)
-    	}
-    	EntitySelectionStore.setEntitiesSelected(m)
+    	EntitySelectionStore.setEntitiesSelected(EntityManager.withComponent(Components.UI).array)
     }
 
-    function addUI() {
-    	const e = EntityAPI.getNewEntityInstance()
-    	e.name = "UI-ShaderNode"
-    	e.addComponent(COMPONENTS.UI)
-    	EngineStateService.add(e)
-    }
 </script>
 
 <ViewHeader>
     <div class="left-content">
-        <button data-sveltebuttondefault="-" on:click={addUI} data-svelteview-header-button="-"
+        <button data-sveltebuttondefault="-" on:click={EntityFactoryService.createUI} data-svelteview-header-button="-"
                 style="max-width: unset">
             <Icon styles="font-size: .9rem">add</Icon>
             {LocalizationEN.ADD_ELEMENT}
@@ -50,7 +37,7 @@
         <div data-sveltevertdivider="-"></div>
         <button data-sveltebuttondefault="-"
                 on:click={() => {
-                    UIAPI.updateAllElements().then(() => {
+                    UIManager.updateAllElements().then(() => {
                         ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
                     })
                 }}

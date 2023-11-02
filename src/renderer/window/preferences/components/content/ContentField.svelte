@@ -5,7 +5,7 @@
     import Range from "../../../shared/components/range/Range.svelte"
     import VisualsStore from "../../../shared/stores/VisualsStore"
     import SettingsStore from "../../../shared/stores/SettingsStore"
-    import Component from "../../../../engine/core/instances/components/Component"
+    import COMPONENT_PROP_TYPES from "../../../editor/static/COMPONENT_PROP_TYPES";
 
     export let toRender
     export let settings
@@ -60,7 +60,7 @@
 </script>
 
 
-{#if toRender.type === Component.propTypes.NUMBER}
+{#if toRender.type === COMPONENT_PROP_TYPES.NUMBER}
     <Range
             label={toRender.label}
             incrementPercentage={toRender.increment}
@@ -80,7 +80,7 @@
             }}
             disabled={toRender.disabled}
     />
-{:else if toRender.type === Component.propTypes.BOOLEAN}
+{:else if toRender.type === COMPONENT_PROP_TYPES.BOOLEAN}
     <Checkbox
             disabled={toRender.disabled}
             checked={fieldValue}
@@ -88,7 +88,7 @@
             label={toRender.label}
     />
 
-{:else if toRender.type === Component.propTypes.COLOR}
+{:else if toRender.type === COMPONENT_PROP_TYPES.COLOR}
     <ColorPicker
             disabled={toRender.disabled}
             value={fieldValue?.map(v => v * 255) || [0,0,0]}

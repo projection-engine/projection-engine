@@ -1,38 +1,27 @@
-<script>
-    import KEYS from "../../static/KEYS.ts"
+<script lang="ts">
+    import KEYS from "../../static/KeyboardKeys.ts"
     import {onDestroy, onMount} from "svelte"
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../shared/components/dropdown/Dropdown.svelte"
     import {Sortable} from "sortablejs"
     import Tab from "./components/Tab.svelte"
     import TabContextController from "./TabContextController"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    /** @type {function} */
-    export let addNewTab
-    /** @type {function} */
-    export let removeTab
-    /** @type {function} */
-    export let removeMultipleTabs
-    /** @type {{icon: string, id: string, name:string, index: number, originalIndex: number}[]} */
-    export let tabs
-    /** @type {number} */
-    export let currentTab
-    /** @type {function} */
-    export let setCurrentView
-    /** @type {boolean} */
-    export let allowDeletion
-    /** @type {boolean} */
-    export let allowRenaming
-    /** @type {{ id: string, name: string }[]} */
-    export let templates
-    /** @type {function} */
-    export let updateView
-    /** @type {boolean} */
-    export let focused
-    /** @type {string} */
-    export let styles
+    export let addNewTab: Function
+    export let removeTab: Function
+    export let removeMultipleTabs: Function
+    export let tabs: {icon: string, id: string, name:string, index: number, originalIndex: number}[]
+    export let currentTab: number
+    export let setCurrentView: Function
+    export let allowDeletion: boolean
+    export let allowRenaming: boolean
+    export let templates: { id: string, name: string }[]
+    export let updateView: Function
+    export let focused: boolean
+    export let styles: string
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
 
     let sortedTabs = []
@@ -48,19 +37,13 @@
     	}
     }
 
-    /**
-     *
-     * @param event
-     * @param tabData
-     * @param index
-     */
-    const handler = (event, tabData, index) => {
-    	const T = event.currentTarget
+    const handler = (event: KeyboardEvent | WheelEvent, tabData, index: number) => {
+    	const T = event.currentTarget as HTMLInputElement
     	switch (event.type) {
     	case "keydown": {
-    		if (event.code !== KEYS.Enter)
+    		if ((event as KeyboardEvent).code !== KEYS.Enter)
     			break
-    		const target = e.target
+    		const target = event.target as HTMLInputElement
     		tabData.name = target.value
     		T.type = "button"
     		break
@@ -71,7 +54,7 @@
     		break
     	}
     	case "input":
-    		const target = e.target
+    		const target = event.target as HTMLInputElement
     		tabData.name = target.value
     		break
     	case "blur":
@@ -81,9 +64,9 @@
     		setCurrentView(index)
     		break
     	case "wheel":
-    		e.preventDefault()
-    		if (ref.scrollWidth > ref.offsetWidth && "deltaY" in e) {
-    			const value = e.deltaY
+    		event.preventDefault()
+    		if (ref.scrollWidth > ref.offsetWidth) {
+    			const value = (event as WheelEvent).deltaY
     			ref.scrollLeft += value
     		}
     		break
@@ -92,9 +75,9 @@
     onMount(() => {
     	ref.addEventListener(
     		"wheel",
-    		ev => {
+    		(ev: WheelEvent) => {
     			ev.preventDefault()
-    			if (ev.wheelDelta > 0)
+    			if (ev.deltaY < 0)
     				ref.scrollLeft += ref.scrollWidth * .1
     			else
     				ref.scrollLeft -= ref.scrollWidth * .1

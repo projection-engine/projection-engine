@@ -2,7 +2,7 @@
     import EngineStore from "../../../shared/stores/EngineStore"
     import {onDestroy, onMount} from "svelte"
 
-    import LevelService from "../../services/engine/LevelService"
+    import EditorLevelService from "../../services/engine/EditorLevelService"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import Tabs from "../tabs/Tabs.svelte"
     import CreationController from "./components/CreationController.svelte"
@@ -18,8 +18,9 @@
     import WindowTypes from "../../../../../shared/enums/WindowTypes"
     import ViewportUtil from "../../util/ViewportUtil"
     import WindowFrameUtil from "../../util/WindowFrameUtil"
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     let executingAnimation = false
     let settings = {}
@@ -52,7 +53,7 @@
         <button
                 data-sveltebuttondefault="-"
                 disabled={executingAnimation}
-                on:click={() => LevelService.getInstance().save()}
+                on:click={() => EditorLevelService.getInstance().save()}
         >
             <Icon styles="font-size: 1rem">save</Icon>
             <ToolTip content={LocalizationEN.SAVE}/>

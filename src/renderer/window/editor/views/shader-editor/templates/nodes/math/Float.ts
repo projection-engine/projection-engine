@@ -1,8 +1,8 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 import ShaderEditorUtil from "../../../../../util/ShaderEditorUtil";
+import {MaterialDataTypes} from "@engine-core/engine.enum";
 
 
 export default class Float extends ShaderNode implements Signature{
@@ -18,15 +18,15 @@ export default class Float extends ShaderNode implements Signature{
 			{
 				label: "Dynamic",
 				key: "uniform",
-				type: DATA_TYPES.CHECKBOX,
+				type: MaterialDataTypes.CHECKBOX,
 			},
-			{label: "Value", key: "v", type: DATA_TYPES.FLOAT},
+			{label: "Value", key: "v", type: MaterialDataTypes.FLOAT},
 		], [
-			{label: "Value", key: "FLOAT_VAR", type: DATA_TYPES.FLOAT},
+			{label: "Value", key: "FLOAT_VAR", type: MaterialDataTypes.FLOAT},
 		])
 
 		this.name = "Float"
-        
+
 	}
 
 	get type() {
@@ -41,13 +41,13 @@ export default class Float extends ShaderNode implements Signature{
 			uniformValues.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.FLOAT,
+				type: MaterialDataTypes.FLOAT,
 				data: this.v
 			})
 			uniforms.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.FLOAT
+				type: MaterialDataTypes.FLOAT
 			})
 
 			return `uniform float ${this.uniformName};`

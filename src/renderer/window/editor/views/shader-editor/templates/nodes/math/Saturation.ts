@@ -1,7 +1,7 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
+import {MaterialDataTypes} from "@engine-core/engine.enum";
 
 
 export default class Saturation extends ShaderNode implements Signature{
@@ -12,13 +12,13 @@ export default class Saturation extends ShaderNode implements Signature{
 	x = 0
 	constructor() {
 		super([
-			{label: "RGB", key: "a", accept: [DATA_TYPES.VEC3]},
-			{label: "Adjustment", key: "x", accept: [DATA_TYPES.FLOAT], type: DATA_TYPES.FLOAT}
+			{label: "RGB", key: "a", accept: [MaterialDataTypes.VEC3]},
+			{label: "Adjustment", key: "x", accept: [MaterialDataTypes.FLOAT], type: MaterialDataTypes.FLOAT}
 		], [
-			{label: "Result", key: "saturationRes", type: DATA_TYPES.VEC3}
+			{label: "Result", key: "saturationRes", type: MaterialDataTypes.VEC3}
 		])
 		this.name = "Saturation"
-        
+
 	}
 
 	get type() {

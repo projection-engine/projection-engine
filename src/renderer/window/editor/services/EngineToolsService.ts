@@ -1,20 +1,19 @@
 import Engine from "../../../engine/core/Engine"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import EngineTools from "../../../engine/tools/EngineTools"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
-import ENVIRONMENT from "../../../engine/core/static/ENVIRONMENT"
+import CameraManager from "@engine-core/managers/CameraManager"
 import EngineResources from "../../../engine/core/lib/EngineResources"
-import AbstractSingleton from "../../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../engine/core/AbstractSingleton"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import VisualsStore from "../../shared/stores/VisualsStore"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
-import UIAPI from "../../../engine/core/lib/rendering/UIAPI"
-import GPU from "../../../engine/core/GPU"
-import EngineToolsState from "../../../engine/tools/EngineToolsState"
-import EngineState from "../../../engine/core/EngineState"
-import SETTINGS from "../static/SETTINGS"
-import GizmoState from "../../../engine/tools/gizmo/util/GizmoState"
+import UIManager from "@engine-core/managers/UIManager"
+import GPUState from "@engine-core/states/GPUState"
+import EngineToolsState from "../../../engine/tools/state/EngineToolsState"
+import EngineState from "@engine-core/states/EngineState"
+import GizmoState from "../../../engine/tools/state/GizmoState"
+import {Environment,} from "@engine-core/engine.enum";
 
 export default class EngineToolsService extends AbstractSingleton {
 
@@ -68,10 +67,10 @@ export default class EngineToolsService extends AbstractSingleton {
 
 	static 	#updateEngineSettings() {
 		const visualSettings = VisualsStore.getData()
-		GPU.canvas.width = visualSettings.resolutionX
-		GPU.canvas.height = visualSettings.resolutionY
+		GPUState.canvas.width = visualSettings.resolutionX
+		GPUState.canvas.height = visualSettings.resolutionY
 
-		if (Engine.environment === ENVIRONMENT.DEV)
+		if (Engine.environment === Environment.DEV)
 			EngineTools.bindSystems()
 		else
 			EngineTools.unbindSystems()
@@ -82,22 +81,25 @@ export default class EngineToolsService extends AbstractSingleton {
 		const engine = EngineStore.getData()
 		const settings = SettingsStore.getData()
 		if (engine.executingAnimation)
-			UIAPI.showUI()
-		if (Engine.environment === ENVIRONMENT.DEV && !engine.focusedCamera) {
-			CameraAPI.trackingEntity = undefined
+			UIManager.showUI()
+		if (Engine.environment === Environment.DEV && !engine.focusedCamera) {
+			EngineState.cameraEntityTarget = undefined
 			if (settings.camera !== undefined) {
-				CameraTracker.screenSpaceMovementSpeed = settings.camera.screenSpaceMovementSpeed || 1
-				CameraTracker.movementSpeed = settings.camera.movementSpeed * .1
-				CameraTracker.turnSpeed = settings.camera.turnSpeed * .01
+				EditorCameraSystem.updateProperties({
+					screenSpaceMovementSpeed: settings.camera.screenSpaceMovementSpeed || 1,
+					movementSpeed: settings.camera.movementSpeed * .1,
+					turnSpeed: settings.camera.turnSpeed * .01
+				})
+
 				if (settings.camera.smoothing != null)
-					CameraAPI.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
-				CameraAPI.updateViewTarget(settings.camera)
+					CameraManager.translationSmoothing = settings.screenSpaceMovement ? 0 : settings.camera.smoothing * .001
+				CameraManager.updateViewTarget(settings.camera)
 			}
 		}
 	}
 
 	static 	#updateEngineToolsState() {
-		const settings = SettingsStore.getData() as typeof SETTINGS
+		const settings = SettingsStore.getData()
 		EngineToolsState.gridColor = settings.gridColor
 		EngineToolsState.gridScale = settings.gridScale * 10
 		EngineToolsState.gridThreshold = settings.gridThreshold
@@ -122,6 +124,6 @@ export default class EngineToolsService extends AbstractSingleton {
 		GizmoState.gizmoType =settings.gizmo
 		EngineToolsService.#updateCameraTracker()
 		EngineToolsService.#updateEngineToolsState()
-		CameraAPI.isOrthographic = settings.camera.ortho
+		CameraManager.isOrthographic = settings.camera.ortho
 	}
 }

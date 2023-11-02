@@ -1,3 +1,4 @@
+import UUIDGen from "../../../../../shared/UUIDGen";
 
 export default class ImageProcessor {
 	static #initialized = false
@@ -22,7 +23,7 @@ export default class ImageProcessor {
 	}
 
 	static #doWork(type:string, data:any, callback:Function) {
-		const id = crypto.randomUUID()
+		const id = UUIDGen()
 		ImageProcessor.callbacks.push({
 			callback,
 			id

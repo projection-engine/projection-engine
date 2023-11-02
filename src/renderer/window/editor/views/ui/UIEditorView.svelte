@@ -1,35 +1,37 @@
 <script lang="ts">
     import {onDestroy, onMount} from "svelte"
-    import UIAPI from "../../../../engine/core/lib/rendering/UIAPI"
-    import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
+    import UIManager from "@engine-core/managers/UIManager"
     import Header from "./components/Header.svelte"
 
 
     import EntityHierarchyService from "../../services/engine/EntityHierarchyService"
-    import GPU from "../../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
     import ToastNotificationSystem from "../../../shared/components/alert/ToastNotificationSystem"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import EntitySelectionStore from "../../../shared/stores/EntitySelectionStore";
-    import type Entity from "../../../../engine/core/instances/Entity";
+    import type EditorEntity from "../../../../engine/tools/EditorEntity";
     import SerializedState from "../../components/view/SerializedState.svelte";
+    import EntityManager from "@engine-core/managers/EntityManager";
+    import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     let ref: HTMLElement
     let tooltipRef: HTMLElement
     let isOnSelection = false
     let isAutoUpdateEnabled = true
-    let selectedEntity: Entity
+    let selectedEntity: EditorEntity
 
 
-    const resizeObserver = new ResizeObserver(() => UIAPI.document.style.height = ref.offsetHeight + "px")
+    const resizeObserver = new ResizeObserver(() => UIManager.document.style.height = ref.offsetHeight + "px")
 
-    function clickHandler(e) {
+    function clickHandler(e: MouseEvent) {
         if (!isOnSelection)
             return
-
-        const bBox = e.target.getBoundingClientRect()
-        const entity = QueryAPI.getEntityByID(e.target.getAttribute("data-entityid"))
+        const tElement = (e.target as HTMLElement)
+        const bBox = tElement.getBoundingClientRect()
+        const entity = tElement.getAttribute("data-entityid") as EngineEntity
 
         tooltipRef.style.width = bBox.width + "px"
         tooltipRef.style.height = bBox.height + "px"
@@ -38,11 +40,14 @@
         tooltipRef.style.zIndex = "500"
         tooltipRef.style.opacity = "1"
 
-        if (e.ctrl)
+        if (e.ctrlKey) {
             EntitySelectionStore.setEntitiesSelected([...EntitySelectionStore.getEntitiesSelected(), tooltipRef.hovered.id])
-        else
-            EntitySelectionStore.setEntitiesSelected(entity.id)
-        selectedEntity = entity
+        }
+        else if (EntityManager.entityExists(entity)) {
+            EntitySelectionStore.setEntitiesSelected(entity)
+            selectedEntity = EditorEntityManager.getEntity(entity)
+        }else
+            selectedEntity = undefined
     }
 
     $: if (!isOnSelection && tooltipRef) tooltipRef.style.zIndex = "-1"
@@ -61,7 +66,7 @@
         clearInterval(updateInterval)
         if (isAutoUpdateEnabled) {
             updateInterval = setInterval(async () => {
-                await UIAPI.updateAllElements()
+                await UIManager.updateAllElements()
                 ToastNotificationSystem.getInstance().log(LocalizationEN.UPDATING_UI)
             }, 15000)
         }
@@ -69,10 +74,10 @@
 
     onMount(() => {
         resizeObserver.observe(ref)
-        UIAPI.showUI()
+        UIManager.showUI()
 
-        UIAPI.document.style.height = (GPU.canvas.getBoundingClientRect().height - 28) + "px"
-        UIAPI.document.style.top = "28px"
+        UIManager.document.style.height = (GPUState.canvas.getBoundingClientRect().height - 28) + "px"
+        UIManager.document.style.top = "28px"
         EntityHierarchyService.registerListener(COMPONENT_ID, update)
         update()
     })
@@ -81,9 +86,9 @@
         clearInterval(updateInterval)
         resizeObserver.disconnect()
         EntityHierarchyService.removeListener(COMPONENT_ID)
-        UIAPI.hideUI()
-        UIAPI.document.style.height = "100%"
-        UIAPI.document.style.top = "0"
+        UIManager.hideUI()
+        UIManager.document.style.height = "100%"
+        UIManager.document.style.top = "0"
     })
 </script>
 

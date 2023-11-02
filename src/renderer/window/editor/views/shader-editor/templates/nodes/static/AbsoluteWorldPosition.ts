@@ -1,7 +1,7 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
+import {MaterialDataTypes} from "@engine-core/engine.enum";
 
 
 export default class AbsoluteWorldPosition extends ShaderNode implements Signature{
@@ -12,11 +12,11 @@ export default class AbsoluteWorldPosition extends ShaderNode implements Signatu
 
 	constructor() {
 		super([], [
-			{label: "Coordinates", key: "worldSpacePosition", type: DATA_TYPES.VEC3}
+			{label: "Coordinates", key: "worldSpacePosition", type: MaterialDataTypes.VEC3}
 		])
 
 		this.name = "AbsoluteWorldPosition"
-        
+
 	}
 
 	get type() {

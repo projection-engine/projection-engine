@@ -1,10 +1,8 @@
-import Physics from "../runtime/Physics"
-import StaticUBOs from "./StaticUBOs"
-import VisibilityRenderer from "../runtime/VisibilityRenderer"
-import EngineState from "../EngineState"
-import SSGI from "../runtime/SSGI"
-import StaticFBO from "./StaticFBO"
-import DirectionalShadows from "../runtime/DirectionalShadows"
+import PhysicsSystem from "../system/PhysicsSystem"
+import StaticUBOState from "../states/StaticUBOState"
+import EngineState from "../states/EngineState"
+import GlobalIlluminationSystem from "../system/GlobalIlluminationSystem"
+import StaticFBOState from "../states/StaticFBOState"
 
 
 export default class EngineResources {
@@ -13,35 +11,33 @@ export default class EngineResources {
 	static #SSAO_BUFFER = new Float32Array([EngineState.ssaoRadius, EngineState.ssaoPower, EngineState.ssaoBias, EngineState.ssaoFalloffDistance])
 
 	static updateParams() {
-		Physics.stop()
-		Physics.start()
+		PhysicsSystem.stop()
+		PhysicsSystem.start()
 
-		SSGI.uniformSettings[0] = EngineState.ssgiStepSize
-		SSGI.uniformSettings[1] = EngineState.ssgiMaxSteps
-		SSGI.uniformSettings[2] = EngineState.ssgiStrength
+		GlobalIlluminationSystem.getInstance().updateUniforms()
 
-		StaticUBOs.uberUBO.bind()
+		StaticUBOState.uberUBO.bind()
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.ssrFalloff
-		StaticUBOs.uberUBO.updateData("SSRFalloff", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.uberUBO.updateData("SSRFalloff", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.ssrStepSize
-		StaticUBOs.uberUBO.updateData("stepSizeSSR", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.uberUBO.updateData("stepSizeSSR", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.sssMaxDistance
-		StaticUBOs.uberUBO.updateData("maxSSSDistance", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.uberUBO.updateData("maxSSSDistance", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.sssDepthThickness
-		StaticUBOs.uberUBO.updateData("SSSDepthThickness", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.uberUBO.updateData("SSSDepthThickness", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.sssEdgeFalloff
-		StaticUBOs.uberUBO.updateData("SSSEdgeAttenuation", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.uberUBO.updateData("SSSEdgeAttenuation", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.sssDepthDelta
-		StaticUBOs.uberUBO.updateData("SSSDepthDelta", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.uberUBO.updateData("SSSDepthDelta", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#INTEGER_BUFFER[0] = EngineState.ssrMaxSteps
-		StaticUBOs.uberUBO.updateData("maxStepsSSR", EngineResources.#INTEGER_BUFFER)
+		StaticUBOState.uberUBO.updateData("maxStepsSSR", EngineResources.#INTEGER_BUFFER)
 		EngineResources.#INTEGER_BUFFER[0] = EngineState.sssMaxSteps
-		StaticUBOs.uberUBO.updateData("maxStepsSSS", EngineResources.#INTEGER_BUFFER)
+		StaticUBOState.uberUBO.updateData("maxStepsSSS", EngineResources.#INTEGER_BUFFER)
 		EngineResources.#INTEGER_BUFFER[0] = EngineState.ssaoEnabled ? 1 : 0
-		StaticUBOs.uberUBO.updateData("hasAmbientOcclusion", EngineResources.#INTEGER_BUFFER)
+		StaticUBOState.uberUBO.updateData("hasAmbientOcclusion", EngineResources.#INTEGER_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.ssaoFalloffDistance
-		StaticUBOs.uberUBO.updateData("SSAOFalloff", EngineResources.#FLOAT_BUFFER)
-		StaticUBOs.uberUBO.unbind()
+		StaticUBOState.uberUBO.updateData("SSAOFalloff", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.uberUBO.unbind()
 
 
 		EngineResources.#SSAO_BUFFER[0] = EngineState.ssaoRadius
@@ -49,39 +45,39 @@ export default class EngineResources {
 		EngineResources.#SSAO_BUFFER[2] = EngineState.ssaoBias
 		EngineResources.#SSAO_BUFFER[3] = EngineState.ssaoFalloffDistance
 
-		StaticUBOs.ssaoUBO.bind()
-		StaticUBOs.ssaoUBO.updateData("settings", EngineResources.#SSAO_BUFFER)
-		StaticUBOs.ssaoUBO.unbind()
+		StaticUBOState.ssaoUBO.bind()
+		StaticUBOState.ssaoUBO.updateData("settings", EngineResources.#SSAO_BUFFER)
+		StaticUBOState.ssaoUBO.unbind()
 
 
-		StaticUBOs.frameCompositionUBO.bind()
+		StaticUBOState.frameCompositionUBO.bind()
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.fxaaSpanMax
-		StaticUBOs.frameCompositionUBO.updateData("FXAASpanMax", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.frameCompositionUBO.updateData("FXAASpanMax", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#INTEGER_BUFFER[0] = EngineState.fxaaEnabled ? 1 : 0
-		StaticUBOs.frameCompositionUBO.updateData("useFXAA", EngineResources.#INTEGER_BUFFER)
+		StaticUBOState.frameCompositionUBO.updateData("useFXAA", EngineResources.#INTEGER_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.fxaaReduceMin
-		StaticUBOs.frameCompositionUBO.updateData("FXAAReduceMin", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.frameCompositionUBO.updateData("FXAAReduceMin", EngineResources.#FLOAT_BUFFER)
 		EngineResources.#FLOAT_BUFFER[0] = EngineState.fxaaReduceMul
-		StaticUBOs.frameCompositionUBO.updateData("FXAAReduceMul", EngineResources.#FLOAT_BUFFER)
-		StaticUBOs.frameCompositionUBO.unbind()
+		StaticUBOState.frameCompositionUBO.updateData("FXAAReduceMul", EngineResources.#FLOAT_BUFFER)
+		StaticUBOState.frameCompositionUBO.unbind()
 
-		VisibilityRenderer.needsUpdate = true
+		EngineState.visibilityNeedsUpdate = true
 		EngineResources.#allocateDirectionalShadowsBuffers()
 
-		DirectionalShadows.resolutionPerTexture = DirectionalShadows.maxResolution / (EngineState.shadowAtlasQuantity || 1)
-		DirectionalShadows.atlasRatio = DirectionalShadows.maxResolution / DirectionalShadows.resolutionPerTexture
-		StaticUBOs.uberUBO.bind()
-		StaticUBOs.uberUBO.updateData("shadowMapsQuantity", new Float32Array([EngineState.shadowAtlasQuantity]))
-		StaticUBOs.uberUBO.updateData("shadowMapResolution", new Float32Array([EngineState.shadowMapResolution]))
-		StaticUBOs.uberUBO.unbind()
+		EngineState.directionalLightsResolutionPerTexture = EngineState.directionalLightsMaxResolution / (EngineState.shadowAtlasQuantity || 1)
+		EngineState.directionalLightsAtlasRatio = EngineState.directionalLightsMaxResolution / EngineState.directionalLightsResolutionPerTexture
+		StaticUBOState.uberUBO.bind()
+		StaticUBOState.uberUBO.updateData("shadowMapsQuantity", new Float32Array([EngineState.shadowAtlasQuantity]))
+		StaticUBOState.uberUBO.updateData("shadowMapResolution", new Float32Array([EngineState.shadowMapResolution]))
+		StaticUBOState.uberUBO.unbind()
 	}
 
 	static #allocateDirectionalShadowsBuffers() {
-		if (DirectionalShadows.maxResolution === EngineState.shadowMapResolution || EngineState.shadowMapResolution < 1024)
+		if (EngineState.directionalLightsMaxResolution === EngineState.shadowMapResolution || EngineState.shadowMapResolution < 1024)
 			return
-		DirectionalShadows.maxResolution = EngineState.shadowMapResolution
-		StaticFBO.updateDirectionalShadowsFBO()
-		DirectionalShadows.changed = true
+		EngineState.directionalLightsMaxResolution = EngineState.shadowMapResolution
+		StaticFBOState.updateDirectionalShadowsFBO()
+		EngineState.directionalLightsChanged = true
 	}
 
 }

@@ -8,7 +8,8 @@
     "package": " yarn build && electron-forge package",
     "build": "node esbuild prod",
     "make": "electron-forge make",
-    "publish": "electron-forge publish"
+    "publish": "electron-forge publish",
+    "test": "jest"
   },
   "keywords": [],
   "author": "facobackup",
@@ -21,7 +22,8 @@
     "hotkeys-js": "3.10.1",
     "image-size": "1.0.2",
     "sharp": "0.32.4",
-    "sortablejs": "1.15.0"
+    "sortablejs": "1.15.0",
+    "uuidv4": "^5.0.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "6.2.1",
@@ -31,13 +33,17 @@
     "@types/sortablejs": "1.15.1",
     "@types/webgl2": "0.0.7",
     "concurrently": "8.2.0",
-    "electron": "25.3.2",
+    "electron": "26.2.0",
     "esbuild": "0.18.17",
     "esbuild-plugin-copy": "2.1.1",
     "esbuild-svelte": "0.7.4",
     "html-to-image": "^1.11.11",
     "svelte": "4.1.1",
     "svelte-preprocess": "5.0.4",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "@jest/globals": "^29.6.4",
+    "@types/jest": "^29.5.4",
+    "jest": "^29.6.4",
+    "ts-jest": "^29.1.1"
   }
 }

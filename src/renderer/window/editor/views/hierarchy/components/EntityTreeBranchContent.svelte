@@ -4,15 +4,15 @@
     import EntityNamingService from "../../../services/engine/EntityNamingService";
     import ToolTip from "../../../../shared/components/tooltip/ToolTip.svelte";
     import Icon from "../../../../shared/components/icon/Icon.svelte";
-    import Entity from "../../../../../engine/core/instances/Entity";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import ChangesTrackerStore from "../../../../shared/stores/ChangesTrackerStore";
-    import EntityUpdateService from "../../../services/engine/EntityUpdateService";
     import ModalInput from "../../../components/modal-input/ModalInput.svelte";
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN";
     import HierarchyUtil from "../../../util/HierarchyUtil";
     import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    export let entity: Entity
+    export let entity: EditorEntity
     export let lockedEntity: string
     export let isOpen: boolean
     export let isOnSearch: boolean
@@ -26,21 +26,21 @@
     $: draggable.disabled = isOnEdit
 
 
-    const ID = crypto.randomUUID()
+    const ID = UUIDGen()
     let entityName = entity.name
     let entityID
     let components = []
     let children = 0
     $: {
         if (entityID !== entity.id) {
-            if (entityID)
-                EntityUpdateService.removeListener(entityID, ID)
-            EntityUpdateService.addListener(entity.id, ID, () => {
-                entityName = entity.name
-                components = HierarchyUtil.mapComponents(entity)
-                children = entity.children.array.length
-            })
-            children = entity.children.array.length
+            // if (entityID)
+            //     EntityManager.removeListener(entityID, ID)
+            // EntityManager.addListener(entity.id, ID, () => {
+            //     entityName = entity.name
+            //     components = HierarchyUtil.mapComponents(entity)
+            //     children = entity.children.array.length
+            // })
+            children = entity.children.length
             components = HierarchyUtil.mapComponents(entity)
             entityName = entity.name
             entityID = entity.id
@@ -62,25 +62,22 @@
     })
     onDestroy(() => {
         draggable.onDestroy()
-        EntityUpdateService.removeListener(entityID, ID)
+        // EntityManager.removeListener(entityID, ID)
     })
 
     $: isLocked = lockedEntity === entity.id
 </script>
 
-<div class="info hierarchy-branch" data-sveltenode={entity.id} on:click={e => HierarchyUtil.updateSelection(entity.id, e.ctrlKey)}>
+<div class="info hierarchy-branch" data-sveltenode={entity.id}
+     on:click={e => HierarchyUtil.updateSelection(entity.id, e.ctrlKey)}>
     <button
 
             data-sveltelocked={isLocked ? "-" : ""}
             class="button-icon hierarchy-branch"
-            style={`--button-color: ${entity.isCollection ? "rgb(" + entity.colorIdentifier + ")" : !isLocked ? "var(--folder-color-darker)" : "var(--folder-color)" }`}
+            style={`--button-color: ${"rgb(" + entity.colorIdentifier + ")"}`}
             on:click={() => EntitySelectionStore.setLockedEntity(entity.id)}
     >
-        {#if entity.isCollection}
-            <Icon styles="font-size: 1rem">inventory_2</Icon>
-        {:else}
-            <Icon styles="font-size: 1rem">view_in_ar</Icon>
-        {/if}
+        <Icon styles="font-size: 1rem">inventory_2</Icon>
     </button>
 
     <div bind:this={ref} on:dblclick={() => isOnEdit = true}>

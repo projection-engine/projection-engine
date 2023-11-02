@@ -1,9 +1,8 @@
 import ShaderNode from "../ShaderNode"
-import DATA_TYPES from "../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import EditorFSUtil from "../../../../util/EditorFSUtil"
 import Signature from "../Signature"
-
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class TextureSample extends ShaderNode implements Signature {
 	static signature = "TextureSample"
@@ -31,16 +30,16 @@ export default class TextureSample extends ShaderNode implements Signature {
 	constructor() {
 		super(
 			[
-				{label: "UV", key: "uv", accept: [DATA_TYPES.VEC2]},
-				{label: "Sampler", key: "texture", type: DATA_TYPES.TEXTURE}
+				{label: "UV", key: "uv", accept: [MaterialDataTypes.VEC2]},
+				{label: "Sampler", key: "texture", type: MaterialDataTypes.TEXTURE}
 			],
 			[
-				{label: "Sampler", key: "sampler", type: DATA_TYPES.TEXTURE, disabled: true},
-				{label: "RGB", key: "rgb", type: DATA_TYPES.VEC3, disabled: true},
-				{label: "R", key: "r", type: DATA_TYPES.FLOAT, color: "red", disabled: true},
-				{label: "G", key: "g", type: DATA_TYPES.FLOAT, color: "green", disabled: true},
-				{label: "B", key: "b", type: DATA_TYPES.FLOAT, color: "blue", disabled: true},
-				{label: "Alpha", key: "a", type: DATA_TYPES.FLOAT, color: "white", disabled: true}
+				{label: "Sampler", key: "sampler", type: MaterialDataTypes.TEXTURE, disabled: true},
+				{label: "RGB", key: "rgb", type: MaterialDataTypes.VEC3, disabled: true},
+				{label: "R", key: "r", type: MaterialDataTypes.FLOAT, color: "red", disabled: true},
+				{label: "G", key: "g", type: MaterialDataTypes.FLOAT, color: "green", disabled: true},
+				{label: "B", key: "b", type: MaterialDataTypes.FLOAT, color: "blue", disabled: true},
+				{label: "Alpha", key: "a", type: MaterialDataTypes.FLOAT, color: "white", disabled: true}
 			]
 		)
 		this.inputs.find(i => i.key === "texture").onChange = (v) => {
@@ -73,13 +72,13 @@ export default class TextureSample extends ShaderNode implements Signature {
 					uniforms.push({
 						label: this.name,
 						key: this.uniformName,
-						type: DATA_TYPES.TEXTURE,
+						type: MaterialDataTypes.TEXTURE,
 					})
 					uniformValues.push({
 						label: this.name,
 						key: this.uniformName,
 						data: res.id,
-						type: DATA_TYPES.TEXTURE
+						type: MaterialDataTypes.TEXTURE
 					})
 				}
 			} catch (error) {

@@ -1,29 +1,29 @@
-<script>
+<script lang="ts">
     import {onDestroy, onMount} from "svelte"
 
     import SveltePortal from "../../lib/SveltePortal"
 
-    export let handleClose
-    export let styles
-    let content
+    export let handleClose: VoidFunction
+    export let styles: string
 
+    let content: HTMLElement
     function handler(event) {
-    	if (!content.contains(event.target)) {
-    		handleClose()
-    		content.style.display = "none"
-    		content.style.zIndex = "-1"
-    	}
+        if (!content.contains(event.target) && handleClose != null) {
+            handleClose()
+            content.style.display = "none"
+            content.style.zIndex = "-1"
+        }
     }
 
     const portal = new SveltePortal(999)
     onMount(() => {
-    	portal.create(content)
-    	portal.open()
-    	document.addEventListener("mousedown", handler)
+        portal.create(content)
+        portal.open()
+        document.addEventListener("mousedown", handler)
     })
     onDestroy(() => {
-    	portal.close()
-    	document.removeEventListener("mousedown", handler)
+        portal.close()
+        document.removeEventListener("mousedown", handler)
     })
 </script>
 

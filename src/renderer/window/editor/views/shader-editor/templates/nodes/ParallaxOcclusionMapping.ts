@@ -1,10 +1,10 @@
 import ShaderNode from "../ShaderNode"
-import DATA_TYPES from "../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../Signature"
 import Material from "./Material"
 import ShaderEditorUtil from "../../../../util/ShaderEditorUtil"
 
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class ParallaxOcclusionMapping extends ShaderNode implements Signature{
 	static signature = "ParallaxOcclusionMapping"
@@ -19,26 +19,26 @@ export default class ParallaxOcclusionMapping extends ShaderNode implements Sign
 			{
 				label: "Height scale",
 				key: "heightScale",
-				type: DATA_TYPES.FLOAT,
+				type: MaterialDataTypes.FLOAT,
 				min: 0,
 				max: 10,
-				accept: [DATA_TYPES.FLOAT]
+				accept: [MaterialDataTypes.FLOAT]
 			},
 			{
 				label: "Layers",
 				key: "layers",
-				type: DATA_TYPES.INT,
+				type: MaterialDataTypes.INT,
 				min: 1,
 				max: 64,
-				accept: [DATA_TYPES.FLOAT]
+				accept: [MaterialDataTypes.FLOAT]
 			},
 			{
 				label: "Height Map",
 				key: "heightMap",
-				accept: [DATA_TYPES.TEXTURE]
+				accept: [MaterialDataTypes.TEXTURE]
 			}
 		], [
-			{label: "UVs", key: "UVs", type: DATA_TYPES.VEC2}
+			{label: "UVs", key: "UVs", type: MaterialDataTypes.VEC2}
 		])
 		this.name = "ParallaxOcclusionMapping"
 
@@ -52,11 +52,11 @@ export default class ParallaxOcclusionMapping extends ShaderNode implements Sign
 		heightMap,
 		layers = {
 			name: ShaderEditorUtil.checkGlslFloat(this.layers),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 		heightScale = {
 			name: ShaderEditorUtil.checkGlslFloat(this.heightScale),
-			type: DATA_TYPES.FLOAT
+			type: MaterialDataTypes.FLOAT
 		},
 	}, index) {
 		this.UVs = "UVs" + index

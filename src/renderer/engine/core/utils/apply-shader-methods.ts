@@ -1,19 +1,18 @@
-import PB_LIGHT_COMPUTATION from "../shaders/uber-shader/PB_LIGHT_COMPUTATION.glsl"
-
-import POST_PROCESSING_UNIFORMS from "../shaders/functions/POST_PROCESSING_UNIFORMS.glsl"
-import COMPUTE_AREA_LIGHT from "../shaders/uber-shader/lights/COMPUTE_AREALIGHT.glsl"
-import RAY_MARCHER from "../shaders/functions/RAY_MARCHER.glsl"
-import ACES from "../shaders/functions/ACES.glsl"
-import DEPTH_UTILS from "../shaders/functions/SCENE_DEPTH_UTILS.glsl"
-import COMPUTE_LIGHTS from "../shaders/uber-shader/lights/COMPUTE_DIRECTIONAL_LIGHTS.glsl"
-import COMPUTE_POINT_LIGHTS from "../shaders/uber-shader/lights/COMPUTE_POINT_LIGHTS.glsl"
-import COMPUTE_SPOTLIGHTS from "../shaders/uber-shader/lights/COMPUTE_SPOTLIGHT.glsl"
-import BRDF_FUNCTIONS from "../shaders/uber-shader/lights/BRDF_FUNCTIONS.glsl"
-import STRONG_BLUR from "../shaders/functions/STRONG_BLUR.glsl"
-import UBER_ATTRIBUTES from "../shaders/uber-shader/ATTRIBUTES.glsl"
-import SSS from "../shaders/uber-shader/lights/SSS.glsl"
-import UberShader from "../resource-libs/UberShader"
-import {StaticUBONames} from "../lib/StaticUBOs"
+import PB_LIGHT_COMPUTATION from "@engine-core/shaders/PB_LIGHT_COMPUTATION.glsl"
+import POST_PROCESSING_UNIFORMS from "@engine-core/shaders/POST_PROCESSING_UNIFORMS.glsl"
+import COMPUTE_AREA_LIGHT from "@engine-core/shaders/COMPUTE_AREALIGHT.glsl"
+import RAY_MARCHER from "@engine-core/shaders/RAY_MARCHER.glsl"
+import ACES from "@engine-core/shaders/ACES.glsl"
+import DEPTH_UTILS from "@engine-core/shaders/SCENE_DEPTH_UTILS.glsl"
+import COMPUTE_LIGHTS from "@engine-core/shaders/COMPUTE_DIRECTIONAL_LIGHTS.glsl"
+import COMPUTE_POINT_LIGHTS from "@engine-core/shaders/COMPUTE_POINT_LIGHTS.glsl"
+import COMPUTE_SPOTLIGHTS from "@engine-core/shaders/COMPUTE_SPOTLIGHT.glsl"
+import BRDF_FUNCTIONS from "@engine-core/shaders/BRDF_FUNCTIONS.glsl"
+import STRONG_BLUR from "@engine-core/shaders/STRONG_BLUR.glsl"
+import UBER_ATTRIBUTES from "@engine-core/shaders/ATTRIBUTES.glsl"
+import SSS from "@engine-core/shaders/SSS.glsl"
+import {StaticUBONames} from "../states/StaticUBOState"
+import GPUState from "@engine-core/states/GPUState";
 
 const METHODS = {
 	cameraViewInfo: "//import(cameraViewInfo)",
@@ -61,7 +60,7 @@ export default function applyShaderMethods(shaderCode) {
 				response = response.replaceAll(METHODS[key], COMPUTE_AREA_LIGHT)
 				break
 			case key === "MAX_LIGHTS":
-				response = response.replaceAll(METHODS[key], "#define MAX_LIGHTS " + UberShader.MAX_LIGHTS)
+				response = response.replaceAll(METHODS[key], "#define MAX_LIGHTS " + GPUState.MAX_LIGHTS)
 				break
 			case key === "blur":
 				response = response.replaceAll(METHODS[key], STRONG_BLUR)

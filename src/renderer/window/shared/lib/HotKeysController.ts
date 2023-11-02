@@ -1,4 +1,4 @@
-import KEYS from "../../editor/static/KEYS"
+import KEYS from "../../editor/static/KeyboardKeys"
 
 export default class HotKeysController {
 	static activeView

@@ -1,107 +1,129 @@
-import COMPONENTS from "../../../../engine/core/static/COMPONENTS"
 import {vec3, vec4} from "gl-matrix"
-
-
-import CameraAPI from "../../../../engine/core/lib/utils/CameraAPI"
 import SettingsStore from "../../../shared/stores/SettingsStore"
-import EntityAPI from "../../../../engine/core/lib/utils/EntityAPI"
-import MeshComponent from "../../../../engine/core/instances/components/MeshComponent"
-import LightComponent from "../../../../engine/core/instances/components/LightComponent"
-import EntityHierarchyService from "./EntityHierarchyService"
+import MeshComponent from "@engine-core/lib/components/MeshComponent"
+import LightComponent from "@engine-core/lib/components/LightComponent"
 import EngineStateService from "./EngineStateService"
-import Engine from "../../../../engine/core/Engine"
 import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
+import {Components} from "@engine-core/engine.enum";
+import EntityManager from "@engine-core/managers/EntityManager";
+import EditorEntityManager from "../../../../engine/tools/managers/EditorEntityManager";
+import EditorEntity from "../../../../engine/tools/EditorEntity";
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import TerrainComponent from "@engine-core/lib/components/TerrainComponent";
+import CameraState from "@engine-core/states/CameraState";
 
+function create(_, k: string, descriptor: PropertyDescriptor) {
+    const original = descriptor.value
+    descriptor.value = function (...args) {
+        let result: EditorEntity|undefined
+        EntityManager.delayedOperation(() => {
+            result = original.call(this, ...args)
+            return []
+        })
+        EngineStateService.add(result)
+        EntityFactoryService.translateEntity(result.id)
+        return result
+    }
+}
 
 export default class EntityFactoryService {
-	static translateEntity(entity, rotation = CameraAPI.rotationBuffer, translation = CameraAPI.translationBuffer) {
-		if (SettingsStore.getData().spawnOnOrigin) {
-			vec3.copy(entity._translation, [0, 0, 0])
-			entity.__changedBuffer[0] = 1
-			return
-		}
+    static translateEntity(entity: EngineEntity) {
+        const transformComponent = EntityManager.getComponent<TransformationComponent>(entity, Components.TRANSFORMATION)
+        if(!transformComponent)
+            return;
+        if (SettingsStore.getData().spawnOnOrigin) {
+            vec3.copy(transformComponent.translation, [0, 0, 0])
+            transformComponent.__changedBuffer[0] = 1
+            return
+        }
 
-		const position = <vec4>[0, 0, -(SettingsStore.getData().spawnDistanceFromCamera || 10), 1]
-		vec4.transformQuat(position, position, rotation)
-		vec3.add(entity._translation, translation, <vec3>position)
-		entity.__changedBuffer[0] = 1
-	}
+        const position = <vec4>[0, 0, -(SettingsStore.getData().spawnDistanceFromCamera || 10), 1]
+        vec4.transformQuat(position, position, CameraState.rotationBuffer)
+        vec3.add(transformComponent._translation, CameraState.translationBuffer, <vec3>position)
+        transformComponent.__changedBuffer[0] = 1
+    }
 
-	static createEmpty(collection?:boolean) {
-		const entity = EntityAPI.getNewEntityInstance(undefined, collection)
-		entity.name = collection ? LocalizationEN.NEW_COLLECTION : LocalizationEN.NEW_ENTITY
-		EngineStateService.add(entity)
-	}
+    @create
+    static createEmpty() {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.NEW_ENTITY
+        return entity
+    }
 
-	static createMesh(id) {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.MESH_RENDERER
-		const m = entity.addComponent<MeshComponent>(COMPONENTS.MESH)
-		entity.addComponent(COMPONENTS.CULLING)
-		m.meshID = id
-		EntityFactoryService.translateEntity(entity)
-		EngineStateService.add(entity)
+    @create
+    static createMesh(meshId?: string) {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.MESH_RENDERER
+        const m = EntityManager.addComponent(entity.id, Components.MESH) as MeshComponent
+        m.meshID = meshId
+        return entity
 
-	}
+    }
 
-	static createProbe() {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.LIGHT_PROBE
-		entity.addComponent(COMPONENTS.LIGHT_PROBE)
-		EntityFactoryService.translateEntity(entity)
-		EngineStateService.add(entity)
-	}
+    @create
+    static createTerrain(terrainId?: string) {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.TERRAIN
+        const component = EntityManager.addComponent(entity.id, Components.TERRAIN) as TerrainComponent
+        component.terrainID = terrainId
+        return entity
+    }
 
-	static createAtmosphere() {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.ATMOSPHERE_RENDERER
-		entity.addComponent(COMPONENTS.ATMOSPHERE)
-		EntityFactoryService.translateEntity(entity)
-		EngineStateService.add(entity)
-	}
+    @create
+    static createProbe() {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.LIGHT_PROBE
+        EntityManager.addComponent(entity.id, Components.LIGHT_PROBE)
 
-	static createLight(type) {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.NEW_LIGHT
-		EntityFactoryService.translateEntity(entity)
-		const comp = entity.addComponent<LightComponent>(COMPONENTS.LIGHT)
-		comp.type = type
-		EngineStateService.add(entity)
-	}
+        return entity
+    }
 
-	static createCamera() {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.CAMERA
-		entity.addComponent(COMPONENTS.CAMERA)
-		EntityFactoryService.translateEntity(entity)
-		EngineStateService.add(entity)
-	}
+    @create
+    static createAtmosphere() {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.ATMOSPHERE_RENDERER
+        EntityManager.addComponent(entity.id, Components.ATMOSPHERE)
+        return entity
+    }
 
-	static createUI() {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.UI_RENDERER
-		entity.addComponent(COMPONENTS.UI)
-		EntityFactoryService.translateEntity(entity)
-		EngineStateService.add(entity)
-	}
+    @create
+    static createLight(type) {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.NEW_LIGHT
+        const component = EntityManager.addComponent(entity.id, Components.LIGHT) as LightComponent
+        component.type = type
+        return entity
+    }
 
-	static createSprite() {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.SPRITE_RENDERER
-		entity.addComponent(COMPONENTS.SPRITE)
-		EngineStateService.add(entity)
-	}
+    @create
+    static createCamera() {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.CAMERA
+        EntityManager.addComponent(entity.id, Components.CAMERA)
+        return entity
+    }
 
-	static createDecal() {
-		const entity = EntityAPI.getNewEntityInstance()
-		entity.name = LocalizationEN.DECAL_RENDERER
-		entity.addComponent(COMPONENTS.DECAL)
-		EngineStateService.add(entity)
-	}
+    @create
+    static createUI() {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.UI_RENDERER
+        EntityManager.addComponent(entity.id, Components.UI)
+        return entity
+    }
 
-	static toggleEntityVisibility(entityID:string, noSubmit?:boolean) {
-		EntityAPI.toggleVisibility(Engine.entities.get(entityID))
-		if (!noSubmit)
-			EntityHierarchyService.updateHierarchy()
-	}
+    @create
+    static createSprite() {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.SPRITE_RENDERER
+        EntityManager.addComponent(entity.id, Components.SPRITE)
+        return entity
+    }
+
+    @create
+    static createDecal() {
+        const entity = EditorEntityManager.create()
+        entity.name = LocalizationEN.DECAL_RENDERER
+        EntityManager.addComponent(entity.id, Components.DECAL)
+        return entity
+    }
 }

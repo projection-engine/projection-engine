@@ -5,10 +5,10 @@ import ElectronWindowService from "../../ElectronWindowService"
 import {mat4} from "gl-matrix"
 import * as fs from "fs"
 import * as path from "path"
-import * as crypto from "node:crypto"
 import FileTypes from "../../../shared/enums/FileTypes"
-import AbstractSingleton from "../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../renderer/engine/core/AbstractSingleton"
 import FileSystemUtil from "../FileSystemUtil"
+import UUIDGen from "../../../shared/UUIDGen";
 
 const CACHE_MATRIX = new Float32Array(16)
 
@@ -92,16 +92,16 @@ export default class AssimpService extends AbstractSingleton {
 				collectionPath,
 				JSON.stringify(collection)
 			)
-			await FileSystemUtil.createRegistryEntry(crypto.randomUUID(), collectionPath.replace(ElectronWindowService.getInstance().pathToAssets, ""))
+			await FileSystemUtil.createRegistryEntry(UUIDGen(), collectionPath.replace(ElectronWindowService.getInstance().pathToAssets, ""))
 		} catch (err) {
 			console.error(err)
 		}
 	}
- 
+
 	async #createMesh(dir, meshes, index, data, collectionName): Promise<void> {
 		const PRIMITIVE_PATH = path.resolve(dir + path.sep + collectionName + path.sep + "primitives")
 		const mesh = data[index]
-		const meshID = crypto.randomUUID()
+		const meshID = UUIDGen()
 		meshes[index] = meshID
 
 		const indices = mesh.faces.flat(), uvs = mesh.texturecoords[0]
@@ -133,7 +133,7 @@ export default class AssimpService extends AbstractSingleton {
 	#mapChildren(collection, meshes: MutableObject, node: NodeType, parent?: string): undefined {
 		if (!node)
 			return
-		const nodeID = crypto.randomUUID()
+		const nodeID = UUIDGen()
 		const {transformation, children, name} = node
 
 		// @ts-ignore

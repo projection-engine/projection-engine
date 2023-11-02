@@ -13,8 +13,9 @@
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import ContentBrowserUtil from "../../../util/ContentBrowserUtil"
     import ContentBrowserStore from "../../../../shared/stores/ContentBrowserStore"
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     const CARD_SIZE = 115
     export let fileType
     export let setFileType

@@ -1,28 +1,27 @@
-import ViewTabItem from "../static/ViewTabItem"
-import VIEWPORT_TABS from "../static/VIEWPORT_TABS"
-import CameraTracker from "../../../engine/tools/utils/CameraTracker"
+import VIEWPORT_TABS from "../static/CENTRAL_VIEWS"
+import EditorCameraSystem from "../../../engine/tools/systems/EditorCameraSystem"
 import Engine from "../../../engine/core/Engine"
-import GPU from "../../../engine/core/GPU"
-import PickingAPI from "../../../engine/core/lib/utils/PickingAPI"
-import QueryAPI from "../../../engine/core/lib/utils/QueryAPI"
-import VisibilityRenderer from "../../../engine/core/runtime/VisibilityRenderer"
+import GPUState from "@engine-core/states/GPUState"
+import PickingUtil from "@engine-core/utils/PickingUtil"
 import EngineTools from "../../../engine/tools/EngineTools"
 import EngineStore from "../../shared/stores/EngineStore"
 import SettingsStore from "../../shared/stores/SettingsStore"
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
-import VIEWS from "../components/view/static/VIEWS"
-import StaticFBO from "../../../engine/core/lib/StaticFBO";
+import VIEWS from "../static/VIEWS"
+import StaticFBOState from "@engine-core/states/StaticFBOState";
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore";
+import EngineState from "@engine-core/states/EngineState";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class ViewportUtil {
     static updateViewport(currentView: ViewTabItem) {
         if (EngineStore.getData().focusedCamera)
             return
         if (currentView.type === VIEWPORT_TABS.EDITOR) {
-            CameraTracker.startTracking()
+            EditorCameraSystem.startTracking()
             Engine.start()
         } else {
-            CameraTracker.stopTracking()
+            EditorCameraSystem.stopTracking()
             Engine.stop()
         }
     }
@@ -38,7 +37,7 @@ export default class ViewportUtil {
 
     static onViewportClick(event, mouseDelta, settings, setContext) {
         const MAX_DELTA = 50, LEFT_BUTTON = 0
-        if (GPU.canvas !== event.target || event.button !== LEFT_BUTTON)
+        if (GPUState.canvas !== event.target || event.button !== LEFT_BUTTON)
             return
         const deltaX = Math.abs(mouseDelta.x - event.clientX)
         const deltaY = Math.abs(mouseDelta.y - event.clientY)
@@ -47,8 +46,8 @@ export default class ViewportUtil {
         const selected = EntitySelectionStore.getEntitiesSelected()
         EngineTools.drawIconsToBuffer()
 
-        const clickedEntity = PickingAPI.readEntityID(event.clientX, event.clientY, 1, StaticFBO.visibility.FBO)
-        const entity = QueryAPI.getEntityByPickerID(clickedEntity)
+        const clickedEntity = PickingUtil.readEntityID(event.clientX, event.clientY, 1, StaticFBOState.visibility.FBO)
+        const entity = EntityManager.getEntityWithPickIndex(clickedEntity)
 
         if (!entity) {
             setContext([])
@@ -56,14 +55,14 @@ export default class ViewportUtil {
         }
 
         if (event.ctrlKey) {
-            if (selected.find(e => e === entity.id))
-                setContext(selected.filter(s => s !== entity.id))
+            if (selected.find(e => e === entity))
+                setContext(selected.filter(s => s !== entity))
             else
-                setContext([...selected, entity.id])
+                setContext([...selected, entity])
         } else
-            setContext([entity.id])
+            setContext([entity])
 
-        VisibilityRenderer.needsUpdate = true
+        EngineState.visibilityNeedsUpdate = true
     }
 
     static addNewTab() {

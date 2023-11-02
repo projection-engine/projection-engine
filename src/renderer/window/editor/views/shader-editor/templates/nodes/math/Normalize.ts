@@ -1,7 +1,7 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
+import {MaterialDataTypes} from "@engine-core/engine.enum";
 
 
 export default class Normalize extends ShaderNode implements Signature{
@@ -11,13 +11,13 @@ export default class Normalize extends ShaderNode implements Signature{
 	}
 	constructor() {
 		super([
-			{label: "Vector", key: "a", accept: [DATA_TYPES.VEC2,DATA_TYPES.VEC3,DATA_TYPES.VEC4]}
+			{label: "Vector", key: "a", accept: [MaterialDataTypes.VEC2,MaterialDataTypes.VEC3,MaterialDataTypes.VEC4]}
 		], [
-			{label: "Result", key: "normalizeRes", type: DATA_TYPES.UNDEFINED}
+			{label: "Result", key: "normalizeRes", type: MaterialDataTypes.UNDEFINED}
 		])
 		this.equalTypeInputs = true
 		this.name = "Normalize"
-        
+
 	}
 
 	get type() {

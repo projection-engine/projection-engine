@@ -9,12 +9,12 @@
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import LocalizationEN from "../../../../../../../shared/enums/LocalizationEN"
     import FileTypes from "../../../../../../../shared/enums/FileTypes"
-    import ContentBrowserUtil from "../../../../util/ContentBrowserUtil";
     import {onDestroy, onMount} from "svelte";
     import ContentBrowserStore from "../../../../../shared/stores/ContentBrowserStore";
+    import UUIDGen from "../../../../../../../shared/UUIDGen";
 
     const VALID = [FileTypes.TEXTURE, FileTypes.COLLECTION, FileTypes.MATERIAL]
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
 
     let selectedFile
     let data

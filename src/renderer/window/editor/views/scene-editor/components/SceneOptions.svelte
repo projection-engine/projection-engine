@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import SettingsStore from "../../../../shared/stores/SettingsStore"
     import OptionDropdown from "../../../../shared/components/dropdown/OptionDropdown.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
@@ -10,11 +10,11 @@
     import Checkbox from "../../../../shared/components/checkbox/Checkbox.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
     import {onDestroy, onMount} from "svelte"
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    /** @type boolean */
-    export let isOnGizmo
+    export let isOnGizmo: boolean
 
-    const COMPONENT_ID = crypto.randomUUID()
+    const COMPONENT_ID = UUIDGen()
     let options = []
     let spawnDistanceFromCamera
     let shadingModelLabel

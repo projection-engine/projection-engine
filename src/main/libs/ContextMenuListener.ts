@@ -3,7 +3,7 @@ import ElectronWindowService from "../ElectronWindowService"
 
 import {ipcMain, Menu,} from "electron"
 import IPCRoutes from "../../shared/enums/IPCRoutes"
-import AbstractSingleton from "../../shared/AbstractSingleton"
+import AbstractSingleton from "../../renderer/engine/core/AbstractSingleton"
 
 
 export default class ContextMenuListener extends AbstractSingleton {

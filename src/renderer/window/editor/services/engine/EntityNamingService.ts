@@ -1,9 +1,10 @@
-import QueryAPI from "../../../../engine/core/lib/utils/QueryAPI"
-import Entity from "../../../../engine/core/instances/Entity"
-import EntityUpdateService from "./EntityUpdateService"
+import EditorEntity from "../../../../engine/tools/EditorEntity"
+import EntityManager from "@engine-core/managers/EntityManager"
+import EntityHierarchyService from "./EntityHierarchyService";
+import UUIDGen from "../../../../../shared/UUIDGen";
 
 export default class EntityNamingService {
-	static #byName = new Map<string, string>()
+	static #byName = new Map<string, EngineEntity>()
 	static get byName(){
 		return EntityNamingService.#byName
 	}
@@ -11,18 +12,16 @@ export default class EntityNamingService {
 	static clear(){
 		EntityNamingService.#byName.clear()
 	}
-	static set byName(data:Map<string, string>){
-		if(data instanceof Map)
-			EntityNamingService.#byName = data
-	}
-	static renameEntity(newName:string, entity:Entity) {
+
+	static renameEntity(newName:string, entity:EditorEntity) {
 		const found = EntityNamingService.#byName.get(newName)
 		let validName = true
 		if (found !== entity.id)
-			validName = !QueryAPI.getEntityByID(found)
+			validName = !EntityManager.entityExists(found)
 		if (validName) {
-			EntityUpdateService.updateEntity(entity,  newName, "name")
+			entity.name = newName
 			EntityNamingService.#byName.set(newName, entity.id)
+			EntityHierarchyService.updateHierarchy()
 		} else{
 			{
 				const subWord = ".00"
@@ -36,8 +35,8 @@ export default class EntityNamingService {
 			}
 		}
 	}
-	static renameInBlock(entities:Entity[]){
-		const groupID = crypto.randomUUID().substring(0, 3)
+	static renameInBlock(entities:EditorEntity[]){
+		const groupID = UUIDGen().substring(0, 3)
 		for (let i = 0; i < entities.length; i++){
 			const entity = entities[i]
 			if(EntityNamingService.#byName.has(entity.name))

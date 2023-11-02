@@ -8,7 +8,7 @@ import * as fs from "fs"
 import * as pathRequire from "path"
 import IPCRoutes from "../../shared/enums/IPCRoutes"
 import FileImporterUtil from "./FileImporterUtil"
-import AbstractSingleton from "../../shared/AbstractSingleton"
+import AbstractSingleton from "../../renderer/engine/core/AbstractSingleton"
 import FileSystemUtil from "./FileSystemUtil"
 
 
@@ -43,7 +43,7 @@ export default class IPCListener extends AbstractSingleton {
 
 	#reload() {
 		const electronInstance = ElectronWindowService.getInstance()
-		electronInstance.closeSubWindows()
+		electronInstance.recreateWindow()
 		electronInstance.bindEssentialResources(electronInstance.pathToProject).catch(console.error)
 	}
 

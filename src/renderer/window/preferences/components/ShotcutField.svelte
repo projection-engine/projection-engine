@@ -1,8 +1,8 @@
 <script>
 
-    import SETTINGS from "../../editor/static/SETTINGS"
+    import SETTINGS from "../../editor/static/SETTINGS_STORE_STATEE"
 
-    import KEYS from "../../editor/static/KEYS.ts"
+    import KEYS from "../../editor/static/KeyboardKeys.ts"
     import SettingsStore from "../../shared/stores/SettingsStore"
     import ToolTip from "../../shared/components/tooltip/ToolTip.svelte"
     import Icon from "../../shared/components/icon/Icon.svelte"
@@ -21,6 +21,7 @@
     let currentShortcut
     $: currentShortcut = [...shortcut]
     let text = ""
+    let label = ""
     let onEdit = false
     $: original = SETTINGS[wrapperKey][key]
     $: isChanged = JSON.stringify(original) !== JSON.stringify(currentShortcut)

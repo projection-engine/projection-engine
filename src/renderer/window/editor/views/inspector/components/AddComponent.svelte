@@ -4,17 +4,18 @@
 
     import Icon from "../../../../shared/components/icon/Icon.svelte"
     import Dropdown from "../../../../shared/components/dropdown/Dropdown.svelte"
-    import ComponentRow from "./ComponentRow.svelte"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
     import EditorUtil from "../../../util/EditorUtil"
     import NATIVE_COMPONENTS from "../static/NATIVE_COMPONENTS";
-    import Entity from "../../../../../engine/core/instances/Entity";
+    import EditorEntity from "../../../../../engine/tools/EditorEntity";
     import EditorActionHistory from "../../../services/EditorActionHistory";
+    import EntitySelectionStore from "../../../../shared/stores/EntitySelectionStore";
+    import UUIDGen from "../../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
-    export let entity: Entity
+    const COMPONENT_ID = UUIDGen()
+    export let entity: EditorEntity
 
-    let components = []
+    let components
     let scripts = []
 
     onMount(() => ContentBrowserStore.getInstance().addListener(COMPONENT_ID, data => scripts = data.components, ["components"]))
@@ -23,7 +24,7 @@
     $:components = [
         ...scripts.map(s => ({type: "script", data: s})),
         ...NATIVE_COMPONENTS
-            .filter(native => !entity.components.has(native[0]))
+            .filter(native => !entity.hasComponent(native[0]))
             .map(n => ({
                 type: "native",
                 data: n
@@ -54,7 +55,7 @@
                         EditorActionHistory.save(entity)
                         entity.addComponent(component.data[0])
                         EditorActionHistory.save(entity)
-                        e.target.closeDropdown()
+                        EntitySelectionStore.getInstance().updateStore({array: EntitySelectionStore.getEntitiesSelected()})
                     }}
             >
                 <Icon styles="font-size: 1rem">{component.data[2]}</Icon>
@@ -66,7 +67,6 @@
                     data-svelteinline="-"
                     on:click={(e) => {
                         EditorUtil.componentConstructor(entity, component.data.registryID).catch(console.error)
-                        e.target.closeDropdown()
                     }}>
                 <Icon styles="font-size: 1rem">add</Icon>
                 {component.data.name}

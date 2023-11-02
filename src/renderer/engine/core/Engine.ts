@@ -1,220 +1,157 @@
-import CameraAPI from "./lib/utils/CameraAPI"
-import ENVIRONMENT from "./static/ENVIRONMENT"
-import Renderer from "./Renderer"
-import SSAO from "./runtime/SSAO"
+import CameraManager from "./managers/CameraManager"
+import AmbientOcclusionSystem from "./system/AmbientOcclusionSystem"
 import ConversionAPI from "./lib/math/ConversionAPI"
-import Physics from "./runtime/Physics"
-import FrameComposition from "./runtime/FrameComposition"
-import GPU from "./GPU"
-import OmnidirectionalShadows from "./runtime/OmnidirectionalShadows"
-import PhysicsAPI from "./lib/rendering/PhysicsAPI"
-import FileSystemAPI from "./lib/utils/FileSystemAPI"
-import ScriptsAPI from "./lib/utils/ScriptsAPI"
-import UIAPI from "./lib/rendering/UIAPI"
-import LightProbe from "./instances/LightProbe"
-import Entity from "./instances/Entity"
-import DynamicMap from "./resource-libs/DynamicMap"
-import GPUAPI from "./lib/rendering/GPUAPI"
-import EntityAPI from "./lib/utils/EntityAPI"
-import ResourceEntityMapper from "./resource-libs/ResourceEntityMapper"
-import ResourceManager from "./runtime/ResourceManager"
-import LightsAPI from "./lib/utils/LightsAPI"
-
+import CompositionSystem from "./system/CompositionSystem"
+import GPUState from "./states/GPUState"
+import OShadowsSystem from "./system/OShadowsSystem"
+import PhysicsManager from "./managers/PhysicsManager"
+import EngineFileSystemManager from "./managers/EngineFileSystemManager"
+import ScriptsManager from "./managers/ScriptsManager"
+import UIManager from "./managers/UIManager"
+import LightProbe from "@engine-core/lib/resources/LightProbe"
+import LightsManager from "./managers/LightsManager"
+import SystemManager from "./managers/SystemManager";
+import PreRendererSystem from "./system/PreRendererSystem";
+import ScriptExecutorSystem from "./system/ScriptExecutorSystem";
+import DShadowsSystem from "./system/DShadowsSystem";
+import VisibilityRendererSystem from "./system/VisibilityRendererSystem";
+import AtmosphereRendererSystem from "./system/AtmosphereRendererSystem";
+import OpaqueRendererSystem from "./system/OpaqueRendererSystem";
+import DecalRendererSystem from "./system/DecalRendererSystem";
+import SpriteRenderer from "./system/SpriteRenderer";
+import TransparencyRendererSystem from "./system/TransparencyRendererSystem";
+import PostRendererSystem from "./system/PostRendererSystem";
+import GlobalIlluminationSystem from "./system/GlobalIlluminationSystem";
+import ThreadSyncSystem from "./system/ThreadSyncSystem";
+import BokehDOFSystem from "./system/BokehDOFSystem";
+import MotionBlurSystem from "./system/MotionBlurSystem";
+import BloomSystem from "./system/BloomSystem";
+import PostProcessingSystem from "./system/PostProcessingSystem";
+import {Environment,} from "@engine-core/engine.enum";
+import GarbageCollectorSystem from "@engine-core/system/GarbageCollectorSystem";
+import PreLoopSystem from "@engine-core/system/PreLoopSystem";
+import GPUManager from "@engine-core/managers/GPUManager";
+import TerrainRendererSystem from "@engine-core/system/TerrainRendererSystem";
+import CameraState from "@engine-core/states/CameraState";
+import PhysicsSystem from "@engine-core/system/PhysicsSystem";
+import Framebuffer from "@engine-core/lib/resources/Framebuffer";
+import Shader from "@engine-core/lib/resources/Shader";
+import StaticMeshesState from "@engine-core/states/StaticMeshesState";
+import EngineState from "@engine-core/states/EngineState";
+import QUADVert from "@engine-core/shaders/QUAD.vert";
+import BRDF_GENFrag from "@engine-core/shaders/BRDF_GEN.frag";
 
 export default class Engine {
-	static #development = false
-	static #onLevelLoadListeners = new DynamicMap<string, Function>()
-	static UILayouts = new Map()
-	static isDev = true
-	static #environment: number = ENVIRONMENT.DEV
-	static #isReady = false
-	static #initializationWasTried = false
-	static #initialized = false
-	static #loadedLevel: Entity
-	static #executionQueue = new DynamicMap<string, Function>()
-	static #frameID: number = undefined
+    static UILayouts = new Map()
+    static isDev = true
+    static #environment: number = Environment.DEV
 
-	static get isExecuting() {
-		return Engine.#frameID !== undefined
-	}
+    static get environment(): number {
+        return Engine.#environment
+    }
 
-	static removeLevelLoaderListener(id: string) {
-		Engine.#onLevelLoadListeners.delete(id)
-	}
+    static set environment(data: number) {
+        Engine.isDev = data === Environment.DEV
+        Engine.#environment = data
+        if (Engine.isDev)
+            CameraManager.updateAspectRatio()
+    }
 
-	static addLevelLoaderListener(id: string, callback: Function) {
-		Engine.#onLevelLoadListeners.set(id, callback)
-	}
+    static #isReady = false
+    static #initialized = false
 
-	static get entities(): DynamicMap<string, Entity> {
-		return ResourceEntityMapper.entities
-	}
+    static get isReady() {
+        return Engine.#isReady
+    }
 
-	static get queryMap(): Map<string, Entity> {
-		return ResourceEntityMapper.queryMap
-	}
 
-	static get isReady() {
-		return Engine.#isReady
-	}
 
-	static get loadedLevel(): Entity {
-		return Engine.#loadedLevel
-	}
+    static async initializeContext(
+        canvas: HTMLCanvasElement,
+        mainResolution: { w: number, h: number } | undefined,
+        readAsset: GenericNonVoidFunctionWithP<string, Promise<string>>,
+        devAmbient: boolean
+    ) {
+        if (Engine.#initialized)
+            return
+        Engine.#initialized = true
 
-	static get developmentMode() {
-		return Engine.#development
-	}
+        EngineState.developmentMode = devAmbient
+        await GPUManager.initializeContext(canvas, mainResolution)
+        Engine.#generateBRDF();
+        EngineFileSystemManager.initialize(readAsset)
+        await PhysicsManager.initialize()
+        LightsManager.get()
 
-	static get environment(): number {
-		return Engine.#environment
-	}
+        ConversionAPI.canvasBBox = GPUState.canvas.getBoundingClientRect()
+        const OBS = new ResizeObserver(() => {
+            const bBox = GPUState.canvas.getBoundingClientRect()
+            ConversionAPI.canvasBBox = bBox
+            CameraState.aspectRatio = bBox.width / bBox.height
+            CameraManager.updateProjection()
+        })
+        OBS.observe(GPUState.canvas.parentElement)
+        OBS.observe(GPUState.canvas)
+        Engine.#isReady = true
+        GPUState.skylightProbe = new LightProbe(128)
+        Engine.#startSystems()
+    }
 
-	static set environment(data: number) {
-		Engine.isDev = data === ENVIRONMENT.DEV
-		Engine.#environment = data
-		if (Engine.isDev)
-			CameraAPI.updateAspectRatio()
-	}
+    static #generateBRDF() {
+        const FBO = new Framebuffer(512, 512).texture({precision: GPUState.context.RG32F, format: GPUState.context.RG})
+        const brdfShader = new Shader(QUADVert, BRDF_GENFrag)
 
-	static async initializeContext(canvas: HTMLCanvasElement, mainResolution: {
-        w: number,
-        h: number
-    } | undefined, readAsset: Function, devAmbient: boolean) {
-		if (Engine.#initialized)
-			return
-		Engine.#initialized = true
+        FBO.startMapping()
+        brdfShader.bind()
+        StaticMeshesState.drawQuad()
+        FBO.stopMapping()
+        GPUState.BRDF = FBO.colors[0]
+        GPUState.context.deleteProgram(brdfShader.program)
+    }
 
-		Engine.#development = devAmbient
-		await GPU.initializeContext(canvas, mainResolution)
-		FileSystemAPI.initialize(readAsset)
-		FrameComposition.initialize()
-		await SSAO.initialize()
-		OmnidirectionalShadows.initialize()
-		await PhysicsAPI.initialize()
-		LightsAPI.initialize()
+    static #startSystems() {
+        const systemManager = SystemManager.getInstance()
+        systemManager.enableSystem(PreLoopSystem)
+        systemManager.enableSystem(GarbageCollectorSystem)
+        systemManager.enableSystem(ScriptExecutorSystem)
+        systemManager.enableSystem(DShadowsSystem)
+        systemManager.enableSystem(OShadowsSystem)
+        systemManager.enableSystem(VisibilityRendererSystem)
+        systemManager.enableSystem(AmbientOcclusionSystem)
 
-		ConversionAPI.canvasBBox = GPU.canvas.getBoundingClientRect()
-		const OBS = new ResizeObserver(() => {
-			const bBox = GPU.canvas.getBoundingClientRect()
-			ConversionAPI.canvasBBox = bBox
-			CameraAPI.aspectRatio = bBox.width / bBox.height
-			CameraAPI.updateProjection()
-		})
-		OBS.observe(GPU.canvas.parentElement)
-		OBS.observe(GPU.canvas)
-		Engine.#isReady = true
-		GPU.skylightProbe = new LightProbe(128)
-		Engine.addSystem("start", Renderer.loop)
-		Engine.start()
-	}
+        systemManager.enableSystem(PreRendererSystem)
+        systemManager.enableSystem(AtmosphereRendererSystem)
+        systemManager.enableSystem(TerrainRendererSystem)
+        systemManager.enableSystem(OpaqueRendererSystem)
+        systemManager.enableSystem(DecalRendererSystem)
+        systemManager.enableSystem(SpriteRenderer)
+        systemManager.enableSystem(PostRendererSystem)
+        systemManager.enableSystem(TransparencyRendererSystem)
 
-	static async startSimulation() {
-		Engine.environment = ENVIRONMENT.EXECUTION
-		UIAPI.buildUI(GPU.canvas.parentElement)
-		const entities = Engine.entities.array
-		for (let i = 0; i < entities.length; i++) {
-			const current = entities[i]
-			PhysicsAPI.registerRigidBody(current)
-		}
-		await ScriptsAPI.updateAllScripts()
-	}
+        systemManager.enableSystem(GlobalIlluminationSystem)
+        systemManager.enableSystem(BokehDOFSystem)
+        systemManager.enableSystem(MotionBlurSystem)
+        systemManager.enableSystem(BloomSystem)
+        systemManager.enableSystem(PostProcessingSystem)
+        systemManager.enableSystem(CompositionSystem)
+        systemManager.enableSystem(ThreadSyncSystem)
+    }
 
-	static start() {
+    static async startSimulation() {
+        UIManager.buildUI(GPUState.canvas.parentElement)
+        await ScriptsManager.updateAllScripts()
+        Engine.environment = Environment.EXECUTION
+    }
 
-		if (!Engine.isExecuting && Engine.#isReady) {
-			Physics.start()
-			ResourceManager.start()
-			Engine.#frameID = requestAnimationFrame(Engine.#loop)
-		} else
-			Engine.#initializationWasTried = true
-	}
+    static start() {
+        if (!SystemManager.getInstance().isRunning() && Engine.#isReady) {
+            SystemManager.getInstance().start()
+            PhysicsSystem.start()
+        }
+    }
 
-	static #loop(c){
-		const queue = Engine.#executionQueue.array
-		const queueLength = queue.length
-		Renderer.currentTimeStamp = c
-		for (let i = 0; i < queueLength; i++){
-			queue[i]()
-		}
-		Engine.#frameID = requestAnimationFrame(Engine.#loop)
-	}
-
-	static stop() {
-		cancelAnimationFrame(Engine.#frameID)
-		Engine.#frameID = undefined
-		ResourceManager.stop()
-		Physics.stop()
-	}
-
-	static async loadLevel(levelID: string, cleanEngine?: boolean) {
-		if (!levelID || Engine.#loadedLevel?.id === levelID && !cleanEngine)
-			return []
-		try {
-
-			if (cleanEngine) {
-				GPU.meshes.forEach(m => GPUAPI.destroyMesh(m))
-				GPU.textures.forEach(m => GPUAPI.destroyTexture(m.id))
-				GPU.materials.clear()
-			}
-
-			const asset = await FileSystemAPI.readAsset(levelID)
-			const {entities, entity} = JSON.parse(asset)
-			let levelEntity
-			if (!entity)
-				levelEntity = EntityAPI.getNewEntityInstance(levelID, true)
-			else
-				levelEntity = EntityAPI.parseEntityObject({...entity, isCollection: true})
-			if (!levelEntity.name)
-				levelEntity.name = "New level"
-			levelEntity.parentID = undefined
-			Engine.#replaceLevel(levelEntity)
-			const allEntities = []
-			for (let i = 0; i < entities.length; i++) {
-				try {
-					const entity = EntityAPI.parseEntityObject(entities[i])
-
-					for (let i = 0; i < entity.scripts.length; i++) {
-						await ScriptsAPI.linkScript(entity, entity.scripts[i].id)
-					}
-					const imgID = entity.spriteComponent?.imageID
-					if (imgID) {
-						const textures = GPU.textures
-						if (!textures.get(imgID))
-							await FileSystemAPI.loadTexture(imgID)
-					}
-					const uiID = entity.uiComponent?.uiLayoutID
-					const file = FileSystemAPI.readAsset(uiID)
-					if (file)
-						Engine.UILayouts.set(uiID, file)
-					allEntities.push(entity)
-				} catch (err) {
-					console.error(err)
-				}
-			}
-
-			EntityAPI.addGroup(allEntities)
-		} catch (err) {
-			console.error(err)
-		}
-		Engine.#onLevelLoadListeners.array.forEach(callback => callback())
-	}
-
-	static #replaceLevel(newLevel?: Entity) {
-		const oldLevel = Engine.#loadedLevel
-		Engine.#loadedLevel = newLevel
-		if (oldLevel) {
-			EntityAPI.removeEntity(oldLevel)
-		}
-		if (newLevel)
-			EntityAPI.addEntity(newLevel)
-	}
-
-	static addSystem(id: string, callback: Function) {
-		Engine.#executionQueue.set(id, callback)
-	}
-
-	static removeSystem(id: string) {
-		Engine.#executionQueue.delete(id)
-	}
+    static stop() {
+        SystemManager.getInstance().stop()
+        PhysicsSystem.stop()
+    }
 }

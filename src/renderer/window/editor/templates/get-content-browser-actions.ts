@@ -129,7 +129,12 @@ export default function getContentBrowserActions(navigationHistory, getCurrentDi
 			{
 				label: "Open current directory on explorer",
 				icon: "open_in_new",
-				onClick: () => ElectronResources.shell.showItemInFolder(FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + getCurrentDirectory().id))
+				onClick: () => {
+					const pathResolved = FileSystemUtil.resolvePath(FileSystemUtil.ASSETS_PATH + FileSystemUtil.sep + getCurrentDirectory().id)
+					console.trace(pathResolved)
+
+					ElectronResources.shell.showItemInFolder(pathResolved)
+				}
 
 			},
 			{divider: true},

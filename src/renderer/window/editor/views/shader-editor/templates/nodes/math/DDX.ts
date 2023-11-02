@@ -1,8 +1,7 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
-
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class DDX extends ShaderNode implements Signature{
 	static signature = "DDX"
@@ -12,12 +11,12 @@ export default class DDX extends ShaderNode implements Signature{
 	a = 0
 	constructor() {
 		super([
-			{label: "X", key: "a", accept: [DATA_TYPES.FLOAT], type: DATA_TYPES.FLOAT}
+			{label: "X", key: "a", accept: [MaterialDataTypes.FLOAT], type: MaterialDataTypes.FLOAT}
 		], [
-			{label: "Result", key: "ddxRes", type: DATA_TYPES.FLOAT}
+			{label: "Result", key: "ddxRes", type: MaterialDataTypes.FLOAT}
 		])
 		this.name = "DDX"
-        
+
 	}
 
 	get type() {

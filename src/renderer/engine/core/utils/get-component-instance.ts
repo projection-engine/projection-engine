@@ -1,43 +1,46 @@
-import COMPONENTS from "../static/COMPONENTS"
-import MeshComponent from "../instances/components/MeshComponent"
-import AtmosphereComponent from "../instances/components/AtmosphereComponent"
-import CameraComponent from "../instances/components/CameraComponent"
-import SpriteComponent from "../instances/components/SpriteComponent"
-import PhysicsColliderComponent from "../instances/components/PhysicsColliderComponent"
-import RigidBodyComponent from "../instances/components/RigidBodyComponent"
-import CullingComponent from "../instances/components/CullingComponent"
-import UIComponent from "../instances/components/UIComponent"
-import LightComponent from "../instances/components/LightComponent"
-import Component from "../instances/components/Component"
-import DecalComponent from "../instances/components/DecalComponent"
-import LightProbeComponent from "../instances/components/LightProbeComponent"
+import MeshComponent from "@engine-core/lib/components/MeshComponent"
+import AtmosphereComponent from "@engine-core/lib/components/AtmosphereComponent"
+import CameraComponent from "@engine-core/lib/components/CameraComponent"
+import SpriteComponent from "@engine-core/lib/components/SpriteComponent"
+import PhysicsColliderComponent from "@engine-core/lib/components/PhysicsColliderComponent"
+import RigidBodyComponent from "@engine-core/lib/components/RigidBodyComponent"
+import CullingComponent from "@engine-core/lib/components/CullingComponent"
+import UIComponent from "@engine-core/lib/components/UIComponent"
+import LightComponent from "@engine-core/lib/components/LightComponent"
+import DecalComponent from "@engine-core/lib/components/DecalComponent"
+import LightProbeComponent from "@engine-core/lib/components/LightProbeComponent"
+import TransformationComponent from "@engine-core/lib/components/TransformationComponent";
+import {Components} from "@engine-core/engine.enum";
+import AbstractComponent from "@engine-core/lib/components/AbstractComponent";
+import TerrainComponent from "@engine-core/lib/components/TerrainComponent";
 
-
-export default function getComponentInstance(key: string): Component | undefined {
-	switch (key) {
-	case  COMPONENTS.LIGHT:
-		return new LightComponent()
-	case  COMPONENTS.MESH:
-		return new MeshComponent()
-	case  COMPONENTS.ATMOSPHERE:
-		return new AtmosphereComponent()
-	case  COMPONENTS.LIGHT_PROBE:
-		return new LightProbeComponent()
-	case  COMPONENTS.CAMERA:
-		return new CameraComponent()
-	case  COMPONENTS.SPRITE:
-		return new SpriteComponent()
-	case  COMPONENTS.DECAL:
-		return new DecalComponent()
-	case  COMPONENTS.PHYSICS_COLLIDER:
-		return new PhysicsColliderComponent()
-	case  COMPONENTS.RIGID_BODY:
-		return new RigidBodyComponent()
-	case  COMPONENTS.CULLING:
-		return new CullingComponent()
-	case  COMPONENTS.UI:
-		return new UIComponent()
-
-	}
-	return undefined
+export default function getComponentInstance(entity: EngineEntity, key: Components): AbstractComponent | undefined {
+    switch (key) {
+        case  Components.LIGHT:
+            return new LightComponent(entity)
+        case  Components.MESH:
+            return new MeshComponent(entity)
+        case  Components.ATMOSPHERE:
+            return new AtmosphereComponent(entity)
+        case  Components.LIGHT_PROBE:
+            return new LightProbeComponent(entity)
+        case  Components.CAMERA:
+            return new CameraComponent(entity)
+        case  Components.SPRITE:
+            return new SpriteComponent(entity)
+        case  Components.DECAL:
+            return new DecalComponent(entity)
+        case  Components.PHYSICS_COLLIDER:
+            return new PhysicsColliderComponent(entity)
+        case  Components.RIGID_BODY:
+            return new RigidBodyComponent(entity)
+        case  Components.CULLING:
+            return new CullingComponent(entity)
+        case  Components.UI:
+            return new UIComponent(entity)
+        case  Components.TRANSFORMATION:
+            return new TransformationComponent(entity)
+        case  Components.TERRAIN:
+            return new TerrainComponent(entity)
+    }
 }

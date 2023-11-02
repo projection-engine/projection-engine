@@ -1,19 +1,17 @@
 import LocalizationEN from "../../../../shared/enums/LocalizationEN"
 import ContentBrowserStore from "../../shared/stores/ContentBrowserStore"
 import ToastNotificationSystem from "../../shared/components/alert/ToastNotificationSystem"
-import COMPONENTS from "../../../engine/core/static/COMPONENTS"
-import EngineResourceLoaderService from "../services/engine/EngineResourceLoaderService"
-import FileSystemAPI from "../../../engine/core/lib/utils/FileSystemAPI"
 import EntityHierarchyService from "../services/engine/EntityHierarchyService"
 import EntitySelectionStore from "../../shared/stores/EntitySelectionStore"
-import LightComponent from "../../../engine/core/instances/components/LightComponent"
-import LightsAPI from "../../../engine/core/lib/utils/LightsAPI"
-import CameraComponent from "../../../engine/core/instances/components/CameraComponent"
 import EngineStore from "../../shared/stores/EngineStore"
-import CameraAPI from "../../../engine/core/lib/utils/CameraAPI"
+import CameraManager from "@engine-core/managers/CameraManager"
 import EditorUtil from "./EditorUtil"
-import type Entity from "../../../engine/core/instances/Entity";
-import type Component from "../../../engine/core/instances/components/Component";
+import type EditorEntity from "../../../engine/tools/EditorEntity";
+import type AbstractComponent from "@engine-core/lib/components/AbstractComponent";
+import {Components,} from "@engine-core/engine.enum";
+import MeshComponent from "@engine-core/lib/components/MeshComponent";
+import SpriteComponent from "@engine-core/lib/components/SpriteComponent";
+import EntityManager from "@engine-core/managers/EntityManager";
 
 export default class InspectorUtil {
     static compareObjects(obj1, obj2) {
@@ -31,55 +29,39 @@ export default class InspectorUtil {
         return isValid
     }
 
-    static getEntityTabs(components, isCollection: boolean) {
-        const result = [
+    static getEntityTabs(components: AbstractComponent[]) {
+        return [
             {
                 icon: "settings",
                 label: LocalizationEN.ENTITY_PROPERTIES,
                 index: -1,
                 color: "var(--pj-accent-color-secondary)"
-            }
-        ]
-        if (isCollection)
-            return result
-        return [
-            ...result,
+            },
             {divider: true},
             ...components.map((c, i) => ({
-                icon: EditorUtil.getComponentIcon(c.componentKey),
-                label: EditorUtil.getComponentLabel(c.componentKey),
+                icon: EditorUtil.getComponentIcon(c.getComponentKey()),
+                label: EditorUtil.getComponentLabel(c.getComponentKey()),
                 index: i, color: "var(--pj-accent-color-tertiary)"
             }))
         ]
     }
 
-    static updateEntityComponent(entity:Entity, key:string, value:any, component:typeof Component) {
-        if (component instanceof LightComponent) {
-            entity.needsLightUpdate = true
-            LightsAPI.packageLights(true)
+    static updateEntityComponent(entity: EditorEntity, key: string, value: any, component: AbstractComponent) {
+        EntityManager.updateProperty(entity.id, component.getComponentKey(), key, value)
+        if (component.getComponentKey() === Components.CAMERA && entity.id === EngineStore.getData().focusedCamera) {
+            CameraManager.updateViewTarget(entity)
         }
-        if (component instanceof CameraComponent) {
-            entity.__cameraNeedsUpdate = true
-        }
-        component[key] = value
-        if (component.componentKey === COMPONENTS.CAMERA && entity.id === EngineStore.getData().focusedCamera)
-            CameraAPI.updateViewTarget(entity)
     }
 
-    static removeComponent(entity, index, key) {
+    static removeComponent(entity: EditorEntity, key: Components) {
         if (!entity)
             return
-        if (index != null) {
-            entity.scripts[index] = undefined
-            entity.scripts = entity.scripts.filter(e => e)
-        } else
-            entity.removeComponent(key)
-
+        entity.removeComponent(key)
         EntityHierarchyService.updateHierarchy()
         EntitySelectionStore.updateStore({array: EntitySelectionStore.getEntitiesSelected()})
     }
 
-    static async handleComponentDrop(entity, data) {
+    static async handleComponentDrop(entity: EditorEntity, data) {
         try {
             const id = JSON.parse(data)[0]
             const type = InspectorUtil.#getItemFound(id)
@@ -91,18 +73,19 @@ export default class InspectorUtil {
                     await EditorUtil.componentConstructor(entity, id, true)
                     break
                 case "MESH":
-                    if (!entity.meshComponent) {
-                        entity.addComponent(COMPONENTS.MESH)
-                        entity.addComponent(COMPONENTS.CULLING)
-                    }
-                    await EngineResourceLoaderService.load(id, true)
-                    entity.meshComponent.meshID = id
+                    if (!entity.hasComponent(Components.MESH))
+                        entity.addComponent(Components.MESH)
+                    entity.getComponent<MeshComponent>(Components.MESH).meshID = id
                     break
                 case "MATERIAL":
-                    entity.meshComponent.materialID = id
+                    if (!entity.hasComponent(Components.MESH))
+                        entity.addComponent(Components.MESH)
+                    entity.getComponent<MeshComponent>(Components.MESH).materialID = id
                     break
                 case "IMAGE":
-                    (entity.addComponent(COMPONENTS.SPRITE)).imageID = await FileSystemAPI.loadTexture(id)
+                    if (!entity.hasComponent(Components.SPRITE))
+                        entity.addComponent(Components.SPRITE)
+                    entity.getComponent<SpriteComponent>(Components.SPRITE).imageID = id
                     break
             }
         } catch (err) {
@@ -113,12 +96,8 @@ export default class InspectorUtil {
 
     static #getItemFound(id) {
         const filesStoreData = ContentBrowserStore.getData()
-        let type = "SCRIPT"
-        let itemFound = filesStoreData.components.find(s => s.registryID === id)
-        if (!itemFound) {
-            itemFound = filesStoreData.meshes.find(s => s.registryID === id)
-            type = "MESH"
-        }
+        let itemFound = filesStoreData.meshes.find(s => s.registryID === id)
+        let type = "MESH"
         if (!itemFound) {
             itemFound = filesStoreData.textures.find(s => s.registryID === id)
             type = "IMAGE"

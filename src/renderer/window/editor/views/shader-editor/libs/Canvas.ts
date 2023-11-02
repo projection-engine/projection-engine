@@ -6,7 +6,7 @@ import type ShaderLink from "../templates/ShaderLink"
 import type ShaderComment from "../templates/ShaderComment"
 import NodesIndex from "../static/NODE_MAP"
 import NODE_MAP from "../static/NODE_MAP"
-import DynamicMap from "../../../../../engine/core/resource-libs/DynamicMap"
+import DynamicMap from "@engine-core/lib/DynamicMap"
 import ShaderEditorActionHistory from "./ShaderEditorActionHistory"
 import ShaderEditorUtil from "../../../util/ShaderEditorUtil"
 

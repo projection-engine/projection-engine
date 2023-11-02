@@ -1,9 +1,8 @@
 import ShaderNode from "../../ShaderNode"
-import DATA_TYPES from "../../../../../../../engine/core/static/DATA_TYPES"
 import NODE_TYPES from "../../../libs/material-compiler/templates/NODE_TYPES"
 import Signature from "../../Signature"
 import ShaderEditorUtil from "../../../../../util/ShaderEditorUtil";
-
+import {MaterialDataTypes,} from "@engine-core/engine.enum";
 
 export default class Vec3 extends ShaderNode implements Signature{
 	static signature = "Vec3"
@@ -18,15 +17,15 @@ export default class Vec3 extends ShaderNode implements Signature{
 			{
 				label: "Dynamic",
 				key: "uniform",
-				type: DATA_TYPES.CHECKBOX,
+				type: MaterialDataTypes.CHECKBOX,
 			},
-			{label: "Vector", key: "v", type: DATA_TYPES.VEC3},
+			{label: "Vector", key: "v", type: MaterialDataTypes.VEC3},
 		], [
-			{label: "Value", key: "VEC3_VAR", type: DATA_TYPES.VEC3},
+			{label: "Value", key: "VEC3_VAR", type: MaterialDataTypes.VEC3},
 		])
 
 		this.name = "Vec3"
-        
+
 	}
 
 	get type() {
@@ -42,13 +41,13 @@ export default class Vec3 extends ShaderNode implements Signature{
 			uniformValues.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.VEC3,
+				type: MaterialDataTypes.VEC3,
 				data: this.v
 			})
 			uniforms.push({
 				label: this.name,
 				key: this.uniformName,
-				type: DATA_TYPES.VEC3
+				type: MaterialDataTypes.VEC3
 			})
 			return `uniform vec3 ${this.uniformName};`
 		}

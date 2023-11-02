@@ -1,4 +1,4 @@
-import AbstractSingleton from "../../../../../shared/AbstractSingleton";
+import AbstractSingleton from "../../../../engine/core/AbstractSingleton";
 
 export default class ToastNotificationSystem extends AbstractSingleton {
     defaultDelay = 3500

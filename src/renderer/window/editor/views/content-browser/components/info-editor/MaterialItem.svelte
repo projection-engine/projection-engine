@@ -1,9 +1,9 @@
 <script>
-    import GPU from "../../../../../../engine/core/GPU"
+    import GPUState from "@engine-core/states/GPUState"
 
     import FileSystemUtil from "../../../../../shared/FileSystemUtil"
     import EditorFSUtil from "../../../../util/EditorFSUtil"
-    import GPUAPI from "../../../../../../engine/core/lib/rendering/GPUAPI"
+    import GPUManager from "@engine-core/managers/GPUManager"
     import MaterialUniforms from "../../../../components/MaterialUniformsForm.svelte"
     import Icon from "../../../../../shared/components/icon/Icon.svelte"
     import ToastNotificationSystem from "../../../../../shared/components/alert/ToastNotificationSystem"
@@ -19,7 +19,7 @@
     let originalMat
     let timeout
     let wasUpdated = false
-
+    let uniforms
     async function load(ID) {
     	if (wasUpdated)
     		return
@@ -54,12 +54,12 @@
     			}
     		}
     		await EditorFSUtil.updateAsset(item.registryID, JSON.stringify(temp))
-    		const instance = GPU.materials.get(item.registryID)
+    		const instance = GPUState.materials.get(item.registryID)
     		if (instance) {
     			await instance.updateUniformGroup(temp.response.uniformValues)
     			ToastNotificationSystem.getInstance().success(LocalizationEN.MATERIAL_UPDATED)
 
-    			GPUAPI.cleanUpTextures()
+    			GPUManager.cleanUpTextures()
     		}
     	}, 150)
     }

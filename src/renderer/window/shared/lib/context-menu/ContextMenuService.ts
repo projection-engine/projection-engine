@@ -4,7 +4,7 @@ import ContextMenuTarget from "./templates/ContextMenuTarget"
 import getContextAction from "./utils/get-context-action"
 import ElectronResources from "../ElectronResources"
 import IPCRoutes from "../../../../../shared/enums/IPCRoutes"
-import AbstractSingleton from "../../../../../shared/AbstractSingleton"
+import AbstractSingleton from "../../../../engine/core/AbstractSingleton"
 import MappedOption from "./templates/MappedOption"
 import getOptionID from "./utils/get-option-id"
 

@@ -1,6 +1,6 @@
 <script>
 
-    import KEYS from "../../../static/KEYS.ts"
+    import KEYS from "../../../static/KeyboardKeys.ts"
     import LocalizationEN from "../../../../../../shared/enums/LocalizationEN"
 
 

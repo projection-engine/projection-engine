@@ -3,10 +3,10 @@ import GLTFBuffer from "./GLTFBuffer"
 import ElectronWindowService from "../../ElectronWindowService"
 import * as fs from "fs"
 import * as path from "path"
-import * as crypto from "node:crypto"
 import FileTypes from "../../../shared/enums/FileTypes"
 import GLTFBuilderUtil from "./GLTFBuilderUtil"
 import FileSystemUtil from "../FileSystemUtil"
+import UUIDGen from "../../../shared/UUIDGen";
 
 export default class GLTFLoaderUtil {
 	static glTFHierarchyNodes = new Map()
@@ -32,7 +32,7 @@ export default class GLTFLoaderUtil {
 
 			const pathToAsset = basePath + path.sep + scene.name + FileTypes.COLLECTION
 			await fs.promises.writeFile(pathToAsset, JSON.stringify(scene))
-			await FileSystemUtil.createRegistryEntry(crypto.randomUUID(), pathToAsset.replace(ElectronWindowService.getInstance().pathToAssets, ""))
+			await FileSystemUtil.createRegistryEntry(UUIDGen(), pathToAsset.replace(ElectronWindowService.getInstance().pathToAssets, ""))
 		} catch (error) {
 			console.error(error)
 		}
@@ -50,7 +50,7 @@ export default class GLTFLoaderUtil {
 		if (file.images)
 			for (let i = 0; i < file.images.length; i++) {
 				try {
-					const ID = crypto.randomUUID()
+					const ID = UUIDGen()
 					const data = file.images[i]
 					textureMap[ID] = await GLTFBuilderUtil.buildImage(resourceRoot, data, ID)
 					images[i] = ID
@@ -77,7 +77,7 @@ export default class GLTFLoaderUtil {
 			primitives[i] = []
 			for (let j = 0; j < data.primitives.length; j++) {
 				const primitive = data.primitives[j]
-				const ID = crypto.randomUUID()
+				const ID = UUIDGen()
 				const primitiveData = GLTFBuilderUtil.buildPrimitive(materials, data.name, j, primitive, accessors)
 				const name = "mesh-" + i + "-primitive-" + j
 				const pathToAsset = basePath + path.sep + "primitives" + path.sep + name + FileTypes.PRIMITIVE
@@ -125,7 +125,7 @@ export default class GLTFLoaderUtil {
 		let basePath = path.resolve(targetDirectory + path.sep + scene.name)
 		try {
 			if (fs.existsSync(basePath))
-				basePath += crypto.randomUUID()
+				basePath += UUIDGen()
 
 			await fs.promises.mkdir(basePath)
 			if (file.images && file.images.length > 0)

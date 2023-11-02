@@ -5,53 +5,47 @@
     import Icon from "../../../shared/components/icon/Icon.svelte"
     import ToolTip from "../../../shared/components/tooltip/ToolTip.svelte"
     import ElectronResources from "../../../shared/lib/ElectronResources"
-    import Engine from "../../../../engine/core/Engine"
     import {onDestroy, onMount} from "svelte"
-    import EntityUpdateService from "../../services/engine/EntityUpdateService"
     import LocalizationEN from "../../../../../shared/enums/LocalizationEN"
     import SettingsStore from "../../../shared/stores/SettingsStore"
     import LoggerConfig from "./components/LoggerConfig.svelte"
+    import LoadedLevelStore from "../../../shared/stores/LoadedLevelStore";
+    import ContentBrowserStore from "../../../shared/stores/ContentBrowserStore";
+    import UUIDGen from "../../../../../shared/UUIDGen";
 
-    const COMPONENT_ID = crypto.randomUUID()
-    let settings = {}
+    const COMPONENT_ID = UUIDGen()
+    let isHidden = false
 
-    let loadedLevel
-    let entityID
+    let loadedLevelName
+    let unsubscribe
 
-    function load() {
-    	loadedLevel = Engine.loadedLevel?.name
-    	entityID = Engine.loadedLevel?.id
-
-    	if (entityID)
-    		EntityUpdateService.removeListener(entityID, COMPONENT_ID)
-
-    	if (!loadedLevel)
-    		return
-    	EntityUpdateService.addListener(entityID, COMPONENT_ID, () => {
-    		loadedLevel = Engine.loadedLevel.name
-    	})
-    }
 
     onMount(() => {
-    	SettingsStore.getInstance().addListener(COMPONENT_ID, data => settings = data, ["hideFooter"])
-    	Engine.addLevelLoaderListener(COMPONENT_ID, load)
-    	load()
+        LoadedLevelStore.getInstance().addListener(COMPONENT_ID, ({loadedLevel}) => {
+            if(loadedLevel) {
+                const found = ContentBrowserStore.getItemById(loadedLevel)
+                loadedLevelName = found?.name
+            }else{
+                loadedLevelName = undefined
+            }
+        }, ["loadedLevel"])
+        SettingsStore.getInstance().addListener(COMPONENT_ID, data => isHidden = data.hideFooter, ["hideFooter"])
     })
 
     onDestroy(() => {
-    	SettingsStore.getInstance().removeListener(COMPONENT_ID)
-    	Engine.removeLevelLoaderListener(COMPONENT_ID)
+        SettingsStore.getInstance().removeListener(COMPONENT_ID)
+        unsubscribe()
     })
 </script>
 
-<div class="container" style={settings.hideFooter ? "display: none" : undefined}>
+<div class="container" style={isHidden ? "display: none" : undefined}>
 
     <div class="meta-data" style="justify-content: flex-start">
-        {#if loadedLevel}
+        {#if loadedLevelName}
             <div class="wrapper footer-header"
                  style="max-width: clamp(100px, 5vw, 100px); background: var(--pj-background-primary)">
                 <Icon styles="font-size: .9rem">forest</Icon>
-                <small data-svelteoverflow="-">{loadedLevel}</small>
+                <small data-svelteoverflow="-">{loadedLevelName}</small>
                 <ToolTip content={LocalizationEN.LOADED_LEVEL}/>
             </div>
             <div data-sveltevertdivider="-" style="margin: 0 2px"></div>
